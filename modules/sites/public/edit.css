@@ -1,0 +1,21 @@
+@CHARSET "UTF-8";
+
+div.form-section.location
+{
+	overflow: hidden;
+}
+
+div.form-section.location div.panel
+{
+	float: left;
+}
+
+form.wdform div.form-section.flat.location .panel > div.form-label
+{
+	margin-top: 0;
+}
+
+form.wdform div.form-section.flat.location .panel > div.form-label + div.form-element
+{
+	margin-bottom: 0;
+}

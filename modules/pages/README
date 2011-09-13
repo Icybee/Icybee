@@ -1,0 +1,11 @@
+Views place holders
+===================
+
+If the data provided to the view is empty, the view tries to fetch a place holder instead :
+
+$placeholder = $core->site->metas["<module_flat_id>.place_holder"];
+
+i18n
+====
+
+<module_flat_id>.<view_id>.empty_view (default "No record found.")

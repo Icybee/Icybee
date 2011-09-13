@@ -1,0 +1,38 @@
+<?php
+
+/*
+ * This file is part of the Icybee package.
+ *
+ * (c) Olivier Laviale <olivier.laviale@gmail.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+namespace ICanBoogie\Operation\Nodes;
+
+use ICanBoogie\Operation;
+
+class Export extends Operation
+{
+	protected function validate()
+	{
+		return true;
+	}
+
+	protected function process()
+	{
+		global $core;
+
+		$records = $this->module->model()->find_by_siteid($core->site_id)->own->all(\PDO::FETCH_OBJ);
+
+		foreach ($records as $record)
+		{
+			$by_id[$record->nid] = $record;
+
+			unset($record->nid);
+		}
+
+		return $by_id;
+	}
+}

@@ -1,0 +1,59 @@
+@CHARSET "UTF-8";
+
+#view-articles-list .article + .article
+{
+	margin-top: 2em;
+}
+
+#view-articles-list h2 a:not(:hover)
+{
+	color: inherit;
+}
+
+#view-articles-list .metas
+{
+	font-size: .8em;
+}
+
+#view-articles-list .metas a:not(:hover)
+{
+	color: inherit;
+	text-decoration: none;
+}
+
+#view-articles-archives h2 sup,
+#view-articles-categories h2 sup
+{
+	font-weight: normal;
+	color: silver;
+}
+
+#view-articles-archives .months,
+#view-articles-categories .categories
+{
+	overflow: hidden;
+	display: block;
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+
+#view-articles-archives .month,
+#view-articles-categories .category
+{
+	width: 48%;
+	float: left;
+}
+
+#view-articles-archives .month:nth-child(odd),
+#view-articles-categories .category:nth-child(odd)
+{
+	margin-right: 4%;
+	clear: left;
+}
+
+#view-articles-archives .links,
+#view-articles-categories .links
+{
+	margin-left: 0;
+}

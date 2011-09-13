@@ -1,0 +1,43 @@
+@CHARSET "UTF-8";
+
+form.edit p.element-description
+{
+	font-size: 0.8em;
+	margin-top: 0.5em;
+	margin-bottom: 0;
+	color: #111;
+}
+
+form.edit div.scopes
+{
+	margin: -1em 0 0 0;
+}
+
+form.edit div.scopes + div.element-description sup
+{
+	vertical-align: text-top;
+}
+
+form.edit div.local
+{
+	width: 25%;
+	display: inline-block;
+	margin: 1em 0 0;
+}
+
+form.edit div.local > label
+{
+	display: block;
+	border-bottom: 1px solid #CCC;
+}
+
+form.edit div.local > label small
+{
+	color: #808080;
+}
+
+form.edit div.local div.checkbox-group
+{
+	font-size: .9em;
+	margin-left: 2ex;
+}

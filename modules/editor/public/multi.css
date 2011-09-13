@@ -1,0 +1,10 @@
+div.editor-options
+{
+	font-size: .8em;
+	margin-top: .5em;
+}
+
+div.editor-wrapper textarea[name="contents[body][contents]"]
+{
+	height: 24em;
+}

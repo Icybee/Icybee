@@ -1,0 +1,44 @@
+@CHARSET "UTF-8";
+
+div.mooeditable-ui-dialog.mooeditable-paste-dialog
+{
+	background-color: white;
+	box-shadow: 0 5px 20px 0 gray;
+	-moz-box-shadow: 0 5px 20px 0 gray;
+	-webkit-box-shadow: 0 5px 20px 0 gray;
+	border: 1px solid #CFCFCF; 
+}
+
+div.mooeditable-ui-dialog.mooeditable-paste-dialog textarea
+{
+	width: 100%;
+	border: none;
+	background-color: white;
+	box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+}
+
+div.mooeditable-ui-dialog div.mooeditable-ui-dialog-contents-frame
+{
+	margin: 1em;
+	border: 1px solid #CFCFCF;
+}
+
+div.mooeditable-ui-dialog div.mooeditable-ui-dialog-action-frame
+{
+	background-color: #F6F6F6;
+	border-top: 1px solid #CFCFCF;
+	text-align: center;
+}
+
+div.mooeditable-ui-dialog div.mooeditable-ui-dialog-action-frame button
+{
+	font-size: 12px;
+	margin: 0.8em 1ex;
+}
+
+button.mooeditable-ui-button.paste-item span.button-icon
+{
+	background: url(icons.png) 0 -160px no-repeat;
+}

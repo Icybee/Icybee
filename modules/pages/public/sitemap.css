@@ -1,0 +1,17 @@
+@CHARSET "UTF-8";
+
+#view-site-pages-sitemap
+{
+	line-height: 2em;
+}
+
+#view-site-pages-sitemap ol
+{
+	padding-left: 0;
+	list-style-position: inside;
+}
+
+#view-site-pages-sitemap ol.lv1
+{
+	margin-left: 0;
+}

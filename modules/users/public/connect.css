@@ -1,0 +1,140 @@
+#contents-wrapper
+{
+	width: 50%;
+	margin: 1em auto 0 auto;
+}
+
+body.admin #login form
+{
+	font-size: 2em;
+	background-image: -moz-linear-gradient(top, white 70%, #f0f0f0);
+}
+
+body.admin #login form.group
+{
+	padding: 1em;
+	margin: 0;
+}
+
+form.login label sup
+{
+	vertical-align: text-top;
+	color: #21759B;
+}
+
+form.login label span.separator
+{
+	display: none;
+}
+
+body.admin form.login div.form-label
+{
+	font-size: .6em;
+	margin-bottom: .4em;
+}
+
+form.login div.form-element
+{
+	margin-bottom: 1em;
+}
+
+form.login div.form-element:last-child
+{
+	margin-bottom: 0;
+}
+
+body.admin form.login input
+{
+	width: 100%;
+	/*-brickrouge background: #FCFCFC;
+	background: -moz-linear-gradient(top, #fcfcfc, white 40%);*/
+	box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+}
+
+/*-brickrouge
+form.login input.missing
+{
+	background: #fdd;
+	background: -moz-linear-gradient(top, #fdd, white);
+}
+*/
+
+form.login div.form-element-submit
+{
+	text-align: center;
+}
+
+body.admin form.login button
+{
+	font-size: .9em;
+}
+
+form.login ul.missing,
+form.login ul.success
+{
+	margin: 0 0 1em 0;
+	padding: .5em;
+	list-style: none;
+	text-align: center;
+}
+
+body.admin form.login ul.missing,
+body.admin form.login ul.success
+{
+	font-size: .4em;
+}
+
+form.login ul.missing
+{
+	color: #EE2222;
+	background-color: #FFDDDD;
+	border: 1px solid #FFAAAA;
+}
+
+form.login ul.success
+{
+	color: #22EE22;
+	background-color: #DDFFDD;
+	border: 1px solid #AAFFAA;
+}
+
+body.admin #login div.element-description
+{
+	text-align: right;
+	font-size: .9rem;
+	margin: .5em 0;
+}
+
+#login h3
+{
+	background-color: #E8E8E8;
+	border-bottom: 1px solid #CCCCCC;
+	padding: 4px 1em;
+	font-size: .9em;
+	font-weight: normal;
+	margin: 0;
+}
+
+#login div.wrapper
+{
+	position: static;
+	overflow: hidden;
+}
+
+#login div.alert-message
+{
+	font-size: 1rem;
+}
+
+form.login.stacked .field > label
+{
+	font-weight: normal;
+	font-size: 1rem;
+}
+
+form.login .field--submit
+{
+	text-align: center;
+}

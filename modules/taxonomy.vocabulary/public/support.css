@@ -1,0 +1,95 @@
+/*
+**
+
+CLOUDS
+
+**
+*/
+
+/*
+div.taxonomy-tags input[type=text]
+{
+	max-width: 64ex;
+}
+*/
+
+div.taxonomy-tags button
+{
+	display: none;
+}
+
+
+div.taxonomy-tags ul.cloud
+{
+	display: block;
+	padding: 0;
+	margin: 1em auto;
+	list-style: none;
+	font-size: .8em;
+}
+
+div.taxonomy-tags ul.cloud li
+{
+	display: inline;
+	margin-right: 0.5ex;
+	vertical-align: middle;
+	cursor: pointer;
+	white-space: nowrap;
+}
+
+div.taxonomy-tags ul.cloud li.selected
+{
+	color: black;
+	background: white;
+	border: 1px solid #21759B;
+	padding: .2em 1ex;
+	border-radius: 5px;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+}
+
+ul.cloud .tag1
+{
+	/*color: #BBB;*/
+	color: #666;
+}
+
+ul.cloud .tag2
+{
+	font-size: 1.2em;
+	/*color: #CCC;*/
+}
+
+ul.cloud .tag3
+{
+	font-size: 1.2em;
+	font-weight: bold;
+	/*color: #CCC;*/
+}
+
+ul.cloud .tag4
+{
+	font-size: 1.4em;
+	/*color: #DDD;*/
+}
+
+ul.cloud .tag5
+{
+	font-size: 1.4em;
+	font-weight: bold;
+}
+
+ul.cloud .tag6
+{
+	font-size: 1.6em;
+}
+
+ul.cloud .tag7
+{
+	font-size: 1.8em;
+}
+
+ul.cloud .tag8
+{
+	font-size: 2em;
+}

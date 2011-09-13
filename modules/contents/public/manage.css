@@ -1,0 +1,11 @@
+@CHARSET "UTF-8";
+
+#manager label.checkbox-wrapper.home.checked
+{
+	background-image: url(home-excluded.png);
+}
+
+#manager label.checkbox-wrapper.home
+{
+	background: url(home.png) center no-repeat;
+}

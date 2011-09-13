@@ -1,0 +1,41 @@
+#section-contents .panel:first-child
+{
+	background: white;
+	border-radius: 0;
+	-moz-border-radius: 0;
+	-webkit-border-radius: 0;
+	margin: 0;
+	overflow: hidden;
+}
+
+#section-contents .panel:first-child:not(:last-child)
+{
+	border-bottom: 1px solid #ccc;
+}
+
+#section-contents .panel:first-child .form-element
+{
+	margin: 1em;
+}
+
+#section-contents .panel:first-child select
+{
+	background: #F6F6F6;
+}
+
+
+.panel.inherit-toggle .element-description
+{
+	max-width: none;
+}
+
+.panel.inherit-toggle + .panel,
+.panel.inherit-toggle + .panel .form-label
+{
+	display: none;
+}
+
+.panel.inherit-toggle.edit + .panel
+{
+	display: block;
+}

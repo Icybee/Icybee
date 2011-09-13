@@ -1,0 +1,21 @@
+#manager th.is_activated,
+#manager td.is_activated
+{
+	width: 1%;
+	text-align: center;
+}
+
+table.resume div.jobs a.operation-password
+{
+	background: url(resume-job-password.gif) no-repeat;
+}
+
+table.resume div.jobs a.operation-password:hover
+{
+	background-position: 0px -20px;
+}
+
+form.management select
+{
+	width: 50%;
+}

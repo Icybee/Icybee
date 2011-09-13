@@ -1,0 +1,13 @@
+form.edit div.file-upload-element div.details
+{
+	display: inline-block;
+	text-align: right;
+	margin-right: 1ex;
+	vertical-align: top;
+}
+
+form.edit div.file-upload-element div.preview small
+{
+	display: block;
+	margin-top: 0.5em;
+}

@@ -1,0 +1,183 @@
+div.wd-adjustnodeslist ul
+{
+	padding: 0;
+	margin: 1em 0;
+	font-size: .9em;
+	list-style: none;
+}
+
+div.wd-adjustnodeslist li
+{
+	background: white;
+	padding: .2em .4em;
+	margin: 1px 0;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	position: relative;
+}
+
+div.wd-adjustnodeslist li:hover
+{
+	background: #f2f8ff;
+}
+
+/*
+div.wd-adjustnodeslist li.sortable
+{
+	cursor: move;
+}
+*/
+
+div.wd-adjustnodeslist li img
+{
+	vertical-align: middle;
+}
+
+div.wd-adjustnodeslist li span.handle
+{
+	color: #808080;
+	margin-right: .5ex;
+	cursor: move;
+	padding: 0 .3ex;
+}
+
+div.wd-adjustnodeslist li input[type=text]:not([size])
+{
+	width: 70%;
+	border: 1px solid transparent;
+}
+
+div.wd-adjustnodeslist li:hover input[type=text]
+{
+	border-color: #B5D5FF;
+}
+
+div.wd-adjustnodeslist li:hover span.handle
+{
+	color: inherit;
+}
+
+div.wd-adjustnodeslist div.list ul
+{
+	margin-top: 0;
+}
+
+div.wd-adjustnodeslist div.list li span.title
+{
+	display: none;
+}
+
+div.wd-adjustnodeslist ul span.small
+{
+	color: #808080;
+}
+
+div.wd-adjustnodeslist div.search,
+div.wd-adjustnodeslist div.list
+{
+	display: inline-block;
+	width: 49%;
+	vertical-align: top;
+}
+
+div.wd-adjustnodeslist h4
+{
+	margin: 0 0 .4em 0;
+	font-size: .9em;
+}
+
+div.wd-adjustnodeslist div.search
+{
+	margin-right: 2%;
+}
+
+div.wd-adjustnodeslist div.search li
+{
+	cursor: pointer;
+}
+
+.wdform div.wd-adjustnodeslist input.search,
+div.wd-adjustnodeslist input.search
+{
+	width: 100%;
+	box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+}
+
+div.wd-adjustnodeslist p.no-response em
+{
+	font-style: normal;
+	font-weight: bold;
+}
+
+/*
+**
+
+PAGER
+
+**
+*/
+
+div.wd-adjustnodeslist div.pager
+{
+	text-align: center;
+	font-size: .8em;
+	margin-top: -.5em;
+}
+
+div.wd-adjustnodeslist div.pager span.separator
+{
+	display: none;
+}
+
+div.wd-adjustnodeslist div.pager a,
+div.wd-adjustnodeslist div.pager strong
+{
+	padding: 0 .5ex;
+}
+
+
+div.wd-adjustnodeslist li.holder
+{
+	background-color: transparent;
+	padding: 0;
+	display: none;
+}
+
+div.wd-adjustnodeslist li.holder:first-child:last-child
+{
+	display: block;
+}
+
+div.wd-adjustnodeslist ul button
+{
+	position: absolute;
+	top: 0;
+	right: 0;
+	
+	font-size: inherit;
+	font-weight: normal;
+	-moz-border-radius: 0 5px 5px 0;
+	-moz-box-shadow: none;
+	-webkit-border-top-left-radius: 0;
+	-webkit-border-top-right-radius: 5px;
+	-webkit-border-bottom-right-radius: 5px;
+	-webkit-border-bottom-left-radius: 0;
+	-webkit-box-shadow: none;
+	background: transparent;
+	border-width: 0 0 0 1px;
+	border-color: #F6F6F6;
+	color: #808080;
+	display: block;
+	height: 100%;
+	width: 3ex;
+	padding: 0 .5ex 0 0;
+}
+
+div.wd-adjustnodeslist div.search li:hover button,
+div.wd-adjustnodeslist ul button:hover
+{
+	color: #4B8BB3;
+	background: #B5D5FF;
+}

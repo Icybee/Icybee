@@ -1,0 +1,87 @@
+<h3>Phrase emphasis</h3>
+<div>
+<p>_accentuation_ &bull; *strong accentuation* &bull; __italic__ &bull; **bold** &bull; -deleted- &bull; +inserted+</p>
+</div>
+
+<h3>Links</h3>
+<div>
+
+<p>Inline:</p>
+<p><code>An [example](http://url.com/ "Title")</code></p>
+
+<p>Reference-style labels (titles are optional):</p>
+<p><code>An [example][id]. Then, anywhere else in the doc, define the link:<br /><br />[id]: http://example.com/  "Title"</code></p>
+</div>
+
+<h3>Images</h3>
+<div>
+<h4>Inline (titles are optional)</h4>
+
+<p><code>![alt text](/path/img.jpg "Title")</code></p>
+
+<h4>Reference-style</h4>
+<p><code>![alt text][id]<br />[id]: /url/to/img.jpg "Title"</code></p>
+
+<p>You can also use the id or the name of an image managed by the WdPublisher.</p>
+
+<h4>Short</h4>
+<p><code>![id][]</code></p>
+
+<h4>Alignement</h4>
+<p>left (&lt;), center (=) or right (&gt;):</p>
+<p><code>!=[id][]</code></p>
+</div>
+
+<h3>Headers</h3>
+<div>
+<h4>Underlined</h4>
+
+<p><code>
+Header 1<br />
+########<br /><br />
+Header 2<br />
+========<br /><br />
+Header 3<br />
+--------</code></p>
+
+<h4>Prepended</h4>
+
+<p><code>
+h1. Header 1<br /><br />
+h2. Header 2<br /><br />
+h6. Header 6
+</code></p>
+</div>
+
+<h3>Lists</h3>
+<div>
+<h4>Ordered, without paragraphs</h4>
+
+<p><code>
+1. Foo<br />
+2. Bar
+</code></p>
+
+<h4>You can nest them</h4>
+
+<p><code>
+* Abacus<br />
+&nbsp;&nbsp;* answer<br />
+* Bubbles<br />
+&nbsp;&nbsp;1. bunk<br />
+&nbsp;&nbsp;2. bupkis<br />
+&nbsp;&nbsp;&nbsp;* BELITTLER<br />
+&nbsp;&nbsp;3. burper<br />
+* Cunning
+</code></p>
+</div>
+
+
+
+<h3>Manual Line Breaks</h3>
+<div>
+<p>End a line with two or more spaces:</p>
+
+<p><code>Roses are red,&nbsp;&nbsp;<br />
+Violets are blue.</code></p>
+</div>

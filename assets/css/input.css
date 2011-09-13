@@ -1,0 +1,771 @@
+@charset "utf-8";
+
+select, input[type=text], input[type=password], textarea, .popbutton
+{
+	/*-brickrouge: border: 1px solid #CFCFCF;*/
+	padding: .2em .5ex;
+	font-size: .9em;
+	border-radius: 4px;
+	-moz-border-radius: 4px;
+	-webkit-border-radius: 4px;
+}
+
+select, input, textarea, .popbutton
+{
+	background: white;
+	margin: 0;
+}
+
+.popbutton:active
+{
+	box-shadow: inset 0 0 5px #CFCFCF;
+}
+
+button, .button, .btn
+{
+	font-weight: bold;
+	color: #404040;
+	text-shadow: 0 -.15ex .15ex rgba(255, 255, 255, 0.25);
+	background: white;
+	background-image: -moz-linear-gradient(top, rgba(255,255,255,.15), rgba(0,0,0,.15));
+	background-image: -webkit-linear-gradient(top, rgba(255,255,255,.15), rgba(0,0,0,.15));
+	background-image: linear-gradient(top, rgba(255,255,255,.15), rgba(0,0,0,.15));
+	border: .12em solid rgba(0, 0, 0, 0.25);	
+	
+	border-radius: .5em;
+	-moz-border-radius: .5em;
+	-webkit-border-radius: .5em;
+	
+	box-shadow: 0 0 .6ex 0 rgba(0, 0, 0, .25);
+	-moz-box-shadow: 0 0 .6ex 0 rgba(0, 0, 0, .25);
+	-webkit-box-shadow: 0 0 .6ex rgba(0, 0, 0, .25);
+}
+
+.button, .popbutton
+{
+	display: inline-block;
+}
+
+button:active, .button:active
+{
+	background-image: -moz-linear-gradient(top, rgba(0,0,0,.15), rgba(255,255,255,.15));
+	background-image: -webkit-linear-gradient(top, rgba(0,0,0,.15), rgba(255,255,255,.15));
+}
+
+a[href].button
+{
+	cursor: default;
+}
+
+a[href].button:hover
+{
+	text-decoration: none;
+}
+
+button[disabled], .button.disabled
+{
+	opacity: .4;
+}
+
+/*-boostrap: 
+.focus,
+select:focus,
+input[type=text]:focus,
+input[type=password]:focus,
+textarea:focus,
+.popbutton:focus
+{
+	border-color: #A3C0E5 !important;
+	box-shadow: 0 0 .6ex 0 #A3C0E5;
+	-moz-box-shadow: 0 0 .6ex 0 #A3C0E5;
+	-webkit-box-shadow: 0 0 .6ex #A3C0E5;
+}
+*/
+
+button.continue, .button.continue,
+button.save, .button.save,
+button.danger, .button.danger,
+button.warn, .button.warn
+{
+	color: white;
+	text-shadow: 0 -.15ex .15ex rgba(0, 0, 0, 0.25);
+}
+
+button.save, .button.save,
+button.danger, .button.danger
+{
+	background-color: #FF5C00;
+}
+
+button.save, .button.save
+{
+	font-size: 1em;
+}
+
+button.save:hover, .button.save:hover,
+button.danger:hover, .button.danger:hover
+{
+	box-shadow: 0 0 .6ex 0 #FF5C00;
+	-moz-box-shadow: 0 0 .6ex 0 #FF5C00;
+	-webkit-box-shadow: 0 0 .6ex #FF5C00;
+}
+
+button.save:active, .button.save:active,
+button.danger:active, .button.danger:active
+{
+	background-image: -moz-linear-gradient(top, #e35700, #ff760d);
+	background-image: -webkit-gradient(linear, left top, left bottom, from(#e35700), to(#ff760d));
+}
+
+button.continue, .button.continue
+{
+	border-color: #6c8815;
+	background-color: #91BD09;
+}
+
+button.continue:hover, .button.continue:hover
+{
+	box-shadow: 0 0 .6ex 0 #91BD09;
+	-moz-box-shadow: 0 0 .6ex 0 #91BD09;
+	-webkit-box-shadow: 0 0 .6ex #91BD09;
+}
+
+button.continue:active, .button.continue:active
+{
+	background-image: -moz-linear-gradient(top, #7c9b00, #a4c226);
+	background-image: -webkit-gradient(linear, left top, left bottom, from(#7c9b00), to(#a4c226));
+}
+
+button.warn, .button.warn
+{
+	background-color: #FFB515;
+}
+
+button.warn:hover, .button.warn:hover
+{
+	box-shadow: 0 0 .6ex 0 #FFB515;
+	-moz-box-shadow: 0 0 .6ex 0 #FFB515;
+	-webkit-box-shadow: 0 0 .6ex #FFB515;
+}
+
+button.warn:active, .button.warn:active
+{
+	background-image: -moz-linear-gradient(top, #E0A119, #FBBC34);
+	background-image: -webkit-gradient(linear, left top, left bottom, from(#E0A119), to(#FBBC34));
+}
+
+form .missing
+{
+	border-color: #FFAAAA;
+}
+
+input[type=text].missing,
+input[type=password].missing,
+input[type=file].missing,
+select.missing,
+textarea.missing,
+div.checkbox-group.missing,
+div.radio-group.missing
+{
+	background-color: #FEE;
+}
+
+input[type=text].missing:focus,
+input[type=password].missing:focus,
+textarea.missing:focus
+{
+	box-shadow: 0 0 0 2px #FBB;
+	-moz-box-shadow: 0 0 0 2px #FBB;
+	-webkit-box-shadow: 0 0 2px #FBB;
+}
+
+/*form label*/ span.label
+{
+	font-size: .9em;
+	font-weight: bolder;
+}
+
+/*-bootstrap:
+.element-label span.label,
+.pager span.label,
+.radio-group span.label
+{
+	font-size: inherit;
+}
+*/
+
+.pager span.label,
+.radio-group span.label
+{
+	font-weight: inherit;
+}
+
+form .form-label + .form-element .combo span.label
+{
+	font-weight: normal;
+}
+
+div.checkbox-group:not(.list) label + label,
+div.radio-group:not(.list) label + label
+{
+	margin-left: 2ex;
+}
+/*
+div.checkbox-group.list,
+div.radio-group.list
+{
+	margin: 1em 0;
+}
+*/
+div.checkbox-group.list label,
+div.radio-group.list label
+{
+	margin: 0;
+	display: block;
+}
+
+div.checkbox-group.list label *,
+div.radio-group.list label *
+{
+	vertical-align: middle;
+}
+
+div.checkbox-group.missing,
+div.radio-group.missing
+{
+	border: 1px solid #FAA;
+	padding: .5em;
+	border-radius: 4px;
+	-moz-border-radius: 4px;
+	-webkit-border-radius: 4px;
+}
+
+div.wd-file div.reminder
+{
+	margin-bottom: .5em;
+}
+
+div.wd-file div.reminder a
+{
+	font-size: .8em;
+	vertical-align: middle;
+}
+
+div.wd-file div.limit
+{
+	font-size: .8em;
+	margin-top: .2em;
+}
+
+
+input.search
+{
+	width: 24ex;
+}
+
+input.full
+{
+	width: 100% !important;
+}
+
+input.search.empty
+{
+	color: #999;
+}
+
+/*
+**
+	
+CHECKBOX WRAPPER
+	
+**
+*/
+
+label.checkbox-wrapper
+{
+	height: 0;
+	padding-top: 1em;
+	width: 1em;
+	overflow: hidden;
+	display: inline-block;
+	min-width: 14px;
+	margin: 0 .5ex;
+}
+
+td label.checkbox-wrapper:first-child:last-child
+{
+	margin: 0;
+}
+
+label.checkbox-wrapper.circle,
+label.checkbox-wrapper.rectangle
+{
+	border: 1px solid #E0E0E0;
+}
+
+label.checkbox-wrapper.circle.checked,
+label.checkbox-wrapper.rectangle.checked
+{
+	background-color: #FFC;
+}
+
+label.checkbox-wrapper.circle
+{
+	border-radius: 10px;
+	-moz-border-radius: 10px;
+	-webkit-border-radius: 10px;
+}
+
+label.checkbox-wrapper.circle.checked
+{
+	border-color: #CCA;	
+}
+
+label.checkbox-wrapper
+{
+	cursor: pointer;
+}
+
+label.checkbox-wrapper.disabled
+{
+	visibility: hidden;
+}
+
+label.checkbox-wrapper input
+{
+	visibility: hidden;
+}
+
+/*
+**
+
+POPUP
+
+**
+*/
+
+div.popup,
+ul.popup
+{
+	box-shadow: 0 5px 20px 0 gray;
+	-moz-box-shadow: 0 5px 20px 0 gray;
+	-webkit-box-shadow: 0 5px 20px 0 gray;
+}
+
+div.popup
+{
+	margin: 0;
+	position: absolute;
+	background-color: white;
+	border: 1px solid #cfcfcf;
+	font-size: .8em;
+	z-index: 4; /* just below sticky footer */
+}
+
+div.popup div.arrow
+{
+	border-style: solid;
+	height:0;
+	width:0;
+	position: absolute;
+	display: none;
+}
+
+div.popup div.arrow div
+{
+	border-style: solid;
+	height:0;
+	width:0;
+	position: absolute;
+}
+
+/* POPUP BELOW */
+
+div.popup.below
+{
+	margin-top: 30px;
+}
+
+div.popup.below div.arrow
+{
+	display: block;
+	border-color: transparent transparent #CFCFCF transparent;
+	border-width: 0 11px 11px 11px;
+	top: -11px;
+	left: 50%;
+	margin-left: -6px;
+}
+
+div.popup.below div.arrow div
+{
+	border-color: transparent transparent white transparent;
+	border-width: 0 10px 10px 10px;
+	top: 1px;
+	left: -10px;
+}
+
+/* POPUP ABOVE */
+
+div.popup.above
+{
+	margin-top: -30px;
+}
+
+div.popup.above div.arrow
+{
+	display: block;
+	border-color: #CFCFCF transparent transparent transparent;
+	border-width: 11px 11px 0 11px;
+	bottom: -11px;
+	left: 50%;
+}
+
+div.popup.above div.arrow div
+{
+	border-color: white transparent transparent transparent;
+	border-width: 10px 10px 0 10px;
+	top: -11px;
+	left: 50%;
+	margin-left: -6px;
+}
+
+/* POPUP AFTER */
+
+div.popup.after
+{
+	margin-left: 30px;
+}
+
+div.popup.after div.arrow
+{
+	display: block;
+	border-color: transparent #CFCFCF transparent transparent;
+	border-width: 11px 11px 11px 0;
+	left: -11px;
+	top: 50%;
+	margin-top: -11px;
+}
+
+div.popup.after div.arrow div
+{
+	border-color: transparent white transparent transparent;
+	border-width: 10px 10px 10px 0;
+	left: 1px;
+	top: 50%;
+	margin-top: -10px;
+}
+
+/* POPUP BEFORE */
+
+div.popup.before
+{
+	margin-left: -30px;
+}
+
+div.popup.before div.arrow
+{
+	display: block;
+	border-color: transparent transparent transparent #CFCFCF;
+	border-width: 11px 0 11px 11px;
+	right: 0;
+	top: 50%;
+	margin-top: -11px;
+}
+
+div.popup.before div.arrow div
+{
+	border-color: transparent transparent transparent white;
+	border-width: 10px 0 10px 10px;
+	left: 0;
+	top: 50%;
+	margin-top: -10px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+div.popup.above.right div.arrow,
+div.popup.below.right div.arrow
+{
+	left: 100%;
+	margin-left: -35px;
+}
+
+div.popup.above.left div.arrow,
+div.popup.below.left div.arrow
+{
+	left: 0;
+	margin-left: 35px;
+}
+
+
+
+
+
+
+
+/*
+div.popup.below
+{
+	margin: 1em 0 0 0;
+}
+
+div.popup.below div.arrow
+{
+	border-color: transparent transparent #CFCFCF transparent;
+	border-width: 0 10px 14px 10px;
+	top: -14px;
+	left: 50%;
+}
+
+div.popup.below div.arrow div
+{
+	border-color: transparent transparent white transparent;
+	border-width: 0 8px 12px 8px;
+	left: 0;
+	top: 2px;
+	margin-top: 0;
+	bottom: -14px;
+	left: -8px;
+}
+*/
+
+div.popup.black
+{
+	color: white;
+	background: -moz-linear-gradient(center top , rgba(0, 0, 0, 0.8), black) transparent;
+	background-image: -webkit-gradient(linear, left top, left bottom, from(rgba(0, 0, 0, 0.8)), to(#000));
+	border: none;
+	border-radius: 5px;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+}
+
+div.popup.black div.arrow
+{
+	border-color: transparent;
+}
+
+div.popup.black.above div.arrow div
+{
+	border-top-color: black;
+}
+
+div.popup.black.after div.arrow div
+{
+	border-right-color: black;
+}
+
+div.popup.black.below div.arrow div
+{
+	border-bottom-color: black;
+}
+
+div.popup.black.before div.arrow div
+{
+	border-left-color: black;
+}
+
+div.popup.info
+{
+	color: #4B8BB3;
+	background: #f2f8ff;
+	border-color: #A3C0E5;
+	border-radius: 5px;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	box-shadow: 0 5px 20px 0 #A3C0E5;
+}
+
+div.popup.info.below div.arrow
+{
+	border-bottom-color: #A3C0E5;
+}
+
+div.popup.info.above div.arrow
+{
+	border-top-color: #A3C0E5;
+}
+
+div.popup.info.after div.arrow
+{
+	border-right-color: #A3C0E5;
+}
+
+div.popup.info.below div.arrow div
+{
+	border-bottom-color: #f2f8ff;
+}
+
+/*
+div.popup div.search
+{
+	margin: 1em;
+}
+*/
+
+/*
+**
+	
+COMBO
+	
+**
+*/
+
+.combo
+{
+	border: 1px solid #ccc;
+	background-color: white;
+	padding: .5em;
+	border-radius: 4px;
+	-moz-border-radius: 4px;
+	-webkit-border-radius: 4px;
+	font-size: .9em;
+}
+
+.combo input[type=text]:not(.missing),
+.combo select:not(.missing),
+.combo textarea:not(.missing)
+{
+	background-color: #F6F6F6;
+}
+
+.combo div.element-label:first-child
+{
+	margin-top: 0;
+}
+
+.list.framed
+{
+	padding: 0;
+	border: 1px solid #ccc;
+	font-size: .9em;
+	border-radius: 4px;
+	-moz-border-radius: 4px;
+	-webkit-border-radius: 4px;
+}
+
+.list.framed label
+{
+	padding: .2em .1ex;
+}
+
+.list.framed input
+{
+	margin-left: .5ex;
+}
+
+.list.framed label:first-child
+{
+	-moz-border-radius: 4px 4px 0 0;
+	border-radius: 4px 4px 0 0;
+}
+
+.list.framed label:last-child
+{
+	-moz-border-radius: 0 0 4px 4px;
+	border-radius: 0 0 4px 4px;
+}
+
+.list.framed label:first-child:last-child
+{
+	-moz-border-radius: 4px;
+	-webkit-border-radius: 4px;
+	border-radius: 4px;
+}
+
+.list.framed label + label
+{
+	border-top: 1px solid #EEE;
+}
+
+.list.framed label:not(:hover):nth-child(odd)
+{
+	background-color: #FBFBFB;
+}
+
+.list.framed label:hover
+{
+	background: #F2F8FF;
+}
+
+
+
+
+
+
+
+
+
+
+
+div.popup input[type="text"],
+div.popup select,
+div.popup textarea
+{
+	background-color: #F6F6F6;
+}
+
+div.popup.black input[type="text"],
+div.popup.black select,
+div.popup.black textarea
+{
+	background: #333333;
+	background-image: -webkit-linear-gradient(top, #222 5%, #333);
+	background-image: -moz-linear-gradient(top, #222 5%, #333);
+	border-color: #444444;
+	box-shadow: 0 0 1px black inset;
+	color: white;
+}
+
+div.popup.black span.label
+{
+	font-weight: normal;
+}
+
+div.popup div.adjust
+{
+	margin: 1em;
+}
+
+div.popup div.adjust input.search
+{
+	width: 100%;
+	box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+}
+
+div.popup div.adjust input.search.empty
+{
+	font-style: italic;
+}
+
+div.popup div.confirm
+{
+	text-align: center;
+	background-color: #F6F6F6;
+	border-top: 1px solid #CFCFCF;
+}
+
+div.popup.black div.confirm
+{
+	background: transparent;
+	background: -moz-linear-gradient(top, #222, rgba(0,0,0,0));
+	border-top-color: #222;
+}
+
+div.popup div.confirm button
+{
+	margin: .8em 1ex;
+	width: 25%;
+}

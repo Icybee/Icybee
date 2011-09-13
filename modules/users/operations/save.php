@@ -1,0 +1,227 @@
+<?php
+
+/*
+ * This file is part of the Icybee package.
+ *
+ * (c) Olivier Laviale <olivier.laviale@gmail.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+namespace ICanBoogie\Operation\Users;
+
+use ICanBoogie\ActiveRecord\User;
+use ICanBoogie\Module;
+use ICanBoogie\Operation;
+
+/**
+ * Create or update a user profile.
+ */
+class Save extends \Icybee\Operation\Constructor\Save
+{
+	protected function __get_properties()
+	{
+		global $core;
+
+		$properties = parent::__get_properties();
+		$params = $this->params;
+
+		if (!empty($params[User::PASSWORD]))
+		{
+			$properties[User::PASSWORD] = $params[User::PASSWORD];
+		}
+
+		if ($core->user->has_permission(Module::PERMISSION_ADMINISTER, $this->module))
+		{
+			#
+			# roles - because roles are not in the properties we need to prepare them for the
+			# model using the params.
+			#
+
+			$roles = array();
+
+			if (!empty($params[User::ROLES]))
+			{
+				foreach ($params[User::ROLES] as $rid => $value)
+				{
+					$value = filter_var($value, FILTER_VALIDATE_BOOLEAN);
+
+					if (!$value)
+					{
+						continue;
+					}
+
+					$roles[] = (int) $rid;
+				}
+			}
+
+			$properties[User::ROLES] = $roles;
+
+			#
+			# restricted sites - because restricted sites are not in the properties we need to
+			# prepare them for the model using the params.
+			#
+
+			$sites = array();
+
+			if (!empty($params[User::RESTRICTED_SITES]))
+			{
+				foreach ($params[User::RESTRICTED_SITES] as $siteid => $value)
+				{
+					$value = filter_var($value, FILTER_VALIDATE_BOOLEAN);
+
+					if (!$value)
+					{
+						continue;
+					}
+
+					$sites[] = (int) $siteid;
+				}
+			}
+
+			$properties[User::RESTRICTED_SITES] = $sites;
+		}
+		else
+		{
+			unset($properties[User::IS_ACTIVATED]);
+		}
+
+		return $properties;
+	}
+
+	/**
+	 * Permission is granted if the user is modifing its own profile, and has permission to.
+	 *
+	 * @see ICanBoogie.Operation::control_permission()
+	 */
+	protected function control_permission($permission=Module::PERMISSION_CREATE)
+	{
+		global $core;
+
+		$user = $core->user;
+
+		if ($user->uid == $this->key && $user->has_permission('modify own profile'))
+		{
+			return true;
+		}
+
+		return parent::control_permission($permission);
+	}
+
+	protected function control_ownership()
+	{
+		global $core;
+
+		$user = $core->user;
+
+		if ($user->uid == $this->key && $user->has_permission('modify own profile'))
+		{
+			// TODO-20110105: it this ok to set the user as a record here ?
+
+			$this->record = $user;
+
+			return true;
+		}
+
+		return parent::control_ownership();
+	}
+
+	/**
+	 * The 'User' role (rid 2) is mandatory for every user.
+	 *
+	 * @see ICanBoogie.Operation::control_form()
+	 */
+	protected function control_form()
+	{
+		$this->params[User::ROLES][2] = 'on';
+
+		return parent::control_form($this);
+	}
+
+	protected function validate()
+	{
+		global $core;
+
+		$valide = true;
+		$properties = $this->properties;
+
+		if (!empty($properties[User::PASSWORD]))
+		{
+			if (empty($this->params[User::PASSWORD . '-verify']))
+			{
+				$this->form->log(User::PASSWORD . '-verify', 'Password verify is empty.');
+
+				$valide = false;
+			}
+
+			if ($properties[User::PASSWORD] != $this->params[User::PASSWORD . '-verify'])
+			{
+				$this->form->log(User::PASSWORD . '-verify', 'Password and password verify don\'t match.');
+
+				$valide = false;
+			}
+		}
+
+		$uid = $this->key ? $this->key : 0;
+		$model = $core->models['users'];
+
+		#
+		# unique username
+		#
+
+		if (isset($properties[User::USERNAME]))
+		{
+			$username = $properties[User::USERNAME];
+			$used = $model->select('uid')->where('username = ? AND uid != ?', $username, $uid)->rc;
+
+			if ($used)
+			{
+				$this->form->log(User::USERNAME, "L'identifiant %username est déjà utilisé.", array('%username' => $username));
+
+				$valide = false;
+			}
+		}
+
+		#
+		# check if email is unique
+		#
+
+		if (isset($properties[User::EMAIL]))
+		{
+			$email = $properties[User::EMAIL];
+			$used = $model->select('uid')->where('email = ? AND uid != ?', $email, $uid)->rc;
+
+			if ($used)
+			{
+				$this->form->log(User::EMAIL, "L'adresse email %email est déjà utilisée.", array('%email' => $email));
+
+				$valide = false;
+			}
+		}
+
+		return $valide && parent::validate();
+	}
+
+	protected function process()
+	{
+		global $core;
+
+		$rc = parent::process();
+
+		$uid = $rc['key'];
+
+		if ($core->user_id == $uid)
+		{
+			wd_log_done("Your profile has been updated.", array(), 'save');
+		}
+		else
+		{
+			$record = $this->module->model[$uid];
+
+			wd_log_done($rc['mode'] == 'update' ? "%name's profile has been updated." : "%name's profile has been created.", array('%name' => $record->name), 'save');
+		}
+
+		return $rc;
+	}
+}

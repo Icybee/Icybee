@@ -1,0 +1,80 @@
+table.manage tr.module td:first-child
+{
+	padding-left: 1ex;
+}
+
+table.manage tr + tr td
+{
+	border-top: 1px solid #EEE;
+}
+
+
+
+table.manage tfoot
+{
+	text-align: center;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+table.manage tr
+{
+	cursor: auto;
+}
+
+table.manage div.jobs
+{
+	float: none;
+	text-align: center;
+}
+
+table.manage a.install
+{
+	color: #4B8BB3;
+}
+
+table.manage th.count,
+table.manage td.count
+{
+	text-align: right;
+	width: 4ex;
+}
+
+table.manage td.not-applicable
+{
+	font-style: italic;
+	font-size: .8em;
+}
+
+table.manage div.checkbox.disabled
+{
+	
+	cursor: auto;
+}
+
+table.manage label.checkbox-wrapper.disabled
+{
+	visibility: hidden;
+}
+
+table.manage tr.module
+{
+	background: #F6F6F6;
+	font-weight: bold;
+}
+
+table.manage div.jobs
+{
+	visibility: visible;
+}

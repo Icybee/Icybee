@@ -1,0 +1,31 @@
+<div id="site-search">
+
+<wdp:site:search:form />
+
+<wdp:site:search:matches>
+	<wdp:choose>
+		<wdp:when test="this">
+			<p class="count">Résultats #{self.range.lower} à #{self.range.upper} sur un total d'environ #{self.range.count} pour <strong>#{self.search.entities()}</strong></p>
+		
+			<ol>
+		
+			<wdp:foreach>
+				<li>
+				<h3><a href="#{@url}">#{@title}</a></h3>
+				<q cite="#{@url}">#{@content}</q>
+				<cite>#{@shortUrl.entities()}</cite>
+				</li>
+			</wdp:foreach>
+		
+			</ol>
+			
+			#{self.pager}
+		</wdp:when>
+		
+		<wdp:otherwise>
+		<p class="count none">Aucun document ne correspond aux termes de recherche spécifiés (<strong>#{self.search.entities()}</strong>).</p>		
+		</wdp:otherwise>
+	</wdp:choose>
+</wdp:site:search:matches>
+
+</div>

@@ -1,0 +1,77 @@
+@CHARSET "UTF-8";
+
+/*
+**
+
+NOW
+
+**
+*/
+
+#system-nodes-now div.panel-contents
+{
+	margin: 0;
+}
+
+#system-nodes-now table
+{
+	line-height: 1.8em;
+}
+
+#system-nodes-now th
+{
+	color: #808080;
+	text-align: left;
+	font-family: Droid Serif, Georgia,"Times New Roman","Bitstream Charter",Times,serif;
+	font-weight: normal;
+	font-style: italic;
+	border-bottom: 1px solid #CCC;
+	background-color: white;
+}
+
+#system-nodes-now td.count
+{
+	font-size: 1.2em;
+	font-family: /*Droid Serif,*/ Georgia,"Times New Roman","Bitstream Charter",Times,serif;
+	font-style: italic;
+	text-align: right;
+	width: 4ex;
+	padding: 0 1ex;
+}
+
+#system-nodes-now td.constructor
+{
+	padding-right: 3ex;
+	width: 20ex;
+}
+
+/*
+**
+
+USER MODIFIED
+
+**
+*/
+
+#system-nodes-user-modified div.panel-contents
+{
+	margin: 0;
+}
+
+#system-nodes-user-modified td.date
+{
+	width: 12ex;
+	text-align: right;
+	padding: 0 1ex;
+	background: white;
+	border-right: 1px solid #CCC;
+	font-family: Droid Serif, Georgia,"Times New Roman","Bitstream Charter",Times,serif;
+	font-style: italic;
+	font-size: .9em;  
+	white-space: nowrap;  
+}
+
+#system-nodes-user-modified td.title
+{
+	padding-left: 1ex;
+}

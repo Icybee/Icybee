@@ -1,0 +1,20 @@
+<ol>
+<wdp:foreach>
+	<li>
+		<h2><a href="#{@url}">#{@title}</a></h2>
+
+		<div class="metas">
+			<wdp:if test="@category"><a href="#{@url('category')}" class="category">#{@category}</a><span class="separator"> &ndash;</span></wdp:if>
+			<time datetime="#{@date}" pubdate="pubdate">#{@date.format_date()}</time>
+		</div>
+		
+		<wdp:if test="@image">
+		#{@image.thumbnail('contents-news-list')=}
+		</wdp:if>
+
+		<div class="contents">#{@excerpt=}</div>
+	</li>
+</wdp:foreach>
+</ol>
+
+<wdp:pager range="self.range" />

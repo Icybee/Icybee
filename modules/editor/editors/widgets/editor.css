@@ -1,0 +1,48 @@
+.widgets-selector
+{
+	padding: 0;
+	margin: 1em 0;
+	list-style: none;
+}
+
+.widgets-selector li
+{
+	background: white;
+	padding: .2em .4em;
+	cursor: move;
+}
+
+.widgets-selector li + li
+{
+	border-top: 1px solid #eee;
+}
+
+.widgets-selector li:first-child
+{
+	-moz-border-radius: 5px 5px 0 0;
+}
+
+.widgets-selector li:last-child
+{
+	-moz-border-radius: 0 0 5px 5px;
+}
+
+.widgets-selector li:nth-child(even)
+{
+	background: #FBFBFB;
+}
+
+.widgets-selector li:hover
+{
+	background: #f2f8ff;
+}
+
+.widgets-selector li + li
+{
+	border-top: 1px solid #eee;
+}
+
+.widgets-selector li label
+{
+	cursor: move;
+}

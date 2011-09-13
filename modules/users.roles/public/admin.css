@@ -1,0 +1,57 @@
+table.manage,
+table.manage th
+{
+	text-align: center;
+}
+
+table.manage th:first-child
+{
+	padding-left: 1ex;
+}
+
+table.manage th:first-child,
+table.manage td:first-child
+{
+	text-align: left;
+}
+	
+table.manage tr.module
+{
+	background-color: #F6F6F6;
+	font-weight: bold;
+}
+
+table.manage tr + tr td
+{
+	border-top: 1px solid #EEE;
+}
+
+table.manage tr.admin
+{
+	background-color: white;
+}
+
+table.manage tr.module td:first-child
+{
+	padding-left: 1ex;
+}
+
+table.manage tr.admin td:first-child
+{
+	padding-left: 3ex;
+}
+
+table.manage tr.perm td:first-child
+{
+	padding-left: 6ex;
+}
+
+table.manage tfoot td
+{
+	border-bottom: 1px solid #CCC;
+}
+
+table.manage + div.group
+{
+	text-align: center;
+}

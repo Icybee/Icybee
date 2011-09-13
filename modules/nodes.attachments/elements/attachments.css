@@ -1,0 +1,92 @@
+@CHARSET "UTF-8";
+
+div.resources-files-attached ol
+{
+	list-style: none;
+	padding: 0;
+	margin: 1em 0;
+}
+
+div.resources-files-attached li
+{
+	background-color: white;
+	padding: .3em 1ex .3em 0;
+	border: 1px solid #CFCFCF;
+	border-radius: 5px;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+}
+
+div.resources-files-attached li + li
+{
+	margin-top: -1px;
+}
+
+div.resources-files-attached li:hover
+{
+	background-color: #F2F8FF;
+}
+
+div.resources-files-attached li span.handle
+{
+	color: #808080;
+	cursor: move;
+	cursor: -moz-grab;
+	padding: 0 1ex;
+}
+
+div.resources-files-attached li:hover span.handle
+{
+	color: inherit;
+}
+
+div.resources-files-attached li span.info
+{
+	display: inline-block;
+	min-width: 18ex;
+	text-align: right;
+}
+
+div.resources-files-attached li input
+{
+	border: 1px solid transparent;
+}
+
+div.resources-files-attached li:hover input
+{
+	border-color: #B5D5FF;
+}
+
+div.resources-files-attached li.progress
+{
+	list-style: none;
+	font-size: .9em;
+	background-color: white;
+	border: 1px solid #CCC;
+	padding-left: 1ex;
+	display: none;
+}
+
+div.resources-files-attached li.progress.done
+{
+	color: #3C3;
+	background-color: #EFE;
+	border-color: #CFC;
+}
+
+div.resources-files-attached li.progress.error
+{
+	color: #F33;
+	background-color: #FEE;
+	border-color: #FCC;
+}
+
+div.resources-files-attached img
+{
+	vertical-align: middle;
+}
+
+div.resources-files-attached li:hover img
+{
+	margin-right: 1ex;
+}

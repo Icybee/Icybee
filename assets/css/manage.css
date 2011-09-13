@@ -1,0 +1,726 @@
+@charset "utf-8";
+
+/*
+**
+
+SEARCH (in MENU OPTIONS)
+
+**
+*/
+
+#menu-options form.search
+{
+	border: 1px solid #CFCFCF;
+	font-size: 12px; /* we use a fixed value so that the height of the form is the same of the browse element*/
+	padding: 2px 0.5ex;
+	background-color: white;
+	border-radius: 4px;
+	-moz-border-radius: 4px;
+	-webkit-border-radius: 4px;
+}
+
+#menu-options form.search input
+{
+	border: none;
+	background: transparent;
+	font-size: inherit;
+	padding: 0;
+	position: relative;
+	top: 1px;
+	border-radius: 0;
+	-moz-border-radius: 0;
+	-webkit-border-radius: 0;
+	box-shadow: none;
+}
+
+#menu-options form.search input.empty
+{
+	font-style: italic;
+}
+
+#menu-options form.search input:focus
+{
+	box-shadow: none;
+	-moz-box-shadow: none;
+	-webkit-box-shadow: none;
+}
+
+#menu-options form.search.active:not(.focus)
+{
+	background-color: #FFC;
+}
+
+#menu-options form.search button
+{
+	color: #808080;
+	background: #EEE;
+	border: none;
+	font-weight: normal;
+	font-size: 10px;
+	text-shadow: none;
+	padding: 0;
+	margin-left: 1ex;
+	border-radius: 1em;
+	-moz-border-radius: 1em;
+	-webkit-border-radius: 1em;
+	box-shadow: none;
+	-moz-box-shadow: none;
+	-webkit-box-shadow: none;
+	visibility: hidden;
+}
+
+#menu-options form.search.active:not(.focus) button
+{
+	color: #808000;
+	background-color: #EE0;
+}
+
+#menu-options form.search input:not(.empty) + button
+{
+	visibility: visible;
+}
+
+/*
+**
+
+TABLE
+
+**
+*/
+
+table.group,
+table.manage
+{
+	width: 100%;
+}
+
+#contents table.manage
+{
+	margin: 0;
+}
+
+table.manage td,
+table.manage th
+{
+	padding: 4px;
+}
+
+table.manage tbody tr + tr td
+{
+	border-top: 1px solid #EEE;
+}
+
+table.manage tbody,
+table.manage tfoot
+{
+	font-size: .9em;
+}
+
+#manager div.empty
+{
+	line-height: 4em;
+	text-align: center;
+	font-size: 14px;
+}
+
+table.manage thead tr
+{
+	background-color: #E8E8E8;
+}
+
+table.manage th
+{
+	/*font-weight: normal;*/
+	text-align: left;
+	border-bottom: 1px solid #CCC;
+	white-space: nowrap;
+	font-size: .9em;
+}
+
+table.manage a
+{
+	color: inherit;
+	text-decoration: none;
+}
+
+table.manage tbody tr:hover a
+{
+	color: #4B8BB3;
+}
+
+table.manage a:hover
+{
+	text-decoration: underline;
+}
+
+table.manage .asc .title
+{
+	background: url(manage/asc.png) no-repeat right center;
+	padding-right: 10px;
+}
+
+table.manage .desc .title
+{
+	background: url(manage/desc.png) no-repeat right center;
+	padding-right: 10px;
+}
+
+table.manage th a.filter
+{
+	background: url(manage/filter.png) no-repeat right center;
+	padding-right: 16px;
+}
+
+table.manage tbody tr:nth-child(even)
+{
+	background-color: #FBFBFB;
+}
+
+table.manage tbody tr:hover
+{
+	background-color: #f2f8ff;
+}
+
+table.manage tbody tr:hover a.filter
+{
+	color: #4BB38B;
+}
+
+table.manage tr.no-ownership div.checkbox,
+table.manage tr.no-ownership label.checkbox-wrapper
+{
+	visibility: hidden;
+}
+
+table.manage tr.no-ownership a.edit
+{
+	color: #808080;
+}
+
+table.manage td:first-child,
+table.manage th:first-child > div
+{
+	padding-left: 8px;
+}
+
+table.manage td:last-child,
+table.manage th:last-child > div
+{
+	padding-right: 8px;
+}
+
+table.manage th.key,
+table.manage td.key
+{
+	text-align: right;
+	width: 1em;
+}
+
+table.manage td.key label
+{
+	display: block;
+}
+
+table.manage th.operations,
+table.manage td.operations
+{
+	text-align: right;
+	width: 1em;
+}
+
+table.manage td.operations a
+{
+	visibility: hidden;
+	display: block;
+	height: 0;
+	padding-top: 16px;
+	width: 16px;
+	overflow: hidden;
+	background: url(manage/operations.png) no-repeat;
+}
+
+table.manage td.operations a:hover
+{
+	background-position: 0 -16px;
+}
+
+table.manage tr:hover td.operations a
+{
+	visibility: visible;
+}
+
+table.manage th.size,
+table.manage td.size,
+table.manage th.date,
+table.manage td.date
+{
+	text-align: right;
+}
+
+table.manage th.date,
+table.manage td.date
+{
+	width: 16ex;
+	white-space: nowrap;
+}
+
+table.manage a.view
+{
+	display: inline-block;
+	height: 1em;
+	overflow: hidden;
+	padding-left: 11px;
+	margin-right: 5px;
+	width: 0;
+	background: url(manage/view.png) 0 bottom no-repeat;
+	vertical-align: baseline;
+}
+
+table.manage a.view:hover
+{
+	background-position: -30px bottom;
+}
+
+/*
+table.manage a.out
+{
+	padding-right: 14px;
+	background: url(manage/out.png) right center no-repeat;
+}
+
+table.manage a.out.left
+{
+	background-position: left center;
+	padding-left: 14px;
+	padding-right: 0;
+}
+*/
+
+table.manage tfoot td
+{
+	cursor: auto;
+	background-color: #E8E8E8;
+	border-top: 1px solid #CFCFCF;
+	padding: 6px 4px;
+}
+
+table.manage td img.icon
+{
+	width: 24px;
+	height: 24px;
+	vertical-align: middle;
+	margin-right: 1ex;
+	border: 1px solid #CFCFCF;
+	padding: 1px;
+}
+
+table.manage td img.icon:hover
+{
+	border-color: #A3C0E5;
+}
+
+table.manage div.jobs
+{
+	float: left;
+	visibility: hidden;
+}
+
+table.manage option[value=delete]
+{
+	color: #C04040;
+}
+
+table.manage div.excerpt
+{
+	font-size: .9em;
+	max-width: 72ex;
+	margin-top: .5em;
+}
+
+/*
+**
+
+OPTIONS
+
+**
+*/
+
+table.manage div.limiter
+{
+	float: right;
+}
+
+#menu-options div.manage form
+{
+	display: inline-block;
+}
+
+#menu-options span.browse,
+table.manage span.browse
+{
+	display: block;
+	float: right;
+}
+
+#menu-options span.browse,
+table.manage span.browse
+{
+	margin-left: 1ex;
+}
+
+#menu-options div.manage span.browse a,
+table.manage span.browse a
+{
+	border: 1px solid transparent;
+    border-radius: 4px;
+	display: block;
+	width: 20px;
+	height: 0;
+	padding: 20px 2px 0px 2px;
+	overflow: hidden;
+	background: no-repeat center;
+	position: relative;
+	float: left;
+}
+
+table.manage span.browse a
+{
+	padding-top: 22px;
+}
+
+#menu-options div.manage span.browse a.previous,
+table.manage span.browse a.previous
+{
+	background-image: url(manage/arrow-right.png);
+}
+
+#menu-options div.manage span.browse a.next,
+table.manage span.browse a.next
+{
+	background-image: url(manage/arrow-left.png);
+}
+
+#menu-options div.manage span.browse a:hover,
+table.manage span.browse a:hover
+{
+	border-color: #CFCFCF;
+	background-color: white;
+}
+
+#menu-options div.manage span.browse a.previous:active,
+table.manage span.browse a.previous:active
+{
+	left: -2px;
+}
+
+#menu-options div.manage span.browse a.next:active,
+table.manage span.browse a.next:active
+{
+	left: 2px;
+}
+
+/*
+#menu-options div.manage span.browse a.next,
+table.manage div.limiter span.browse a.next
+{
+	margin-left: -5px;
+}
+*/
+
+/*
+#menu-options div.manage span.browse a:hover,
+#menu-options div.manage a.reset:hover,
+table.manage div.limiter span.browse a:hover
+{
+	background-color: white;
+	border-color: #CFCFCF;
+	border-radius: 5px;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+}
+*/
+
+#menu-options div.manage a.reset
+{
+	margin-left: 1ex;
+	padding: .2em .5ex;
+	text-decoration: none;
+	border: 1px solid transparent;
+}
+
+/*
+#menu-options div.manage span.browse
+{
+	display: block;
+	position: absolute;
+	top: 0;
+	right: -1px;
+	margin-top: -30px;
+	margin-right: 0;
+	line-height: 30px;
+	padding: 0 1ex;
+	border-left: 1px solid #ccc;
+	border-top: 1px solid #ccc;
+	border-right: 1px solid #ccc;
+	background: #F6F6F6;
+}
+*/
+
+/*
+**
+
+RECORDS
+
+**
+*/
+
+table.manage td.key label.checkbox-wrapper
+{
+	border: 1px solid #CFCFCF;
+	background: #E8E8E8;
+}
+
+table.manage tfoot td.key label.checkbox-wrapper
+{
+	background: #F6F6F6;
+}
+
+table.manage td.key label.checkbox-wrapper.checked
+{
+	background: #B5D5FF;
+	border-color: #a3c0e5;
+}
+
+/*
+**
+
+MANAGE-JOB
+
+**
+*/
+
+#manage-job
+{
+	text-align: center;
+	padding: 1em;
+}
+
+#manage-job h3
+{
+	margin-top: 0;
+	font-weight: normal;
+}
+
+#manage-job span.spacer
+{
+	padding: 0 .5ex;
+}
+
+#manage-job div.gauge
+{
+	margin: 1em auto;
+	height: 1.5em;
+	width: 50%;
+	border: 1px solid #CCC;
+}
+
+#manage-job div.gauge div.bar
+{
+	height: 100%;
+	background-color: #FFE;
+}
+
+#manage-job div.gauge,
+#manage-job div.gauge div.bar
+{
+	border-radius: 4px;
+	-moz-border-radius: 4px;
+	-webkit-border-radius: 4px;
+}
+
+#manage-job div.progress p
+{
+	font-size: .8em;
+}
+
+/*
+**
+
+MANAGER - OPERATIONS MENU
+
+**
+*/
+
+#manager-operations-menu
+{
+	position: absolute;
+	background: #F6F6F6;
+	border: 1px solid #CFCFCF;
+	background: white;
+	padding: 0;
+	margin: 0;
+	top: 0;
+	left: 0;
+	font-size: .8em;
+	list-style: none;
+	/*-moz-box-shadow: 0 5px 10px 0 gray;*/
+}
+
+#manager-operations-menu li
+{
+	padding: .2em .6em;
+}
+
+#manager-operations-menu li:hover
+{
+	color: #4B8BB3;
+	background: #F2F8FF;
+	cursor: pointer;
+}
+
+#manager-operations-menu li + li
+{
+	border-top: 1px solid #CFCFCF;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+table.manage th
+{
+	padding: 0;
+}
+
+table.manage th a
+{
+	display: block;
+}
+
+table.manage th > div
+{
+	/*padding: 4px;*/
+	border-left: 1px solid transparent;
+	border-right: 1px solid transparent;
+	position: relative;
+}
+
+table.manage th > :first-child
+{
+	padding-left: 4px;
+}
+
+table.manage th > :last-child
+{
+	padding-right: 4px;
+}
+
+table.manage th
+{
+	line-height: 28px;
+}
+
+table.manage th:first-child > div
+{
+	border-left-width: 0;
+}
+
+table.manage th:last-child > div
+{
+	border-right-width: 0;
+}
+
+table.manage th.orderable:hover,
+table.manage th.filters:hover,
+table.manage th.filtering:hover
+{
+	background: -moz-linear-gradient(top, #ddd, #E8E8E8 60%);
+	background: -webkit-linear-gradient(top, #ddd, #E8E8E8 60%);
+	background: linear-gradient(top, #ddd, #E8E8E8 60%);
+}
+
+table.manage th.orderable:hover > div,
+table.manage th.filters:hover > div,
+table.manage th.filtering:hover > div
+{
+	border-color: #cfcfcf;
+}
+
+table.manage th.filtering .title
+{
+	background: url(manage/filter.png) no-repeat right center;
+	padding-right: 16px;
+}
+
+table.manage th ul
+{
+	position: absolute;
+	background: #E8E8E8;
+	border: 1px solid #CFCFCF;
+	border-top: 0;
+	margin: 0 0 0 -5px;
+	padding: 0;
+	list-style: none;
+	line-height: 1.33em;
+	font-weight: normal;
+	text-align: left;
+	z-index: 1;
+	font-size: 12px;
+	-moz-box-shadow: 0px 10px 10px #ccc;
+	-webkit-box-shadow: 0px 10px 10px #ccc;
+	box-shadow: 0px 10px 10px #ccc;
+	display: none;
+}
+
+table.manage th.size ul
+{
+	left: auto;
+	right: 0;
+	margin-left: 0;
+	margin-right: -1px;
+	text-align: right;
+}
+
+table.manage th:hover ul
+{
+	display: block;
+}
+
+table.manage th li:hover a
+{
+	color: #4BB38B;
+}
+
+table.manage th li a
+{
+	color: inherit;
+	display: block;
+	padding: 8px 6px;
+}
+
+table.manage th a:hover
+{
+	text-decoration: none;
+}
+
+table.manage th li.reset
+{
+	color: black;
+	border-bottom: 1px dashed #cfcfcf;
+}
+
+table.manage th li.reset:hover
+{
+	border-bottom-style: solid;
+}

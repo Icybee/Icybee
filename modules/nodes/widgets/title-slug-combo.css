@@ -1,0 +1,28 @@
+@CHARSET "UTF-8";
+
+.widget-title-slug-combo .slug-reminder,
+.widget-title-slug-combo a[href="#slug-collapse"]
+{
+	margin-left: 1ex;
+}
+
+.widget-title-slug-combo a[href="#slug-collapse"],
+.widget-title-slug-combo div.slug
+{
+	display: none;
+}
+
+.widget-title-slug-combo div.slug
+{
+	margin: 1em 0;
+}
+
+.widget-title-slug-combo .slug-reminder span
+{
+	display: none;
+}
+
+.widget-title-slug-combo p
+{
+	margin-top: .5em;
+}

@@ -1,0 +1,74 @@
+@CHARSET "UTF-8";
+
+table.manage td
+{
+	padding: 4px;
+	vertical-align: middle;
+}
+
+table.manage td.top
+{
+	vertical-align: top;
+}
+
+table.manage th.right
+{
+	text-align: right;
+}
+
+table.manage tr.group-title td
+{
+	background: #F6F6F6;
+	font-weight: bold;
+}
+
+table.manage tbody tr + tr td
+{
+	border-top: 1px solid #EEE;
+}
+
+table.manage tbody td.state
+{
+	text-align: center;
+	padding-top: 1em;
+	vertical-align: top;
+}
+
+table.manage tbody td.limit
+{
+	text-align: right;
+}
+
+table.manage tbody td.limit input
+{
+	text-align: right;
+}
+
+table.manage tbody td.usage
+{
+	text-align: right;
+}
+
+table.manage tbody td.usage.empty
+{
+	color: #808080;
+	font-style: italic;
+	vertical-align: middle;
+	font-size: .9em;
+}
+
+table.manage tbody td.usage.empty + td button
+{
+	visibility: hidden;
+}
+
+table.manage tbody td.erase
+{
+	text-align: center;
+}
+
+table.manage tbody div.element-description
+{
+	font-size: .8em;
+	margin-top: .5em;
+}

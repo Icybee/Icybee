@@ -1,0 +1,12 @@
+@charset "utf-8";
+
+table.manage a.download
+{
+	padding-left: 15px;
+	width: 0;
+	overflow: hidden;
+	display: inline-block;
+	background: url(download.png) no-repeat bottom left;
+	vertical-align: baseline;
+	height: 1em;
+}

@@ -1,0 +1,318 @@
+@charset "utf-8";
+
+#contents form.group
+{
+	margin: 0;
+	border-top: none;
+}
+
+form.edit
+{
+	margin: 0;
+	border-bottom: 1px solid white; /* fix margin glitch because the form has no border */
+}
+
+#contents h3,
+form.edit h3
+{
+	border-bottom: 1px solid #CCC;
+	background-color: #E8E8E8;
+	margin: 0;
+	font-size: 1em;
+	font-weight: normal;
+	padding: 4px 1em;
+}
+
+div.form-section + h3
+{
+	border-top: 1px solid #CCC;
+}
+
+div.form-section.flat + h3,
+h3.folded + div.form-section + h3
+{
+	border-top: none;
+}
+
+form.wdform div.form-section
+{
+	margin: 1em;
+}
+
+form.wdform h3.folded + div.form-section
+{
+	display: none;
+}
+
+form.wdform div.form-section.folded + h3
+{
+	border-top: none;
+}
+
+form.wdform td.label
+{
+	text-align: right;
+	/*vertical-align: top;*/
+}
+
+form.wdform label sup
+{
+	vertical-align: text-top;
+}
+
+form.wdform div.form-label
+{
+	font-size: .9em;
+	margin: 1em 0 .4em 0;
+}
+
+form.wdform label.mandatory sup,
+form.wdform div.form-label sup
+{
+	vertical-align: text-top;
+	color: #21759B;
+}
+
+form.wdform div.form-label label span.separator
+{
+	display: none;
+}
+
+form.wdform textarea
+{
+	width: 100%;
+	box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+}
+
+form.wdform input[type=text]:not([size])
+{
+	width: 40%;
+	min-width: 32ex;
+	box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+}
+
+.wdform input[type=text].short:not([size])
+{
+	width: 20%;
+	min-width: 16ex;
+}
+
+.wdform div.save-mode
+{
+	margin: 1em 0;
+	font-size: 14px;
+}
+
+
+
+
+
+
+
+
+form div.alert-message
+{
+	margin: 0;
+	border-radius: 0;
+}
+
+div.form-section-description
+{
+	background: white;
+	border-bottom: 1px solid #ccc;
+}
+
+div.form-section-description div.contents
+{
+	margin: .5em 16px;
+	font-size: .8em;
+}
+
+
+div.form-section:not(.flat) .panel
+{
+	background-color: #F6F6F6;
+	border: 1px solid #CCC;
+	margin: 1em auto;
+	border-radius: .5em;
+	-moz-border-radius: .5em;
+	-webkit-border-radius: .5em;
+}
+
+div.form-section.flat .panel
+{
+	margin: 1em;
+}
+
+div.form-section.flat .panel .panel
+{
+	margin: 1em 0;
+}
+
+.wdform div.form-section .panel > div.form-label
+{
+	background: #E8E8E8;
+	border-bottom: 1px solid #CCC;
+	margin: 0 0 1em 0;
+	padding: .2em 1ex;
+	border-radius: .5em .5em 0 0;
+	-moz-border-radius: .5em .5em 0 0;
+	-webkit-border-top-left-radius: .5em;
+	-webkit-border-top-right-radius: .5em;
+}
+
+div.form-section:not(.flat) .panel > div.form-label span.separator
+{
+	display: none;
+}
+
+div.form-section:not(.flat) .panel > div.form-element
+{
+	margin: 1em;
+}
+
+.panel div.help
+{
+	font-size: .75em;
+	max-width: 76ex;
+	margin: 1em 0;
+}
+
+/*-bootstrap
+.element-label
+{
+	font-size: .9em;
+	margin-top: 1em;
+	margin-bottom: .2em;
+}
+*/
+
+div.form-section table
+{
+	border-spacing: .4em;
+	/*margin: 1em;*/
+	width: 80%;
+}
+
+form.wdform td input[type="text"]:not([size])
+{
+	width: 100%;
+}
+
+form.wdform td.label:first-child
+{
+	width: 20ex;
+}
+
+form.wdform td + td.label
+{
+	padding-left: 3ex;
+}
+
+
+/*
+form.edit div.form-element > label span.label,
+div.form-element div.element-label
+*/
+
+form.edit div.element-label label span.label
+{
+	font-size: inherit;
+}
+
+form.edit div.radio-group span.label
+{
+	font-weight: inherit;
+}
+
+/*
+**
+
+FLAT SECTION MODIFIERS
+	
+**
+*/
+
+form.wdform div.form-section.flat
+{
+	margin: 0;
+	background-color: #F6F6F6;
+	border-bottom: 1px solid #CCC;
+	/*border-top: 1px solid transparent;*/
+	overflow: hidden;
+}
+
+form.wdform div.form-section.flat .panel > div.form-label
+{
+	font-weight: bolder;
+	background: transparent;
+	margin: 1.15em 0 .4em 0;
+	padding: 0;
+	border: none;
+	border-radius: 0;
+	-moz-border-radius: 0;
+	-webkit-border-radius: 0;
+}
+
+form.wdform div.form-section.flat .panel > div.form-label + div.form-element
+{
+	margin: 0 0 1em 0;
+}
+
+
+/*
+**
+
+SAVE MIRROR
+
+**
+*/
+
+#save-mirror.sticky
+{
+	position: fixed;
+	bottom: 60px;
+	right: 32px;
+	padding: 1em;
+	/*background: transparent -moz-linear-gradient(top, rgba(0,0,0,.8), black);*/
+}
+
+#save-mirror select
+{
+	background: transparent;
+	border: none;
+	padding: 0;
+	color: white;
+	font-size: 1em;
+	width: 20ex;
+}
+
+#save-mirror a
+{
+	color: white;
+	margin-left: 1ex;
+}
+
+#save-mirror div.settings
+{
+	display: none;
+}
+
+#save-mirror.settings div.main
+{
+	display: none;
+}
+
+#save-mirror.settings div.settings
+{
+	display: block;
+}
+
+form.edit .checkbox-group.list
+{
+	background: white;
+}

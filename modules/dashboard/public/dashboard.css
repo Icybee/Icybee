@@ -1,0 +1,93 @@
+@CHARSET "UTF-8";
+
+#contents-header
+{
+	display: none;
+}
+
+#contents
+{
+	background-color: transparent;
+	border: none;
+	box-shadow: none;
+	-moz-box-shadow: none;
+	-webkit-box-shadow: none;
+}
+
+#dashboard-panels
+{
+	overflow: hidden;
+	margin-top: -1em;
+}
+
+#dashboard-panels > div.column
+{
+	float: left;
+	width: 49%;
+	min-height: 200px;
+}
+
+#dashboard-panels > div.column + div.column
+{
+	margin-left: 1%;
+}
+
+div.panel
+{
+	margin: 1em 0 2em 0;
+	background-color: #F6F6F6;
+	border:1px solid #CCC;
+	border-radius: 0.5em;
+	-moz-border-radius: 0.5em;
+	-webkit-border-radius: 0.5em;
+	font-size: .9em;
+	
+	box-shadow: 0 25px 15px -20px rgba(0, 0, 0, 0.2);
+	-moz-box-shadow: 0 25px 15px -20px rgba(0, 0, 0, 0.2);
+	-webkit-box-shadow: 0 10px 15px rgba(0, 0, 0, 0.2);
+	-webkit-box-shadow: 0 25px 15px -20px rgba(0, 0, 0, 0.2); /* this one should work, but it doesn't on Safari, the one above is used instead */
+	
+	overflow: hidden;
+}
+
+#dashboard-panels p.nothing
+{
+	margin: 1em;
+	text-align: center;
+}
+
+div.panel-title
+{
+	font-weight: bolder;
+	background: -webkit-gradient(linear, left top, left bottom, from(#F6F6F6), color-stop(50%, #E8E8E8), to(#E8E8E8));
+	background: -moz-linear-gradient(top, #F6F6F6, #E8E8E8 50%);
+	background-color: #E8E8E8;
+	border-bottom: 1px solid #CCC;
+	padding: 0.4em 1ex;
+	border-radius: 0.5em 0.5em 0 0;
+	-moz-border-radius: 0.5em 0.5em 0 0;
+	-webkit-border-top-left-radius: .5em;
+	-webkit-border-top-right-radius: .5em;
+	-webkit-border-bottom-left-radius: 0;
+	-webkit-border-bottom-right-radius: 0;
+	text-shadow: 0 1px 0 #FFFFFF;
+	text-align: center;
+	cursor: move;
+}
+
+div.panel-contents
+{
+	margin: 1em;
+}
+
+div.panel-contents > table
+{
+	width: 100%;
+	border-collapse: collapse;
+}
+
+div.panel-holder
+{
+	visibility: hidden;
+	height: 1px;
+}

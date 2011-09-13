@@ -1,0 +1,68 @@
+#gallery
+{
+	text-align: center;
+}
+
+#gallery div.thumbnailer-wrapper
+{
+	text-align: center;
+	font-size: .8em;
+	margin: 1em;
+	display: inline-block;
+	position: relative;
+}
+
+table.manage tbody tr:hover a
+{
+	color: inherit;
+}
+
+table.manage tbody tr:hover a:hover
+{
+	color: #4B8BB3;
+}
+
+#gallery div.thumbnailer-wrapper img
+{
+	margin-bottom: .5em;
+	border: 1px solid #CCC;
+	-moz-box-shadow: 0 0 5px 0 #CCC;
+	-webkit-box-shadow: 0 0 5px 0 #CCC;
+}
+
+#gallery div.thumbnailer-wrapper a.edit
+{
+	display: block;
+	height: 2.5em;
+	overflow: hidden;
+	line-height: normal;
+}
+
+#gallery:hover
+{
+	background: inherit;
+	cursor: auto;
+}
+
+#gallery div.thumbnailer-wrapper input[type=checkbox],
+#gallery div.thumbnailer-wrapper div.checkbox
+{
+	display: none;
+	position: absolute;
+	top: 0;
+	right: 0;
+}
+
+#gallery div.thumbnailer-wrapper div.checkbox
+{
+	margin: 5px;
+	-moz-box-shadow: 0 0 20px 0 #999;
+	-webkit-box-shadow: 0 0 20px 0 #999;
+}
+
+#gallery div.thumbnailer-wrapper:hover input[type=checkbox],
+#gallery div.thumbnailer-wrapper:hover div.checkbox,
+#gallery div.thumbnailer-wrapper div.checkbox.checked
+{
+	display: block;
+}

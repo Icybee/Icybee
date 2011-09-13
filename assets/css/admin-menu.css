@@ -1,0 +1,177 @@
+@CHARSET "UTF-8";
+
+@font-face
+{
+	font-family: 'Droid Sans';
+	font-style: normal;
+	font-weight: bold;
+	src: url('http://themes.googleusercontent.com/font?kit=EFpQQyG9GqCrobXxL-KRMQJKKGfqHaYFsRG-T3ceEVo');
+	src: local('Droid Sans Bold'), url('http://themes.googleusercontent.com/font?kit=EFpQQyG9GqCrobXxL-KRMQJKKGfqHaYFsRG-T3ceEVo') format('truetype');
+}
+
+@font-face
+{
+	font-family: 'Droid Sans';
+	font-style: normal;
+	font-weight: normal;
+	src: url('http://themes.googleusercontent.com/font?kit=rS9BT6-asrfjpkcV3DXf__esZW2xOQ-xsNqO47m55DA');
+	src: local('Droid Sans'), url('http://themes.googleusercontent.com/font?kit=rS9BT6-asrfjpkcV3DXf__esZW2xOQ-xsNqO47m55DA') format('truetype');
+}
+
+@font-face
+{
+	font-family: 'Droid Serif';
+	font-style: italic;
+	font-weight: normal;
+	src: url('http://themes.googleusercontent.com/font?kit=cj2hUnSRBhwmSPr9kS5890eOrDcLawS7-ssYqLr2Xp4');
+	src: local('Droid Serif Italic'), local('DroidSerif-Italic'), url('http://themes.googleusercontent.com/font?kit=cj2hUnSRBhwmSPr9kS5890eOrDcLawS7-ssYqLr2Xp4') format('truetype');
+}
+
+@font-face
+{
+	font-family: 'Droid Serif';
+	font-style: normal;
+	font-weight: normal;
+	src: url('http://themes.googleusercontent.com/font?kit=DgAtPy6rIVa2Zx3Xh9KaNaCWcynf_cDxXwCLxiixG1c');
+	src: local('Droid Serif'), local('DroidSerif'), url('http://themes.googleusercontent.com/font?kit=DgAtPy6rIVa2Zx3Xh9KaNaCWcynf_cDxXwCLxiixG1c') format('truetype');
+}
+
+@font-face
+{
+	font-family: 'Droid Serif';
+	font-style: italic;
+	font-weight: bold;
+	src: url('http://themes.googleusercontent.com/font?kit=c92rD_x0V1LslSFt3-QEps_zJjSACmk0BRPxQqhnNLU');
+	src: local('Droid Serif Bold Italic'), local('DroidSerif-BoldItalic'), url('http://themes.googleusercontent.com/font?kit=c92rD_x0V1LslSFt3-QEps_zJjSACmk0BRPxQqhnNLU') format('truetype');
+}
+
+@font-face
+{
+	font-family: 'Droid Serif';
+	font-style: normal;
+	font-weight: bold;
+	src: url('http://themes.googleusercontent.com/font?kit=QQt14e8dY39u-eYBZmppwXe1Pd76Vl7zRpE7NLJQ7XU');
+	src: local('Droid Serif Bold'), local('DroidSerif-Bold'), url('http://themes.googleusercontent.com/font?kit=QQt14e8dY39u-eYBZmppwXe1Pd76Vl7zRpE7NLJQ7XU') format('truetype');
+}
+
+#wdpublisher-admin-menu
+{
+	position: fixed;
+	top: 1em;
+	right: 1em;
+	z-index: 100;	
+		
+	color: #404040;
+	background:#F6F6F6;
+	border:1px solid #CCCCCC;
+	border-radius: .5em;
+	-moz-border-radius: .5em;
+	-webkit-border-radius: .5em;
+	
+	font-family: Droid Sans, Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	line-height: 1.33em;
+
+	box-shadow: 0 10px 10px -6px rgba(0, 0, 0, 0.2);
+	-moz-box-shadow: 0 10px 10px -6px rgba(0, 0, 0, 0.2);
+	-webkit-box-shadow: 0 10px 10px -6px rgba(0, 0, 0, 0.2);
+}
+
+@media print
+{
+	#wdpublisher-admin-menu
+	{
+		display: none;
+	}
+}
+
+#wdpublisher-admin-menu:hover
+{
+	box-shadow: 0 25px 15px -20px rgba(0, 0, 0, 0.2);
+	-moz-box-shadow: 0 25px 15px -20px rgba(0, 0, 0, 0.2);
+	-webkit-box-shadow: 0 25px 15px -20px rgba(0, 0, 0, 0.2);
+}
+
+#wdpublisher-admin-menu div.panel-title
+{
+	background-image: -webkit-gradient(linear, left top, left bottom, from(#F6F6F6), color-stop(50%, #E8E8E8), to(#E8E8E8));
+	background-image: -moz-linear-gradient(center top , #F6F6F6, #E8E8E8 50%);
+	background-color: #F6F6F6;
+	font-weight:bolder;
+	padding:0.4em 1ex;
+	text-align:center;
+	text-shadow:0 1px 0 #FFF;
+	border-radius: .5em;
+	-moz-border-radius: .5em;
+	-webkit-border-radius: .5em;
+}
+
+#wdpublisher-admin-menu:hover div.panel-title
+{
+	border-bottom: 1px solid #ccc;
+}
+
+#wdpublisher-admin-menu div.panel-title span
+{
+	color: #808080;
+	/*font-family: Droid Serif, Georgia, "Times New Roman", "Bitstream Charter", Times, serif;
+	font-style:italic;*/
+}
+
+#wdpublisher-admin-menu:hover div.panel-title
+{
+	-moz-border-radius: .5em .5em 0 0;
+	-webkit-border-radius: .5em .5em 0 0;
+}
+
+#wdpublisher-admin-menu div.panel-title a
+{
+	color: inherit;
+}
+
+#wdpublisher-admin-menu div.panel-section-title
+{
+	border-top: 1px solid #CCC;
+	border-bottom: 1px solid #CCC;
+	
+	color: #808080;
+	background-color: white;
+	
+	font-family: Droid Serif, Georgia, "Times New Roman", "Bitstream Charter", Times, serif;
+	font-style:italic;
+	font-weight:normal;
+	text-align:left;
+	padding: .2em 1em;
+}
+
+#wdpublisher-admin-menu div.contents
+{
+	display: none;
+	padding: 0;
+	margin: 0;
+	max-width: none;
+	min-width: 0;
+}
+
+#wdpublisher-admin-menu:hover div.contents
+{
+	display: block;
+}
+
+#wdpublisher-admin-menu a
+{
+	color: #4B8BB3;
+	text-decoration: none;
+}
+
+#wdpublisher-admin-menu a:hover
+{
+	text-decoration: underline;
+}
+
+#wdpublisher-admin-menu ul
+{
+	margin: 1em 0;
+	padding: 0 1em;
+	list-style: none;
+}

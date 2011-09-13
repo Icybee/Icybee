@@ -1,0 +1,74 @@
+@CHARSET "UTF-8";
+
+ul.sortable
+{
+	padding: 0;
+	margin: 1em 0;
+	font-size: .9em;
+	list-style: none;
+}
+
+.form-element ul.sortable
+{
+	margin: 0;
+}
+
+ul.sortable li
+{
+	background: white;
+	padding: .2em .4em;
+	margin: 1px 0;
+	border-radius: 5px;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+}
+
+ul.sortable li:hover
+{
+	background: #f2f8ff;
+}
+
+ul.sortable li + li
+{
+	border-top: 1px solid #eee;
+}
+
+ul.sortable li span.handle
+{
+	margin-right: .5ex;
+	padding: 0 .3ex;
+}
+
+ul.sortable.self-handle li,
+ul.sortable li span.handle
+{
+	cursor: move;
+}
+
+ul.sortable li:not(:hover) span.handle
+{
+	color: #808080;
+}
+
+ul.sortable.combo li
+{
+	margin: 0;
+	border-radius: 0;
+	-moz-border-radius: 0;
+	-webkit-border-radius: 0;
+}
+
+ul.sortable.combo li:first-child
+{
+	-moz-border-radius: 5px 5px 0 0;
+}
+
+ul.sortable.combo li:last-child
+{
+	-moz-border-radius: 0 0 5px 5px;
+}
+
+ul.sortable.combo li:nth-child(even):not(:hover)
+{
+	background: #FBFBFB;
+}

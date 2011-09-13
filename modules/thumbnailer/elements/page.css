@@ -1,0 +1,22 @@
+@CHARSET "UTF-8";
+
+.widget-adjust-thumbnail-version > label
+{
+	display: block;
+	margin-top: .5em;
+}
+
+.widget-adjust-thumbnail-version [name="method"],
+.widget-adjust-thumbnail-version [name="background"]
+{
+	width: 100%;
+	box-sizing: border-box;
+	-moz-box-sizing: border-box;
+}
+
+.widget-adjust-thumbnail-version [name="w"],
+.widget-adjust-thumbnail-version [name="h"],
+.widget-adjust-thumbnail-version [name="quality"]
+{
+	text-align: right;
+}
