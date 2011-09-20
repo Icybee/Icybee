@@ -75,7 +75,6 @@ select.unstyled
 	display: inline-block;
 	margin: 0;
 	background: white;
-	font-size: .9em;
 	border-radius: 4px;
 	overflow: hidden;
 	-moz-transition-property: border-color, box-shadow;
@@ -93,12 +92,21 @@ select.unstyled
 .widget-search-combo select,
 .widget-search-combo button
 {
+	font-size: inherit;
 	padding: 2px 4px;
 	margin: 0;
 	border: none;
-	line-height: normal;
+	height: 18px;
+	line-height: 1;
 	vertical-align: middle;
 	border-radius: 0;
+}
+
+.widget-search-combo select,
+.widget-search-combo button
+{
+	height: 22px;
+	width: auto;	
 }
 
 .widget-search-combo input[type="text"]
@@ -113,6 +121,6 @@ select.unstyled
 	color: white;
 	background: #0064CD;
 	background-image: -moz-linear-gradient(center top , #049CDB, #0064CD);
-	padding-left: 1ex;
-	padding-right: 1ex;
+	padding-left: 2ex;
+	padding-right: 2ex;
 }

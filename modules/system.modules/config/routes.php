@@ -11,14 +11,12 @@ return array
 	(
 		'title' => 'Install',
 		'block' => 'install',
-		'visibility' => 'auto',
-		'workspace' => 'system'
+		'visibility' => 'auto'
 	),
 
 	'/admin/system.modules/inactives' => array
 	(
 		'title' => 'Inactifs',
-		'block' => 'inactives',
-		'workspace' => 'system'
+		'block' => 'inactives'
 	)
 );

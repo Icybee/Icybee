@@ -16,6 +16,7 @@ use ICanBoogie\Module;
 use ICanBoogie\Route;
 
 $user = $core->user;
+$request = $core->request;
 
 if ($user->is_guest)
 {
@@ -33,7 +34,7 @@ else
 		$core->language = $user->language;
 	}
 
-	$request_route = $_SERVER['REQUEST_URI'];
+	$request_route = $request->path;
 
 	if ($user instanceof ActionRecord\Users\Member)
 	{
@@ -65,11 +66,6 @@ else
 	}
 	else
 	{
-		if ($_SERVER['QUERY_STRING'])
-		{
-			$request_route = substr($request_route, 0, -(strlen($_SERVER['QUERY_STRING']) + 1));
-		}
-
 		$path = $core->site->path;
 
 		if ($path && preg_match('#^' . preg_quote($path) . '/admin/?#', $request_route))

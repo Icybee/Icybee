@@ -17,7 +17,7 @@ class QueryOperation extends \Icybee\Operation\Module\QueryOperation
 {
 	protected function query_activate()
 	{
-		$keys = $this->params['keys'];
+		$keys = $this->request['keys'];
 		$count = count($keys);
 
 		return array
@@ -38,7 +38,7 @@ class QueryOperation extends \Icybee\Operation\Module\QueryOperation
 
 	protected function query_deactivate()
 	{
-		$keys = $this->params['keys'];
+		$keys = $this->request['keys'];
 		$count = count($keys);
 
 		return array
@@ -63,7 +63,7 @@ class QueryOperation extends \Icybee\Operation\Module\QueryOperation
 		(
 			'params' => array
 			(
-				'keys' => $this->params['keys']
+				'keys' => $this->request['keys']
 			)
 		);
 	}
@@ -85,7 +85,7 @@ class QueryOperation extends \Icybee\Operation\Module\QueryOperation
 					return false;
 				}
 
-				$entries = $operation->params['entries'];
+				$entries = $operation->request['entries'];
 				$count = count($entries);
 
 				$message = ($count == 1)

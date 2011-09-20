@@ -1,5 +1,10 @@
 @CHARSET "UTF-8";
 
+#view-comments-list.empty
+{
+	display: none;	
+}
+
 #view-comments-list .comment
 {
 	position: relative;

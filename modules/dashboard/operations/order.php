@@ -30,14 +30,14 @@ class Order extends Operation
 
 	protected function validate()
 	{
-		return !empty($this->params['order']);
+		return !empty($this->request['order']);
 	}
 
 	protected function process()
 	{
 		global $core;
 
-		$core->user->metas['dashboard.order'] = json_encode($this->params['order']);
+		$core->user->metas['dashboard.order'] = json_encode($this->request['order']);
 
 		return true;
 	}

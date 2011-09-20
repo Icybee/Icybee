@@ -1,9 +1,13 @@
 <wdp:foreach>
-<div class="article">
-<h2><a href="#{@url}">#{@title}</a></h2>
-<div class="metas">Posté le <time datetime="#{@date}" pubdate="pubdate">#{@date.format_date()}</time><span class="separator">&nbsp;−</span>
-<a href="#{@url}#comments">#{@rendered_comments_count=}</a>
-</div>
-<div class="body">#{@=}</div>
-</div>
+	<div class="#{@css_class}">
+		<h2><a href="#{@url}">#{@title}</a></h2>
+		
+		<div class="metas">Posté le <time datetime="#{@date}" pubdate="pubdate">#{@date.format_date()}</time><span class="separator">&nbsp;−</span>
+		<a href="#{@url}#comments">#{@rendered_comments_count=}</a>
+		</div>
+		
+		<div class="excerpt">#{@excerpt=}</div>
+	</div>
 </wdp:foreach>
+
+<wdp:pager range="self.range" />

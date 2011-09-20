@@ -1,5 +1,5 @@
 /*
- * This file is part of the Publishr package.
+ * This file is part of the Icybee package.
  *
  * (c) Olivier Laviale <olivier.laviale@gmail.com>
  *

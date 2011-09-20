@@ -37,7 +37,7 @@ class Send extends Operation
 	/**
 	 * Returns the record for the operation.
 	 *
-	 * The OPERATION_SEND_ID is required in the operation's params to retrieve the corresponding
+	 * The OPERATION_SEND_ID is required in the request's params to retrieve the corresponding
 	 * form record.
 	 *
 	 * @see ICanBoogie.Operation::__get_record()
@@ -46,14 +46,14 @@ class Send extends Operation
 	 */
 	protected function __get_record()
 	{
-		$params = $this->params;
+		$request = $this->request;
 
-		if (empty($params[Module\Forms::OPERATION_SEND_ID]))
+		if (empty($request[Module\Forms::OPERATION_SEND_ID]))
 		{
 			throw new Exception('Missing OPERATION_SEND_ID parameter', array(), 404);
 		}
 
-		$form_id = (int) $params[Module\Forms::OPERATION_SEND_ID];
+		$form_id = (int) $request[Module\Forms::OPERATION_SEND_ID];
 
 		return $this->module->model[$form_id];
 	}
@@ -91,13 +91,13 @@ class Send extends Operation
 	 * message to send. One can overrite the value of the property to use a template different then
 	 * the one defined by the form record.
 	 *
-	 * The value of the `notify_bind` property is set to the value of the operation `params`
+	 * The value of the `notify_bind` property is set to the value of the request `params`
 	 * property. The `notify_bind` property is used as scope to format the template of the message
 	 * to send. One can overrite the value of the property to use a different scope.
 	 *
 	 * If the result of the `finalize` method and the `is_notify` property of the record are not
 	 * empty, an email is sent using the `notify_<identifier>` properties. The properties are
-	 * resolved using the `Patron()` function and the operation's params, or, if defined, the
+	 * resolved using the `Patron()` function and the request's params, or, if defined, the
 	 * value of the `entry` property of the operation object, as bind.
 	 *
 	 * If the `notify_message` property of the operation object is defined, it's used for the
@@ -126,7 +126,7 @@ class Send extends Operation
 		$form = $this->form;
 
 		$this->notify_template = $record->notify_template;
-		$this->notify_bind = $this->params;
+		$this->notify_bind = $this->request->params;
 
 		$rc = method_exists($form, 'finalize') ? $form->finalize($this) : true;
 		$core->session->modules['forms']['rc'][$record->nid] = $rc;

@@ -32,10 +32,10 @@ class QueryOperation extends Operation
 	{
 		global $core;
 
-		$params = $this->params;
+		$request = $this->request;
 
-		$this->module = $core->modules[$params['module']];
-		$this->callback = $callback = 'query_' . $params['operation'];
+		$this->module = $core->modules[$request['module']];
+		$this->callback = $callback = 'query_' . $request['operation'];
 
 		if (!$this->has_method($callback))
 		{
@@ -49,11 +49,11 @@ class QueryOperation extends Operation
 	{
 		$this->terminus = true;
 
-		$params = $this->params;
-		$name = $params['operation'];
+		$request = $this->request;
+		$name = $request['operation'];
 		$t_options = array('scope' => array($this->module->flat_id, $name, 'operation'));
 
-		$keys = isset($params['keys']) ? $params['keys'] : array();
+		$keys = isset($request['keys']) ? $request['keys'] : array();
 		$count = count($keys);
 
 		return $this->{$this->callback}() + array
@@ -70,7 +70,7 @@ class QueryOperation extends Operation
 
 	protected function query_delete()
 	{
-		$keys = $this->params['keys'];
+		$keys = $this->request['keys'];
 		$count = count($keys);
 
 		return array

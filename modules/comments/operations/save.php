@@ -68,15 +68,15 @@ class Save extends \Icybee\Operation\ActiveRecord\Save
 	{
 		global $core;
 
-		$params = &$this->params;
+		$request = $this->request;
 
 		#
 		# the article id is required when creating a message
 		#
 
-		if (!$this->key && empty($params[Comment::NID]))
+		if (!$this->key && !$request[Comment::NID])
 		{
-			$this->form->log(Comment::NID, 'The node id is required while creating a new comment');
+			$this->errors[Comment::NID] = t('The node id is required while creating a new comment');
 
 			return false;
 		}
@@ -85,22 +85,22 @@ class Save extends \Icybee\Operation\ActiveRecord\Save
 		# validate IP
 		#
 
-		$ip = $_SERVER['REMOTE_ADDR'];
+		$ip = $request->ip;
 
-		if (!filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE))
+		if (!filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_NO_RES_RANGE))
 		{
-			$this->form->log(null, 'Adresse IP invalide&nbsp;: %ip', array('%ip' => $ip));
+			$this->errors[] = t('Adresse IP invalide&nbsp;: %ip', array('%ip' => $ip));
 
 			return false;
 		}
 
 		if (!$core->user_id)
 		{
-			$score = Module\Comments::score_spam($params[Comment::CONTENTS], $params[Comment::AUTHOR_URL], $params[Comment::AUTHOR]);
+			$score = Module\Comments::score_spam($request[Comment::CONTENTS], $request[Comment::AUTHOR_URL], $request[Comment::AUTHOR]);
 
 			if ($score < 1)
 			{
-				$this->form->log(Comment::CONTENTS, '@form.log.spam', array('%score' => $score));
+				$this->errors[Comment::CONTENTS] = t('@form.log.spam', array('%score' => $score));
 
 				return false;
 			}
@@ -116,14 +116,14 @@ class Save extends \Icybee\Operation\ActiveRecord\Save
 			->where
 			(
 				'(author = ? OR author_email = ? OR author_ip = ?) AND created + INTERVAL ? MINUTE > NOW()',
-				$params['author'], $params['author_email'], $ip, $interval
+				$request['author'], $request['author_email'], $ip, $interval
 			)
 			->order('created DESC')
 			->rc;
 
 			if ($last)
 			{
-				$this->form->log(null, "Les commentaires ne peuvent être fait à moins de $interval minutes d'intervale.");
+				$this->errors[] = t("Les commentaires ne peuvent être fait à moins de $interval minutes d'intervale.");
 
 				return false;
 			}

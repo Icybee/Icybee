@@ -215,16 +215,16 @@ form.wdform td + td.label
 
 
 /*
-form.edit div.form-element > label span.label,
+form.edit div.form-element > label span.text,
 div.form-element div.element-label
 */
 
-form.edit div.element-label label span.label
+form.edit div.element-label label span.text
 {
 	font-size: inherit;
 }
 
-form.edit div.radio-group span.label
+form.edit div.radio-group span.text
 {
 	font-weight: inherit;
 }

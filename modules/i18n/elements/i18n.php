@@ -154,6 +154,7 @@ class WdI18nElement extends Element
 		return parent::render_inner_html();
 	}
 
+	// FIXME-20110918: deprecated
 	static public function operation_nodes_language(WdOperation $operation)
 	{
 		global $core;

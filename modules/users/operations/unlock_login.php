@@ -27,7 +27,7 @@ class UnlockLogin extends Operation
 {
 	protected function __get_record()
 	{
-		$username = $this->params['username'];
+		$username = $this->request['username'];
 
 		return $this->module->model->where('username = ? OR email = ?', $username, $username)->one;
 	}
@@ -36,7 +36,9 @@ class UnlockLogin extends Operation
 	{
 		global $core;
 
-		if (empty($this->params['username']) || empty($this->params['token']))
+		$token = $this->request['token'];
+
+		if (!$this->request['username'] || !$token)
 		{
 			return false;
 		}
@@ -61,8 +63,6 @@ class UnlockLogin extends Operation
 			);
 		}
 
-		$token = $this->params['token'];
-
 		if ($user->metas['login_unlock_token'] != base64_encode(Security::pbkdf2($token, $config['unlock_login_salt'])))
 		{
 			throw new HTTPException('Invalid token.', array());
@@ -83,7 +83,7 @@ class UnlockLogin extends Operation
 
 		wd_log_done('Login has been unlocked');
 
-		$this->location = isset($this->params['continue']) ? $this->params['continue'] : '/';
+		$this->location = isset($this->request['continue']) ? $this->request['continue'] : '/';
 
 		return true;
 	}

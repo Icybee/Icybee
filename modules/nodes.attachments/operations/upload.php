@@ -24,12 +24,6 @@ class Upload extends Operation
 	protected function validate()
 	{
 		#
-		# we set the HTTP_ACCEPT ourselves to force JSON output
-		#
-
-		$_SERVER['HTTP_ACCEPT'] = 'application/json';
-
-		#
 		# TODO-20100624: we use 'Filedata' because it's used by Swiff.Uploader, we have to change
 		# that as soon as possible.
 		#
@@ -69,8 +63,7 @@ class Upload extends Operation
 
 		if ($file->er)
 		{
-			wd_log_error($file->er_message);
-
+			$this->errors[] = $file->er_message;
 			$this->response->file = $file;
 
 			return false;

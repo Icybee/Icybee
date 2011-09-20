@@ -53,10 +53,9 @@ class TemplateEditors extends Operation
 	{
 		global $core;
 
-		$params = $this->params;
-
-		$template = isset($params['template']) ? $params['template'] : null;
-		$pageid = isset($params['pageid']) ? $params['pageid'] : null;
+		$request = $this->request;
+		$template = $request['template'];
+		$pageid = $request['pageid'];
 
 		list($contents_tags, $template_info) = $this->module->get_contents_section($pageid, $template);
 

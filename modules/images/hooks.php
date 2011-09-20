@@ -195,7 +195,7 @@ class Images
 
 	public static function on_nodes_save(Event $event, Operation\Nodes\Save $operation)
 	{
-		$params = &$operation->params;
+		$params = &$event->request->params;
 
 		if (!isset($params['resources_images']['imageid']))
 		{
@@ -210,13 +210,13 @@ class Images
 
 	public static function before_contents_config(Event $event, Operation\Contents\Config $operation)
 	{
-		if (!isset($operation->params['global']['resources_images.inject']))
+		if (!isset($event->request->params['global']['resources_images.inject']))
 		{
 			return;
 		}
 
 		$module_flat_id = $operation->destination->flat_id;
-		$options = &$operation->params['global']['resources_images.inject'];
+		$options = &$event->request->params['global']['resources_images.inject'];
 
 		$options += array
 		(

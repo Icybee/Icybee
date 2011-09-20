@@ -33,7 +33,8 @@ class Images extends Files
 
 	protected $uploader_class = 'BrickRouge\Widget\ImageUpload';
 
-	public function install()
+	/*
+	public function install(\ICanBoogie\Errors $errors)
 	{
 		global $core;
 
@@ -65,8 +66,9 @@ class Images extends Files
 			)
 		);
 
-		return parent::install();
+		return parent::install($errors);
 	}
+	*/
 
 	protected function block_manage()
 	{

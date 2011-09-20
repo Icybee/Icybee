@@ -36,10 +36,10 @@ class Permissions extends Operation
 	{
 		global $core;
 
-		$params = $this->params;
+		$request = $this->request;
 		$model = $this->module->model;
 
-		foreach ($params['roles'] as $rid => $perms)
+		foreach ($request['roles'] as $rid => $perms)
 		{
 			$role = $model[$rid];
 

@@ -489,7 +489,7 @@ EOT;
 		return $query->limit(1);
 	}
 
-	protected function provide_view_list(Query $query, WdPatron $patron)
+	protected function provide_view_list(Query $query, \WdPatron $patron)
 	{
 		global $core;
 

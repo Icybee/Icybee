@@ -28,24 +28,24 @@ class Change extends Operation
 
 	protected function validate()
 	{
-		$params = $this->params;
+		$request = $this->request;
 
-		if (empty($this->key))
+		if (!$this->key)
 		{
 			throw new Exception('Empty operation key (editor id)');
 		}
 
-		if (empty($params['selector_name']))
+		if (empty($request['selector_name']))
 		{
 			throw new Exception('Empty selector name');
 		}
 
-		if (empty($params['contents_name']))
+		if (empty($request['contents_name']))
 		{
 			throw new Exception('Empty contents_name');
 		}
 
-		if (!isset($params['contents']))
+		if (!isset($request['contents']))
 		{
 			throw new Exception('Missing conents');
 		}
@@ -57,16 +57,16 @@ class Change extends Operation
 	{
 		global $core;
 
-		$params = $this->params;
+		$request = $this->request;
 
 		$editor = (string) new \WdMultiEditorElement
 		(
 			$this->key, array
 			(
-				\WdMultiEditorElement::T_SELECTOR_NAME => $params['selector_name'],
+				\WdMultiEditorElement::T_SELECTOR_NAME => $request['selector_name'],
 
-				'name' => $params['contents_name'],
-				'value' => $params['contents']
+				'name' => $request['contents_name'],
+				'value' => $request['contents']
 			)
 		);
 

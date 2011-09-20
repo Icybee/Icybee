@@ -19,7 +19,7 @@ class QueryOperation extends \Icybee\Operation\Module\QueryOperation
 		(
 			'params' => array
 			(
-				'keys' => $this->params['keys']
+				'keys' => $this->request['keys']
 			)
 		);
 	}
@@ -30,7 +30,7 @@ class QueryOperation extends \Icybee\Operation\Module\QueryOperation
 		(
 			'params' => array
 			(
-				'keys' => $this->params['keys']
+				'keys' => $this->request['keys']
 			)
 		);
 	}

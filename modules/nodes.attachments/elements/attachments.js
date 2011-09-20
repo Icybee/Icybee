@@ -1,6 +1,84 @@
+
+BrickRouge.Widget.NodeAttachments = new Class({
+
+	initialize: function(el, options)
+	{
+		this.element = $(el);
+
+		this.element.addEvent
+		(
+			'click:relay(a[href="#delete"])', this.onDelete.bind(this)
+		);
+
+		this.element.addEvent
+		(
+			'click:relay(a[href="#remove"])', this.onRemove.bind(this)
+		);
+
+
+		this.file = el.getElement('.widget-file').get('widget');
+
+		var list = el.getElement('ol');
+
+		var sortable = new Sortables
+		(
+			list,
+			{
+				clone: true,
+				constrain: true,
+				opacity: 0.2,
+				handle: 'span.handle',
+
+				onStart: function(el, clone)
+				{
+					clone.setStyle('z-index', 10000);
+				}
+			}
+		);
+
+		console.log('file:', this.file);
+
+		this.file.addEvent
+		(
+			'success', function(response) {
+
+				console.log('success:', response);
+
+				var item = Elements.from(response.rc).shift();
+
+				item.inject(list);
+				sortable.addItems(item);
+			}
+		);
+	},
+
+	onRemove: function(ev, target)
+	{
+		ev.stop();
+
+		target.getParent('li').destroy();
+	},
+
+	onDelete: function(ev, target)
+	{
+		ev.stop();
+
+		var row = target.getParent('li');
+		var titleInput = row.getElement('input[type=text]');
+		var inputs = row.getElements('input');
+
+		row.destroy();
+
+		titleInput.type = 'hidden';
+		titleInput.value = '!delete';
+
+		inputs.inject(this.element);
+	}
+});
+
 window.addEvent
 (
-	'load', function()
+	'--load', function()
 	{
 		$$('div.resources-files-attached').each
 		(

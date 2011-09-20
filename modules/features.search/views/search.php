@@ -81,6 +81,7 @@ $form = new BrickRouge\Form
 				(
 					Form::T_LABEL => t('search.label.keywords'),
 
+					'autofocus' => true,
 					'placeholder' => t('search.label.keywords'),
 					'class' => 'unstyled'
 				)

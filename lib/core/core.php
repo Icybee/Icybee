@@ -12,6 +12,7 @@
 namespace Icybee;
 
 use ICanBoogie;
+use ICanBoogie\Debug;
 use ICanBoogie\Exception;
 use ICanBoogie\Hooks;
 use ICanBoogie\Module;
@@ -98,23 +99,18 @@ class Core extends ICanBoogie\Core
 	{
 		global $core;
 
-		if (isset($_SERVER['HTTP_ACCEPT']) && $_SERVER['HTTP_ACCEPT'] == 'application/json')
+		$code = $exception->getCode() ?: 500;
+		$class = get_class($exception);
+		$message = $exception->getMessage();
+
+		if (!headers_sent())
 		{
-			$message = $exception->getMessage();
+			header("HTTP/1.0 $code $class: " . strip_tags($message));
+		}
 
-			if (!headers_sent())
-			{
-				if ($exception instanceof Exception)
-				{
-					$exception->alter_header();
-				}
-				else
-				{
-					header('HTTP/1.0 500 ' . strip_tags($message));
-				}
-			}
-
-			$rc = json_encode(array('rc' => null, 'exception' => $message));
+		if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'] == 'XMLHttpRequest')
+		{
+			$rc = json_encode(array('rc' => null, 'errors' => array('_base' => $message)));
 
 			header('Content-Type: application/json');
 			header('Content-Length: ' . strlen($rc));
@@ -122,27 +118,22 @@ class Core extends ICanBoogie\Core
 			exit($rc);
 		}
 
-		if (headers_sent())
+		$formated_exception = Debug::format_exception($exception);
+
+		if (!headers_sent())
 		{
-			exit((string) $exception);
+			$site = isset($core->site) ? $core->site : null;
+			$version = preg_replace('#\s\([^\)]+\)#', '', VERSION);
+			$css = array
+			(
+				Document::resolve_url(\BrickRouge\ASSETS . 'brickrouge.css'),
+				Document::resolve_url(ASSETS . 'css/base.css')
+			);
+
+			$formated_exception = require(__DIR__ . '/exception.template');
 		}
 
-		$site = isset($core->site) ? $core->site : null;
-
-		echo strtr
-		(
-			file_get_contents('exception.html', true), array
-			(
-				'#{css.base}' => Document::resolve_url(ASSETS . 'css/base.css'),
-				'#{@title}' => ($exception instanceof Exception) ? $exception->getTitle() : 'Exception',
-				'#{this}' => ($exception instanceof Exception) ? $exception : '<code>' . nl2br($exception) . '</code>',
-				'#{site_title}' => $site ? $site->title : 'Icybee',
-				'#{site_url}' => $site ? $site->url : '',
-				'#{version}' => preg_replace('#\s\([^\)]+\)#', '', VERSION)
-			)
-		);
-
-		exit;
+		exit($formated_exception);
 	}
 
 	/**

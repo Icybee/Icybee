@@ -2,9 +2,17 @@
 
 .node-navigation
 {
+	color: #BFBFBF;
 	margin-top: 2em;
 	padding-top: 2em;
-	border-top: 1px dashed #ccc;
+	margin-bottom: 4em;
+	border-top: 1px dashed #EEEEEE;
+	line-height: 1.33em;
+}
+
+.node-navigation a:not(:hover)
+{
+	color: inherit;
 }
 
 .node-navigation .list
@@ -14,7 +22,7 @@
 
 .node-navigation .cycle
 {
-	margin-top: -1.4em; /* line-height */
+	margin-top: -1.33em; /* line-height */
 }
 
 .node-navigation .cycle a

@@ -11,6 +11,8 @@
 
 namespace Icybee;
 
+use ICanBoogie\HTTP\Request;
+
 use ICanBoogie\Event;
 use ICanBoogie\Exception;
 use ICanBoogie\Operation;
@@ -178,11 +180,11 @@ class Hooks
 	 *
 	 * @return Operation
 	 */
-	public static function dispatch_query_operation(array $params)
+	public static function dispatch_query_operation(Request $request)
 	{
 		global $core;
 
-		$module = $core->modules[$params['module']];
+		$module = $core->modules[$request['module']];
 
 		$try = get_class($module);
 		$class = null;
@@ -205,7 +207,7 @@ class Hooks
 			$class = 'Icybee\Operation\Module\QueryOperation';
 		}
 
-		return new $class($module, $params);
+		return new $class($module, $request);
 	}
 
 	/**

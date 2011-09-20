@@ -1,13 +1,5 @@
-/**
- * This file is part of the Publishr software
- *
- * @author Olivier Laviale <olivier.laviale@gmail.com>
- * @link http://www.wdpublisher.com/
- * @copyright Copyright (c) 2007-2011 Olivier Laviale
- * @license http://www.wdpublisher.com/license.html
- */
 
-Widget.TitleSlugCombo = new Class
+BrickRouge.Widget.TitleSlugCombo = new Class
 ({
 	initialize: function(el, options)
 	{

@@ -91,9 +91,9 @@ class Save extends Operation\Nodes\Save
 		global $core;
 
 		$this->file = null;
-		$params = &$this->params;
+		$request = $this->request;
 
-		if (empty($params[File::PATH]))
+		if (empty($request[File::PATH]))
 		{
 			$required = empty($this->key);
 			$file = new Uploaded(File::PATH, $this->accept, $required);
@@ -105,16 +105,16 @@ class Save extends Operation\Nodes\Save
 				$path = $core->config['repository.temp'] . '/' . basename($file->location) . $file->extension;
 				$file->move($_SERVER['DOCUMENT_ROOT'] . $path, true);
 
-				$params[File::PATH] = $path;
+				$request[File::PATH] = $path;
 
-				if (empty($params[File::TITLE]))
+				if (empty($request[File::TITLE]))
 				{
-					$params[File::TITLE] = $file->name;
+					$request[File::TITLE] = $file->name;
 				}
 			}
 			else if (!$required)
 			{
-				$params[File::PATH] = true;
+				$request[File::PATH] = true;
 			}
 		}
 
@@ -132,7 +132,7 @@ class Save extends Operation\Nodes\Save
 
 		if ($file && $file->er)
 		{
-			$this->form->log(File::PATH, 'Unable to upload file %file: :message.', array('%file' => $file->name, ':message' => $file->er_message));
+			$this->errors[File::PATH] = t('Unable to upload file %file: :message.', array('%file' => $file->name, ':message' => $file->er_message));
 
 			return false;
 		}

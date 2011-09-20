@@ -24,11 +24,11 @@ class Comments
 {
 	public static function before_node_save(Event $event, Operation\Nodes\Save $sender)
 	{
-		$params = &$sender->params;
+		$request = $event->request;
 
-		if (isset($params['metas']['comments/reply']))
+		if (isset($request['metas']['comments/reply']))
 		{
-			$metas = &$params['metas']['comments/reply'];
+			$metas = &$request->params['metas']['comments/reply'];
 
 			$metas += array
 			(
@@ -342,6 +342,18 @@ EOT;
 			throw new Exception\Config($module);
 		}
 
+		if (!$core->user->has_permission(ICanBoogie\Module::PERMISSION_CREATE, 'comments'))
+		{
+			return new \BrickRouge\AlertMessage
+			(
+				<<<EOT
+You don't have permission the create comments,
+<a href="{$core->site->path}/admin/users.roles">the <q>Visitor</q> role should be modified.</a>
+EOT
+, array(), 'error'
+			);
+		}
+
 		$form = $core->models['forms'][$form_id];
 
 		if (!$form)
@@ -373,7 +385,6 @@ EOT;
 
 		$nid = is_object($select) ? $select->nid : $select;
 
-		//$form->form->hiddens[Comment::NID] = $nid;
 		$form->form->hiddens[Comment::NID] = isset($page->node) ? $page->node->nid : $page->nid;
 		$form->form->add_class('wd-feedback-comments');
 

@@ -1,5 +1,5 @@
 /*
- * This file is part of the Publishr package.
+ * This file is part of the Icybee package.
  *
  * (c) Olivier Laviale <olivier.laviale@gmail.com>
  *
@@ -7,7 +7,7 @@
  * file that was distributed with this source code.
  */
 
-Widget.Popup = new Class
+BrickRouge.Widget.Popup = new Class
 ({
 	Implements: [ Options, Events ],
 
@@ -255,10 +255,10 @@ Widget.Popup = new Class
 	}
 });
 
-Widget.Popup.Adjust = new Class
+BrickRouge.Widget.Popup.Adjust = new Class
 ({
 	Implements: [ Options, Events ],
-	Extends: Widget.Popup,
+	Extends: BrickRouge.Widget.Popup,
 
 	initialize: function(el, options)
 	{

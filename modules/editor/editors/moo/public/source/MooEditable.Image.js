@@ -143,7 +143,7 @@ MooEditable.UI.ImageDialog = new Class
 
 	setupPopup: function(popElement)
 	{
-		this.popup = new Widget.Popup.Adjust
+		this.popup = new BrickRouge.Widget.Popup.Adjust
 		(
 			popElement,
 			{

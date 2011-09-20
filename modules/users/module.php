@@ -63,7 +63,39 @@ Cordialement'
 		);
 	}
 
-	public function install()
+	/**
+	 * Override the method to check if the "user" config is correctly created.
+	 *
+	 * @see ICanBoogie.Module::is_installed()
+	 */
+	public function is_installed(\ICanBoogie\Errors $errors)
+	{
+		global $core;
+
+		$config = $core->configs['user'];
+
+		if (!$config)
+		{
+			$errors[$this->id] = t('The <q>user</q> config is missing.');
+
+			return false;
+		}
+
+		return parent::is_installed($errors);
+	}
+
+	/**
+	 * Override the method to create the "user" config.
+	 *
+	 * The "user" config is stored at "<DOCUMENT_ROOT>/protected/all/config/user.php" and contains
+	 * the randomly generated salts used to encrypt users' password, the unlock login tokens and
+	 * the nonce login tokens.
+	 *
+	 * The "user" config file must be writtable.
+	 *
+	 * @see ICanBoogie.Module::install()
+	 */
+	public function install(\ICanBoogie\Errors $errors)
 	{
 		$path = ICanBoogie\DOCUMENT_ROOT . 'protected/all/config/user.php';
 
@@ -71,7 +103,9 @@ Cordialement'
 		{
 			if (!is_writable(dirname($path)))
 			{
-				throw new Exception('The file %path must be writable during installation', array('%path' => $path));
+				$errors[$this->id] = t('The file %path must be writable during installation', array('%path' => $path));
+
+				return false;
 			}
 
 			$password_salt = ICanBoogie\Security::generate_token(64, 'wide');
@@ -92,23 +126,7 @@ EOT;
 			file_put_contents($path, $config);
 		}
 
-		return parent::install();
-	}
-
-	public function is_installed()
-	{
-		global $core;
-
-		$config = $core->configs['user'];
-
-		if (!$config)
-		{
-			wd_log_error('Missings <em>user</em> config!');
-
-			return false;
-		}
-
-		return parent::is_installed();
+		return parent::install($errors);
 	}
 
 	protected function block_connect()
@@ -116,39 +134,24 @@ EOT;
 		global $core;
 
 		$core->document->js->add('public/connect.js');
+		$core->document->css->add('public/connect.css');
 
-		$form = (string) $this->form_connect();
+		$login_widget = new Widget\Users\Login(array());
 
-		$label_email = t('label.your_email');
-		$label_cancel = t('label.cancel');
-		$label_send = t('label.send');
+		$password_widget = new Widget\Users\NonceRequest
+		(
+			array
+			(
+				'class' => 'group password login stacked'
+			)
+		);
+
+		$password_widget->children['email'][Element::T_DESCRIPTION] = '<a href="#" class="cancel">' . t('label.cancel') . '</a>';
 
 		return <<<EOT
 <div id="login">
-	<div class="wrapper">
-		<div class="slide">$form</div>
-	</div>
-
-	<div class="wrapper password" style="height: 0">
-		<div class="slide">
-		<form class="group password login stacked" name="password" action="">
-			<div class="field field--email required clearfix">
-				<label class="input-label required" for="email">$label_email</label>
-
-				<div class="input">
-					<input type="text" name="email" />
-					<div class="element-description"><a href="#" class="cancel">$label_cancel</a></div>
-				</div>
-			</div>
-
-			<div class="field field--submit clearfix">
-				<div class="input">
-				<button class="warn" type="submit">$label_send</button>
-				</div>
-			</div>
-		</form>
-		</div>
-	</div>
+	<div class="wrapper login">$login_widget</div>
+	<div class="wrapper password" style="height: 0">$password_widget</div>
 </div>
 EOT;
 	}
@@ -210,7 +213,7 @@ EOT;
 							Form::T_LABEL => 'username',
 							Element::T_REQUIRED => true,
 
-							'class' => 'autofocus'
+							'autofocus' => true
 						)
 					),
 
@@ -358,12 +361,20 @@ EOT;
 		}
 
 		#
+		# languages
+		#
+
+		$languages = $core->locale->conventions['localeDisplayNames']['languages'];
+
+		uasort($languages, 'wd_unaccent_compare_ci');
+
+		#
 		# restricted sites
 		#
 
 		$restricted_sites_el = null;
 
-		if ($user->has_permission(self::PERMISSION_ADMINISTER, $this))
+		if (!$user->is_admin && $user->has_permission(self::PERMISSION_ADMINISTER, $this))
 		{
 			$value = array();
 
@@ -378,19 +389,24 @@ EOT;
 				}
 			}
 
-			$restricted_sites_el = new Element
-			(
-				Element::E_CHECKBOX_GROUP, array
-				(
-					Form::T_LABEL => '.siteid',
-					Element::T_OPTIONS => $core->models['sites']->select('siteid, IF(admin_title != "", admin_title, concat(title, ":", language))')->order('admin_title, title')->pairs,
-					Element::T_GROUP => 'advanced',
-					Element::T_DESCRIPTION => '.siteid',
+			$restricted_sites_options = $core->models['sites']->select('siteid, IF(admin_title != "", admin_title, concat(title, ":", language))')->order('admin_title, title')->pairs;
 
-					'class' => 'list framed',
-					'value' => $value
-				)
-			);
+			if ($restricted_sites_options)
+			{
+				$restricted_sites_el = new Element
+				(
+					Element::E_CHECKBOX_GROUP, array
+					(
+						Form::T_LABEL => '.siteid',
+						Element::T_OPTIONS => $restricted_sites_options,
+						Element::T_GROUP => 'advanced',
+						Element::T_DESCRIPTION => '.siteid',
+
+						'class' => 'list framed',
+						'value' => $value
+					)
+				);
+			}
 		}
 
 		$rc = array
@@ -448,7 +464,7 @@ EOT;
 				(
 					array
 					(
-						Form::T_LABEL => '.username',
+						Form::T_LABEL => '.Username',
 						Element::T_GROUP => 'contact',
 						Element::T_REQUIRED => true
 					)
@@ -543,7 +559,7 @@ EOT;
 						Form::T_LABEL => 'Language',
 						Element::T_GROUP => 'advanced',
 						Element::T_DESCRIPTION => '.language',
-						Element::T_OPTIONS => array(null => '') + $core->locale->conventions['localeDisplayNames']['languages']
+						Element::T_OPTIONS => array(null => '') + $languages
 					)
 				),
 

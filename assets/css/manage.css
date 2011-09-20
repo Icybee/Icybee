@@ -322,7 +322,6 @@ table.manage td img.icon:hover
 table.manage div.jobs
 {
 	float: left;
-	visibility: hidden;
 }
 
 table.manage option[value=delete]

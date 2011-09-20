@@ -69,9 +69,9 @@ class Save extends \ICanBoogie\Operation\Nodes\Save
 		$content_ids = array();
 		$contents_model = $this->module->model('contents');
 
-		if (isset($this->params['contents']))
+		if (isset($this->request['contents']))
 		{
-			$contents = $this->params['contents'];
+			$contents = $this->request['contents'];
 			$content_ids = array_keys($contents);
 
 			foreach ($contents as $content_id => $values)
@@ -148,7 +148,7 @@ class Save extends \ICanBoogie\Operation\Nodes\Save
 				(
 					'urlchange', array
 					(
-						'form' => $oldurl,
+						'from' => $oldurl,
 						'to' => $newurl
 					),
 

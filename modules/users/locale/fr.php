@@ -46,7 +46,7 @@ return array
 		'Roles' => 'Rôles',
 		'Timezone' => 'Zone horaire',
 		'Username' => 'Identifiant',
-		'your_email' => 'Votre adresse E-Mail'
+		'your_email' => 'Votre adresse e-mail'
 	),
 
 	'module_category.title.users' => 'Utilisateurs',

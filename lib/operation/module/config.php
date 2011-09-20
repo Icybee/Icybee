@@ -46,9 +46,9 @@ class Config extends Operation
 	 */
 	protected function __get_properties()
 	{
-		$properties = array_intersect_key($this->params, array('global' => true, 'local' => true));
+		$properties = array_intersect_key($this->request->params, array('global' => true, 'local' => true));
 
-		Event::fire('properties:before', array('properties' => &$properties), $this);
+		Event::fire('properties:before', array('properties' => &$properties, 'request' => $this->request), $this);
 
 		return $properties;
 	}
@@ -62,23 +62,23 @@ class Config extends Operation
 	{
 		global $core;
 
-		$params = $this->properties;
+		$properties = $this->properties;
 
-		if (isset($params['global']))
+		if (isset($properties['global']))
 		{
 			$registry = $core->registry;
 
-			foreach ($params['global'] as $name => $value)
+			foreach ($properties['global'] as $name => $value)
 			{
 				$registry[$name] = $value;
 			}
 		}
 
-		if (isset($params['local']))
+		if (isset($properties['local']))
 		{
 			$site = $core->site;
 
-			foreach ($params['local'] as $name => $value)
+			foreach ($properties['local'] as $name => $value)
 			{
 				if (is_array($value))
 				{

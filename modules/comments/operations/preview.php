@@ -20,12 +20,12 @@ class Preview extends Operation
 {
 	protected function validate()
 	{
-		return !empty($this->params['contents']);
+		return $this->request['contents'];
 	}
 
 	protected function process()
 	{
-		$contents = $this->params['contents'];
+		$contents = $this->request['contents'];
 		$contents = \Textmark_Parser::parse($contents);
 
 		return \Icybee\Kses::sanitizeComment($contents);

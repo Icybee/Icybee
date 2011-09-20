@@ -28,7 +28,7 @@ window.addEvent
 				(
 					'click', function(ev)
 					{
-						var url = this.get('value').replace('%modelid', this.form.elements['modelid'].value);
+						var url = this.get('value').replace('%modelid', encodeURIComponent(this.form.elements['modelid'].value));
 						var ns = this.get('data-ns');
 
 						if (!url)
@@ -38,9 +38,10 @@ window.addEvent
 
 						var form = this.form;
 
-						var op = new Request.JSON
+						var op = new Request.API
 						({
 							url: url,
+
 							onSuccess: function(response)
 							{
 								Object.each

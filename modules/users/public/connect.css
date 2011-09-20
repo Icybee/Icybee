@@ -8,71 +8,64 @@ body.admin #login form
 {
 	font-size: 2em;
 	background-image: -moz-linear-gradient(top, white 70%, #f0f0f0);
-}
-
-body.admin #login form.group
-{
 	padding: 1em;
 	margin: 0;
 }
-
-form.login label sup
+/*
+#login label sup
 {
 	vertical-align: text-top;
 	color: #21759B;
 }
 
-form.login label span.separator
+#login label span.separator
 {
 	display: none;
 }
+*/
 
-body.admin form.login div.form-label
+/*
+body.admin #login div.form-label
 {
 	font-size: .6em;
 	margin-bottom: .4em;
 }
-
-form.login div.form-element
+*/
+/*
+#login div.form-element
 {
 	margin-bottom: 1em;
 }
 
-form.login div.form-element:last-child
+#login div.form-element:last-child
 {
 	margin-bottom: 0;
 }
-
-body.admin form.login input
-{
-	width: 100%;
-	/*-brickrouge background: #FCFCFC;
-	background: -moz-linear-gradient(top, #fcfcfc, white 40%);*/
-	box-sizing: border-box;
-	-moz-box-sizing: border-box;
-	-webkit-box-sizing: border-box;
-}
-
-/*-brickrouge
-form.login input.missing
-{
-	background: #fdd;
-	background: -moz-linear-gradient(top, #fdd, white);
-}
 */
 
-form.login div.form-element-submit
+body.admin #login input
+{
+	width: 100%;
+	-moz-box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	box-sizing: border-box;
+}
+
+/*
+#login div.form-element-submit
 {
 	text-align: center;
 }
+*/
 
-body.admin form.login button
+body.admin #login button
 {
 	font-size: .9em;
 }
 
-form.login ul.missing,
-form.login ul.success
+/*
+#login ul.missing,
+#login ul.success
 {
 	margin: 0 0 1em 0;
 	padding: .5em;
@@ -80,8 +73,8 @@ form.login ul.success
 	text-align: center;
 }
 
-body.admin form.login ul.missing,
-body.admin form.login ul.success
+body.admin #login ul.missing,
+body.admin #login ul.success
 {
 	font-size: .4em;
 }
@@ -99,6 +92,7 @@ form.login ul.success
 	background-color: #DDFFDD;
 	border: 1px solid #AAFFAA;
 }
+*/
 
 body.admin #login div.element-description
 {
@@ -107,6 +101,7 @@ body.admin #login div.element-description
 	margin: .5em 0;
 }
 
+/*
 #login h3
 {
 	background-color: #E8E8E8;
@@ -116,6 +111,7 @@ body.admin #login div.element-description
 	font-weight: normal;
 	margin: 0;
 }
+*/
 
 #login div.wrapper
 {
@@ -128,13 +124,13 @@ body.admin #login div.element-description
 	font-size: 1rem;
 }
 
-form.login.stacked .field > label
+#login .stacked .field > label
 {
 	font-weight: normal;
 	font-size: 1rem;
 }
 
-form.login .field--submit
+#login .field--submit
 {
 	text-align: center;
 }

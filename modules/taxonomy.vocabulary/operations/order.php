@@ -27,7 +27,7 @@ class Order extends Operation
 
 	protected function validate()
 	{
-		return !empty($this->params['terms']);
+		return !empty($this->request['terms']);
 	}
 
 	protected function process()
@@ -38,7 +38,7 @@ class Order extends Operation
 		$weights = array();
 		$update = $core->models['taxonomy.terms']->prepare('UPDATE {self} SET weight = ? WHERE vtid = ?');
 
-		foreach ($this->params['terms'] as $vtid => $dummy)
+		foreach ($this->request['terms'] as $vtid => $dummy)
 		{
 			$update->execute(array($w, $vtid));
 			$weights[$vtid] = $w++;

@@ -51,7 +51,7 @@ class Icybee extends WdPatron
 
 		$time_start = microtime(true);
 
-//		session_cache_limiter('public');
+// 		session_cache_limiter('public');
 
 		try
 		{
@@ -74,7 +74,7 @@ class Icybee extends WdPatron
 		}
 		catch (\Exception $e)
 		{
-			$code = $e->code;
+			$code = $e->getCode();
 			$path = ICanBoogie\DOCUMENT_ROOT . "protected/all/templates/$code.html";
 
 			if (file_exists($path))
@@ -239,7 +239,17 @@ class Icybee extends WdPatron
 
 		if (isset($page->url_variables))
 		{
+			$request = $core->request;
+
 			$_REQUEST += $page->url_variables;
+
+			$request->path_parameters = $page->url_variables + $request->path_parameters;
+
+			#
+			# we unset the request params, it will be reconstructed on the next access.
+			#
+
+			unset($request->params);
 		}
 
 		$_REQUEST += array

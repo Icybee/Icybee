@@ -89,17 +89,25 @@ class User extends ActiveRecord
 		global $core;
 
 		$permissions = array();
+		$name = null;
 
 		foreach ($this->roles as $role)
 		{
+			$name .= ', ' . $role->name;
+
 			foreach ($role->perms as $access => $permission)
 			{
 				$permissions[$access] = $permission;
 			}
 		}
 
-		$role = new Role($core->models['users.roles']);
+		$role = new Role();
 		$role->perms = $permissions;
+
+		if ($name)
+		{
+			$role->name = substr($name, 2);
+		}
 
 		return $role;
 	}

@@ -36,13 +36,14 @@ class Site extends ActiveRecord
 	public $path;
 	public $tld;
 	public $title;
+	public $admin_title;
 	public $model;
 	public $language;
 	public $timezone;
 	public $nativeid;
 	public $status;
 
-	public function __construct(Model $model)
+	public function __construct($model)
 	{
 		if (empty($this->model))
 		{
@@ -54,12 +55,12 @@ class Site extends ActiveRecord
 
 	public function __wakeup()
 	{
-		global $core;
-
-		if (empty($this->_model))
+		if (empty($this->_model_id))
 		{
-			$this->_model = $core->models['sites'];
+			$this->_model_id = 'sites';
 		}
+
+		unset($this->_model);
 	}
 
 	protected function __get_url()

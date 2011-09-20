@@ -48,7 +48,7 @@ class Node extends ActiveRecord
 	 * The `slug` property is unset if it is empty but the `title` property is defined. The slug
 	 * will be created on the fly when accessed throught the `slug` property.
 	 */
-	public function __construct(Model $model)
+	public function __construct($model)
 	{
 		if (!$this->slug && $this->title)
 		{

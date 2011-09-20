@@ -121,6 +121,8 @@ EOT
 
 		$span = $is_installer_mode ? 4 : 5;
 		$context = $core->site->path;
+		$errors = new \ICanBoogie\Errors;
+		$extends_errors = new \ICanBoogie\Errors;
 
 		foreach ($packages as $p_name => $descriptors)
 		{
@@ -212,38 +214,102 @@ EOT
 
 						$is_installed = false;
 
-						try
+
+						# EXTENDS
+
+						$d = $descriptor;
+						$n_errors = count($errors);
+
+						while (isset($descriptor[Module::T_EXTENDS]))
 						{
-							$is_installed = $module->is_installed();
-						}
-						catch (\Exception $e)
-						{
-							wd_log_error('Exception with module %module: :message', array('%module' => (string) $module, ':message' => $e->getMessage()));
+							$extends = $descriptor[Module::T_EXTENDS];
+
+							if (empty($core->modules->descriptors[$extends]))
+							{
+								$errors[$m_id] = t('Requires the %module module which is missing.', array('%module' => $extends));
+
+								break;
+							}
+							else if (!isset($core->modules[$extends]))
+							{
+								$errors[$m_id] = t('Requires the %module module which is disabled.', array('%module' => $extends));
+
+								break;
+							}
+							else
+							{
+								$extends_errors->clear();
+								$extends_module = $core->modules[$extends];
+								$extends_is_installed = $extends_module->is_installed($extends_errors);
+
+								if (count($extends_errors))
+								{
+									$extends_is_installed = false;
+								}
+
+								if (!$extends_is_installed)
+								{
+									$errors[$m_id] = t('Requires the %module module which is disabled.', array('%module' => $extends));
+
+									break;
+								}
+							}
+
+							$descriptor = $core->modules->descriptors[$extends];
 						}
 
-						if ($is_installed)
-						{
-							$sub .= '<td class="installed">' . t('Installed') . '</td>';
-						}
-						else if ($is_installed === false)
-						{
-							$sub .= '<td>';
-							/*
-							$sub .= t('Not installed');
-							$sub .= ' ';
-							*/
-							$sub .= '<a class="install" href="';
-							$sub .= $context . '/admin/' . $this . '/' . $module . '/install';
-
-							$sub .= '">' . t('Install module') . '</a>';
-
-							$sub .= '</td>';
-						}
-						else // null
+						if ($n_errors != count($errors))
 						{
 							$sub .= '<td class="not-applicable">';
-							$sub .= 'Not applicable';
+							$sub .= '<div class="error">' . implode('<br />', (array) $errors[$m_id]) . '</div>';
 							$sub .= '</td>';
+						}
+						else
+						{
+							try
+							{
+								$n_errors = count($errors);
+								$is_installed = $module->is_installed($errors);
+
+								if (count($errors) != $n_errors)
+								{
+									$is_installed = false;
+								}
+							}
+							catch (\Exception $e)
+							{
+								$errors[$module->id] = t('Exception with module %module: :message', array('%module' => (string) $module, ':message' => $e->getMessage()));
+							}
+
+							if ($is_installed)
+							{
+								$sub .= '<td class="installed">' . t('Installed') . '</td>';
+							}
+							else if ($is_installed === false)
+							{
+								$sub .= '<td>';
+								/*
+								$sub .= t('Not installed');
+								$sub .= ' ';
+								*/
+								$sub .= '<a class="install" href="';
+								$sub .= $context . '/admin/' . $this . '/' . $module . '/install';
+
+								$sub .= '">' . t('Install module') . '</a>';
+
+								if (isset($errors[$m_id]))
+								{
+									$sub .= '<div class="error">' . implode('; ', (array) $errors[$m_id]) . '</div>';
+								}
+
+								$sub .= '</td>';
+							}
+							else // null
+							{
+								$sub .= '<td class="not-applicable">';
+								$sub .= 'Not applicable';
+								$sub .= '</td>';
+							}
 						}
 					}
 					else
@@ -279,6 +345,8 @@ EOT;
 		{
 			$th_installed = '<th><div>' . t('Installed') . '</div></th>';
 		}
+
+// 		$alert_message = new \BrickRouge\AlertMessage($errors);
 
 		$contents  = <<<EOT
 <table class="manage" cellpadding="4" cellspacing="0">
@@ -333,14 +401,20 @@ EOT;
 			return '<div class="group"><p>' . t('The module %module_id does not exists.', array('%module_id' => $module_id)) . '</p></div>';
 		}
 
+		$errors = new \ICanBoogie\Errors;
 		$module = $core->modules[$module_id];
 
-		if ($module->is_installed())
+		$is_installed = $module->is_installed($errors);
+
+		if ($is_installed && !count($errors))
 		{
 			return '<div class="group"><p>' . t('The module %module is already installed', array('%module' => $module_id)) . '</p></div>';
 		}
 
-		if (!$module->install())
+		$errors->clear();
+		$is_installed = $module->install($errors);
+
+		if (!$is_installed || count($errors))
 		{
 			return '<div class="group"><p>' . t('Unable to install the module %module', array('%module' => $module_id)) . '</p></div>';
 		}

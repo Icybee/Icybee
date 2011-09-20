@@ -129,6 +129,38 @@ class Form extends Node
 
 		try
 		{
+			$form = $this->form;
+
+			if (isset($form->hiddens[Operation::DESTINATION]) && isset($form->hiddens[Operation::NAME]))
+			{
+				$destination = $form->hiddens[Operation::DESTINATION];
+				$name = $access = $form->hiddens[Operation::NAME];
+
+				if ($access == 'save')
+				{
+					$access = Module::PERMISSION_CREATE;
+				}
+
+				if (!$core->user->has_permission($access, $destination))
+				{
+					return (string) new \BrickRouge\AlertMessage
+					(
+						<<<EOT
+<p>You don't have permission to execute the <q>$name</q> operation on the <q>$destination</q> module,
+<a href="{$core->site->path}/admin/users.roles">the <q>{$core->user->role->name}</q> role should be modified</a>.</p>
+EOT
+						, array(), 'error'
+					);
+				}
+			}
+
+
+
+
+
+
+			$core->document->css->add('public/page.css');
+
 			// FIXME-20110531: saving the form disables validation during the "forms/send" operation
 			//$this->form->save();
 

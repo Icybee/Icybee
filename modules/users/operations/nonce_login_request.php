@@ -30,23 +30,23 @@ class NonceLoginRequest extends Operation
 	{
 		global $core;
 
-		return $core->models['users']->find_by_email($this->params['email'])->one;
+		return $core->models['users']->find_by_email($this->request['email'])->one;
 	}
 
 	protected function validate()
 	{
-		if (empty($this->params['email']))
+		if (!$this->request['email'])
 		{
-			wd_log_error('The field %field is required!', array('%field' => 'Votre adresse E-Mail'));
+			$this->errors['email'] = t('The field %field is required!', array('%field' => 'Votre adresse E-Mail'));
 
 			return false;
 		}
 
-		$email = $this->params['email'];
+		$email = $this->request['email'];
 
 		if (!filter_var($email, FILTER_VALIDATE_EMAIL))
 		{
-			wd_log_error('Invalid e-mail address: %email.', array('%email' => $email));
+			$this->errors['email'] = t('Invalid e-mail address: %email.', array('%email' => $email));
 
 			return false;
 		}
@@ -55,7 +55,7 @@ class NonceLoginRequest extends Operation
 
 		if (!$user)
 		{
-			wd_log_error('Unknown e-mail address.');
+			$this->errors['email'] = t('Unknown e-mail address.');
 
 			return false;
 		}

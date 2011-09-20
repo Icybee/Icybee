@@ -28,14 +28,14 @@ class UpdateTree extends Operation
 
 	protected function validate()
 	{
-		return !empty($this->params['parents']);
+		return !empty($this->request['parents']);
 	}
 
 	protected function process()
 	{
 		$w = 0;
 		$update = $this->module->model->prepare('UPDATE {self} SET `parentid` = ?, `weight` = ? WHERE `{primary}` = ? LIMIT 1');
-		$parents = $this->params['parents'];
+		$parents = $this->request['parents'];
 
 		foreach ($parents as $nid => $parentid)
 		{

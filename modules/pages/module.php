@@ -21,6 +21,7 @@ use Icybee\Manager;
 
 class Pages extends Nodes
 {
+	// FIXME-20110918: this should be an operation
 	protected function operation_query_delete(WdOperation $operation)
 	{
 		$entries = array();
@@ -63,6 +64,7 @@ class Pages extends Nodes
 		return $ids;
 	}
 
+	// FIXME-20110918: this should be an operation
 	protected function operation_query_copy(WdOperation $operation)
 	{
 		$entries = $operation->params['entries'];

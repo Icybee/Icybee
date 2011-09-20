@@ -1,6 +1,5 @@
-<ol>
 <wdp:foreach>
-	<li>
+	<div class="#{@css_class}">
 		<h2><a href="#{@url}">#{@title}</a></h2>
 
 		<div class="metas">
@@ -9,12 +8,11 @@
 		</div>
 		
 		<wdp:if test="@image">
-		#{@image.thumbnail('contents-news-list')=}
+		<a href="#{@url}">#{@image.thumbnail('contents-news-list')=}</a>
 		</wdp:if>
 
-		<div class="contents">#{@excerpt=}</div>
-	</li>
+		<div class="excerpt">#{@excerpt=}</div>
+	</div>
 </wdp:foreach>
-</ol>
 
 <wdp:pager range="self.range" />

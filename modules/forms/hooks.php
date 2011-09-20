@@ -70,6 +70,12 @@ class Forms
 	 *
 	 * This function is a callback for the `ICanBoogie\Operation::get_form` event.
 	 *
+	 * The OPERATION_SEND_ID parameter provides the key of the form active record to load.
+	 *
+	 * If the form is successfully retrieved a callback is added to the
+	 * "<operation_class>::process" event, it is used to send a notify message with the parameters
+	 * provided by the form active record.
+	 *
 	 * @param Event $event
 	 * @param Operation $operation
 	 */
@@ -77,29 +83,35 @@ class Forms
 	{
 		global $core;
 
-		$params = $event->params;
+		$request = $event->request;
 
-		if (empty($params[Module\Forms::OPERATION_SEND_ID]))
+		if (!$request[Module\Forms::OPERATION_SEND_ID])
 		{
 			return;
 		}
 
-		$record = $core->models['forms'][(int) $params[Module\Forms::OPERATION_SEND_ID]];
+		$record = $core->models['forms'][(int) $request[Module\Forms::OPERATION_SEND_ID]];
 		$form = $record->form;
 
 		$event->rc = $form;
 
 		Event::add
 		(
-			get_class($operation) . '::process', function(Event $event, Operation $operation) use ($record, $form)
+			get_class($operation) . '::process', function(Event $event, Operation $operation) use ($record, $form, $core)
 			{
-				global $core;
-
-				$template = $record->notify_template;
-				$message = null;
-				$bind = $operation->params;
-
 				$rc = $event->rc;
+				$bind = $event->request->params;
+				$template = $record->notify_template;
+				$mailer = null;
+
+				$mailer_tags = array
+				(
+					Mailer::T_BCC => $record->notify_bcc,
+					Mailer::T_DESTINATION => $record->notify_destination,
+					Mailer::T_FROM => $record->notify_from,
+					Mailer::T_SUBJECT => $record->notify_subject,
+					Mailer::T_MESSAGE => null
+				);
 
 				if (method_exists($form, 'alter_notify'))
 				{
@@ -108,10 +120,13 @@ class Forms
 						(object) array
 						(
 							'rc' => &$rc,
-							'message' => &$message,
+							'bind' => &$bind,
 							'template' => &$template,
-							'bind' => &$bind
-						)
+							'mailer' => &$mailer,
+							'mailer_tags' => &$mailer_tags
+						),
+
+						$record, $event, $operation
 					);
 				}
 
@@ -120,19 +135,21 @@ class Forms
 				if ($record->is_notify)
 				{
 					$patron = new \WdPatron();
-					$message = $message ?: $patron($template, $bind);
 
-					$mailer = new Mailer
-					(
-						array
-						(
-							Mailer::T_DESTINATION => $patron($record->notify_destination, $bind),
-							Mailer::T_FROM => $patron($record->notify_from, $bind),
-							Mailer::T_BCC => $patron($record->notify_bcc, $bind),
-							Mailer::T_SUBJECT => $patron($record->notify_subject, $bind),
-							Mailer::T_MESSAGE => $message
-						)
-					);
+					if (!$mailer_tags[Mailer::T_MESSAGE])
+					{
+						$mailer_tags[Mailer::T_MESSAGE] = $template;
+					}
+
+					foreach ($mailer_tags as &$value)
+					{
+						$value = $patron($value, $bind);
+					}
+
+					if (!$mailer)
+					{
+						$mailer = new Mailer($mailer_tags);
+					}
 
 					wd_log('operation send mailer: \1', array($mailer));
 

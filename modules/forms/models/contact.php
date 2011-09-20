@@ -9,9 +9,13 @@
  * file that was distributed with this source code.
  */
 
-use BrickRouge\Form;
+namespace BrickRouge\Form;
 
-class contact_WdForm extends Form
+use BrickRouge\Element;
+use BrickRouge\Form;
+use BrickRouge\Text;
+
+class Contact extends Form
 {
 	public function __construct($tags, $dummy=null)
 	{
@@ -21,49 +25,51 @@ class contact_WdForm extends Form
 			(
 				$tags, array
 				(
+					Form::T_RENDERER => 'Simple',
+
 					Element::T_CHILDREN => array
 					(
 						'gender' => new Element
 						(
 							Element::E_RADIO_GROUP, array
 							(
-								Form::T_LABEL => '.Salutation',
+								Form::T_LABEL => 'Salutation',
 								Element::T_OPTIONS => array('salutation.misses', 'salutation.miss', 'salutation.mister'),
 								Element::T_REQUIRED => true
 							)
 						),
 
-						'lastname' => new Element
+						'lastname' => new Text
 						(
-							Element::E_TEXT, array
+							array
 							(
-								Form::T_LABEL => '.Lastname',
+								Form::T_LABEL => 'Lastname',
 								Element::T_REQUIRED => true
 							)
 						),
 
-						'firstname' => new Element
+						'firstname' => new Text
 						(
-							Element::E_TEXT, array
+							array
 							(
-								Form::T_LABEL => '.Firstname',
+								Form::T_LABEL => 'Firstname',
 								Element::T_REQUIRED => true
 							)
 						),
 
-						'company' => new Element
+						'company' => new Text
 						(
-							Element::E_TEXT, array
+							array
 							(
-								Form::T_LABEL => '.Company'
+								Form::T_LABEL => 'Company'
 							)
 						),
 
-						'email' => new Element
+						'email' => new Text
 						(
-							Element::E_TEXT, array
+							array
 							(
-								Form::T_LABEL => '.E-mail',
+								Form::T_LABEL => 'E-mail',
 								Element::T_REQUIRED => true,
 								Element::T_VALIDATOR => array('BrickRouge\Form::validate_email')
 							)
@@ -73,7 +79,7 @@ class contact_WdForm extends Form
 						(
 							'textarea', array
 							(
-								Form::T_LABEL => '.Your message',
+								Form::T_LABEL => 'Your message',
 								Element::T_REQUIRED => true
 							)
 						)

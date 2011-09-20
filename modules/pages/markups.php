@@ -554,7 +554,7 @@ class site_pages_navigation_WdMarkup extends patron_WdMarkup
 			return;
 		}
 
-		return '<ol class="lv' . $level . '">' . $rc . '</ol>';
+		return '<ol class="lv' . $level . ($level == 1 ? ' nav' : '') . '">' . $rc . '</ol>';
 	}
 
 

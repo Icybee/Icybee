@@ -46,9 +46,11 @@ class Activate extends Operation
 				$core->modules[$key] = true;
 				$module = $core->modules[$key];
 
-				if (!$module->is_installed())
+				$rc = $module->is_installed($this->errors);
+
+				if (!$rc || count($this->errors))
 				{
-					$module->install();
+					$module->install($this->errors);
 				}
 
 				$enabled[$key] = true;

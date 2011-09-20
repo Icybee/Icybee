@@ -25,7 +25,7 @@ class Thumbnailer extends Module
 	{
 		global $core;
 
-		return $core->config['repository.cache'] . '/thumbnailer';
+		return $core->config['repository.cache'] ? $core->config['repository.cache'] . '/thumbnailer' : null;
 	}
 
 	/**
@@ -33,21 +33,35 @@ class Thumbnailer extends Module
 	 *
 	 * @see Module::install()
 	 */
-	public function install()
+	public function install(\ICanBoogie\Errors $errors)
 	{
-		$repository = $this->repository;
+		$root = \ICanBoogie\DOCUMENT_ROOT;
+		$path = $this->repository;
 
-		// TODO: use is_writable() to know if we can create the repository folder
-		// FIXME: 0777 ? really ?
-
-		$rc = mkdir($_SERVER['DOCUMENT_ROOT'] . $repository, 0777, true);
-
-		if (!$rc)
+		if ($path)
 		{
-			wd_log_error('Unable to create folder %path', array('%path' => $repository));
+			$path = $root . $path;
+
+			if (!file_exists($path))
+			{
+				$parent = dirname($path);
+
+				if (is_writable($parent))
+				{
+					mkdir($_SERVER['DOCUMENT_ROOT'] . $repository, 0755, true);
+				}
+				else
+				{
+					$errors[$this->id] = t('Unable to create %directory directory, its parent is not writtable', array('%directory' => $path));
+				}
+			}
+		}
+		else
+		{
+			$errors[$this->id] = t('The %var var is empty is core config', array('%var' => 'repository.cache'));
 		}
 
-		return $rc;
+		return 0 == count($errors);
 	}
 
 	/**
@@ -55,8 +69,16 @@ class Thumbnailer extends Module
 	 *
 	 * @see Module::is_installed()
 	 */
-	public function is_installed()
+	public function is_installed(\ICanBoogie\Errors $errors)
 	{
-		return is_dir($_SERVER['DOCUMENT_ROOT'] . $this->repository);
+		$root = \ICanBoogie\DOCUMENT_ROOT;
+		$path = $this->repository;
+
+		if (!file_exists($root . $path))
+		{
+			$errors[$this->id] = t('The %directory directory is missing.', array('%directory' => $path));
+		}
+
+		return 0 == count($errors);
 	}
 }

@@ -39,8 +39,7 @@ class Save extends Operation\ActiveRecord\Save
 	{
 		global $core;
 
-		$params = $this->params;
-		$mode = $this->mode = isset($params[self::MODE]) ? $params[self::MODE] : null;
+		$this->mode = $mode = $this->request[self::MODE];
 
 		if ($mode)
 		{

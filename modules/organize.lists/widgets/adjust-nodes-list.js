@@ -1,4 +1,4 @@
-Widget.AdjustNodesList  = new Class
+BrickRouge.Widget.AdjustNodesList  = new Class
 ({
 	Implements: [ Options, Events ],
 

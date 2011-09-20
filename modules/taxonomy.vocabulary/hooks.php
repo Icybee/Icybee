@@ -247,7 +247,7 @@ class Vocabulary
 		global $core;
 
 		$name = 'vocabulary';
-		$params = $sender->params;
+		$params = $event->request->params;
 
 		if (empty($params[$name]))
 		{

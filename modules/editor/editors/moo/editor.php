@@ -68,7 +68,7 @@ class moo_WdEditorElement extends WdEditorElement
 
 		if (count($css) == 1)
 		{
-			$css[] = $document->resolve_url(Icybee\ASSETS . 'css/reset.css');
+			$css[] = $document->resolve_url(\BrickRouge\ASSETS . 'brickrouge.css');
 		}
 
 		$document->css->add('public/assets/MooEditable.css');

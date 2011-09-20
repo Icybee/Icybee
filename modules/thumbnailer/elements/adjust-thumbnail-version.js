@@ -1,4 +1,4 @@
-Widget.AdjustThumbnailVersion = new Class
+BrickRouge.Widget.AdjustThumbnailVersion = new Class
 ({
 	Implements: [ Options, Events ],
 

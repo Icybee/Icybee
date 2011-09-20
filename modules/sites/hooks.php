@@ -132,46 +132,84 @@ class Sites
 		return $match ? $match : self::get_default_site();
 	}
 
-	static public function __get_site_id($target)
+	/**
+	 * Returns the site active record associated to the node.
+	 *
+	 * This is the getter for the nodes' `site` magic property.
+	 *
+	 * @param ActiveRecord\Node $node
+	 *
+	 * @return \ICanBoogie\ActiveRecord\Site|null The site active record associate with the node,
+	 * or null if the node is not associated to a specific site.
+	 */
+	static public function __get_node_site(ActiveRecord\Node $node)
 	{
-		$site = self::__get_site($target);
+		global $core;
+
+		if (!$node->siteid)
+		{
+			return null;
+		}
+
+		return $core->site_id == $node->siteid ? $core->site : $core->models['sites'][$node->siteid];
+	}
+
+	/**
+	 * Returns the active record for the current site.
+	 *
+	 * This is the getter for the core's {@link \ICanBoogie\ActiveRecord\Site::site} magic property.
+	 *
+	 * @return \ICanBoogie\ActiveRecord\Site
+	 */
+	static public function __get_core_site()
+	{
+		return self::find_by_request($_SERVER);
+	}
+
+	/**
+	 * Returns the key of the current site.
+	 *
+	 * This is the getter for the core's {@link \ICanBoogie\ActiveRecord\Site::site_id} magic
+	 * property.
+	 *
+	 * @param \ICanBoogie\Core $core
+	 *
+	 * @return int
+	 */
+	static public function __get_core_site_id(\ICanBoogie\Core $core)
+	{
+		$site = self::__get_core_site($core);
 
 		return $site ? $site->siteid : null;
 	}
 
-	static public function __get_site($target)
-	{
-		if ($target instanceof ActiveRecord\Node)
-		{
-			global $core;
+	static private $default_site;
 
-			if (!$target->siteid)
-			{
-				return null;
-			}
-
-			return $core->site_id == $target->siteid ? $core->site : $core->models['sites'][$target->siteid];
-		}
-
-		return self::find_by_request($_SERVER);
-	}
-
+	/**
+	 * Returns a default site active record.
+	 *
+	 * @return ActiveRecord\Site
+	 */
 	static private function get_default_site()
 	{
 		global $core;
 
-		$site = new Site();
+		if (self::$default_site === null)
+		{
+			self::$default_site = Site::from
+			(
+				array
+				(
+					'title' => 'Undefined',
+					'language' => $core->language,
+					'timezone' => $core->timezone,
+					'status' => 1
+				),
 
-		$site->siteid = 0;
-		$site->title = 'Undefined';
-		$site->admin_title = '';
-		$site->subdomain = '';
-		$site->domain = '';
-		$site->tld = '';
-		$site->path = '';
-		$site->language = $core->language;
-		$site->status = 1;
+				array('sites')
+			);
+		}
 
-		return $site;
+		return self::$default_site;
 	}
 }

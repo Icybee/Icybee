@@ -111,7 +111,7 @@ class Registry
 	{
 		global $core;
 
-		$params = $sender->params;
+		$params = $event->request->params;
 
 		if (!array_key_exists('metas', $params))
 		{

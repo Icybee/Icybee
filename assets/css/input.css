@@ -179,28 +179,28 @@ textarea.missing:focus
 	-webkit-box-shadow: 0 0 2px #FBB;
 }
 
-/*form label*/ span.label
+/*form label*/ span.text
 {
 	font-size: .9em;
 	font-weight: bolder;
 }
 
 /*-bootstrap:
-.element-label span.label,
-.pager span.label,
-.radio-group span.label
+.element-label span.text,
+.pager span.text,
+.radio-group span.text
 {
 	font-size: inherit;
 }
 */
 
-.pager span.label,
-.radio-group span.label
+.pager span.text,
+.radio-group span.text
 {
 	font-weight: inherit;
 }
 
-form .form-label + .form-element .combo span.label
+form .form-label + .form-element .combo span.text
 {
 	font-weight: normal;
 }
@@ -727,7 +727,7 @@ div.popup.black textarea
 	color: white;
 }
 
-div.popup.black span.label
+div.popup.black span.text
 {
 	font-weight: normal;
 }

@@ -51,16 +51,16 @@ class Connect extends Operation
 	{
 		global $core;
 
-		$params = $this->params;
+		$request = $this->request;
 		$form = $this->form;
-		$username = $params[User::USERNAME];
-		$password = $params[User::PASSWORD];
+		$username = $request[User::USERNAME];
+		$password = $request[User::PASSWORD];
 
 		$user = $core->models['users']->where('username = ? OR email = ?', $username, $username)->one;
 
 		if (!$user)
 		{
-			$form->log(User::PASSWORD, 'Unknown username/password combination.');
+			$this->errors[User::PASSWORD] = t('Unknown username/password combination.');
 
 			return false;
 		}
@@ -91,7 +91,7 @@ class Connect extends Operation
 
 		if (!$user->is_password($password))
 		{
-			$form->log(User::PASSWORD, 'Unknown username/password combination.');
+			$this->errors[User::PASSWORD] = t('Unknown username/password combination.');
 
 			$user->metas['failed_login_count'] += 1;
 			$user->metas['failed_login_time'] = $now;
@@ -167,7 +167,7 @@ EOT
 
 		if (!$user->is_admin && !$user->is_activated)
 		{
-			$form->log(null, 'User %username is not activated', array('%username' => $username));
+			$this->errors[] = t('User %username is not activated', array('%username' => $username));
 
 			return false;
 		}

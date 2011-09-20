@@ -1,3 +1,4 @@
+/*
 @font-face
 {
 	font-family: 'Droid Sans';
@@ -45,6 +46,9 @@
 	font-weight: bold;
 	src: local('Droid Serif Bold'), local('DroidSerif-Bold'), url('http://themes.googleusercontent.com/font?kit=QQt14e8dY39u-eYBZmppwXe1Pd76Vl7zRpE7NLJQ7XU') format('truetype');
 }
+*/
+
+@import url(http://fonts.googleapis.com/css?family=Droid+Sans:400,700|Droid+Serif:400,400italic,700,700italic);
 
 *
 {
@@ -143,9 +147,9 @@ form
 	margin: 0;
 }
 
-code
+pre, code
 {
-	font-family: Monaco, Consolas, Courrier New, monospace;
+	font-family: Droid Sans Mono, Monaco, Consolas, Courrier New, monospace;
 }
 
 .small
@@ -157,6 +161,8 @@ code
 {
 	font-size: 1.4em;
 }
+
+
 
 #quick
 {

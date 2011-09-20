@@ -31,11 +31,13 @@ class IsInique extends Operation
 
 	protected function validate()
 	{
-		$params = $this->params;
+		$request = $this->request;
 
-		if (empty($params[User::USERNAME]) && empty($params[User::EMAIL]))
+		if (!$request[User::USERNAME] && !$request[User::EMAIL])
 		{
-			wd_log_error('Missing %username or %email', array('%username' => User::USERNAME, '%email' => User::EMAIL));
+			$this->errors[] = t('Missing %username or %email', array('%username' => User::USERNAME, '%email' => User::EMAIL));
+			$this->errors[User::USERNAME] = true;
+			$this->errors[User::EMAIL] = true;
 
 			return false;
 		}
@@ -45,21 +47,21 @@ class IsInique extends Operation
 
 	protected function process()
 	{
-		$params = $this->params;
+		$request = $this->request;
 
-		$uid = isset($params[User::UID]) ? $params[User::UID] : 0;
+		$uid = $request[User::UID] ?: 0;
 
 		$is_unique_username = true;
 		$is_unique_email = true;
 
-		if (isset($params[User::USERNAME]))
+		if ($request[User::USERNAME])
 		{
-			$is_unique_username = !$this->module->model->select('uid')->where('username = ? AND uid != ?', $params[User::USERNAME], $uid)->rc;
+			$is_unique_username = !$this->module->model->select('uid')->where('username = ? AND uid != ?', $request[User::USERNAME], $uid)->rc;
 		}
 
-		if (isset($params[User::EMAIL]))
+		if ($request[User::EMAIL])
 		{
-			$is_unique_email = !$this->module->model->select('uid')->where('email = ? AND uid != ?', $params[User::EMAIL], $uid)->rc;
+			$is_unique_email = !$this->module->model->select('uid')->where('email = ? AND uid != ?', $request[User::EMAIL], $uid)->rc;
 		}
 
 		$this->response->username = $is_unique_username;

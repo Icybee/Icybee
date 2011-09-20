@@ -1,13 +1,5 @@
-/**
- * This file is part of the Publishr software
- *
- * @author Olivier Laviale <olivier.laviale@gmail.com>
- * @link http://www.wdpublisher.com/
- * @copyright Copyright (c) 2007-2011 Olivier Laviale
- * @license http://www.wdpublisher.com/license.html
- */
 
-Widget.AdjustThumbnailOptions = new Class
+BrickRouge.Widget.AdjustThumbnailOptions = new Class
 ({
 	Implements: [ Events ],
 
@@ -147,7 +139,7 @@ Widget.AdjustThumbnailOptions = new Class
 });
 
 
-Widget.AdjustThumbnail = new Class
+BrickRouge.Widget.AdjustThumbnail = new Class
 ({
 	Implements: [ Events ],
 

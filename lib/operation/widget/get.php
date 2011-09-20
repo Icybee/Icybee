@@ -31,7 +31,7 @@ class Get extends Operation
 
 	protected function validate()
 	{
-		$this->widget_class = $class = 'BrickRouge\Widget\\' . wd_camelize('-' . $this->params['class'], '-');
+		$this->widget_class = $class = 'BrickRouge\Widget\\' . wd_camelize('-' . $this->request['class'], '-');
 
 		if (!class_exists($class, true))
 		{
@@ -50,17 +50,16 @@ class Get extends Operation
 			throw new Exception('Unauthorized', array(), 401);
 		}
 
-		$params = &$this->params;
-
+		$request = $this->request;
 		$document = $core->document;
 
 		$rc = null;
-		$mode = isset($params['mode']) ? $params['mode'] : null;
-		$selected = isset($_GET['selected']) ? $_GET['selected'] : null;
+		$mode = $request['mode'];
+		$selected = $request['selected'];
 
-		if (isset($_GET['value']))
+		if ($request['value'])
 		{
-			$selected = $_GET['value'];
+			$selected = $request['value'];
 		}
 
 		$class = $this->widget_class;
@@ -70,7 +69,7 @@ class Get extends Operation
 			array
 			(
 				'value' => $selected,
-				Widget\AdjustNode::T_CONSTRUCTOR => isset($params['constructor']) ? $params['constructor'] : null
+				Widget\AdjustNode::T_CONSTRUCTOR => $request['constructor']
 			)
 		);
 

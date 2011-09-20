@@ -59,7 +59,7 @@
 	position: fixed;
 	top: 1em;
 	right: 1em;
-	z-index: 100;	
+	z-index: 1000000; /* to beat the crazy 10000 index of the twitter bootstrap topbar */	
 		
 	color: #404040;
 	background:#F6F6F6;

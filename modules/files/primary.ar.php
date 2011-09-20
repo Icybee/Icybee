@@ -23,6 +23,11 @@ class File extends Node
 	public $size;
 	public $description;
 
+	public function __construct($model='files')
+	{
+		parent::__construct($model);
+	}
+
 	protected function __get_extension()
 	{
 		$path = $this->path;

@@ -9,10 +9,12 @@
  * file that was distributed with this source code.
  */
 
+use ICanBoogie\ActiveRecord;
 use ICanBoogie\Uploaded;
+use ICanBoogie\Operation;
+
 use BrickRouge\Element;
 use BrickRouge\Document;
-use ICanBoogie\Operation;
 
 class WdAttachmentsElement extends Element
 {
@@ -23,6 +25,7 @@ class WdAttachmentsElement extends Element
 	{
 		parent::__construct('div', $tags);
 
+		$this->add_class('widget-node-attachments');
 		$this->add_class('resources-files-attached');
 	}
 
@@ -34,7 +37,7 @@ class WdAttachmentsElement extends Element
 
 		$document->css->add('attachments.css');
 		$document->js->add('attachments.js');
-		$document->js->add('../../files/elements/Swiff.Uploader.js');
+// 		$document->js->add('../../files/elements/Swiff.Uploader.js');
 
 		$nid = $this->get(self::T_NODEID);
 		$hard_bond = $this->get(self::T_HARD_BOND, false);
@@ -68,6 +71,7 @@ class WdAttachmentsElement extends Element
 		$limit = ini_get('upload_max_filesize') * 1024 * 1024;
 		$limit_formated = wd_format_size($limit);
 
+		/*
 		$this->dataset = array
 		(
 			'path' => Document::resolve_url('../../files/elements/Swiff.Uploader.swf'),
@@ -76,9 +80,19 @@ class WdAttachmentsElement extends Element
 		)
 
 		+ $this->dataset;
+		*/
 
 		$label_join = t('Add a new attachment');
 		$label_limit = t('The maximum size for each attachment is :size', array(':size' => $limit_formated));
+
+		$label_join = new \BrickRouge\File
+		(
+			array
+			(
+				\BrickRouge\File::T_FILE_WITH_LIMIT => $limit / 1024,
+				\BrickRouge\File::T_UPLOAD_URL => '/api/nodes.attachments/upload'
+			)
+		);
 
 		return <<<EOT
 <ol>
@@ -86,13 +100,13 @@ class WdAttachmentsElement extends Element
 	<li class="progress">&nbsp;</li>
 </ol>
 
-<button type="button">$label_join</button>
+$label_join
 
-<div class="element-description">$label_limit.$formats</div>
+<!--div class="element-description">$label_limit.$formats</div-->
 EOT;
 	}
 
-	static public function create_attachment($entry, $hard_bond=false)
+	public static function create_attachment($entry, $hard_bond=false)
 	{
 		global $core;
 
@@ -126,25 +140,16 @@ EOT;
 
 			$links = array
 			(
-				'<a href="' . Route::contextualize('/admin/resources.files/' . $fid . '/edit') . '">' . t('label.edit') .'</a>',
-				'<a href="' . Operation::encode('resources.files/' . $fid . '/download') . '">' . t('label.download') . '</a>',
+				'<a href="' . \ICanBoogie\Route::contextualize('/admin/files/' . $fid . '/edit') . '">' . t('label.edit') .'</a>',
+				'<a href="' . Operation::encode('files/' . $fid . '/download') . '">' . t('label.download') . '</a>',
 				$hard_bond ? '<a href="#delete" class="danger">' . t('Delete file') .'</a>' : '<a href="#remove" class="warn">' . t('Break link') . '</a>'
 			);
 
 			$node = $core->models['nodes'][$entry->nid];
 
-			if ($node instanceof ICanBoogie\ActiveRecord\Image)
+			if ($node instanceof ActiveRecord\Image)
 			{
-				$preview = new Element
-				(
-					'img', array
-					(
-						'src' => $node->thumbnail('$icon'),
-						'width' => Module\Images::ICON_WIDTH,
-						'height' => Module\Images::ICON_HEIGHT,
-						'alt' => $node->alt
-					)
-				);
+				$preview = $node->thumbnail('$icon');
 			}
 		}
 

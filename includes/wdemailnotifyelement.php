@@ -13,7 +13,7 @@ use BrickRouge\Element;
 use BrickRouge\Form;
 use BrickRouge\Text;
 
-class WdEMailNotifyElement extends Form\Section
+class WdEMailNotifyElement extends \BrickRouge\Group
 {
 	protected $elements;
 
@@ -21,7 +21,7 @@ class WdEMailNotifyElement extends Form\Section
 	{
 		parent::__construct
 		(
-			'div', $tags + array
+			$tags + array
 			(
 				Element::T_CHILDREN => array
 				(

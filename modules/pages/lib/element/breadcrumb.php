@@ -71,7 +71,7 @@ use BrickRouge\Element;
 class Breadcrumb extends Element
 {
 	const T_PAGE = '#breadcrumb-page';
-	const T_SEPARATOR = '#breadcrumb-separator';
+	const T_DIVIDER = '#breadcrumb-divider';
 
 	public function __construct($tags)
 	{
@@ -79,9 +79,9 @@ class Breadcrumb extends Element
 		(
 			'ol', $tags + array
 			(
-				self::T_SEPARATOR => ' › ',
+				self::T_DIVIDER => ' › ',
 
-				'id' => 'breadcrumb'
+				'class' => 'breadcrumb'
 			)
 		);
 	}
@@ -117,14 +117,14 @@ class Breadcrumb extends Element
 		}
 
 		$slices = array_reverse($slices);
-		$separator = $this->get(self::T_SEPARATOR, ' › ');
+		$divider = $this->get(self::T_DIVIDER, ' › ');
 
 		Event::fire
 		(
 			__FUNCTION__ . ':before', array
 			(
 				'slices' => &$slices,
-				'separator' => &$separator,
+				'divider' => &$divider,
 				'page' => $page
 			),
 
@@ -141,7 +141,7 @@ class Breadcrumb extends Element
 
 			if ($i)
 			{
-				$rc .= '<span class="separator"> › </span>';
+				$rc .= '<span class="divider">' . $divider . '</span>';
 			}
 
 			$class = wd_entities($slice['class']);

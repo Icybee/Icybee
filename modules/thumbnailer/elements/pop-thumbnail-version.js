@@ -1,4 +1,4 @@
-Widget.Pop = new Class
+BrickRouge.Widget.Pop = new Class
 ({
 	Implements: [ Options, Events ],
 
@@ -35,9 +35,9 @@ Widget.Pop = new Class
 	}
 });
 
-Widget.PopThumbnailVersion = new Class
+BrickRouge.Widget.PopThumbnailVersion = new Class
 ({
-	Extends: Widget.Pop,
+	Extends: BrickRouge.Widget.Pop,
 
 	pop: function()
 	{
@@ -89,7 +89,7 @@ Widget.PopThumbnailVersion = new Class
 
 	attachAdjust: function(adjust)
 	{
-		this.popup = new Widget.Popup.Adjust
+		this.popup = new BrickRouge.Widget.Popup.Adjust
 		(
 			adjust,
 			{

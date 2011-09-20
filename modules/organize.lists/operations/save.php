@@ -23,11 +23,11 @@ class Save extends \ICanBoogie\Operation\Nodes\Save
 			$model = $this->module->model('nodes');
 			$model->where('listid = ?', $listid)->delete();
 
-			$params = $this->params;
+			$request = $this->request;
+			$nodes = $params['nodes'];
 
-			if (isset($params['nodes']))
+			if ($nodes)
 			{
-				$nodes = $params['nodes'];
 				$labels = $params['labels'];
 
 				$weight = 0;
@@ -49,7 +49,7 @@ class Save extends \ICanBoogie\Operation\Nodes\Save
 		}
 		catch (\Exception $e)
 		{
-			wd_log_error($e->getMessage());
+			$this->errors[] = $e->getMessage();
 		}
 
 		return $rc;

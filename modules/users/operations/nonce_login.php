@@ -36,17 +36,20 @@ class NonceLogin extends Operation
 	{
 		global $core;
 
-		return isset($this->params['email']) ? $core->models['users']->find_by_email($this->params['email'])->one : null;
+		return $this->request['email'] ? $core->models['users']->find_by_email($this->request['email'])->one : null;
 	}
 
 	protected function validate()
 	{
 		global $core;
 
-		$params = $this->params;
+		$request = $this->request;
+		$token = $request['token'];
 
-		if (empty($params['token']))
+		if (!$token)
 		{
+			$this->error['token'] = t('Token is required.');
+
 			return false;
 		}
 
@@ -72,8 +75,6 @@ class NonceLogin extends Operation
 				)
 			);
 		}
-
-		$token = $params['token'];
 
 		if ($user->metas['nonce_login.token'] != base64_encode(Security::pbkdf2($token, $config['nonce_login_salt'])))
 		{

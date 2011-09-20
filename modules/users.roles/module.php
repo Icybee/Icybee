@@ -34,32 +34,85 @@ class Roles extends \Icybee\Module
 		Module::PERMISSION_ADMINISTER => 'administer'
 	);
 
-	public function install()
+	/**
+	 * Overrides the methods to create the "Visitor" and "User" roles.
+	 *
+	 * @see ICanBoogie.Module::install()
+	 */
+	public function install(\ICanBoogie\Errors $errors)
 	{
-		$rc = parent::install();
+		$rc = parent::install($errors);
 
 		if (!$rc)
 		{
 			return $rc;
 		}
 
-		$this->model->save
-		(
-			array
-			(
-				Role::NAME => t('Visitor')
-			)
-		);
+		$model = $this->model;
 
-		$this->model->save
-		(
-			array
+		try
+		{
+			$this->model[1];
+		}
+		catch (\ICanBoogie\Exception\MissingRecord $e)
+		{
+			$role = Role::from
 			(
-				Role::NAME => t('User')
-			)
-		);
+				array
+				(
+					Role::NAME => t('Visitor')
+				),
+
+				array($model)
+			);
+
+			var_dump($role);
+
+			$role->save();
+		}
+
+		try
+		{
+			$this->model[2];
+		}
+		catch (\ICanBoogie\Exception\MissingRecord $e)
+		{
+			$role = Role::from
+			(
+				array
+				(
+					Role::NAME => t('User')
+				),
+
+				array($model)
+			);
+
+			$role->save();
+		}
 
 		return $rc;
+	}
+
+	public function is_installed(\ICanBoogie\Errors $errors)
+	{
+		try
+		{
+			$this->model->find(array(1, 2));
+		}
+		catch (\ICanBoogie\Exception\MissingRecord $e)
+		{
+			var_dump($e);
+
+			if (!$e->rc[1])
+			{
+				$errors[$this->id] = t('Visitor role is missing');
+			}
+
+			if (!$e->rc[2])
+			{
+				$errors[$this->id] = t('User role is missing');
+			}
+		}
 	}
 
 	protected function block_edit($properties, $permission)

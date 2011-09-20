@@ -21,6 +21,132 @@ use BrickRouge\Form;
 
 class Attachments
 {
+	public static function on_node_save(Event $event, Operation\Nodes\Save $operation)
+	{
+		global $core;
+
+		$params = &$event->request->params;
+		$nid = $event->rc['key'];
+
+		if (empty($params['nodes_attachments']))
+		{
+			return;
+		}
+
+		$model = $core->models['nodes.attachments'];
+
+		$files_model = $core->models['files'];
+		$images_model = $core->models['images'];
+
+		$root = \ICanBoogie\DOCUMENT_ROOT;
+		$repository = $core->config['repository.temp'] . '/';
+
+		$weight = 0;
+		$attached_fileids = array();
+
+		foreach ($params['nodes_attachments'] as $attached_params)
+		{
+			if (isset($attached_params['file']))
+			{
+				#
+				# create
+				#
+
+				$path = $repository . $attached_params['file'];
+
+				$attached_params['path'] = $path;
+				$attached_params['is_online'] = true;
+
+				if (getimagesize($root . $path))
+				{
+					$fileid = ActiveRecord\Image::from
+					(
+						$attached_params + array
+						(
+							ActiveRecord\Node::SITEID => $core->site_id,
+							ActiveRecord\Node::CONSTRUCTOR => 'images'
+						)
+					)
+					->save();
+				}
+				else
+				{
+					$fileid = ActiveRecord\File::from
+					(
+						$attached_params + array
+						(
+							ActiveRecord\Node::SITEID => $core->site_id,
+							ActiveRecord\Node::CONSTRUCTOR => 'files'
+						)
+					)
+					->save();
+				}
+
+				if (!$fileid)
+				{
+					$operation->errors[] = t('Unable to save file: \1', array($attached_params));
+
+					continue;
+				}
+
+				$model->save
+				(
+					array
+					(
+						'nodeid' => $nid,
+						'fileid' => $fileid,
+						'title' => $attached_params['title'],
+						'weight' => $weight
+					)
+				);
+
+				$attached_fileids[] = $fileid;
+			}
+			else if (isset($attached_params['fileid']))
+			{
+				$fileid = $attached_params['fileid'];
+
+				if ($attached_params['title'] == '!delete')
+				{
+					$file = $files_model[$fileid];
+
+					$delete_operation = Operation::decode("/api/{$file->constructor}/{$fileid}/delete");
+					$delete_operation->__invoke();
+
+					continue;
+				}
+				else if ($attached_params['title'] == '!remove')
+				{
+					continue;
+				}
+
+				$model->execute
+				(
+					'UPDATE {self} SET title = ?, weight = ? WHERE nodeid = ? AND fileid = ?', array
+					(
+						$attached_params['title'], $weight, $nid, $fileid
+					)
+				);
+
+				$attached_fileids[] = $fileid;
+			}
+
+			$weight++;
+		}
+
+		#
+		# we remove the link to unspecified files.
+		#
+
+		$model->execute
+		(
+			'DELETE FROM {self} WHERE nodeid = ?' . ($attached_fileids ? ' AND fileid NOT IN(' . implode(',', $attached_fileids) . ')' : ''), array
+			(
+				$nid
+			)
+		);
+	}
+
 	/**
 	 * Returns the attachments of the given node.
 	 *
@@ -28,16 +154,16 @@ class Attachments
 	 *
 	 * @return array|null An array of attachments or null if there is none.
 	 */
-	public static function get_attachments(Node $ar)
+	public static function get_attachments(ActiveRecord\Node $ar)
 	{
 		global $core;
 
 		$nodes = $core->models['nodes.attachments']
 		->find_by_nodeid($ar->nid)
 		->joins('INNER JOIN {prefix}nodes ON(nid = fileid)')
-		->select('fileid, attached.title, constructor')
+		->select('fileid, attachment.title, constructor')
 		->where('is_online = 1')
-		->order('weight')->all(PDO::FETCH_OBJ);
+		->order('weight')->all(\PDO::FETCH_OBJ);
 
 		if (!$nodes)
 		{
@@ -211,7 +337,7 @@ class Attachments
 
 	public static function before_operation_config(Event $event, Operation\Files\Config $sender)
 	{
-		$params = &$sender->params;
+		$params = &$event->request->params;
 
 		if (isset($params['global']['nodes_attachments.scope']))
 		{
@@ -272,7 +398,7 @@ class Attachments
 	 * @param string|null $template
 	 * @return string|null The rendered attached file(s), or null if no files were attached.
 	 */
-	static public function markup_node_attachments(array $args=array(), WdPatron $patron, $template)
+	static public function markup_node_attachments(array $args=array(), \WdPatron $patron, $template)
 	{
 		$target = $patron->context['this'];
 		$files = $target->attachments;

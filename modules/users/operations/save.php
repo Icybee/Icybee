@@ -25,11 +25,11 @@ class Save extends \Icybee\Operation\Constructor\Save
 		global $core;
 
 		$properties = parent::__get_properties();
-		$params = $this->params;
+		$request = $this->request;
 
-		if (!empty($params[User::PASSWORD]))
+		if ($request[User::PASSWORD])
 		{
-			$properties[User::PASSWORD] = $params[User::PASSWORD];
+			$properties[User::PASSWORD] = $request[User::PASSWORD];
 		}
 
 		if ($core->user->has_permission(Module::PERMISSION_ADMINISTER, $this->module))
@@ -41,9 +41,9 @@ class Save extends \Icybee\Operation\Constructor\Save
 
 			$roles = array();
 
-			if (!empty($params[User::ROLES]))
+			if ($request[User::ROLES])
 			{
-				foreach ($params[User::ROLES] as $rid => $value)
+				foreach ($request[User::ROLES] as $rid => $value)
 				{
 					$value = filter_var($value, FILTER_VALIDATE_BOOLEAN);
 
@@ -65,9 +65,9 @@ class Save extends \Icybee\Operation\Constructor\Save
 
 			$sites = array();
 
-			if (!empty($params[User::RESTRICTED_SITES]))
+			if ($request[User::RESTRICTED_SITES])
 			{
-				foreach ($params[User::RESTRICTED_SITES] as $siteid => $value)
+				foreach ($request[User::RESTRICTED_SITES] as $siteid => $value)
 				{
 					$value = filter_var($value, FILTER_VALIDATE_BOOLEAN);
 
@@ -134,7 +134,7 @@ class Save extends \Icybee\Operation\Constructor\Save
 	 */
 	protected function control_form()
 	{
-		$this->params[User::ROLES][2] = 'on';
+		$this->request->params[User::ROLES][2] = 'on';
 
 		return parent::control_form($this);
 	}
@@ -148,16 +148,16 @@ class Save extends \Icybee\Operation\Constructor\Save
 
 		if (!empty($properties[User::PASSWORD]))
 		{
-			if (empty($this->params[User::PASSWORD . '-verify']))
+			if (!$this->request[User::PASSWORD . '-verify'])
 			{
-				$this->form->log(User::PASSWORD . '-verify', 'Password verify is empty.');
+				$this->errors[User::PASSWORD . '-verify'] = t('Password verify is empty.');
 
 				$valide = false;
 			}
 
-			if ($properties[User::PASSWORD] != $this->params[User::PASSWORD . '-verify'])
+			if ($properties[User::PASSWORD] != $this->request[User::PASSWORD . '-verify'])
 			{
-				$this->form->log(User::PASSWORD . '-verify', 'Password and password verify don\'t match.');
+				$this->errors[User::PASSWORD . '-verify'] = t('Password and password verify don\'t match.');
 
 				$valide = false;
 			}
@@ -177,7 +177,7 @@ class Save extends \Icybee\Operation\Constructor\Save
 
 			if ($used)
 			{
-				$this->form->log(User::USERNAME, "L'identifiant %username est déjà utilisé.", array('%username' => $username));
+				$this->errors[User::USERNAME] = t("L'identifiant %username est déjà utilisé.", array('%username' => $username));
 
 				$valide = false;
 			}
@@ -194,7 +194,7 @@ class Save extends \Icybee\Operation\Constructor\Save
 
 			if ($used)
 			{
-				$this->form->log(User::EMAIL, "L'adresse email %email est déjà utilisée.", array('%email' => $email));
+				$this->errors[User::EMAIL] = t("L'adresse email %email est déjà utilisée.", array('%email' => $email));
 
 				$valide = false;
 			}

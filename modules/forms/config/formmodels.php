@@ -11,7 +11,7 @@ return array
 	'contact' => array
 	(
 		'title' => 'Contact',
-		'class' => 'contact_WdForm'
+		'class' => 'BrickRouge\Form\Contact'
 	),
 
 	'quickContact' => array

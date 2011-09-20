@@ -2,7 +2,7 @@
  *
  */
 
-Widget.TimeZone = new Class({
+BrickRouge.Widget.TimeZone = new Class({
 
 	Implements: [ Options ],
 

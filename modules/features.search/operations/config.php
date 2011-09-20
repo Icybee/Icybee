@@ -17,16 +17,16 @@ class Config extends \Icybee\Operation\Module\Config
 	{
 		global $core;
 
-		$params = &$this->params;
+		$request = $this->request;
 
 		$key = $this->module->flat_id . '.scope';
 		$scope = null;
 
-		if (isset($params['local'][$key]))
+		if ($request['local'][$key])
 		{
-			$scope = implode(',', array_keys($params['local'][$key]));
+			$scope = implode(',', array_keys($request['local'][$key]));
 
-			unset($params['local'][$key]);
+			unset($request->params['local'][$key]);
 		}
 
 		$core->site->metas[$key] = $scope;

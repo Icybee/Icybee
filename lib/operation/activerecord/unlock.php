@@ -26,8 +26,8 @@ class Unlock extends Operation
 
 		parent::reset();
 
-		$this->module = $core->modules[$this->params['module']];
-		$this->key = $this->params['key'];
+		$this->module = $core->modules[$this->request['module']];
+		$this->key = $this->request['key'];
 	}
 
 	protected function __get_controls()

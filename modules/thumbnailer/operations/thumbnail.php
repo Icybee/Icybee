@@ -23,7 +23,7 @@ class Thumbnail extends Get
 	{
 		global $core;
 
-		$params = &$this->params;
+		$params = &$this->request->params;
 		$params['src'] = null;
 
 		// TODO-20101031: support for the 's' shorthand.
@@ -32,7 +32,7 @@ class Thumbnail extends Get
 
 		if (function_exists('glob'))
 		{
-			$root = $_SERVER['DOCUMENT_ROOT'];
+			$root = \ICanBoogie\DOCUMENT_ROOT;
 			$files = glob($root . $core->config['repository.files'] . '/*/' . $nid . '-*');
 
 			if ($files)
@@ -43,7 +43,7 @@ class Thumbnail extends Get
 		else
 		{
 			$path = $core->config['repository.files'] . '/image';
-			$root = $_SERVER['DOCUMENT_ROOT'] . $path;
+			$root = \ICanBoogie\DOCUMENT_ROOT . $path;
 
 			$nid .= '-';
 			$nid_length = strlen($nid);

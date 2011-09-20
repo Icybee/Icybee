@@ -1,6 +1,6 @@
 <div class="metas">Posté le <time datetime="#{@date}" pubdate="pubdate">#{@date.format_date()}</time> par #{@user.name}</div>
 
-<div class="contents">
+<div class="body clearfix">
 	<wdp:if test="@image">
 	<a href="#{@image.path}" rel="lightbox"><img src="#{@image.thumbnail('articles-view').url}" alt="#{@image.alt}" class="illustration" /></a>
 	</wdp:if>

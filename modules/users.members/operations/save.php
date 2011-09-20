@@ -44,7 +44,7 @@ class Save extends \ICanBoogie\Operation\Users\Save
 
 			if ($file->location)
 			{
-				$this->params['photo'] = $file;
+				$this->request['photo'] = $file;
 			}
 		}
 
@@ -52,9 +52,9 @@ class Save extends \ICanBoogie\Operation\Users\Save
 		# email verify
 		#
 
-		if (!$this->key && isset($this->properties['email-verify']) && $this->params['email-verify'] != $this->properties['email'])
+		if (!$this->key && isset($this->properties['email-verify']) && $this->request['email-verify'] != $this->properties['email'])
 		{
-			$this->form->log('email-verify', "E-mail and E-mail confirm don't match");
+			$this->errors['email-verify'] = t("E-mail and E-mail confirm don't match");
 
 			return false;
 		}

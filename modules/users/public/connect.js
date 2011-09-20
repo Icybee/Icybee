@@ -66,7 +66,7 @@ Core.Element.Form = new Class
 						el.getParent('.field').addClass('error');
 					}
 
-					if (!message)
+					if (!message || message === true)
 					{
 						return;
 					}
@@ -112,7 +112,7 @@ Core.Element.Form = new Class
 	submit: function()
 	{
 		this.fireEvent('submit', {});
-		this.getOperation().send(this.element.toQueryString());
+		this.getOperation().send(this.element/*.toQueryString()*/);
 	},
 
 	getOperation: function()
@@ -141,7 +141,11 @@ Core.Element.Form = new Class
 
 			onSuccess: function(response)
 			{
-				self.log(response.log.done, 'success');
+				if (response.log.done)
+				{
+					self.log(response.log.done, 'success');
+				}
+
 				self.fireEvent('success', arguments);
 			},
 
@@ -188,18 +192,16 @@ window.addEvent
 		//}) ('contents', 50, 200);
 		}) (container.getParent('shakable') || container, 50, 200);
 
-		var loginElement = container.getElement('form[name=connect]');
-		var loginSlide = loginElement.getParent();
-
-		loginSlide.set('slide', { duration: 'short', wrapper: loginSlide.getParent(), resetHeight: true });
+		var loginElement = container.getElement('form[name="users/login"]');
+		var loginSlideFx = new Fx.Slide(loginElement, { duration: 'short', wrapper: loginElement.getParent(), resetHeight: true });
 
 		//if (document.body.hasClass('admin'))
 		{
-			var login = new Core.Element.Form
+			new Core.Element.Form
 			(
 				loginElement,
 				{
-					onSuccess: function()
+					onSuccess: function(response)
 					{
 						window.location.reload();
 					},
@@ -212,11 +214,10 @@ window.addEvent
 			);
 		}
 
-		var passwordElement = container.getElement('form[name=password]');
-		var passwordSlide = passwordElement.getParent();
+		var passwordElement = container.getElement('form[name="users/nonce-request"]');
+		var passwordSlideFx = new Fx.Slide(passwordElement, { duration: 'short', wrapper: passwordElement.getParent(), resetHeight: true });
 
-		passwordSlide.set('slide', { duration: 'short', wrapper: passwordSlide.getParent(), resetHeight: true });
-		passwordSlide.get('slide').hide();
+		passwordSlideFx.hide();
 
 		//
 		// password form handling
@@ -247,28 +248,28 @@ window.addEvent
 		{
 			password.resetFeedback();
 
-			loginSlide.get('slide').slideOut().chain
+			loginSlideFx.slideOut().chain
 			(
 				function()
 				{
-					passwordSlide.get('slide').slideIn();
+					passwordSlideFx.slideIn();
 				}
 			);
 
-			return passwordSlide.get('slide');
+			return passwordSlideFx;
 		};
 
 		function passwordOut()
 		{
-			passwordSlide.get('slide').slideOut().chain
+			passwordSlideFx.slideOut().chain
 			(
 				function()
 				{
-					loginSlide.get('slide').slideIn();
+					loginSlideFx.slideIn();
 				}
 			);
 
-			return loginSlide.get('slide');
+			return loginSlideFx;
 		};
 
 		loginElement.getElement('a').addEvent
@@ -281,14 +282,19 @@ window.addEvent
 			}
 		);
 
-		passwordElement.getElement('a').addEvent
-		(
-			'click', function(ev)
-			{
-				ev.stop();
+		var passwordCancel = passwordElement.getElement('a');
 
-				passwordOut();
-			}
-		);
+		if (passwordCancel)
+		{
+			passwordCancel.addEvent
+			(
+				'click', function(ev)
+				{
+					ev.stop();
+
+					passwordOut();
+				}
+			);
+		}
 	}
 );

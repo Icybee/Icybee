@@ -19,12 +19,12 @@ class Save extends \Icybee\Operation\ActiveRecord\Save
 	{
 		global $core;
 
-		$params = $this->params;
+		$request = $this->request;
 		$properties = parent::__get_properties();
 
-		if (isset($params['scope']))
+		if ($request['scope'])
 		{
-			$properties['scope'] = $params['scope'];
+			$properties['scope'] = $request['scope'];
 		}
 
 		if (!$this->key || !$core->user->has_permission(Module\Nodes::PERMISSION_MODIFY_BELONGING_SITE))

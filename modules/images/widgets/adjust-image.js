@@ -7,7 +7,7 @@
  * @license http://www.wdpublisher.com/license.html
  */
 
-Widget.AdjustImage = new Class
+BrickRouge.Widget.AdjustImage = new Class
 ({
-	Extends: Widget.AdjustNode
+	Extends: BrickRouge.Widget.AdjustNode
 });

@@ -476,11 +476,11 @@ class Get extends Operation
 		$this->clear_cache();
 		$this->rescue_uri();
 
-		$location = $this->get($this->params);
+		$location = $this->get($this->request->params);
 
 		if (!$location)
 		{
-			throw new HTTPException('Unable to create thumbnail for: %src', array('%src' => $this->params['src']), 404);
+			throw new HTTPException('Unable to create thumbnail for: %src', array('%src' => $this->request->params['src']), 404);
 		}
 
 		$server_location = $_SERVER['DOCUMENT_ROOT'] . $location;
@@ -568,7 +568,7 @@ class Get extends Operation
 	 */
 	private function rescue_uri()
 	{
-		$query = $_SERVER['QUERY_STRING'];
+		$query = $this->request->query_string;
 
 		if (strpos($query, '&amp;') === false)
 		{
@@ -577,6 +577,6 @@ class Get extends Operation
 
 		$query = html_entity_decode($query);
 
-		$rc = parse_str($query, $this->params);
+		$rc = parse_str($query, $this->request->params);
 	}
 }

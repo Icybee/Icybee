@@ -21,6 +21,11 @@ class Image extends File
 	public $height;
 	public $alt;
 
+	public function __construct($model='images')
+	{
+		parent::__construct($model);
+	}
+
 	public function __toString()
 	{
 		return '<img src="' . wd_entities($this->path) . '" alt="' . wd_entities($this->alt) . '" />';

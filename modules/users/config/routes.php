@@ -17,10 +17,12 @@ return array
 
 	),
 
+	/*
 	'config' => array
 	(
 
 	),
+	*/
 
 	'/admin/profile' => array
 	(

@@ -40,7 +40,7 @@ class News extends \ICanBoogie\Module\Contents
 			(
 				Element::T_CHILDREN => array
 				(
-					Content::DATE => new Element\Date
+					Content::DATE => new \BrickRouge\Date
 					(
 						array
 						(
