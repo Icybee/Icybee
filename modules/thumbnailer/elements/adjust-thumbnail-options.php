@@ -20,8 +20,6 @@ class AdjustThumbnailOptions extends Element
 
 	public function __construct($tags, $dummy=null)
 	{
-		global $document;
-
 		$versions = array(null => '<personnalisé>');
 
 		parent::__construct
@@ -153,6 +151,11 @@ class AdjustThumbnailOptions extends Element
 				$tags
 			)
 		);
+	}
+
+	protected static function add_assets(\BrickRouge\Document $document)
+	{
+		parent::add_assets($document);
 
 		$document->css->add('adjust-thumbnail-options.css');
 		$document->js->add('adjust-thumbnail-options.js');

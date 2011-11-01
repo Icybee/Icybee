@@ -23,7 +23,7 @@ class Hooks
 	{
 		global $core;
 
-		static $specials = array('manage', 'new', 'config', 'edit');
+		static $specials = array(':admin/manage', ':admin/new', ':admin/config', ':admin/edit');
 
 		$rc = array();
 
@@ -36,7 +36,7 @@ class Hooks
 				$local_module_id = basename($path);
 			}
 
-			foreach ($routes as $pattern => $route)
+			foreach ($routes as $route_id => $route)
 			{
 				$add_delete_route = false;
 
@@ -45,11 +45,13 @@ class Hooks
 					$local_module_id = $route['module'];
 				}
 
-				if (in_array($pattern, $specials))
+				$pattern = isset($route['pattern']) ? $route['pattern'] : null;
+
+				if (in_array($route_id, $specials))
 				{
-					switch ($pattern)
+					switch ($route_id)
 					{
-						case 'manage':
+						case ':admin/manage':
 						{
 							$pattern = "/admin/$local_module_id";
 
@@ -64,7 +66,7 @@ class Hooks
 						}
 						break;
 
-						case 'new':
+						case ':admin/new':
 						{
 							$pattern = "/admin/$local_module_id/new";
 
@@ -78,7 +80,7 @@ class Hooks
 						}
 						break;
 
-						case 'edit':
+						case ':admin/edit':
 						{
 							$pattern = "/admin/$local_module_id/<\d+>/edit";
 
@@ -94,7 +96,7 @@ class Hooks
 						}
 						break;
 
-						case 'config':
+						case ':admin/config':
 						{
 							$pattern = "/admin/$local_module_id/config";
 
@@ -109,7 +111,26 @@ class Hooks
 						}
 						break;
 					}
+
+					$route_id = $local_module_id . $route_id;
 				}
+
+				/*
+				if (empty($route['pattern']))
+				{
+					throw new \LogicException(t
+					(
+						"Route %route_id has no pattern in %path. !route", array
+						(
+							'%route_id' => $route_id,
+							'%path' => $path,
+							'!route' => $route
+						)
+					));
+				}
+
+				$pattern = $route['pattern'];
+				*/
 
 				if (substr($pattern, 0, 7) != '/admin/')
 				{
@@ -150,17 +171,19 @@ class Hooks
 
 				$route += array
 				(
+					'pattern' => $pattern,
 					'module' => $module_id,
 					'workspace' => $workspace,
 					'visibility' => 'visible'
 				);
 
-				$rc[$pattern] = $route;
+				$rc[$route_id] = $route;
 
 				if ($add_delete_route)
 				{
-					$rc["/admin/$local_module_id/<\d+>/delete"] = $a = array
+					$rc["/admin/$local_module_id/delete"] = $a = array
 					(
+						'pattern' => "/admin/$local_module_id/<\d+>/delete",
 						'title' => '.delete',
 						'block' => 'delete'
 					)
@@ -215,7 +238,7 @@ class Hooks
 	 *
 	 * @param Event $event
 	 */
-	static public function before_user_disconnect(Event $event)
+	static public function before_user_logout(Event $event)
 	{
 		global $core;
 

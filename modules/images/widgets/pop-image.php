@@ -20,8 +20,6 @@ class PopImage extends PopNode
 
 	public function __construct($tags=array(), $dummy=null)
 	{
-		global $core;
-
 		parent::__construct
 		(
 			$tags + array
@@ -41,9 +39,14 @@ class PopImage extends PopNode
 		)
 
 		+ $this->dataset;
+	}
 
-		$core->document->css->add('pop-image.css');
-		$core->document->js->add('pop-image.js');
+	protected static function add_assets(\BrickRouge\Document $document)
+	{
+		parent::add_assets($document);
+
+		$document->css->add('pop-image.css');
+		$document->js->add('pop-image.js');
 	}
 
 	protected function getEntry($model, $value)

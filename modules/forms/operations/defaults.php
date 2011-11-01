@@ -39,11 +39,11 @@ class Defaults extends Operation
 	 *
 	 * @see ICanBoogie.Operation::validate()
 	 */
-	protected function validate()
+	protected function validate(\ICanboogie\Errors $errors)
 	{
 		if (!$this->key)
 		{
-			wd_log_error('Missing modelid');
+			$errors['key'] = 'Missing modelid';
 
 			return false;
 		}

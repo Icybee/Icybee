@@ -163,32 +163,35 @@ class Thumbnail extends ICanBoogie\Object
 	{
 		global $core;
 
-		//var_dump($this);
-
 		$src = $this->src;
 		$options = $this->options;
 		$version_name = $this->version_name;
 
+		$url = '/api/';
+
 		if (is_string($src))
 		{
-			$base = '/api/thumbnail';
+			$url .= 'thumbnail';
 
 			$options['src'] = $src;
 			$options['version'] = $version_name;
 		}
 		else
 		{
-			$base = '/api/' . $src->constructor . '/' . $src->nid . '/thumbnail';
+			$url .= $src->constructor . '/' . $src->nid . '/thumbnail';
 
 			if ($version_name)
 			{
-				return $base . 's/' . $version_name;
+				$url .= 's/' . $version_name;
 			}
 		}
 
-		$base .= '?'. http_build_query($options);
+		if ($options)
+		{
+			$url .= '?'. http_build_query($options);
+		}
 
-		return $base;
+		return $url;
 	}
 
 	/**
@@ -223,7 +226,7 @@ class Thumbnail extends ICanBoogie\Object
 				(
 					'src' => $src,
 					'alt' => $alt,
-					'widht' => $final_w,
+					'width' => $final_w,
 					'height' => $final_h
 				)
 			);

@@ -29,15 +29,17 @@ class WdAttachmentsElement extends Element
 		$this->add_class('resources-files-attached');
 	}
 
-	protected function render_inner_html()
+	protected static function add_assets(\BrickRouge\Document $document)
 	{
-		global $core;
-
-		$document = $core->document;
+		parent::add_assets($document);
 
 		$document->css->add('attachments.css');
 		$document->js->add('attachments.js');
-// 		$document->js->add('../../files/elements/Swiff.Uploader.js');
+	}
+
+	protected function render_inner_html()
+	{
+		global $core;
 
 		$nid = $this->get(self::T_NODEID);
 		$hard_bond = $this->get(self::T_HARD_BOND, false);

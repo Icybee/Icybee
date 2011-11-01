@@ -13,7 +13,7 @@ window.addEvent
 	{
 		var container = $('dashboard-panels');
 
-		var sortables = new Sortables
+		new Sortables
 		(
 			'#dashboard-panels > div',
 			{
@@ -25,6 +25,9 @@ window.addEvent
 				onStart: function(el, clone)
 				{
 					clone.id = el.id;
+					el.setStyle('opacity', .1);
+
+					this._original = el;
 
 					container.addClass('sorting');
 				},
@@ -32,6 +35,7 @@ window.addEvent
 				onComplete: function(ev)
 				{
 					container.removeClass('sorting');
+					this._original.setStyle('opacity', 1);
 
 					container.getElements('div.panel-holder').each
 					(

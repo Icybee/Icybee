@@ -18,8 +18,8 @@ use Icybee\Manager;
 
 class Forms extends Nodes
 {
-	const OPERATION_SEND = 'send';
-	const OPERATION_SEND_ID = '#form-id';
+	const OPERATION_POST = 'post';
+	const OPERATION_POST_ID = '#post-id';
 	const OPERATION_DEFAULTS = 'defaults';
 
 	protected function block_manage()

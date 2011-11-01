@@ -5,6 +5,7 @@ use ICanBoogie\ActiveRecord\Model;
 
 return array
 (
+	Module::T_CATEGORY => 'features',
 	Module::T_TITLE => 'Registry',
 	Module::T_DESCRIPTION => 'Holds configuration settings for the system as well as nodes, users and sites.',
 	Module::T_PERMISSION => false,

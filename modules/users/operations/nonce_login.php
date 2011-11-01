@@ -39,7 +39,7 @@ class NonceLogin extends Operation
 		return $this->request['email'] ? $core->models['users']->find_by_email($this->request['email'])->one : null;
 	}
 
-	protected function validate()
+	protected function validate(\ICanboogie\Errors $errors)
 	{
 		global $core;
 
@@ -48,7 +48,7 @@ class NonceLogin extends Operation
 
 		if (!$token)
 		{
-			$this->error['token'] = t('Token is required.');
+			$errors['token'] = t('Token is required.');
 
 			return false;
 		}
@@ -101,7 +101,7 @@ class NonceLogin extends Operation
 
 		$user->login();
 
-		$this->location = $user->url('profile');
+		$this->response->location = $user->url('profile');
 
 		return true;
 	}

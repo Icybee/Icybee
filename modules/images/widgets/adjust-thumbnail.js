@@ -147,11 +147,17 @@ BrickRouge.Widget.AdjustThumbnail = new Class
 	{
 		this.element = $(el);
 
-		this.thumbnailOptions = this.element.getElement('.widget-adjust-thumbnail-options').retrieve('widget');
+		console.log('element:', el);
+
+		this.thumbnailOptions = this.element.getElement('.widget-adjust-thumbnail-options').get('widget');
 		this.thumbnailOptions.addEvent('change', this.onChange.bind(this));
 
-		this.image = this.element.getElement('.widget-adjust-image').retrieve('widget');
-		this.image.addEvent('change', this.onChange.bind(this));
+		this.image = this.element.getElement('.widget-adjust-image').get('widget');
+
+		if (this.image)
+		{
+			this.image.addEvent('change', this.onChange.bind(this));
+		}
 
 		this.element.getFirst('.more').addEvent
 		(
@@ -168,12 +174,13 @@ BrickRouge.Widget.AdjustThumbnail = new Class
 	{
 		var nid = values.get('data-nid');
 
-		if (nid)
+		if (nid && this.image)
 		{
 			this.image.setSelected(nid);
 		}
 
 		var src = values.get('src');
+		var options = {};
 
 		if (src && src.substring(0, 5) != 'data:')
 		{
@@ -181,16 +188,30 @@ BrickRouge.Widget.AdjustThumbnail = new Class
 
 			if (i)
 			{
-				var options = src.substring(i + 1).parseQueryString();
-
-				this.thumbnailOptions.setValues(options);
+				options = src.substring(i + 1).parseQueryString();
 			}
 		}
+
+		var w = values.get('width');
+
+		if (w)
+		{
+			options.w = w;
+		}
+
+		var h = values.get('height');
+
+		if (h)
+		{
+			options.h = h;
+		}
+
+		this.thumbnailOptions.setValues(options);
 	},
 
 	onChange: function(ev)
 	{
-		var image = this.image.selected;
+		var image = this.image ? this.image.selected : null;
 		var options = this.thumbnailOptions.getValues();
 		var nid = null;
 		var url = null;
@@ -201,7 +222,7 @@ BrickRouge.Widget.AdjustThumbnail = new Class
 
 			if ((options.w !== "" && options.h !== "") && (options.w || options.h))
 			{
-				url = '/api/resources.images/' + nid + '/thumbnail?' + Object.toQueryString(options);
+				url = Request.API.encode('images/' + nid + '/thumbnail?' + Object.toQueryString(options));
 			}
 			else
 			{

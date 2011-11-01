@@ -91,7 +91,7 @@ class Save extends \Icybee\Operation\ActiveRecord\Save
 
 			if ($url{0} != '#')
 			{
-				$this->location = $record->url;
+				$this->response->location = $record->url;
 			}
 		}
 

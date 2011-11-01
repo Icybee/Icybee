@@ -84,13 +84,11 @@ EOT
 		$packages = array();
 		$modules = array();
 
-		foreach ($core->modules->descriptors as $id => $descriptor)
-		{
-			if (isset($descriptor[Module::T_DISABLED]))
-			{
-				continue;
-			}
+		$descriptors = $core->modules->enabled_modules_descriptors;
+		self::sort_descriptors($descriptors);
 
+		foreach ($descriptors as $id => $descriptor)
+		{
 			if (isset($descriptor[Module::T_CATEGORY]))
 			{
 				$category = $descriptor[Module::T_CATEGORY];
@@ -101,15 +99,9 @@ EOT
 			}
 
 			$category = t($category, array(), array('scope' => 'module_category.title', 'default' => ucfirst($category)));
-			$title = t(strtr($id, '.', '_'), array(), array('scope' => 'module.title', 'default' => isset($descriptor[Module::T_TITLE]) ? $descriptor[Module::T_TITLE] : $id));
+			$title = $descriptor['_locale_title'];
 
-			$packages[$category][$title] = array_merge
-			(
-				$descriptor, array
-				(
-					self::T_ID => $id
-				)
-			);
+			$packages[$category][$id] = $descriptor;
 		}
 
 		uksort($packages, 'wd_unaccent_compare_ci');
@@ -129,17 +121,10 @@ EOT
 			$sub = null;
 			$i = 0;
 
-			foreach ($descriptors as $title => $descriptor)
+			foreach ($descriptors as $m_id => $descriptor)
 			{
-				$m_id = $descriptor[Module::T_ID];
 				$is_required = isset($mandatories[$m_id]);
-
-				if (isset($descriptor[Module::T_DISABLED]))
-				{
-					continue;
-				}
-
-				$m_desc = $descriptor;
+				$title = $descriptor['_locale_title'];
 
 				#
 				#
@@ -436,7 +421,11 @@ EOT;
 		$categories = array();
 		$modules = array();
 
-		foreach ($core->modules->descriptors as $id => $descriptor)
+		$descriptors = $core->modules->descriptors;
+
+		self::sort_descriptors($descriptors);
+
+		foreach ($descriptors as $id => $descriptor)
 		{
 			$name = isset($descriptor[Module::T_TITLE]) ? $descriptor[Module::T_TITLE] : $id;
 
@@ -450,7 +439,7 @@ EOT;
 			}
 
 			$category = t($category, array(), array('scope' => 'module_category.title', 'default' => ucfirst($category)));
-			$title = t(isset($descriptor[Module::T_TITLE]) ? $descriptor[Module::T_TITLE] : $id);
+			$title = $descriptor['_locale_title'];
 
 			$categories[$category][$title] = array_merge
 			(
@@ -605,5 +594,28 @@ EOT;
 		}
 
 		return $rc;
+	}
+
+	static private function sort_descriptors(array &$descriptors)
+	{
+		wd_stable_sort
+		(
+			$descriptors, function(&$descriptor)
+			{
+				$id = $descriptor[Module::T_ID];
+				$title = t
+				(
+					strtr($id, '.', '_'), array(), array
+					(
+						'scope' => 'module.title',
+						'default' => isset($descriptor[Module::T_TITLE]) ? $descriptor[Module::T_TITLE] : $id
+					)
+				);
+
+				$descriptor['_locale_title'] = $title;
+
+				return wd_remove_accents($title);
+			}
+		);
 	}
 }

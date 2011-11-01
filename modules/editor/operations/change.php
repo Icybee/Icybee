@@ -26,7 +26,7 @@ class Change extends Operation
 		+ parent::__get_controls();
 	}
 
-	protected function validate()
+	protected function validate(\ICanboogie\Errors $errors)
 	{
 		$request = $this->request;
 
@@ -70,8 +70,7 @@ class Change extends Operation
 			)
 		);
 
-		$this->response->assets = $core->document->get_assets();
-		$this->terminus = true;
+		$this->response['assets'] = $core->document->get_assets();
 
 		return $editor;
 	}

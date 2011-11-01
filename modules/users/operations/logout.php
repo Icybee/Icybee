@@ -15,31 +15,34 @@ use ICanBoogie\Exception;
 use ICanBoogie\Operation;
 
 /**
- * Disconnects the user from the system by removing its identifier form its session.
+ * Log the user out of the system by removing its identifier form its session.
  */
-class Disconnect extends Operation
+class Logout extends Operation
 {
 	/**
 	 * Validates the operation if the user is actually connected.
 	 *
 	 * @see ICanBoogie.Operation::validate()
 	 */
-
-	protected function validate()
+	protected function validate(\ICanboogie\Errors $errors)
 	{
 		global $core;
 
+		/*
 		if (!$core->user_id)
 		{
-			throw new Exception('You are not connected.');
+			$errors[] = t('You are not connected.');
+
+			return false;
 		}
+		*/
 
 		return true;
 	}
 
 	/**
 	 * Removes the user id form the session and set the location of the operation to the location
-	 * defined by `$_GET[location]` or the HTTP referer, or '/'.
+	 * defined by the request's `continue` parameter or the request's referer, or '/'.
 	 *
 	 * @see ICanBoogie.Operation::process()
 	 */
@@ -47,9 +50,11 @@ class Disconnect extends Operation
 	{
 		global $core;
 
+		$request = $this->request;
+
 		unset($core->session->users['user_id']);
 
-		$this->location = isset($_GET['location']) ? $_GET['location'] : (isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : '/');
+		$this->response->location = isset($request['continue']) ? $request['continue'] : ($request->referer ? $request->referer : '/');
 
 		return true;
 	}

@@ -2,29 +2,30 @@
 
 return array
 (
-	'manage' => array
+	':admin/manage' => array
 	(
 		'title' => 'Approuvés'
 	),
 
-	'/admin/comments/spam' => array
+	'comments:admin/spam' => array
 	(
+		'pattern' => '/admin/comments/spam',
 		'title' => 'Spam',
 		'block' => 'manage_spam',
 		'workspace' => 'feedback'
 	),
 
-	'new' => array
+	':admin/new' => array
 	(
 
 	),
 
-	'config' => array
+	':admin/config' => array
 	(
 
 	),
 
-	'edit' => array
+	':admin/edit' => array
 	(
 
 	)

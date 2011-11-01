@@ -139,7 +139,6 @@ class Roles extends \Icybee\Module
 
 		$document->css->add(\Icybee\ASSETS . 'css/manage.css', -170);
 		$document->css->add('public/admin.css');
-		$document->js->add('public/admin.js');
 
 		$packages = array();
 		$modules = array();

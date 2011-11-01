@@ -291,7 +291,7 @@ EOT;
 
 			$rc .= t('Hello :username', array(':username' => '<a href="' . $site->path . '/admin/profile">' . $user->name . '</a>'));
 			$rc .= ' <span class="small">(' . $roles . ')</span>';
-			$rc .= ' <span class="separator">|</span> <a href="' . Operation::encode('users/disconnect') . '">' . t('label.disconnect') . '</a>';
+			$rc .= ' <span class="separator">|</span> <a href="' . Operation::encode('users/logout') . '">' . t('label.logout') . '</a>';
 			$rc .= '</span>';
 
 			$rc .= '<div class="clear"></div>';
@@ -331,20 +331,12 @@ EOT;
 		}
 		else
 		{
-			global $routes, $matching_route, $core;
-
-			//wd_log('routes: \1', array($routes));
-
 			$links = array();
+			$routes = Route::routes();
 
 			foreach ($routes as $route)
 			{
-				if (empty($route['index']))
-				{
-					continue;
-				}
-
-				if (empty($route['workspace']))
+				if (empty($route['index']) || empty($route['workspace']))
 				{
 					continue;
 				}
@@ -380,7 +372,8 @@ EOT;
 				$links
 			);
 
-			$selected = $matching_route ? $matching_route['workspace'] : 'dashboard';
+			$matching_route = Route::find($_SERVER['REQUEST_URI'], 'any', 'admin');
+			$selected = $matching_route ? $matching_route[0]['workspace'] : 'dashboard';
 			$context = $core->site->path;
 
 			$rc .= '<ul>';
@@ -404,8 +397,6 @@ EOT;
 			}
 
 			$rc .= '</ul>';
-
-			//$rc .= '<form action="" id="search"><input type="text" class="empty" value="Search"/></form>';
 		}
 
 		$rc .= '<span id="loader">loading</span>';

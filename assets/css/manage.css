@@ -178,7 +178,7 @@ table.manage tbody tr:nth-child(even)
 
 table.manage tbody tr:hover
 {
-	background-color: #f2f8ff;
+	background-color: #f2f8ff; 
 }
 
 table.manage tbody tr:hover a.filter
@@ -322,6 +322,7 @@ table.manage td img.icon:hover
 table.manage div.jobs
 {
 	float: left;
+	visibility: hidden;
 }
 
 table.manage option[value=delete]

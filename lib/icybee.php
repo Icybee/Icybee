@@ -9,15 +9,16 @@
  * file that was distributed with this source code.
  */
 
-use ICanBoogie\ActiveRecord;
-use ICanBoogie\Core;
-use ICanBoogie\Debug;
-use ICanBoogie\Event;
-use ICanBoogie\Exception;
-use ICanBoogie\Module;
-use ICanBoogie\Operation;
-use ICanBoogie\Route;
-use ICanBoogie\I18n\Translator\Proxi;
+use ICanBoogie\ActiveRecord,
+	ICanBoogie\Core,
+	ICanBoogie\Debug,
+	ICanBoogie\Event,
+	ICanBoogie\Exception,
+	ICanBoogie\HTTP\Request,
+	ICanBoogie\Module,
+	ICanBoogie\Operation,
+	ICanBoogie\Route,
+	ICanBoogie\I18n\Translator\Proxi;
 
 class Icybee extends WdPatron
 {
@@ -53,24 +54,30 @@ class Icybee extends WdPatron
 
 // 		session_cache_limiter('public');
 
+		$html = null;
+		$request = $core->request;
+		$constructor_data = array($request);
+
 		try
 		{
-			$rc = null;
-
 			Event::fire
 			(
 				'render:before', array
 				(
-					'uri' => $_SERVER['REQUEST_URI'],
+					'request' => $request,
+// 					'uri' => $_SERVER['REQUEST_URI'],
 					'constructor' => array($this, 'run_callback'),
-					'constructor_data' => array(),
-					'rc' => &$rc
+					'constructor_data' => &$constructor_data,
+					'rc' => &$html
 				),
 
 				$this
 			);
 
-			$html = $rc === null ? $this->run_callback() : $rc;
+			if ($html === null)
+			{
+				$html = call_user_func_array(array($this, 'run_callback'), $constructor_data);
+			}
 		}
 		catch (\Exception $e)
 		{
@@ -138,11 +145,10 @@ class Icybee extends WdPatron
 		echo $html . $comment;
 	}
 
-	public function run_callback()
+	public function run_callback(Request $request)
 	{
 		global $core, $page;
 
-		$path = $_SERVER['REQUEST_PATH'];
 		$status = $core->site->status;
 
 		if ($status != 1 && $core->user->is_guest)
@@ -160,14 +166,19 @@ class Icybee extends WdPatron
 				(
 					'Access to the requested URL %uri is forbidden.', array
 					(
-						'%uri' => $_SERVER['REQUEST_URI']
+						'uri' => $request->uri
 					),
 
 					403
 				);
 			}
 
-			$site = \ICanBoogie\Hooks\Sites::find_by_request($_SERVER, $core->user);
+			// TODO-20111101: we could use $core->site to get the current site, still we need to
+			// check user permission to access the site. Using find_by_request() with the user
+			// we get a site that the user can actually access, this is required to redirect the
+			// user to the first available site when '/' is requested.
+
+			$site = \ICanBoogie\Hooks\Sites::find_by_request($request, $core->user);
 
 			if ($site->siteid && $site->siteid != $core->site_id)
 			{
@@ -180,14 +191,15 @@ class Icybee extends WdPatron
 			(
 				'The requested URL %uri requires authentication.', array
 				(
-					'%uri' => $_SERVER['REQUEST_URI']
+					'uri' => $request->uri
 				),
 
 				401
 			);
 		}
 
-		$page = $this->find_page_by_uri($path, $_SERVER['QUERY_STRING']);
+		$path = $request->path;
+		$page = $this->find_page_by_uri($path, $request->query_string);
 
 		if (!$page)
 		{
@@ -195,7 +207,7 @@ class Icybee extends WdPatron
 			(
 				'The requested URL %uri was not found on this server.', array
 				(
-					'%uri' => $_SERVER['REQUEST_URI']
+					'uri' => $request->uri
 				),
 
 				404
@@ -215,7 +227,7 @@ class Icybee extends WdPatron
 				(
 					'The requested URL %uri requires authentication.', array
 					(
-						'%uri' => $_SERVER['REQUEST_URI']
+						'uri' => $request->uri
 					),
 
 					401
@@ -273,7 +285,7 @@ class Icybee extends WdPatron
 			$body = $e->getMessage();
 		}
 
-		$root = $_SERVER['DOCUMENT_ROOT'];
+		$root = \ICanBoogie\DOCUMENT_ROOT;
 		$file = $core->site->resolve_path('templates/' . $page->template);
 
 		if (!$file)
@@ -289,7 +301,7 @@ class Icybee extends WdPatron
 		(
 			'render', array
 			(
-				'uri' => $_SERVER['REQUEST_URI'],
+				'request' => $request,
 				'page' => $page,
 				'rc' => &$html
 			),
@@ -364,10 +376,9 @@ class Icybee extends WdPatron
 
 			$parsed_url_pattern = Route::parse($page->url_pattern);
 
-			if (!$parsed_url_pattern[1] && $page->url != $path)
+			if (empty($parsed_url_pattern[1]) && $page->url != $path)
 			{
-				header('HTTP/1.0 301 Moved Permanently');
-				header('Location: ' . $page->url . ($query_string ? '?' . $query_string : ''));
+				header('Location: ' . $page->url . ($query_string ? '?' . $query_string : ''), true, 301);
 
 				exit;
 			}
@@ -425,7 +436,7 @@ class Icybee extends WdPatron
 			$contents .= '<a href="' . $core->site->path . '/admin/' . $edit_target->constructor . '/' . $edit_target->nid . '/edit' . '" title="' . $translator->__invoke('Edit: !title', array('!title' => $edit_target->title)) . '">' . $translator->__invoke('Edit') . '</a> &ndash; ';
 		}
 
-		$contents .= '<a href="' . wd_entities(Operation::encode('users/disconnect', array('location'  => $_SERVER['REQUEST_URI']))) . '">' . $translator->__invoke('Disconnect') . '</a> &ndash;
+		$contents .= '<a href="' . wd_entities(Operation::encode('users/logout', array('location'  => $_SERVER['REQUEST_URI']))) . '">' . $translator->__invoke('Disconnect') . '</a> &ndash;
 		<a href="' . $core->site->path . '/admin/">' . $translator->__invoke('Admin') . '</a></li>';
 		$contents .= '</ul>';
 
@@ -512,7 +523,7 @@ class Icybee extends WdPatron
 		{
 			$rc  = <<<EOT
 <div id="wdpublisher-admin-menu">
-<div class="panel-title">Publish<span>r</span></div>
+<div class="panel-title">Icybee</div>
 <div class="contents">$contents</div>
 </div>
 EOT;

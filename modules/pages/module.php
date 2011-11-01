@@ -386,7 +386,7 @@ class Pages extends Nodes
 									)
 								),
 
-								Form\Section::T_PANEL_CLASS => 'inherit-toggle'
+								\BrickRouge\Section::T_PANEL_CLASS => 'inherit-toggle'
 							)
 						);
 					}
@@ -442,7 +442,7 @@ class Pages extends Nodes
 							Element::T_DESCRIPTION => $editor_description,
 
 							'id' => 'editor-' . $id,
-							'name' => $name,
+// 							'name' => $name,
 							'value' => $value
 						)
 					);
@@ -463,7 +463,7 @@ class Pages extends Nodes
 								\WdEditorElement::T_STYLESHEETS => $styles,
 								\WdEditorElement::T_CONFIG => $editor_config,
 
-								'name' => "$name[$i]",
+// 								'name' => "$name[$i]",
 								'value' => $value
 							)
 						);

@@ -22,8 +22,6 @@ class Comments extends \WdManager
 
 	public function __construct($module, array $tags=array())
 	{
-		global $core;
-
 		parent::__construct
 		(
 			$module, $tags + array
@@ -31,8 +29,13 @@ class Comments extends \WdManager
 				self::T_KEY => 'commentid'
 			)
 		);
+	}
 
-		$core->document->css->add('public/admin.css');
+	protected static function add_assets(\BrickRouge\Document $document)
+	{
+		parent::add_assets($document);
+
+		$document->css->add('public/admin.css');
 	}
 
 	protected function columns()

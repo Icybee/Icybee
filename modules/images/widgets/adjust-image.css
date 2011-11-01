@@ -29,7 +29,7 @@
 
 .popup.black .widget-adjust-image .results ul
 {
-	background: #333;
+	background-color: rgba(0,0,0,0.2);
 	border-color: #222;
 }
 

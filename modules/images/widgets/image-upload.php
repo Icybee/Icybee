@@ -19,6 +19,15 @@ class ImageUpload extends \WdFileUploadElement
 	const THUMBNAIL_WIDTH = 64;
 	const THUMBNAIL_HEIGHT = 64;
 
+	protected static function add_assets(\BrickRouge\Document $document)
+	{
+		parent::add_assets($document);
+
+		$document->js->add('../public/slimbox.js');
+		$document->css->add('../public/slimbox.css');
+		$document->css->add('image-upload.css');
+	}
+
 	protected function preview($path)
 	{
 		global $core;
@@ -63,12 +72,6 @@ class ImageUpload extends \WdFileUploadElement
 
 	protected function details($path)
 	{
-		global $document;
-
-		$document->js->add('../public/slimbox.js');
-		$document->css->add('../public/slimbox.css');
-		$document->css->add('image-upload.css');
-
 		$path = $this->get('value');
 
 		list($entry_width, $entry_height) = getimagesize($_SERVER['DOCUMENT_ROOT'] . $path);

@@ -11,14 +11,15 @@
 
 namespace ICanBoogie\Hooks;
 
-use ICanBoogie\ActiveRecord;
-use ICanBoogie\ActiveRecord\Site;
+use ICanBoogie\ActiveRecord,
+	ICanBoogie\ActiveRecord\Site,
+	ICanBoogie\HTTP\Request;
 
 class Sites
 {
 	static private $model;
 
-	static public function find_by_request($request, $user=null)
+	static public function find_by_request(Request $request, $user=null)
 	{
 		global $core;
 
@@ -43,14 +44,16 @@ class Sites
 			}
 		}
 
-		$path = $request['REQUEST_PATH'];
+		$path = $request->path;
 
+		/* FIXME-20111101: do we still need that now that we use the Request object ?
 		if (preg_match('#/index\.(html|php)#', $path))
 		{
 			$path = '/';
 		}
+		*/
 
-		$parts = array_reverse(explode('.', $request['HTTP_HOST']));
+		$parts = array_reverse(explode('.', $request->headers['Host']));
 
 		$tld = null;
 		$domain = null;
@@ -161,9 +164,9 @@ class Sites
 	 *
 	 * @return \ICanBoogie\ActiveRecord\Site
 	 */
-	static public function __get_core_site()
+	static public function __get_core_site(\ICanBoogie\Core $core)
 	{
-		return self::find_by_request($_SERVER);
+		return self::find_by_request($core->request);
 	}
 
 	/**
@@ -204,9 +207,7 @@ class Sites
 					'language' => $core->language,
 					'timezone' => $core->timezone,
 					'status' => 1
-				),
-
-				array('sites')
+				)
 			);
 		}
 

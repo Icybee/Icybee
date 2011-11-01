@@ -31,7 +31,7 @@ class Activate extends Operation
 		+ parent::__get_controls();
 	}
 
-	protected function validate()
+	protected function validate(\ICanboogie\Errors $errors)
 	{
 		return true;
 	}
@@ -42,7 +42,7 @@ class Activate extends Operation
 		$record->is_activated = true;
 		$record->save();
 
-		wd_log_done('!name account is active.', array('!name' => $record->name));
+		$this->response->success = t('!name account is active.', array('!name' => $record->name));
 
 		return true;
 	}

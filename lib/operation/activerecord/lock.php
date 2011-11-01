@@ -40,7 +40,7 @@ class Lock extends Operation
 		+ parent::__get_controls();
 	}
 
-	protected function validate()
+	protected function validate(\ICanboogie\Errors $errors)
 	{
 		return true;
 	}

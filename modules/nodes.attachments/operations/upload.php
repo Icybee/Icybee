@@ -21,7 +21,7 @@ class Upload extends Operation
 	 */
 	protected $file;
 
-	protected function validate()
+	protected function validate(\ICanboogie\Errors $errors)
 	{
 		#
 		# TODO-20100624: we use 'Filedata' because it's used by Swiff.Uploader, we have to change
@@ -64,7 +64,7 @@ class Upload extends Operation
 		if ($file->er)
 		{
 			$this->errors[] = $file->er_message;
-			$this->response->file = $file;
+			$this->response['file'] = $file;
 
 			return false;
 		}
@@ -89,8 +89,6 @@ class Upload extends Operation
 
 			$file->move($_SERVER['DOCUMENT_ROOT'] . $destination, true);
 		}
-
-		$this->terminus = true;
 
 		return \WdAttachmentsElement::create_attachment($file);
 	}

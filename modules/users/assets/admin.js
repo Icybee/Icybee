@@ -1,3 +1,4 @@
+
 window.addEvent
 (
 	'domready', function()
@@ -24,12 +25,33 @@ window.addEvent
 
 		var operation_check_unique = new Request.API
 		({
-			url: 'user.users/is_unique',
-			link: 'cancel',
-			onComplete: function(response)
+			url: 'users/is_unique',
+
+			onFailure: function(xhr, response)
 			{
-				username[response.username ? 'removeClass' : 'addClass']('missing');
-				email[response.email ? 'removeClass' : 'addClass']('missing');
+				if (response.errors.username)
+				{
+					username.addClass('missing');
+				}
+				else
+				{
+					username.removeClass('missin');
+				}
+
+				if (response.errors.email)
+				{
+					email.addClass('missing');
+				}
+				else
+				{
+					email.removeClass('missing');
+				}
+			},
+
+			onSuccess: function(response)
+			{
+				username.removeClass('missing');
+				email.removeClass('missing');
 			}
 		});
 

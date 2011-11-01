@@ -43,7 +43,7 @@ class Site extends ActiveRecord
 	public $nativeid;
 	public $status;
 
-	public function __construct($model)
+	public function __construct($model='sites')
 	{
 		if (empty($this->model))
 		{

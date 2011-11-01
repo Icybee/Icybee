@@ -84,7 +84,7 @@ class Save extends Operation\ActiveRecord\Save
 				break;
 			}
 
-			$this->location = $core->site->path . $route;
+			$this->response->location = $core->site->path . $route;
 		}
 
 		return $rc;

@@ -4,9 +4,9 @@ return array
 (
 	'events' => array
 	(
-		'ICanBoogie\Operation\Users\Disconnect::process:before' => array
+		'ICanBoogie\Operation\Users\Logout::process:before' => array
 		(
-			'Icybee\Hooks::before_user_disconnect',
+			'Icybee\Hooks::before_user_logout',
 		),
 
 		'operation.components/*:before' => array

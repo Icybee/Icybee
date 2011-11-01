@@ -27,7 +27,7 @@ class Activate extends Operation
 		+ parent::__get_controls();
 	}
 
-	protected function validate()
+	protected function validate(\ICanboogie\Errors $errors)
 	{
 		return true;
 	}
@@ -36,6 +36,7 @@ class Activate extends Operation
 	{
 		global $core;
 
+		$errors = $this->response->errors;
 		$enabled = json_decode($core->vars['enabled_modules'], true);
 		$enabled = $enabled ? array_flip($enabled) : array();
 
@@ -46,11 +47,11 @@ class Activate extends Operation
 				$core->modules[$key] = true;
 				$module = $core->modules[$key];
 
-				$rc = $module->is_installed($this->errors);
+				$rc = $module->is_installed($errors);
 
-				if (!$rc || count($this->errors))
+				if (!$rc || count($errors))
 				{
-					$module->install($this->errors);
+					$module->install($errors);
 				}
 
 				$enabled[$key] = true;
@@ -63,7 +64,7 @@ class Activate extends Operation
 
 		$core->vars['enabled_modules'] = json_encode(array_keys($enabled));
 
-		$this->location = Route::contextualize('/admin/' . (string) $this->module);
+		$this->response->location = Route::contextualize('/admin/' . (string) $this->module);
 
 		return true;
 	}

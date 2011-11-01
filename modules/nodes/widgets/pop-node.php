@@ -20,8 +20,6 @@ class PopNode extends \BrickRouge\Widget
 
 	public function __construct($tags=array(), $dummy=null)
 	{
-		global $core;
-
 		parent::__construct
 		(
 			'div', $tags + array
@@ -29,13 +27,16 @@ class PopNode extends \BrickRouge\Widget
 				self::T_CONSTRUCTOR => 'nodes',
 				self::T_PLACEHOLDER => 'Sélectionner un enregistrement',
 
-				'class' => 'button'
+				'class' => 'like-input'
 			)
 		);
 
 		$this->dataset['adjust'] = 'adjust-node';
+	}
 
-		$document = $core->document;
+	protected static function add_assets(\BrickRouge\Document $document)
+	{
+		parent::add_assets($document);
 
 		$document->css->add('pop-node.css');
 		$document->js->add('pop-node.js');
@@ -75,7 +76,7 @@ class PopNode extends \BrickRouge\Widget
 
 		if (!$entry)
 		{
-			$this->add_class('empty');
+			$this->add_class('placeholder');
 			$value = null;
 		}
 

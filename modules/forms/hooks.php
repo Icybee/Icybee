@@ -70,7 +70,7 @@ class Forms
 	 *
 	 * This function is a callback for the `ICanBoogie\Operation::get_form` event.
 	 *
-	 * The OPERATION_SEND_ID parameter provides the key of the form active record to load.
+	 * The OPERATION_POST_ID parameter provides the key of the form active record to load.
 	 *
 	 * If the form is successfully retrieved a callback is added to the
 	 * "<operation_class>::process" event, it is used to send a notify message with the parameters
@@ -85,12 +85,12 @@ class Forms
 
 		$request = $event->request;
 
-		if (!$request[Module\Forms::OPERATION_SEND_ID])
+		if (!$request[Module\Forms::OPERATION_POST_ID])
 		{
 			return;
 		}
 
-		$record = $core->models['forms'][(int) $request[Module\Forms::OPERATION_SEND_ID]];
+		$record = $core->models['forms'][(int) $request[Module\Forms::OPERATION_POST_ID]];
 		$form = $record->form;
 
 		$event->rc = $form;

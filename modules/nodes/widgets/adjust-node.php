@@ -22,8 +22,6 @@ class AdjustNode extends \BrickRouge\Widget
 
 	public function __construct($tags=array(), $dummy=null)
 	{
-		global $core;
-
 		parent::__construct
 		(
 			'div', $tags + array
@@ -35,8 +33,11 @@ class AdjustNode extends \BrickRouge\Widget
 		);
 
 		$this->dataset['adjust'] = 'adjust-node';
+	}
 
-		$document = $core->document;
+	protected static function add_assets(\BrickRouge\Document $document)
+	{
+		parent::add_assets($document);
 
 		$document->css->add('adjust-node.css');
 		$document->js->add('adjust-node.js');

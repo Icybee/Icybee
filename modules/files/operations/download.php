@@ -67,7 +67,7 @@ class Download extends Operation
 		return $record;
 	}
 
-	protected function validate()
+	protected function validate(\ICanboogie\Errors $errors)
 	{
 		return true;
 	}
@@ -75,56 +75,48 @@ class Download extends Operation
 	protected function process()
 	{
 		$record = $this->record;
+		$request = $this->request;
+		$response = $this->response;
 
 		// TODO-20090512: Implement Accept-Range
 
 		$filename = $record->title . $record->extension;
 		$filename = strtr($filename, '"', '');
 
-		#
-		# http://tools.ietf.org/html/rfc2183
-		#
+		$response->headers['Content-Description'] = 'File Transfer';
+		$response->headers['Content-Disposition'] = array('attachment', $filename);
+		$response->headers['Content-Type'] = $record->mime;
+		$response->headers['Content-Transfer-Encodin'] = 'binary';
+		$response->headers['Content-Length'] = $record->size;
 
-		if (isset($_SERVER['HTTP_USER_AGENT']) && strpos($_SERVER['HTTP_USER_AGENT'], 'MSIE') !== false)
+		return function() use ($record)
 		{
-			$filename = wd_remove_accents($filename);
-		}
+			$fh = fopen(\ICanBoogie\DOCUMENT_ROOT . $record->path, 'rb');
 
-		header('Content-Description: File Transfer');
-		header('Content-Disposition: attachment; filename="' . $filename . '"');
-		header('Content-Type: ' . $record->mime);
-		header('Content-Transfer-Encoding: binary');
-		header('Content-Length: '. $record->size);
-		header('Cache-Control: no-cache, must-revalidate');
-		header('Pragma: public');
-
-		$fh = fopen($_SERVER['DOCUMENT_ROOT'] . $record->path, 'rb');
-
-		if ($fh)
-	    {
-			#
-			# Reset time limit for big files
-			#
-
-	    	if (!ini_get('safe_mode'))
-	    	{
-				set_time_limit(0);
-	    	}
-
-			while (!feof($fh) && !connection_status())
-			{
-				echo fread($fh, 1024 * 8);
-
+			if ($fh)
+		    {
 				#
-				# flushing frees memory used by the PHP buffer
+				# Reset time limit for big files
 				#
 
-				flush();
+		    	if (!ini_get('safe_mode'))
+		    	{
+					set_time_limit(0);
+		    	}
+
+				while (!feof($fh) && !connection_status())
+				{
+					echo fread($fh, 1024 * 8);
+
+					#
+					# flushing frees memory used by the PHP buffer
+					#
+
+					flush();
+				}
+
+				fclose($fh);
 			}
-
-			fclose($fh);
-		}
-
-		exit;
+		};
 	}
 }

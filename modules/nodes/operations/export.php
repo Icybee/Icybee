@@ -15,7 +15,7 @@ use ICanBoogie\Operation;
 
 class Export extends Operation
 {
-	protected function validate()
+	protected function validate(\ICanboogie\Errors $errors)
 	{
 		return true;
 	}

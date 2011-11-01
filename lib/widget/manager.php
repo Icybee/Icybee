@@ -173,10 +173,9 @@ class Manager extends Element
 	 */
 	public function __toString()
 	{
-		global $core, $document;
+		global $core;
 
-		$document->js->add('manager.js', -170);
-		$document->css->add(\Icybee\ASSETS . 'css/manage.css', -170);
+		static::handle_assets();
 
 		$module_id = $this->module->id;
 		$session = $core->session;
@@ -279,6 +278,14 @@ class Manager extends Element
 		$this->inject_search();
 
 		return $rc;
+	}
+
+	protected static function add_assets(\BrickRouge\Document $document)
+	{
+		parent::add_assets($document);
+
+		$document->js->add('manager.js', -170);
+		$document->css->add(\Icybee\ASSETS . 'css/manage.css', -170);
 	}
 
 	/**

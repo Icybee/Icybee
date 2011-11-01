@@ -13,7 +13,7 @@ namespace ICanBoogie\Operation\Users;
 
 use ICanBoogie\Exception;
 use ICanBoogie\Exception\HTTP as HTTPException;
-use ICanBoogie\I18n\Tanslator\Proxi;
+use ICanBoogie\I18n\Translator\Proxi;
 use ICanBoogie\Mailer;
 use ICanBoogie\Operation;
 use ICanBoogie\Security;
@@ -33,11 +33,11 @@ class NonceLoginRequest extends Operation
 		return $core->models['users']->find_by_email($this->request['email'])->one;
 	}
 
-	protected function validate()
+	protected function validate(\ICanboogie\Errors $errors)
 	{
 		if (!$this->request['email'])
 		{
-			$this->errors['email'] = t('The field %field is required!', array('%field' => 'Votre adresse E-Mail'));
+			$errors['email'] = t('The field %field is required!', array('%field' => 'Votre adresse E-Mail'));
 
 			return false;
 		}
@@ -46,7 +46,7 @@ class NonceLoginRequest extends Operation
 
 		if (!filter_var($email, FILTER_VALIDATE_EMAIL))
 		{
-			$this->errors['email'] = t('Invalid e-mail address: %email.', array('%email' => $email));
+			$errors['email'] = t('Invalid e-mail address: %email.', array('%email' => $email));
 
 			return false;
 		}
@@ -55,7 +55,7 @@ class NonceLoginRequest extends Operation
 
 		if (!$user)
 		{
-			$this->errors['email'] = t('Unknown e-mail address.');
+			$errors['email'] = t('Unknown e-mail address.');
 
 			return false;
 		}
@@ -87,7 +87,7 @@ class NonceLoginRequest extends Operation
 		{
 			throw new Exception
 			(
-				'<em>nonce_login_salt</em> is empty in the <em>user</em> config, here is one generated randomly: %salt', array
+				'<q>nonce_login_salt</q> is empty in the <q>user</q> config, here is one generated randomly: %salt', array
 				(
 					'%salt' => Security::generate_token(64, 'wide')
 				)
@@ -122,11 +122,9 @@ class NonceLoginRequest extends Operation
 			)
 		);
 
-		$this->response->mailer = $mailer;
-
 		$mailer();
 
-		wd_log_done($t('success', array('%email' => $user->email)));
+		$this->response->success = $t('success', array('%email' => $user->email));
 
 		return true;
 	}

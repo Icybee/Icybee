@@ -36,11 +36,11 @@ class Delete extends \ICanBoogie\Operation\ActiveRecord\Delete
 	 *
 	 * @see ICanBoogie\Operation\ActiveRecord.Delete::validate()
 	 */
-	protected function validate()
+	protected function validate(\ICanboogie\Errors $errors)
 	{
 		if ($this->key == 1 || $this->key == 2)
 		{
-			wd_log_error('The <em>visitor</em> and <em>user</em> roles cannot be deleted');
+			$errors[] = 'The <q>visitor</q> and <q>user</q> roles cannot be deleted';
 
 			return false;
 		}

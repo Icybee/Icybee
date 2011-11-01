@@ -18,8 +18,6 @@ class AdjustImage extends AdjustNode
 {
 	public function __construct($tags=array(), $dummy=null)
 	{
-		global $core;
-
 		parent::__construct
 		(
 			$tags + array
@@ -29,8 +27,11 @@ class AdjustImage extends AdjustNode
 		);
 
 		$this->dataset['adjust'] = 'adjust-image';
+	}
 
-		$document = $core->document;
+	protected static function add_assets(\BrickRouge\Document $document)
+	{
+		parent::add_assets($document);
 
 		$document->css->add('adjust-image.css');
 		$document->js->add('adjust-image.js');

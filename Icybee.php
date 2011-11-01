@@ -55,7 +55,11 @@ else
 	require_once ROOT . 'framework/BrickRouge/BrickRouge.php';
 }
 
-require_once ROOT . 'lib/core/core.php';
+if (!class_exists('Icybee\Core', false))
+{
+	require_once ROOT . 'lib/core/core.php';
+}
+
 require_once ROOT . 'includes/common.php';
 
 /**
@@ -76,7 +80,7 @@ $core->run();
  * user is asked to authenticate.
  */
 
-$uri = $_SERVER['REQUEST_URI'];
+$uri = $core->request->uri;
 $site = $core->site;
 $suffix = $site->path;
 
@@ -89,6 +93,8 @@ if (preg_match('#^/admin/#', $uri) || preg_match('#^/admin$#', $uri))
 {
 	if (!$site->siteid)
 	{
+		throw new Exception('No site id');
+		/*
 		$site = \ICanBoogie\Hooks\Sites::find_by_request(array('REQUEST_PATH' => '/', 'HTTP_HOST' => $_SERVER['HTTP_HOST']));
 
 		if ($site->path)
@@ -97,6 +103,7 @@ if (preg_match('#^/admin/#', $uri) || preg_match('#^/admin$#', $uri))
 
 			exit;
 		}
+		*/
 	}
 
 	require ROOT . 'admin.php';

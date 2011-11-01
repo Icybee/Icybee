@@ -25,8 +25,8 @@ use Icybee\Manager;
 
 class Users extends \Icybee\Module
 {
-	const OPERATION_CONNECT = 'connect';
-	const OPERATION_DISCONNECT = 'disconnect';
+	const OPERATION_LOGIN = 'login';
+	const OPERATION_LOGOUT = 'logout';
 	const OPERATION_ACTIVATE = 'activate';
 	const OPERATION_DEACTIVATE = 'deactivate';
 	const OPERATION_IS_UNIQUE = 'is_unique';
@@ -131,32 +131,10 @@ EOT;
 
 	protected function block_connect()
 	{
-		global $core;
-
-		$core->document->js->add('public/connect.js');
-		$core->document->css->add('public/connect.css');
-
-		$login_widget = new Widget\Users\Login(array());
-
-		$password_widget = new Widget\Users\NonceRequest
-		(
-			array
-			(
-				'class' => 'group password login stacked'
-			)
-		);
-
-		$password_widget->children['email'][Element::T_DESCRIPTION] = '<a href="#" class="cancel">' . t('label.cancel') . '</a>';
-
-		return <<<EOT
-<div id="login">
-	<div class="wrapper login">$login_widget</div>
-	<div class="wrapper password" style="height: 0">$password_widget</div>
-</div>
-EOT;
+		return new \BrickRouge\Widget\Users\LoginCombo;
 	}
 
-	protected function block_disconnect()
+	protected function block_logout()
 	{
 		return new Form
 		(
@@ -164,7 +142,7 @@ EOT;
 			(
 				Form::T_HIDDENS => array
 				(
-					Operation::NAME => self::OPERATION_DISCONNECT,
+					Operation::NAME => self::OPERATION_LOGOUT,
 					Operation::DESTINATION => $this->id
 				),
 
@@ -174,7 +152,7 @@ EOT;
 					(
 						Element::E_SUBMIT, array
 						(
-							Element::T_INNER_HTML => t('disconnect', array(), array('scope' => array('user_users', 'form', 'label')))
+							Element::T_INNER_HTML => t('logout', array(), array('scope' => array('user_users', 'form', 'label')))
 						)
 					)
 				)
@@ -182,86 +160,11 @@ EOT;
 		);
 	}
 
-	public function form_connect()
-	{
-		global $core, $document;
-
-		if (isset($document))
-		{
-			$document->css->add('public/connect.css');
-		}
-
-		return new Form
-		(
-			array
-			(
-				Form::T_RENDERER => 'Simple',
-
-				Form::T_HIDDENS => array
-				(
-					Operation::DESTINATION => $this,
-					Operation::NAME => self::OPERATION_CONNECT,
-					Operation::SESSION_TOKEN => $core->session->token
-				),
-
-				Element::T_CHILDREN => array
-				(
-					User::USERNAME => new Element
-					(
-						Element::E_TEXT, array
-						(
-							Form::T_LABEL => 'username',
-							Element::T_REQUIRED => true,
-
-							'autofocus' => true
-						)
-					),
-
-					User::PASSWORD => new Element
-					(
-						Element::E_PASSWORD, array
-						(
-							Form::T_LABEL => 'password',
-							Element::T_REQUIRED => true,
-							Element::T_DESCRIPTION => '<a href="#lost-password">' . t
-							(
-								'lost_password', array(), array
-								(
-									'scope' => array('user_users', 'form', 'label'),
-									'default' => 'I forgot my password'
-								)
-							)
-
-							.
-
-							'</a>'
-						)
-					),
-
-					'#submit' => new Element
-					(
-						Element::E_SUBMIT, array
-						(
-							Element::T_INNER_HTML => t('connect', array(), array('scope' => 'user_users.element.label')),
-
-							'class' => 'continue'
-						)
-					)
-				),
-
-				'class' => 'group login stacked',
-				'name' => self::OPERATION_CONNECT
-			),
-
-			'div'
-		);
-	}
-
 	protected function block_edit(array $properties, $permission)
 	{
-		global $core, $document;
+		global $core;
 
-		$document->js->add('public/edit.js');
+		$core->document->js->add('assets/admin.js');
 
 		#
 		# permissions

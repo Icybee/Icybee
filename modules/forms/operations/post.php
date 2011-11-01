@@ -16,7 +16,7 @@ use ICanBoogie\Mailer;
 use ICanBoogie\Module;
 use ICanBoogie\Operation;
 
-class Send extends Operation
+class Post extends Operation
 {
 	/**
 	 * Controls for the operation: form.
@@ -37,7 +37,7 @@ class Send extends Operation
 	/**
 	 * Returns the record for the operation.
 	 *
-	 * The OPERATION_SEND_ID is required in the request's params to retrieve the corresponding
+	 * The OPERATION_POST_ID is required in the request's params to retrieve the corresponding
 	 * form record.
 	 *
 	 * @see ICanBoogie.Operation::__get_record()
@@ -48,12 +48,12 @@ class Send extends Operation
 	{
 		$request = $this->request;
 
-		if (empty($request[Module\Forms::OPERATION_SEND_ID]))
+		if (empty($request[Module\Forms::OPERATION_POST_ID]))
 		{
-			throw new Exception('Missing OPERATION_SEND_ID parameter', array(), 404);
+			throw new Exception('Missing OPERATION_POST_ID parameter', array(), 404);
 		}
 
-		$form_id = (int) $request[Module\Forms::OPERATION_SEND_ID];
+		$form_id = (int) $request[Module\Forms::OPERATION_POST_ID];
 
 		return $this->module->model[$form_id];
 	}
@@ -63,7 +63,7 @@ class Send extends Operation
 		return $this->record->form;
 	}
 
-	protected function validate()
+	protected function validate(\ICanboogie\Errors $errors)
 	{
 		return true;
 	}
@@ -127,6 +127,8 @@ class Send extends Operation
 
 		$this->notify_template = $record->notify_template;
 		$this->notify_bind = $this->request->params;
+
+		// TODO-20110921: see on_operation_get_form(), the process should be the same.
 
 		$rc = method_exists($form, 'finalize') ? $form->finalize($this) : true;
 		$core->session->modules['forms']['rc'][$record->nid] = $rc;

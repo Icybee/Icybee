@@ -2,35 +2,22 @@
 
 return array
 (
-	'manage' => array
+	':admin/manage' => array
 	(
 
 	),
 
-	'/admin/images/gallery' => array
+	':admin/gallery' => array
 	(
+		'pattern' => '/admin/images/gallery',
 		'title' => '.gallery',
 		'block' => 'gallery',
 		'workspace' => 'resources'
 	),
 
-	'new' => array
+	'redirect:/admin/resources' => array
 	(
-
-	),
-
-	'config' => array
-	(
-
-	),
-
-	'edit' => array
-	(
-
-	),
-
-	'/admin/resources' => array
-	(
+		'pattern' => '/admin/resources',
 		'location' => '/admin/images'
 	)
 );

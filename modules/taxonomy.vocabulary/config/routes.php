@@ -2,23 +2,24 @@
 
 return array
 (
-	'manage' => array
+	':admin/manage' => array
 	(
 
 	),
 
-	'new' => array
+	':admin/new' => array
 	(
 
 	),
 
-	'edit' => array
+	':admin/edit' => array
 	(
 
 	),
 
-	'/admin/taxonomy.vocabulary/<vid:\d+>/order' => array
+	'taxonomy.vocabulary:admin/order' => array
 	(
+		'pattern' => '/admin/taxonomy.vocabulary/<vid:\d+>/order',
 		'title' => 'Ordonner',
 		'block' => 'order',
 		'visibility' => 'auto',

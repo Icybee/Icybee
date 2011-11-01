@@ -54,7 +54,7 @@ class Upload extends Operation
 	 *
 	 * @see ICanBoogie.Operation::validate()
 	 */
-	protected function validate()
+	protected function validate(\ICanboogie\Errors $errors)
 	{
 		#
 		# forces 'application/json' response type
@@ -70,7 +70,7 @@ class Upload extends Operation
 		$file = new Uploaded('Filedata', $this->accept, true);
 
 		$this->file = $file;
-		$this->response->file = $file;
+		$this->response['file'] = $file;
 
 		if ($file->er)
 		{
@@ -97,9 +97,8 @@ class Upload extends Operation
 		$file->location = $path;
 		$name = $file->name;
 
-		$this->terminus = true;
-		$this->response->infos = null;
-		$this->response->properties = array
+		$this->response['infos'] = null;
+		$this->response['properties'] = array
 		(
 			'title' => $name
 		);
@@ -108,7 +107,7 @@ class Upload extends Operation
 		{
 			$size = wd_format_size($file->size);
 
-			$this->response->infos = <<<EOT
+			$this->response['infos'] = <<<EOT
 <ul class="details">
 	<li><span title="Path: {$file->location}">{$name}</span></li>
 	<li>$file->mime</li>

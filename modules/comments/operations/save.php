@@ -64,7 +64,7 @@ class Save extends \Icybee\Operation\ActiveRecord\Save
 		return $properties;
 	}
 
-	protected function validate()
+	protected function validate(\ICanboogie\Errors $errors)
 	{
 		global $core;
 
@@ -76,7 +76,7 @@ class Save extends \Icybee\Operation\ActiveRecord\Save
 
 		if (!$this->key && !$request[Comment::NID])
 		{
-			$this->errors[Comment::NID] = t('The node id is required while creating a new comment');
+			$errors[Comment::NID] = t('The node id is required while creating a new comment');
 
 			return false;
 		}
@@ -89,7 +89,7 @@ class Save extends \Icybee\Operation\ActiveRecord\Save
 
 		if (!filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_NO_RES_RANGE))
 		{
-			$this->errors[] = t('Adresse IP invalide&nbsp;: %ip', array('%ip' => $ip));
+			$errors[] = t('Invalid IP address: %ip', array('%ip' => $ip));
 
 			return false;
 		}
@@ -100,7 +100,7 @@ class Save extends \Icybee\Operation\ActiveRecord\Save
 
 			if ($score < 1)
 			{
-				$this->errors[Comment::CONTENTS] = t('@form.log.spam', array('%score' => $score));
+				$errors[Comment::CONTENTS] = t('@form.log.spam', array('%score' => $score));
 
 				return false;
 			}
@@ -123,7 +123,7 @@ class Save extends \Icybee\Operation\ActiveRecord\Save
 
 			if ($last)
 			{
-				$this->errors[] = t("Les commentaires ne peuvent être fait à moins de $interval minutes d'intervale.");
+				$errors[] = t("Les commentaires ne peuvent être fait à moins de $interval minutes d'intervale.");
 
 				return false;
 			}
@@ -144,7 +144,7 @@ class Save extends \Icybee\Operation\ActiveRecord\Save
 			{
 				$comment = $this->module->model[$rc['key']];
 
-				$this->location = $comment->url;
+				$this->response->location = $comment->url;
 			}
 		}
 

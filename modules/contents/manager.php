@@ -26,8 +26,11 @@ class Contents extends Nodes
 				self::T_ORDER_BY => array('date', 'desc')
 			)
 		);
+	}
 
-		global $document;
+	protected static function add_assets(\BrickRouge\Document $document)
+	{
+		parent::add_assets($document);
 
 		$document->css->add('public/manage.css');
 		$document->js->add('public/manage.js');

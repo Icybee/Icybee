@@ -187,16 +187,36 @@ MooEditable.UI.ImageDialog = new Class
 		(
 			'change', function(ev)
 			{
+				var options = ev.options;
+
 				this.node.src = this.editor.baseHREF + ev.url;
 				this.node.set('data-nid', ev.nid);
 
-				if (ev.options.lightbox)
+				if (options.lightbox)
 				{
 					this.node.set('data-lightbox', true);
 				}
 				else
 				{
 					this.node.removeAttribute('data-lightbox');
+				}
+
+				if (options.w)
+				{
+					this.node.set('width', options.w);
+				}
+				else
+				{
+					this.node.removeAttribute('width');
+				}
+
+				if (options.h)
+				{
+					this.node.set('height', options.h);
+				}
+				else
+				{
+					this.node.removeAttribute('height');
 				}
 			}
 			.bind(this)

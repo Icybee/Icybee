@@ -32,13 +32,13 @@ class Upload extends Operation\Files\Upload
 	{
 		$rc = parent::process();
 
-		if ($this->response->infos)
+		if ($this->response['infos'])
 		{
 			$path = $this->file->location;
 
 			// TODO-20110106: compute surface w & h and use them for img in order to avoid poping
 
-			$this->response->infos = '<div class="preview">'
+			$this->response['infos'] = '<div class="preview">'
 
 			.
 
@@ -64,7 +64,7 @@ class Upload extends Operation\Files\Upload
 				)
 			)
 
-			. '</div>' . $this->response->infos;
+			. '</div>' . $this->response['infos'];
 		}
 
 		return $rc;

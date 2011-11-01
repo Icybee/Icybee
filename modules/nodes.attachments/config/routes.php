@@ -2,9 +2,10 @@
 
 return array
 (
-	'/admin/resources.files/config' => array
+	'files:admin/config' => array
 	(
-		'module' => 'resources.files',
+		'pattern' => '/admin/files/config',
+		'module' => 'files',
 		'title' => 'Config.',
 		'block' => 'config',
 		'workspace' => 'resources'

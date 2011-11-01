@@ -64,7 +64,7 @@ abstract class Base extends Operation
 		return true;
 	}
 
-	protected function validate()
+	protected function validate(\ICanboogie\Errors $errors)
 	{
 		return true;
 	}

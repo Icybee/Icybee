@@ -16,11 +16,9 @@ use ICanBoogie\Module;
 
 class Images extends Files
 {
-	public function __construct($module, array $tags=array())
+	protected static function add_assets(\BrickRouge\Document $document)
 	{
-		global $document;
-
-		parent::__construct($module, $tags);
+		parent::add_assets($document);
 
 		$document->js->add('public/slimbox.js')->add('public/manage.js');
 		$document->css->add('public/slimbox.css')->add('public/manage.css');

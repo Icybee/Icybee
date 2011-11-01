@@ -122,7 +122,7 @@ BrickRouge.Widget.PopNode = new Class
 		title_el.set('title', entry_title);
 		key_el.set('value', entry_nid);
 
-		this.element.removeClass('empty');
+		this.element.removeClass('placeholder');
 
 		if (preview_el && entry_nid)
 		{
@@ -167,7 +167,7 @@ BrickRouge.Widget.PopNode = new Class
 			break;
 		}
 
-		this.element[(0 + key_el.value.toInt() ? 'remove' : 'add') + 'Class']('empty');
+		this.element[(0 + key_el.value.toInt() ? 'remove' : 'add') + 'Class']('placeholder');
 
 		this.popup.close();
 	},

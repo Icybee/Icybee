@@ -2,7 +2,7 @@
 
 return array
 (
-	'config' => array
+	':admin/config' => array
 	(
 		'index' => true
 	)

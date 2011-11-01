@@ -215,7 +215,15 @@ BrickRouge.Widget.Popup = new Class
 		el.addClass('invisible');
 
 		document.body.appendChild(el);
-		document.fireEvent('elementsready', { target: document.body });
+
+		try
+		{
+			document.fireEvent('elementsready', { target: document.body });
+		}
+		catch (e)
+		{
+			console.log('exception: ', e);
+		}
 
 		window.addEvents
 		({

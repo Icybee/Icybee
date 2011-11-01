@@ -6,7 +6,7 @@ use ICanBoogie\ActiveRecord\Model;
 return array
 (
 	Module::T_TITLE => 'Pages',
-	Module::T_CATEGORY => 'structure',
+	Module::T_CATEGORY => 'contents',
 	Module::T_EXTENDS => 'nodes',
 	Module::T_REQUIRED => true,
 	Module::T_MODELS => array
@@ -38,8 +38,7 @@ return array
 					'pageid' => array('foreign', 'primary' => true),
 					'contentid' => array('varchar', 64, 'primary' => true),
 					'content' => 'text',
-					'editor' => array('varchar', 32),
-					'is_multiple' => 'boolean'
+					'editor' => array('varchar', 32)
 				)
 			)
 		)

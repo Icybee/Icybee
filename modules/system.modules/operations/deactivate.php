@@ -27,7 +27,7 @@ class Deactivate extends Operation
 		+ parent::__get_controls();
 	}
 
-	protected function validate()
+	protected function validate(\ICanboogie\Errors $errors)
 	{
 		return true;
 	}
@@ -46,7 +46,7 @@ class Deactivate extends Operation
 
 		$core->vars['enabled_modules'] = json_encode(array_keys($enabled));
 
-		$this->location = Route::contextualize('/admin/' . (string) $this->module);
+		$this->response->location = Route::contextualize('/admin/' . (string) $this->module);
 
 		return true;
 	}

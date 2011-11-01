@@ -22,7 +22,7 @@ class Deactivate extends Activate
 		$record->is_activated = false;
 		$record->save();
 
-		wd_log_done('!name account is deactivated.', array('!name' => $record->name));
+		$this->response->success = t('!name account is deactivated.', array('!name' => $record->name));
 
 		return true;
 	}

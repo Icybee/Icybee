@@ -32,11 +32,15 @@ class Pages
 		try
 		{
 			$model = $core->models['pages/contents'];
+			$path = $event->path;
 
-			$model->execute
-			(
-				'UPDATE {self} SET content = REPLACE(content, ?, ?)', $event->path
-			);
+			if ($path)
+			{
+				$model->execute
+				(
+					'UPDATE {self} SET content = REPLACE(content, ?, ?)', $path
+				);
+			}
 		}
 		catch (\Exception $e)
 		{

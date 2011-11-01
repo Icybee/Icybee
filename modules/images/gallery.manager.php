@@ -26,8 +26,11 @@ class Gallery extends Manager\Images
 				self::T_BLOCK => 'gallery'
 			)
 		);
+	}
 
-		global $document;
+	protected static function add_assets(\BrickRouge\Document $document)
+	{
+		parent::add_assets($document);
 
 		$document->css->add('public/gallery.css');
 	}

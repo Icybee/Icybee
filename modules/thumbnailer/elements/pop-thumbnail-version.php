@@ -19,8 +19,6 @@ class PopThumbnailVersion extends \BrickRouge\Widget
 
 	public function __construct($tags=array())
 	{
-		global $core;
-
 		parent::__construct
 		(
 			'div', wd_array_merge_recursive
@@ -35,15 +33,20 @@ class PopThumbnailVersion extends \BrickRouge\Widget
 						)
 					),
 
-					'class' => 'popbutton'
+					'class' => 'like-input'
 				),
 
 				$tags
 			)
 		);
+	}
 
-		$core->document->css->add('pop-thumbnail-version.css');
-		$core->document->js->add('pop-thumbnail-version.js');
+	protected static function add_assets(\BrickRouge\Document $document)
+	{
+		parent::add_assets($document);
+
+		$document->css->add('pop-thumbnail-version.css');
+		$document->js->add('pop-thumbnail-version.js');
 	}
 
 	public function set($name, $value=null)
@@ -83,8 +86,6 @@ class PopThumbnailVersion extends \BrickRouge\Widget
 			$value = json_decode($value, true);
 		}
 
-		//var_dump($this->get('value'));
-
 		if ($value)
 		{
 			$value += array
@@ -97,8 +98,8 @@ class PopThumbnailVersion extends \BrickRouge\Widget
 				'interlace' => false
 			);
 
-			$w = $value['w'];
-			$h = $value['h'];
+			$w = $value['w'] ?: '<em>auto</em>';
+			$h = $value['h'] ?: '<em>auto</em>';
 			$no_upscale = $value['no-upscale'] ? '(ne pas agrandir)' : '';
 			$method = $value['method'];
 			$format = strtoupper($value['format']);

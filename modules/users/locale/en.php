@@ -24,8 +24,8 @@ return array
 
 	'label' => array
 	(
-		'connect' => 'Connect',
-		'disconnect' => 'Disconnect',
+		'login' => 'Log in',
+		'logout' => 'Log out',
 		'display_as' => 'Display as',
 		'email' => 'E-mail',
 		'email_confirm' => 'Confirm e-mail',

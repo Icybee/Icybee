@@ -92,12 +92,12 @@ function _create_ws_locations($routes)
 {
 	global $core;
 
-	$ws = array();
+	$add = array();
 	$user = $core->user;
 
-	foreach ($routes as $pattern => $route)
+	foreach ($routes as $id => $route)
 	{
-		if (empty($route['workspace']) || empty($route['index']) || empty($route['module']))
+		if (empty($route['pattern']) || empty($route['workspace']) || empty($route['index']) || empty($route['module']))
 		{
 			continue;
 		}
@@ -109,37 +109,31 @@ function _create_ws_locations($routes)
 			continue;
 		}
 
-		$ws_pattern = '/admin/' . $route['workspace'];
 
-		if (isset($ws[$ws_pattern]))
+		$pattern = '/admin/' . $route['workspace'];
+		$route_id = 'redirect:' . $pattern;
+
+		if (isset($add[$route_id]) || isset($add[$route_id]))
 		{
-			$cmp_route = $routes[$ws[$ws_pattern]['location']];
-
-			$cmp_title = $core->modules->descriptors[$cmp_route['module']][Module::T_TITLE];
-			$title = $core->modules->descriptors[$module_id][Module::T_TITLE];
-
-			//wd_log('compare \1 and \2 == \3', array($cmp_title, $title, strcmp($cmp_title, $title)));
-
-			if (strcmp($cmp_title, $title) < 0)
-			{
-				continue;
-			}
+			continue;
 		}
 
-		$ws[$ws_pattern]= array
+		$location = $route['pattern'];
+
+		$add[$route_id] = array
 		(
-			'location' => $pattern
+			'pattern' => $pattern,
+			'location' => $location
 		);
 	}
 
-	$routes += $ws;
-
-	//wd_log('ws: \1', array($ws));
-
-	return $routes;
+	foreach ($add as $route_id => $definition)
+	{
+		Route::add($route_id, $definition);
+	}
 }
 
-$routes = _create_ws_locations($routes);
+_create_ws_locations($routes);
 
 /*
  * special routes are created from modules descriptors. For exemple, one can define the route 'edit' which
@@ -179,7 +173,7 @@ function _route_add_block($route, $params)
 
 function _route_add_options($requested, $req_pattern)
 {
-	global $core, $document, $routes;
+	global $core, $document;
 
 	if (empty($requested['workspace']))
 	{
@@ -192,12 +186,14 @@ function _route_add_options($requested, $req_pattern)
 	$options = array();
 	$user = $core->user;
 
-	foreach ($routes as $pattern => $route)
+	foreach (Route::routes() as $route)
 	{
-		if (is_numeric($pattern))
+		if (empty($route['pattern']))
 		{
 			continue;
 		}
+
+		$pattern = $route['pattern'];
 
 		$module = isset($route['module']) ? $route['module'] : null;
 
@@ -249,13 +245,14 @@ function _route_add_options($requested, $req_pattern)
 
 	$suffix = $core->site->path;
 
-	foreach ($options as $pattern => $route)
+	foreach ($options as $route_id => $route)
 	{
 		if (empty($route['title']))
 		{
 			continue;
 		}
 
+		$pattern = $route['pattern'];
 		$title = $route['title'];
 
 		if ($title{0} == '.')
@@ -307,7 +304,7 @@ EOT;
 
 function _route_add_tabs($requested, $req_pattern)
 {
-	global $core, $routes;
+	global $core;
 
 	$user = $core->user;
 	$document = $core->document;
@@ -323,7 +320,7 @@ function _route_add_tabs($requested, $req_pattern)
 
 	$tabs = array();
 
-	foreach ($routes as $pattern => $route)
+	foreach (Route::routes() as $route_id => $route)
 	{
 		if (empty($route['workspace']) || $route['workspace'] != $req_ws)
 		{
@@ -332,12 +329,7 @@ function _route_add_tabs($requested, $req_pattern)
 			continue;
 		}
 
-		if (empty($route['index']))
-		{
-			continue;
-		}
-
-		if (empty($modules[$route['module']]))
+		if (empty($route['index']) || empty($modules[$route['module']]))
 		{
 			continue;
 		}
@@ -347,6 +339,7 @@ function _route_add_tabs($requested, $req_pattern)
 			continue;
 		}
 
+		$pattern = $route['pattern'];
 		$tabs[$pattern] = $route;
 	}
 
@@ -400,16 +393,11 @@ function _route_add_tabs($requested, $req_pattern)
  *
  */
 
-$matching_route = null;
+$match = Route::find($request_route, 'any', 'admin');
 
-foreach ($routes as $pattern => $route)
+if ($match)
 {
-	$match = Route::match($request_route, $pattern);
-
-	if ($match === false)
-	{
-		continue;
-	}
+	list($route, $capture, $pattern) = $match;
 
 	if (isset($route['location']))
 	{
@@ -419,12 +407,6 @@ foreach ($routes as $pattern => $route)
 
 		exit;
 	}
-
-	$matching_route = $route;
-
-	//wd_log('pattern: %pattern, match: !match, route: !route', array('%pattern' => $pattern, '!match' => $match, '!route' => $route));
-
-	break;
 }
 
 if ($request_route == '/admin/available-sites')
@@ -433,9 +415,9 @@ if ($request_route == '/admin/available-sites')
 
 	_route_add_available_sites();
 }
-else if ($matching_route)
+else if ($match)
 {
-	_route_add_block($route, is_array($match) ? $match : array());
+	_route_add_block($route, is_array($capture) ? $capture : array());
 	_route_add_tabs($route, $pattern);
 	_route_add_options($route, $pattern);
 }
@@ -445,7 +427,7 @@ else
 
 	if ($core->user_id == 1)
 	{
-		$rc = wd_dump(array_keys($routes));
+		$rc = wd_dump(Route::routes());
 
 		$document->addToBlock($rc, 'contents');
 	}

@@ -35,5 +35,10 @@ return array
 				)
 			)
 		)
+	),
+
+	Module::T_PERMISSIONS => array
+	(
+		'post form'
 	)
 );

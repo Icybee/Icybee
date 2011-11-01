@@ -2,8 +2,10 @@
 
 return array
 (
-	'/api/components/i18n/nodes/<nid:\d+>/language' => array
+	'i18n:languages' => array
 	(
-		'callback' => array('WdI18nElement', 'operation_nodes_language')
+		'pattern' => '/api/components/i18n/nodes/<nid:\d+>/language',
+		'callback' => 'WdI18nElement::operation_nodes_language',
+		'via' => 'get'
 	)
 );

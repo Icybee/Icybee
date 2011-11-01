@@ -22,7 +22,7 @@ class Save extends \ICanBoogie\Operation\Users\Save
 		'image/png'
 	);
 
-	protected function validate()
+	protected function validate(\ICanboogie\Errors $errors)
 	{
 		$file = new Uploaded('photo', $this->accept, false);
 
@@ -30,14 +30,11 @@ class Save extends \ICanBoogie\Operation\Users\Save
 		{
 			if ($file->er)
 			{
-				$operation->form->log
+				$errors['photo'] = t('Unable to upload file %file: :message.', array
 				(
-					'photo', 'Unable to upload file %file: :message.', array
-					(
-						'%file' => $file->name,
-						':message' => $file->er_message
-					)
-				);
+					'%file' => $file->name,
+					':message' => $file->er_message
+				));
 
 				return false;
 			}
@@ -54,12 +51,12 @@ class Save extends \ICanBoogie\Operation\Users\Save
 
 		if (!$this->key && isset($this->properties['email-verify']) && $this->request['email-verify'] != $this->properties['email'])
 		{
-			$this->errors['email-verify'] = t("E-mail and E-mail confirm don't match");
+			$errors['email-verify'] = t("E-mail and E-mail confirm don't match");
 
 			return false;
 		}
 
-		return parent::validate();
+		return parent::validate($errors);
 	}
 
 	protected function process()

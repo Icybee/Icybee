@@ -5,6 +5,7 @@ return array
 	'autoload' => array
 	(
 		'BrickRouge\Widget\Users\Login' => $path . 'widgets' . DIRECTORY_SEPARATOR . 'login.php',
+		'BrickRouge\Widget\Users\LoginCombo' => $path . 'widgets' . DIRECTORY_SEPARATOR . 'login-combo.php',
 		'BrickRouge\Widget\Users\NonceRequest' => $path . 'widgets' . DIRECTORY_SEPARATOR . 'nonce-request.php'
 	),
 

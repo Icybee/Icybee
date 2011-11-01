@@ -2,13 +2,15 @@
 
 return array
 (
-	'/admin/' => array
+	'redirect:admin' => array
 	(
+		'pattern' => '/admin/',
 		'location' => '/admin/dashboard'
 	),
 
-	'/admin/dashboard' => array
+	'dashboard' => array
 	(
+		'pattern' => '/admin/dashboard',
 		'block' => 'dashboard',
 		'workspace' => 'dashboard'
 	)

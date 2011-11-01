@@ -155,9 +155,14 @@ class AdjustThumbnailVersion extends \BrickRouge\Widget
 				$tags
 			)
 		);
+	}
 
-		$core->document->css->add('page.css');
-		$core->document->js->add('adjust-thumbnail-version.js');
+	protected static function add_assets(\BrickRouge\Document $document)
+	{
+		parent::add_assets($document);
+
+		$document->css->add('page.css');
+		$document->js->add('adjust-thumbnail-version.js');
 	}
 
 	public function set($name, $value=null)

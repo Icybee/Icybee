@@ -126,18 +126,18 @@ class Save extends Operation\Nodes\Save
 	 *
 	 * @see ICanBoogie\Operation\Nodes.Save::validate()
 	 */
-	protected function validate()
+	protected function validate(\ICanboogie\Errors $errors)
 	{
 		$file = $this->file;
 
 		if ($file && $file->er)
 		{
-			$this->errors[File::PATH] = t('Unable to upload file %file: :message.', array('%file' => $file->name, ':message' => $file->er_message));
+			$errors[File::PATH] = t('Unable to upload file %file: :message.', array('%file' => $file->name, ':message' => $file->er_message));
 
 			return false;
 		}
 
-		return parent::validate();
+		return parent::validate($errors);
 	}
 
 	/**

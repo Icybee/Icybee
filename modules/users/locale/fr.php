@@ -29,8 +29,8 @@ return array
 
 	'label' => array
 	(
-		'connect' => 'Connexion',
-		'disconnect' => 'Déconnexion',
+		'login' => 'Connexion',
+		'logout' => 'Déconnexion',
 		'display_as' => 'Afficher comme',
 		'email' => 'E-mail',
 		'firstname' => 'Prénom',

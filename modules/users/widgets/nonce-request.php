@@ -11,6 +11,7 @@
 
 namespace BrickRouge\Widget\Users;
 
+use ICanBoogie\Operation;
 use BrickRouge;
 use BrickRouge\Button;
 use BrickRouge\Element;
@@ -19,13 +20,19 @@ use BrickRouge\Text;
 
 class NonceRequest extends Form
 {
-	public function __construct($tags)
+	public function __construct($tags=array())
 	{
 		parent::__construct
 		(
 			$tags + array
 			(
 				self::T_RENDERER => 'Simple',
+
+				self::T_HIDDENS => array
+				(
+					Operation::DESTINATION => 'users',
+					Operation::NAME => 'nonce-login-request'
+				),
 
 				self::T_CHILDREN => array
 				(
@@ -48,8 +55,22 @@ class NonceRequest extends Form
 					)
 				),
 
+				'class' => 'widget-nonce-request group password login stacked',
 				'name' => 'users/nonce-request'
 			)
 		);
+	}
+
+	/**
+	 * Adds the "widget.css" and "widget.js" assets.
+	 *
+	 * @param \BrickRouge\Document $document
+	 */
+	protected static function add_assets(\BrickRouge\Document $document)
+	{
+		$document->css->add('../assets/widget.css');
+		$document->js->add('../assets/widget.js');
+
+		parent::add_assets($document);
 	}
 }

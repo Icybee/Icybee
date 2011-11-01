@@ -25,11 +25,11 @@ class Blocks extends Operation
 		+ parent::__get_controls();
 	}
 
-	protected function validate()
+	protected function validate(\ICanboogie\Errors $errors)
 	{
 		if (!$this->request['name'])
 		{
-			$this->errors['name'] = t('Missing block name');
+			$errors['name'] = t('Missing block name');
 
 			return false;
 		}
@@ -56,8 +56,7 @@ class Blocks extends Operation
 
 		$block = $module->getBlock($name, $request->params);
 
-		$this->terminus = true;
-		$this->response->assets = $document->get_assets();
+		$this->response['assets'] = $document->get_assets();
 
 		return (string) $block;
 	}

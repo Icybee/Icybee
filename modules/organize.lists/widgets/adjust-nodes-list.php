@@ -184,7 +184,7 @@ class AdjustNodesList extends \BrickRouge\Widget
 
 class widget_adjust_nodes_list__add_WdOperation extends Operation
 {
-	protected function validate()
+	protected function validate(\ICanboogie\Errors $errors)
 	{
 		return true;
 	}

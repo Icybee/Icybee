@@ -42,7 +42,7 @@
 						}
 					);
 
-					( function() { op.send(); }).periodical(30 * 1000);
+					( function() { op.put(); }).periodical(30 * 1000);
 				}
 			);
 
@@ -53,12 +53,13 @@
 					var op = new Request.API
 					(
 						{
-							url: base + 'unlock',
-							async: false
+							url: base + 'lock',
+							async: false,
+							method: 'delete'
 						}
 					);
 
-					op.get();
+					op.send();
 				}
 			);
 		}
@@ -137,7 +138,7 @@
 			return hash.toQueryString();
 		}
 
-		var values_init;
+		var values_init=null;
 
 		window.addEvent
 		(

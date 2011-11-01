@@ -82,6 +82,14 @@ class TitleSlugCombo extends \BrickRouge\Widget
 		);
 	}
 
+	protected static function add_assets(\BrickRouge\Document $document)
+	{
+		parent::add_assets($document);
+
+		$document->css->add('title-slug-combo.css');
+		$document->js->add('title-slug-combo.js');
+	}
+
 	public function set($name, $value=null)
 	{
 		if ($name == 'name')
@@ -99,7 +107,7 @@ class TitleSlugCombo extends \BrickRouge\Widget
 
 	public function render_inner_html()
 	{
-		global $core, $document;
+		global $core;
 
 		$slug = $this->slug_el->get('value');
 
@@ -110,9 +118,6 @@ class TitleSlugCombo extends \BrickRouge\Widget
 		$this->slug_tease->innerHTML = $tease;
 
 		$rc = parent::render_inner_html();
-
-		$document->css->add('title-slug-combo.css');
-		$document->js->add('title-slug-combo.js');
 
 		$nid = $this->get(self::T_NODEID);
 

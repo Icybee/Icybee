@@ -14,6 +14,7 @@ namespace ICanBoogie\Module;
 use ICanBoogie\ActiveRecord\Node;
 use ICanBoogie\ActiveRecord\Query;
 use ICanBoogie\ActiveRecord\Model;
+use ICanBoogie\Event;
 use ICanBoogie\Exception\HTTP as HTTPException;
 use ICanBoogie\Module;
 use BrickRouge\Element;
@@ -511,6 +512,97 @@ EOT;
 		);
 
 		return $query->all;
+	}
+
+	public static function create_default_routes()
+	{
+		global $core;
+
+		$routes = array();
+
+		foreach ($core->modules->enabled_modules_descriptors as $module_id => $descriptor)
+		{
+			if ($module_id == 'nodes' || $module_id == 'contents' || !self::is_extending($module_id, 'nodes'))
+			{
+				continue;
+			}
+
+			$common = array
+			(
+				'module' => $module_id,
+				'workspace' => $descriptor[self::T_CATEGORY],
+				'visibility' => 'visible'
+			);
+
+// 			wd_log("create default routes for $module_id");
+
+			# manage (index)
+
+			$routes["/admin/$module_id"] = array
+			(
+				'pattern' => "/admin/$module_id",
+				'title' => '.manage',
+				'block' => 'manage',
+				'index' => true
+			)
+
+			+ $common;
+
+			# create
+
+			$routes["/admin/$module_id/new"] = array
+			(
+				'pattern' => "/admin/$module_id/new",
+				'title' => '.new',
+				'block' => 'edit'
+			)
+
+			+ $common;
+
+			# edit
+
+			$routes["/admin/$module_id/edit"] = array
+			(
+				'pattern' => "/admin/$module_id/<\d+>/edit",
+				'title' => '.edit',
+				'block' => 'edit',
+				'visibility' => 'auto'
+			)
+
+			+ $common;
+
+			# delete
+
+			$routes["/admin/$module_id/delete"] = array
+			(
+				'pattern' => "/admin/$module_id/<\d+>/delete",
+				'title' => '.delete',
+				'block' => 'delete',
+				'visibility' => 'auto'
+			)
+
+			+ $common;
+
+			# config'
+
+			$routes["/admin/$module_id/config"] = array
+			(
+				'pattern' => "/admin/$module_id/config",
+				'title' => '.config',
+				'block' => 'config',
+				'permission' => self::PERMISSION_ADMINISTER,
+			)
+
+			+ $common;
+		}
+
+		Event::fire('create_default_routes', array('routes' => &$routes), $core->modules['nodes']);
+
+// 		var_dump($routes);
+
+		$export = var_export($routes,true);
+
+		$core->vars['default_nodes_routes'] = "<?php\n\nreturn " . $export . ';';
 	}
 }
 

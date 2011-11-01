@@ -18,7 +18,7 @@ use ICanBoogie\Operation;
  */
 class Preview extends Operation
 {
-	protected function validate()
+	protected function validate(\ICanboogie\Errors $errors)
 	{
 		return $this->request['contents'];
 	}

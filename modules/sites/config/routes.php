@@ -2,22 +2,22 @@
 
 return array
 (
-	'manage' => array
+	':admin/manage' => array
 	(
 
 	),
 
-	'new' => array
+	':admin/new' => array
 	(
 
 	),
 
-	/*'config' => array
+	/*':admin/config' => array
 	(
 
 	),*/
 
-	'edit' => array
+	':admin/edit' => array
 	(
 
 	)

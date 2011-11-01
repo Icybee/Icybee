@@ -2,21 +2,24 @@
 
 return array
 (
-	'/api/thumbnail' => array
+	'thumbnail' => array
 	(
+		'pattern' => '/api/thumbnail',
 		'class' => 'ICanBoogie\Operation\Thumbnailer\Get',
-		'via' => 'GET'
+		'via' => 'get'
 	),
 
-	'/api/:module/:nid/thumbnail' => array
+	'thumbnail:image' => array
 	(
+		'pattern' => '/api/:module/:nid/thumbnail',
 		'class' => 'ICanBoogie\Operation\Thumbnailer\Thumbnail',
-		'via' => 'GET'
+		'via' => 'get'
 	),
 
-	'/api/:module/:nid/thumbnails/:version' => array
+	'thumbnail:image/version' => array
 	(
+		'pattern' => '/api/:module/:nid/thumbnails/:version',
 		'class' => 'ICanBoogie\Operation\Thumbnailer\Thumbnail',
-		'via' => 'GET'
+		'via' => 'get'
 	)
 );

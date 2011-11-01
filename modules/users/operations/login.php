@@ -19,7 +19,7 @@ use ICanBoogie\Exception\HTTP as HTTPException;
 use ICanBoogie\Security;
 use ICanBoogie\Operation;
 
-class Connect extends Operation
+class Login extends Operation
 {
 	/**
 	 * Adds form control.
@@ -44,15 +44,14 @@ class Connect extends Operation
 	 */
 	protected function __get_form()
 	{
-		return $this->module->form_connect();
+		return new \BrickRouge\Widget\Users\Login;
 	}
 
-	protected function validate()
+	protected function validate(\ICanboogie\Errors $errors)
 	{
 		global $core;
 
 		$request = $this->request;
-		$form = $this->form;
 		$username = $request[User::USERNAME];
 		$password = $request[User::PASSWORD];
 
@@ -60,7 +59,7 @@ class Connect extends Operation
 
 		if (!$user)
 		{
-			$this->errors[User::PASSWORD] = t('Unknown username/password combination.');
+			$errors[User::PASSWORD] = t('Unknown username/password combination.');
 
 			return false;
 		}
@@ -91,7 +90,7 @@ class Connect extends Operation
 
 		if (!$user->is_password($password))
 		{
-			$this->errors[User::PASSWORD] = t('Unknown username/password combination.');
+			$errors[User::PASSWORD] = t('Unknown username/password combination.');
 
 			$user->metas['failed_login_count'] += 1;
 			$user->metas['failed_login_time'] = $now;
@@ -104,7 +103,7 @@ class Connect extends Operation
 				{
 					throw new Exception
 					(
-						'<em>unlock_login_salt</em> is empty in the <em>user</em> config, here is one generated randomly: %salt', array
+						'<q>unlock_login_salt</q> is empty in the <q>user</q> config, here is one generated randomly: %salt', array
 						(
 							'%salt' => Security::generate_token(64, 'wide')
 						)
@@ -124,11 +123,9 @@ class Connect extends Operation
 					(
 						'username' => $username,
 						'token' => $token,
-						'continue' => $_SERVER['REQUEST_URI']
+						'continue' => $_SERVER['REQUEST_URI'] // FIXME-20110924: should be something like $request->uri
 					)
 				);
-
-				$ip = $_SERVER['REMOTE_ADDR'];
 
 				$t = new Proxi(array('scope' => array(wd_normalize($user->constructor, '_'), 'connect', 'operation')));
 
@@ -152,7 +149,7 @@ If you forgot your password, you'll be able to request a new one.
 If you didn't try to login neither forgot your password, this message might be the result of an
 attack attempt on the website. If you think this is the case, please contact its admin.
 
-The remote address of the request was: $ip.
+The remote address of the request was: $request->ip.
 EOT
 					)
 				);
@@ -167,7 +164,7 @@ EOT
 
 		if (!$user->is_admin && !$user->is_activated)
 		{
-			$this->errors[] = t('User %username is not activated', array('%username' => $username));
+			$this->response->errors[] = t('User %username is not activated', array('%username' => $username));
 
 			return false;
 		}
@@ -203,7 +200,7 @@ EOT
 			)
 		);
 
-		$this->location = $_SERVER['REQUEST_URI'];
+		$this->response->location = $_SERVER['REQUEST_URI'];
 
 		return true;
 	}

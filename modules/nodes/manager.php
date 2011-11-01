@@ -19,8 +19,6 @@ class Nodes extends \WdManager
 {
 	public function __construct($module, array $tags=array())
 	{
-		global $document;
-
 		parent::__construct
 		(
 			$module, $tags + array
@@ -29,6 +27,11 @@ class Nodes extends \WdManager
 				self::T_ORDER_BY => array(Node::MODIFIED, 'desc')
 			)
 		);
+	}
+
+	protected static function add_assets(\BrickRouge\Document $document)
+	{
+		parent::add_assets($document);
 
 		$document->css->add('public/manage.css');
 		$document->js->add('public/manage.js');

@@ -83,7 +83,7 @@ class WdMultiEditorElement extends Element
 			'moo' => 'HTML WYSIWYG',
 			'textmark' => 'Textmark',
 			'patron' => 'Patron',
-			'php' => 'PHP',
+// 			'php' => 'PHP',
 			'view' => 'Vue',
 			'widgets' => 'Gadgets'
 		);

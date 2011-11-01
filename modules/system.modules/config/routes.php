@@ -2,20 +2,22 @@
 
 return array
 (
-	'manage' => array
+	':admin/manage' => array
 	(
 		'title' => 'Actifs'
 	),
 
-	'/admin/system.modules/<[^/]+>/install' => array
+	'system.modules:install' => array
 	(
+		'pattern' => '/admin/system.modules/<[^/]+>/install',
 		'title' => 'Install',
 		'block' => 'install',
 		'visibility' => 'auto'
 	),
 
-	'/admin/system.modules/inactives' => array
+	'system.modules:inactives' => array
 	(
+		'pattern' => '/admin/system.modules/inactives',
 		'title' => 'Inactifs',
 		'block' => 'inactives'
 	)

@@ -45,13 +45,13 @@ class user_users_WdMarkups
 						(
 							Element::E_SUBMIT, array
 							(
-								Element::T_INNER_HTML => t('Deconnection'),
-								'class' => 'disconnect'
+								Element::T_INNER_HTML => t('logout'),
+								'class' => 'logout'
 							)
 						)
 					),
 
-					'name' => 'disconnect'
+					'name' => 'logout'
 				),
 
 				'div'

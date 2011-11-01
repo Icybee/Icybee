@@ -144,65 +144,6 @@ class Files extends Nodes
 		return parent::is_installed($errors);
 	}
 
-	/* FIXME-20112307: OBSOLETE
-
-	protected function validate_operation_uploadResponse(WdOperation $operation)
-	{
-		global $core;
-
-		$core->session;
-
-		$id = $operation->params['uploadId'];
-		$key = self::SESSION_UPLOAD_RESPONSE;
-
-		if (empty($_SESSION[$key][$id]))
-		{
-			return false;
-		}
-
-		$operation->upload = $_SESSION[$key][$id];
-		$count = count($_SESSION[$key]);
-
-		if ($count > 10)
-		{
-			$_SESSION[$key] = array_splice($_SESSION[$key], $count - 10);
-		}
-
-		return true;
-	}
-
-	protected function operation_uploadResponse(WdOperation $operation, array $options=array())
-	{
-		$operation->terminus = true;
-
-		$options += array
-		(
-			self::UPLOADER_CLASS => $this->uploader_class
-		);
-
-		$class = $options[self::UPLOADER_CLASS];
-		$upload = $operation->upload;
-
-		return array
-		(
-			'element' => (string) new $class
-			(
-				array
-				(
-					Element::T_FILE_WITH_LIMIT => true,
-
-					'name' => isset($_GET['name']) ? $_GET['name'] : File::PATH,
-					'value' => $upload['path']
-				)
-			),
-
-			'title' => $upload['name'],
-			'fields' => $upload['fields']
-		);
-	}
-
-	*/
-
 	public function clean_repository($repository=':repository.temp', $lifetime=3600)
 	{
 		global $core;
@@ -404,7 +345,8 @@ class Files extends Nodes
 							Form::T_LABEL => '.file',
 							Element::T_REQUIRED => empty($entry_nid),
 							Element::T_FILE_WITH_LIMIT => $core->site->metas[$this->flat_id . '.max_file_size'],
-							Element::T_WEIGHT => -100
+							Element::T_WEIGHT => -100,
+							\BrickRouge\File::T_UPLOAD_URL => '/api/' . $this->id . '/upload'
 						)
 					),
 

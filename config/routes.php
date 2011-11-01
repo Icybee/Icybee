@@ -2,33 +2,43 @@
 
 return array
 (
-	'/api/widgets/:class' => array
+	'icybee:widget' => array
 	(
+		'pattern' => '/api/widgets/:class',
+		'class' => 'Icybee\Operation\Widget\Get',
+		'via' => 'get'
+	),
+
+	'icybee:widget:mode' => array
+	(
+		'pattern' => '/api/widgets/:class/:mode',
 		'class' => 'Icybee\Operation\Widget\Get'
 	),
 
-	'/api/widgets/:class/:mode' => array
+	'icybee:activerecord:lock' => array
 	(
-		'class' => 'Icybee\Operation\Widget\Get'
+		'pattern' => '/api/:module/:key/lock',
+		'class' => 'Icybee\Operation\ActiveRecord\Lock',
+		'via' => 'put'
 	),
 
-	'/api/:module/:key/lock' => array
+	'icybee:activerecord:unlock' => array
 	(
-		'class' => 'Icybee\Operation\ActiveRecord\Lock'
+		'pattern' => '/api/:module/:key/lock',
+		'class' => 'Icybee\Operation\ActiveRecord\Unlock',
+		'via' => 'delete'
 	),
 
-	'/api/:module/:key/unlock' => array
+	'icybee:module:block' => array
 	(
-		'class' => 'Icybee\Operation\ActiveRecord\Unlock'
+		'pattern' => '/api/:module/blocks/:name',
+		'class' => 'Icybee\Operation\Module\Blocks',
+		'via' => 'get'
 	),
 
-	'/api/:module/blocks/:name' => array
+	'icybee:module:query-operation' => array
 	(
-		'class' => 'Icybee\Operation\Module\Blocks'
-	),
-
-	'/api/query-operation/:module/:operation' => array
-	(
+		'pattern' => '/api/query-operation/:module/:operation',
 		'callback' => 'Icybee\Hooks::dispatch_query_operation'
 	)
 );

@@ -632,36 +632,31 @@ manager.addEvent
 						}
 					);
 
-					var op = new WdOperation
-					(
-						'pages', 'update_tree',
+					var op = new Request.API
+					({
+						url: 'pages/update_tree',
+						onSuccess: function(response)
 						{
-							onSuccess: function(response)
-							{
-								if (response.rc)
+							table.getElements('tr.modified').each
+							(
+								function(el)
 								{
-									table.getElements('tr.modified').each
-									(
-										function(el)
-										{
-											el.removeClass('modified');
-											el.getElement('sup.modified').destroy();
+									el.removeClass('modified');
+									el.getElement('sup.modified').destroy();
 
-											update_button.get('tween').start(0).chain
-											(
-												function()
-												{
-													update_button.setStyle('display', '');
-													update_button.disabled = false;
-												}
-											);
+									update_button.get('tween').start(0).chain
+									(
+										function()
+										{
+											update_button.setStyle('display', '');
+											update_button.disabled = false;
 										}
 									);
 								}
-							}
-							.bind(this)
+							);
 						}
-					);
+						.bind(this)
+					});
 
 					op.post({ weights: weights, parents: parents });
 				}

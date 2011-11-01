@@ -32,7 +32,7 @@ class UnlockLogin extends Operation
 		return $this->module->model->where('username = ? OR email = ?', $username, $username)->one;
 	}
 
-	protected function validate()
+	protected function validate(\ICanboogie\Errors $errors)
 	{
 		global $core;
 
@@ -83,7 +83,7 @@ class UnlockLogin extends Operation
 
 		wd_log_done('Login has been unlocked');
 
-		$this->location = isset($this->request['continue']) ? $this->request['continue'] : '/';
+		$this->response->location = isset($this->request['continue']) ? $this->request['continue'] : '/';
 
 		return true;
 	}

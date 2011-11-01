@@ -17,8 +17,6 @@ class AdjustThumbnail extends \BrickRouge\Widget
 {
 	public function __construct($tags)
 	{
-		global $document;
-
 		parent::__construct
 		(
 			'div', $tags + array
@@ -32,6 +30,11 @@ class AdjustThumbnail extends \BrickRouge\Widget
 				'class' => 'adjust'
 			)
 		);
+	}
+
+	protected static function add_assets(\BrickRouge\Document $document)
+	{
+		parent::add_assets($document);
 
 		$document->js->add('adjust-thumbnail.js');
 		$document->css->add('adjust-thumbnail.css');

@@ -30,7 +30,7 @@ class Stat extends Icybee\Operation\System\Cache\Base
 	{
 		list($count, $label) = $this->{$this->callback}();
 
-		$this->response->count = (int) $count;
+		$this->response['count'] = (int) $count;
 
 		return $label;
 	}

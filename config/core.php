@@ -15,6 +15,7 @@ return array
 		'Icybee' => $path . '/lib/icybee.php',
 		'Icybee\Accessor\Modules' => $path . 'lib/core/accessor/modules.php',
 		'Icybee\ActiveRecord\Model\Constructor' => $path . 'lib/activerecord/model.constructor.php',
+		'Icybee\Core' => $path . 'lib/core/core.php',
 		'Icybee\Document' => $path . 'lib/element/document.php',
 		'Icybee\Hooks' => $path . 'lib/hooks.php',
 		'Icybee\Kses' => $includes . 'external/kses/kses.php',

@@ -2,6 +2,12 @@
 
 return array
 (
+	'events' => array
+	(
+		'ICanBoogie\Operation\System\Modules\Activate::process' => 'ICanBoogie\Hooks\Nodes::on_modules_activate',
+		'ICanBoogie\Operation\System\Modules\Deactivate::process' => 'ICanBoogie\Hooks\Nodes::on_modules_deactivate'
+	),
+
 	'patron.markups' => array
 	(
 		'node' => array

@@ -105,7 +105,15 @@ class Core extends ICanBoogie\Core
 
 		if (!headers_sent())
 		{
-			header("HTTP/1.0 $code $class: " . strip_tags($message));
+			$normalized_message = strip_tags($message);
+			$normalized_message = str_replace(array("\r\n", "\n"), ' ', $message);
+
+			if (strlen($normalized_message > 29))
+			{
+				$normalized_message = mb_substr($normalized_message, 0, 29) . '...';
+			}
+
+			header("HTTP/1.0 $code $class: " . $normalized_message);
 		}
 
 		if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'] == 'XMLHttpRequest')
@@ -158,7 +166,7 @@ class Core extends ICanBoogie\Core
 	 */
 	protected function run_context()
 	{
-		$this->site = $site = Hooks\Sites::find_by_request($_SERVER);
+		$this->site = $site = Hooks\Sites::find_by_request($this->request);
 		$this->language = $site->language;
 
 		if ($site->timezone)

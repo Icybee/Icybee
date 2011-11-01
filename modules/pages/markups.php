@@ -574,6 +574,17 @@ class site_pages_navigation_WdMarkup extends patron_WdMarkup
 			$node = $node->parent;
 		}
 
+		$template = <<<EOT
+<div class="nav leaf">
+	<h5 class="#{@css_class}"><a href="#{@url}">#{@label}</a></h5>
+	<ol>
+		<wdp:foreach in="@navigation_children">
+		<li class="#{@css_class}"><a href="#{@url}">#{@label}</a></li>
+		</wdp:foreach>
+	</ol>
+</div>
+EOT;
+
 		Event::fire
 		(
 			'render.markup.navigation_leaf:before', array

@@ -36,13 +36,9 @@ BrickRouge.Widget.NodeAttachments = new Class({
 			}
 		);
 
-		console.log('file:', this.file);
-
 		this.file.addEvent
 		(
 			'success', function(response) {
-
-				console.log('success:', response);
 
 				var item = Elements.from(response.rc).shift();
 

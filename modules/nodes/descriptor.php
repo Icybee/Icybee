@@ -5,6 +5,7 @@ use ICanBoogie\ActiveRecord\Model;
 
 return array
 (
+	Module::T_CATEGORY => 'contents',
 	Module::T_TITLE => 'Nodes',
 	Module::T_DESCRIPTION => 'Centralized node system base',
 	Module::T_PERMISSION => false,

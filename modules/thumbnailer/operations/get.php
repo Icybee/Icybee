@@ -434,7 +434,7 @@ class Get extends Operation
         return $destination;
 	}
 
-	protected function validate()
+	protected function validate(\ICanBoogie\Errors $errors)
 	{
 		return true;
 	}
@@ -476,58 +476,58 @@ class Get extends Operation
 		$this->clear_cache();
 		$this->rescue_uri();
 
-		$location = $this->get($this->request->params);
+		$path = $this->get($this->request->params);
 
-		if (!$location)
+		if (!$path)
 		{
 			throw new HTTPException('Unable to create thumbnail for: %src', array('%src' => $this->request->params['src']), 404);
 		}
 
-		$server_location = $_SERVER['DOCUMENT_ROOT'] . $location;
+		$server_location = \ICanBoogie\DOCUMENT_ROOT . $path;
+		$response = $this->response;
 
 		$stat = stat($server_location);
-		$etag = md5($location);
+		$etag = md5($path);
 
 		#
 		# The expiration date is set to seven days.
 		#
 
 		session_cache_limiter('public');
-		session_cache_expire(60 * 24 * 7);
 
-		header('Date: ' . gmdate('D, d M Y H:i:s', $stat['ctime']) . ' GMT');
-		header('X-Generated-By: Icybee-Thumbnailer/' . self::VERSION);
-		header('Etag: ' . $etag);
-		header('Cache-Control: public');
-		header('Expires: ' . gmdate('D, d M Y H:i:s', time() + 60 * 24 * 7) . ' GMT');
+		$response->headers['X-Generated-By'] = 'Icybee/Thumbnailer';
+		$response->headers['Etag'] = $etag;
+		$response->headers['Cache-Control'] = 'public';
+		$response->expires = time() + 60 * 24 * 7;
 
 		if (isset($_SERVER['HTTP_IF_MODIFIED_SINCE']) && isset($_SERVER['HTTP_IF_NONE_MATCH'])
 		&& (strtotime($_SERVER['HTTP_IF_MODIFIED_SINCE']) == $stat['mtime'] || trim($_SERVER['HTTP_IF_NONE_MATCH']) == $etag))
 		{
-			header('HTTP/1.1 304 Not Modified');
+			$response->status = 304;
 
 			#
 			# WARNING: do *not* send any data after that
 			#
+
+			return true;
 		}
-		else
+
+		$pos = strrpos($path, '.');
+		$type = substr($path, $pos + 1);
+
+		$response->last_modified = $stat['mtime'];
+		$response->content_type = "image/$type";
+
+	    //return file_get_contents($server_location);
+
+		return function() use ($server_location)
 		{
-			$pos = strrpos($location, '.');
-			$type = substr($location, $pos + 1);
-
-			header('Last-Modified: ' . gmdate('D, d M Y H:i:s', $stat['mtime']) . ' GMT');
-		    header('Content-Type: image/' . $type);
-
-		    $fh = fopen($server_location, 'rb');
+			$fh = fopen($server_location, 'rb');
 
 			fpassthru($fh);
 
 			fclose($fh);
-	    }
-
-		$this->terminus = true;
-
-		return $location;
+		};
 	}
 
 	static private function decode_background($background)

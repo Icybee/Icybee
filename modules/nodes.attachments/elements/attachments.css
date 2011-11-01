@@ -47,9 +47,11 @@ div.resources-files-attached li span.info
 	text-align: right;
 }
 
-div.resources-files-attached li input
+div.resources-files-attached li:not(:hover) input,
+div.resources-files-attached li input:not(:focus)
 {
-	border: 1px solid transparent;
+	border-color: transparent;
+	box-shadow: none;
 }
 
 div.resources-files-attached li:hover input

@@ -5,6 +5,7 @@ use ICanBoogie\ActiveRecord\Model;
 
 return array
 (
+	Module::T_CATEGORY => 'features',
 	Module::T_TITLE => 'Fichiers attachés',
 	Module::T_DESCRIPTION => "Permet d'attacher des fichiers à des entrées",
 	Module::T_MODELS => array

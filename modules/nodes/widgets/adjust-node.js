@@ -33,6 +33,11 @@ BrickRouge.Widget.AdjustNode = new Class
 
 		if (el)
 		{
+			if (el.hasClass('empty'))
+			{
+				return;
+			}
+
 			ev.stop();
 
 			this.element.getElements('.results li').removeClass('selected');
@@ -55,7 +60,7 @@ BrickRouge.Widget.AdjustNode = new Class
 			this.fetchResults
 			({
 				page: page,
-				search: (this.search && !this.search.hasClass('empty')) ? this.search.value : null
+				search: (this.search && !this.search.hasClass('placeholder')) ? this.search.value : null
 			});
 		}
 	},

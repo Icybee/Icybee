@@ -26,11 +26,14 @@ class Users extends \WdManager
 				self::T_KEY => User::UID
 			)
 		);
+	}
 
-		global $document;
+	protected static function add_assets(\BrickRouge\Document $document)
+	{
+		parent::add_assets($document);
 
-		$document->css->add('public/manage.css');
-		$document->js->add('public/manage.js');
+		$document->css->add('assets/admin.css');
+		$document->js->add('assets/manager.js');
 	}
 
 	protected function columns()

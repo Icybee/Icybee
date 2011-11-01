@@ -87,8 +87,8 @@ class Form extends Node
 				BrickRouge\Form::T_HIDDENS => array
 				(
 					Operation::DESTINATION => 'forms',
-					Operation::NAME => Module\Forms::OPERATION_SEND,
-					Module\Forms::OPERATION_SEND_ID => $this->nid
+					Operation::NAME => Module\Forms::OPERATION_POST,
+					Module\Forms::OPERATION_POST_ID => $this->nid
 				),
 
 				Element::T_CHILDREN => array
@@ -136,9 +136,13 @@ class Form extends Node
 				$destination = $form->hiddens[Operation::DESTINATION];
 				$name = $access = $form->hiddens[Operation::NAME];
 
-				if ($access == 'save')
+				if ($name == 'save')
 				{
 					$access = Module::PERMISSION_CREATE;
+				}
+				else if ($name == 'post' && $destination == 'forms')
+				{
+					$access = 'post form';
 				}
 
 				if (!$core->user->has_permission($access, $destination))
@@ -153,11 +157,6 @@ EOT
 					);
 				}
 			}
-
-
-
-
-
 
 			$core->document->css->add('public/page.css');
 

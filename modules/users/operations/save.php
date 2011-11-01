@@ -139,27 +139,22 @@ class Save extends \Icybee\Operation\Constructor\Save
 		return parent::control_form($this);
 	}
 
-	protected function validate()
+	protected function validate(\ICanboogie\Errors $errors)
 	{
 		global $core;
 
-		$valide = true;
 		$properties = $this->properties;
 
 		if (!empty($properties[User::PASSWORD]))
 		{
 			if (!$this->request[User::PASSWORD . '-verify'])
 			{
-				$this->errors[User::PASSWORD . '-verify'] = t('Password verify is empty.');
-
-				$valide = false;
+				$errors[User::PASSWORD . '-verify'] = t('Password verify is empty.');
 			}
 
 			if ($properties[User::PASSWORD] != $this->request[User::PASSWORD . '-verify'])
 			{
-				$this->errors[User::PASSWORD . '-verify'] = t('Password and password verify don\'t match.');
-
-				$valide = false;
+				$errors[User::PASSWORD . '-verify'] = t('Password and password verify don\'t match.');
 			}
 		}
 
@@ -177,9 +172,7 @@ class Save extends \Icybee\Operation\Constructor\Save
 
 			if ($used)
 			{
-				$this->errors[User::USERNAME] = t("L'identifiant %username est déjà utilisé.", array('%username' => $username));
-
-				$valide = false;
+				$errors[User::USERNAME] = t("L'identifiant %username est déjà utilisé.", array('%username' => $username));
 			}
 		}
 
@@ -194,13 +187,11 @@ class Save extends \Icybee\Operation\Constructor\Save
 
 			if ($used)
 			{
-				$this->errors[User::EMAIL] = t("L'adresse email %email est déjà utilisée.", array('%email' => $email));
-
-				$valide = false;
+				$errors[User::EMAIL] = t("L'adresse email %email est déjà utilisée.", array('%email' => $email));
 			}
 		}
 
-		return $valide && parent::validate();
+		return count($errors) == 0 && parent::validate($errors);
 	}
 
 	protected function process()

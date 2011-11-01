@@ -26,7 +26,7 @@ class TemplateEditors extends Operation
 		+ parent::__get_controls();
 	}
 
-	protected function validate()
+	protected function validate(\ICanboogie\Errors $errors)
 	{
 		return true;
 	}
@@ -59,11 +59,11 @@ class TemplateEditors extends Operation
 
 		list($contents_tags, $template_info) = $this->module->get_contents_section($pageid, $template);
 
-		$this->response->template = $template_info;
+		$this->response['template'] = $template_info;
 
 		$form = (string) new \WdSectionedForm($contents_tags);
 
-		$this->response->assets = $core->document->get_assets();
+		$this->response['assets'] = $core->document->get_assets();
 
 		return $form;
 	}

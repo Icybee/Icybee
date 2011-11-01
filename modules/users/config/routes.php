@@ -2,56 +2,61 @@
 
 return array
 (
-	'manage' => array
+	':admin/manage' => array
 	(
 
 	),
 
-	'new' => array
+	':admin/new' => array
 	(
 
 	),
 
-	'edit' => array
+	':admin/edit' => array
 	(
 
 	),
 
 	/*
-	'config' => array
+	':admin/config' => array
 	(
 
 	),
 	*/
 
-	'/admin/profile' => array
+	'users:admin/profile' => array
 	(
+		'pattern' => '/admin/profile',
 		'title' => 'Profil',
 		'block' => 'profile',
 		'visibility' => 'auto',
 		'workspace' => ''
 	),
 
-	'/admin/authenticate' => array
+	'users:admin/authenticate' => array
 	(
+		'pattern' => '/admin/authenticate',
 		'title' => 'Connection',
 		'block' => 'connect',
 		'workspace' => '',
 		'visibility' => 'auto'
 	),
 
-	'/api/nonce-login-request' => array
+	'users:nonce-login-request' => array
 	(
+		'pattern' => '/api/nonce-login-request',
 		'class' => 'ICanBoogie\Operation\Users\NonceLoginRequest'
 	),
 
-	'/api/nonce-login-request/:email' => array
+	'users:inline-nonce-login-request' => array
 	(
+		'pattern' => '/api/nonce-login-request/:email',
 		'class' => 'ICanBoogie\Operation\Users\NonceLoginRequest'
 	),
 
-	'/api/nonce-login/:email/:token' => array
+	'users:nonce-login' => array
 	(
+		'pattern' => '/api/nonce-login/:email/:token',
 		'class' => 'ICanBoogie\Operation\Users\NonceLogin'
 	)
 );

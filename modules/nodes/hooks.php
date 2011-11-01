@@ -11,6 +11,8 @@
 
 namespace ICanBoogie\Hooks;
 
+use ICanBoogie\Event;
+
 use BrickRouge\Element;
 
 class Nodes
@@ -81,5 +83,15 @@ class Nodes
 		{
 			return '<div class="node-navigation">' . $list . $cycle . '</div>';
 		}
+	}
+
+	public static function on_modules_activate(Event $event)
+	{
+		\ICanBoogie\Module\Nodes::create_default_routes();
+	}
+
+	public static function on_modules_deactivate(Event $event)
+	{
+		\ICanBoogie\Module\Nodes::create_default_routes();
 	}
 }

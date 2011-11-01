@@ -53,7 +53,7 @@ class Config extends Operation
 		return $properties;
 	}
 
-	protected function validate()
+	protected function validate(\ICanboogie\Errors $errors)
 	{
 		return true;
 	}
@@ -96,7 +96,7 @@ class Config extends Operation
 
 		wd_log_done("La configuration a été renregistrée");
 
-		$this->location = $_SERVER['REQUEST_URI'];
+		$this->response->location = $_SERVER['REQUEST_URI'];
 
 		return true;
 	}

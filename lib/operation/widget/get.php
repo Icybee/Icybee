@@ -29,7 +29,7 @@ class Get extends Operation
 		+ parent::__get_controls();
 	}
 
-	protected function validate()
+	protected function validate(\ICanboogie\Errors $errors)
 	{
 		$this->widget_class = $class = 'BrickRouge\Widget\\' . wd_camelize('-' . $this->request['class'], '-');
 
@@ -108,8 +108,8 @@ EOT;
 			throw new Exception('Uknown widget mode: %mode', array('%mode' => $mode));
 		}
 
-		$this->response->assets = $document->get_assets();
-		$this->response->mode = $mode;
+		$this->response['assets'] = $document->get_assets();
+		$this->response['mode'] = $mode;
 
 		return $rc;
 	}

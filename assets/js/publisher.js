@@ -63,28 +63,6 @@ String.implement
 	}
 });
 
-
-
-
-
-
-
-
-
-
-
-
-
-if (!Wd)
-{
-	var Wd = {};
-}
-
-if (!Wd.Elements)
-{
-	Wd.Elements = {};
-}
-
 var spinner = null;
 
 window.addEvent
@@ -266,65 +244,3 @@ window.addEvent
 		);
 	}
 );
-
-
-var WdOperation = new Class
-({
-	Extends: Request.JSON,
-
-	initialize: function(destination, operation, options)
-	{
-		this.destination = destination;
-		this.operation = operation;
-
-		if (!options)
-		{
-			options = {};
-		}
-
-		if (!options.url)
-		{
-			options.url = document.location.protocol + '//' + document.location.host + document.location.pathname;
-		}
-
-		this.parent(options);
-	},
-
-	post: function(params)
-	{
-		if (!params)
-		{
-			params = {};
-		}
-
-		params['#destination'] = this.destination;
-		params['#operation'] = this.operation;
-
-		return this.parent(params);
-	},
-
-	get: function(params)
-	{
-		this.options.url = '/api/' + this.destination + '/' + this.operation;
-
-		return this.parent(params);
-	},
-
-	success: function(text)
-	{
-		this.response.json = JSON.decode(text, this.options.secure);
-
-		if (!this.response.json)
-		{
-			var el = new Element('pre', { 'html': text });
-
-			document.body.appendChild(el);
-
-			alert(text);
-
-			return;
-		}
-
-		this.onSuccess(this.response.json, text);
-	}
-});
