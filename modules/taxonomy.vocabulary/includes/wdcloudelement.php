@@ -17,7 +17,7 @@ class WdCloudElement extends Element
 
 	protected function render_inner_html()
 	{
-		$options = $this->get(self::T_OPTIONS);
+		$options = $this->get(self::OPTIONS);
 
 		if (!$options)
 		{

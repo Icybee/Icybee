@@ -53,8 +53,8 @@ class WdMultiEditorElement extends Element
 			(
 				$this->get(self::T_EDITOR_TAGS, array()) + array
 				(
-					Element::T_REQUIRED => $this->get(self::T_REQUIRED),
-					Element::T_DEFAULT => $this->get(self::T_DEFAULT),
+					Element::REQUIRED => $this->get(self::REQUIRED),
+					Element::DEFAULT_VALUE => $this->get(self::DEFAULT_VALUE),
 
 					'name' => $this->get('name'),
 					'value' => $this->get('value')
@@ -100,9 +100,9 @@ class WdMultiEditorElement extends Element
 		(
 			'select', array
 			(
-				Element::T_LABEL => '.editor',
-				Element::T_LABEL_POSITION => 'before',
-				Element::T_OPTIONS => $options,
+				Element::LABEL => '.editor',
+				Element::LABEL_POSITION => 'before',
+				Element::OPTIONS => $options,
 
 				'name' => $this->get(self::T_SELECTOR_NAME),
 				'class' => 'editor-selector',

@@ -180,8 +180,8 @@ class AdjustNode extends \BrickRouge\Widget
 		(
 			'li', array
 			(
-				Element::T_INNER_HTML => wd_shorten($record->title),
-				Element::T_DATASET => array
+				Element::INNER_HTML => wd_shorten($record->title),
+				Element::DATASET => array
 				(
 					Node::NID => $recordid,
 					Node::TITLE => $record->title

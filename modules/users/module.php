@@ -17,6 +17,7 @@ use ICanBoogie\ActiveRecord\Model;
 use ICanBoogie\Exception;
 use ICanBoogie\Operation;
 use BrickRouge;
+use BrickRouge\Button;
 use BrickRouge\Element;
 use BrickRouge\Form;
 use BrickRouge\Text;
@@ -140,19 +141,19 @@ EOT;
 		(
 			array
 			(
-				Form::T_HIDDENS => array
+				Form::HIDDENS => array
 				(
 					Operation::NAME => self::OPERATION_LOGOUT,
 					Operation::DESTINATION => $this->id
 				),
 
-				Element::T_CHILDREN => array
+				Element::CHILDREN => array
 				(
-					new Element
+					new Button
 					(
-						Element::E_SUBMIT, array
+						'logout', array
 						(
-							Element::T_INNER_HTML => t('logout', array(), array('scope' => array('user_users', 'form', 'label')))
+							'type' => 'submit'
 						)
 					)
 				)
@@ -248,14 +249,14 @@ EOT;
 
 			$role_el = new Element
 			(
-				Element::E_CHECKBOX_GROUP, array
+				Element::TYPE_CHECKBOX_GROUP, array
 				(
-					Form::T_LABEL => '.roles',
-					Element::T_GROUP => 'advanced',
-					Element::T_OPTIONS => $core->models['users.roles']->select('rid, name')->where('rid != 1')->order('rid')->pairs,
-					Element::T_OPTIONS_DISABLED => array(2 => true),
-					Element::T_REQUIRED => true,
-					Element::T_DESCRIPTION => '.roles',
+					Form::LABEL => '.roles',
+					Element::GROUP => 'advanced',
+					Element::OPTIONS => $core->models['users.roles']->select('rid, name')->where('rid != 1')->order('rid')->pairs,
+					Element::OPTIONS_DISABLED => array(2 => true),
+					Element::REQUIRED => true,
+					Element::DESCRIPTION => '.roles',
 
 					'class' => 'framed list sortable',
 					'value' => $properties_rid
@@ -298,12 +299,12 @@ EOT;
 			{
 				$restricted_sites_el = new Element
 				(
-					Element::E_CHECKBOX_GROUP, array
+					Element::TYPE_CHECKBOX_GROUP, array
 					(
-						Form::T_LABEL => '.siteid',
-						Element::T_OPTIONS => $restricted_sites_options,
-						Element::T_GROUP => 'advanced',
-						Element::T_DESCRIPTION => '.siteid',
+						Form::LABEL => '.siteid',
+						Element::OPTIONS => $restricted_sites_options,
+						Element::GROUP => 'advanced',
+						Element::DESCRIPTION => '.siteid',
 
 						'class' => 'list framed',
 						'value' => $value
@@ -314,9 +315,9 @@ EOT;
 
 		$rc = array
 		(
-			Form::T_DISABLED => !$permission,
+			Form::DISABLED => !$permission,
 
-			Element::T_GROUPS => array
+			Element::GROUPS => array
 			(
 				'contact' => array
 				(
@@ -337,7 +338,7 @@ EOT;
 				)
 			),
 
-			Element::T_CHILDREN => array
+			Element::CHILDREN => array
 			(
 				#
 				# name group
@@ -347,8 +348,8 @@ EOT;
 				(
 					array
 					(
-						Form::T_LABEL => '.firstname',
-						Element::T_GROUP => 'contact',
+						Form::LABEL => '.firstname',
+						Element::GROUP => 'contact',
 
 						//'class' => 'autofocus'
 					)
@@ -358,8 +359,8 @@ EOT;
 				(
 					array
 					(
-						Form::T_LABEL => '.lastname',
-						Element::T_GROUP => 'contact'
+						Form::LABEL => '.lastname',
+						Element::GROUP => 'contact'
 					)
 				),
 
@@ -367,9 +368,9 @@ EOT;
 				(
 					array
 					(
-						Form::T_LABEL => '.Username',
-						Element::T_GROUP => 'contact',
-						Element::T_REQUIRED => true
+						Form::LABEL => '.Username',
+						Element::GROUP => 'contact',
+						Element::REQUIRED => true
 					)
 				) : null,
 
@@ -377,9 +378,9 @@ EOT;
 				(
 					'select', array
 					(
-						Form::T_LABEL => '.display_as',
-						Element::T_GROUP => 'contact',
-						Element::T_OPTIONS => $display_options
+						Form::LABEL => '.display_as',
+						Element::GROUP => 'contact',
+						Element::OPTIONS => $display_options
 					)
 				),
 
@@ -391,9 +392,9 @@ EOT;
 				(
 					array
 					(
-						Form::T_LABEL => '.email',
-						Element::T_GROUP => 'connection',
-						Element::T_REQUIRED => true,
+						Form::LABEL => '.email',
+						Element::GROUP => 'connection',
+						Element::REQUIRED => true,
 
 						'autocomplete' => 'off'
 					)
@@ -403,36 +404,38 @@ EOT;
 				(
 					'div', array
 					(
-						Element::T_GROUP => 'connection',
-						Element::T_CHILDREN => array
+						Element::GROUP => 'connection',
+						Element::CHILDREN => array
 						(
 							'<div>',
 
-							User::PASSWORD => new Element
+							User::PASSWORD => new Text
 							(
-								Element::E_PASSWORD, array
+								array
 								(
-									Element::T_LABEL => '.password',
-									Element::T_LABEL_POSITION => 'above',
-									Element::T_DESCRIPTION => '.password_' . ($uid ? 'update' : 'new'),
+									Element::LABEL => '.password',
+									Element::LABEL_POSITION => 'above',
+									Element::DESCRIPTION => '.password_' . ($uid ? 'update' : 'new'),
 
-									'value' => '',
-									'autocomplete' => 'off'
+									'autocomplete' => 'off',
+									'type' => 'password',
+									'value' => ''
 								)
 							),
 
 							'</div><div>',
 
-							User::PASSWORD . '-verify' => new Element
+							User::PASSWORD . '-verify' => new Text
 							(
-								Element::E_PASSWORD, array
+								array
 								(
-									Element::T_LABEL => '.password_confirm',
-									Element::T_LABEL_POSITION => 'above',
-									Element::T_DESCRIPTION => '.password_confirm',
+									Element::LABEL => '.password_confirm',
+									Element::LABEL_POSITION => 'above',
+									Element::DESCRIPTION => '.password_confirm',
 
-									'value' => '',
-									'autocomplete' => 'off'
+									'autocomplete' => 'off',
+									'type' => 'password',
+									'value' => ''
 								)
 							),
 
@@ -445,11 +448,11 @@ EOT;
 
 				User::IS_ACTIVATED => ($uid == 1 || !$administer) ? null : new Element
 				(
-					Element::E_CHECKBOX, array
+					Element::TYPE_CHECKBOX, array
 					(
-						Element::T_LABEL => '.is_activated',
-						Element::T_GROUP => 'connection',
-						Element::T_DESCRIPTION => '.is_activated'
+						Element::LABEL => '.is_activated',
+						Element::GROUP => 'connection',
+						Element::DESCRIPTION => '.is_activated'
 					)
 				),
 
@@ -459,10 +462,10 @@ EOT;
 				(
 					'select', array
 					(
-						Form::T_LABEL => 'Language',
-						Element::T_GROUP => 'advanced',
-						Element::T_DESCRIPTION => '.language',
-						Element::T_OPTIONS => array(null => '') + $languages
+						Form::LABEL => 'Language',
+						Element::GROUP => 'advanced',
+						Element::DESCRIPTION => '.language',
+						Element::OPTIONS => array(null => '') + $languages
 					)
 				),
 
@@ -470,9 +473,9 @@ EOT;
 				(
 					array
 					(
-						Form::T_LABEL => '.timezone',
-						Element::T_GROUP => 'advanced',
-						Element::T_DESCRIPTION => "Si la zone horaire n'est pas définie celle
+						Form::LABEL => '.timezone',
+						Element::GROUP => 'advanced',
+						Element::DESCRIPTION => "Si la zone horaire n'est pas définie celle
 						du site sera utilisée à la place."
 					)
 				),
@@ -483,14 +486,13 @@ EOT;
 
 		if ($permission_modify_own_profile)
 		{
-			$rc[Element::T_CHILDREN]['#submit'] = new Element
+			$rc[Element::CHILDREN]['#submit'] = new Button
 			(
-				Element::E_SUBMIT, array
+				'Save', array
 				(
-					Element::T_GROUP => 'save',
-					Element::T_INNER_HTML => 'Enregistrer',
-
-					'class' => 'save'
+					Element::GROUP => 'save',
+					'class' => 'save',
+					'type' => 'submit'
 				)
 			);
 		}
@@ -531,7 +533,7 @@ EOT;
 	{
 		return array
 		(
-			Element::T_GROUPS => array
+			Element::GROUPS => array
 			(
 				'notifies.password' => array
 				(
@@ -541,17 +543,17 @@ EOT;
 				)
 			),
 
-			Element::T_CHILDREN => array
+			Element::CHILDREN => array
 			(
 				/*
 				"local[$this->flat_id.notifies.password]" => new WdEMailNotifyElement
 				(
 					array
 					(
-						Element::T_GROUP => 'notifies.password',
-						//Element::T_DEFAULT => self::$config_default['notifies']['password']
+						Element::GROUP => 'notifies.password',
+						//Element::DEFAULT_VALUE => self::$config_default['notifies']['password']
 
-						Element::T_DEFAULT => array
+						Element::DEFAULT_VALUE => array
 						(
 							'subject' => 'Vos paramètres de connexion à Icybee',
 							'from' => 'no-reply@' . $_SERVER['HTTP_HOST'],

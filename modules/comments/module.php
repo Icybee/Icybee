@@ -21,6 +21,27 @@ use Icybee\Manager;
 
 class Comments extends \Icybee\Module
 {
+	protected function __get_views()
+	{
+		$assets = array('css' => $this->descriptor[self::T_PATH] . 'public/page.css');
+
+		return array
+		(
+			'list' => array
+			(
+				'title' => "Comments associated to a node",
+				'assets' => $assets,
+				'provider' => true
+			),
+
+			'submit' => array
+			(
+				'title' => "Comment submit form",
+				'assets' => $assets
+			)
+		);
+	}
+
 	/*
 	static $notifies_response = array
 	(
@@ -44,14 +65,14 @@ Aucune autre notification ne vous sera envoyée.
 	{
 		return array
 		(
-			Element::T_CHILDREN => array
+			Element::CHILDREN => array
 			(
 				Comment::AUTHOR => new Text
 				(
 					array
 					(
-						Form::T_LABEL => 'Author',
-						Element::T_REQUIRED => true
+						Form::LABEL => 'Author',
+						Element::REQUIRED => true
 					)
 				),
 
@@ -59,8 +80,8 @@ Aucune autre notification ne vous sera envoyée.
 				(
 					array
 					(
-						Form::T_LABEL => 'E-mail',
-						Element::T_REQUIRED => true
+						Form::LABEL => 'E-mail',
+						Element::REQUIRED => true
 					)
 				),
 
@@ -68,7 +89,7 @@ Aucune autre notification ne vous sera envoyée.
 				(
 					array
 					(
-						Form::T_LABEL => 'URL'
+						Form::LABEL => 'URL'
 					)
 				),
 
@@ -76,8 +97,8 @@ Aucune autre notification ne vous sera envoyée.
 				(
 					array
 					(
-						Form::T_LABEL => 'Adresse IP',
-						Element::T_DESCRIPTION => "Status spam: <em>en cours de vérification</em>.",
+						Form::LABEL => 'Adresse IP',
+						Element::DESCRIPTION => "Status spam: <em>en cours de vérification</em>.",
 
 						'disabled' => true
 					)
@@ -87,8 +108,8 @@ Aucune autre notification ne vous sera envoyée.
 				(
 					'textarea', array
 					(
-						Form::T_LABEL => 'Message',
-						Element::T_REQUIRED => true,
+						Form::LABEL => 'Message',
+						Element::REQUIRED => true,
 
 						'rows' => 10
 					)
@@ -96,12 +117,12 @@ Aucune autre notification ne vous sera envoyée.
 
 				Comment::NOTIFY => new Element
 				(
-					Element::E_RADIO_GROUP, array
+					Element::TYPE_RADIO_GROUP, array
 					(
-						Form::T_LABEL => 'Notification',
-						Element::T_DEFAULT => 'no',
-						Element::T_REQUIRED => true,
-						Element::T_OPTIONS => array
+						Form::LABEL => 'Notification',
+						Element::DEFAULT_VALUE => 'no',
+						Element::REQUIRED => true,
+						Element::OPTIONS => array
 						(
 							'yes' => 'Bien sûr !',
 							'author' => "Seulement si c'est l'auteur du billet qui répond",
@@ -109,7 +130,7 @@ Aucune autre notification ne vous sera envoyée.
 							'done' => 'Notification envoyée'
 						),
 
-						Element::T_DESCRIPTION => (($properties[Comment::NOTIFY] == 'done') ? "Un
+						Element::DESCRIPTION => (($properties[Comment::NOTIFY] == 'done') ? "Un
 						message de notification a été envoyé." : null),
 
 						'class' => 'list'
@@ -120,9 +141,9 @@ Aucune autre notification ne vous sera envoyée.
 				(
 					'select', array
 					(
-						Form::T_LABEL => 'Status',
-						Element::T_REQUIRED => true,
-						Element::T_OPTIONS => array
+						Form::LABEL => 'Status',
+						Element::REQUIRED => true,
+						Element::OPTIONS => array
 						(
 							null => '',
 							'pending' => 'Pending',
@@ -185,12 +206,12 @@ Aucune autre notification ne vous sera envoyée.
 
 		return array
 		(
-			Form::T_VALUES => array
+			Form::VALUES => array
 			(
 				"global[$this->flat_id.spam.keywords]" => $keywords
 			),
 
-			Element::T_GROUPS => array
+			Element::GROUPS => array
 			(
 				'primary' => array
 				(
@@ -213,16 +234,16 @@ Aucune autre notification ne vous sera envoyée.
 				)
 			),
 
-			Element::T_CHILDREN => array
+			Element::CHILDREN => array
 			(
 				"local[$this->flat_id.form_id]" => new \WdFormSelectorElement
 				(
 					'select', array
 					(
-						Form::T_LABEL => 'Formulaire',
-						Element::T_GROUP => 'primary',
-						Element::T_REQUIRED => true,
-						Element::T_DESCRIPTION => "Il s'agit du formulaire à utiliser pour la
+						Form::LABEL => 'Formulaire',
+						Element::GROUP => 'primary',
+						Element::REQUIRED => true,
+						Element::DESCRIPTION => "Il s'agit du formulaire à utiliser pour la
 						saisie des commentaires."
 					)
 				),
@@ -231,9 +252,9 @@ Aucune autre notification ne vous sera envoyée.
 				(
 					array
 					(
-						Form::T_LABEL => 'Intervale entre deux commentaires',
-						Element::T_LABEL => 'minutes',
-						Element::T_DEFAULT => 3,
+						Form::LABEL => 'Intervale entre deux commentaires',
+						Element::LABEL => 'minutes',
+						Element::DEFAULT_VALUE => 3,
 
 						'size' => 3,
 						'style' => 'text-align: right'
@@ -244,13 +265,13 @@ Aucune autre notification ne vous sera envoyée.
 				(
 					'select', array
 					(
-						Form::T_LABEL => 'Status par défaut',
-						Element::T_OPTIONS => array
+						Form::LABEL => 'Status par défaut',
+						Element::OPTIONS => array
 						(
 							'pending' => 'Pending',
 							'approved' => 'Approuvé'
 						),
-						Element::T_DESCRIPTION => "Il s'agit du status par défaut pour les nouveaux
+						Element::DESCRIPTION => "Il s'agit du status par défaut pour les nouveaux
 						commentaires."
 					)
 				),
@@ -259,8 +280,8 @@ Aucune autre notification ne vous sera envoyée.
 				(
 					'textarea', array
 					(
-						Form::T_LABEL => 'URLs',
-						Element::T_GROUP => 'spam',
+						Form::LABEL => 'URLs',
+						Element::GROUP => 'spam',
 						'rows' => 5
 					)
 				),
@@ -269,8 +290,8 @@ Aucune autre notification ne vous sera envoyée.
 				(
 					'textarea', array
 					(
-						Form::T_LABEL => 'Mots clés',
-						Element::T_GROUP => 'spam',
+						Form::LABEL => 'Mots clés',
+						Element::GROUP => 'spam',
 						'rows' => 5
 					)
 				)

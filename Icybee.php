@@ -19,7 +19,7 @@ $wddebug_time_reference = microtime(true);
 /**
  * @var string Version string for the Icybee package.
  */
-define('Icybee\VERSION', '0.8.0-dev (2011-08-03)');
+define('Icybee\VERSION', '1.0-dev (2012-01-08)');
 
 /**
  * @var string Root path for the Icybee package.
@@ -55,17 +55,49 @@ else
 	require_once ROOT . 'framework/BrickRouge/BrickRouge.php';
 }
 
+if (file_exists(ROOT . 'framework/Patron.phar'))
+{
+	require_once 'phar://' . ROOT . 'framework/Patron.phar/bootstrap.php';
+}
+else
+{
+	require_once ROOT . 'framework/Patron/bootstrap.php';
+}
+
+
 if (!class_exists('Icybee\Core', false))
 {
 	require_once ROOT . 'lib/core/core.php';
 }
 
 require_once ROOT . 'includes/common.php';
+require_once ROOT . 'lib/helpers.php';
 
 /**
  * @var Icybee\Core The core instance is the heart of the ICanBoogie framework.
  */
-$core = Core::get_singleton();
+$core = Core::get_singleton
+(
+	array
+	(
+		'paths' => array
+		(
+			'config' => array
+			(
+				\BrickRouge\ROOT,
+				\Patron\ROOT,
+				ROOT
+			),
+
+			'locale' => array
+			(
+				\BrickRouge\ROOT,
+				\Patron\ROOT,
+				ROOT
+			)
+		)
+	)
+);
 
 // wd_log_time('core created');
 

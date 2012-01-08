@@ -147,7 +147,7 @@ EOT
 
 				$sub .= new Element
 				(
-					Element::E_CHECKBOX, array
+					Element::TYPE_CHECKBOX, array
 					(
 						'name' => Operation::KEY . '[' . $m_id . ']',
 						'disabled' => $is_required
@@ -360,7 +360,7 @@ EOT;
 		(
 			array
 			(
-				Element::T_CHILDREN => array
+				Element::CHILDREN => array
 				(
 					$contents
 				),
@@ -421,13 +421,20 @@ EOT;
 		$categories = array();
 		$modules = array();
 
-		$descriptors = $core->modules->descriptors;
+		$descriptors = $core->modules->disabled_modules_descriptors;
 
 		self::sort_descriptors($descriptors);
 
 		foreach ($descriptors as $id => $descriptor)
 		{
-			$name = isset($descriptor[Module::T_TITLE]) ? $descriptor[Module::T_TITLE] : $id;
+			if ($descriptor[Module::T_REQUIRED])
+			{
+				unset($descriptors[$id]);
+
+				continue;
+			}
+
+			$name = $descriptor[Module::T_TITLE];
 
 			if (isset($descriptor[Module::T_CATEGORY]))
 			{
@@ -452,8 +459,6 @@ EOT;
 
 		uksort($categories, 'wd_unaccent_compare_ci');
 
-		$mandatories = $core->modules->ids_by_property(Module::T_REQUIRED);
-
 		#
 		# disabled modules
 		#
@@ -468,14 +473,9 @@ EOT;
 			{
 				$moduleid = $descriptor[Module::T_ID];
 
-				if (isset($mandatories[$moduleid]) || empty($descriptor[Module::T_DISABLED]))
-				{
-					continue;
-				}
-
 				$checkbox = new Element
 				(
-					Element::E_CHECKBOX, array
+					Element::TYPE_CHECKBOX, array
 					(
 						'name' => Operation::KEY . '[' . $moduleid . ']'
 					)
@@ -547,13 +547,13 @@ EOT;
 		(
 			array
 			(
-				Form::T_HIDDENS => array
+				Form::HIDDENS => array
 				(
 					Operation::NAME => self::OPERATION_ACTIVATE,
 					Operation::DESTINATION => $this
 				),
 
-				Element::T_CHILDREN => array
+				Element::CHILDREN => array
 				(
 					$rc
 				)
@@ -598,7 +598,7 @@ EOT;
 
 	static private function sort_descriptors(array &$descriptors)
 	{
-		wd_stable_sort
+		\ICanBoogie\stable_sort
 		(
 			$descriptors, function(&$descriptor)
 			{

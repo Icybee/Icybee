@@ -29,6 +29,40 @@ class Nodes extends \Icybee\Module
 {
 	const PERMISSION_MODIFY_BELONGING_SITE = 'modify belonging site';
 
+	/**
+	 * Defines the views "view", "list" and "home".
+	 *
+	 * @see Icybee.Module::__get_views()
+	 */
+	protected function __get_views()
+	{
+		return array
+		(
+			'view' => array
+			(
+				'title' => "Node detail",
+				'provider' => 'Icybee\Views\Nodes\Provider',
+				'assets' => array()
+			),
+
+			'list' => array
+			(
+				'title' => 'Nodes list',
+				'provider' => 'Icybee\Views\Nodes\Provider',
+				'assets' => array()
+			),
+
+			'home' => array
+			(
+				'title' => 'Nodes home',
+				'provider' => 'Icybee\Views\Nodes\Provider',
+				'assets' => array()
+			)
+		)
+
+		+ parent::__get_views();
+	}
+
 	protected function resolve_primary_model_tags($tags)
 	{
 		return parent::resolve_model_tags($tags, 'primary') + array
@@ -55,13 +89,13 @@ class Nodes extends \Icybee\Module
 				(
 					'select', array
 					(
-						Element::T_LABEL => '.user',
-						Element::T_LABEL_POSITION => 'before',
-						Element::T_OPTIONS => array(null => '')	+ $users,
-						Element::T_REQUIRED => true,
-						Element::T_DEFAULT => $core->user->uid,
-						Element::T_GROUP => 'admin',
-						Element::T_DESCRIPTION => '.user'
+						Element::LABEL => '.user',
+						Element::LABEL_POSITION => 'before',
+						Element::OPTIONS => array(null => '')	+ $users,
+						Element::REQUIRED => true,
+						Element::DEFAULT_VALUE => $core->user->uid,
+						Element::GROUP => 'admin',
+						Element::DESCRIPTION => '.user'
 					)
 				);
 			}
@@ -79,11 +113,11 @@ class Nodes extends \Icybee\Module
 				(
 					'select', array
 					(
-						Element::T_LABEL => '.siteid',
-						Element::T_LABEL_POSITION => 'before',
-						Element::T_OPTIONS => array(null => '') + $sites,
-						Element::T_GROUP => 'admin',
-						Element::T_DESCRIPTION => '.siteid'
+						Element::LABEL => '.siteid',
+						Element::LABEL_POSITION => 'before',
+						Element::OPTIONS => array(null => '') + $sites,
+						Element::GROUP => 'admin',
+						Element::DESCRIPTION => '.siteid'
 					)
 				);
 			}
@@ -95,9 +129,9 @@ class Nodes extends \Icybee\Module
 
 		return array
 		(
-			Form::T_HIDDENS => $hiddens,
+			Form::HIDDENS => $hiddens,
 
-			Element::T_GROUPS => array
+			Element::GROUPS => array
 			(
 				'node' => array
 				(
@@ -114,14 +148,14 @@ class Nodes extends \Icybee\Module
 				)
 			),
 
-			Element::T_CHILDREN => array
+			Element::CHILDREN => array
 			(
 				Node::TITLE => new Widget\TitleSlugCombo
 				(
 					array
 					(
-						Form::T_LABEL => '.title',
-						Element::T_REQUIRED => true,
+						Form::LABEL => '.title',
+						Element::REQUIRED => true,
 						Widget\TitleSlugCombo::T_NODEID => $properties[Node::NID],
 						Widget\TitleSlugCombo::T_SLUG_NAME => 'slug'
 					)
@@ -133,11 +167,11 @@ class Nodes extends \Icybee\Module
 
 				Node::IS_ONLINE => new Element
 				(
-					Element::E_CHECKBOX, array
+					Element::TYPE_CHECKBOX, array
 					(
-						Element::T_LABEL => '.is_online',
-						Element::T_DESCRIPTION => '.is_online',
-						Element::T_GROUP => 'visibility'
+						Element::LABEL => '.is_online',
+						Element::DESCRIPTION => '.is_online',
+						Element::GROUP => 'visibility'
 					)
 				)
 			)
@@ -165,7 +199,7 @@ class Nodes extends \Icybee\Module
 			array
 			(
 				WdAdjustNodeWidget::T_CONSTRUCTOR => $this->id,
-				Element::T_DESCRIPTION => null,
+				Element::DESCRIPTION => null,
 
 				'value' => isset($params['value']) ? $params['value'] : null
 			)
@@ -464,6 +498,15 @@ EOT;
 	{
 		$query->own->similar_site->similar_language;
 
+		if (isset($conditions['nid']))
+		{
+			$query->where('nid = ?', $conditions['nid']);
+		}
+		else if (isset($conditions['slug']))
+		{
+			$query->where('slug = ?', $conditions['slug']);
+		}
+
 		if ($name != 'view')
 		{
 			$query->where('is_online = 1');
@@ -474,15 +517,7 @@ EOT;
 
 	protected function provide_view_alter_query_view($query, array $conditions)
 	{
-		if (isset($conditions['nid']))
-		{
-			$query->where('nid = ?', $conditions['nid']);
-		}
-		else if (isset($conditions['slug']))
-		{
-			$query->where('slug = ?', $conditions['slug']);
-		}
-		else
+		if (empty($conditions['nid']) && empty($conditions['slug']))
 		{
 			$query->where('is_online = 1');
 		}

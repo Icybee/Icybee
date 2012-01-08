@@ -230,7 +230,7 @@ class Attachments
 		(
 			$event->tags, array
 			(
-				Element::T_GROUPS => array
+				Element::GROUPS => array
 				(
 					'attachments' => array
 					(
@@ -239,13 +239,13 @@ class Attachments
 					)
 				),
 
-				Element::T_CHILDREN => array
+				Element::CHILDREN => array
 				(
 					new \WdAttachmentsElement
 					(
 						array
 						(
-							Element::T_GROUP => 'attachments',
+							Element::GROUP => 'attachments',
 
 							\WdAttachmentsElement::T_NODEID => $event->key,
 							\WdAttachmentsElement::T_HARD_BOND => true
@@ -297,7 +297,7 @@ class Attachments
 		(
 			$event->tags, array
 			(
-				Element::T_GROUPS => array
+				Element::GROUPS => array
 				(
 					'attachments' => array
 					(
@@ -306,15 +306,15 @@ class Attachments
 					)
 				),
 
-				Element::T_CHILDREN => array
+				Element::CHILDREN => array
 				(
 					'global[nodes_attachments.scope]' => new Element
 					(
-						Element::E_CHECKBOX_GROUP, array
+						Element::TYPE_CHECKBOX_GROUP, array
 						(
-							Form::T_LABEL => t('nodes_attachments.element.label.scope'),
-							Element::T_OPTIONS => $scope,
-							Element::T_GROUP => 'attachments',
+							Form::LABEL => t('nodes_attachments.element.label.scope'),
+							Element::OPTIONS => $scope,
+							Element::GROUP => 'attachments',
 
 							'class' => 'list combo',
 							'value' => $scope_value

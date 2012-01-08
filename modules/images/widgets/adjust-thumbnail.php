@@ -21,7 +21,7 @@ class AdjustThumbnail extends \BrickRouge\Widget
 		(
 			'div', $tags + array
 			(
-				Element::T_CHILDREN => array
+				Element::CHILDREN => array
 				(
 					$this->adjust_image = new AdjustImage(array()),
 					$this->adjust_thumbnail_options = new AdjustThumbnailOptions(array())

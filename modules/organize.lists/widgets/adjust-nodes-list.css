@@ -96,7 +96,7 @@ div.wd-adjustnodeslist div.search li
 	cursor: pointer;
 }
 
-.wdform div.wd-adjustnodeslist input.search,
+form div.wd-adjustnodeslist input.search,
 div.wd-adjustnodeslist input.search
 {
 	width: 100%;

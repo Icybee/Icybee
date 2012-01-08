@@ -12,9 +12,9 @@
 namespace ICanBoogie\Module\Features;
 
 use ICanBoogie\Module;
-
 use BrickRouge\Element;
 use BrickRouge\Form;
+use BrickRouge\Text;
 
 class Search extends \Icybee\Module
 {
@@ -72,7 +72,7 @@ class Search extends \Icybee\Module
 			(
 				'input', array
 				(
-					Element::T_LABEL => $label,
+					Element::LABEL => $label,
 
 					'name' => "local[$this->flat_id.scope][$module_id]",
 					'type' => 'checkbox',
@@ -102,7 +102,7 @@ class Search extends \Icybee\Module
 
 		return array
 		(
-			Element::T_GROUPS => array
+			Element::GROUPS => array
 			(
 				'primary' => array
 				(
@@ -110,33 +110,33 @@ class Search extends \Icybee\Module
 				)
 			),
 
-			Element::T_CHILDREN => array
+			Element::CHILDREN => array
 			(
 				"local[$this->flat_id.scope]" => new Element
 				(
 					'div', array
 					(
-						Form::T_LABEL => '.scope',
-						Element::T_INNER_HTML => $el,
-						Element::T_DESCRIPTION => '.scope'
+						Form::LABEL => '.scope',
+						Element::INNER_HTML => $el,
+						Element::DESCRIPTION => '.scope'
 					)
 				),
 
-				"local[$this->flat_id.limits.home]" => new Element
+				"local[$this->flat_id.limits.home]" => new Text
 				(
-					Element::E_TEXT, array
+					array
 					(
-						Form::T_LABEL => 'limits_home',
-						Element::T_DEFAULT => 5
+						Form::LABEL => 'limits_home',
+						Element::DEFAULT_VALUE => 5
 					)
 				),
 
-				"local[$this->flat_id.limits.list]" => new Element
+				"local[$this->flat_id.limits.list]" => new Text
 				(
-					Element::E_TEXT, array
+					array
 					(
-						Form::T_LABEL => 'limits_list',
-						Element::T_DEFAULT => 10
+						Form::LABEL => 'limits_list',
+						Element::DEFAULT_VALUE => 10
 					)
 				)
 			)

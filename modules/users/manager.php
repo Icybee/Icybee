@@ -156,11 +156,11 @@ class Users extends \WdManager
 		(
 			'label', array
 			(
-				Element::T_CHILDREN => array
+				Element::CHILDREN => array
 				(
 					new Element
 					(
-						Element::E_CHECKBOX, array
+						Element::TYPE_CHECKBOX, array
 						(
 							'value' => $record->uid,
 							'checked' => ($record->is_activated != 0)

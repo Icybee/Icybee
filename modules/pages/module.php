@@ -13,14 +13,31 @@ namespace ICanBoogie\Module;
 
 use ICanBoogie\ActiveRecord\Node;
 use ICanBoogie\ActiveRecord\Page;
-
 use BrickRouge\Element;
 use BrickRouge\Form;
-
+use BrickRouge\Text;
 use Icybee\Manager;
 
 class Pages extends Nodes
 {
+	/**
+	 * Only the "list" view is available and it is used to create the sitemap.
+	 *
+	 * @see ICanBoogie\Module.Nodes::__get_views()
+	 */
+	protected function __get_views()
+	{
+		return array
+		(
+			'list' => array
+			(
+				'title' => 'Sitemap',
+				'class' => 'Icybee\Modules\Pages\ListView',
+				'assets' => array()
+			)
+		);
+	}
+
 	// FIXME-20110918: this should be an operation
 	protected function operation_query_delete(WdOperation $operation)
 	{
@@ -121,9 +138,9 @@ class Pages extends Nodes
 			(
 				'select', array
 				(
-					Form::T_LABEL => '.parentid',
-					Element::T_OPTIONS_DISABLED => $nid ? array($nid => true) : null,
-					Element::T_DESCRIPTION => '.parentid'
+					Form::LABEL => '.parentid',
+					Element::OPTIONS_DISABLED => $nid ? array($nid => true) : null,
+					Element::DESCRIPTION => '.parentid'
 				)
 			);
 		}
@@ -140,11 +157,11 @@ class Pages extends Nodes
 			(
 				'select', array
 				(
-					Form::T_LABEL => '.location',
-					Element::T_GROUP => 'advanced',
-					Element::T_WEIGHT => 10,
-					Element::T_OPTIONS_DISABLED => $nid ? array($nid => true) : null,
-					Element::T_DESCRIPTION => '.location'
+					Form::LABEL => '.location',
+					Element::GROUP => 'advanced',
+					Element::WEIGHT => 10,
+					Element::OPTIONS_DISABLED => $nid ? array($nid => true) : null,
+					Element::DESCRIPTION => '.location'
 				)
 			);
 		}
@@ -153,13 +170,13 @@ class Pages extends Nodes
 		(
 			parent::block_edit($properties, $permission), array
 			(
-				Form::T_HIDDENS => array
+				Form::HIDDENS => array
 				(
 					Page::SITEID => $core->site_id,
 					Page::LANGUAGE => $core->site->language
 				),
 
-				Element::T_GROUPS => array
+				Element::GROUPS => array
 				(
 					'advanced' => array
 					(
@@ -169,37 +186,37 @@ class Pages extends Nodes
 					)
 				),
 
-				Element::T_CHILDREN => array
+				Element::CHILDREN => array
 				(
 					Page::PARENTID => $parentid_el,
 					Page::SITEID => null,
 
 					Page::IS_NAVIGATION_EXCLUDED => new Element
 					(
-						Element::E_CHECKBOX, array
+						Element::TYPE_CHECKBOX, array
 						(
-							Element::T_LABEL => '.is_navigation_excluded',
-							Element::T_GROUP => 'visibility'
+							Element::LABEL => '.is_navigation_excluded',
+							Element::GROUP => 'visibility'
 						)
 					),
 
-					Page::LABEL => new Element
+					Page::LABEL => new Text
 					(
-						Element::E_TEXT, array
+						array
 						(
-							Form::T_LABEL => '.label',
-							Element::T_GROUP => 'advanced',
-							Element::T_DESCRIPTION => '.label'
+							Form::LABEL => '.label',
+							Element::GROUP => 'advanced',
+							Element::DESCRIPTION => '.label'
 						)
 					),
 
-					Page::PATTERN => new Element
+					Page::PATTERN => new Text
 					(
-						Element::E_TEXT, array
+						array
 						(
-							Form::T_LABEL => '.pattern',
-							Element::T_GROUP => 'advanced',
-							Element::T_DESCRIPTION => '.pattern'
+							Form::LABEL => '.pattern',
+							Element::GROUP => 'advanced',
+							Element::DESCRIPTION => '.pattern'
 						)
 					),
 
@@ -233,10 +250,10 @@ class Pages extends Nodes
 				(
 					array
 					(
-						Element::T_LABEL => '.template',
-						Element::T_LABEL_POSITION => 'before',
-						Element::T_GROUP => 'contents',
-						Element::T_DESCRIPTION => $template_description
+						Element::LABEL => '.template',
+						Element::LABEL_POSITION => 'before',
+						Element::GROUP => 'contents',
+						Element::DESCRIPTION => $template_description
 					)
 				)
 			),
@@ -248,19 +265,19 @@ class Pages extends Nodes
 		(
 			array
 			(
-				Form::T_HIDDENS => $hiddens,
+				Form::HIDDENS => $hiddens,
 
 				#
 				# If the template is inherited, we remove the value in order to have a clean
 				# inheritence, easier to manage.
 				#
 
-				Form::T_VALUES => array
+				Form::VALUES => array
 				(
 					Page::TEMPLATE => $is_inherited ? null : $template
 				),
 
-				Element::T_GROUPS => array
+				Element::GROUPS => array
 				(
 					'contents' => array
 					(
@@ -277,7 +294,7 @@ class Pages extends Nodes
 					)
 				),
 
-				Element::T_CHILDREN => $elements
+				Element::CHILDREN => $elements
 			),
 
 			array
@@ -374,10 +391,10 @@ class Pages extends Nodes
 						(
 							'div', array
 							(
-								Form::T_LABEL => $title,
-								Element::T_GROUP => 'contents.inherit',
-								Element::T_INNER_HTML => '',
-								Element::T_DESCRIPTION => t
+								Form::LABEL => $title,
+								Element::GROUP => 'contents.inherit',
+								Element::INNER_HTML => '',
+								Element::DESCRIPTION => t
 								(
 									'This content is currently inherited from the <q><a href="!url">!title</a></q> parent page – <a href="#edit">Edit the content</a>', array
 									(
@@ -416,9 +433,9 @@ class Pages extends Nodes
 					(
 						'div', array
 						(
-							Form::T_LABEL => $title,
-							Element::T_INNER_HTML => t('Éditeur inconnu : %editor', array('%editor' => $editable['editor'])),
-							Element::T_GROUP => $does_inherit ? 'contents.inherit' : 'contents',
+							Form::LABEL => $title,
+							Element::INNER_HTML => t('Éditeur inconnu : %editor', array('%editor' => $editable['editor'])),
+							Element::GROUP => $does_inherit ? 'contents.inherit' : 'contents',
 
 							'class' => 'danger'
 						)
@@ -433,13 +450,13 @@ class Pages extends Nodes
 					(
 						array
 						(
-							Form::T_LABEL => $title,
+							Form::LABEL => $title,
 
 							\WdEditorElement::T_STYLESHEETS => $styles,
 							\WdEditorElement::T_CONFIG => $editor_config,
 
-							Element::T_GROUP => $does_inherit ? 'contents.inherit' : 'contents',
-							Element::T_DESCRIPTION => $editor_description,
+							Element::GROUP => $does_inherit ? 'contents.inherit' : 'contents',
+							Element::DESCRIPTION => $editor_description,
 
 							'id' => 'editor-' . $id,
 // 							'name' => $name,
@@ -475,11 +492,11 @@ class Pages extends Nodes
 					(
 						'div', array
 						(
-							Form::T_LABEL => $title,
+							Form::LABEL => $title,
 
-							Element::T_GROUP => $does_inherit ? 'contents.inherit' : 'contents',
-							Element::T_DESCRIPTION => $editor_description,
-							Element::T_CHILDREN => $fragments,
+							Element::GROUP => $does_inherit ? 'contents.inherit' : 'contents',
+							Element::DESCRIPTION => $editor_description,
+							Element::CHILDREN => $fragments,
 
 							'id' => 'editor-' . $id,
 							'class' => 'editor multiple'
@@ -501,7 +518,7 @@ class Pages extends Nodes
 				(
 					$editor, array
 					(
-						Form::T_LABEL => $title,
+						Form::LABEL => $title,
 
 						\WdMultiEditorElement::T_NOT_SWAPPABLE => isset($editable['editor']),
 						\WdMultiEditorElement::T_SELECTOR_NAME => $name . '[editor]',
@@ -511,8 +528,8 @@ class Pages extends Nodes
 							\WdEditorElement::T_CONFIG => $editor_config
 						),
 
-						Element::T_GROUP => $does_inherit ? 'contents.inherit' : 'contents',
-						Element::T_DESCRIPTION => $editor_description,
+						Element::GROUP => $does_inherit ? 'contents.inherit' : 'contents',
+						Element::DESCRIPTION => $editor_description,
 
 						'id' => 'editor-' . $id,
 						'value' => $value

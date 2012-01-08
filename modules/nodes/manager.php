@@ -347,7 +347,7 @@ class Nodes extends \WdManager
 		(
 			'a', array
 			(
-				Element::T_INNER_HTML => t('Display'),
+				Element::INNER_HTML => t('Display'),
 
 				'href' => $url,
 				'title' => t('View this entry on the website'),
@@ -387,7 +387,7 @@ class Nodes extends \WdManager
 		(
 			'a', array
 			(
-				Element::T_INNER_HTML => $label,
+				Element::INNER_HTML => $label,
 
 				'class' => 'edit',
 				'title' => $shortened ? $this->t->__invoke('manager.edit_named', array(':title' => $title ? $title : 'unnamed')) : $this->t->__invoke('manager.edit'),
@@ -457,11 +457,11 @@ class Nodes extends \WdManager
 		(
 			'label', array
 			(
-				Element::T_CHILDREN => array
+				Element::CHILDREN => array
 				(
 					new Element
 					(
-						Element::E_CHECKBOX, array
+						Element::TYPE_CHECKBOX, array
 						(
 							'value' => $entry->nid,
 							'checked' => ($entry->$tag != 0),

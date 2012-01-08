@@ -2,11 +2,12 @@
 
 .node-navigation
 {
+	clear: both;
 	color: #BFBFBF;
 	margin-top: 2em;
 	padding-top: 2em;
 	margin-bottom: 4em;
-	border-top: 1px dashed #EEEEEE;
+	border-top: 1px dashed #ddd;
 	line-height: 1.33em;
 }
 

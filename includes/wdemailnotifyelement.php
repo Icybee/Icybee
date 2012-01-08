@@ -23,14 +23,14 @@ class WdEMailNotifyElement extends \BrickRouge\Group
 		(
 			$tags + array
 			(
-				Element::T_CHILDREN => array
+				Element::CHILDREN => array
 				(
 					'subject' => $this->elements['subject'] = new Text
 					(
 						array
 						(
-							Form::T_LABEL => 'Sujet du message',
-							Element::T_REQUIRED => true
+							Form::LABEL => 'Sujet du message',
+							Element::REQUIRED => true
 						)
 					),
 
@@ -38,8 +38,8 @@ class WdEMailNotifyElement extends \BrickRouge\Group
 					(
 						array
 						(
-							Form::T_LABEL => 'Adresse d\'expédition',
-							Element::T_REQUIRED => true
+							Form::LABEL => 'Adresse d\'expédition',
+							Element::REQUIRED => true
 						)
 					),
 
@@ -47,7 +47,7 @@ class WdEMailNotifyElement extends \BrickRouge\Group
 					(
 						array
 						(
-							Form::T_LABEL => 'Copie cachée',
+							Form::LABEL => 'Copie cachée',
 						)
 					),
 
@@ -55,8 +55,8 @@ class WdEMailNotifyElement extends \BrickRouge\Group
 					(
 						'textarea', array
 						(
-							Form::T_LABEL => 'Patron du message',
-							Element::T_REQUIRED => true,
+							Form::LABEL => 'Patron du message',
+							Element::REQUIRED => true,
 							'rows' => 8
 						)
 					)
@@ -66,11 +66,11 @@ class WdEMailNotifyElement extends \BrickRouge\Group
 			)
 		);
 
-		$group = $this->get(self::T_GROUP);
+		$group = $this->get(self::GROUP);
 
 		if ($group)
 		{
-			$this->set(self::T_GROUP, $group);
+			$this->set(self::GROUP, $group);
 		}
 	}
 
@@ -78,7 +78,7 @@ class WdEMailNotifyElement extends \BrickRouge\Group
 	{
 		switch ($name)
 		{
-			case self::T_GROUP:
+			case self::GROUP:
 			{
 				foreach ($this->elements as $el)
 				{
@@ -87,11 +87,11 @@ class WdEMailNotifyElement extends \BrickRouge\Group
 			}
 			break;
 
-			case self::T_DEFAULT:
+			case self::DEFAULT_VALUE:
 			{
 				foreach ($value as $identifier => $default)
 				{
-					$this->elements[$identifier]->set(self::T_DEFAULT, $default);
+					$this->elements[$identifier]->set(self::DEFAULT_VALUE, $default);
 				}
 			}
 			break;

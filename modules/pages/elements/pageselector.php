@@ -34,7 +34,7 @@ class WdPageSelectorElement extends Element
 				$options[$entry->nid] = str_repeat("\xC2\xA0", $entry->depth * 4) . $entry->title;
 			}
 
-			$this->set(self::T_OPTIONS, array(null => '') + $options);
+			$this->set(self::OPTIONS, array(null => '') + $options);
 		}
 		catch (\Exception $e)
 		{

@@ -18,6 +18,7 @@ use BrickRouge\Element;
 
 class view_WdEditorElement extends WdEditorElement
 {
+	/*
 	static protected $views = array();
 
 	static public function __static_construct()
@@ -112,6 +113,7 @@ class view_WdEditorElement extends WdEditorElement
 
 		return $views;
 	}
+	*/
 
 	static public function to_content(array $params, $content_id, $page_id)
 	{
@@ -145,12 +147,36 @@ class view_WdEditorElement extends WdEditorElement
 			}
 		}
 
+		/*
+
 		if (empty(self::$views[$id]))
 		{
 			throw new Exception('Unknown view: %id', array('%id' => $id));
 		}
 
-		$view = new ICanBoogie\View($id, self::$views[$id], $patron, $core->document, $page);
+		$class = 'BriskView\View';
+
+		if (isset(self::$views[$id]['class']))
+		{
+			$class = self::$views[$id]['class'];
+		}
+
+		$view = new $class($id, self::$views[$id], $patron, $core->document, $page);
+
+		*/
+
+		$views = \Icybee\Views::get();
+
+		if (empty($views[$id]))
+		{
+			throw new Exception('Unknown view: %id.', array('%id' => $id));
+		}
+
+		$definition = $views[$id];
+
+		$class = $definition['class'] ?: 'Icybee\Views\View';
+
+		$view = new $class($id, $definition, $patron, $core->document, $page);
 
 		return $view();
 	}
@@ -188,7 +214,9 @@ class view_WdEditorElement extends WdEditorElement
 
 //		var_dump(self::$views);
 
-		foreach (self::$views as $id => $view)
+		$views = \Icybee\Views::get();
+
+		foreach ($views as $id => $view)
 		{
 			list($module_id, $type) = explode('/', $id) + array(1 => null);
 
@@ -307,10 +335,10 @@ class view_WdEditorElement extends WdEditorElement
 
 					$items[$title] = new Element
 					(
-						Element::E_RADIO, array
+						Element::TYPE_RADIO, array
 						(
-							Element::T_LABEL => $title,
-							Element::T_DESCRIPTION => $description,
+							Element::LABEL => $title,
+							Element::DESCRIPTION => $description,
 
 							'name' => $name,
 							'value' => $id,

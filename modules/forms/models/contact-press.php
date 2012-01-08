@@ -22,15 +22,15 @@ class press_WdForm extends Form
 			(
 				$tags, array
 				(
-					Element::T_CHILDREN => array
+					Element::CHILDREN => array
 					(
 						'gender' => new Element
 						(
-							Element::E_RADIO_GROUP, array
+							Element::TYPE_RADIO_GROUP, array
 							(
-								Form::T_LABEL => 'Gender',
-								Element::T_OPTIONS => array('salutation.misses', 'salutation.miss', 'salutation.mister'),
-								Element::T_REQUIRED => true
+								Form::LABEL => 'Gender',
+								Element::OPTIONS => array('salutation.misses', 'salutation.miss', 'salutation.mister'),
+								Element::REQUIRED => true
 							)
 						),
 
@@ -38,8 +38,8 @@ class press_WdForm extends Form
 						(
 							array
 							(
-								Form::T_LABEL => 'Lastname',
-								Element::T_REQUIRED => true
+								Form::LABEL => 'Lastname',
+								Element::REQUIRED => true
 							)
 						),
 
@@ -47,8 +47,8 @@ class press_WdForm extends Form
 						(
 							array
 							(
-								Form::T_LABEL => 'Firstname',
-								Element::T_REQUIRED => true
+								Form::LABEL => 'Firstname',
+								Element::REQUIRED => true
 							)
 						),
 
@@ -56,7 +56,7 @@ class press_WdForm extends Form
 						(
 							array
 							(
-								Form::T_LABEL => 'Média'
+								Form::LABEL => 'Média'
 							)
 						),
 
@@ -64,9 +64,9 @@ class press_WdForm extends Form
 						(
 							array
 							(
-								Form::T_LABEL => 'E-Mail',
-								Element::T_REQUIRED => true,
-								Element::T_VALIDATOR => array('BrickRouge\Form::validate_email')
+								Form::LABEL => 'E-Mail',
+								Element::REQUIRED => true,
+								Element::VALIDATOR => array('BrickRouge\Form::validate_email')
 							)
 						),
 
@@ -74,8 +74,8 @@ class press_WdForm extends Form
 						(
 							array
 							(
-								Form::T_LABEL => 'Subject',
-								Element::T_REQUIRED => true
+								Form::LABEL => 'Subject',
+								Element::REQUIRED => true
 							)
 						),
 
@@ -83,7 +83,7 @@ class press_WdForm extends Form
 						(
 							'textarea', array
 							(
-								Form::T_LABEL => 'Your message'
+								Form::LABEL => 'Your message'
 							)
 						)
 					)

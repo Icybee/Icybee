@@ -38,15 +38,15 @@ class News extends \ICanBoogie\Module\Contents
 		(
 			parent::block_edit($properties, $permission), array
 			(
-				Element::T_CHILDREN => array
+				Element::CHILDREN => array
 				(
 					Content::DATE => new \BrickRouge\Date
 					(
 						array
 						(
-							Form::T_LABEL => 'Date',
-							Element::T_REQUIRED => true,
-							Element::T_DEFAULT => date('Y-m-d')
+							Form::LABEL => 'Date',
+							Element::REQUIRED => true,
+							Element::DEFAULT_VALUE => date('Y-m-d')
 						)
 					)
 				)

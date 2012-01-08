@@ -14,6 +14,7 @@ namespace Icybee;
 use ICanBoogie\ActiveRecord\User;
 use ICanBoogie\ActiveRecord\Users\Role;
 use ICanBoogie\Debug;
+use ICanBoogie\Event;
 use ICanBoogie\Exception;
 use ICanBoogie\Operation;
 use ICanBoogie\Route;
@@ -22,6 +23,9 @@ class Document extends \BrickRouge\Document
 {
 	public $on_setup = false;
 	protected $changed_site;
+
+	public $title;
+	public $page_title;
 
 	public function __construct()
 	{
@@ -45,7 +49,7 @@ class Document extends \BrickRouge\Document
 			$head = $this->getHead();
 
 			$rc  = '<!DOCTYPE html>' . PHP_EOL;
-			$rc .= '<html lang="' . $core->language . '" data-api-base="' . wd_entities($core->site->path) . '">' . PHP_EOL;
+			$rc .= '<html lang="' . $core->language . '" data-api-base="' . \ICanBoogie\escape($core->site->path) . '">' . PHP_EOL;
 
 			$rc .= $head;
 			$rc .= $body;
@@ -54,7 +58,7 @@ class Document extends \BrickRouge\Document
 		}
 		catch (\Exception $e)
 		{
-			$rc = (string) $e;
+			$rc = \ICanBoogie\Debug::format_alert($e);
 		}
 
 		return $rc;
@@ -68,10 +72,16 @@ class Document extends \BrickRouge\Document
 
 		$this->title = 'Icybee (' . $site_title . ')';
 
-		//$this->css->add('http://fonts.googleapis.com/css?family=Droid+Sans:regular,bold&subset=latin');
-		//$this->css->add('http://fonts.googleapis.com/css?family=Droid+Serif:regular,italic,bold,bolditalic&subset=latin');
+		$rc  = '<head>' . PHP_EOL;
+		$rc .= '<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />' . PHP_EOL;
 
-		return parent::getHead();
+		$rc .= '<title>' . $this->title . '</title>' . PHP_EOL;
+
+		$rc .= $this->css;
+
+		$rc .= '</head>' . PHP_EOL;
+
+		return $rc;
 	}
 
 	protected function getBody()
@@ -503,6 +513,92 @@ EOT;
 		{
 			$rc .= $contents;
 		}
+
+		return $rc;
+	}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	/**
+	 * Getter hook for the use ICanBoogie\Core::$document property.
+	 *
+	 * @return Document
+	 */
+	static public function hook_get_document()
+	{
+		global $document;
+
+		return $document = new \BrickRouge\Document();
+	}
+
+	public static function markup_document_title(array $args, \WdPatron $patron, $template)
+	{
+		global $core;
+
+		$document = $core->document;
+
+		$title = isset($document->title) ? $document->title : null;
+
+		Event::fire('render_title:before', array('title' => &$title), $document);
+
+		$rc = '<title>' . wd_entities($title) . '</title>';
+
+		Event::fire('render_title', array('rc' => &$rc), $document);
+
+		return $rc;
+	}
+
+	static public function markup_document_metas(array $args, \WdPatron $patron, $template)
+	{
+		global $core;
+
+		$document = $core->document;
+
+		$http_equiv = array
+		(
+			'Content-Type' => 'text/html; charset=' . \ICanBoogie\CHARSET
+		);
+
+		$metas = array
+		(
+
+		);
+
+		Event::fire('render_metas:before', array('http_equiv' => &$http_equiv, 'metas' => &$metas), $document);
+
+		$rc = '';
+
+		foreach ($http_equiv as $name => $content)
+		{
+			$rc .= '<meta http-equiv="' . \ICanBoogie\escape($name) . '" content="' . \ICanBoogie\escape($content) . '" />' . PHP_EOL;
+		}
+
+		foreach ($metas as $name => $content)
+		{
+			$rc .= '<meta name="' . \ICanBoogie\escape($name) . '" content="' . \ICanBoogie\escape($content) . '" />' . PHP_EOL;
+		}
+
+		Event::fire('render_metas', array('rc' => &$rc), $document);
 
 		return $rc;
 	}

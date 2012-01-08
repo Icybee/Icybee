@@ -18,7 +18,9 @@ use ICanBoogie\I18n;
 use ICanBoogie\Operation;
 use ICanBoogie\ActiveRecord\Query;
 use ICanBoogie\ActiveRecord\Site;
+
 use BrickRouge;
+use BrickRouge\Button;
 use BrickRouge\Element;
 use BrickRouge\Form;
 
@@ -31,6 +33,52 @@ use BrickRouge\Form;
 class Module extends \ICanBoogie\Module
 {
 	const OPERATION_CONFIG = 'config';
+
+	/**
+	 * Fires the "alter_views" event with the module as sender:
+	 *
+	 * - &views: The views to alter.
+	 *
+	 * @param array $params
+	 *
+	 * @return Event|null
+	 */
+	protected function fire_alter_views(array $params)
+	{
+		return Event::fire('alter_views', $params, $this);
+	}
+
+	/**
+	 * Fires the "alter_views" event before the value of the `views` property is returned.
+	 *
+	 * @see ICanBoogie.Object::__get()
+	 */
+	public function __get($property)
+	{
+		$rc = parent::__get($property);
+
+		if ($property === 'views')
+		{
+			$this->fire_alter_views(array('views' => &$rc));
+		}
+
+		return $rc;
+	}
+
+	/**
+	 * Returns the views defined by the module.
+	 *
+	 * Each _key/value_ pair defines a view, _key_ is its type, _value_ its definition:
+	 *
+	 * - (string) title: Title of the view. The title of the view is localized use the
+	 * "<module_flat_id>.view" scope.
+	 *
+	 * @return array[string]array
+	 */
+	protected function __get_views()
+	{
+		return array();
+	}
 
 	public function getBlock($name)
 	{
@@ -226,16 +274,16 @@ EOT;
 				(
 					array
 					(
-						Form::T_VALUES => &$properties,
-						Form::T_DISABLED => !$permission,
-						Form::T_HIDDENS => array
+						Form::VALUES => &$properties,
+						Form::DISABLED => !$permission,
+						Form::HIDDENS => array
 						(
 							Operation::DESTINATION => $this->id,
 							Operation::NAME => 'save',
 							Operation::KEY => $key
 						),
 
-						Element::T_GROUPS => array
+						Element::GROUPS => array
 						(
 							'primary' => array
 							(
@@ -259,27 +307,27 @@ EOT;
 
 						// TODO-20091228: create an element for this lovely submit-save-mode-combo
 
-						Element::T_CHILDREN => $permission ? array
+						Element::CHILDREN => $permission ? array
 						(
 							\Icybee\Operation\ActiveRecord\Save::MODE => new Element
 							(
-								Element::E_RADIO_GROUP, array
+								Element::TYPE_RADIO_GROUP, array
 								(
-									Element::T_GROUP => 'save',
-									Element::T_OPTIONS => $save_mode_options,
+									Element::GROUP => 'save',
+									Element::OPTIONS => $save_mode_options,
 
 									'value' => $mode,
 									'class' => 'list save-mode'
 								)
 							),
 
-							'#submit' => new Element
+							'#submit' => new Button
 							(
-								Element::E_SUBMIT, array
+								'Save', array
 								(
-									Element::T_GROUP => 'save',
-									Element::T_INNER_HTML => t('save', array(), array('scope' => array('button', 'label'))),
-									'class' => 'save'
+									Element::GROUP => 'save',
+									'class' => 'save',
+									'type' => 'submit'
 								)
 							)
 						) : array(),
@@ -356,17 +404,17 @@ EOT;
 		(
 			array
 			(
-				Form::T_HIDDENS => array
+				Form::HIDDENS => array
 				(
 					Operation::DESTINATION => $this->id,
 					Operation::NAME => self::OPERATION_CONFIG
 				),
 
-				Form::T_VALUES => array
+				Form::VALUES => array
 				(
 				),
 
-				Element::T_GROUPS => array
+				Element::GROUPS => array
 				(
 					'primary' => array
 					(
@@ -381,21 +429,20 @@ EOT;
 					)
 				),
 
-				Element::T_CHILDREN => array
+				Element::CHILDREN => array
 				(
-					new Element
+					new Button
 					(
-						Element::E_SUBMIT, array
+						'Save', array
 						(
-							Element::T_GROUP => 'save',
-							Element::T_INNER_HTML => t('save', array(), array('scope' => array('button', 'label'))),
-
-							'class' => 'save'
+							Element::GROUP => 'save',
+							'class' => 'save',
+							'type' => 'submit'
 						)
 					)
 				),
 
-				'class' => 'stacked group config',
+				'class' => 'stacked group config edit',
 				'name' => (string) $this
 			),
 
@@ -419,11 +466,18 @@ EOT;
 
 		$registry = $core->registry;
 		$local = $core->site->metas;
-		$elements = $form->get_named_elements();
+		$iterator = new \RecursiveIteratorIterator($form, \RecursiveIteratorIterator::SELF_FIRST);
 		$values = array();
 
-		foreach ($elements as $name => $element)
+		foreach ($iterator as $element)
 		{
+			$name = $element['name'];
+
+			if (!$name)
+			{
+				continue;
+			}
+
 			$dotted_name = strtr($name, array('[' => '.', ']' => ''));
 
 //			wd_log("element: $name");
@@ -459,7 +513,7 @@ EOT;
 
 		$config = array();
 
-		$form->set(Form::T_VALUES, $form->get(Form::T_VALUES) + $values);
+		$form->set(Form::VALUES, $form->get(Form::VALUES) + $values);
 
 		$form->save();
 
@@ -485,7 +539,7 @@ EOT;
 		(
 			array
 			(
-				Form::T_HIDDENS => array
+				Form::HIDDENS => array
 				(
 					Operation::DESTINATION => $this,
 					Operation::NAME => self::OPERATION_DELETE,
@@ -494,15 +548,14 @@ EOT;
 					'#location' => "/admin/{$this->id}"
 				),
 
-				Element::T_CHILDREN => array
+				Element::CHILDREN => array
 				(
-					new Element
+					new Button
 					(
-						Element::E_SUBMIT, array
+						'Delete', array
 						(
-							Element::T_INNER_HTML => t('label.delete'),
-
-							'class' => 'danger'
+							'class' => 'danger',
+							'type' => 'submit'
 						)
 					)
 				)

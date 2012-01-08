@@ -10,6 +10,10 @@ return array
 	Module::T_EXTENDS => 'files',
 	Module::T_CATEGORY => 'resources',
 	Module::T_REQUIRED => true,
+	Module::T_REQUIRES => array
+	(
+		'thumbnailer' => '1.x'
+	),
 
 	Module::T_MODELS => array
 	(

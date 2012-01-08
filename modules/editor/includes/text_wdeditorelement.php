@@ -9,14 +9,17 @@
  * file that was distributed with this source code.
  */
 
+use BrickRouge\Element;
+
 class text_WdEditorElement extends WdEditorElement
 {
 	public function __construct($tags, $dummy=null)
 	{
 		parent::__construct
 		(
-			Element::E_TEXT, $tags + array
+			'input', $tags + array
 			(
+				'type' => 'text',
 				'class' => 'editor text'
 			)
 		);

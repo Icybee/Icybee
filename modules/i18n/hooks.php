@@ -25,7 +25,7 @@ class I18n
 	 * to select a language for the node and a native source target.
 	 *
 	 * Only the native target selector is added if the `language` property is defined in the
-	 * T_HIDDENS array, indicating that the language is already set and cannot be modified by the
+	 * HIDDENS array, indicating that the language is already set and cannot be modified by the
 	 * user.
 	 *
 	 * The I18n options are not added if the following conditions are met:
@@ -33,7 +33,7 @@ class I18n
 	 * - The working site has no native target
 	 * - The "i18n" module is disabled
 	 * - Only one language is used by all the sites available.
-	 * - The `language` property is defined in the T_CHILDREN array but is empty, indicating that
+	 * - The `language` property is defined in the CHILDREN array but is empty, indicating that
 	 * the language is irrelevant for the node.
 	 *
 	 * @param Event $event
@@ -55,14 +55,14 @@ class I18n
 		}
 
 		$tags = &$event->tags;
-		$children = &$tags[Element::T_CHILDREN];
+		$children = &$tags[Element::CHILDREN];
 
 		if (array_key_exists(Node::LANGUAGE, $children) && empty($children[Node::LANGUAGE]))
 		{
 			return;
 		}
 
-		$tags[Element::T_GROUPS]['i18n'] = array
+		$tags[Element::GROUPS]['i18n'] = array
 		(
 			'title' => '.i18n',
 			'weight' => 100,
@@ -71,7 +71,7 @@ class I18n
 
 		$constructor = (string) $sender;
 
-		if (array_key_exists(Node::LANGUAGE, $event->tags[Form::T_HIDDENS]))
+		if (array_key_exists(Node::LANGUAGE, $event->tags[Form::HIDDENS]))
 		{
 			$children[Node::NATIVEID] = new \WdI18nLinkElement
 			(
@@ -87,7 +87,7 @@ class I18n
 			(
 				array
 				(
-					Element::T_GROUP => 'i18n',
+					Element::GROUP => 'i18n',
 					\WdI18nElement::T_CONSTRUCTOR => $constructor
 				)
 			);

@@ -132,11 +132,11 @@ class Contents extends Nodes
 		(
 			'label', array
 			(
-				Element::T_CHILDREN => array
+				Element::CHILDREN => array
 				(
 					new Element
 					(
-						Element::E_CHECKBOX, array
+						Element::TYPE_CHECKBOX, array
 						(
 							'value' => $record->nid,
 							'checked' => ($record->$property != 0),

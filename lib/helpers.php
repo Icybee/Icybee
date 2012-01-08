@@ -9,19 +9,12 @@
  * file that was distributed with this source code.
  */
 
-namespace ICanBoogie\Module\Feedback;
-
-use Icybee\Manager;
-
-class Hits extends \Icybee\Module
+function wd_entities($str, $charset=ICanBoogie\CHARSET)
 {
-	const OPERATION_HIT = 'hit';
+	return htmlspecialchars($str, ENT_COMPAT, $charset);
+}
 
-	protected function block_manage()
-	{
-		return new Manager\Feedback\Hits
-		(
-			$this
-		);
-	}
+function wd_entities_all($str, $charset=ICanBoogie\CHARSET)
+{
+	return htmlentities($str, ENT_COMPAT, $charset);
 }

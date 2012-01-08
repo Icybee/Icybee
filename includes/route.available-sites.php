@@ -38,27 +38,26 @@ function _route_add_available_sites()
 	(
 		array
 		(
-			Element::T_CHILDREN => array
+			Element::CHILDREN => array
 			(
 				new Element
 				(
 					'select', array
 					(
-						Element::T_LABEL => 'Available sites',
-						Element::T_LABEL_POSITION => 'before',
-						Element::T_OPTIONS => $options
+						Element::LABEL => 'Available sites',
+						Element::LABEL_POSITION => 'before',
+						Element::OPTIONS => $options
 					)
 				),
 
 				' &nbsp; ',
 
-				new Element
+				new Button
 				(
-					Element::E_SUBMIT, array
+					'Change', array
 					(
-						Element::T_INNER_HTML => 'Change',
-
-						'class' => 'continue'
+						'class' => 'continue',
+						'type' => 'submit'
 					)
 				)
 			),

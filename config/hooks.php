@@ -4,24 +4,28 @@ return array
 (
 	'events' => array
 	(
-		'ICanBoogie\Operation\Users\Logout::process:before' => array
+		'ICanBoogie\Operation\Users\Logout::process:before' => 'Icybee\Hooks::before_user_logout',
+
+		'operation.components/*:before' => 'publisher_WdHooks::before_operation_components_all', // FIXME-20120108: is this still relevant ?
+		'operation.components/*' => 'publisher_WdHooks::operation_components_all', // FIXME-20120108: is this still relevant ?
+		'Icybee::nodes_load' => 'Icybee::on_nodes_load'
+	),
+
+	'objects.methods' => array
+	(
+		'ICanBoogie\Core::__get_document' => 'Icybee\Document::hook_get_document'
+	),
+
+	'patron.markups' => array
+	(
+		'document:metas' => array
 		(
-			'Icybee\Hooks::before_user_logout',
+			'IcyBee\Document::markup_document_metas', array()
 		),
 
-		'operation.components/*:before' => array
+		'document:title' => array
 		(
-			array('publisher_WdHooks', 'before_operation_components_all')
-		),
-
-		'operation.components/*' => array
-		(
-			array('publisher_WdHooks', 'operation_components_all')
-		),
-
-		'Icybee::nodes_load' => array
-		(
-			'Icybee::on_nodes_load'
+			'IcyBee\Document::markup_document_title', array()
 		)
 	)
 );

@@ -54,7 +54,7 @@ class Images
 
 		$group = null;
 
-		if (isset($event->tags[Element::T_GROUPS]['contents']))
+		if (isset($event->tags[Element::GROUPS]['contents']))
 		{
 			$group = 'contents';
 		}
@@ -70,15 +70,15 @@ class Images
 		(
 			$event->tags, array
 			(
-				Element::T_CHILDREN => array
+				Element::CHILDREN => array
 				(
 					'resources_images[imageid]' => new Widget\PopImage
 					(
 						array
 						(
-							Form::T_LABEL => 'Image',
-							Element::T_GROUP => $group,
-							Element::T_REQUIRED => $core->registry['resources_images.inject.' . $flat_id . '.required'],
+							Form::LABEL => 'Image',
+							Element::GROUP => $group,
+							Element::REQUIRED => $core->registry['resources_images.inject.' . $flat_id . '.required'],
 
 							'value' => $imageid
 						)
@@ -125,9 +125,9 @@ class Images
 			(
 				array
 				(
-					Element::T_GROUP => 'resources_images__inject_thumbnails',
-					Form::T_LABEL => $view['title'],// . ' <span class="small">(' . $id . ')</span>',
-					Element::T_DESCRIPTION => 'Identifiant de la version&nbsp;: <q>' . $id . '</q>.'
+					Element::GROUP => 'resources_images__inject_thumbnails',
+					Form::LABEL => $view['title'],// . ' <span class="small">(' . $id . ')</span>',
+					Element::DESCRIPTION => 'Identifiant de la version&nbsp;: <q>' . $id . '</q>.'
 				)
 			);
 		}
@@ -136,7 +136,7 @@ class Images
 		(
 			$event->tags, array
 			(
-				Element::T_GROUPS => array
+				Element::GROUPS => array
 				(
 					'resources_images__inject' => array
 					(
@@ -158,23 +158,23 @@ class Images
 					)
 				),
 
-				Element::T_CHILDREN => array
+				Element::CHILDREN => array
 				(
 					'global[resources_images.inject][' . $sender_flat_id . ']' => new Element
 					(
-						Element::E_CHECKBOX, array
+						Element::TYPE_CHECKBOX, array
 						(
-							Element::T_LABEL => 'Associer une image aux enregistrements',
-							Element::T_GROUP => 'resources_images__inject'
+							Element::LABEL => 'Associer une image aux enregistrements',
+							Element::GROUP => 'resources_images__inject'
 						)
 					),
 
 					'global[resources_images.inject][' . $sender_flat_id . '.required]' => new Element
 					(
-						Element::E_CHECKBOX, array
+						Element::TYPE_CHECKBOX, array
 						(
-							Element::T_LABEL => "L'association est obligatoire",
-							Element::T_GROUP => 'resources_images__inject_options'
+							Element::LABEL => "L'association est obligatoire",
+							Element::GROUP => 'resources_images__inject_options'
 						)
 					),
 
@@ -182,8 +182,8 @@ class Images
 					(
 						array
 						(
-							Form::T_LABEL => "Image par défaut",
-							Element::T_GROUP => 'resources_images__inject_options'
+							Form::LABEL => "Image par défaut",
+							Element::GROUP => 'resources_images__inject_options'
 						)
 					)
 				)

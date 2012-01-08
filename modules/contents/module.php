@@ -11,11 +11,14 @@
 
 namespace ICanBoogie\Module;
 
-use ICanBoogie\ActiveRecord\Content;
-use ICanBoogie\ActiveRecord\Query;
-use BrickRouge;
-use BrickRouge\Element;
-use BrickRouge\Form;
+use ICanBoogie\ActiveRecord\Content,
+	ICanBoogie\ActiveRecord\Query,
+
+	BrickRouge,
+	BrickRouge\Element,
+	BrickRouge\Form,
+	BrickRouge\Text;
+
 use Icybee\Manager\Contents as Manager;
 
 use WdPatron;
@@ -31,6 +34,40 @@ class Contents extends Nodes
 {
 	const OPERATION_HOME_INCLUDE = 'home_include';
 	const OPERATION_HOME_EXCLUDE = 'home_exclude';
+
+	/**
+	 * Overrites the "view", "list" and "home" views to provide different titles and providers.
+	 *
+	 * @see Icybee.Module::__get_views()
+	 */
+	protected function __get_views()
+	{
+		return array
+		(
+			'view' => array
+			(
+				'title' => "Content detail",
+				'provider' => 'Icybee\Views\Contents\Provider',
+				'assets' => array()
+			),
+
+			'list' => array
+			(
+				'title' => 'Content list',
+				'provider' => 'Icybee\Views\Contents\Provider',
+				'assets' => array()
+			),
+
+			'home' => array
+			(
+				'title' => 'Content home',
+				'provider' => 'Icybee\Views\Contents\Provider',
+				'assets' => array()
+			)
+		)
+
+		+ parent::__get_views();
+	}
 
 	protected function block_manage()
 	{
@@ -50,7 +87,7 @@ class Contents extends Nodes
 	{
 		return array
 		(
-			Element::T_GROUPS => array
+			Element::GROUPS => array
 			(
 				'limits' => array
 				(
@@ -59,41 +96,41 @@ class Contents extends Nodes
 				)
 			),
 
-			Element::T_CHILDREN => array
+			Element::CHILDREN => array
 			(
-				"local[$this->flat_id.default_editor]" => new Element
+				"local[$this->flat_id.default_editor]" => new Text
 				(
-					Element::E_TEXT, array
+					array
 					(
-						Form::T_LABEL => '.default_editor'
+						Form::LABEL => '.default_editor'
 					)
 				),
 
 				"local[$this->flat_id.use_multi_editor]" => new Element
 				(
-					Element::E_CHECKBOX, array
+					Element::TYPE_CHECKBOX, array
 					(
-						Element::T_LABEL => '.use_multi_editor'
+						Element::LABEL => '.use_multi_editor'
 					)
 				),
 
-				"local[$this->flat_id.limits.home]" => new Element
+				"local[$this->flat_id.limits.home]" => new Text
 				(
-					Element::E_TEXT, array
+					array
 					(
-						Form::T_LABEL => '.limits_home',
-						Element::T_DEFAULT => 3,
-						Element::T_GROUP => 'limits'
+						Form::LABEL => '.limits_home',
+						Element::DEFAULT_VALUE => 3,
+						Element::GROUP => 'limits'
 					)
 				),
 
-				"local[$this->flat_id.limits.list]" => new Element
+				"local[$this->flat_id.limits.list]" => new Text
 				(
-					Element::E_TEXT, array
+					array
 					(
-						Form::T_LABEL => '.limits_list',
-						Element::T_DEFAULT => 10,
-						Element::T_GROUP => 'limits'
+						Form::LABEL => '.limits_list',
+						Element::DEFAULT_VALUE => 10,
+						Element::GROUP => 'limits'
 					)
 				)
 			)
@@ -122,7 +159,7 @@ class Contents extends Nodes
 
 			array
 			(
-				Element::T_GROUPS => array
+				Element::GROUPS => array
 				(
 					'contents' => array
 					(
@@ -136,13 +173,13 @@ class Contents extends Nodes
 					)
 				),
 
-				Element::T_CHILDREN => array
+				Element::CHILDREN => array
 				(
-					Content::SUBTITLE => new Element
+					Content::SUBTITLE => new Text
 					(
-						Element::E_TEXT, array
+						array
 						(
-							Form::T_LABEL => '.subtitle'
+							Form::LABEL => '.subtitle'
 						)
 					),
 
@@ -150,9 +187,9 @@ class Contents extends Nodes
 					(
 						$properties['editor'] ? $properties['editor'] : $default_editor, array
 						(
-							Element::T_LABEL_MISSING => 'Contents', // TODO-20110205: scope => 'element', 'missing', 'label'
-							Element::T_GROUP => 'contents',
-							Element::T_REQUIRED => true,
+							Element::LABEL_MISSING => 'Contents', // TODO-20110205: scope => 'element', 'missing', 'label'
+							Element::GROUP => 'contents',
+							Element::REQUIRED => true,
 
 							'rows' => 16
 						)
@@ -162,9 +199,9 @@ class Contents extends Nodes
 					(
 						array
 						(
-							Form::T_LABEL => '.excerpt',
-							Element::T_GROUP => 'contents',
-							Element::T_DESCRIPTION => ".excerpt",
+							Form::LABEL => '.excerpt',
+							Element::GROUP => 'contents',
+							Element::DESCRIPTION => ".excerpt",
 
 							'rows' => 3
 						)
@@ -174,19 +211,19 @@ class Contents extends Nodes
 					(
 						array
 						(
-							Form::T_LABEL => 'Date',
-							Element::T_REQUIRED => true,
-							Element::T_DEFAULT => date('Y-m-d')
+							Form::LABEL => 'Date',
+							Element::REQUIRED => true,
+							Element::DEFAULT_VALUE => date('Y-m-d')
 						)
 					),
 
 					Content::IS_HOME_EXCLUDED => new Element
 					(
-						Element::E_CHECKBOX, array
+						Element::TYPE_CHECKBOX, array
 						(
-							Element::T_LABEL => ".is_home_excluded",
-							Element::T_GROUP => 'visibility',
-							Element::T_DESCRIPTION => ".is_home_excluded"
+							Element::LABEL => ".is_home_excluded",
+							Element::GROUP => 'visibility',
+							Element::DESCRIPTION => ".is_home_excluded"
 						)
 					)
 				)

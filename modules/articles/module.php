@@ -19,22 +19,46 @@ use BrickRouge\Element;
 
 class Articles extends Contents
 {
+	protected function __get_views()
+	{
+		$views = parent::__get_views() + array
+		(
+			'archives' => array
+			(
+				'title' => "Archives des articles",
+				'class' => 'Icybee\Views\Articles\Archives',
+				'provider' => 'Icybee\Views\Contents\Provider',
+				'assets' => array
+				(
+					'css' => array
+					(
+						__DIR__ . '/public/page.css'
+					)
+				)
+			)
+		);
+
+		$views['list']['assets']['css'][] = __DIR__ . '/public/page.css';
+
+		return $views;
+	}
+
 	protected function block_edit(array $properties, $permission)
 	{
 		return wd_array_merge_recursive
 		(
 			parent::block_edit($properties, $permission), array
 			(
-				Element::T_CHILDREN => array
+				Element::CHILDREN => array
 				(
 					Content::DATE => new BrickRouge\DateTime
 					(
 						array
 						(
-							Form::T_LABEL => 'Date',
+							Form::LABEL => 'Date',
 
-							Element::T_REQUIRED => true,
-							Element::T_DEFAULT => date('Y-m-d H:i:s')
+							Element::REQUIRED => true,
+							Element::DEFAULT_VALUE => date('Y-m-d H:i:s')
 						)
 					)
 				)

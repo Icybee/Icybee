@@ -84,24 +84,24 @@ class Vocabulary extends \Icybee\Module
 			(
 				'select', array
 				(
-					Element::T_LABEL => '.siteid',
-					Element::T_LABEL_POSITION => 'before',
-					Element::T_OPTIONS => array
+					Element::LABEL => '.siteid',
+					Element::LABEL_POSITION => 'before',
+					Element::OPTIONS => array
 					(
 						null => ''
 					)
 					+ $core->models['sites']->select('siteid, IF(admin_title != "", admin_title, concat(title, ":", language))')->order('admin_title, title')->pairs,
 
-					Element::T_DEFAULT => $core->site_id,
-					Element::T_GROUP => 'admin',
-					Element::T_DESCRIPTION => '.siteid'
+					Element::DEFAULT_VALUE => $core->site_id,
+					Element::GROUP => 'admin',
+					Element::DESCRIPTION => '.siteid'
 				)
 			);
 		}
 
 		return array
 		(
-			Element::T_GROUPS => array
+			Element::GROUPS => array
 			(
 				'settings' => array
 				(
@@ -111,24 +111,24 @@ class Vocabulary extends \Icybee\Module
 				)
 			),
 
-			Element::T_CHILDREN => array
+			Element::CHILDREN => array
 			(
 				ActiveRecord\Taxonomy\Vocabulary::VOCABULARY => new Widget\TitleSlugCombo
 				(
 					array
 					(
-						Form::T_LABEL => '.title',
-						Element::T_REQUIRED => true
+						Form::LABEL => '.title',
+						Element::REQUIRED => true
 					)
 				),
 
 				ActiveRecord\Taxonomy\Vocabulary::SCOPE => new Element
 				(
-					Element::E_CHECKBOX_GROUP, array
+					Element::TYPE_CHECKBOX_GROUP, array
 					(
-						Form::T_LABEL => '.scope',
-						Element::T_OPTIONS => $scope_options,
-						Element::T_REQUIRED => true,
+						Form::LABEL => '.scope',
+						Element::OPTIONS => $scope_options,
+						Element::REQUIRED => true,
 
 						'class' => 'list combo',
 						'value' => $scope_value
@@ -137,22 +137,22 @@ class Vocabulary extends \Icybee\Module
 
 				ActiveRecord\Taxonomy\Vocabulary::IS_TAGS => new Element
 				(
-					Element::E_CHECKBOX, array
+					Element::TYPE_CHECKBOX, array
 					(
 
-						Element::T_LABEL => '.is_tags',
-						Element::T_GROUP => 'settings',
-						Element::T_DESCRIPTION => '.is_tags'
+						Element::LABEL => '.is_tags',
+						Element::GROUP => 'settings',
+						Element::DESCRIPTION => '.is_tags'
 					)
 				),
 
 				ActiveRecord\Taxonomy\Vocabulary::IS_MULTIPLE => new Element
 				(
-					Element::E_CHECKBOX, array
+					Element::TYPE_CHECKBOX, array
 					(
-						Element::T_LABEL => 'Multiple appartenance',
-						Element::T_GROUP => 'settings',
-						Element::T_DESCRIPTION => "Les enregistrements peuvent appartenir à
+						Element::LABEL => 'Multiple appartenance',
+						Element::GROUP => 'settings',
+						Element::DESCRIPTION => "Les enregistrements peuvent appartenir à
 						plusieurs terms du vocabulaire (c'est toujours le cas pour les
 						<em>étiquettes</em>)"
 					)
@@ -160,11 +160,11 @@ class Vocabulary extends \Icybee\Module
 
 				ActiveRecord\Taxonomy\Vocabulary::IS_REQUIRED => new Element
 				(
-					Element::E_CHECKBOX, array
+					Element::TYPE_CHECKBOX, array
 					(
-						Element::T_LABEL => 'Requis',
-						Element::T_GROUP => 'settings',
-						Element::T_DESCRIPTION => 'Au moins un terme de ce vocabulaire doit être
+						Element::LABEL => 'Requis',
+						Element::GROUP => 'settings',
+						Element::DESCRIPTION => 'Au moins un terme de ce vocabulaire doit être
 						sélectionné.'
 					)
 				),

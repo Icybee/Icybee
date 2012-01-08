@@ -36,15 +36,17 @@ class Deactivate extends Operation
 	{
 		global $core;
 
-		$enabled = json_decode($core->vars['enabled_modules'], true);
-		$enabled = $enabled ? array_flip($enabled) : array();
+		$enabled = array_keys($core->modules->enabled_modules_descriptors);
+		$enabled = array_combine($enabled, $enabled);
 
 		foreach ((array) $this->key as $key => $dummy)
 		{
 			unset($enabled[$key]);
 		}
 
-		$core->vars['enabled_modules'] = json_encode(array_keys($enabled));
+		$core->vars['enabled_modules'] = json_encode($enabled);
+
+		unset($core->vars['views']);
 
 		$this->response->location = Route::contextualize('/admin/' . (string) $this->module);
 

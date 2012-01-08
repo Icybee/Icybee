@@ -22,7 +22,7 @@ class LoginCombo extends Element
 		$login = new Login;
 		$password = new NonceRequest;
 
-		$password->children['email'][Element::T_DESCRIPTION] = '<a href="#" class="cancel">' . t('cancel', array(), array('scope' => 'element.label')) . '</a>';
+		$password->children['email'][Element::DESCRIPTION] = '<a href="#" class="cancel">' . t('cancel', array(), array('scope' => 'element.label')) . '</a>';
 
 		$this->elements['login'] = $login;
 		$this->elements['password'] = $password;

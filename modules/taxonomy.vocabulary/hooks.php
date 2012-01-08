@@ -129,7 +129,7 @@ class Vocabulary
 		->order('weight')
 		->all;
 
-		// TODO-20101104: use BrickRouge\Form::T_VALUES instead of setting the 'values' of the elements.
+		// TODO-20101104: use BrickRouge\Form::VALUES instead of setting the 'values' of the elements.
 		// -> because 'properties' are ignored, and that's bad.
 
 		$terms_model = $core->models['taxonomy.terms'];
@@ -161,12 +161,12 @@ class Vocabulary
 				(
 					'div', array
 					(
-						Form::T_LABEL => $label,
+						Form::LABEL => $label,
 
-						Element::T_GROUP => 'organize',
-						Element::T_WEIGHT => 100,
+						Element::GROUP => 'organize',
+						Element::WEIGHT => 100,
 
-						Element::T_CHILDREN => array
+						Element::CHILDREN => array
 						(
 							new Text
 							(
@@ -181,7 +181,7 @@ class Vocabulary
 							(
 								'ul', array
 								(
-									Element::T_OPTIONS => $options,
+									Element::OPTIONS => $options,
 									'class' => 'cloud'
 								)
 							)
@@ -208,11 +208,11 @@ class Vocabulary
 				(
 					'select', array
 					(
-						Form::T_LABEL => $vocabulary->vocabulary,
-						Element::T_GROUP => 'organize',
-						Element::T_OPTIONS => array(null => '') + $options,
-						Element::T_REQUIRED => $vocabulary->is_required,
-						Element::T_DESCRIPTION => '<a href="' . $edit_url . '">' . t('Edit the vocabulary <q>!vocabulary</q>', array('!vocabulary' => $vocabulary->vocabulary)) . '</a>.',
+						Form::LABEL => $vocabulary->vocabulary,
+						Element::GROUP => 'organize',
+						Element::OPTIONS => array(null => '') + $options,
+						Element::REQUIRED => $vocabulary->is_required,
+						Element::DESCRIPTION => '<a href="' . $edit_url . '">' . t('Edit the vocabulary <q>!vocabulary</q>', array('!vocabulary' => $vocabulary->vocabulary)) . '</a>.',
 
 						'value' => $value
 					)
@@ -227,7 +227,7 @@ class Vocabulary
 		(
 			$event->tags, array
 			(
-				Element::T_GROUPS => array
+				Element::GROUPS => array
 				(
 					'organize' => array
 					(
@@ -237,7 +237,7 @@ class Vocabulary
 					)
 				),
 
-				Element::T_CHILDREN => $children
+				Element::CHILDREN => $children
 			)
 		);
 	}

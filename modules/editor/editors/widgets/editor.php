@@ -118,11 +118,11 @@ class widgets_WdEditorElement extends WdEditorElement
 			)
 		);
 
-		if ($this->get(self::T_DESCRIPTION) === null)
+		if ($this->get(Element::DESCRIPTION) === null)
 		{
 			$this->set
 			(
-				self::T_DESCRIPTION, "Sélectionner les widgets à afficher. Vous pouvez
+				Element::DESCRIPTION, "Sélectionner les widgets à afficher. Vous pouvez
 				les ordonner par glissé-déposé."
 			);
 		}
@@ -153,9 +153,9 @@ class widgets_WdEditorElement extends WdEditorElement
 
 			$rc .= new Element
 			(
-				Element::E_CHECKBOX, array
+				Element::TYPE_CHECKBOX, array
 				(
-					Element::T_LABEL => $widget['title'],
+					Element::LABEL => $widget['title'],
 
 					'name' => $name . '[' . $id . ']',
 					'checked' => isset($value[$id])

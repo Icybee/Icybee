@@ -12,6 +12,7 @@
 namespace ICanBoogie\Module\System;
 
 use BrickRouge\Element;
+use BrickRouge\Text;
 use ICanBoogie\Event;
 
 class Cache extends \Icybee\Module
@@ -112,11 +113,11 @@ EOT;
 				(
 					'label', array
 					(
-						Element::T_CHILDREN => array
+						Element::CHILDREN => array
 						(
 							new Element
 							(
-								Element::E_CHECKBOX, array
+								Element::TYPE_CHECKBOX, array
 								(
 									'checked' => $checked,
 									'disabled' => $definition['state'] === null,
@@ -139,11 +140,11 @@ EOT;
 				{
 					list($value, $unit) = $definition['size_limit'];
 
-					$size_limit = new Element
+					$size_limit = new Text
 					(
-						Element::E_TEXT, array
+						array
 						(
-							Element::T_LABEL => $unit,
+							Element::LABEL => $unit,
 
 							'name' => 'size_limit',
 							'size' => 4,
@@ -158,11 +159,11 @@ EOT;
 				{
 					list($value, $unit) = $definition['time_limit'];
 
-					$time_limit = new Element
+					$time_limit = new Text
 					(
-						Element::E_TEXT, array
+						array
 						(
-							Element::T_LABEL => $unit,
+							Element::LABEL => $unit,
 
 							'name' => 'time_limit',
 							'size' => 4,
@@ -184,7 +185,7 @@ EOT;
 		}
 
 		$rc = <<<EOT
-<table class="wdform manage" cellpadding="0" cellspacing="0" border="0" width="100%">
+<table class="manage" cellpadding="0" cellspacing="0" border="0" width="100%">
 	<thead>
 		<tr>
 			<th colspan="2"><div>&nbsp;</div></th>

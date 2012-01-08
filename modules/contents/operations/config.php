@@ -17,7 +17,17 @@ use ICanBoogie\Operation;
  * The class doesn't do a thing but make config events more accurate because one can listen to the
  * configuration of a "contents" type module.
  */
-class Save extends Operation\Nodes\Save
+class Config extends \ICanBoogie\Operation\Nodes\Config
 {
+	protected function __get_properties()
+	{
+		$properties = parent::__get_properties();
 
+		$properties['local'] += array
+		(
+			"{$this->module->flat_id}.use_multi_editor" => false
+		);
+
+		return $properties;
+	}
 }

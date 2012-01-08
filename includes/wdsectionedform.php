@@ -20,7 +20,7 @@ class WdSectionedForm extends Form
 	{
 		$this->contextPush();
 
-		$groups = $this->get(self::T_GROUPS, array());
+		$groups = $this->get(self::GROUPS, array());
 
 		self::sort_by($groups, 'weight');
 
@@ -35,9 +35,9 @@ class WdSectionedForm extends Form
 				continue;
 			}
 
-			$group = is_object($element) ? $element->get(Element::T_GROUP, 'primary') : 'primary';
+			$group = is_object($element) ? $element->get(Element::GROUP, 'primary') : 'primary';
 
-			$groups[$group][self::T_CHILDREN][$name] = $element;
+			$groups[$group][self::CHILDREN][$name] = $element;
 		}
 
 		#
@@ -48,7 +48,7 @@ class WdSectionedForm extends Form
 
 		foreach ($groups as $group_id => $group)
 		{
-			if (empty($group[self::T_CHILDREN]))
+			if (empty($group[self::CHILDREN]))
 			{
 				continue;
 			}
@@ -57,7 +57,7 @@ class WdSectionedForm extends Form
 			# sort children
 			#
 
-			self::sort_elements_by($group[self::T_CHILDREN], self::T_WEIGHT);
+			self::sort_elements_by($group[self::CHILDREN], self::WEIGHT);
 
 			#
 			# section title
@@ -111,7 +111,7 @@ class WdSectionedForm extends Form
 					(
 						'div', array
 						(
-							self::T_CHILDREN => $group[self::T_CHILDREN],
+							self::CHILDREN => $group[self::CHILDREN],
 
 							'class' => $css_class,
 							'id' => 'section-' . wd_normalize($group_id)
@@ -124,7 +124,7 @@ class WdSectionedForm extends Form
 					(
 						array
 						(
-							self::T_CHILDREN => $group[self::T_CHILDREN],
+							self::CHILDREN => $group[self::CHILDREN],
 
 							'class' => $css_class,
 							'id' => 'section-' . wd_normalize($group_id)
@@ -134,7 +134,7 @@ class WdSectionedForm extends Form
 			}
 			else
 			{
-				$children[] = '<div id="section-' . $group_id . '" class="' . $css_class . '">' . $this->publishTemplate($group['template'], $group[self::T_CHILDREN]) . '</div>';
+				$children[] = '<div id="section-' . $group_id . '" class="' . $css_class . '">' . $this->publishTemplate($group['template'], $group[self::CHILDREN]) . '</div>';
 			}
 		}
 
@@ -220,21 +220,14 @@ class WdSectionedForm extends Form
 			# label
 			#
 
-			$label = $child->get(self::T_LABEL);
+			$label = $child->get(self::LABEL);
 
 			if ($label)
 			{
 				$label = t($label);
-				$is_required = $child->get(self::T_REQUIRED);
+				$is_required = $child->get(self::REQUIRED);
 
-				$child_id = $child->get('id');
-
-				if (!$child_id)
-				{
-					$child_id = Form::getAutoElementId();
-
-					$child->set('id', $child_id);
-				}
+				$child_id = $child->id;
 
 				// TODO: clean up this mess
 
@@ -250,7 +243,7 @@ class WdSectionedForm extends Form
 				$start =  $is_required ? $markup_start . $label . '&nbsp;<sup>*</sup>' : $markup_start . $label;
 				$finish = '</label>';
 
-				$complement = $child->get(self::T_LABEL_COMPLEMENT);
+				$complement = $child->get(self::LABEL_COMPLEMENT);
 
 				if ($complement)
 				{

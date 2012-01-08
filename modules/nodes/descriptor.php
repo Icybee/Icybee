@@ -10,6 +10,10 @@ return array
 	Module::T_DESCRIPTION => 'Centralized node system base',
 	Module::T_PERMISSION => false,
 	Module::T_REQUIRED => true,
+	Module::T_REQUIRES => array
+	(
+		'users' => 'x.x'
+	),
 
 	Module::T_MODELS => array
 	(

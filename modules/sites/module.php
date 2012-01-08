@@ -13,6 +13,7 @@ namespace ICanBoogie\Module;
 
 use BrickRouge\Element;
 use BrickRouge\Form;
+use BrickRouge\Text;
 use BrickRouge\Widget;
 use Icybee\Manager;
 
@@ -58,9 +59,9 @@ class Sites extends \Icybee\Module
 			(
 				'select', array
 				(
-					Form::T_LABEL => 'Source de traduction',
-					Element::T_GROUP => 'i18n',
-					Element::T_OPTIONS => array(0 => '<aucune>') + $translation_sources_options
+					Form::LABEL => 'Source de traduction',
+					Element::GROUP => 'i18n',
+					Element::OPTIONS => array(0 => '<aucune>') + $translation_sources_options
 				)
 			);
 		}
@@ -78,7 +79,7 @@ class Sites extends \Icybee\Module
 
 		return array
 		(
-			Element::T_GROUPS => array
+			Element::GROUPS => array
 			(
 				'location' => array
 				(
@@ -99,23 +100,23 @@ class Sites extends \Icybee\Module
 				)
 			),
 
-			Element::T_CHILDREN => array
+			Element::CHILDREN => array
 			(
-				'title' => new Element
+				'title' => new Text
 				(
-					Element::E_TEXT, array
+					array
 					(
-						Form::T_LABEL => 'Titre',
-						Element::T_REQUIRED => true
+						Form::LABEL => 'Titre',
+						Element::REQUIRED => true
 					)
 				),
 
-				'admin_title' => new Element
+				'admin_title' => new Text
 				(
-					Element::E_TEXT, array
+					array
 					(
-						Form::T_LABEL => 'Titre administratif',
-						Element::T_DESCRIPTION => "Il s'agit du titre utilisé par l'interface d'administration."
+						Form::LABEL => 'Titre administratif',
+						Element::DESCRIPTION => "Il s'agit du titre utilisé par l'interface d'administration."
 					)
 				),
 
@@ -123,8 +124,8 @@ class Sites extends \Icybee\Module
 				(
 					'select', array
 					(
-						Form::T_LABEL => 'Modèle',
-						Element::T_OPTIONS => array
+						Form::LABEL => 'Modèle',
+						Element::OPTIONS => array
 						(
 							null => '<défaut>'
 						)
@@ -133,43 +134,43 @@ class Sites extends \Icybee\Module
 					)
 				),
 
-				'subdomain' => new Element
+				'subdomain' => new Text
 				(
-					Element::E_TEXT, array
+					array
 					(
-						Form::T_LABEL => 'Sous-domaine',
-						Element::T_GROUP => 'location',
+						Form::LABEL => 'Sous-domaine',
+						Element::GROUP => 'location',
 
 						'size' => 16
 					)
 				),
 
-				'domain' => new Element
+				'domain' => new Text
 				(
-					Element::E_TEXT, array
+					array
 					(
-						Form::T_LABEL => 'Domaine',
-						Element::T_GROUP => 'location'
+						Form::LABEL => 'Domaine',
+						Element::GROUP => 'location'
 					)
 				),
 
-				'tld' => new Element
+				'tld' => new Text
 				(
-					Element::E_TEXT, array
+					array
 					(
-						Form::T_LABEL => 'TLD',
-						Element::T_GROUP => 'location',
+						Form::LABEL => 'TLD',
+						Element::GROUP => 'location',
 
 						'size' => 8
 					)
 				),
 
-				'path' => new Element
+				'path' => new Text
 				(
-					Element::E_TEXT, array
+					array
 					(
-						Form::T_LABEL => 'Chemin',
-						Element::T_GROUP => 'location',
+						Form::LABEL => 'Chemin',
+						Element::GROUP => 'location',
 
 						'value' => $path
 					)
@@ -179,10 +180,10 @@ class Sites extends \Icybee\Module
 				(
 					'select', array
 					(
-						Form::T_LABEL => 'Langue',
-						Element::T_REQUIRED => true,
-						Element::T_GROUP => 'i18n',
-						Element::T_OPTIONS => array(null => '') + $languages
+						Form::LABEL => 'Langue',
+						Element::REQUIRED => true,
+						Element::GROUP => 'i18n',
+						Element::OPTIONS => array(null => '') + $languages
 					)
 				),
 
@@ -192,9 +193,9 @@ class Sites extends \Icybee\Module
 				(
 					array
 					(
-						Form::T_LABEL => 'Fuseau horaire',
-						Element::T_GROUP => 'i18n',
-						Element::T_DESCRIPTION => "Par défaut, le fuseau horaire du serveur est
+						Form::LABEL => 'Fuseau horaire',
+						Element::GROUP => 'i18n',
+						Element::DESCRIPTION => "Par défaut, le fuseau horaire du serveur est
 						utilisé (actuellement&nbsp;: <q>" . ($tz ? $tz : 'non défini') . "</q>)."
 					)
 				),
@@ -203,8 +204,8 @@ class Sites extends \Icybee\Module
 				(
 					'select', array
 					(
-						Form::T_LABEL => 'Status',
-						Element::T_OPTIONS => array
+						Form::LABEL => 'Status',
+						Element::OPTIONS => array
 						(
 							0 => 'Le site est hors ligne',
 							1 => 'Le site est en ligne',

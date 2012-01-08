@@ -53,13 +53,13 @@ class AdjustImage extends AdjustNode
 		(
 			'li', array
 			(
-				Element::T_CHILDREN => array
+				Element::CHILDREN => array
 				(
 					new Element
 					(
 						'img', array
 						(
-							Element::T_DATASET => array
+							Element::DATASET => array
 							(
 								'nid' => $recordid,
 								'pop-preview-delay' => 1000,
@@ -75,7 +75,7 @@ class AdjustImage extends AdjustNode
 					)
 				),
 
-				Element::T_DATASET => array
+				Element::DATASET => array
 				(
 					ActiveRecord\Image::NID => $recordid,
 					ActiveRecord\Image::TITLE => $record->title,

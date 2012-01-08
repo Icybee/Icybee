@@ -56,7 +56,7 @@ class Blocks extends Operation
 
 		$block = $module->getBlock($name, $request->params);
 
-		$this->response['assets'] = $document->get_assets();
+		$this->response['assets'] = $document->assets;
 
 		return (string) $block;
 	}

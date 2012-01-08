@@ -38,14 +38,14 @@ class Terms extends \Icybee\Module
 
 		return array
 		(
-			Element::T_CHILDREN => array
+			Element::CHILDREN => array
 			(
 				Term::TERM => new Widget\TitleSlugCombo
 				(
 					array
 					(
-						Form::T_LABEL => 'Term',
-						Element::T_REQUIRED => true
+						Form::LABEL => 'Term',
+						Element::REQUIRED => true
 					)
 				),
 
@@ -53,9 +53,9 @@ class Terms extends \Icybee\Module
 				(
 					'select', array
 					(
-						Form::T_LABEL => 'Vocabulary',
-						Element::T_OPTIONS => $vid_options,
-						Element::T_REQUIRED => true
+						Form::LABEL => 'Vocabulary',
+						Element::OPTIONS => $vid_options,
+						Element::REQUIRED => true
 					)
 				)/*,
 
@@ -63,7 +63,7 @@ class Terms extends \Icybee\Module
 				(
 					array
 					(
-						Form::T_LABEL => 'Weight'
+						Form::LABEL => 'Weight'
 					)
 				)
 				*/

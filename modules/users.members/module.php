@@ -12,8 +12,10 @@
 namespace ICanBoogie\Module\Users;
 
 use ICanBoogie\Module;
+use BrickRouge\Date;
 use BrickRouge\Element;
 use BrickRouge\Form;
+use BrickRouge\Text;
 
 class Members extends Module\Users
 {
@@ -23,7 +25,7 @@ class Members extends Module\Users
 		(
 			parent::block_edit($properties, $permission), array
 			(
-				Element::T_GROUPS => array
+				Element::GROUPS => array
 				(
 					'numbers' => array
 					(
@@ -100,17 +102,17 @@ EOT
 					)
 				),
 
-				Element::T_CHILDREN => array
+				Element::CHILDREN => array
 				(
 					'salutation' => new Element
 					(
 						'select', array
 						(
-							Form::T_LABEL => '.Salutation',
-							Element::T_REQUIRED => true,
-							Element::T_GROUP => 'contact',
-							Element::T_WEIGHT => -10,
-							Element::T_OPTIONS => array
+							Form::LABEL => '.Salutation',
+							Element::REQUIRED => true,
+							Element::GROUP => 'contact',
+							Element::WEIGHT => -10,
+							Element::OPTIONS => array
 							(
 								null => '',
 								t('salutation.misses'),
@@ -124,48 +126,48 @@ EOT
 					# numbers
 					#
 
-					'number_work' => new Element
+					'number_work' => new Text
 					(
-						Element::E_TEXT, array
+						array
 						(
-							Form::T_LABEL => 'Travail',
-							Element::T_GROUP => 'numbers'
+							Form::LABEL => 'Travail',
+							Element::GROUP => 'numbers'
 						)
 					),
 
-					'number_home' => new Element
+					'number_home' => new Text
 					(
-						Element::E_TEXT, array
+						array
 						(
-							Form::T_LABEL => 'Domicile',
-							Element::T_GROUP => 'numbers'
+							Form::LABEL => 'Domicile',
+							Element::GROUP => 'numbers'
 						)
 					),
 
-					'number_fax' => new Element
+					'number_fax' => new Text
 					(
-						Element::E_TEXT, array
+						array
 						(
-							Form::T_LABEL => 'FAX',
-							Element::T_GROUP => 'numbers'
+							Form::LABEL => 'FAX',
+							Element::GROUP => 'numbers'
 						)
 					),
 
-					'number_pager' => new Element
+					'number_pager' => new Text
 					(
-						Element::E_TEXT, array
+						array
 						(
-							Form::T_LABEL => 'Pager',
-							Element::T_GROUP => 'numbers'
+							Form::LABEL => 'Pager',
+							Element::GROUP => 'numbers'
 						)
 					),
 
-					'number_mobile' => new Element
+					'number_mobile' => new Text
 					(
-						Element::E_TEXT, array
+						array
 						(
-							Form::T_LABEL => 'Mobile',
-							Element::T_GROUP => 'numbers'
+							Form::LABEL => 'Mobile',
+							Element::GROUP => 'numbers'
 						)
 					),
 
@@ -173,74 +175,74 @@ EOT
 					# private
 					#
 
-					'street' => new Element
-					(
-						Element::E_TEXT, array
-						(
-							Form::T_LABEL => 'Rue',
-							Element::T_GROUP => 'private'
-						)
-					),
-
-					'street_complement' => new Element
-					(
-						Element::E_TEXT, array
-						(
-							Element::T_GROUP => 'private'
-						)
-					),
-
-					'city' => new Element
-					(
-						Element::E_TEXT, array
-						(
-							Form::T_LABEL => 'Ville/Localité',
-							Element::T_GROUP => 'private'
-						)
-					),
-
-					'state' => new Element
-					(
-						Element::E_TEXT, array
-						(
-							Form::T_LABEL => 'État/Province',
-							Element::T_GROUP => 'private'
-						)
-					),
-
-					'postalcode' => new Element
-					(
-						Element::E_TEXT, array
-						(
-							Form::T_LABEL => 'Code postal',
-							Element::T_GROUP => 'private'
-						)
-					),
-
-					'country' => new Element
-					(
-						Element::E_TEXT, array
-						(
-							Form::T_LABEL => 'Pays',
-							Element::T_GROUP => 'private'
-						)
-					),
-
-					'webpage' => new Element
-					(
-						Element::E_TEXT, array
-						(
-							Form::T_LABEL => 'Page Web',
-							Element::T_GROUP => 'private'
-						)
-					),
-
-					'birthday' => new WdDateElement
+					'street' => new Text
 					(
 						array
 						(
-							Form::T_LABEL => 'Date de naissance',
-							Element::T_GROUP => 'private'
+							Form::LABEL => 'Rue',
+							Element::GROUP => 'private'
+						)
+					),
+
+					'street_complement' => new Text
+					(
+						array
+						(
+							Element::GROUP => 'private'
+						)
+					),
+
+					'city' => new Text
+					(
+						array
+						(
+							Form::LABEL => 'Ville/Localité',
+							Element::GROUP => 'private'
+						)
+					),
+
+					'state' => new Text
+					(
+						array
+						(
+							Form::LABEL => 'État/Province',
+							Element::GROUP => 'private'
+						)
+					),
+
+					'postalcode' => new Text
+					(
+						array
+						(
+							Form::LABEL => 'Code postal',
+							Element::GROUP => 'private'
+						)
+					),
+
+					'country' => new Text
+					(
+						array
+						(
+							Form::LABEL => 'Pays',
+							Element::GROUP => 'private'
+						)
+					),
+
+					'webpage' => new Text
+					(
+						array
+						(
+							Form::LABEL => 'Page Web',
+							Element::GROUP => 'private'
+						)
+					),
+
+					'birthday' => new Date
+					(
+						array
+						(
+							Form::LABEL => 'Date de naissance',
+							Element::GROUP => 'private'
 						)
 					),
 
@@ -248,92 +250,92 @@ EOT
 					# professional
 					#
 
-					'position' => new Element
+					'position' => new Text
 					(
-						Element::E_TEXT, array
+						array
 						(
-							Form::T_LABEL => 'Poste',
-							Element::T_GROUP => 'professional'
+							Form::LABEL => 'Poste',
+							Element::GROUP => 'professional'
 						)
 					),
 
-					'service' => new Element
+					'service' => new Text
 					(
-						Element::E_TEXT, array
+						array
 						(
-							Form::T_LABEL => 'Service',
-							Element::T_GROUP => 'professional'
+							Form::LABEL => 'Service',
+							Element::GROUP => 'professional'
 						)
 					),
 
-					'company' => new Element
+					'company' => new Text
 					(
-						Element::E_TEXT, array
+						array
 						(
-							Form::T_LABEL => 'Société',
-							Element::T_GROUP => 'professional'
+							Form::LABEL => 'Société',
+							Element::GROUP => 'professional'
 						)
 					),
 
-					'company_street' => new Element
+					'company_street' => new Text
 					(
-						Element::E_TEXT, array
+						array
 						(
-							Form::T_LABEL => 'Rue',
-							Element::T_GROUP => 'professional'
+							Form::LABEL => 'Rue',
+							Element::GROUP => 'professional'
 						)
 					),
 
-					'company_street_complement' => new Element
+					'company_street_complement' => new Text
 					(
-						Element::E_TEXT, array
+						array
 						(
-							Element::T_GROUP => 'professional'
+							Element::GROUP => 'professional'
 						)
 					),
 
-					'company_city' => new Element
+					'company_city' => new Text
 					(
-						Element::E_TEXT, array
+						array
 						(
-							Form::T_LABEL => 'Ville/Localité',
-							Element::T_GROUP => 'professional'
+							Form::LABEL => 'Ville/Localité',
+							Element::GROUP => 'professional'
 						)
 					),
 
-					'company_state' => new Element
+					'company_state' => new Text
 					(
-						Element::E_TEXT, array
+						array
 						(
-							Form::T_LABEL => 'État/Province',
-							Element::T_GROUP => 'professional'
+							Form::LABEL => 'État/Province',
+							Element::GROUP => 'professional'
 						)
 					),
 
-					'company_postalcode' => new Element
+					'company_postalcode' => new Text
 					(
-						Element::E_TEXT, array
+						array
 						(
-							Form::T_LABEL => 'Code postal',
-							Element::T_GROUP => 'professional'
+							Form::LABEL => 'Code postal',
+							Element::GROUP => 'professional'
 						)
 					),
 
-					'company_country' => new Element
+					'company_country' => new Text
 					(
-						Element::E_TEXT, array
+						array
 						(
-							Form::T_LABEL => 'Pays',
-							Element::T_GROUP => 'professional'
+							Form::LABEL => 'Pays',
+							Element::GROUP => 'professional'
 						)
 					),
 
-					'company_webpage' => new Element
+					'company_webpage' => new Text
 					(
-						Element::E_TEXT, array
+						array
 						(
-							Form::T_LABEL => 'Page Web',
-							Element::T_GROUP => 'professional'
+							Form::LABEL => 'Page Web',
+							Element::GROUP => 'professional'
 						)
 					),
 
@@ -341,48 +343,48 @@ EOT
 					# miscelaneous informations
 					#
 
-					'misc1' => new Element
-					(
-						Element::E_TEXT, array
-						(
-							Form::T_LABEL => 'Divers 1',
-							Element::T_GROUP => 'misc'
-						)
-					),
-
-					'misc2' => new Element
-					(
-						Element::E_TEXT, array
-						(
-							Form::T_LABEL => 'Divers 2',
-							Element::T_GROUP => 'misc'
-						)
-					),
-
-					'misc3' => new Element
-					(
-						Element::E_TEXT, array
-						(
-							Form::T_LABEL => 'Divers 3',
-							Element::T_GROUP => 'misc'
-						)
-					),
-
-					'misc4' => new Element
-					(
-						Element::E_TEXT, array
-						(
-							Form::T_LABEL => 'Divers 4',
-							Element::T_GROUP => 'misc'
-						)
-					),
-
-					'notes' => new moo_WdEditorElement
+					'misc1' => new Text
 					(
 						array
 						(
-							Form::T_LABEL => 'Notes',
-							Element::T_GROUP => 'misc'
+							Form::LABEL => 'Divers 1',
+							Element::GROUP => 'misc'
+						)
+					),
+
+					'misc2' => new Text
+					(
+						array
+						(
+							Form::LABEL => 'Divers 2',
+							Element::GROUP => 'misc'
+						)
+					),
+
+					'misc3' => new Text
+					(
+						array
+						(
+							Form::LABEL => 'Divers 3',
+							Element::GROUP => 'misc'
+						)
+					),
+
+					'misc4' => new Text
+					(
+						array
+						(
+							Form::LABEL => 'Divers 4',
+							Element::GROUP => 'misc'
+						)
+					),
+
+					'notes' => new \moo_WdEditorElement
+					(
+						array
+						(
+							Form::LABEL => 'Notes',
+							Element::GROUP => 'misc'
 						)
 					),
 
@@ -390,14 +392,14 @@ EOT
 					# photo
 					#
 
-					'photo' => new Element
+					'photo' => new \BrickRouge\File
 					(
-						Element::E_FILE, array
+						array
 						(
-							Form::T_LABEL => 'Photo',
-							Element::T_GROUP => 'attached',
-							Element::T_FILE_WITH_LIMIT => 256,
-							Element::T_FILE_WITH_REMINDER => true,
+							Form::LABEL => 'Photo',
+							Element::GROUP => 'attached',
+							Element::FILE_WITH_LIMIT => 256,
+							Element::FILE_WITH_REMINDER => true
 						)
 					)
 				)

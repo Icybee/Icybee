@@ -48,7 +48,7 @@ class Nodes
 			(
 				'a', array
 				(
-					Element::T_INNER_HTML => wd_entities(wd_shorten($title, 48, 1)),
+					Element::INNER_HTML => wd_entities(wd_shorten($title, 48, 1)),
 
 					'class' => "next",
 					'href' => $next_record->url,
@@ -65,7 +65,7 @@ class Nodes
 			(
 				'a', array
 				(
-					Element::T_INNER_HTML => wd_entities(wd_shorten($title, 48, 1)),
+					Element::INNER_HTML => wd_entities(wd_shorten($title, 48, 1)),
 
 					'class' => "previous",
 					'href' => $previous_record->url,

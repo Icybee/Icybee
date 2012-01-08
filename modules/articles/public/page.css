@@ -57,3 +57,11 @@
 {
 	margin-left: 0;
 }
+
+#view-articles-archives .links
+{
+	color: #ddd;
+    line-height: 2em;
+    list-style: square inside none;
+    padding-left: 1ex;
+}

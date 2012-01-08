@@ -37,7 +37,7 @@ class Onlinr
 			{
 				$onlinr = $core->models['nodes.onlinr'][$nid];
 
-				$event->tags[Form::T_VALUES]['nodes_onlinr'] = (array) $onlinr;
+				$event->tags[Form::VALUES]['nodes_onlinr'] = (array) $onlinr;
 			}
 			catch (Exception\MissingRecord $e) {}
 		}
@@ -48,16 +48,16 @@ class Onlinr
 		(
 			$event->tags, array
 			(
-				Element::T_CHILDREN => array
+				Element::CHILDREN => array
 				(
 					'nodes_onlinr' => new Element\DateRange
 					(
 						array
 						(
-							Element::T_GROUP => 'visibility',
-							Element::T_WEIGHT => 100,
+							Element::GROUP => 'visibility',
+							Element::WEIGHT => 100,
 
-							Element::T_DESCRIPTION => "Les dates de <em>publication</em> et de
+							Element::DESCRIPTION => "Les dates de <em>publication</em> et de
 							<em>dépublication</em> permettent de définir un intervalle pendant
 							lequel l'entrée est visible. Si la date de publication est définie,
 							l'entrée sera visible à partir de la date définie. Si la date de
@@ -66,14 +66,14 @@ class Onlinr
 
 							Element\DateRange::T_START_TAGS => array
 							(
-								Element::T_LABEL => 'Publication',
+								Element::LABEL => 'Publication',
 
 								'name' => 'nodes_onlinr[publicize]'
 							),
 
 							Element\DateRange::T_FINISH_TAGS => array
 							(
-								Element::T_LABEL => 'Dépublication',
+								Element::LABEL => 'Dépublication',
 
 								'name' => 'nodes_onlinr[privatize]'
 							)

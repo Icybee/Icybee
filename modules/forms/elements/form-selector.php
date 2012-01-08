@@ -39,7 +39,7 @@ EOT;
 			$options = array(null => '') + $options;
 		}
 
-		$this->set(self::T_OPTIONS, $options);
+		$this->set(self::OPTIONS, $options);
 
 		return parent::__toString();
 	}

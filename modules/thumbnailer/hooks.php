@@ -118,10 +118,10 @@ class Thumbnailer
 			(
 				array
 				(
-					Form::T_LABEL => $config['title'] . ' <small>(' . $version_name . ')</small>',
-					Element::T_DEFAULT => $defaults,
-					Element::T_GROUP => 'thumbnailer',
-					Element::T_DESCRIPTION => $config['description'],
+					Form::LABEL => $config['title'] . ' <small>(' . $version_name . ')</small>',
+					Element::DEFAULT_VALUE => $defaults,
+					Element::GROUP => 'thumbnailer',
+					Element::DESCRIPTION => $config['description'],
 
 					'value' => $core->registry["thumbnailer.verison.$version_name"]
 				)
@@ -132,7 +132,7 @@ class Thumbnailer
 		(
 			$event->tags, array
 			(
-				Element::T_GROUPS => array
+				Element::GROUPS => array
 				(
 					'thumbnailer' => array
 					(
@@ -144,7 +144,7 @@ class Thumbnailer
 					)
 				),
 
-				Element::T_CHILDREN => $children
+				Element::CHILDREN => $children
 			)
 		);
 	}

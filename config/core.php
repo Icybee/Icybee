@@ -9,6 +9,7 @@ return array
 	(
 		'ICanBoogie\Exception\Config' => $path . 'lib/core/exception.config.php',
 
+		'BrickRouge\Section' => $path . 'lib/element/section.php',
 		'BrickRouge\Widget' => $path . 'lib/widget/widget.php',
 		'BrickRouge\Widget\TimeZone' => $includes . 'widgets/time-zone.php',
 
@@ -30,8 +31,10 @@ return array
 		'Icybee\Operation\Module\Config' => $path . 'lib/operation/module/config.php',
 		'Icybee\Operation\Module\QueryOperation' => $path . 'lib/operation/module/query-operation.php',
 		'Icybee\Operation\Widget\Get' => $path . 'lib/operation/widget/get.php',
-
-
+		'Icybee\Views' => $path . 'lib/views.php',
+		'Icybee\Views\View' => $path . 'lib/views/view.php',
+		'Icybee\Views\Provider' => $path . 'lib/views/provider.php',
+		'Icybee\Views\ActiveRecord\Provider' => $path . 'lib/views/provider.php',
 
 
 

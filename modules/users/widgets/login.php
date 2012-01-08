@@ -30,46 +30,44 @@ class Login extends Form
 		(
 			$tags + array
 			(
-				self::T_RENDERER => 'Simple',
+				Form::RENDERER => 'Simple',
 
-				self::T_HIDDENS => array
+				Form::HIDDENS => array
 				(
 					Operation::DESTINATION => 'users',
 					Operation::NAME => \ICanBoogie\Module\Users::OPERATION_LOGIN,
 					Operation::SESSION_TOKEN => $core->session->token
 				),
 
-				self::T_CHILDREN => array
+				Element::CHILDREN => array
 				(
 					User::USERNAME => new Text
 					(
 						array
 						(
-							Form::T_LABEL => 'username',
-							Element::T_REQUIRED => true,
+							Form::LABEL => 'username',
+							Element::REQUIRED => true,
 
 							'autofocus' => true
 						)
 					),
 
-					User::PASSWORD => new Element
+					User::PASSWORD => new Text
 					(
-						Element::E_PASSWORD, array
+						array
 						(
-							Form::T_LABEL => 'password',
-							Element::T_REQUIRED => true,
-							Element::T_DESCRIPTION => '<a href="#lost-password" rel="nonce-request">' . t
+							Form::LABEL => 'password',
+							Element::REQUIRED => true,
+							Element::DESCRIPTION => '<a href="#lost-password" rel="nonce-request">' . t
 							(
 								'lost_password', array(), array
 								(
 									'scope' => array('user_users', 'form', 'label'),
 									'default' => 'I forgot my password'
 								)
-							)
+							) . '</a>',
 
-							.
-
-							'</a>'
+							'type' => 'password'
 						)
 					),
 
@@ -92,7 +90,7 @@ class Login extends Form
 	/**
 	 * Adds the "widget.css" and "widget.js" assets.
 	 *
-	 * @param \BrickRouge\Document $document
+	 * @param BrickRouge\Document $document
 	 */
 	protected static function add_assets(\BrickRouge\Document $document)
 	{

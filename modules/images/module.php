@@ -13,9 +13,9 @@ namespace ICanBoogie\Module;
 
 use ICanBoogie\Image;
 
-use BrickRouge;
 use BrickRouge\Element;
 use BrickRouge\Form;
+use BrickRouge\Text;
 
 use Icybee\Manager;
 
@@ -102,13 +102,13 @@ class Images extends Files
 		(
 			parent::block_edit($properties, $permission, $options), array
 			(
-				Element::T_CHILDREN => array
+				Element::CHILDREN => array
 				(
-					'alt' => new Element
+					'alt' => new Text
 					(
-						Element::E_TEXT, array
+						array
 						(
-							Form::T_LABEL => '.alt'
+							Form::LABEL => '.alt'
 						)
 					)
 				)
@@ -148,7 +148,7 @@ class Images extends Files
 			array
 			(
 				\WdAdjustImageWidget::T_CONSTRUCTOR => $this->id,
-				Element::T_DESCRIPTION => null,
+				Element::DESCRIPTION => null,
 
 				'value' => isset($params['value']) ? $params['value'] : null
 			)
@@ -156,7 +156,7 @@ class Images extends Files
 	}
 }
 
-class resources_images_adjustimage_WdPager extends BrickRouge\Pager
+class resources_images_adjustimage_WdPager extends \BrickRouge\Pager
 {
 	protected function getURL($n)
 	{

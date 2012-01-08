@@ -74,7 +74,7 @@ class TimeZone extends \BrickRouge\Widget
 
 		if (!$value)
 		{
-			$value = $this->get(self::T_DEFAULT);
+			$value = $this->get(self::DEFAULT_VALUE);
 		}
 
 		if ($value !== null)
@@ -99,7 +99,7 @@ class TimeZone extends \BrickRouge\Widget
 
 		$rc = parent::render_inner_html();
 
-		if (!$this->get(self::T_REQUIRED))
+		if (!$this->get(self::REQUIRED))
 		{
 			$options = array(null => '') + $options;
 		}
@@ -108,7 +108,7 @@ class TimeZone extends \BrickRouge\Widget
 		(
 			'select', array
 			(
-				Element::T_OPTIONS => $options,
+				Element::OPTIONS => $options,
 
 				'name' => $this->get('name'),
 				'value' => $value

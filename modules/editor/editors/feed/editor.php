@@ -9,8 +9,10 @@
  * file that was distributed with this source code.
  */
 
-use ICanBoogie\Module;
-use BrickRouge\Element;
+use ICanBoogie\Module,
+
+	BrickRouge\Element,
+	BrickRouge\Text;
 
 class feed_WdEditorElement extends WdEditorElement
 {
@@ -38,27 +40,27 @@ class feed_WdEditorElement extends WdEditorElement
 		(
 			'div', $tags + array
 			(
-				self::T_CHILDREN => array
+				self::CHILDREN => array
 				(
 					$this->elements['constructor'] = new Element
 					(
 						'select', array
 						(
-							Element::T_LABEL => 'Module',
-							Element::T_LABEL_POSITION => 'above',
-							Element::T_REQUIRED => true,
-							Element::T_OPTIONS => array(null => '<sélectionner un module>') + $constructors
+							Element::LABEL => 'Module',
+							Element::LABEL_POSITION => 'above',
+							Element::REQUIRED => true,
+							Element::OPTIONS => array(null => '<sélectionner un module>') + $constructors
 						)
 					),
 
-					$this->elements['limit'] = new Element
+					$this->elements['limit'] = new Text
 					(
-						Element::E_TEXT, array
+						array
 						(
-							Element::T_LABEL => "Nombre d'entrées dans le flux",
-							Element::T_LABEL_POSITION => 'above',
-							Element::T_REQUIRED => true,
-							Element::T_DEFAULT => 10,
+							Element::LABEL => "Nombre d'entrées dans le flux",
+							Element::LABEL_POSITION => 'above',
+							Element::REQUIRED => true,
+							Element::DEFAULT_VALUE => 10,
 
 							'size' => 4
 						)
@@ -66,11 +68,11 @@ class feed_WdEditorElement extends WdEditorElement
 
 					$this->elements['settings'] = new Element
 					(
-						Element::E_CHECKBOX_GROUP, array
+						Element::TYPE_CHECKBOX_GROUP, array
 						(
-							Element::T_LABEL => 'Options',
-							Element::T_LABEL_POSITION => 'above',
-							Element::T_OPTIONS => array
+							Element::LABEL => 'Options',
+							Element::LABEL_POSITION => 'above',
+							Element::OPTIONS => array
 							(
 								'is_with_author' => "Mentionner l'auteur",
 								'is_with_category' => "Mentionner les catégories",

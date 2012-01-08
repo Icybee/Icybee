@@ -70,7 +70,7 @@ class Change extends Operation
 			)
 		);
 
-		$this->response['assets'] = $core->document->get_assets();
+		$this->response['assets'] = $core->document->assets;
 
 		return $editor;
 	}

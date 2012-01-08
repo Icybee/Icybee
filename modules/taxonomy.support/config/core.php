@@ -4,6 +4,6 @@ return array
 (
 	'autoload' => array
 	(
-		'taxonomy_support_WdMarkups' => $root . 'markups.php'
+		'taxonomy_support_WdMarkups' => $path . 'markups.php'
 	)
 );

@@ -34,51 +34,51 @@ h3.folded + div.form-section + h3
 	border-top: none;
 }
 
-form.wdform div.form-section
+form.edit div.form-section
 {
 	margin: 1em;
 }
 
-form.wdform h3.folded + div.form-section
+form.edit h3.folded + div.form-section
 {
 	display: none;
 }
 
-form.wdform div.form-section.folded + h3
+form.edit div.form-section.folded + h3
 {
 	border-top: none;
 }
 
-form.wdform td.label
+form.edit td.label
 {
 	text-align: right;
 	/*vertical-align: top;*/
 }
 
-form.wdform label sup
+form.edit label sup
 {
 	vertical-align: text-top;
 }
 
-form.wdform div.form-label
+form.edit div.form-label
 {
 	font-size: .9em;
 	margin: 1em 0 .4em 0;
 }
 
-form.wdform label.mandatory sup,
-form.wdform div.form-label sup
+form.edit label.mandatory sup,
+form.edit div.form-label sup
 {
 	vertical-align: text-top;
 	color: #21759B;
 }
 
-form.wdform div.form-label label span.separator
+form.edit div.form-label label span.separator
 {
 	display: none;
 }
 
-form.wdform textarea
+form.edit textarea
 {
 	width: 100%;
 	box-sizing: border-box;
@@ -86,7 +86,7 @@ form.wdform textarea
 	-webkit-box-sizing: border-box;
 }
 
-form.wdform input[type=text]:not([size])
+form.edit input[type=text]:not([size])
 {
 	width: 40%;
 	min-width: 32ex;
@@ -95,13 +95,13 @@ form.wdform input[type=text]:not([size])
 	-webkit-box-sizing: border-box;
 }
 
-.wdform input[type=text].short:not([size])
+form.edit input[type=text].short:not([size])
 {
 	width: 20%;
 	min-width: 16ex;
 }
 
-.wdform div.save-mode
+form.edit div.save-mode
 {
 	margin: 1em 0;
 	font-size: 14px;
@@ -198,17 +198,17 @@ div.form-section table
 	width: 80%;
 }
 
-form.wdform td input[type="text"]:not([size])
+form.edit td input[type="text"]:not([size])
 {
 	width: 100%;
 }
 
-form.wdform td.label:first-child
+form.edit td.label:first-child
 {
 	width: 20ex;
 }
 
-form.wdform td + td.label
+form.edit td + td.label
 {
 	padding-left: 3ex;
 }
@@ -237,7 +237,7 @@ FLAT SECTION MODIFIERS
 **
 */
 
-form.wdform div.form-section.flat
+form.edit div.form-section.flat
 {
 	margin: 0;
 	background-color: #F6F6F6;
@@ -246,7 +246,7 @@ form.wdform div.form-section.flat
 	overflow: hidden;
 }
 
-form.wdform div.form-section.flat .panel > div.form-label
+form.edit div.form-section.flat .panel > div.form-label
 {
 	font-weight: bolder;
 	background: transparent;
@@ -258,7 +258,7 @@ form.wdform div.form-section.flat .panel > div.form-label
 	-webkit-border-radius: 0;
 }
 
-form.wdform div.form-section.flat .panel > div.form-label + div.form-element
+form.edit div.form-section.flat .panel > div.form-label + div.form-element
 {
 	margin: 0 0 1em 0;
 }

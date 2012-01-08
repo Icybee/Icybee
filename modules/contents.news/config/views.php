@@ -11,6 +11,7 @@ return array
 	(
 		'title' => 'Accueil des actualités',
 		'provider' => true,
+		'provider' => 'Icybee\Modules\Content\ViewProvider',
 		'assets' => $assets
 	),
 
@@ -18,6 +19,7 @@ return array
 	(
 		'title' => 'Liste des actualités',
 		'provider' => true,
+		'provider' => 'Icybee\Modules\Content\ViewProvider',
 		'assets' => $assets
 	),
 
@@ -25,6 +27,7 @@ return array
 	(
 		'title' => "Détail d'une actualité",
 		'provider' => true,
+		'provider' => 'Icybee\Modules\Content\ViewProvider',
 		'assets' => $assets
 	),
 
@@ -32,6 +35,7 @@ return array
 	(
 		'title' => "Liste des actualités pour une catégorie",
 		'provider' => true,
+		'provider' => 'Icybee\Modules\Content\ViewProvider',
 		'assets' => $assets
 	)
 );

@@ -17,6 +17,7 @@ use ICanBoogie\Uploaded;
 
 use BrickRouge\Element;
 use BrickRouge\Form;
+use BrickRouge\Text;
 
 use Icybee\Manager;
 
@@ -222,16 +223,16 @@ class Files extends Nodes
 	{
 		return array
 		(
-			Element::T_CHILDREN => array
+			Element::CHILDREN => array
 			(
-				"local[$this->flat_id.max_file_size]" => new Element
+				"local[$this->flat_id.max_file_size]" => new Text
 				(
-					Element::E_TEXT, array
+					array
 					(
-						Form::T_LABEL => '.max_file_size',
-						Element::T_LABEL => 'Ko', // TODO-20110206: use conventions
-						Element::T_GROUP => 'primary',
-						Element::T_DEFAULT => 16000,
+						Form::LABEL => '.max_file_size',
+						Element::LABEL => 'Ko', // TODO-20110206: use conventions
+						Element::GROUP => 'primary',
+						Element::DEFAULT_VALUE => 16000,
 
 						'size' => 6,
 						'style' => 'text-align: right'
@@ -251,7 +252,7 @@ class Files extends Nodes
 		{
 			return array
 			(
-				Element::T_CHILDREN => array
+				Element::CHILDREN => array
 				(
 					t('The folder %folder is not writable !', array('%folder' => $folder))
 				)
@@ -326,7 +327,7 @@ class Files extends Nodes
 		(
 			parent::block_edit($properties, $permission), array
 			(
-				Form::T_HIDDENS => array
+				Form::HIDDENS => array
 				(
 					File::PATH => $uploaded_path,
 					File::MIME => $uploaded_mime,
@@ -334,42 +335,28 @@ class Files extends Nodes
 					self::UPLOADED => $uploaded_path
 				),
 
-				Form::T_VALUES => $values,
+				Form::VALUES => $values,
 
-				Element::T_CHILDREN => array
+				Element::CHILDREN => array
 				(
 					File::PATH => new $uploader_class
 					(
 						array
 						(
-							Form::T_LABEL => '.file',
-							Element::T_REQUIRED => empty($entry_nid),
-							Element::T_FILE_WITH_LIMIT => $core->site->metas[$this->flat_id . '.max_file_size'],
-							Element::T_WEIGHT => -100,
+							Form::LABEL => '.file',
+							Element::REQUIRED => empty($entry_nid),
+							Element::FILE_WITH_LIMIT => $core->site->metas[$this->flat_id . '.max_file_size'],
+							Element::WEIGHT => -100,
 							\BrickRouge\File::T_UPLOAD_URL => '/api/' . $this->id . '/upload'
 						)
 					),
-
-					/*
-					File::PATH => new Element
-					(
-						Element::E_FILE, array
-						(
-							Form::T_LABEL => '.file',
-							Element::T_REQUIRED => empty($entry_nid),
-							Element::T_FILE_WITH_REMINDER => true,
-							Element::T_FILE_WITH_LIMIT => $core->site->metas[$this->flat_id . '.max_file_size'],
-							Element::T_WEIGHT => -100
-						)
-					),
-					*/
 
 					File::DESCRIPTION => new \moo_WdEditorElement
 					(
 						array
 						(
-							Form::T_LABEL => '.description',
-							Element::T_WEIGHT => 50,
+							Form::LABEL => '.description',
+							Element::WEIGHT => 50,
 
 							'rows' => 5
 						)

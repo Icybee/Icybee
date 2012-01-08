@@ -11,8 +11,9 @@
 
 use ICanBoogie\Module;
 use ICanBoogie\Operation;
-use BrickRouge\Form;
+use BrickRouge\Button;
 use BrickRouge\Element;
+use BrickRouge\Form;
 
 class user_users_WdMarkups
 {
@@ -33,20 +34,20 @@ class user_users_WdMarkups
 			(
 				array
 				(
-					Form::T_HIDDENS => array
+					Form::HIDDENS => array
 					(
 						Operation::DESTINATION => 'users',
 						Operation::NAME => Module\Users::OPERATION_DISCONNECT
 					),
 
-					Element::T_CHILDREN => array
+					Element::CHILDREN => array
 					(
-						new Element
+						new Button
 						(
-							Element::E_SUBMIT, array
+							'logout', array
 							(
-								Element::T_INNER_HTML => t('logout'),
-								'class' => 'logout'
+								'class' => 'logout',
+								'type' => 'submit'
 							)
 						)
 					),
@@ -78,38 +79,40 @@ class user_users_WdMarkups
 			(
 				array
 				(
-					Form::T_HIDDENS => array
+					Form::HIDDENS => array
 					(
 						Operation::DESTINATION => 'users',
 						Operation::NAME => Module\Users::OPERATION_CONNECT
 					),
 
-					Element::T_CHILDREN => array
+					Element::CHILDREN => array
 					(
 						User::USERNAME => new Text
 						(
 							array
 							(
-								Form::T_LABEL => 'Username',
-								Element::T_REQUIRED => true
+								Form::LABEL => 'Username',
+								Element::REQUIRED => true
 							)
 						),
 
-						User::PASSWORD => new Element
+						User::PASSWORD => new Text
 						(
-							Element::E_PASSWORD, array
+							array
 							(
-								Form::T_LABEL => 'Password',
-								Element::T_REQUIRED => true
+								Form::LABEL => 'Password',
+								Element::REQUIRED => true,
+
+								'type' => 'password'
 							)
 						),
 
-						new Element
+						new Button
 						(
-							Element::E_SUBMIT, array
+							'Connect', array
 							(
-								Element::T_INNER_HTML => t('Connect'),
-								'class' => 'connect'
+								'class' => 'connect',
+								'type' => 'submit'
 							)
 						)
 					),

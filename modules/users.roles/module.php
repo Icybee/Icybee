@@ -119,14 +119,14 @@ class Roles extends \Icybee\Module
 	{
 		return array
 		(
-			Element::T_CHILDREN => array
+			Element::CHILDREN => array
 			(
 				Role::NAME => new Text
 				(
 					array
 					(
-						Form::T_LABEL => '.title',
-						Element::T_REQUIRED => true
+						Form::LABEL => '.title',
+						Element::REQUIRED => true
 					)
 				)
 			)
@@ -247,7 +247,7 @@ class Roles extends \Icybee\Module
 				(
 					'a', array
 					(
-						Element::T_INNER_HTML => $role->name,
+						Element::INNER_HTML => $role->name,
 						'href' => $context . '/admin/' . $this . '/' . $role->rid . '/edit',
 						'title' => t('Edit entry')
 					)
@@ -353,7 +353,7 @@ EOT;
 
 							$rc .= new Element
 							(
-								Element::E_CHECKBOX, array
+								Element::TYPE_CHECKBOX, array
 								(
 									'name' => 'roles[' . $role->rid . '][' . $m_id . ']',
 									'checked' => isset($role->levels[$m_id]) && ($role->levels[$m_id] = $level)
@@ -380,7 +380,7 @@ EOT;
 							(
 								'select', array
 								(
-									Element::T_OPTIONS => $options,
+									Element::OPTIONS => $options,
 
 									'name' => 'roles[' . $role->rid . '][' . $m_id . ']',
 									'value' => isset($role->perms[$m_id]) ? $role->perms[$m_id] : null
@@ -428,7 +428,7 @@ EOT;
 					{
 						$columns .= '<td>' . new Element
 						(
-							Element::E_CHECKBOX, array
+							Element::TYPE_CHECKBOX, array
 							(
 								'name' => $user_has_access ? 'roles[' . $role->rid . '][' . $pname . ']' : NULL,
 								'checked' => $role->has_permission($pname)

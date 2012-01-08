@@ -25,17 +25,17 @@ class Contact extends Form
 			(
 				$tags, array
 				(
-					Form::T_RENDERER => 'Simple',
+					Form::RENDERER => 'Simple',
 
-					Element::T_CHILDREN => array
+					Element::CHILDREN => array
 					(
 						'gender' => new Element
 						(
-							Element::E_RADIO_GROUP, array
+							Element::TYPE_RADIO_GROUP, array
 							(
-								Form::T_LABEL => 'Salutation',
-								Element::T_OPTIONS => array('salutation.misses', 'salutation.miss', 'salutation.mister'),
-								Element::T_REQUIRED => true
+								Form::LABEL => 'Salutation',
+								Element::OPTIONS => array('salutation.misses', 'salutation.miss', 'salutation.mister'),
+								Element::REQUIRED => true
 							)
 						),
 
@@ -43,8 +43,8 @@ class Contact extends Form
 						(
 							array
 							(
-								Form::T_LABEL => 'Lastname',
-								Element::T_REQUIRED => true
+								Form::LABEL => 'Lastname',
+								Element::REQUIRED => true
 							)
 						),
 
@@ -52,8 +52,8 @@ class Contact extends Form
 						(
 							array
 							(
-								Form::T_LABEL => 'Firstname',
-								Element::T_REQUIRED => true
+								Form::LABEL => 'Firstname',
+								Element::REQUIRED => true
 							)
 						),
 
@@ -61,7 +61,7 @@ class Contact extends Form
 						(
 							array
 							(
-								Form::T_LABEL => 'Company'
+								Form::LABEL => 'Company'
 							)
 						),
 
@@ -69,9 +69,9 @@ class Contact extends Form
 						(
 							array
 							(
-								Form::T_LABEL => 'E-mail',
-								Element::T_REQUIRED => true,
-								Element::T_VALIDATOR => array('BrickRouge\Form::validate_email')
+								Form::LABEL => 'E-mail',
+								Element::REQUIRED => true,
+								Element::VALIDATOR => array('BrickRouge\Form::validate_email')
 							)
 						),
 
@@ -79,8 +79,8 @@ class Contact extends Form
 						(
 							'textarea', array
 							(
-								Form::T_LABEL => 'Your message',
-								Element::T_REQUIRED => true
+								Form::LABEL => 'Your message',
+								Element::REQUIRED => true
 							)
 						)
 					)

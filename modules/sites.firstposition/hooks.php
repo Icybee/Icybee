@@ -14,10 +14,9 @@ namespace ICanBoogie\Hooks\Sites;
 use ICanBoogie\ActiveRecord\Content;
 use ICanBoogie\Event;
 use ICanBoogie\Module;
-
 use BrickRouge\Element;
 use BrickRouge\Form;
-
+use BrickRouge\Text;
 use WdPatron as Patron;
 
 // http://www.google.com/webmasters/docs/search-engine-optimization-starter-guide.pdf
@@ -92,7 +91,7 @@ EOT;
 
 		if ($description)
 		{
-			$description = html_entity_decode($description, ENT_QUOTES, WDCORE_CHARSET);
+			$description = html_entity_decode($description, ENT_QUOTES, ICanBoogie\CHARSET);
 			$description = trim(strip_tags($description));
 
 			$event->metas['Description'] = $description;
@@ -141,7 +140,7 @@ EOT;
 			(
 				$event->tags, array
 				(
-					Element::T_GROUPS => array
+					Element::GROUPS => array
 					(
 						'firstposition' => array
 						(
@@ -151,23 +150,23 @@ EOT;
 						)
 					),
 
-					Element::T_CHILDREN => array
+					Element::CHILDREN => array
 					(
-						'metas[google_analytics_ua]' => new Element
+						'metas[google_analytics_ua]' => new Text
 						(
-							Element::E_TEXT, array
+							array
 							(
-								Form::T_LABEL => 'Google Analytics UA',
-								Element::T_GROUP => 'firstposition'
+								Form::LABEL => 'Google Analytics UA',
+								Element::GROUP => 'firstposition'
 							)
 						),
 
-						'metas[google_site_verification]' => new Element
+						'metas[google_site_verification]' => new Text
 						(
-							Element::E_TEXT, array
+							array
 							(
-								Form::T_LABEL => 'Google Site Verification',
-								Element::T_GROUP => 'firstposition'
+								Form::LABEL => 'Google Site Verification',
+								Element::GROUP => 'firstposition'
 							)
 						)
 					)
@@ -191,7 +190,7 @@ EOT;
 		(
 			$event->tags, array
 			(
-				Element::T_GROUPS => array
+				Element::GROUPS => array
 				(
 					'firstposition' => array
 					(
@@ -201,15 +200,15 @@ EOT;
 					)
 				),
 
-				Element::T_CHILDREN => array
+				Element::CHILDREN => array
 				(
-					'metas[document_title]' => new Element
+					'metas[document_title]' => new Text
 					(
-						Element::E_TEXT, array
+						array
 						(
-							Form::T_LABEL => '.document_title',
-							Element::T_GROUP => 'firstposition',
-							Element::T_DESCRIPTION => '.document_title'
+							Form::LABEL => '.document_title',
+							Element::GROUP => 'firstposition',
+							Element::DESCRIPTION => '.document_title'
 						)
 					),
 
@@ -217,9 +216,9 @@ EOT;
 					(
 						'textarea', array
 						(
-							Form::T_LABEL => '.description',
-							Element::T_GROUP => 'firstposition',
-							Element::T_DESCRIPTION => '.description',
+							Form::LABEL => '.description',
+							Element::GROUP => 'firstposition',
+							Element::DESCRIPTION => '.description',
 
 							'rows' => 3
 						)

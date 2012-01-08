@@ -83,21 +83,21 @@ class Form extends Node
 		(
 			array
 			(
-				BrickRouge\Form::T_VALUES => $_REQUEST,
-				BrickRouge\Form::T_HIDDENS => array
+				BrickRouge\Form::VALUES => $_REQUEST,
+				BrickRouge\Form::HIDDENS => array
 				(
 					Operation::DESTINATION => 'forms',
 					Operation::NAME => Module\Forms::OPERATION_POST,
 					Module\Forms::OPERATION_POST_ID => $this->nid
 				),
 
-				Element::T_CHILDREN => array
+				Element::CHILDREN => array
 				(
 					'#submit' => new Button
 					(
 						'Send', array
 						(
-							Element::T_WEIGHT => 1000,
+							Element::WEIGHT => 1000,
 
 							'class' => 'primary',
 							'type' => 'submit'

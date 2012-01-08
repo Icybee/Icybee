@@ -13,6 +13,7 @@ use ICanBoogie\ActiveRecord\Comment;
 use ICanBoogie\Operation;
 use BrickRouge\Element;
 use BrickRouge\Form;
+use BrickRouge\Text;
 
 class feedback_comments_WdForm extends Form
 {
@@ -36,42 +37,42 @@ class feedback_comments_WdForm extends Form
 			(
 				$tags, array
 				(
-					Form::T_RENDERER => 'Simple',
-					Form::T_VALUES => $values,
-					Form::T_HIDDENS => array
+					Form::RENDERER => 'Simple',
+					Form::VALUES => $values,
+					Form::HIDDENS => array
 					(
 						Operation::DESTINATION => 'comments',
 						Operation::NAME => 'save'
 					),
 
-					Element::T_CHILDREN => array
+					Element::CHILDREN => array
 					(
-						Comment::AUTHOR => new Element
+						Comment::AUTHOR => new Text
 						(
-							Element::E_TEXT, array
+							array
 							(
-								Element::T_LABEL => 'Name',
-								Element::T_REQUIRED => true,
+								Element::LABEL => 'Name',
+								Element::REQUIRED => true,
 // 								'readonly' => $is_member
 							)
 						),
 
-						Comment::AUTHOR_EMAIL => new Element
+						Comment::AUTHOR_EMAIL => new Text
 						(
-							Element::E_TEXT, array
+							array
 							(
-								Element::T_LABEL => 'E-mail',
-								Element::T_REQUIRED => true,
-								Element::T_VALIDATOR => array('BrickRouge\Form::validate_email'),
+								Element::LABEL => 'E-mail',
+								Element::REQUIRED => true,
+								Element::VALIDATOR => array('BrickRouge\Form::validate_email'),
 // 								'readonly' => $is_member
 							)
 						),
 
-						Comment::AUTHOR_URL => new Element
+						Comment::AUTHOR_URL => new Text
 						(
-							Element::E_TEXT, array
+							array
 							(
-								Element::T_LABEL => 'Website'
+								Element::LABEL => 'Website'
 							)
 						),
 
@@ -79,27 +80,27 @@ class feedback_comments_WdForm extends Form
 						(
 							'textarea', array
 							(
-								Element::T_REQUIRED => true,
-								Element::T_LABEL_MISSING => 'Message',
+								Element::REQUIRED => true,
+								Element::LABEL_MISSING => 'Message',
 								'rows' => 8
 							)
 						),
 
 						Comment::NOTIFY => new Element
 						(
-							Element::E_RADIO_GROUP, array
+							Element::TYPE_RADIO_GROUP, array
 							(
-								Element::T_OPTIONS => array
+								Element::OPTIONS => array
 								(
 									'yes' => "Bien sûr !",
 									'author' => "Seulement si c'est l'auteur du billet qui répond.",
 									'no' => "Pas la peine, je viens tous les jours."
 								),
 
-								Element::T_DEFAULT => 'no',
-								Element::T_LABEL => "Shouhaitez-vous être informé d'une réponse à votre message&nbsp;?",
-								Element::T_LABEL_POSITION => 'above',
-								Element::T_LABEL_SEPARATOR => false,
+								Element::DEFAULT_VALUE => 'no',
+								Element::LABEL => "Shouhaitez-vous être informé d'une réponse à votre message&nbsp;?",
+								Element::LABEL_POSITION => 'above',
+								Element::LABEL_SEPARATOR => false,
 
 								'class' => 'inputs-list'
 							)

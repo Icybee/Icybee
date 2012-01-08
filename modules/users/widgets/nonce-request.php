@@ -26,22 +26,22 @@ class NonceRequest extends Form
 		(
 			$tags + array
 			(
-				self::T_RENDERER => 'Simple',
+				Form::RENDERER => 'Simple',
 
-				self::T_HIDDENS => array
+				Form::HIDDENS => array
 				(
 					Operation::DESTINATION => 'users',
 					Operation::NAME => 'nonce-login-request'
 				),
 
-				self::T_CHILDREN => array
+				Element::CHILDREN => array
 				(
 					'email' => new Text
 					(
 						array
 						(
-							Form::T_LABEL => 'your_email',
-							Element::T_REQUIRED => true
+							Form::LABEL => 'your_email',
+							Element::REQUIRED => true
 						)
 					),
 

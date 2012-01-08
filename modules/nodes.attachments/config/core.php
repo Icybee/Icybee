@@ -4,6 +4,6 @@ return array
 (
 	'autoload' => array
 	(
-		'WdAttachmentsElement' => $root . 'elements/attachments.php'
+		'WdAttachmentsElement' => $path . 'elements/attachments.php'
 	)
 );

@@ -6,6 +6,8 @@ return array
 (
 	'autoload' => array
 	(
+		'Icybee\Views\Nodes\Provider' => $path . 'lib/views/provider.php',
+
 		'system_nodes_view_WdMarkup' => $path . 'markups.php',
 		'system_nodes_list_WdMarkup' => $path . 'markups.php',
 

@@ -13,6 +13,7 @@ namespace BrickRouge\Widget;
 
 use ICanBoogie\Image;
 use BrickRouge\Element;
+use BrickRouge\Text;
 
 class AdjustThumbnailOptions extends Element
 {
@@ -28,31 +29,31 @@ class AdjustThumbnailOptions extends Element
 			(
 				array
 				(
-					self::T_CHILDREN => array
+					self::CHILDREN => array
 					(
 						'v' => $this->elements['v'] = new Element
 						(
 							'select', array
 							(
-								Element::T_OPTIONS => $versions
+								Element::OPTIONS => $versions
 							)
 						),
 
-						'w' => $this->elements['w'] = new Element
+						'w' => $this->elements['w'] = new Text
 						(
-							Element::E_TEXT, array
+							array
 							(
 								/*
-								Element::T_LABEL => 'Dimensions',
-								Element::T_LABEL_POSITION => 'before',
+								Element::LABEL => 'Dimensions',
+								Element::LABEL_POSITION => 'before',
 								*/
 								'size' => 5
 							)
 						),
 
-						'h' => $this->elements['h'] = new Element
+						'h' => $this->elements['h'] = new Text
 						(
-							Element::E_TEXT, array
+							array
 							(
 								'size' => 5
 							)
@@ -62,10 +63,10 @@ class AdjustThumbnailOptions extends Element
 						(
 							'select', array
 							(
-								self::T_LABEL => 'Méthode',
-								self::T_LABEL_POSITION => 'above',
+								self::LABEL => 'Méthode',
+								self::LABEL_POSITION => 'above',
 
-								Element::T_OPTIONS => array
+								Element::OPTIONS => array
 								(
 									Image::RESIZE_FILL => 'Remplir',
 									Image::RESIZE_FIT => 'Ajuster',
@@ -81,9 +82,9 @@ class AdjustThumbnailOptions extends Element
 
 						'no-upscale' => $this->elements['no-upscale'] = new Element
 						(
-							Element::E_CHECKBOX, array
+							Element::TYPE_CHECKBOX, array
 							(
-								Element::T_LABEL => 'Ne pas agrandir'
+								Element::LABEL => 'Ne pas agrandir'
 							)
 						),
 
@@ -91,29 +92,29 @@ class AdjustThumbnailOptions extends Element
 						(
 							'select', array
 							(
-								self::T_LABEL => 'Format',
-								self::T_LABEL_POSITION => 'before',
+								self::LABEL => 'Format',
+								self::LABEL_POSITION => 'before',
 
-								self::T_OPTIONS => array
+								self::OPTIONS => array
 								(
 									'jpeg' => 'JPEG',
 									'png' => 'PNG',
 									'gif' => 'GIF'
 								),
 
-								self::T_DEFAULT => 'jpeg',
+								self::DEFAULT_VALUE => 'jpeg',
 
 								'style' => 'display: inline-block'
 							)
 						),
 
-						'quality' => $this->elements['quality'] = new Element
+						'quality' => $this->elements['quality'] = new Text
 						(
-							Element::E_TEXT, array
+							array
 							(
-								self::T_LABEL => 'Qualité',
-								self::T_LABEL_POSITION => 'before',
-								self::T_DEFAULT => 80,
+								self::LABEL => 'Qualité',
+								self::LABEL_POSITION => 'before',
+								self::DEFAULT_VALUE => 80,
 
 								'size' => 3
 							)
@@ -121,26 +122,26 @@ class AdjustThumbnailOptions extends Element
 
 						'interlace' => $this->elements['interlace'] = new Element
 						(
-							Element::E_CHECKBOX, array
+							Element::TYPE_CHECKBOX, array
 							(
-								self::T_LABEL => 'Affichage progressif'
+								self::LABEL => 'Affichage progressif'
 							)
 						),
 
-						'background' => $this->elements['background'] = new Element
+						'background' => $this->elements['background'] = new Text
 						(
-							Element::E_TEXT, array
+							array
 							(
-								self::T_LABEL => 'Remplissage',
-								self::T_LABEL_POSITION => 'above'
+								self::LABEL => 'Remplissage',
+								self::LABEL_POSITION => 'above'
 							)
 						),
 
 						'lightbox' => $this->elements['lightbox'] = new Element
 						(
-							Element::E_CHECKBOX, array
+							Element::TYPE_CHECKBOX, array
 							(
-								self::T_LABEL => "Afficher l'original en lightbox"
+								self::LABEL => "Afficher l'original en lightbox"
 							)
 						)
 					),
@@ -167,7 +168,7 @@ class AdjustThumbnailOptions extends Element
 		{
 			switch ($name)
 			{
-				case self::T_DEFAULT:
+				case self::DEFAULT_VALUE:
 				{
 					foreach ($this->elements as $identifier => $element)
 					{

@@ -13,7 +13,7 @@ namespace ICanBoogie\Module;
 
 use BrickRouge\Element;
 use BrickRouge\Form;
-
+use BrickRouge\Text;
 use Icybee\Manager;
 
 class Forms extends Nodes
@@ -60,7 +60,7 @@ class Forms extends Nodes
 		(
 			parent::block_edit($properties, $permission), array
 			(
-				Element::T_GROUPS => array
+				Element::GROUPS => array
 				(
 					'messages' => array
 					(
@@ -80,16 +80,16 @@ class Forms extends Nodes
 					)
 				),
 
-				Element::T_CHILDREN => array
+				Element::CHILDREN => array
 				(
 					'modelid' => new Element
 					(
 						'select', array
 						(
-							Form::T_LABEL => '.modelid',
-							Element::T_REQUIRED => true,
-							Element::T_OPTIONS => array(null => '') + $models_options,
-							Element::T_LABEL_POSITION => 'before'
+							Form::LABEL => '.modelid',
+							Element::REQUIRED => true,
+							Element::OPTIONS => array(null => '') + $models_options,
+							Element::LABEL_POSITION => 'before'
 						)
 					),
 
@@ -97,8 +97,8 @@ class Forms extends Nodes
 					(
 						'select', array
 						(
-							Form::T_LABEL => '.pageid',
-							Element::T_LABEL_POSITION => 'before'
+							Form::LABEL => '.pageid',
+							Element::LABEL_POSITION => 'before'
 						)
 					),
 
@@ -106,8 +106,8 @@ class Forms extends Nodes
 					(
 						array
 						(
-							Form::T_LABEL => '.before',
-							Element::T_GROUP => 'messages',
+							Form::LABEL => '.before',
+							Element::GROUP => 'messages',
 
 							'rows' => 5
 						)
@@ -117,8 +117,8 @@ class Forms extends Nodes
 					(
 						array
 						(
-							Form::T_LABEL => '.after',
-							Element::T_GROUP => 'messages',
+							Form::LABEL => '.after',
+							Element::GROUP => 'messages',
 
 							'rows' => 5
 						)
@@ -128,11 +128,11 @@ class Forms extends Nodes
 					(
 						array
 						(
-							Form::T_LABEL => '.complete',
-							Element::T_GROUP => 'messages',
-							Element::T_REQUIRED => true,
-							Element::T_DESCRIPTION => '.complete',
-							Element::T_DEFAULT => '<p>' . t('default.complete') . '</p>',
+							Form::LABEL => '.complete',
+							Element::GROUP => 'messages',
+							Element::REQUIRED => true,
+							Element::DESCRIPTION => '.complete',
+							Element::DEFAULT_VALUE => '<p>' . t('default.complete') . '</p>',
 
 							'rows' => 5
 						)
@@ -146,53 +146,53 @@ class Forms extends Nodes
 					(
 						'div', array
 						(
-							Element::T_GROUP => 'notify',
-							Element::T_CHILDREN => array
+							Element::GROUP => 'notify',
+							Element::CHILDREN => array
 							(
 								'is_notify' => new Element
 								(
-									Element::E_CHECKBOX, array
+									Element::TYPE_CHECKBOX, array
 									(
-										Element::T_LABEL => '.is_notify',
-										Element::T_GROUP => 'notify',
-										Element::T_DESCRIPTION => '.is_notify'
+										Element::LABEL => '.is_notify',
+										Element::GROUP => 'notify',
+										Element::DESCRIPTION => '.is_notify'
 									)
 								),
 
-								'notify_destination' => new Element
+								'notify_destination' => new Text
 								(
-									Element::E_TEXT, array
+									array
 									(
-										Form::T_LABEL => '.notify_destination',
-										Element::T_GROUP => 'notify',
-										Element::T_DEFAULT => $core->user->email
+										Form::LABEL => '.notify_destination',
+										Element::GROUP => 'notify',
+										Element::DEFAULT_VALUE => $core->user->email
 									)
 								),
 
-								'notify_from' => new Element
+								'notify_from' => new Text
 								(
-									Element::E_TEXT, array
+									array
 									(
-										Form::T_LABEL => '.notify_from',
-										Element::T_GROUP => 'notify'
+										Form::LABEL => '.notify_from',
+										Element::GROUP => 'notify'
 									)
 								),
 
-								'notify_bcc' => new Element
+								'notify_bcc' => new Text
 								(
-									Element::E_TEXT, array
+									array
 									(
-										Form::T_LABEL => '.notify_bcc',
-										Element::T_GROUP => 'notify'
+										Form::LABEL => '.notify_bcc',
+										Element::GROUP => 'notify'
 									)
 								),
 
-								'notify_subject' => new Element
+								'notify_subject' => new Text
 								(
-									Element::E_TEXT, array
+									array
 									(
-										Form::T_LABEL => '.notify_subject',
-										Element::T_GROUP => 'notify'
+										Form::LABEL => '.notify_subject',
+										Element::GROUP => 'notify'
 									)
 								),
 
@@ -200,8 +200,8 @@ class Forms extends Nodes
 								(
 									'textarea', array
 									(
-										Form::T_LABEL => '.notify_template',
-										Element::T_GROUP => 'notify'
+										Form::LABEL => '.notify_template',
+										Element::GROUP => 'notify'
 									)
 								)
 							)

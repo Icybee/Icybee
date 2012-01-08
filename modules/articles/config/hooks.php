@@ -4,10 +4,7 @@ return array
 (
 	'events' => array
 	(
-		'resources.files.path.change' => array
-		(
-			'ICanBoogie\Hooks\Articles::resources_files_path_change'
-		)
+		'resources.files.path.change' => 'ICanBoogie\Hooks\Articles::resources_files_path_change'
 	),
 
 	'patron.markups' => array

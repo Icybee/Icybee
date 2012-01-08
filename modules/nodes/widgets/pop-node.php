@@ -88,9 +88,10 @@ class PopNode extends \BrickRouge\Widget
 		{
 			$rc .= new Element
 			(
-				Element::E_HIDDEN, array
+				'input', array
 				(
 					'name' => $name,
+					'type' => 'hidden',
 					'value' => $value,
 					'class' => 'key'
 				)

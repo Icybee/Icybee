@@ -57,15 +57,15 @@ class Lists extends Module\Nodes
 		(
 			parent::block_edit($properties, $permission), array
 			(
-				Element::T_CHILDREN => array
+				Element::CHILDREN => array
 				(
 					'scope' => new Element
 					(
 						'select', array
 						(
-							Form::T_LABEL => 'Portée',
-							Element::T_OPTIONS => array('nodes' => '') + $scopes,
-							Element::T_DESCRIPTION => "La « portée » permet de choisir le type
+							Form::LABEL => 'Portée',
+							Element::OPTIONS => array('nodes' => '') + $scopes,
+							Element::DESCRIPTION => "La « portée » permet de choisir le type
 							des entrées qui composent la liste.",
 
 							'value' => $scope
@@ -76,7 +76,7 @@ class Lists extends Module\Nodes
 					(
 						array
 						(
-							//Form::T_LABEL => 'Entrées',
+							//Form::LABEL => 'Entrées',
 							\WdAdjustNodesListWidget::T_SCOPE => $scope,
 							\WdAdjustNodesListWidget::T_LIST_ID => $properties[Node::NID],
 
@@ -88,7 +88,7 @@ class Lists extends Module\Nodes
 					(
 						array
 						(
-							Form::T_LABEL => 'Description',
+							Form::LABEL => 'Description',
 
 							'rows' => 5
 						)

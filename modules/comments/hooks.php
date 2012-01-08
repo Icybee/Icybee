@@ -11,14 +11,16 @@
 
 namespace ICanBoogie\Hooks;
 
-use ICanBoogie;
-use ICanBoogie\ActiveRecord\Node;
-use ICanBoogie\ActiveRecord\Comment;
-use ICanBoogie\Event;
-use ICanBoogie\Exception;
-use ICanBoogie\Operation;
-use BrickRouge\Element;
-use BrickRouge\Form;
+use ICanBoogie,
+	ICanBoogie\ActiveRecord\Node,
+	ICanBoogie\ActiveRecord\Comment,
+	ICanBoogie\Event,
+	ICanBoogie\Exception,
+	ICanBoogie\Operation,
+
+	BrickRouge\Element,
+	BrickRouge\Form,
+	BrickRouge\Text;
 
 class Comments
 {
@@ -95,49 +97,49 @@ class Comments
 		(
 			$event->tags, array
 			(
-				Form::T_VALUES => $values ? $values : array(),
+				Form::VALUES => $values ? $values : array(),
 
-				Element::T_CHILDREN => array
+				Element::CHILDREN => array
 				(
 					$key => new Element\Templated
 					(
 						'div', array
 						(
-							Element::T_GROUP => 'notify',
-							Element::T_CHILDREN => array
+							Element::GROUP => 'notify',
+							Element::CHILDREN => array
 							(
 								$metas_prefix . '[is_notify]' => new Element
 								(
-									Element::E_CHECKBOX, array
+									Element::TYPE_CHECKBOX, array
 									(
-										Element::T_LABEL => 'Activer la notification aux réponses',
-										Element::T_DESCRIPTION => "Cette option déclanche l'envoi
+										Element::LABEL => 'Activer la notification aux réponses',
+										Element::DESCRIPTION => "Cette option déclanche l'envoi
 										d'un email à l'auteur ayant choisi d'être informé d'une
 										réponse à son commentaire."
 									)
 								),
 
-								$metas_prefix . '[from]' => new Element
+								$metas_prefix . '[from]' => new Text
 								(
-									Element::E_TEXT, array
+									array
 									(
-										Form::T_LABEL => 'Adresse d\'expédition'
+										Form::LABEL => 'Adresse d\'expédition'
 									)
 								),
 
-								$metas_prefix . '[bcc]' => new Element
+								$metas_prefix . '[bcc]' => new Text
 								(
-									Element::E_TEXT, array
+									array
 									(
-										Form::T_LABEL => 'Copie cachée'
+										Form::LABEL => 'Copie cachée'
 									)
 								),
 
-								$metas_prefix . '[subject]' => new Element
+								$metas_prefix . '[subject]' => new Text
 								(
-									Element::E_TEXT, array
+									array
 									(
-										Form::T_LABEL => 'Sujet du message'
+										Form::LABEL => 'Sujet du message'
 									)
 								),
 
@@ -145,8 +147,8 @@ class Comments
 								(
 									'textarea', array
 									(
-										Form::T_LABEL => 'Patron du message',
-										Element::T_DESCRIPTION => "Le sujet du message et le corps du message
+										Form::LABEL => 'Patron du message',
+										Element::DESCRIPTION => "Le sujet du message et le corps du message
 										sont formatés par <a href=\"http://github.com/Weirdog/WdPatron\" target=\"_blank\">WdPatron</a>,
 										utilisez ses fonctionnalités avancées pour les personnaliser."
 									)
@@ -227,7 +229,7 @@ EOT
 				$author = '<strong class="author">' . $author . '</strong>';
 			}
 
-			$excerpt = wd_shorten(strip_tags((string) html_entity_decode($entry, ENT_COMPAT, WDCORE_CHARSET)), 140);
+			$excerpt = wd_shorten(strip_tags((string) html_entity_decode($entry, ENT_COMPAT, ICanBoogie\CHARSET)), 140);
 
 			$target_url = $entry->node->url;
 			$target_title = wd_entities(wd_shorten($entry->node->title));

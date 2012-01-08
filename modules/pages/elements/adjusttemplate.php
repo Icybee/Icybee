@@ -31,7 +31,7 @@ class WdAdjustTemplateElement extends Element
 
 		$options = array_combine($list, $list);
 
-		$this->set(self::T_OPTIONS, array(null => '<auto>') + $options);
+		$this->set(self::OPTIONS, array(null => '<auto>') + $options);
 
 		return parent::__toString();
 	}

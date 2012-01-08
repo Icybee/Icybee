@@ -13,6 +13,7 @@ namespace BrickRouge\Widget;
 
 use BrickRouge;
 use BrickRouge\Element;
+use BrickRouge\Text;
 
 class TitleSlugCombo extends \BrickRouge\Widget
 {
@@ -26,21 +27,21 @@ class TitleSlugCombo extends \BrickRouge\Widget
 	public function __construct($tags=array(), $dummy=null)
 	{
 		$slugname = isset($tags[self::T_SLUG_NAME]) ? $tags[self::T_SLUG_NAME] : null;
-		$label = isset($tags[Element::T_LABEL]) ? $tags[Element::T_LABEL] : null;
-		$label_position = isset($tags[Element::T_LABEL_POSITION]) ? $tags[Element::T_LABEL_POSITION] : 'before';
+		$label = isset($tags[Element::LABEL]) ? $tags[Element::LABEL] : null;
+		$label_position = isset($tags[Element::LABEL_POSITION]) ? $tags[Element::LABEL_POSITION] : 'before';
 
 		parent::__construct
 		(
 			'div', $tags + array
 			(
-				Element::T_CHILDREN => array
+				Element::CHILDREN => array
 				(
-					$this->title_el = new BrickRouge\Text
+					$this->title_el = new Text
 					(
 						array
 						(
-							Element::T_LABEL_POSITION => $label_position,
-							Element::T_REQUIRED => true
+							Element::LABEL_POSITION => $label_position,
+							Element::REQUIRED => true
 						)
 					),
 
@@ -48,24 +49,23 @@ class TitleSlugCombo extends \BrickRouge\Widget
 					(
 						'span', array
 						(
-							self::T_INNER_HTML => '&nbsp;',
+							self::INNER_HTML => '&nbsp;',
 
 							'class' => 'slug-reminder small'
 						)
 					),
 
-					'<a href="#slug-collapse" class="small">' . t('fold', array(), array('scope' => array('titleslugcombo', 'element'))) . '</a>',
+					'<a href="#slug-collapse" class="small">' . t('fold', array(), array('scope' => 'titleslugcombo.element')) . '</a>',
 
 					'<div class="slug">',
 
-					$this->slug_el = new BrickRouge\Text
+					$this->slug_el = new Text
 					(
 						array
 						(
-							Element::T_LABEL => '.slug',
-							Element::T_LABEL_POSITION => 'above',
-							Element::T_GROUP => 'node',
-							Element::T_DESCRIPTION => '.slug',
+							Element::LABEL => '.slug',
+							Element::LABEL_POSITION => 'above',
+							Element::DESCRIPTION => '.slug',
 
 							'name' => $slugname
 						)
@@ -74,12 +74,27 @@ class TitleSlugCombo extends \BrickRouge\Widget
 					'</div>'
 				),
 
-				Element::T_DATASET => array
+				Element::DATASET => array
 				(
-					'auto-label' => '<em>' . t('auto', array(), array('scope' => array('titleslugcombo', 'element'))) . '</em>'
+					'auto-label' => '<em>' . t('auto', array(), array('scope' => 'titleslugcombo.element')) . '</em>'
 				)
 			)
 		);
+	}
+
+	public function offsetSet($offset, $value)
+	{
+		if ($offset == 'name')
+		{
+			$this->title_el['name'] = $value;
+
+			if (!$this->slug_el['name'])
+			{
+				$this->slug_el['name'] = $value . 'slug';
+			}
+		}
+
+		parent::offsetSet($offset, $value);
 	}
 
 	protected static function add_assets(\BrickRouge\Document $document)
@@ -90,36 +105,21 @@ class TitleSlugCombo extends \BrickRouge\Widget
 		$document->js->add('title-slug-combo.js');
 	}
 
-	public function set($name, $value=null)
-	{
-		if ($name == 'name')
-		{
-			$this->title_el->set('name', $value);
-
-			if (!$this->slug_el->get('name'))
-			{
-				$this->slug_el->set('name', $value . 'slug');
-			}
-		}
-
-		parent::set($name, $value);
-	}
-
-	public function render_inner_html()
+	protected function render_inner_html()
 	{
 		global $core;
 
-		$slug = $this->slug_el->get('value');
+		$slug = $this->slug_el['value'];
 
 		$tease = '<strong>Slug&nbsp;:</strong> ';
-		$tease .= '<a href="#slug-edit" title="' . t('edit', array(), array('scope' => array('titleslugcombo', 'element'))) . '">' . ($slug ? wd_entities(wd_shorten($slug)) : $this->dataset['auto-label']) . '</a>';
-		$tease .= ' <span>&ndash; <a href="slug-delete" class="warn">' . t('reset', array(), array('scope' => array('titleslugcombo', 'element'))) . '</a></span>';
+		$tease .= '<a href="#slug-edit" title="' . t('edit', array(), array('scope' => 'titleslugcombo.element')) . '">' . ($slug ? wd_entities(wd_shorten($slug)) : $this->dataset['auto-label']) . '</a>';
+		$tease .= ' <span>&ndash; <a href="slug-delete" class="warn">' . t('reset', array(), array('scope' => 'titleslugcombo.element')) . '</a></span>';
 
-		$this->slug_tease->innerHTML = $tease;
+		$this->slug_tease->inner_html = $tease;
 
 		$rc = parent::render_inner_html();
 
-		$nid = $this->get(self::T_NODEID);
+		$nid = $this[self::T_NODEID];
 
 		if ($nid)
 		{

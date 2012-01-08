@@ -13,6 +13,7 @@ namespace BrickRouge\Widget;
 
 use ICanBoogie\Image;
 use BrickRouge\Element;
+use BrickRouge\Text;
 
 class AdjustThumbnailVersion extends \BrickRouge\Widget
 {
@@ -28,19 +29,19 @@ class AdjustThumbnailVersion extends \BrickRouge\Widget
 			(
 				array
 				(
-					self::T_CHILDREN => array
+					Element::CHILDREN => array
 					(
 						new Element
 						(
 							'div', array
 							(
-								Element::T_LABEL => 'Dimensions',
-								Element::T_LABEL_POSITION => 'above',
-								Element::T_CHILDREN => array
+								Element::LABEL => 'Dimensions',
+								Element::LABEL_POSITION => 'above',
+								Element::CHILDREN => array
 								(
-									'w' => $this->elements['w'] = new Element
+									'w' => $this->elements['w'] = new Text
 									(
-										Element::E_TEXT, array
+										array
 										(
 											'size' => 5
 										)
@@ -48,9 +49,9 @@ class AdjustThumbnailVersion extends \BrickRouge\Widget
 
 									' × ',
 
-									'h' => $this->elements['h'] = new Element
+									'h' => $this->elements['h'] = new Text
 									(
-										Element::E_TEXT, array
+										array
 										(
 											'size' => 5
 										)
@@ -65,9 +66,9 @@ class AdjustThumbnailVersion extends \BrickRouge\Widget
 						(
 							'select', array
 							(
-								Element::T_LABEL => 'Méthode',
-								Element::T_LABEL_POSITION => 'above',
-								Element::T_OPTIONS => array
+								Element::LABEL => 'Méthode',
+								Element::LABEL_POSITION => 'above',
+								Element::OPTIONS => array
 								(
 									Image::RESIZE_FILL => 'Remplir',
 									Image::RESIZE_FIT => 'Ajuster',
@@ -83,9 +84,9 @@ class AdjustThumbnailVersion extends \BrickRouge\Widget
 
 						'no-upscale' => $this->elements['no-upscale'] = new Element
 						(
-							Element::E_CHECKBOX, array
+							Element::TYPE_CHECKBOX, array
 							(
-								Element::T_LABEL => 'Redimensionner, mais ne pas agrandir'
+								Element::LABEL => 'Redimensionner, mais ne pas agrandir'
 							)
 						),
 
@@ -93,22 +94,22 @@ class AdjustThumbnailVersion extends \BrickRouge\Widget
 						(
 							'div', array
 							(
-								self::T_LABEL => 'Format de la miniature',
-								self::T_LABEL_POSITION => 'above',
-								self::T_CHILDREN => array
+								self::LABEL => 'Format de la miniature',
+								self::LABEL_POSITION => 'above',
+								self::CHILDREN => array
 								(
 									'format' => $this->elements['format'] = new Element
 									(
 										'select', array
 										(
-											self::T_OPTIONS => array
+											self::OPTIONS => array
 											(
 												'jpeg' => 'JPEG',
 												'png' => 'PNG',
 												'gif' => 'GIF'
 											),
 
-											self::T_DEFAULT => 'jpeg',
+											self::DEFAULT_VALUE => 'jpeg',
 
 											'style' => 'display: inline-block'
 										)
@@ -116,13 +117,13 @@ class AdjustThumbnailVersion extends \BrickRouge\Widget
 
 									'&nbsp;',
 
-									'quality' => $this->elements['quality'] = new Element
+									'quality' => $this->elements['quality'] = new Text
 									(
-										Element::E_TEXT, array
+										array
 										(
-											self::T_LABEL => 'Qualité',
-											self::T_LABEL_POSITION => 'before',
-											self::T_DEFAULT => 80,
+											self::LABEL => 'Qualité',
+											self::LABEL_POSITION => 'before',
+											self::DEFAULT_VALUE => 80,
 
 											'size' => 3
 										)
@@ -133,18 +134,18 @@ class AdjustThumbnailVersion extends \BrickRouge\Widget
 
 						'interlace' => $this->elements['interlace'] = new Element
 						(
-							Element::E_CHECKBOX, array
+							Element::TYPE_CHECKBOX, array
 							(
-								self::T_LABEL => 'Affichage progressif'
+								self::LABEL => 'Affichage progressif'
 							)
 						),
 
-						'background' => $this->elements['background'] = new Element
+						'background' => $this->elements['background'] = new Text
 						(
-							Element::E_TEXT, array
+							array
 							(
-								self::T_LABEL => 'Remplissage',
-								self::T_LABEL_POSITION => 'above'
+								self::LABEL => 'Remplissage',
+								self::LABEL_POSITION => 'above'
 							)
 						)
 					),
@@ -171,7 +172,7 @@ class AdjustThumbnailVersion extends \BrickRouge\Widget
 		{
 			switch ($name)
 			{
-				case self::T_DEFAULT:
+				case self::DEFAULT_VALUE:
 				{
 					$options = $value;
 

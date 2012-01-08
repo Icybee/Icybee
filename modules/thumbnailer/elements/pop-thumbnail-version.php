@@ -25,11 +25,14 @@ class PopThumbnailVersion extends \BrickRouge\Widget
 			(
 				array
 				(
-					Element::T_CHILDREN => array
+					Element::CHILDREN => array
 					(
 						$this->elements['value'] = new Element
 						(
-							Element::E_HIDDEN
+							'input', array
+							(
+								'type' => 'hidden'
+							)
 						)
 					),
 
@@ -55,7 +58,7 @@ class PopThumbnailVersion extends \BrickRouge\Widget
 		{
 			switch ($name)
 			{
-				case self::T_DEFAULT:
+				case self::DEFAULT_VALUE:
 				case 'name':
 				case 'value':
 				{
@@ -79,7 +82,7 @@ class PopThumbnailVersion extends \BrickRouge\Widget
 	{
 		$rc = parent::render_inner_html();
 
-		$value = $this->get('value', $this->get(self::T_DEFAULT));
+		$value = $this->get('value', $this->get(self::DEFAULT_VALUE));
 
 		if (is_string($value))
 		{

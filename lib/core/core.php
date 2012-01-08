@@ -45,22 +45,12 @@ class Core extends ICanBoogie\Core
 	 *
 	 * @return Core The core object.
 	 */
-	static public function get_singleton(array $options=array())
+	public static function get_singleton(array $options=array())
 	{
-		$config = array
-		(
-			ROOT . 'framework/BrickRouge',
-			ROOT . 'framework/wdpatron',
-			ROOT
-		);
+		$config = array();
+		$locale = array();
 
-		$locale = array
-		(
-			ROOT . 'framework/BrickRouge',
-			ROOT
-		);
-
-		$protected_path = ICanBoogie\DOCUMENT_ROOT . 'protected/all' . DIRECTORY_SEPARATOR;
+		$protected_path = ICanBoogie\DOCUMENT_ROOT . 'protected' . DIRECTORY_SEPARATOR . 'all' . DIRECTORY_SEPARATOR;
 
 		if (file_exists($protected_path . 'config'))
 		{
@@ -76,16 +66,14 @@ class Core extends ICanBoogie\Core
 		(
 			wd_array_merge_recursive
 			(
-				array
+				$options, array
 				(
 					'paths' => array
 					(
 						'config' => $config,
 						'locale' => $locale
 					)
-				),
-
-				$options
+				)
 			)
 		);
 	}
@@ -95,25 +83,26 @@ class Core extends ICanBoogie\Core
 	 *
 	 * @param \Exception $exception
 	 */
-	static public function exception_handler(\Exception $exception)
+	public static function exception_handler(\Exception $exception)
 	{
 		global $core;
 
 		$code = $exception->getCode() ?: 500;
-		$class = get_class($exception);
 		$message = $exception->getMessage();
+		$class = get_class($exception); // The $class variable is required by the template
 
 		if (!headers_sent())
 		{
 			$normalized_message = strip_tags($message);
-			$normalized_message = str_replace(array("\r\n", "\n"), ' ', $message);
+			$normalized_message = str_replace(array("\r\n", "\n"), ' ', $normalized_message);
+			$normalized_message = mb_convert_encoding($normalized_message, ICanBoogie\CHARSET, 'ASCII');
 
-			if (strlen($normalized_message > 29))
+			if (strlen($normalized_message) > 32)
 			{
 				$normalized_message = mb_substr($normalized_message, 0, 29) . '...';
 			}
 
-			header("HTTP/1.0 $code $class: " . $normalized_message);
+			header('HTTP/1.0 ' . $code . ' ' . $class . ': ' . $normalized_message);
 		}
 
 		if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'] == 'XMLHttpRequest')
@@ -126,7 +115,12 @@ class Core extends ICanBoogie\Core
 			exit($rc);
 		}
 
-		$formated_exception = Debug::format_exception($exception);
+		$formated_exception = Debug::format_alert($exception);
+
+		if (!($exception instanceof Exception\HTTP))
+		{
+			Debug::report($formated_exception);
+		}
 
 		if (!headers_sent())
 		{

@@ -55,7 +55,7 @@ class WdFileUploadElement extends BrickRouge\File
 	{
 		global $document;
 
-		$limit = $this->get(self::T_FILE_WITH_LIMIT, 2 * 1024);
+		$limit = $this->get(self::FILE_WITH_LIMIT, 2 * 1024);
 
 		if ($limit === true)
 		{

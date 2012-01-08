@@ -31,15 +31,15 @@ class site_search_WdMarkups extends patron_markups_WdHooks
 
 		$tags = array
 		(
-			Form::T_VALUES => $_GET,
+			Form::VALUES => $_GET,
 
-			Element::T_CHILDREN => array
+			Element::CHILDREN => array
 			(
 				'q' => new BrickRouge\Searchbox
 				(
 					array
 					(
-						Form::T_LABEL => $label,
+						Form::LABEL => $label,
 						'placeholder' => $label
 					)
 				)
@@ -51,51 +51,6 @@ class site_search_WdMarkups extends patron_markups_WdHooks
 		);
 
 		return $template ? new WdTemplatedForm($tags, $patron($template)) : (string) new Form($tags);
-
-
-		/*
-		$document->css->add('public/page.css');
-		$document->js->add('public/page.js');
-
-		$page = $core->models['pages'][$pageid];
-		$label = t('search.label.search');
-
-		$tags = array
-		(
-			Form::T_VALUES => $_GET,
-
-			Element::T_CHILDREN => array
-			(
-				'q' => new Element
-				(
-					Element::E_TEXT, array
-					(
-						Form::T_LABEL => $label,
-						Element::T_DATASET => array
-						(
-							'placeholder' => $label
-						),
-
-						'class' => 'search autofocus'
-					)
-				),
-
-				new Element
-				(
-					Element::E_SUBMIT, array
-					(
-						Element::T_INNER_HTML => $label
-					)
-				)
-			),
-
-			'id' => 'search-quick',
-			'method' => 'get',
-			'action' => $page->url
-		);
-
-		return $template ? new WdTemplatedForm($tags, $patron($template)) : (string) new Form($tags);
-		*/
 	}
 
 	// TODO: move to the module and use registry configuration.

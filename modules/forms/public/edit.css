@@ -14,12 +14,12 @@ form.edit div.is_notify.unfolded + table
 	display: table;
 }
 
-form.wdform td.label
+form.edit td.label
 {
 	font-size: .9em;
 }
 
-form.wdform textarea[name="notify_template"]
+form.edit textarea[name="notify_template"]
 {
 	font-family: Droid Sans Mono, Consolas, Monaco, monospace;
 	font-size: .8em;

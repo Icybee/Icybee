@@ -9,13 +9,14 @@
  * file that was distributed with this source code.
  */
 
+use ICanBoogie\ActiveRecord\Model;
 use ICanBoogie\Event;
 use ICanBoogie\Exception;
-use ICanBoogie\ActiveRecord\Model;
 use ICanBoogie\Module;
-
+use BrickRouge\Button;
 use BrickRouge\Element;
 use BrickRouge\Form;
+use BrickRouge\Text;
 
 require_once dirname(__DIR__) . '/api.php';
 
@@ -71,15 +72,15 @@ $form = new BrickRouge\Form
 (
 	array
 	(
-		BrickRouge\Form::T_VALUES => $_GET,
+		BrickRouge\Form::VALUES => $_GET,
 
-		Element::T_CHILDREN => array
+		Element::CHILDREN => array
 		(
-			'q' => new Element
+			'q' => new Text
 			(
-				Element::E_TEXT, array
+				array
 				(
-					Form::T_LABEL => t('search.label.keywords'),
+					Form::LABEL => t('search.label.keywords'),
 
 					'autofocus' => true,
 					'placeholder' => t('search.label.keywords'),
@@ -91,18 +92,18 @@ $form = new BrickRouge\Form
 			(
 				'select', array
 				(
-					Form::T_LABEL => t('search.label.in'),
-					Element::T_OPTIONS => $constructors_options,
+					Form::LABEL => t('search.label.in'),
+					Element::OPTIONS => $constructors_options,
 					'class' => 'unstyled'
 				)
 			),
 
-			new Element
+			new Button
 			(
-				Element::E_SUBMIT, array
+				'search.label.search', array
 				(
-					Element::T_INNER_HTML => t('search.label.search'),
-					'class' => 'unstyled'
+					'class' => 'unstyled',
+					'type' => 'Submit'
 				)
 			)
 		),

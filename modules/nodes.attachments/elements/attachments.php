@@ -91,7 +91,7 @@ class WdAttachmentsElement extends Element
 		(
 			array
 			(
-				\BrickRouge\File::T_FILE_WITH_LIMIT => $limit / 1024,
+				\BrickRouge\File::FILE_WITH_LIMIT => $limit / 1024,
 				\BrickRouge\File::T_UPLOAD_URL => '/api/nodes.attachments/upload'
 			)
 		);

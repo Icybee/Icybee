@@ -28,11 +28,11 @@ class WdI18nLinkElement extends Element
 		(
 			'select', $tags + array
 			(
-				Element::T_LABEL => '.nativeid',
-				Element::T_LABEL_POSITION => 'before',
-				Element::T_GROUP => 'i18n',
+				Element::LABEL => '.nativeid',
+				Element::LABEL_POSITION => 'before',
+				Element::GROUP => 'i18n',
 
-				Element::T_DESCRIPTION => t('nativeid', array(':native' => $native, ':language' => $site->language), array('scope' => array('element', 'description'))),
+				Element::DESCRIPTION => t('nativeid', array(':native' => $native, ':language' => $site->language), array('scope' => array('element', 'description'))),
 
 				'name' => Node::NATIVEID
 			)
@@ -84,7 +84,7 @@ class WdI18nLinkElement extends Element
 			unset($label);
 		}
 
-		$this->set(self::T_OPTIONS, array(null => '.none') + $options);
+		$this->set(self::OPTIONS, array(null => '.none') + $options);
 
 		return parent::__toString();
 	}

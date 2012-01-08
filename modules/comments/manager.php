@@ -84,7 +84,7 @@ class Comments extends \WdManager
 		(
 			'a', array
 			(
-				Element::T_INNER_HTML => 'Voir le commentaire',
+				Element::INNER_HTML => 'Voir le commentaire',
 
 				'href' => $record->url,
 				'class' => 'view'
@@ -173,7 +173,7 @@ class Comments extends \WdManager
 			(
 				'a', array
 				(
-					Element::T_INNER_HTML => 'Aller à l\'article',
+					Element::INNER_HTML => 'Aller à l\'article',
 
 					'href' => $node->url,
 					'title' => $title,

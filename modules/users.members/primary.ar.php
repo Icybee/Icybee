@@ -14,7 +14,7 @@ namespace ICanBoogie\ActiveRecord\Users;
 use ICanBoogie\ActiveRecord\User;
 use ICanBoogie\Operation;
 
-class Members extends User
+class Member extends User
 {
 	public $gender;
 

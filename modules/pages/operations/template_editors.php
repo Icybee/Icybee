@@ -63,7 +63,7 @@ class TemplateEditors extends Operation
 
 		$form = (string) new \WdSectionedForm($contents_tags);
 
-		$this->response['assets'] = $core->document->get_assets();
+		$this->response['assets'] = $core->document->assets;
 
 		return $form;
 	}

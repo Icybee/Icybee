@@ -4,15 +4,8 @@ return array
 (
 	'events' => array
 	(
-		'resources.files.path.change' => array
-		(
-			'ICanBoogie\Hooks\Pages::resources_files_path_change'
-		),
-
-		'ICanBoogie\ActiveRecord\Page::urlchange' => array
-		(
-			'ICanBoogie\Hooks\Pages::on_urlchange'
-		),
+		'resources.files.path.change' => 'ICanBoogie\Hooks\Pages::resources_files_path_change',
+		'ICanBoogie\ActiveRecord\Page::urlchange' => 'ICanBoogie\Hooks\Pages::on_urlchange',
 
 		/*
 		 * cache support

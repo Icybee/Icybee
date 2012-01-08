@@ -10,17 +10,17 @@ class form_WdEditorElement extends WdEditorElement
 		(
 			'div', array
 			(
-				Element::T_CHILDREN => array
+				Element::CHILDREN => array
 				(
 					$this->selector = new BrickRouge\FormSelectorElement
 					(
 						'select', array
 						(
 							/*
-							Element::T_LABEL => 'Formulaire',
-							Element::T_LABEL_POSITION => 'before',
+							Element::LABEL => 'Formulaire',
+							Element::LABEL_POSITION => 'before',
 							*/
-							Element::T_DESCRIPTION => 'Sélectionner le formulaire à afficher sur la page'
+							Element::DESCRIPTION => 'Sélectionner le formulaire à afficher sur la page'
 						)
 					)
 				),

@@ -108,7 +108,7 @@ EOT;
 			throw new Exception('Uknown widget mode: %mode', array('%mode' => $mode));
 		}
 
-		$this->response['assets'] = $document->get_assets();
+		$this->response['assets'] = $document->assets;
 		$this->response['mode'] = $mode;
 
 		return $rc;

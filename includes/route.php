@@ -163,7 +163,7 @@ function _route_add_block($route, $params)
 	}
 	catch (\Exception $e)
 	{
-		$block = '<div class="group">' . $e . '</div>';
+		$block = '<div class="group">' . ICanBoogie\Debug::format_alert($e) . '</div>';
 	}
 
 	//$document->addToBlock((string) $block, 'contents');

@@ -35,22 +35,22 @@ class WdI18nElement extends Element
 		(
 			'div', $tags + array
 			(
-				Element::T_CHILDREN => array
+				Element::CHILDREN => array
 				(
 					Node::LANGUAGE => $this->el_language = new Element
 					(
 						'select', array
 						(
-							Element::T_LABEL => '.language',
-							Element::T_LABEL_POSITION => 'before',
-							Element::T_OPTIONS => array
+							Element::LABEL => '.language',
+							Element::LABEL_POSITION => 'before',
+							Element::OPTIONS => array
 							(
 								null => '.neutral'
 							)
 
 							+ $languages,
 
-							Element::T_DESCRIPTION => '.language'
+							Element::DESCRIPTION => '.language'
 						)
 					),
 
@@ -60,9 +60,9 @@ class WdI18nElement extends Element
 					(
 						'em', array
 						(
-							Element::T_LABEL => '.nativeid',
-							Element::T_LABEL_POSITION => 'before',
-							Element::T_INNER_HTML => "Il n'y a pas d'entrée à traduire.",
+							Element::LABEL => '.nativeid',
+							Element::LABEL_POSITION => 'before',
+							Element::INNER_HTML => "Il n'y a pas d'entrée à traduire.",
 
 							'class' => 'small'
 						)
@@ -133,17 +133,17 @@ class WdI18nElement extends Element
 			(
 				'select', array
 				(
-					Element::T_LABEL => '.nativeid',
-					Element::T_LABEL_POSITION => 'before',
-					Element::T_GROUP => 'i18n',
-					Element::T_OPTIONS => array
+					Element::LABEL => '.nativeid',
+					Element::LABEL_POSITION => 'before',
+					Element::GROUP => 'i18n',
+					Element::OPTIONS => array
 					(
 						null => ''
 					)
 
 					+ $sources,
 
-					Element::T_DESCRIPTION => t('nativeid', array(':native' => $native, ':language' => $site->language), array('scope' => array('element', 'description'))),
+					Element::DESCRIPTION => t('nativeid', array(':native' => $native, ':language' => $site->language), array('scope' => array('element', 'description'))),
 
 					'name' => Node::NATIVEID,
 					'value' => $native_nid

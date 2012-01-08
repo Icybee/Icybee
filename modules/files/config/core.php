@@ -4,6 +4,6 @@ return array
 (
 	'autoload' => array
 	(
-		'WdFileUploadElement' => $root . 'elements/fileupload.element.php'
+		'WdFileUploadElement' => $path . 'elements/fileupload.element.php'
 	)
 );

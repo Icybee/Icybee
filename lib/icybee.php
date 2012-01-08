@@ -239,11 +239,6 @@ class Icybee extends WdPatron
 
 		$document = $core->document;
 
-		if ($core->user_id)
-		{
-			$document->css->add('../framework/wdpatron/public/patron.css');
-		}
-
 		// FIXME: because set() doesn't handle global vars ('$') correctly,
 		// we have to set '$page' otherwise, a new variable '$page' is created
 

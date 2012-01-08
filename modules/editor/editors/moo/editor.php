@@ -71,6 +71,13 @@ class moo_WdEditorElement extends WdEditorElement
 			$css[] = $document->resolve_url(\BrickRouge\ASSETS . 'brickrouge.css');
 		}
 
+		$try = \ICanBoogie\DOCUMENT_ROOT . 'public/page.css';
+
+		if (file_exists($try))
+		{
+			$css[] = $document->resolve_url($try);
+		}
+
 		$document->css->add('public/assets/MooEditable.css');
 		$document->css->add('public/assets/MooEditable.Image.css');
 		$document->css->add('public/assets/MooEditable.Extras.css');
@@ -123,7 +130,7 @@ class moo_WdEditorElement extends WdEditorElement
 				preg_match_all('#([\w\-]+)\s*=\s*\"([^"]+)#', $match[0], $attributes);
 
 				$attributes = array_combine($attributes[1], $attributes[2]);
-				$attributes = array_map(function($v) { return html_entity_decode($v, ENT_COMPAT, WDCORE_CHARSET); }, $attributes);
+				$attributes = array_map(function($v) { return html_entity_decode($v, ENT_COMPAT, ICanBoogie\CHARSET); }, $attributes);
 
 				if (isset($attributes['width']) && isset($attributes['height']) && isset($attributes['data-nid']))
 				{

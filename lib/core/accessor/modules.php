@@ -36,12 +36,10 @@ class Modules extends ICanBoogie\Accessor\Modules
 
 		foreach ($this->descriptors as $module_id => &$descriptor)
 		{
-			if (!empty($descriptor[Module::T_REQUIRED]) || in_array($module_id, $enableds))
+			if ($descriptor[Module::T_REQUIRED] || in_array($module_id, $enableds))
 			{
-				continue;
+				$descriptor[Module::T_DISABLED] = false;
 			}
-
-			$descriptor[Module::T_DISABLED] = true;
 		}
 
 		parent::run();
@@ -53,18 +51,20 @@ class Modules extends ICanBoogie\Accessor\Modules
 	 *
 	 * @see ICanBoogie\Accessor.Modules::index_module()
 	 */
-	protected function index_module($id, $path)
+	protected function index_module(array $descriptor)
 	{
-		$info = parent::index_module($id, $path);
+		$index = parent::index_module($descriptor);
+		$path = $descriptor[Module::T_PATH];
 
 		if (file_exists($path . 'manager.php'))
 		{
+			$id = $descriptor[Module::T_ID];
 			$class = 'Icybee\Manager\\' . ICanBoogie\normalize_namespace_part($id);
 
-			$info['autoload'][$class] = $path . 'manager.php';
+			$index['autoload'][$class] = $path . 'manager.php';
 		}
 
-		return $info;
+		return $index;
 	}
 
 	public function ids_by_property($tag, $default=null)

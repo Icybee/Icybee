@@ -9,7 +9,9 @@
  * file that was distributed with this source code.
  */
 
-class user_members_WdModel extends user_users_WdModel
+namespace ICanBoogie\ActiveRecord\Model\Users;
+
+class Members extends \ICanBoogie\ActiveRecord\Model\Users
 {
 	public function save(array $properties, $key=null, array $options=array())
 	{

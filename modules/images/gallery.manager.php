@@ -72,7 +72,7 @@ class Gallery extends Manager\Images
 			(
 				'a', array
 				(
-					Element::T_INNER_HTML => wd_entities($title),
+					Element::INNER_HTML => wd_entities($title),
 
 					'class' => 'edit',
 					'title' => t('Edit this item'),
@@ -88,7 +88,7 @@ class Gallery extends Manager\Images
 
 					$key = new Element
 					(
-						Element::E_CHECKBOX, array
+						Element::TYPE_CHECKBOX, array
 						(
 							'class' => 'key',
 							'title' => t('Toggle selection for entry #\1', array($entry->nid)),

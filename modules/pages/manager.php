@@ -14,8 +14,8 @@ namespace Icybee\Manager;
 use ICanBoogie\ActiveRecord\Query;
 use ICanBoogie\Exception;
 use ICanBoogie\Route;
-
 use BrickRouge\Element;
+use BrickRouge\Text;
 
 class Pages extends Nodes
 {
@@ -303,7 +303,7 @@ class Pages extends Nodes
 	{
 		$checkbox = new Element
 		(
-			Element::E_CHECKBOX, array
+			Element::TYPE_CHECKBOX, array
 			(
 				'class' => 'navigation',
 				'checked' => !empty($record->is_navigation_excluded),
@@ -327,12 +327,12 @@ EOT;
 
 			if (0)
 			{
-				$rc .= new Element
+				$rc .= new Text
 				(
-					Element::E_TEXT, array
+					array
 					(
-						Element::T_LABEL => 'w',
-						Element::T_LABEL_POSITION => 'before',
+						Element::LABEL => 'w',
+						Element::LABEL_POSITION => 'before',
 						'name' => 'weights[' . $record->nid . ']',
 						'value' => $record->weight,
 						'size' => 3,
@@ -342,12 +342,12 @@ EOT;
 
 				$rc .= '&nbsp;';
 
-				$rc .= new Element
+				$rc .= new Text
 				(
-					Element::E_TEXT, array
+					array
 					(
-						Element::T_LABEL => 'p',
-						Element::T_LABEL_POSITION => 'before',
+						Element::LABEL => 'p',
+						Element::LABEL_POSITION => 'before',
 						'name' => 'parents[' . $record->nid . ']',
 						'value' => $record->parentid,
 						'size' => 3,
@@ -360,9 +360,10 @@ EOT;
 				/*
 				$rc .= new Element
 				(
-					Element::E_HIDDEN, array
+					'input', array
 					(
 						'name' => 'weights[' . $entry->nid . ']',
+						'type' => 'hidden',
 						'value' => $entry->weight
 					)
 				);
@@ -372,9 +373,10 @@ EOT;
 
 				$rc .= new Element
 				(
-					Element::E_HIDDEN, array
+					'input', array
 					(
 						'name' => 'parents[' . $record->nid . ']',
+						'type' => 'hidden',
 						'value' => $record->parentid
 					)
 				);
@@ -417,7 +419,7 @@ EOT;
 
 		$rc .= new Element
 		(
-			Element::E_CHECKBOX, array
+			Element::TYPE_CHECKBOX, array
 			(
 				'class' => 'navigation',
 				'checked' => !empty($entry->is_navigation_excluded),

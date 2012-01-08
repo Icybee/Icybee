@@ -39,20 +39,6 @@ abstract class Widget extends Element
 		$this->add_class($class);
 	}
 
-	protected function __get_assets()
-	{
-		return wd_array_merge_recursive
-		(
-			parent::__get_assets(), array
-			(
-				'js' => array
-				(
-					\BrickRouge\ASSETS . 'brickrouge.js' => 0
-				)
-			)
-		);
-	}
-
 	public function get_results(array $options=array())
 	{
 		throw new Exception('The widget class %class does not implement results', array('%class' => get_class($this)));

@@ -19,9 +19,11 @@ use ICanBoogie\Exception;
 use ICanBoogie\I18n\Translator\Proxi;
 use ICanBoogie\Operation;
 use BrickRouge;
+use BrickRouge\Button;
 use BrickRouge\Element;
 use BrickRouge\Form;
 use BrickRouge\Ranger;
+use BrickRouge\Text;
 
 class Manager extends Element
 {
@@ -230,18 +232,20 @@ class Manager extends Element
 
 		$rc .= new Element
 		(
-			Element::E_HIDDEN, array
+			'input', array
 			(
 				'name' => Operation::DESTINATION,
+				'type' => 'hidden',
 				'value' => (string) $this->module
 			)
 		);
 
 		$rc .= new Element
 		(
-			Element::E_HIDDEN, array
+			'input', array
 			(
 				'name' => self::T_BLOCK,
+				'type' => 'hidden',
 				'value' => $this->get(self::T_BLOCK, 'manage')
 			)
 		);
@@ -879,7 +883,7 @@ EOT;
 			(
 				'a', array
 				(
-					Element::T_INNER_HTML => '<span class="title">' . $label . '</span>',
+					Element::INNER_HTML => '<span class="title">' . $label . '</span>',
 
 					'title' => $t('Sort by: :identifier', array(':identifier' => $label)),
 					'href' => "?order=$id:" . ($reverse < 0 ? 'desc' : 'asc'),
@@ -1050,11 +1054,11 @@ EOT;
 		(
 			'label', array
 			(
-				Element::T_CHILDREN => array
+				Element::CHILDREN => array
 				(
 					new Element
 					(
-						Element::E_CHECKBOX, array
+						Element::TYPE_CHECKBOX, array
 						(
 							'value' => $value,
 							'checked' => $disabled
@@ -1299,13 +1303,13 @@ EOT;
 		(
 			array
 			(
-				Element::T_CHILDREN => array
+				Element::CHILDREN => array
 				(
-					'search' => new Element
+					'search' => new Text
 					(
-						Element::E_TEXT, array
+						array
 						(
-							Element::T_DATASET => array
+							Element::DATASET => array
 							(
 								'placeholder' => t('Search')
 							),
@@ -1318,11 +1322,10 @@ EOT;
 						)
 					),
 
-					new Element
+					new Button
 					(
-						'button', array
+						'×', array
 						(
-							Element::T_INNER_HTML => '✖',
 							'type' => 'button'
 						)
 					)
@@ -1375,7 +1378,7 @@ EOT;
 			(
 				'select', array
 				(
-					Element::T_OPTIONS => array(10 => 10, 20 => 20, 50 => 50, 100 => 100),
+					Element::OPTIONS => array(10 => 10, 20 => 20, 50 => 50, 100 => 100),
 
 					'title' => $t('Number of item to display by page'),
 					'name' => 'limit',
@@ -1432,13 +1435,13 @@ EOT;
 		(
 			'div', array
 			(
-				Element::T_CHILDREN => array
+				Element::CHILDREN => array
 				(
 					'jobs' => new Element
 					(
 						'select', array
 						(
-							Element::T_OPTIONS => $options
+							Element::OPTIONS => $options
 						)
 					)
 				),
@@ -1463,11 +1466,11 @@ EOT;
 				(
 					'label', array
 					(
-						Element::T_CHILDREN => array
+						Element::CHILDREN => array
 						(
 							new Element
 							(
-								Element::E_CHECKBOX
+								Element::TYPE_CHECKBOX
 							)
 						),
 
@@ -1531,7 +1534,7 @@ EOT;
 		(
 			'a', array
 			(
-				Element::T_INNER_HTML => $label,
+				Element::INNER_HTML => $label,
 
 				'class' => 'edit',
 				'title' => t($title),
@@ -1548,7 +1551,7 @@ EOT;
 		(
 			'a', array
 			(
-				Element::T_INNER_HTML => $label,
+				Element::INNER_HTML => $label,
 
 				'class' => 'edit',
 				'title' => t('Edit this item'),

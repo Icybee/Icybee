@@ -9,6 +9,10 @@ return array
 	Module::T_DESCRIPTION => 'Role management',
 	Module::T_CATEGORY => 'users',
 	Module::T_REQUIRED => true,
+	Module::T_REQUIRES => array
+	(
+		'users' => 'x.x'
+	),
 
 	Module::T_MODELS => array
 	(
