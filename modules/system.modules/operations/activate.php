@@ -55,15 +55,15 @@ class Activate extends Operation
 					$module->install($errors);
 				}
 
-				$enabled[$key] = $key;
+				$enabled[$key] = true;
 			}
 			catch (\Exception $e)
 			{
-				wd_log_error($e->getMessage());
+				$errors[$e->getMessage()];
 			}
 		}
 
-		$core->vars['enabled_modules'] = json_encode($enabled);
+		$core->vars['enabled_modules'] = array_keys($enabled);
 
 		unset($core->vars['views']);
 
