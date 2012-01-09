@@ -667,30 +667,4 @@ EOT;
 
 		return true;
 	}
-
-	public function provide_view($name, $patron)
-	{
-		global $page;
-
-		$name = wd_normalize($name, '_');
-
-		$query = new Query($this->model);
-		$query = $this->provide_view_alter_query($name, $query, $page->url_variables);
-
-		$callback = __FUNCTION__ . '_' . $name;
-
-		return $this->$callback($query, $patron);
-	}
-
-	protected function provide_view_alter_query($name, Query $query, array $conditions)
-	{
-		$callback = __FUNCTION__ . '_' . $name;
-
-		if (!method_exists($this, $callback))
-		{
-			return $query;
-		}
-
-		return $this->$callback($query, $conditions);
-	}
 }

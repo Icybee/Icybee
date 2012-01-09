@@ -30,37 +30,38 @@ class Nodes extends \Icybee\Module
 	const PERMISSION_MODIFY_BELONGING_SITE = 'modify belonging site';
 
 	/**
-	 * Defines the views "view", "list" and "home".
+	 * Defines the "view", "list" and "home" views.
 	 *
 	 * @see Icybee.Module::__get_views()
 	 */
 	protected function __get_views()
 	{
-		return array
+		return wd_array_merge_recursive
 		(
-			'view' => array
+			parent::__get_views(), array
 			(
-				'title' => "Node detail",
-				'provider' => 'Icybee\Views\Nodes\Provider',
-				'assets' => array()
-			),
+				'view' => array
+				(
+					'title' => "Record detail",
+					'provider' => 'Icybee\Views\Nodes\Provider',
+					'assets' => array()
+				),
 
-			'list' => array
-			(
-				'title' => 'Nodes list',
-				'provider' => 'Icybee\Views\Nodes\Provider',
-				'assets' => array()
-			),
+				'list' => array
+				(
+					'title' => 'Records list',
+					'provider' => 'Icybee\Views\Nodes\Provider',
+					'assets' => array()
+				),
 
-			'home' => array
-			(
-				'title' => 'Nodes home',
-				'provider' => 'Icybee\Views\Nodes\Provider',
-				'assets' => array()
+				'home' => array
+				(
+					'title' => 'Records home',
+					'provider' => 'Icybee\Views\Nodes\Provider',
+					'assets' => array()
+				)
 			)
-		)
-
-		+ parent::__get_views();
+		);
 	}
 
 	protected function resolve_primary_model_tags($tags)
@@ -467,86 +468,6 @@ EOT;
 		$rc .= '</table>';
 
 		return $rc;
-	}
-
-	protected function provide_view_view(Query $query, WdPatron $patron)
-	{
-		global $core, $page;
-
-		$record = $query->one;
-
-		if (!$record)
-		{
-			throw new HTTPException('The requested record was not found.', array(), 404);
-		}
-		else if (!$record->is_online)
-		{
-			if (!$core->user->has_permission(Module::PERMISSION_ACCESS, $record->constructor))
-			{
-				throw new HTTPException('The requested record requires authentication.', array(), 401);
-			}
-
-			$record->title .= ' ✎';
-		}
-
-		$page->title = $record->title;
-
-		return $record;
-	}
-
-	protected function provide_view_alter_query($name, Query $query, array $conditions)
-	{
-		$query->own->similar_site->similar_language;
-
-		if (isset($conditions['nid']))
-		{
-			$query->where('nid = ?', $conditions['nid']);
-		}
-		else if (isset($conditions['slug']))
-		{
-			$query->where('slug = ?', $conditions['slug']);
-		}
-
-		if ($name != 'view')
-		{
-			$query->where('is_online = 1');
-		}
-
-		return parent::provide_view_alter_query($name, $query, $conditions);
-	}
-
-	protected function provide_view_alter_query_view($query, array $conditions)
-	{
-		if (empty($conditions['nid']) && empty($conditions['slug']))
-		{
-			$query->where('is_online = 1');
-		}
-
-		return $query->limit(1);
-	}
-
-	protected function provide_view_list(Query $query, \WdPatron $patron)
-	{
-		global $core;
-
-		$count = $query->count;
-
-		$limit = $core->site->metas->get("$this->flat_id.limits.list", 10);
-		$position = isset($_GET['page']) ? $_GET['page'] : 0;
-
-		if ($limit)
-		{
-			$query->limit($position * $limit, $limit);
-		}
-
-		$patron->context['self']['range'] = array
-		(
-			'count' => $count,
-			'page' => $position,
-			'limit' => $limit
-		);
-
-		return $query->all;
 	}
 
 	public static function create_default_routes()

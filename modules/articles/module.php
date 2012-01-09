@@ -19,28 +19,39 @@ use BrickRouge\Element;
 
 class Articles extends Contents
 {
+	/**
+	 * Adds the "archives" view type and adds assets to the inherited "list" view type.
+	 *
+	 * @see ICanBoogie\Module.Contents::__get_views()
+	 */
 	protected function __get_views()
 	{
-		$views = parent::__get_views() + array
+		$assets = array
 		(
-			'archives' => array
+			'css' => array
 			(
-				'title' => "Archives des articles",
-				'class' => 'Icybee\Views\Articles\Archives',
-				'provider' => 'Icybee\Views\Contents\Provider',
-				'assets' => array
-				(
-					'css' => array
-					(
-						__DIR__ . '/public/page.css'
-					)
-				)
+				__DIR__ . '/public/page.css'
 			)
 		);
 
-		$views['list']['assets']['css'][] = __DIR__ . '/public/page.css';
+		return wd_array_merge_recursive
+		(
+			parent::__get_views(), array
+			(
+				'list' => array
+				(
+					'assets' => $assets
+				),
 
-		return $views;
+				'archives' => array
+				(
+					'title' => "Archives des articles",
+					'class' => 'Icybee\Views\Articles\Archives',
+					'provider' => 'Icybee\Views\Contents\Provider',
+					'assets' => $assets
+				)
+			)
+		);
 	}
 
 	protected function block_edit(array $properties, $permission)
@@ -64,20 +75,5 @@ class Articles extends Contents
 				)
 			)
 		);
-	}
-
-	protected function provide_view_archives(Query $query)
-	{
-		$records = $query->own->visible->order('date DESC')->all;
-
-		$by_month = array();
-
-		foreach ($records as $record)
-		{
-			$date = substr($record->date, 0, 7) . '-01';
-			$by_month[$date][] = $record;
-		}
-
-		return $by_month;
 	}
 }

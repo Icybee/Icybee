@@ -42,31 +42,26 @@ class Contents extends Nodes
 	 */
 	protected function __get_views()
 	{
-		return array
+		return wd_array_merge_recursive
 		(
-			'view' => array
+			parent::__get_views(), array
 			(
-				'title' => "Content detail",
-				'provider' => 'Icybee\Views\Contents\Provider',
-				'assets' => array()
-			),
+				'view' => array
+				(
+					'provider' => 'Icybee\Views\Contents\Provider'
+				),
 
-			'list' => array
-			(
-				'title' => 'Content list',
-				'provider' => 'Icybee\Views\Contents\Provider',
-				'assets' => array()
-			),
+				'list' => array
+				(
+					'provider' => 'Icybee\Views\Contents\Provider'
+				),
 
-			'home' => array
-			(
-				'title' => 'Content home',
-				'provider' => 'Icybee\Views\Contents\Provider',
-				'assets' => array()
+				'home' => array
+				(
+					'provider' => 'Icybee\Views\Contents\Provider'
+				)
 			)
-		)
-
-		+ parent::__get_views();
+		);
 	}
 
 	protected function block_manage()
@@ -229,114 +224,5 @@ class Contents extends Nodes
 				)
 			)
 		);
-	}
-
-	protected function provide_view_view(Query $query, WdPatron $patron)
-	{
-		global $page;
-
-		$record = $query->one;
-		$url_variables = $page->url_variables;
-
-		if (!$record && empty($url_variables['nid']) && isset($url_variables['slug']))
-		{
-			$slug = $page->url_variables['slug'];
-			$tries = $this->model->select('nid, slug')->where('constructor = ?', $this->id)->visible->order('date DESC')->pairs;
-			$key = null;
-			$max = 0;
-
-			foreach ($tries as $nid => $compare)
-			{
-				similar_text($slug, $compare, $p);
-
-				if ($p > $max)
-				{
-					$key = $nid;
-
-					if ($p > 90)
-					{
-						break;
-					}
-
-					$max = $p;
-				}
-			}
-
-			if ($key)
-			{
-				$record = $this->model[$key];
-
-				wd_log('The content node %title was rescued !', array('%title' => $record->title));
-			}
-		}
-
-		$query->one = $record;
-
-		return parent::provide_view_view($query, $patron);
-	}
-
-	protected function provide_view_home(Query $query, WdPatron $patron)
-	{
-		global $page;
-
-		$limit = $page->site->metas->get("$this->flat_id.limits.home", 5);
-
-		if ($limit)
-		{
-			$query->limit($limit);
-		}
-
-		return $query->all;
-	}
-
-	protected function provide_view_alter_query($name, Query $query, array $conditions)
-	{
-		if (!empty($conditions['year']))
-		{
-			$query->where('YEAR(date) = ?', $conditions['year']);
-		}
-
-		if (!empty($conditions['month']))
-		{
-			$query->where('MONTH(date) = ?', $conditions['month']);
-		}
-
-		if (!empty($conditions['day']))
-		{
-			$query->where('DAY(date) = ?', $conditions['day']);
-		}
-
-		if (!empty($conditions['categoryslug']))
-		{
-			$query->where('nid IN (SELECT nid FROM {prefix}taxonomy_terms
-			INNER JOIN {prefix}taxonomy_terms__nodes USING(vtid) WHERE termslug = ?)', $conditions['categoryslug']);
-		}
-
-		return parent::provide_view_alter_query($name, $query, $conditions);
-	}
-
-	protected function provide_view_alter_query_home(Query $query, array $conditions)
-	{
-		return $query->where('is_home_excluded = 0')->order('date DESC');
-	}
-
-	protected function provide_view_alter_query_list(Query $query, array $conditions)
-	{
-		return $query->order('date DESC');
-	}
-
-	protected function provide_view_archives(Query $query)
-	{
-		$records = $query->own->visible->order('date DESC')->all;
-
-		$by_date = array();
-
-		foreach ($records as $record)
-		{
-			$date = substr($record->date, 0, 4);// . '-01-01';
-			$by_date[$date][] = $record;
-		}
-
-		return $by_date;
 	}
 }
