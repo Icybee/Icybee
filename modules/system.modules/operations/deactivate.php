@@ -44,7 +44,7 @@ class Deactivate extends Operation
 			unset($enabled[$key]);
 		}
 
-		$core->vars['enabled_modules'] = json_encode($enabled);
+		$core->vars['enabled_modules'] = array_values($enabled);
 
 		unset($core->vars['views']);
 

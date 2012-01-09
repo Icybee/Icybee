@@ -45,16 +45,11 @@ class Views implements \ArrayAccess, \IteratorAggregate
 
 		$views = $core->vars['views'];
 
-		if ($views)
-		{
-			$views = unserialize($views);
-		}
-
 		if (!$views)
 		{
 			$views = $this->collect();
 
-			$core->vars['views'] = serialize($views);
+			$core->vars['views'] = $views;
 		}
 
 		$this->views = $views;

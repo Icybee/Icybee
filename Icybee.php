@@ -39,16 +39,16 @@ define('Icybee\ASSETS', ROOT . 'assets' . DIRECTORY_SEPARATOR);
  */
 if (file_exists(ROOT . 'framework/ICanBoogie.phar'))
 {
-	require_once 'phar://' . ROOT . 'framework/ICanBoogie.phar/ICanBoogie.php';
+	require_once ROOT . 'framework/ICanBoogie.phar';
 }
 else
 {
-	require_once ROOT . 'framework/ICanBoogie/ICanBoogie.php';
+	require_once ROOT . 'framework/ICanBoogie/startup.php';
 }
 
 if (file_exists(ROOT . 'framework/BrickRouge.phar'))
 {
-	require_once 'phar://' . ROOT . 'framework/BrickRouge.phar/BrickRouge.php';
+	require_once ROOT . 'framework/BrickRouge.phar';
 }
 else
 {
@@ -57,11 +57,11 @@ else
 
 if (file_exists(ROOT . 'framework/Patron.phar'))
 {
-	require_once 'phar://' . ROOT . 'framework/Patron.phar/bootstrap.php';
+	require_once ROOT . 'framework/Patron.phar';
 }
 else
 {
-	require_once ROOT . 'framework/Patron/bootstrap.php';
+	require_once ROOT . 'framework/Patron/startup.php';
 }
 
 

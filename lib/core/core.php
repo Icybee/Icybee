@@ -149,7 +149,7 @@ class Core extends ICanBoogie\Core
 	{
 		$config = $this->config;
 
-		return new Accessor\Modules($config['modules'], $config['cache modules'], $config['repository.cache'] . '/core');
+		return new Accessor\Modules($config['modules'], $config['cache modules'], $this->vars);
 	}
 
 	/**

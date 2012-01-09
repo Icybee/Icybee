@@ -39,7 +39,7 @@ class Activate extends Operation
 		$errors = $this->response->errors;
 
 		$enabled = array_keys($core->modules->enabled_modules_descriptors);
-		$enabled = array_combine($enabled, $enabled);
+		$enabled = array_flip($enabled);
 
 		foreach ((array) $this->key as $key => $dummy)
 		{

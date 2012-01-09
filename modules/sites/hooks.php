@@ -25,18 +25,13 @@ class Sites
 
 		$sites = $core->vars['sites'];
 
-		if ($sites)
-		{
-			$sites = unserialize($sites);
-		}
-
 		if (!$sites)
 		{
 			try
 			{
 				$sites = $core->models['sites']->all;
 
-				$core->vars['sites'] = serialize($sites);
+				$core->vars['sites'] = $sites;
 			}
 			catch (\Exception $e)
 			{

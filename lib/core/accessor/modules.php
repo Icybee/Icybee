@@ -32,13 +32,18 @@ class Modules extends ICanBoogie\Accessor\Modules
 	{
 		global $core;
 
-		$enableds = (array) json_decode($core->vars['enabled_modules'], true);
+		$enableds = $core->vars['enabled_modules'];
 
-		foreach ($this->descriptors as $module_id => &$descriptor)
+		if ($enableds && is_array($enableds))
 		{
-			if ($descriptor[Module::T_REQUIRED] || in_array($module_id, $enableds))
+			$enableds = array_flip($enableds);
+
+			foreach ($this->descriptors as $module_id => &$descriptor)
 			{
-				$descriptor[Module::T_DISABLED] = false;
+				if ($descriptor[Module::T_REQUIRED] || isset($enableds[$module_id]))
+				{
+					$descriptor[Module::T_DISABLED] = false;
+				}
 			}
 		}
 
