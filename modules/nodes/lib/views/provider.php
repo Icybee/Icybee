@@ -66,6 +66,26 @@ class Provider extends \Icybee\Views\ActiveRecord\Provider
 	}
 
 	/**
+	 * Returns the conditions unaltered.
+	 *
+	 * @see Icybee\Views.Provider::alter_conditions()
+	 */
+	protected function alter_conditions(array $conditions)
+	{
+		return $conditions;
+	}
+
+	/**
+	 * Returns the rendering context unaltered.
+	 *
+	 * @see Icybee\Views.Provider::alter_context()
+	 */
+	protected function alter_context(array $context)
+	{
+		return $context;
+	}
+
+	/**
 	 * Alters the query to search for records from the same constructor, a similar site and a
 	 * similar language.
 	 *
@@ -89,7 +109,7 @@ class Provider extends \Icybee\Views\ActiveRecord\Provider
 			$query->where('slug = ?', $conditions['slug']);
 		}
 
-		if ($this->get_return_type() == self::RETURN_MANY)
+		if ($this->returns == self::RETURNS_MANY)
 		{
 			$query->where('is_online = 1');
 		}
@@ -114,7 +134,7 @@ class Provider extends \Icybee\Views\ActiveRecord\Provider
 	 */
 	protected function extract_result(Query $query)
 	{
-		if ($this->get_return_type() == self::RETURN_ONE)
+		if ($this->returns == self::RETURNS_ONE)
 		{
 			return $query->one;
 		}

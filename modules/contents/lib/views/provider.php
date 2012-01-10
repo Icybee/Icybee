@@ -20,7 +20,7 @@ class Provider extends \Icybee\Views\Nodes\Provider
 	{
 		$rc = parent::__invoke();
 
-		if ($this->get_return_type() == self::RETURN_ONE && !$rc)
+		if ($this->returns == self::RETURNS_ONE && !$rc)
 		{
 			$rc = $this->rescue();
 		}
@@ -60,21 +60,6 @@ class Provider extends \Icybee\Views\Nodes\Provider
 		}
 
 		return parent::alter_query($query, $conditions)->order('date DESC, created DESC');
-	}
-
-	protected function alter_context(array $context)
-	{
-		$context = parent::alter_context($context);
-
-		if ($this->view->type == 'list')
-		{
-			$context['range'] = array
-			(
-
-			);
-		}
-
-		return $context;
 	}
 
 	/**

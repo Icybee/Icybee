@@ -48,7 +48,8 @@ class Articles extends Contents
 					'title' => "Archives des articles",
 					'class' => 'Icybee\Views\Articles\Archives',
 					'provider' => 'Icybee\Views\Contents\Provider',
-					'assets' => $assets
+					'assets' => $assets,
+					'renders' => \Icybee\Views\View::RENDERS_MANY
 				)
 			)
 		);

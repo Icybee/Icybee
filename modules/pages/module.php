@@ -33,7 +33,8 @@ class Pages extends Nodes
 			(
 				'title' => 'Sitemap',
 				'class' => 'Icybee\Modules\Pages\ListView',
-				'assets' => array()
+				'assets' => array(),
+				'renders' => \Icybee\Views\View::RENDERS_MANY
 			)
 		);
 	}

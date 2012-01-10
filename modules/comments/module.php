@@ -31,13 +31,15 @@ class Comments extends \Icybee\Module
 			(
 				'title' => "Comments associated to a node",
 				'assets' => $assets,
-				'provider' => true
+				'provider' => true,
+				'renders' => \Icybee\Views\View::RENDERS_MANY
 			),
 
 			'submit' => array
 			(
 				'title' => "Comment submit form",
-				'assets' => $assets
+				'assets' => $assets,
+				'renders' => \Icybee\Views\View::RENDERS_OTHER
 			)
 		);
 	}

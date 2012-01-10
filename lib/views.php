@@ -43,13 +43,20 @@ class Views implements \ArrayAccess, \IteratorAggregate
 	{
 		global $core;
 
-		$views = $core->vars['views'];
+		if (defined('Icybee\CACHE_VIEWS'))
+		{
+			$views = $core->vars['views'];
 
-		if (!$views)
+			if (!$views)
+			{
+				$views = $this->collect();
+
+				$core->vars['views'] = $views;
+			}
+		}
+		else
 		{
 			$views = $this->collect();
-
-			$core->vars['views'] = $views;
 		}
 
 		$this->views = $views;
@@ -76,10 +83,24 @@ class Views implements \ArrayAccess, \IteratorAggregate
 			{
 				$definition += array
 				(
+					'access_callback' => null,
 					'class' => null,
 					'module' => $id,
 					'type' => $type
 				);
+
+				if (empty($definition['renders']))
+				{
+					throw new \UnexpectedValueException(\ICanBoogie\format
+					(
+						'%property is empty for the view type %type defined by the module %module.', array
+						(
+							'property' => 'renders',
+							'type' => $type,
+							'module' => $id
+						)
+					));
+				}
 
 				$views[$id . '/' . $type] = $definition;
 			}
@@ -88,11 +109,21 @@ class Views implements \ArrayAccess, \IteratorAggregate
 		return $views;
 	}
 
+	/**
+	 * Checks if a view exists.
+	 *
+	 * @see ArrayAccess::offsetExists()
+	 */
 	public function offsetExists($offset)
 	{
 		return isset($this->views[$offset]);
 	}
 
+	/**
+	 * Returns the definition of a view.
+	 *
+	 * @see ArrayAccess::offsetGet()
+	 */
 	public function offsetGet($offset)
 	{
 		return $this->offsetExists($offset) ? $this->views[$offset] : null;

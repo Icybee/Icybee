@@ -16,48 +16,42 @@ use ICanBoogie\ActiveRecord\Query;
 use ICanBoogie\Event;
 use ICanBoogie\Module;
 
-class Provider
+abstract class Provider
 {
-	const RETURN_ONE = 1;
-	const RETURN_MANY = 2;
+	const RETURNS_ONE = 1;
+	const RETURNS_MANY = 2;
+	const RETURNS_OTHER = 3;
 
 	protected $view;
 	protected $context;
 	protected $module;
 	protected $conditions;
+	protected $returns;
 
-	public function __construct(View $view, array &$context, Module $module, array $conditions=array())
+	public function __construct(View $view, array &$context, Module $module, array $conditions, $returns)
 	{
 		$this->view = $view;
 		$this->context = &$context;
 		$this->module = $module;
 		$this->conditions = $conditions;
+		$this->returns = $returns;
 	}
 
-	public function __invoke()
-	{
-
-	}
-
-	protected function alter_conditions(array $conditions)
-	{
-		return $conditions;
-	}
-
-	protected function alter_context(array $context)
-	{
-		return $context;
-	}
+	abstract public function __invoke();
 
 	/**
-	 * Returns wheter the provider return a value (RETURN_ONE) or an array of values (RETURN_MANY).
+	 * Alters the conditions.
 	 *
-	 * @return int
+	 * @param array $conditions
 	 */
-	protected function get_return_type()
-	{
-		return self::RETURN_MANY;
-	}
+	abstract protected function alter_conditions(array $conditions);
+
+	/**
+	 * Alters rendering context.
+	 *
+	 * @param array $context
+	 */
+	abstract protected function alter_context(array $context);
 }
 
 namespace Icybee\Views\ActiveRecord;
@@ -65,7 +59,7 @@ namespace Icybee\Views\ActiveRecord;
 use ICanBoogie\ActiveRecord\Query;
 use ICanBoogie\Event;
 
-class Provider extends \Icybee\Views\Provider
+abstract class Provider extends \Icybee\Views\Provider
 {
 	/**
 	 * @return array[ActiveRecord]|ActiveRecord|null
@@ -181,21 +175,6 @@ class Provider extends \Icybee\Views\Provider
 	}
 
 	/**
-	 * Returns RETURN_ONE if the view is of type "view".
-	 *
-	 * @see BriskView.Provider::get_return_type()
-	 */
-	protected function get_return_type()
-	{
-		if ($this->view->type == "view")
-		{
-			return self::RETURN_ONE;
-		}
-
-		return parent::get_return_type();
-	}
-
-	/**
 	 * Create the activerecord query object.
 	 *
 	 * @return Query
@@ -237,7 +216,7 @@ class Provider extends \Icybee\Views\Provider
 
 	protected function extract_result(Query $query)
 	{
-		if ($this->get_return_type() == self::RETURN_MANY)
+		if ($this->returns == self::RETURNS_MANY)
 		{
 			$range = &$this->view->range;
 			$range['count'] = $this->count_result($query);

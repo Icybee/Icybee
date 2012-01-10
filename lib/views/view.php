@@ -16,6 +16,7 @@ use ICanBoogie\Event;
 use ICanBoogie\Exception;
 use ICanBoogie\I18n;
 use ICanBoogie\Module;
+use ICanBoogie\Object;
 
 use BrickRouge\Document;
 use BrickRouge\Element;
@@ -23,34 +24,71 @@ use BrickRouge\Element;
 /**
  * A view on provided data.
  */
-class View
+class View extends Object
 {
-	protected $options;
+	const RENDERS_ONE = 1;
+	const RENDERS_MANY = 2;
+	const RENDERS_OTHER = 3;
+
 	protected $id;
+
+	/**
+	 * The amount of data the view is rendering.
+	 *
+	 * - RENDERS_ONE: Renders a record.
+	 *
+	 * - RENDERS_MANY: Renders an array of records. A 'range' value is added to the rendering
+	 * context the following properties:
+	 *     - (int) limit: The maximum number of record to render.
+	 *     - (int) page: The starting page.
+	 *     - (int) count: The total number of records. This value is to be entered by the provider.
+	 *
+	 * - RENDERS_OTHER: Renders an unknown amount of data.
+	 *
+	 * The property is read-only.
+	 *
+	 * @var int
+	 */
+	protected $renders;
+	protected $options;
+
 	protected $engine;
 	protected $document;
 	protected $page;
 	protected $template;
 
-	public $module;
+	protected $module;
+
+	protected function __get_module()
+	{
+		global $core;
+
+		if (isset($this->module))
+		{
+			return $this->module;
+		}
+
+		return $core->modules[$this->module_id];
+	}
+
 	public $module_id;
 	public $type;
 
 	public function __construct($id, $options, $engine, $document, $page, $template=null)
 	{
-		$this->options = $options + array
-		(
-			'access_callback' => null
-		);
+		unset($this->module);
+
+		$this->options = $options;
 
 		$this->id = $id;
+		$this->type = $options['type'];
+		$this->module_id = $options['module'];
+		$this->renders = $options['renders'];
+
 		$this->engine = $engine;
 		$this->document = $document;
 		$this->page = $page;
 		$this->template = $template;
-
-		$this->module_id = $options['module'];
-		$this->type = $options['type'];
 	}
 
 	/**
@@ -235,32 +273,21 @@ class View
 
 	protected function provide($provider, &$context, array $conditions)
 	{
-		if ($provider === true)
+		if (!class_exists($provider))
 		{
-			wd_log('using module provider for view %view', array('view' => $id));
-
-			$bind = $this->module->provide_view($name, $engine);
-		}
-		else
-		{
-			if (!class_exists($provider))
-			{
-				throw new \InvalidArgumentException(\ICanBoogie\format
+			throw new \InvalidArgumentException(\ICanBoogie\format
+			(
+				'Provider class %class for view %id does not exists', array
 				(
-					'Provider class %class for view %id does not exists', array
-					(
-						'class' => $provider,
-						'id' => $id
-					)
-				));
-			}
-
-			$provider = new $provider($this, $context, $this->module, $conditions);
-
-			$bind = $provider();
+					'class' => $provider,
+					'id' => $id
+				)
+			));
 		}
 
-		return $bind;
+		$provider = new $provider($this, $context, $this->module, $conditions, $this->renders);
+
+		return $bind = $provider();
 	}
 
 	/**
@@ -268,7 +295,8 @@ class View
 	 *
 	 * @throws WdException
 	 * @throws Exception
-	 * @return unknown|string|Ambigous <string, mixed>
+	 *
+	 * @return html
 	 */
 	protected function render_inner_html($template_path, $engine)
 	{
@@ -277,15 +305,11 @@ class View
 		$view = $this->options;
 		$bind = null;
 		$id = $this->id;
-
 		$page = $this->page;
-
 
 		if (!empty($view['provider']))
 		{
 			list($constructor, $name) = explode('/', $id);
-
-			$this->module = $module = $core->modules[$constructor];
 
 			$this->range = $this->init_range();
 
@@ -318,96 +342,57 @@ class View
 
 		$rc = '';
 
-		if ($template_path)
+		if (!$template_path)
 		{
-			/*
-			$file = $core->site->resolve_path("templates/views/$id.php");
+			throw new Exception('Unable to resolve template for view %id', array('id' => $id));
+		}
 
-			if (!$file)
+		I18n::push_scope($this->module->flat_id);
+
+		try
+		{
+			$extension = pathinfo($template_path, PATHINFO_EXTENSION);
+
+			if ('php' == $extension)
 			{
-				$file = $core->site->resolve_path("templates/views/$id.html");
+				$module = $core->modules[$this->module_id];
+
+				ob_start();
+
+				//TODO: use a context and the alter_context() method
+
+				wd_isolated_require
+				(
+					$template_path, array
+					(
+						'bind' => $bind,
+						'context' => &$context,
+						'core' => $core,
+						'document' => $core->document,
+						'page' => $page,
+						'module' => $module
+					)
+				);
+
+				$rc = ob_get_clean();
 			}
-
-			if ($file)
+			else if ('html' == $extension)
 			{
-				$file = ICanBoogie\DOCUMENT_ROOT . $file;
+				$rc = Patron(file_get_contents($template_path), $bind, array('file' => $template_path));
 			}
 			else
 			{
-				$file = $view['file'];
-			}
-			*/
-
-			/*
-			$scope = isset($view['scope']) ? $view['scope'] : null;
-
-			if ($scope)
-			{
-				I18n::push_scope($scope);
-			}
-			*/
-
-			I18n::push_scope($this->module->flat_id);
-
-			try
-			{
-				$extension = pathinfo($template_path, PATHINFO_EXTENSION);
-
-				if ('php' == $extension)
-				{
-					$module = $core->modules[$this->module_id];
-
-					ob_start();
-
-					//TODO: use a context and the alter_context() method
-
-					wd_isolated_require
-					(
-						$template_path, array
-						(
-							'bind' => $bind,
-							'context' => &$context,
-							'core' => $core,
-							'document' => $core->document,
-							'page' => $page,
-							'module' => $module
-						)
-					);
-
-					$rc = ob_get_clean();
-				}
-				else if ('html' == $extension)
-				{
-					$rc = Patron(file_get_contents($template_path), $bind, array('file' => $template_path));
-				}
-				else
-				{
-					throw new Exception('Unable to process file %file, unsupported type', array('file' => $template_path));
-				}
-			}
-			catch (\Exception $e)
-			{
-// 				if ($scope)
-				{
-					I18n::pop_scope();
-				}
-
-				throw $e;
-			}
-
-// 			if ($scope)
-			{
-				I18n::pop_scope();
+				throw new Exception('Unable to process file %file, unsupported type', array('file' => $template_path));
 			}
 		}
-		else if (isset($view['module']) && isset($view['block']))
+		catch (\Exception $e)
 		{
-			$rc = $core->modules[$view['module']]->getBlock($view['block']);
+			I18n::pop_scope();
+
+			throw $e;
 		}
-		else
-		{
-			throw new Exception('Unable to render view %view. The description of the view is invalid: :descriptor', array('view' => $id, 'descriptor' => $view));
-		}
+
+		I18n::pop_scope();
 
 		return $rc;
 	}
@@ -442,8 +427,6 @@ class View
 		);
 
 		$template_path = $this->resolve_template_location();
-
-		wd_log("view template: $template_path");
 
 		$engine = $this->engine;
 
@@ -482,7 +465,7 @@ class View
 			return $this->options['file'];
 		}
 
-		$m = $core->modules[$this->module_id];
+		$m = $this->module;
 
 		while ($m)
 		{
@@ -503,7 +486,7 @@ class View
 	/**
 	 * Checks if the view access is valid.
 	 *
-	 * @throws WdHTTPException when the view access requires authentication.
+	 * @throws Exception\HTTP when the view access requires authentication.
 	 *
 	 * @return boolean true
 	 */

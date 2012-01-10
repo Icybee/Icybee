@@ -44,21 +44,24 @@ class Nodes extends \Icybee\Module
 				(
 					'title' => "Record detail",
 					'provider' => 'Icybee\Views\Nodes\Provider',
-					'assets' => array()
+					'assets' => array(),
+					'renders' => \Icybee\Views\View::RENDERS_ONE
 				),
 
 				'list' => array
 				(
 					'title' => 'Records list',
 					'provider' => 'Icybee\Views\Nodes\Provider',
-					'assets' => array()
+					'assets' => array(),
+					'renders' => \Icybee\Views\View::RENDERS_MANY
 				),
 
 				'home' => array
 				(
 					'title' => 'Records home',
 					'provider' => 'Icybee\Views\Nodes\Provider',
-					'assets' => array()
+					'assets' => array(),
+					'renders' => \Icybee\Views\View::RENDERS_MANY
 				)
 			)
 		);
