@@ -13,8 +13,8 @@ return array
 		records may be available to users who have permission.",
 
 		'slug' => "The <q>slug</q> is the version of the title used in URLs. Written in lowercase,
-		it contains only letters, numbers and hyphens. If empty when saving, the <q>slug</q> is
-		automatically created from the title.",
+		it contains only unaccentuated letters, numbers and hyphens. If empty when saving,
+		the <q>slug</q> is automatically created from the title.",
 
 		'siteid' => "Because you have permission, you can choose the belonging site for the
 		record. A record belonging to a site inherits its language and only appears on this
