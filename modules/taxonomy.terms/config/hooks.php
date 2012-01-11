@@ -4,10 +4,7 @@ return array
 (
 	'events' => array
 	(
-		'ICanBoogie\Operation\Nodes\Delete::process' => array
-		(
-			'ICanBoogie\Hooks\Taxonomy\Terms::on_nodes_delete'
-		)
+		'ICanBoogie\Operation\Nodes\Delete::process' => 'ICanBoogie\Hooks\Taxonomy\Terms::on_nodes_delete'
 	),
 
 	'patron.markups' => array
