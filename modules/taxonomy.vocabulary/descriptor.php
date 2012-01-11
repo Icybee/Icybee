@@ -8,6 +8,10 @@ return array
 	Module::T_TITLE => 'Vocabulary',
 	Module::T_DESCRIPTION => 'Manage vocabulary',
 	Module::T_CATEGORY => 'organize',
+	Module::T_REQUIRES => array
+	(
+		'taxonomy.terms' => '1.x'
+	),
 
 	Module::T_MODELS => array
 	(
