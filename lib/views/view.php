@@ -52,6 +52,11 @@ class View extends Object
 	protected $renders;
 	protected $options;
 
+	protected function __volatile_get_options()
+	{
+		return $this->options;
+	}
+
 	protected $engine;
 	protected $document;
 	protected $page;
