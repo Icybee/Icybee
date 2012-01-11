@@ -2,6 +2,8 @@
 
 namespace ICanBoogie\Hooks\Taxonomy;
 
+use Icybee\Views\Provider;
+
 use ICanBoogie\ActiveRecord;
 use ICanBoogie\Event;
 use ICanBoogie\Module;
@@ -332,5 +334,99 @@ class Vocabulary
 				);
 			}
 		}
+	}
+
+	public static function on_alter_views(Event $event)
+	{
+		global $core;
+
+		$vocabulary = $core->models['taxonomy.vocabulary']->all;
+		$views = &$event->views;
+
+		foreach ($vocabulary as $v)
+		{
+			$scope = $v->scope;
+			$vocabulary_name = $v->vocabulary;
+			$vocabulary_slug = $v->vocabularyslug;
+
+			foreach ($scope as $constructor)
+			{
+				$extend_id = $constructor . '/list';
+
+				if (isset($views[$extend_id]))
+				{
+					$views["$constructor/taxonomy:$vocabulary_slug/home"] = array
+					(
+						'title' => 'Home for vocabulary %name',
+						'title args' => array('name' => $v->vocabulary)
+					);
+
+					$views["$constructor/taxonomy:$vocabulary_slug/list"] = array
+					(
+						'title' => 'Records list, in vocabulary %vocabulary and a term',
+						'title args' => array('vocabulary' => $vocabulary_name),
+						'taxonomy vocabulary' => $v
+					)
+
+					+ $views[$extend_id];
+
+					foreach ($v->terms as $term)
+					{
+						$term_name = $term->term;
+						$term_slug = $term->termslug;
+
+						$views["$constructor/taxonomy:$vocabulary_slug/$term_slug/home"] = array
+						(
+							'title' => 'Records home, in vocabulary %vocabulary and term %term',
+							'title args' => array('vocabulary' => $vocabulary_name, 'term' => $term_name),
+							'taxonomy vocabulary' => $v,
+							'taxonomy term' => $term
+						);
+
+						$views["$constructor/taxonomy:$vocabulary_slug/$term_slug/list"] = array
+						(
+							'title' => 'Records list, in vocabulary %vocabulary and term %term',
+							'title args' => array('vocabulary' => $vocabulary_name, 'term' => $term_name),
+							'taxonomy vocabulary' => $v,
+							'taxonomy term' => $term
+						)
+
+						+ $views[$extend_id];
+					}
+				}
+			}
+		}
+	}
+
+	public static function on_alter_provider_query(Event $event, Provider $provider)
+	{
+		global $core;
+
+		if (empty($event->view->options['taxonomy vocabulary']))
+		{
+			return;
+		}
+
+		$vocabulary = $event->view->options['taxonomy vocabulary'];
+
+		$condition = $vocabulary->vocabularyslug . 'slug';
+
+		if (empty($event->conditions[$condition]))
+		{
+			return;
+		}
+
+		$condition_value = $event->conditions[$condition];
+
+		$term = $core->models['taxonomy.terms']->where('vid = ? AND termslug = ?', array($vocabulary->vid, $condition_value))->order('term.weight')->one;
+
+		$event->query->where('nid IN (SELECT nid FROM {prefix}taxonomy_terms
+		INNER JOIN {prefix}taxonomy_terms__nodes USING(vtid) WHERE vtid = ?)', $term ? $term->vtid : 0);
+
+		#
+
+		global $page;
+
+		$page->title = \ICanBoogie\format($page->title, array(':term' => $term->term));
 	}
 }
