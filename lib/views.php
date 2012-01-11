@@ -11,6 +11,7 @@
 
 namespace Icybee;
 
+use ICanBoogie\Event;
 use ICanBoogie\Exception;
 
 /**
@@ -43,7 +44,7 @@ class Views implements \ArrayAccess, \IteratorAggregate
 	{
 		global $core;
 
-		if (defined('Icybee\CACHE_VIEWS'))
+		if (CACHE_VIEWS)
 		{
 			$views = $core->vars['views'];
 
@@ -83,8 +84,6 @@ class Views implements \ArrayAccess, \IteratorAggregate
 			{
 				$definition += array
 				(
-					'access_callback' => null,
-					'class' => null,
 					'module' => $id,
 					'type' => $type
 				);
@@ -104,6 +103,18 @@ class Views implements \ArrayAccess, \IteratorAggregate
 
 				$views[$id . '/' . $type] = $definition;
 			}
+		}
+
+		Event::fire('alter', array('views' => &$views), $this);
+
+		foreach ($views as &$view)
+		{
+			$view += array
+			(
+				'access_callback' => null,
+				'class' => null,
+				'title args' => array()
+			);
 		}
 
 		return $views;
