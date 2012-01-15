@@ -9,13 +9,13 @@
  * file that was distributed with this source code.
  */
 
-namespace ICanBoogie\ActiveRecord\Model;
+namespace ICanBoogie\Modules\Nodes;
 
 use ICanBoogie\ActiveRecord\Node;
 use ICanBoogie\ActiveRecord\Query;
 use ICanBoogie\Exception;
 
-class Nodes extends \Icybee\ActiveRecord\Model\Constructor
+class Model extends \Icybee\ActiveRecord\Model\Constructor
 {
 	public function save(array $properties, $key=null, array $options=array())
 	{

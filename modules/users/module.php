@@ -13,7 +13,6 @@ namespace ICanBoogie\Modules\Users;
 
 use ICanBoogie;
 use ICanBoogie\ActiveRecord\User;
-use ICanBoogie\ActiveRecord\Model;
 use ICanBoogie\Exception;
 use ICanBoogie\Operation;
 use BrickRouge;
@@ -59,7 +58,7 @@ Cordialement'
 	{
 		return parent::resolve_model_tags($tags, 'primary') + array
 		(
-			Model\Users::T_CONSTRUCTOR => $this->id
+			Model::T_CONSTRUCTOR => $this->id
 		);
 	}
 

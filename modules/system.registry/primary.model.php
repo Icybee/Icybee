@@ -9,11 +9,9 @@
  * file that was distributed with this source code.
  */
 
-namespace ICanBoogie\ActiveRecord\Model\System;
+namespace ICanBoogie\Modules\System\Registry;
 
-use ICanBoogie\ActiveRecord\Model;
-
-class Registry extends Model
+class Model extends \ICanBoogie\ActiveRecord\Model
 {
 	protected $cached_values = array();
 

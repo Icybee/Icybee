@@ -9,12 +9,11 @@
  * file that was distributed with this source code.
  */
 
-namespace ICanBoogie\ActiveRecord\Model\Taxonomy;
+namespace ICanBoogie\Modules\Taxonomy\Terms;
 
-use ICanBoogie\ActiveRecord\Model;
 use ICanBoogie\ActiveRecord\Taxonomy\Term;
 
-class Terms extends Model
+class Model extends \ICanBoogie\ActiveRecord\Model
 {
 	public function save(array $properties, $key=null, array $options=array())
 	{

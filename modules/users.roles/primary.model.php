@@ -9,13 +9,12 @@
  * file that was distributed with this source code.
  */
 
-namespace ICanBoogie\ActiveRecord\Model\Users;
+namespace ICanBoogie\Modules\Users\Roles;
 
-use ICanBoogie\ActiveRecord\Model;
 use ICanBoogie\ActiveRecord\Users\Role;
 use ICanBoogie\Exception;
 
-class Roles extends Model
+class Model extends \ICanBoogie\ActiveRecord\Model
 {
 	public function save(array $properties, $key=null, array $options=array())
 	{

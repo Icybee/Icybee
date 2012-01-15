@@ -9,13 +9,13 @@
  * file that was distributed with this source code.
  */
 
-namespace ICanBoogie\ActiveRecord\Model;
+namespace ICanBoogie\Modules\Files;
 
 use ICanBoogie\ActiveRecord\File;
 use ICanBoogie\Exception;
 use ICanBoogie\Uploaded;
 
-class Files extends Nodes
+class Model extends \ICanBoogie\Modules\Nodes\Model
 {
 	const ACCEPT = '#files-accept';
 	const UPLOADED = '#files-uploaded';

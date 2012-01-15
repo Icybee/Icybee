@@ -6,7 +6,7 @@ return array
 	(
 		'search:form:quick' => array
 		(
-			array('site_search_WdMarkups', 'form'), array
+			'ICanBoogie\Modules\Search\Hooks::form', array
 			(
 			)
 		)/*,

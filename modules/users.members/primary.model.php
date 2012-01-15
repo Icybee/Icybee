@@ -9,9 +9,9 @@
  * file that was distributed with this source code.
  */
 
-namespace ICanBoogie\ActiveRecord\Model\Users;
+namespace ICanBoogie\Modules\Users\Members;
 
-class Members extends \ICanBoogie\ActiveRecord\Model\Users
+class Model extends \ICanBoogie\Modules\Users\Model
 {
 	public function save(array $properties, $key=null, array $options=array())
 	{

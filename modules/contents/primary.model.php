@@ -9,9 +9,9 @@
  * file that was distributed with this source code.
  */
 
-namespace ICanBoogie\ActiveRecord\Model;
+namespace ICanBoogie\Modules\Contents;
 
-class Contents extends Nodes
+class Model extends \ICanBoogie\Modules\Nodes\Model
 {
 	public function parseConditions(array $conditions)
 	{

@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-use ICanBoogie\ActiveRecord\Model;
+use ICanBoogie\Modules\Pages\Model as PagesModel;
 use BrickRouge\Element;
 
 class WdPageSelectorElement extends Element
@@ -23,9 +23,9 @@ class WdPageSelectorElement extends Element
 			$model = $core->models['pages'];
 			$nodes = $model->select('nid, parentid, title')->where('siteid = ?', $core->site_id)->order('weight, created')->all(PDO::FETCH_OBJ);
 
-			$tree = Model\Pages::nestNodes($nodes);
-			Model\Pages::setNodesDepth($tree);
-			$entries = Model\Pages::levelNodesById($tree);
+			$tree = PagesModel::nestNodes($nodes);
+			PagesModel::setNodesDepth($tree);
+			$entries = PagesModel::levelNodesById($tree);
 
 			$options = array();
 

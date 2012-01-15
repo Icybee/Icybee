@@ -9,8 +9,8 @@
  * file that was distributed with this source code.
  */
 
-use ICanBoogie\ActiveRecord\Model;
 use ICanBoogie\ActiveRecord\Node;
+use ICanBoogie\Modules\Pages\Model as PagesModel;
 use BrickRouge\Element;
 
 class WdI18nElement extends Element
@@ -97,12 +97,12 @@ class WdI18nElement extends Element
 				$nodes = $core->models['pages']->select('nid, parentid, title')->where('language = ?', $native)
 				->order('weight, created')->all(PDO::FETCH_OBJ);
 
-				$tree = Model\Pages::nestNodes($nodes);
+				$tree = PagesModel::nestNodes($nodes);
 
 				if ($tree)
 				{
-					Model\Pages::setNodesDepth($tree);
-					$entries = Model\Pages::levelNodesById($tree);
+					PagesModel::setNodesDepth($tree);
+					$entries = PagesModel::levelNodesById($tree);
 
 					foreach ($entries as $entry)
 					{

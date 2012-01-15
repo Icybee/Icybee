@@ -15,6 +15,7 @@ use ICanBoogie\Exception;
 
 use BrickRouge\Element;
 use BrickRouge\Form;
+use BrickRouge\Searchbox;
 
 use WdPatron;
 
@@ -39,7 +40,7 @@ class Hooks
 
 			Element::CHILDREN => array
 			(
-				'q' => new BrickRouge\Searchbox
+				'q' => new Searchbox
 				(
 					array
 					(

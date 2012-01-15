@@ -9,7 +9,8 @@
  * file that was distributed with this source code.
  */
 
-use ICanBoogie\ActiveRecord\Model;
+use ICanBoogie\Modules\Contents\Model as ContentsModel;
+use ICanBoogie\Modules\Pages\Model as PagesModel;
 use ICanBoogie\Event;
 use ICanBoogie\Exception;
 use ICanBoogie\Module;
@@ -159,7 +160,7 @@ if (empty($_GET['constructor']))
 		{
 			$model = $core->models[$constructor];
 
-			if ($model instanceof Model\Pages)
+			if ($model instanceof PagesModel)
 			{
 				list($entries, $count) = query_pages($search, 0, $_home_limit);
 			}
@@ -188,11 +189,11 @@ else
 	{
 		$model = $core->models[$constructor];
 
-		if ($model instanceof Model\Pages)
+		if ($model instanceof PagesModel)
 		{
 			list($entries, $count) = query_pages($search, $position, $_list_limit);
 		}
-		else if ($model instanceof Model\Contents)
+		else if ($model instanceof ContentsModel)
 		{
 			list($entries, $count) = query_contents($constructor, $search, $position, $_list_limit);
 		}

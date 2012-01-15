@@ -13,15 +13,13 @@ namespace ICanBoogie\Modules\Nodes;
 
 use ICanBoogie\ActiveRecord\Node;
 use ICanBoogie\ActiveRecord\Query;
-use ICanBoogie\ActiveRecord\Model;
 use ICanBoogie\Event;
 use ICanBoogie\Exception\HTTP as HTTPException;
+
 use BrickRouge\Element;
 use BrickRouge\Form;
 use BrickRouge\Widget;
-use Icybee\Manager;
 
-use WdPatron;
 use WdAdjustNodeWidget;
 
 class Module extends \Icybee\Module
@@ -70,7 +68,7 @@ class Module extends \Icybee\Module
 	{
 		return parent::resolve_model_tags($tags, 'primary') + array
 		(
-			Model\Nodes::T_CONSTRUCTOR => $this->id
+			Model::T_CONSTRUCTOR => $this->id
 		);
 	}
 
