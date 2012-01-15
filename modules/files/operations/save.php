@@ -9,14 +9,15 @@
  * file that was distributed with this source code.
  */
 
-namespace ICanBoogie\Operation\Files;
+namespace ICanBoogie\Modules\Files;
 
 use ICanBoogie\ActiveRecord\File;
 use ICanBoogie\Event;
+use ICanBoogie\Modules;
 use ICanBoogie\Operation;
 use ICanBoogie\Uploaded;
 
-class Save extends Operation\Nodes\Save
+class SaveOperation extends Modules\Nodes\SaveOperation
 {
 	/**
 	 * @var Uploaded|bool The optional file to save with the record.
@@ -33,7 +34,7 @@ class Save extends Operation\Nodes\Save
 	 * `file` property is defined, which is the case when an asynchronous upload happend, it is
 	 * copied to the `path` property.
 	 *
-	 * @see ICanBoogie\Operation\Nodes.Save::__get_properties()
+	 * @see ICanBoogie\Modules\Nodes.SaveOperation::__get_properties()
 	 */
 	protected function __get_properties()
 	{
@@ -124,7 +125,7 @@ class Save extends Operation\Nodes\Save
 	/**
 	 * The method validates unless there was an error during the file upload.
 	 *
-	 * @see ICanBoogie\Operation\Nodes.Save::validate()
+	 * @see ICanBoogie\Modules\Nodes.SaveOperation::validate()
 	 */
 	protected function validate(\ICanboogie\Errors $errors)
 	{
@@ -144,7 +145,7 @@ class Save extends Operation\Nodes\Save
 	 * Trigger a 'resources.files.path.change' event when the path of the updated record is
 	 * modified.
 	 *
-	 * @see ICanBoogie\Operation\Nodes.Save::process()
+	 * @see ICanBoogie\Modules\Nodes.SaveOperation::process()
 	 */
 	protected function process()
 	{

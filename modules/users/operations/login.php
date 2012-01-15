@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace ICanBoogie\Operation\Users;
+namespace ICanBoogie\Modules\Users;
 
 use ICanBoogie\ActiveRecord\User;
 use ICanBoogie\Mailer;
@@ -19,7 +19,7 @@ use ICanBoogie\Exception\HTTP as HTTPException;
 use ICanBoogie\Security;
 use ICanBoogie\Operation;
 
-class Login extends Operation
+class LoginOperation extends Operation
 {
 	/**
 	 * Adds form control.

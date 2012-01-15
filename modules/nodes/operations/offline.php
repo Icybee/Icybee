@@ -9,12 +9,11 @@
  * file that was distributed with this source code.
  */
 
-namespace ICanBoogie\Operation\Nodes;
+namespace ICanBoogie\Modules\Nodes;
 
-use ICanBoogie\Module;
 use ICanBoogie\Operation;
 
-class Offline extends Operation
+class OfflineOperation extends Operation
 {
 	/**
 	 * Controls for the operation: permission(maintain), record and ownership.

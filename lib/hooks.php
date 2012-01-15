@@ -207,11 +207,12 @@ class Hooks
 	{
 		global $core;
 
+		$class = 'Icybee\Operation\Module\QueryOperationOperation';
 		$try_module = $module = $core->modules[$request['module']];
 
 		while ($try_module)
 		{
-			$try = 'ICanBoogie\Operation\\' . \ICanBoogie\normalize_namespace_part($try_module->id) . '\QueryOperation';
+			$try = Operation::format_class_name($try_module->descriptor[Module::T_NAMESPACE], 'QueryOperation');
 
 			if (class_exists($try, true))
 			{
@@ -221,11 +222,6 @@ class Hooks
 			}
 
 			$try_module = $try_module->parent;
-		}
-
-		if (!$class)
-		{
-			$class = 'Icybee\Operation\Module\QueryOperation';
 		}
 
 		return new $class($module, $request);

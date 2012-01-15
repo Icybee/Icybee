@@ -122,9 +122,9 @@ class Hooks
 	/**
 	 * Enables page caching.
 	 *
-	 * @param ICanBoogie\Operation\System\Cache\Enable $operation
+	 * @param ICanBoogie\Modules\System\Cache\EnableOperation $operation
 	 */
-	static public function enable_cache(\ICanBoogie\Operation\System\Cache\Enable $operation)
+	static public function enable_cache(\ICanBoogie\Modules\System\Cache\EnableOperation $operation)
 	{
 		global $core;
 
@@ -144,9 +144,9 @@ class Hooks
 	/**
 	 * Disables page caching.
 	 *
-	 * @param ICanBoogie\Operation\System\Cache\Disable $operation
+	 * @param ICanBoogie\Modules\System\Cache\DisableOperation $operation
 	 */
-	static public function disable_cache(\ICanBoogie\Operation\System\Cache\Disable $operation)
+	static public function disable_cache(\ICanBoogie\Modules\System\Cache\DisableOperation $operation)
 	{
 		global $core;
 
@@ -156,9 +156,9 @@ class Hooks
 	/**
 	 * Returns usage of the page cache.
 	 *
-	 * @param ICanBoogie\Operation\System\Cache\Stat $operation
+	 * @param ICanBoogie\Modules\System\Cache\StatOperation $operation
 	 */
-	static public function stat_cache(\ICanBoogie\Operation\System\Cache\Stat $operation)
+	static public function stat_cache(\ICanBoogie\Modules\System\Cache\StatOperation $operation)
 	{
 		global $core;
 
@@ -170,7 +170,7 @@ class Hooks
 	/**
 	 * Clears the page cache.
 	 */
-	static public function clear_cache(\ICanBoogie\Operation\System\Cache\Clear $operation)
+	static public function clear_cache(\ICanBoogie\Modules\System\Cache\ClearOperation $operation)
 	{
 		global $core;
 

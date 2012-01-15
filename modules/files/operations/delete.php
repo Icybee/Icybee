@@ -9,11 +9,11 @@
  * file that was distributed with this source code.
  */
 
-namespace ICanBoogie\Operation\Files;
+namespace ICanBoogie\Modules\Files;
 
-use ICanBoogie\Operation;
+use ICanBoogie\Modules;
 
-class Delete extends Operation\Nodes\Delete
+class DeleteOperation extends Modules\Nodes\DeleteOperation
 {
 
 }

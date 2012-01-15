@@ -244,7 +244,7 @@ class Hooks
 		);
 	}
 
-	public static function on_node_save(Event $event, Operation\Nodes\Save $sender)
+	public static function on_node_save(Event $event, \ICanBoogie\Modules\Nodes\SaveOperation $sender)
 	{
 		global $core;
 

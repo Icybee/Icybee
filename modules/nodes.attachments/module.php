@@ -19,7 +19,7 @@ class Module extends \Icybee\Module
 {
 	const OPERATION_UPLOAD = 'upload';
 
-	public function on_node_delete(Event $event, Operation\Nodes\Delete $sender)
+	public function on_node_delete(Event $event, \ICanBoogie\Modules\Nodes\DeleteOperation $sender)
 	{
 		$key = $event->operation->key;
 
@@ -28,7 +28,7 @@ class Module extends \Icybee\Module
 		# check it first.
 		#
 
-		if ($sender instanceof Operation\Files\Delete)
+		if ($sender instanceof \ICanBoogie\Modules\Files\DeleteOperation)
 		{
 			#
 			# delete attached on fileid

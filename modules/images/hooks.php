@@ -193,7 +193,7 @@ class Hooks
 		);
 	}
 
-	public static function on_nodes_save(Event $event, Operation\Nodes\Save $operation)
+	public static function on_nodes_save(Event $event, \ICanBoogie\Modules\Nodes\SaveOperation $operation)
 	{
 		$params = &$event->request->params;
 
@@ -208,7 +208,7 @@ class Hooks
 		$entry->metas['resources_images.imageid'] = $imageid ? $imageid : null;
 	}
 
-	public static function before_contents_config(Event $event, Operation\Contents\Config $operation)
+	public static function before_contents_config(Event $event, \ICanBoogie\Modules\Contents\ConfigOperation $operation)
 	{
 		if (!isset($event->request->params['global']['resources_images.inject']))
 		{

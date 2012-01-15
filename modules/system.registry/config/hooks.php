@@ -10,13 +10,13 @@ return array
 		'ICanBoogie\Modules\Users\Module::alter.block.edit' => __NAMESPACE__ . '::on_alter_block_edit',
 		'ICanBoogie\Modules\Sites\Module::alter.block.edit' => __NAMESPACE__ . '::on_alter_block_edit',
 
-		'ICanBoogie\Operation\Nodes\Save::process' => __NAMESPACE__ . '::on_operation_save',
-		'ICanBoogie\Operation\Users\Save::process' => __NAMESPACE__ . '::on_operation_save',
-		'ICanBoogie\Operation\Sites\Save::process' => __NAMESPACE__ . '::on_operation_save',
+		'ICanBoogie\Modules\Nodes\SaveOperation::process' => __NAMESPACE__ . '::on_operation_save',
+		'ICanBoogie\Modules\Users\SaveOperation::process' => __NAMESPACE__ . '::on_operation_save',
+		'ICanBoogie\Modules\Sites\SaveOperation::process' => __NAMESPACE__ . '::on_operation_save',
 
-		'ICanBoogie\Operation\Nodes\Delete::process' => __NAMESPACE__ . '::on_operation_delete',
-		'ICanBoogie\Operation\Users\Delete::process' => __NAMESPACE__ . '::on_operation_delete',
-		'ICanBoogie\Operation\Sites\Delete::process' => __NAMESPACE__ . '::on_operation_delete'
+		'ICanBoogie\Modules\Nodes\DeleteOperation::process' => __NAMESPACE__ . '::on_operation_delete',
+		'ICanBoogie\Modules\Users\DeleteOperation::process' => __NAMESPACE__ . '::on_operation_delete',
+		'ICanBoogie\Modules\Sites\DeleteOperation::process' => __NAMESPACE__ . '::on_operation_delete'
 	),
 
 	'objects.methods' => array

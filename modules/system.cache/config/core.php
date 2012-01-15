@@ -4,6 +4,6 @@ return array
 (
 	'autoload' => array
 	(
-		'Icybee\Operation\System\Cache\Base' => $path . 'lib/base.operation.php'
+		'ICanBoogie\Modules\System\Cache\BaseOperation' => $path . 'lib/base.operation.php'
 	)
 );

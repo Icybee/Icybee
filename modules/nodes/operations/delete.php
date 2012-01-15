@@ -9,9 +9,9 @@
  * file that was distributed with this source code.
  */
 
-namespace ICanBoogie\Operation\Nodes;
+namespace ICanBoogie\Modules\Nodes;
 
-class Delete extends \Icybee\Operation\ActiveRecord\Delete
+class DeleteOperation extends \Icybee\Operation\ActiveRecord\Delete
 {
 	/**
 	 * Overrides the method to create a nicer log entry.

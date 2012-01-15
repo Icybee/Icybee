@@ -15,7 +15,7 @@ return array
 	(
 		'ICanBoogie\ActiveRecord\Image::thumbnail' => __NAMESPACE__ . '::method_thumbnail',
 		'ICanBoogie\ActiveRecord\Image::__get_thumbnail' => __NAMESPACE__ . '::method_get_thumbnail',
-		'ICanBoogie\Operation\System\Cache\Stat::stat_thumbnails' => __NAMESPACE__ . '::method_stat_cache',
-		'ICanBoogie\Operation\System\Cache\Clear::clear_thumbnails' => __NAMESPACE__ . '::method_clear_cache'
+		'ICanBoogie\Modules\System\Cache\StatOperation::stat_thumbnails' => __NAMESPACE__ . '::method_stat_cache',
+		'ICanBoogie\Modules\System\Cache\ClearOperation::clear_thumbnails' => __NAMESPACE__ . '::method_clear_cache'
 	)
 );

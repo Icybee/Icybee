@@ -9,10 +9,10 @@ return array
 
 	'objects.methods' => array
 	(
-		'ICanBoogie\Operation\System\Cache\Enable::enable_contents_body' => 'ICanBoogie\Modules\Contents\Hooks::enable_cache',
-		'ICanBoogie\Operation\System\Cache\Disable::disable_contents_body' => 'ICanBoogie\Modules\Contents\Hooks::disable_cache',
-		'ICanBoogie\Operation\System\Cache\Stat::stat_contents_body' => 'ICanBoogie\Modules\Contents\Hooks::stat_cache',
-		'ICanBoogie\Operation\System\Cache\Clear::clear_contents_body' => 'ICanBoogie\Modules\Contents\Hooks::clear_cache'
+		'ICanBoogie\Modules\System\Cache\EnableOperation::enable_contents_body' => 'ICanBoogie\Modules\Contents\Hooks::enable_cache',
+		'ICanBoogie\Modules\System\Cache\DisableOperation::disable_contents_body' => 'ICanBoogie\Modules\Contents\Hooks::disable_cache',
+		'ICanBoogie\Modules\System\Cache\StatOperation::stat_contents_body' => 'ICanBoogie\Modules\Contents\Hooks::stat_cache',
+		'ICanBoogie\Modules\System\Cache\ClearOperation::clear_contents_body' => 'ICanBoogie\Modules\Contents\Hooks::clear_cache'
 	),
 
 	'patron.markups' => array

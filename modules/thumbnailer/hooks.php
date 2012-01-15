@@ -187,7 +187,7 @@ class Hooks
 		);
 	}
 
-	static public function method_stat_cache(Operation\System\Cache\Stat $operation)
+	static public function method_stat_cache(\ICanBoogie\Modules\System\Cache\StatOperation $operation)
 	{
 		global $core;
 
@@ -196,7 +196,7 @@ class Hooks
 		return $operation->get_files_stat($path);
 	}
 
-	static public function method_clear_cache(Operation\System\Cache\Clear $operation)
+	static public function method_clear_cache(\ICanBoogie\Modules\System\Cache\ClearOperation $operation)
 	{
 		global $core;
 

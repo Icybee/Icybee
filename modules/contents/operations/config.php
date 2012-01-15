@@ -9,15 +9,15 @@
  * file that was distributed with this source code.
  */
 
-namespace ICanBoogie\Operation\Contents;
+namespace ICanBoogie\Modules\Contents;
 
-use ICanBoogie\Operation;
+use ICanBoogie\Modules;
 
 /**
  * The class doesn't do a thing but make config events more accurate because one can listen to the
  * configuration of a "contents" type module.
  */
-class Config extends \ICanBoogie\Operation\Nodes\Config
+class ConfigOperation extends Modules\Nodes\ConfigOperation
 {
 	protected function __get_properties()
 	{

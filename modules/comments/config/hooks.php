@@ -4,8 +4,8 @@ return array
 (
 	'events' => array
 	(
-		'ICanBoogie\Operation\Nodes\Save::process:before' => 'ICanBoogie\Modules\Comments\Hooks::before_node_save',
-		'ICanBoogie\Operation\Nodes\Delete::process' => 'ICanBoogie\Modules\Comments\Hooks::on_node_delete',
+		'ICanBoogie\Modules\Nodes\SaveOperation::process:before' => 'ICanBoogie\Modules\Comments\Hooks::before_node_save',
+		'ICanBoogie\Modules\Nodes\DeleteOperation::process' => 'ICanBoogie\Modules\Comments\Hooks::on_node_delete',
 		'ICanBoogie\Modules\Forms\Module::alter.block.edit' => 'ICanBoogie\Modules\Comments\Hooks::alter_block_edit',
 		'ICanBoogie\View::render' => 'ICanBoogie\Modules\Comments\Hooks::on_view_render'
 	),

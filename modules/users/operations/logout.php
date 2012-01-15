@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace ICanBoogie\Operation\Users;
+namespace ICanBoogie\Modules\Users;
 
 use ICanBoogie\Exception;
 use ICanBoogie\Operation;
@@ -17,7 +17,7 @@ use ICanBoogie\Operation;
 /**
  * Log the user out of the system by removing its identifier form its session.
  */
-class Logout extends Operation
+class LogoutOperation extends Operation
 {
 	/**
 	 * Validates the operation if the user is actually connected.

@@ -123,7 +123,7 @@ class Module extends \Icybee\Module
 		}
 	}
 
-	public function event_operation_save(Event $event, Operation\Nodes\Save $sender)
+	public function event_operation_save(Event $event, \ICanBoogie\Modules\Nodes\SaveOperation $sender)
 	{
 		$params = &$sender->params;
 

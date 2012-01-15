@@ -9,12 +9,11 @@
  * file that was distributed with this source code.
  */
 
-namespace ICanBoogie\Operation\Pages;
+namespace ICanBoogie\Modules\Pages;
 
-use ICanBoogie\Module;
 use ICanBoogie\Operation;
 
-class UpdateTree extends Operation
+class UpdateTreeOperation extends Operation
 {
 	protected function __get_controls()
 	{

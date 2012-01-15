@@ -9,15 +9,15 @@
  * file that was distributed with this source code.
  */
 
-namespace ICanBoogie\Operation\Forms;
+namespace ICanBoogie\Modules\Forms;
 
-use ICanBoogie\Module;
+use ICanBoogie\Errors;
 use ICanBoogie\Operation;
 
 /**
  * Returns model specific default values for the form.
  */
-class Defaults extends Operation
+class DefaultsOperation extends Operation
 {
 	/**
 	 * Controls for the operation: authentication, permission(create)
@@ -39,7 +39,7 @@ class Defaults extends Operation
 	 *
 	 * @see ICanBoogie.Operation::validate()
 	 */
-	protected function validate(\ICanboogie\Errors $errors)
+	protected function validate(Errors $errors)
 	{
 		if (!$this->key)
 		{

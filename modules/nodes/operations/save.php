@@ -9,17 +9,16 @@
  * file that was distributed with this source code.
  */
 
-namespace ICanBoogie\Operation\Nodes;
+namespace ICanBoogie\Modules\Nodes;
 
 use ICanBoogie\ActiveRecord\Node;
-use ICanBoogie\Modules\Nodes\Module;
 
 /**
  * Saves a node.
  *
  * Adds the "display" save mode.
  */
-class Save extends \Icybee\Operation\ActiveRecord\Save
+class SaveOperation extends \Icybee\Operation\ActiveRecord\Save
 {
 	const MODE_DISPLAY = 'display';
 

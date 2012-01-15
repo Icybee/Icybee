@@ -9,11 +9,9 @@
  * file that was distributed with this source code.
  */
 
-namespace ICanBoogie\Operation\Users\Roles;
+namespace ICanBoogie\Modules\Users\Roles;
 
-use ICanBoogie\Module;
-
-class Delete extends \ICanBoogie\Operation\ActiveRecord\Delete
+class DeleteOperation extends \ICanBoogie\Operation\ActiveRecord\Delete
 {
 	/**
 	 * Controls for the operation: permission(manage), record and ownership.

@@ -9,14 +9,15 @@
  * file that was distributed with this source code.
  */
 
-namespace ICanBoogie\Operation\Dashboard;
+namespace ICanBoogie\Modules\Dashboard;
 
+use ICanBoogie\Errors;
 use ICanBoogie\Operation;
 
 /**
  * Saves the order of the user's dashboard blocks.
  */
-class Order extends Operation
+class OrderOperation extends Operation
 {
 	protected function __get_controls()
 	{
@@ -28,7 +29,7 @@ class Order extends Operation
 		+ parent::__get_controls();
 	}
 
-	protected function validate(\ICanboogie\Errors $errors)
+	protected function validate(Errors $errors)
 	{
 		return !empty($this->request['order']);
 	}

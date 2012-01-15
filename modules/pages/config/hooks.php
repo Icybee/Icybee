@@ -19,8 +19,8 @@ return array
 
 		'ICanBoogie\Operation\ActiveRecord\Save::process' => __NAMESPACE__ . '::invalidate_cache',
 		'ICanBoogie\Operation\ActiveRecord\Delete::process' => __NAMESPACE__ . '::invalidate_cache',
-		'ICanBoogie\Operation\Nodes\Online::process' => __NAMESPACE__ . '::invalidate_cache',
-		'ICanBoogie\Operation\Nodes\Offline::process' => __NAMESPACE__ . '::invalidate_cache',
+		'ICanBoogie\Modules\Nodes\OnlineOperation::process' => __NAMESPACE__ . '::invalidate_cache',
+		'ICanBoogie\Modules\Nodes\OfflineOperation::process' => __NAMESPACE__ . '::invalidate_cache',
 
 		'BrickRouge\Document::render_title:before' => __NAMESPACE__ . '::on_document_render_title'
 	),
@@ -37,10 +37,10 @@ return array
 		 * The following hooks are for the unified cache support
 		 */
 
-		'ICanBoogie\Operation\System\Cache\Enable::enable_pages' => __NAMESPACE__ . '::enable_cache',
-		'ICanBoogie\Operation\System\Cache\Disable::disable_pages' => __NAMESPACE__ . '::disable_cache',
-		'ICanBoogie\Operation\System\Cache\Stat::stat_pages' => __NAMESPACE__ . '::stat_cache',
-		'ICanBoogie\Operation\System\Cache\Clear::clear_pages' => __NAMESPACE__ . '::clear_cache',
+		'ICanBoogie\Modules\System\Cache\EnableOperation::enable_pages' => __NAMESPACE__ . '::enable_cache',
+		'ICanBoogie\Modules\System\Cache\DisableOperation::disable_pages' => __NAMESPACE__ . '::disable_cache',
+		'ICanBoogie\Modules\System\Cache\StatOperation::stat_pages' => __NAMESPACE__ . '::stat_cache',
+		'ICanBoogie\Modules\System\Cache\ClearOperation::clear_pages' => __NAMESPACE__ . '::clear_cache',
 
 		/*
 		 * views

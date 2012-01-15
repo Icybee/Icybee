@@ -9,11 +9,11 @@
  * file that was distributed with this source code.
  */
 
-namespace ICanBoogie\Operation\Taxonomy\Vocabulary;
+namespace ICanBoogie\Modules\Taxonomy\Vocabulary;
 
 use ICanBoogie\Modules;
 
-class Save extends \Icybee\Operation\ActiveRecord\Save
+class SaveOperation extends \Icybee\Operation\ActiveRecord\Save
 {
 	protected function __get_properties()
 	{

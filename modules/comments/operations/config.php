@@ -9,9 +9,9 @@
  * file that was distributed with this source code.
  */
 
-namespace ICanBoogie\Operation\Comments;
+namespace ICanBoogie\Modules\Comments;
 
-class Config extends \Icybee\Operation\Module\Config
+class ConfigOperation extends \Icybee\Operation\Module\Config
 {
 
 }

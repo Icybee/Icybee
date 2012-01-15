@@ -9,13 +9,13 @@
  * file that was distributed with this source code.
  */
 
-namespace ICanBoogie\Operation\Forms;
+namespace ICanBoogie\Modules\Forms;
 
 use ICanBoogie\Exception;
 use ICanBoogie\Mailer;
 use ICanBoogie\Operation;
 
-class Post extends Operation
+class PostOperation extends Operation
 {
 	/**
 	 * Controls for the operation: form.

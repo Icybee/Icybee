@@ -12,6 +12,7 @@
 namespace ICanBoogie\Modules\Taxonomy\Terms;
 
 use ICanBoogie\ActiveRecord;
+use ICanBoogie\Event;
 use ICanBoogie\Exception;
 
 class Hooks

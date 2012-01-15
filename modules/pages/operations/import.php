@@ -9,11 +9,9 @@
  * file that was distributed with this source code.
  */
 
-namespace ICanBoogie\Operation\Pages;
+namespace ICanBoogie\Modules\Pages;
 
-use ICanBoogie\Operation;
-
-class Import extends \ICanBoogie\Operation\Nodes\Import
+class ImportOperation extends \ICanBoogie\Modules\Nodes\ImportOperation
 {
 	private $parentid = array();
 	private $locationid = array();
@@ -73,7 +71,7 @@ class Import extends \ICanBoogie\Operation\Nodes\Import
 		return parent::parse_data($data);
 	}
 
-	protected function import(array $data, Operation\Nodes\Save $save)
+	protected function import(array $data, \ICanBoogie\Modules\Nodes\SaveOperation $save)
 	{
 		global $core;
 

@@ -9,11 +9,11 @@
  * file that was distributed with this source code.
  */
 
-namespace ICanBoogie\Operation\Nodes;
+namespace ICanBoogie\Modules\Nodes;
 
 use ICanBoogie\Operation;
 
-class Export extends Operation
+class ExportOperation extends Operation
 {
 	protected function validate(\ICanboogie\Errors $errors)
 	{

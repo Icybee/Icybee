@@ -267,7 +267,7 @@ EOT;
 
 				if ($url)
 				{
-					$save_mode_options[\ICanBoogie\Operation\Nodes\Save::MODE_DISPLAY] = '.save_mode_display';
+					$save_mode_options[\ICanBoogie\Modules\Nodes\SaveOperation::MODE_DISPLAY] = '.save_mode_display';
 				}
 
 				$tags = wd_array_merge_recursive

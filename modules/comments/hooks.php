@@ -11,20 +11,20 @@
 
 namespace ICanBoogie\Modules\Comments;
 
-use ICanBoogie,
-	ICanBoogie\ActiveRecord\Node,
-	ICanBoogie\ActiveRecord\Comment,
-	ICanBoogie\Event,
-	ICanBoogie\Exception,
-	ICanBoogie\Operation,
+use ICanBoogie;
+use ICanBoogie\ActiveRecord\Node;
+use ICanBoogie\ActiveRecord\Comment;
+use ICanBoogie\Event;
+use ICanBoogie\Exception;
+use ICanBoogie\Operation;
 
-	BrickRouge\Element,
-	BrickRouge\Form,
-	BrickRouge\Text;
+use BrickRouge\Element;
+use BrickRouge\Form;
+use BrickRouge\Text;
 
 class Hooks
 {
-	public static function before_node_save(Event $event, Operation\Nodes\Save $sender)
+	public static function before_node_save(Event $event, \ICanBoogie\Modules\Nodes\SaveOperation $sender)
 	{
 		$request = $event->request;
 
@@ -45,9 +45,9 @@ class Hooks
 	 * Deletes all the comments attached to a node.
 	 *
 	 * @param Event $event
-	 * @param Operation\Nodes\Delete $sender
+	 * @param ICanBoogie\Modules\Nodes\DeleteOperation $sender
 	 */
-	public static function on_node_delete(Event $event, Operation\Nodes\Delete $sender)
+	public static function on_node_delete(Event $event, \ICanBoogie\Modules\Nodes\DeleteOperation $sender)
 	{
 		global $core;
 

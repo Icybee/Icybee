@@ -9,14 +9,12 @@
  * file that was distributed with this source code.
  */
 
-namespace ICanBoogie\Operation\System\Cache;
-
-use Icybee;
+namespace ICanBoogie\Modules\System\Cache;
 
 /**
  * Returns the usage (memory, files) of a specified cache.
  */
-class Stat extends Icybee\Operation\System\Cache\Base
+class StatOperation extends BaseOperation
 {
 	/**
 	 * The method is defered to the "usage_<cache_id>" method.

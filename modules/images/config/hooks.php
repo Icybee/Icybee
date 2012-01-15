@@ -6,8 +6,8 @@ return array
 (
 	'events' => array
 	(
-		'ICanBoogie\Operation\Nodes\Save::process' => __NAMESPACE__ . '::on_nodes_save',
-		'ICanBoogie\Operation\Contents\Config::process:before' => __NAMESPACE__ . '::before_contents_config',
+		'ICanBoogie\Modules\Nodes\SaveOperation::process' => __NAMESPACE__ . '::on_nodes_save',
+		'ICanBoogie\Modules\Contents\ConfigOperation::process:before' => __NAMESPACE__ . '::before_contents_config',
 		'ICanBoogie\Modules\Contents\Module::alter.block.edit' => __NAMESPACE__ . '::on_alter_block_edit',
 		'ICanBoogie\Modules\Contents\Module::alter.block.config' => __NAMESPACE__ . '::on_alter_block_config',
 

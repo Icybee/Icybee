@@ -21,7 +21,7 @@ use BrickRouge\Form;
 
 class Hooks
 {
-	public static function on_node_save(Event $event, Operation\Nodes\Save $operation)
+	public static function on_node_save(Event $event, Modules\Nodes\SaveOperation $operation)
 	{
 		global $core;
 

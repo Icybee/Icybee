@@ -9,9 +9,9 @@
  * file that was distributed with this source code.
  */
 
-namespace ICanBoogie\Operation\Sites;
+namespace ICanBoogie\Modules\Sites;
 
-class Delete extends \ICanBoogie\Operation\ActiveRecord\Delete
+class DeleteOperation extends \ICanBoogie\Operation\ActiveRecord\Delete
 {
 	protected function process()
 	{

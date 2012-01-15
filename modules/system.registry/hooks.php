@@ -120,15 +120,15 @@ class Hooks
 
 		$targetid = $event->rc['key'];
 
-		if ($sender instanceof Operation\Nodes\Save)
+		if ($sender instanceof Modules\Nodes\SaveOperation)
 		{
 			$type = 'node';
 		}
-		else if ($sender instanceof Operation\Users\Save)
+		else if ($sender instanceof Modules\Users\SaveOperation)
 		{
 			$type = 'user';
 		}
-		else if ($sender instanceof Operation\Sites\Save)
+		else if ($sender instanceof Modules\Sites\SaveOperation)
 		{
 			$type = 'site';
 		}

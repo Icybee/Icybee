@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace ICanBoogie\Operation\Users;
+namespace ICanBoogie\Modules\Users;
 
 use ICanBoogie\Exception;
 use ICanBoogie\Exception\HTTP as HTTPException;
@@ -21,7 +21,7 @@ use ICanBoogie\Security;
 /**
  * Provides a nonce login.
  */
-class NonceLoginRequest extends Operation
+class NonceLoginRequestOperation extends Operation
 {
 	const FRESH_PERIOD = 3600;
 	const COOLOFF_DELAY = 900;

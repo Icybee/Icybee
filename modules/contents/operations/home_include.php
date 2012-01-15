@@ -9,15 +9,15 @@
  * file that was distributed with this source code.
  */
 
-namespace ICanBoogie\Operation\Contents;
+namespace ICanBoogie\Modules\Contents;
 
-use ICanBoogie\Module;
+use ICanBoogie\Errors;
 use ICanBoogie\Operation;
 
 /**
  * Includes a record is the home page.
  */
-class HomeInclude extends Operation
+class HomeIncludeOperation extends Operation
 {
 	/**
 	 * Controls for the operation: permission(maintain), record and ownership.
@@ -36,7 +36,7 @@ class HomeInclude extends Operation
 		+ parent::__get_controls();
 	}
 
-	protected function validate(\ICanboogie\Errors $errors)
+	protected function validate(Errors $errors)
 	{
 		return true;
 	}

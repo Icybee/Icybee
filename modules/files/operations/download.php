@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace ICanBoogie\Operation\Files;
+namespace ICanBoogie\Modules\Files;
 
 use ICanBoogie\Exception\HTTP as HTTPException;
 use ICanBoogie\Operation;
@@ -21,7 +21,7 @@ use ICanBoogie\Operation;
  *
  * Offline files cannot be downloaded by visitors.
  */
-class Download extends Operation
+class DownloadOperation extends Operation
 {
 	/**
 	 * Controls for the operation: record.

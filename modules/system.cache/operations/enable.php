@@ -9,11 +9,9 @@
  * file that was distributed with this source code.
  */
 
-namespace ICanBoogie\Operation\System\Cache;
+namespace ICanBoogie\Modules\System\Cache;
 
-use Icybee;
-
-class Enable extends Icybee\Operation\System\Cache\Base
+class EnableOperation extends BaseOperation
 {
 	protected function process()
 	{

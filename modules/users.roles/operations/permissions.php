@@ -9,13 +9,11 @@
  * file that was distributed with this source code.
  */
 
-namespace ICanBoogie\Operation\Users\Roles;
+namespace ICanBoogie\Modules\Users\Roles;
 
 use ICanBoogie\ActiveRecord\Users\Role;
-use ICanBoogie\Module;
-use ICanBoogie\Operation;
 
-class Permissions extends Operation
+class PermissionsOperation extends \ICanBoogie\Operation
 {
 	protected function __get_controls()
 	{

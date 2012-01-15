@@ -9,12 +9,12 @@
  * file that was distributed with this source code.
  */
 
-namespace ICanBoogie\Operation\Nodes\Attachments;
+namespace ICanBoogie\Modules\Nodes\Attachments;
 
 use ICanBoogie\Operation;
 use ICanBoogie\Uploaded;
 
-class Upload extends Operation
+class UploadOperation extends Operation
 {
 	/**
 	 * @var Uploaded
