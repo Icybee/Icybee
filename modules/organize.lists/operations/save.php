@@ -9,9 +9,9 @@
  * file that was distributed with this source code.
  */
 
-namespace ICanBoogie\Operation\Organize\Lists;
+namespace ICanBoogie\Modules\Organize\Lists;
 
-class Save extends \ICanBoogie\Operation\Nodes\Save
+class SaveOperation extends \ICanBoogie\Modules\Nodes\SaveOperation
 {
 	protected function process()
 	{

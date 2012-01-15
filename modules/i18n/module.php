@@ -9,9 +9,9 @@
  * file that was distributed with this source code.
  */
 
-namespace ICanBoogie\Module;
+namespace ICanBoogie\Modules\I18n;
 
-class I18n extends \Icybee\Module
+class Module extends \Icybee\Module
 {
 
 }

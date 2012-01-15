@@ -9,17 +9,15 @@
  * file that was distributed with this source code.
  */
 
-namespace ICanBoogie\Module;
+namespace ICanBoogie\Modules\Contents;
 
-use ICanBoogie\ActiveRecord\Content,
-	ICanBoogie\ActiveRecord\Query,
+use ICanBoogie\ActiveRecord\Content;
+use ICanBoogie\ActiveRecord\Query;
 
-	BrickRouge,
-	BrickRouge\Element,
-	BrickRouge\Form,
-	BrickRouge\Text;
-
-use Icybee\Manager\Contents as Manager;
+use BrickRouge;
+use BrickRouge\Element;
+use BrickRouge\Form;
+use BrickRouge\Text;
 
 use WdPatron;
 use WdMultiEditorElement;
@@ -30,7 +28,7 @@ use WdDateElement;
  * The "contents" module extends the "system.nodes" module by offrering a subtitle, a body
  * (with a customizable editor), an optional excerpt, a date and a new visibility option (home).
  */
-class Contents extends Nodes
+class Module extends \ICanBoogie\Modules\Nodes\Module
 {
 	const OPERATION_HOME_INCLUDE = 'home_include';
 	const OPERATION_HOME_EXCLUDE = 'home_exclude';

@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace ICanBoogie\Module\Taxonomy;
+namespace ICanBoogie\Modules\Taxonomy\Terms;
 
 use ICanBoogie\ActiveRecord\Taxonomy\Term;
 use ICanBoogie\Event;
@@ -18,13 +18,11 @@ use BrickRouge\Element;
 use BrickRouge\Form;
 use BrickRouge\Widget;
 
-use Icybee\Manager;
-
-class Terms extends \Icybee\Module
+class Module extends \Icybee\Module
 {
 	protected function block_manage()
 	{
-		return new Manager\Taxonomy\Terms($this);
+		return new Manager($this);
 	}
 
 	protected function block_edit(array $values, $permission)

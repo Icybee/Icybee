@@ -9,18 +9,18 @@
  * file that was distributed with this source code.
  */
 
-namespace ICanBoogie\ActiveRecord\Model;
+namespace ICanBoogie\Modules\Pages;
 
 use ICanBoogie\ActiveRecord\Page;
 use ICanBoogie\Exception;
 use ICanBoogie\Route;
 
-class Pages extends Nodes
+class Model extends \ICanBoogie\Modules\Nodes\Model
 {
 	/**
 	 * Before saving the record, we make sure that it is not its own parent.
 	 *
-	 * @see ICanBoogie\ActiveRecord\Model.Nodes::save()
+	 * @see ICanBoogie\Modules\Nodes.Model::save()
 	 */
 	public function save(array $properties, $key=null, array $options=array())
 	{
@@ -36,7 +36,7 @@ class Pages extends Nodes
 	 * Before deleting the record, we make sure that it is not used as a parent page or as a
 	 * location target.
 	 *
-	 * @see @see ICanBoogie\ActiveRecord\Model.Nodes::delete()
+	 * @see @see ICanBoogie\Modules\Nodes.Model::delete()
 	 */
 	public function delete($key)
 	{

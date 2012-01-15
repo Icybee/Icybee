@@ -9,26 +9,24 @@
  * file that was distributed with this source code.
  */
 
-namespace ICanBoogie\Module\Taxonomy;
+namespace ICanBoogie\Modules\Taxonomy\Vocabulary;
 
 use ICanBoogie\ActiveRecord;
 use ICanBoogie\Event;
-use ICanBoogie\Module;
+use ICanBoogie\Modules;
 use ICanBoogie\Operation;
 
 use BrickRouge\Element;
 use BrickRouge\Form;
 use BrickRouge\Widget;
 
-use Icybee\Manager;
-
-class Vocabulary extends \Icybee\Module
+class Module extends \Icybee\Module
 {
 	const OPERATION_ORDER = 'order';
 
 	protected function block_manage()
 	{
-		return new Manager\Taxonomy\Vocabulary($this);
+		return new Manager($this);
 	}
 
 	protected function block_edit(array $properties, $permission)
@@ -50,7 +48,7 @@ class Vocabulary extends \Icybee\Module
 				continue;
 			}
 
-			$is_instance = Module::is_extending($module_id, 'nodes');
+			$is_instance = self::is_extending($module_id, 'nodes');
 
 			if (!$is_instance)
 			{
@@ -76,7 +74,7 @@ class Vocabulary extends \Icybee\Module
 		# belonging site
 		#
 
-		if ($core->user->has_permission(Module\Nodes::PERMISSION_MODIFY_BELONGING_SITE))
+		if ($core->user->has_permission(Modules\Nodes\Module::PERMISSION_MODIFY_BELONGING_SITE))
 		{
 			// TODO-20100906: this should be added by the "sites" modules using the alter event.
 

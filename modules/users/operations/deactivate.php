@@ -9,12 +9,12 @@
  * file that was distributed with this source code.
  */
 
-namespace ICanBoogie\Operation\Users;
+namespace ICanBoogie\Modules\Users;
 
 /**
  * Disables a user account.
  */
-class Deactivate extends Activate
+class DeactivateOperation extends Activate
 {
 	protected function process()
 	{

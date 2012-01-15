@@ -9,14 +9,13 @@
  * file that was distributed with this source code.
  */
 
-namespace ICanBoogie\Operation\Forms;
+namespace ICanBoogie\Modules\Forms;
 
 use ICanBoogie\Exception;
 use ICanBoogie\Mailer;
-use ICanBoogie\Module;
 use ICanBoogie\Operation;
 
-class Post extends Operation
+class PostOperation extends Operation
 {
 	/**
 	 * Controls for the operation: form.
@@ -48,12 +47,12 @@ class Post extends Operation
 	{
 		$request = $this->request;
 
-		if (empty($request[Module\Forms::OPERATION_POST_ID]))
+		if (empty($request[Module::OPERATION_POST_ID]))
 		{
 			throw new Exception('Missing OPERATION_POST_ID parameter', array(), 404);
 		}
 
-		$form_id = (int) $request[Module\Forms::OPERATION_POST_ID];
+		$form_id = (int) $request[Module::OPERATION_POST_ID];
 
 		return $this->module->model[$form_id];
 	}

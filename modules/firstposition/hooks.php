@@ -9,19 +9,21 @@
  * file that was distributed with this source code.
  */
 
-namespace ICanBoogie\Hooks\Sites;
+namespace ICanBoogie\Modules\FirstPosition;
 
 use ICanBoogie\ActiveRecord\Content;
 use ICanBoogie\Event;
-use ICanBoogie\Module;
+use ICanBoogie\Modules;
+
 use BrickRouge\Element;
 use BrickRouge\Form;
 use BrickRouge\Text;
+
 use WdPatron as Patron;
 
 // http://www.google.com/webmasters/docs/search-engine-optimization-starter-guide.pdf
 
-class Firstposition
+class Hooks
 {
 	public static function on_icybee_render(Event $event)
 	{
@@ -130,11 +132,11 @@ EOT;
 		}
 	}
 
-	static public function event_alter_block_edit(Event $event, Module $sender)
+	static public function event_alter_block_edit(Event $event, \ICanBoogie\Module $sender)
 	{
 		global $core;
 
-		if ($sender instanceof Module\Sites)
+		if ($sender instanceof Modules\Sites\Module)
 		{
 			$event->tags = wd_array_merge_recursive
 			(
@@ -175,7 +177,7 @@ EOT;
 
 			return;
 		}
-		else if (!$sender instanceof Module\Pages)
+		else if (!$sender instanceof Modules\Pages\Module)
 		{
 			return;
 		}

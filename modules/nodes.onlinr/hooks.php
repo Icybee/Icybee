@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace ICanBoogie\Hooks\Nodes;
+namespace ICanBoogie\Modules\Nodes\Onlinr;
 
 use ICanBoogie\Event;
 use ICanBoogie\Exception;
@@ -17,7 +17,7 @@ use ICanBoogie\Exception;
 use BrickRouge\Element;
 use BrickRouge\Form;
 
-class Onlinr
+class Hooks
 {
 	/**
 	 * This event callback adds a new element to the "online" group defined by the system.nodes

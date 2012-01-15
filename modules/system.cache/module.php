@@ -9,13 +9,13 @@
  * file that was distributed with this source code.
  */
 
-namespace ICanBoogie\Module\System;
+namespace ICanBoogie\Modules\System\Cache;
 
 use BrickRouge\Element;
 use BrickRouge\Text;
 use ICanBoogie\Event;
 
-class Cache extends \Icybee\Module
+class Module extends \Icybee\Module
 {
 	protected function block_manage()
 	{

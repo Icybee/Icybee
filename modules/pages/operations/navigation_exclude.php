@@ -9,9 +9,9 @@
  * file that was distributed with this source code.
  */
 
-namespace ICanBoogie\Operation\Pages;
+namespace ICanBoogie\Modules\Pages;
 
-class NavigationExclude extends \ICanBoogie\Operation\Pages\NavigationInclude
+class NavigationExcludeOperation extends NavigationIncludeOperation
 {
 	protected function process()
 	{

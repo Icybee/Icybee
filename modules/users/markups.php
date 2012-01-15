@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-use ICanBoogie\Module;
+use ICanBoogie\Modules;
 use ICanBoogie\Operation;
 use BrickRouge\Button;
 use BrickRouge\Element;
@@ -37,7 +37,7 @@ class user_users_WdMarkups
 					Form::HIDDENS => array
 					(
 						Operation::DESTINATION => 'users',
-						Operation::NAME => Module\Users::OPERATION_DISCONNECT
+						Operation::NAME => Modules\Users\Module::OPERATION_DISCONNECT
 					),
 
 					Element::CHILDREN => array
@@ -82,7 +82,7 @@ class user_users_WdMarkups
 					Form::HIDDENS => array
 					(
 						Operation::DESTINATION => 'users',
-						Operation::NAME => Module\Users::OPERATION_CONNECT
+						Operation::NAME => Modules\Users\Module::OPERATION_CONNECT
 					),
 
 					Element::CHILDREN => array

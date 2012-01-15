@@ -11,7 +11,7 @@
 
 use BrickRouge\Element;
 use ICanBoogie\ActiveRecord\Node;
-use ICanBoogie\ActiveRecord\Model;
+use ICanBoogie\Modules\Pages\Model as PagesModel;
 
 class WdI18nLinkElement extends Element
 {
@@ -55,12 +55,12 @@ class WdI18nLinkElement extends Element
 			->order('weight, created')
 			->all(PDO::FETCH_OBJ);
 
-			$tree = Model\Pages::nestNodes($nodes);
+			$tree = PagesModel::nestNodes($nodes);
 
 			if ($tree)
 			{
-				Model\Pages::setNodesDepth($tree);
-				$records = Model\Pages::levelNodesById($tree);
+				PagesModel::setNodesDepth($tree);
+				$records = PagesModel::levelNodesById($tree);
 
 				foreach ($records as $record)
 				{

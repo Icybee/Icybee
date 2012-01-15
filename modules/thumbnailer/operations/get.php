@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace ICanBoogie\Operation\Thumbnailer;
+namespace ICanBoogie\Modules\Thumbnailer;
 
 use ICanBoogie\Exception;
 use ICanBoogie\FileCache;
@@ -18,11 +18,11 @@ use ICanBoogie\Image;
 use ICanBoogie\Operation;
 
 /**
- * @property Module\Thumbnailer $module
+ * @property Modules\Thumbnailer $module
  * @property string $repository Path to the thumbnails repository.
  * @property FileCache $cache Thumbnails cache manager.
  */
-class Get extends Operation
+class GetOperation extends Operation
 {
 	const VERSION = '1.2.0';
 

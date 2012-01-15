@@ -9,11 +9,11 @@
  * file that was distributed with this source code.
  */
 
-namespace ICanBoogie\ActiveRecord\Model;
+namespace ICanBoogie\Modules\Images;
 
 use ICanBoogie\ActiveRecord\Image;
 
-class Images extends Files
+class Model extends \ICanBoogie\Modules\Files\Model
 {
 	protected static $accept = array
 	(

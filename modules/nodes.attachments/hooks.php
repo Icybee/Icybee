@@ -9,19 +9,19 @@
  * file that was distributed with this source code.
  */
 
-namespace ICanBoogie\Hooks\Nodes;
+namespace ICanBoogie\Modules\Nodes\Attachments;
 
 use ICanBoogie\ActiveRecord;
 use ICanBoogie\Event;
-use ICanBoogie\Module;
+use ICanBoogie\Modules;
 use ICanBoogie\Operation;
 
 use BrickRouge\Element;
 use BrickRouge\Form;
 
-class Attachments
+class Hooks
 {
-	public static function on_node_save(Event $event, Operation\Nodes\Save $operation)
+	public static function on_node_save(Event $event, Modules\Nodes\SaveOperation $operation)
 	{
 		global $core;
 
@@ -203,11 +203,11 @@ class Attachments
 	 *
 	 * @param Event $event
 	 */
-	public static function on_alter_block_edit(Event $event, Module\Nodes $sender)
+	public static function on_alter_block_edit(Event $event, Modules\Nodes\Module $sender)
 	{
 		global $core;
 
-		if ($sender instanceof Module\Files)
+		if ($sender instanceof Modules\Files\Module)
 		{
 			return;
 		}
@@ -256,11 +256,11 @@ class Attachments
 		);
 	}
 
-	public static function on_alter_block_config(Event $event, Module\Files $sender)
+	public static function on_alter_block_config(Event $event, Modules\Files\Module $sender)
 	{
 		global $core;
 
-		if (get_class($sender) != 'ICanBoogie\Module\Files')
+		if (get_class($sender) != 'ICanBoogie\Modules\Files\Module')
 		{
 			return;
 		}

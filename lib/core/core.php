@@ -14,10 +14,10 @@ namespace Icybee;
 use ICanBoogie;
 use ICanBoogie\Debug;
 use ICanBoogie\Exception;
-use ICanBoogie\Hooks;
 use ICanBoogie\Module;
 use ICanBoogie\Operation;
 use ICanBoogie\Route;
+
 use BrickRouge\Document;
 
 /**
@@ -160,7 +160,7 @@ class Core extends ICanBoogie\Core
 	 */
 	protected function run_context()
 	{
-		$this->site = $site = Hooks\Sites::find_by_request($this->request);
+		$this->site = $site = \ICanBoogie\Modules\Sites\Hooks::find_by_request($this->request);
 		$this->language = $site->language;
 
 		if ($site->timezone)

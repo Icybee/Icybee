@@ -1,9 +1,10 @@
 <?php
 
-namespace ICanBoogie\Module\Thumbnailer;
+namespace ICanBoogie\Modules\Thumbnailer;
 
 use ICanBoogie;
 use ICanBoogie\ActiveRecord;
+
 use BrickRouge\Element;
 
 /**

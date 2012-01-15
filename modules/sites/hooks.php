@@ -9,13 +9,13 @@
  * file that was distributed with this source code.
  */
 
-namespace ICanBoogie\Hooks;
+namespace ICanBoogie\Modules\Sites;
 
-use ICanBoogie\ActiveRecord,
-	ICanBoogie\ActiveRecord\Site,
-	ICanBoogie\HTTP\Request;
+use ICanBoogie\ActiveRecord;
+use ICanBoogie\ActiveRecord\Site;
+use ICanBoogie\HTTP\Request;
 
-class Sites
+class Hooks
 {
 	static private $model;
 

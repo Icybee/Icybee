@@ -9,17 +9,16 @@
  * file that was distributed with this source code.
  */
 
-namespace ICanBoogie\Operation\Nodes;
+namespace ICanBoogie\Modules\Nodes;
 
 use ICanBoogie\ActiveRecord\Node;
-use ICanBoogie\Module;
 
 /**
  * Saves a node.
  *
  * Adds the "display" save mode.
  */
-class Save extends \Icybee\Operation\ActiveRecord\Save
+class SaveOperation extends \Icybee\Operation\ActiveRecord\Save
 {
 	const MODE_DISPLAY = 'display';
 
@@ -51,7 +50,7 @@ class Save extends \Icybee\Operation\ActiveRecord\Save
 			unset($properties[Node::UID]);
 		}
 
-		if (!$this->key || !$user->has_permission(Module\Nodes::PERMISSION_MODIFY_BELONGING_SITE))
+		if (!$this->key || !$user->has_permission(Module::PERMISSION_MODIFY_BELONGING_SITE))
 		{
 			$properties[Node::SITEID] = $core->site_id;
 		}

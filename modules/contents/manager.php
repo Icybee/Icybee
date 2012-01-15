@@ -9,13 +9,13 @@
  * file that was distributed with this source code.
  */
 
-namespace Icybee\Manager;
+namespace ICanBoogie\Modules\Contents;
 
 use ICanBoogie\ActiveRecord;
 use ICanBoogie\ActiveRecord\Query;
 use BrickRouge\Element;
 
-class Contents extends Nodes
+class Manager extends \ICanBoogie\Modules\Nodes\Manager
 {
 	public function __construct($module, array $tags=array())
 	{

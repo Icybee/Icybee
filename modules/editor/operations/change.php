@@ -9,12 +9,13 @@
  * file that was distributed with this source code.
  */
 
-namespace ICanBoogie\Operation\Editor;
+namespace ICanBoogie\Modules\Editor;
 
+use ICanBoogie\Errors;
 use ICanBoogie\Exception;
 use ICanBoogie\Operation;
 
-class Change extends Operation
+class ChangeOperation extends Operation
 {
 	protected function __get_controls()
 	{
@@ -26,7 +27,7 @@ class Change extends Operation
 		+ parent::__get_controls();
 	}
 
-	protected function validate(\ICanboogie\Errors $errors)
+	protected function validate(Errors $errors)
 	{
 		$request = $this->request;
 

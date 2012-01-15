@@ -9,13 +9,13 @@
  * file that was distributed with this source code.
  */
 
-namespace ICanBoogie\Hooks;
+namespace ICanBoogie\Modules\Articles;
 
 use ICanBoogie\Event;
 
 // TODO-20101116: move this code to the "contents" module.
 
-class Articles
+class Hooks
 {
 	/**
 	 * The callback is called when the `resources.files.path.change` is triggered, allowing us to

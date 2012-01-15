@@ -9,15 +9,14 @@
  * file that was distributed with this source code.
  */
 
-namespace ICanBoogie\Operation\Comments;
+namespace ICanBoogie\Modules\Comments;
 
 use ICanBoogie\ActiveRecord\Comment;
 use ICanBoogie\Exception;
-use ICanBoogie\Module;
 use ICanBoogie\Mailer;
 use ICanBoogie\Operation;
 
-class Save extends \Icybee\Operation\ActiveRecord\Save
+class SaveOperation extends \Icybee\Operation\ActiveRecord\Save
 {
 	protected function __get_properties()
 	{

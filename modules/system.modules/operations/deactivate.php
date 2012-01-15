@@ -9,13 +9,12 @@
  * file that was distributed with this source code.
  */
 
-namespace ICanBoogie\Operation\System\Modules;
+namespace ICanBoogie\Modules\System\Modules;
 
-use ICanBoogie\Module;
 use ICanBoogie\Operation;
 use ICanBoogie\Route;
 
-class Deactivate extends Operation
+class DeactivateOperation extends Operation
 {
 	protected function __get_controls()
 	{

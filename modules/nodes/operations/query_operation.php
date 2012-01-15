@@ -9,9 +9,9 @@
  * file that was distributed with this source code.
  */
 
-namespace ICanBoogie\Operation\Nodes;
+namespace ICanBoogie\Modules\Nodes;
 
-class QueryOperation extends \Icybee\Operation\Module\QueryOperation
+class QueryOperationOperation extends \Icybee\Operation\Module\QueryOperation
 {
 	protected function query_online()
 	{

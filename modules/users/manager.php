@@ -9,13 +9,13 @@
  * file that was distributed with this source code.
  */
 
-namespace Icybee\Manager;
+namespace ICanBoogie\Modules\Users;
 
 use ICanBoogie\ActiveRecord\User;
-use ICanBoogie\Module;
+
 use BrickRouge\Element;
 
-class Users extends \WdManager
+class Manager extends \WdManager
 {
 	public function __construct($module, array $tags=array())
 	{
@@ -84,8 +84,8 @@ class Users extends \WdManager
 
 		$jobs = array
 		(
-			Module\Users::OPERATION_ACTIVATE => t('activate.operation.title'),
-			Module\Users::OPERATION_DEACTIVATE => t('deactivate.operation.title')
+			Module::OPERATION_ACTIVATE => t('activate.operation.title'),
+			Module::OPERATION_DEACTIVATE => t('deactivate.operation.title')
 		);
 
 		return $jobs;

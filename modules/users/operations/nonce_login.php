@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace ICanBoogie\Operation\Users;
+namespace ICanBoogie\Modules\Users;
 
 use ICanBoogie\Exception;
 use ICanBoogie\Exception\HTTP as HTTPException;
@@ -20,7 +20,7 @@ use ICanBoogie\Security;
  * The "nonce-login" operation is used to login a user using a one time, time limited pass created
  * by the "nonce-request" operation.
  */
-class NonceLogin extends Operation
+class NonceLoginOperation extends Operation
 {
 	protected function __get_controls()
 	{

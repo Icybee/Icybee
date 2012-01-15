@@ -9,12 +9,17 @@
  * file that was distributed with this source code.
  */
 
+namespace ICanBoogie\Modules\Search;
+
 use ICanBoogie\Exception;
 
 use BrickRouge\Element;
 use BrickRouge\Form;
+use BrickRouge\Searchbox;
 
-class site_search_WdMarkups extends patron_markups_WdHooks
+use WdPatron;
+
+class Hooks
 {
 	static public function form(array $args, WdPatron $patron, $template)
 	{
@@ -35,7 +40,7 @@ class site_search_WdMarkups extends patron_markups_WdHooks
 
 			Element::CHILDREN => array
 			(
-				'q' => new BrickRouge\Searchbox
+				'q' => new Searchbox
 				(
 					array
 					(
@@ -50,7 +55,7 @@ class site_search_WdMarkups extends patron_markups_WdHooks
 			'action' => $page->url
 		);
 
-		return $template ? new WdTemplatedForm($tags, $patron($template)) : (string) new Form($tags);
+		return $template ? new \WdTemplatedForm($tags, $patron($template)) : (string) new Form($tags);
 	}
 
 	// TODO: move to the module and use registry configuration.

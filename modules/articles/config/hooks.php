@@ -4,14 +4,14 @@ return array
 (
 	'events' => array
 	(
-		'resources.files.path.change' => 'ICanBoogie\Hooks\Articles::resources_files_path_change'
+		'resources.files.path.change' => 'ICanBoogie\Modules\Articles\Hooks::resources_files_path_change'
 	),
 
 	'patron.markups' => array
 	(
 		'articles' => array
 		(
-			'ICanBoogie\Hooks\Articles::markup_articles', array
+			'ICanBoogie\Modules\Articles\Hooks::markup_articles', array
 			(
 				'by' => 'date',
 				'section' => null,
@@ -27,7 +27,7 @@ return array
 
 		'articles:read' => array
 		(
-			'ICanBoogie\Hooks\Articles::markup_articles_read', array
+			'ICanBoogie\Modules\Articles\Hooks::markup_articles_read', array
 			(
 				'section' => null,
 				'order' => 'desc',
@@ -38,7 +38,7 @@ return array
 		/*
 		'articles:commented' => array
 		(
-			'ICanBoogie\Hooks\Articles::articles_commented', array
+			'ICanBoogie\Modules\Articles\Hooks::articles_commented', array
 			(
 				'section' => null,
 				'order' => 'desc',
@@ -49,7 +49,7 @@ return array
 
 		'articles:authors' => array
 		(
-			'ICanBoogie\Hooks\Articles::markup_articles_authors', array
+			'ICanBoogie\Modules\Articles\Hooks::markup_articles_authors', array
 			(
 				'section' => null,
 				'order' => 'asc'
@@ -59,7 +59,7 @@ return array
 		/*
 		'article' => array
 		(
-			'ICanBoogie\Hooks\Articles::article', array
+			'ICanBoogie\Modules\Articles\Hooks::article', array
 			(
 				'select' => array('expression' => true, 'required' => true),
 				'relative' => null
@@ -69,7 +69,7 @@ return array
 
 		'articles:by:date' => array
 		(
-			'ICanBoogie\Hooks\Articles::markup_by_date', array
+			'ICanBoogie\Modules\Articles\Hooks::markup_by_date', array
 			(
 				'group' => null,
 				'order' => 'asc',
@@ -80,7 +80,7 @@ return array
 
 		'articles:by:author' => array
 		(
-			'ICanBoogie\Hooks\Articles::markup_by_author'
+			'ICanBoogie\Modules\Articles\Hooks::markup_by_author'
 		)
 	)
 );

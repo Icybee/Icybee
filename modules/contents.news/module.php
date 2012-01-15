@@ -9,18 +9,18 @@
  * file that was distributed with this source code.
  */
 
-namespace ICanBoogie\Module\Contents;
+namespace ICanBoogie\Modules\Contents\News;
 
 use ICanBoogie\ActiveRecord\Content;
+use ICanBoogie\Modules\Contents\Manager;
 use BrickRouge\Element;
 use BrickRouge\Form;
-use Icybee\Manager;
 
-class News extends \ICanBoogie\Module\Contents
+class Module extends \ICanBoogie\Modules\Contents\Module
 {
 	protected function block_manage()
 	{
-		return new Manager\Contents
+		return new Manager
 		(
 			$this, array
 			(

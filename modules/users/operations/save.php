@@ -9,16 +9,15 @@
  * file that was distributed with this source code.
  */
 
-namespace ICanBoogie\Operation\Users;
+namespace ICanBoogie\Modules\Users;
 
 use ICanBoogie\ActiveRecord\User;
-use ICanBoogie\Module;
 use ICanBoogie\Operation;
 
 /**
  * Create or update a user profile.
  */
-class Save extends \Icybee\Operation\Constructor\Save
+class SaveOperation extends \Icybee\Operation\Constructor\Save
 {
 	protected function __get_properties()
 	{

@@ -9,11 +9,11 @@
  * file that was distributed with this source code.
  */
 
-namespace ICanBoogie\Operation\Taxonomy\Vocabulary;
+namespace ICanBoogie\Modules\Taxonomy\Vocabulary;
 
 use ICanBoogie\Operation;
 
-class Order extends Operation
+class OrderOperation extends Operation
 {
 	protected function __get_controls()
 	{

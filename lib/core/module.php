@@ -205,7 +205,7 @@ EOT;
 						$items[] = '<a href="/admin/' . $this->id . '/' . $key . '/delete">' . t('label.delete') . '</a>';
 					}
 
-					if ($this instanceof ICanBoogie\Module\Nodes && $entry->url[0] != '#')
+					if ($this instanceof ICanBoogie\Modules\Nodes\Module && $entry->url[0] != '#')
 					{
 						$url = $entry->url;
 
@@ -267,7 +267,7 @@ EOT;
 
 				if ($url)
 				{
-					$save_mode_options[\ICanBoogie\Operation\Nodes\Save::MODE_DISPLAY] = '.save_mode_display';
+					$save_mode_options[\ICanBoogie\Modules\Nodes\SaveOperation::MODE_DISPLAY] = '.save_mode_display';
 				}
 
 				$tags = wd_array_merge_recursive

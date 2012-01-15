@@ -9,9 +9,9 @@
  * file that was distributed with this source code.
  */
 
-namespace ICanBoogie\Module\Taxonomy;
+namespace ICanBoogie\Modules\Taxonomy\Support;
 
-class Support extends \Icybee\Module
+class Module extends \Icybee\Module
 {
 	/**
 	 * The getManageColumns method can be used by modules whishing to display

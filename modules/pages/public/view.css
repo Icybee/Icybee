@@ -67,13 +67,15 @@ div.view-editor td.view-editor-subcategories a:hover
 }
 
 div.view-editor td.view-editor-categories li.selected,
-div.view-editor td.view-editor-subcategories li.selected
+div.view-editor td.view-editor-subcategories li.selected,
+div.view-editor td.view-editor-views li.selected
 {
 	background-color: #FFE;
 }
 
 div.view-editor td.view-editor-categories li.active,
-div.view-editor td.view-editor-subcategories li.active
+div.view-editor td.view-editor-subcategories li.active,
+div.view-editor td.view-editor-views li.active
 {
 	background-color: #F2F8FF;
 }
@@ -83,9 +85,22 @@ div.view-edutor td.view-editor-views ul
 	padding: .5em 1ex;
 }
 
-div.view-editor td.view-editor-views label
+div.view-editor td.view-editor-views li
 {
-	line-height: 2em;
+	display: block;
+	padding: 0.5em 1ex;
+}
+
+div.view-editor td.view-editor-views label {
+	display: block;
+}
+
+div.view-editor td.view-editor-views span.text {
+	font-weight: normal;
+}
+
+div.view-editor td.view-editor-views input {
+	display: none;
 }
 
 div.view-editor td.view-editor-views div.element-description

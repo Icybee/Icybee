@@ -9,9 +9,9 @@
  * file that was distributed with this source code.
  */
 
-namespace ICanBoogie\Operation\Taxonomy\Terms;
+namespace ICanBoogie\Modules\Taxonomy\Terms;
 
-class Save extends \Icybee\Operation\ActiveRecord\Save
+class SaveOperation extends \Icybee\Operation\ActiveRecord\Save
 {
 
 }

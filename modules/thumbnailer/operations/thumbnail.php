@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace ICanBoogie\Operation\Thumbnailer;
+namespace ICanBoogie\Modules\Thumbnailer;
 
 use ICanBoogie\Exception\HTTP as HTTPException;
 use ICanBoogie\Operation;
@@ -17,7 +17,7 @@ use ICanBoogie\Operation;
 /**
  * Creates a thumbnail of an image managed by the "resource.images" module.
  */
-class Thumbnail extends Get
+class ThumbnailOperation extends GetOperation
 {
 	protected function process()
 	{

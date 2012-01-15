@@ -9,11 +9,11 @@
  * file that was distributed with this source code.
  */
 
-namespace ICanBoogie\ActiveRecord\Model;
+namespace ICanBoogie\Modules\Users;
 
 use ICanBoogie\ActiveRecord\User;
 
-class Users extends \Icybee\ActiveRecord\Model\Constructor
+class Model extends \Icybee\ActiveRecord\Model\Constructor
 {
 	public function save(array $properties, $key=null, array $options=array())
 	{

@@ -45,18 +45,18 @@ return array
 	'users:nonce-login-request' => array
 	(
 		'pattern' => '/api/nonce-login-request',
-		'class' => 'ICanBoogie\Operation\Users\NonceLoginRequest'
+		'class' => 'ICanBoogie\Modules\Users\NonceLoginRequestOperation'
 	),
 
 	'users:inline-nonce-login-request' => array
 	(
 		'pattern' => '/api/nonce-login-request/:email',
-		'class' => 'ICanBoogie\Operation\Users\NonceLoginRequest'
+		'class' => 'ICanBoogie\Modules\Users\NonceLoginRequestOperation'
 	),
 
 	'users:nonce-login' => array
 	(
 		'pattern' => '/api/nonce-login/:email/:token',
-		'class' => 'ICanBoogie\Operation\Users\NonceLogin'
+		'class' => 'ICanBoogie\Modules\Users\NonceLoginOperation'
 	)
 );

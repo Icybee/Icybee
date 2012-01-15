@@ -9,11 +9,11 @@
  * file that was distributed with this source code.
  */
 
-namespace ICanBoogie\Operation\Users;
+namespace ICanBoogie\Modules\Users;
 
 use ICanBoogie\Operation;
 
-class QueryOperation extends \Icybee\Operation\Module\QueryOperation
+class QueryOperationOperation extends \Icybee\Operation\Module\QueryOperation
 {
 	protected function query_activate()
 	{

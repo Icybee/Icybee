@@ -9,20 +9,20 @@
  * file that was distributed with this source code.
  */
 
-namespace ICanBoogie\Hooks;
+namespace ICanBoogie\Modules\Images;
 
 use ICanBoogie\ActiveRecord;
 use ICanBoogie\ActiveRecord\Node;
 use ICanBoogie\Debug;
 use ICanBoogie\Event;
-use ICanBoogie\Module;
+use ICanBoogie\Modules;
 use ICanBoogie\Operation;
 
 use BrickRouge\Element;
 use BrickRouge\Form;
 use BrickRouge\Widget;
 
-class Images
+class Hooks
 {
 	/**
 	 * Getter for the mixin magic property `image`
@@ -40,7 +40,7 @@ class Images
 		return $imageid ? $core->models['images'][$imageid] : null;
 	}
 
-	static public function on_alter_block_edit(Event $event, Module $sender)
+	static public function on_alter_block_edit(Event $event, Modules\Nodes\Module $sender)
 	{
 		global $core;
 
@@ -88,7 +88,7 @@ class Images
 		);
 	}
 
-	static public function on_alter_block_config(Event $event, Module\Contents $sender)
+	static public function on_alter_block_config(Event $event, Modules\Contents\Module $sender)
 	{
 		global $core;
 
@@ -193,7 +193,7 @@ class Images
 		);
 	}
 
-	public static function on_nodes_save(Event $event, Operation\Nodes\Save $operation)
+	public static function on_nodes_save(Event $event, \ICanBoogie\Modules\Nodes\SaveOperation $operation)
 	{
 		$params = &$event->request->params;
 
@@ -208,7 +208,7 @@ class Images
 		$entry->metas['resources_images.imageid'] = $imageid ? $imageid : null;
 	}
 
-	public static function before_contents_config(Event $event, Operation\Contents\Config $operation)
+	public static function before_contents_config(Event $event, \ICanBoogie\Modules\Contents\ConfigOperation $operation)
 	{
 		if (!isset($event->request->params['global']['resources_images.inject']))
 		{

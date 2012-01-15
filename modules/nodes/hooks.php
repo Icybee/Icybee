@@ -9,13 +9,13 @@
  * file that was distributed with this source code.
  */
 
-namespace ICanBoogie\Hooks;
+namespace ICanBoogie\Modules\Nodes;
 
 use ICanBoogie\Event;
 
 use BrickRouge\Element;
 
-class Nodes
+class Hooks
 {
 	public static function markup_node_navigation(array $args, \WdPatron $patron, $template)
 	{
@@ -87,11 +87,11 @@ class Nodes
 
 	public static function on_modules_activate(Event $event)
 	{
-		\ICanBoogie\Module\Nodes::create_default_routes();
+		\ICanBoogie\Modules\Nodes\Module::create_default_routes();
 	}
 
 	public static function on_modules_deactivate(Event $event)
 	{
-		\ICanBoogie\Module\Nodes::create_default_routes();
+		\ICanBoogie\Modules\Nodes\Module::create_default_routes();
 	}
 }

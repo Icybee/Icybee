@@ -207,27 +207,21 @@ class Hooks
 	{
 		global $core;
 
-		$module = $core->modules[$request['module']];
+		$class = 'Icybee\Operation\Module\QueryOperationOperation';
+		$try_module = $module = $core->modules[$request['module']];
 
-		$try = get_class($module);
-		$class = null;
-
-		while ($try && strpos($try, 'ICanBoogie\Module\\') === 0)
+		while ($try_module)
 		{
-			$class = str_replace('\Module\\', '\Operation\\', $try) . '\QueryOperation';
+			$try = Operation::format_class_name($try_module->descriptor[Module::T_NAMESPACE], 'QueryOperation');
 
-			if (class_exists($class, true))
+			if (class_exists($try, true))
 			{
+				$class = $try;
+
 				break;
 			}
 
-			$class = null;
-			$try = get_parent_class($try);
-		}
-
-		if (!$class)
-		{
-			$class = 'Icybee\Operation\Module\QueryOperation';
+			$try_module = $try_module->parent;
 		}
 
 		return new $class($module, $request);

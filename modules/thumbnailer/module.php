@@ -9,14 +9,14 @@
  * file that was distributed with this source code.
  */
 
-namespace ICanBoogie\Module;
+namespace ICanBoogie\Modules\Thumbnailer;
 
-use ICanBoogie\Module;
+use ICanBoogie\Errors;
 
 /**
  * @property string $repository Path to the thumbnails repository.
  */
-class Thumbnailer extends Module
+class Module extends \ICanBoogie\Module
 {
 	/**
 	 * Getter for the $repository magic property.
@@ -33,7 +33,7 @@ class Thumbnailer extends Module
 	 *
 	 * @see Module::install()
 	 */
-	public function install(\ICanBoogie\Errors $errors)
+	public function install(Errors $errors)
 	{
 		$root = \ICanBoogie\DOCUMENT_ROOT;
 		$path = $this->repository;
@@ -48,7 +48,7 @@ class Thumbnailer extends Module
 
 				if (is_writable($parent))
 				{
-					mkdir($_SERVER['DOCUMENT_ROOT'] . $repository, 0755, true);
+					mkdir($root . $repository, 0755, true);
 				}
 				else
 				{
@@ -69,7 +69,7 @@ class Thumbnailer extends Module
 	 *
 	 * @see Module::is_installed()
 	 */
-	public function is_installed(\ICanBoogie\Errors $errors)
+	public function is_installed(Errors $errors)
 	{
 		$root = \ICanBoogie\DOCUMENT_ROOT;
 		$path = $this->repository;

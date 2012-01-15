@@ -11,6 +11,6 @@ return array
 		'BrickRouge\Widget\ImageUpload' => $widgets_path . 'image-upload.php',
 		'BrickRouge\Widget\AdjustThumbnail' => $widgets_path . 'adjust-thumbnail.php',
 
-		'Icybee\Manager\Images\Gallery' => $path . 'gallery.manager.php'
+		'ICanBoogie\Modules\Images\GalleryManager' => $path . 'gallery.manager.php'
 	)
 );

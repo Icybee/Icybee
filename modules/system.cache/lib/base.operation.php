@@ -9,13 +9,12 @@
  * file that was distributed with this source code.
  */
 
-namespace Icybee\Operation\System\Cache;
+namespace ICanBoogie\Modules\System\Cache;
 
 use ICanBoogie\Exception;
-use ICanBoogie\Module;
 use ICanBoogie\Operation;
 
-abstract class Base extends Operation
+abstract class BaseOperation extends Operation
 {
 	protected $callback;
 	static protected $internal = array('core.assets', 'core.catalogs', 'core.configs', 'core.modules');
@@ -37,7 +36,7 @@ abstract class Base extends Operation
 			return false;
 		}
 
-		$operation_name = strtolower(substr(get_class($this), strlen('ICanBoogie\Operation\System\Cache') + 1));
+		$operation_name = strtolower(substr(get_class($this), strlen(__NAMESPACE__) + 1, -9));
 		$cache_id = $this->key;
 
 		if ($operation_name != 'enable' && $operation_name != 'disable'

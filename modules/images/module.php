@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace ICanBoogie\Module;
+namespace ICanBoogie\Modules\Images;
 
 use ICanBoogie\Image;
 
@@ -17,9 +17,7 @@ use BrickRouge\Element;
 use BrickRouge\Form;
 use BrickRouge\Text;
 
-use Icybee\Manager;
-
-class Images extends Files
+class Module extends \ICanBoogie\Modules\Files\Module
 {
 	const ICON_WIDTH = 24;
 	const ICON_HEIGHT = 24;
@@ -72,7 +70,7 @@ class Images extends Files
 
 	protected function block_manage()
 	{
-		return new Manager\Images
+		return new Manager
 		(
 			$this, array
 			(
@@ -86,7 +84,7 @@ class Images extends Files
 
 	protected function block_gallery()
 	{
-		return new Manager\Images\Gallery
+		return new GalleryManager
 		(
 			$this, array
 			(

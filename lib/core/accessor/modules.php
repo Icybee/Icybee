@@ -11,13 +11,12 @@
 
 namespace Icybee\Accessor;
 
-use ICanBoogie;
 use ICanBoogie\Module;
 
 /**
  * Accessor class for the modules of the framework.
  */
-class Modules extends ICanBoogie\Accessor\Modules
+class Modules extends \ICanBoogie\Accessor\Modules
 {
 	/**
 	 * Overrides the method to disable selected modules before they are run.
@@ -51,25 +50,22 @@ class Modules extends ICanBoogie\Accessor\Modules
 	}
 
 	/**
-	 * Overrides the method to handle the autoloading of the manager's class for the specified
-	 * module.
+	 * Adds autoloading of the manager's class for the specified module.
 	 *
-	 * @see ICanBoogie\Accessor.Modules::index_module()
+	 * @see ICanBoogie\Accessor.Modules::alter_descriptor()
 	 */
-	protected function index_module(array $descriptor)
+	protected function alter_descriptor(array $descriptor)
 	{
-		$index = parent::index_module($descriptor);
+		$descriptor = parent::alter_descriptor($descriptor);
+
 		$path = $descriptor[Module::T_PATH];
 
 		if (file_exists($path . 'manager.php'))
 		{
-			$id = $descriptor[Module::T_ID];
-			$class = 'Icybee\Manager\\' . ICanBoogie\normalize_namespace_part($id);
-
-			$index['autoload'][$class] = $path . 'manager.php';
+			$descriptor['__autoload'][$descriptor[Module::T_NAMESPACE] . '\Manager'] = $path . 'manager.php';
 		}
 
-		return $index;
+		return $descriptor;
 	}
 
 	public function ids_by_property($tag, $default=null)

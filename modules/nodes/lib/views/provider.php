@@ -114,14 +114,6 @@ class Provider extends \Icybee\Views\ActiveRecord\Provider
 			$query->where('is_online = 1');
 		}
 
-		// TODO-20120105: the "taxonomy" modules should listen to the "alter_query" event to alter the query.
-
-		if (!empty($conditions['categoryslug']))
-		{
-			$query->where('nid IN (SELECT nid FROM {prefix}taxonomy_terms
-			INNER JOIN {prefix}taxonomy_terms__nodes USING(vtid) WHERE termslug = ?)', $conditions['categoryslug']);
-		}
-
 		return parent::alter_query($query, $conditions)->order('created DESC');
 	}
 

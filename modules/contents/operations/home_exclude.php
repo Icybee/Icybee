@@ -9,12 +9,12 @@
  * file that was distributed with this source code.
  */
 
-namespace ICanBoogie\Operation\Contents;
+namespace ICanBoogie\Modules\Contents;
 
 /**
  * Excludes a record from the home page.
  */
-class HomeExclude extends HomeInclude
+class HomeExcludeOperation extends HomeIncludeOperation
 {
 	protected function process()
 	{

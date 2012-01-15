@@ -9,12 +9,12 @@
  * file that was distributed with this source code.
  */
 
-namespace Icybee\Manager;
+namespace ICanBoogie\Modules\Files;
 
 use ICanBoogie\ActiveRecord\File;
 use ICanBoogie\ActiveRecord\Query;
 
-class Files extends Nodes
+class Manager extends \ICanBoogie\Modules\Nodes\Manager
 {
 	public function __construct($module, array $tags=array())
 	{

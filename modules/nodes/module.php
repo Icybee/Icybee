@@ -9,23 +9,20 @@
  * file that was distributed with this source code.
  */
 
-namespace ICanBoogie\Module;
+namespace ICanBoogie\Modules\Nodes;
 
 use ICanBoogie\ActiveRecord\Node;
 use ICanBoogie\ActiveRecord\Query;
-use ICanBoogie\ActiveRecord\Model;
 use ICanBoogie\Event;
 use ICanBoogie\Exception\HTTP as HTTPException;
-use ICanBoogie\Module;
+
 use BrickRouge\Element;
 use BrickRouge\Form;
 use BrickRouge\Widget;
-use Icybee\Manager;
 
-use WdPatron;
 use WdAdjustNodeWidget;
 
-class Nodes extends \Icybee\Module
+class Module extends \Icybee\Module
 {
 	const PERMISSION_MODIFY_BELONGING_SITE = 'modify belonging site';
 
@@ -71,7 +68,7 @@ class Nodes extends \Icybee\Module
 	{
 		return parent::resolve_model_tags($tags, 'primary') + array
 		(
-			Model\Nodes::T_CONSTRUCTOR => $this->id
+			Model::T_CONSTRUCTOR => $this->id
 		);
 	}
 
@@ -361,14 +358,14 @@ class Nodes extends \Icybee\Module
 			}
 
 			$descriptor = $core->modules->descriptors[$constructor];
-			$category = $descriptor[Module::T_CATEGORY];
+			$category = $descriptor[self::T_CATEGORY];
 
 			if (!isset($categories[$category]))
 			{
 				$category = $default_category;
 			}
 
-			$title = t($descriptor[Module::T_TITLE], array(), array('scope' => 'module.title'));
+			$title = t($descriptor[self::T_TITLE], array(), array('scope' => 'module.title'));
 
 			$categories[$category][] = array
 			(

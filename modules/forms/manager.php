@@ -9,9 +9,9 @@
  * file that was distributed with this source code.
  */
 
-namespace Icybee\Manager;
+namespace ICanBoogie\Modules\Forms;
 
-class Forms extends Nodes
+class Manager extends \ICanBoogie\Modules\Nodes\Manager
 {
 	protected function columns()
 	{

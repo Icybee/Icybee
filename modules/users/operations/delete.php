@@ -9,12 +9,12 @@
  * file that was distributed with this source code.
  */
 
-namespace ICanBoogie\Operation\Users;
+namespace ICanBoogie\Modules\Users;
 
 /**
  * Deletes a user.
  */
-class Delete extends \ICanBoogie\Operation\ActiveRecord\Delete
+class DeleteOperation extends \ICanBoogie\Operation\ActiveRecord\Delete
 {
 
 }

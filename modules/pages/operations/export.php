@@ -9,9 +9,9 @@
  * file that was distributed with this source code.
  */
 
-namespace ICanBoogie\Operation\Pages;
+namespace ICanBoogie\Modules\Pages;
 
-class Export extends \ICanBoogie\Operation\Nodes\Export
+class ExportOperation extends \ICanBoogie\Modules\Nodes\ExportOperation
 {
 	protected function process()
 	{

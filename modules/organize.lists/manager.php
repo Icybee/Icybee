@@ -9,12 +9,11 @@
  * file that was distributed with this source code.
  */
 
-namespace Icybee\Manager\Organize;
+namespace ICanBoogie\Modules\Organize\Lists;
 
 use ICanBoogie\ActiveRecord;
-use Icybee\Manager;
 
-class Lists extends Manager\Nodes
+class Manager extends \ICanBoogie\Modules\Nodes\Manager
 {
 	protected function get_cell_title(ActiveRecord\Node $record, $property)
 	{

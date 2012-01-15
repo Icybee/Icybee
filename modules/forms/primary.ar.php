@@ -14,7 +14,7 @@ namespace ICanBoogie\ActiveRecord;
 use ICanBoogie\Event;
 use ICanBoogie\Exception;
 use ICanBoogie\Operation;
-use ICanBoogie\Module;
+use ICanBoogie\Modules;
 
 use BrickRouge;
 use BrickRouge\Button;
@@ -87,8 +87,8 @@ class Form extends Node
 				BrickRouge\Form::HIDDENS => array
 				(
 					Operation::DESTINATION => 'forms',
-					Operation::NAME => Module\Forms::OPERATION_POST,
-					Module\Forms::OPERATION_POST_ID => $this->nid
+					Operation::NAME => Modules\Forms\Module::OPERATION_POST,
+					Modules\Forms\Module::OPERATION_POST_ID => $this->nid
 				),
 
 				Element::CHILDREN => array

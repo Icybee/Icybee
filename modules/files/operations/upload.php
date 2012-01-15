@@ -9,13 +9,12 @@
  * file that was distributed with this source code.
  */
 
-namespace ICanBoogie\Operation\Files;
+namespace ICanBoogie\Modules\Files;
 
-use ICanBoogie\Module;
 use ICanBoogie\Operation;
 use ICanBoogie\Uploaded;
 
-class Upload extends Operation
+class UploadOperation extends Operation
 {
 	/**
 	 * @var Uploaded The target file of the operation.
@@ -126,7 +125,7 @@ EOT;
 
 		$id = uniqid();
 
-		$_SESSION[Module\Files::SESSION_UPLOAD_RESPONSE][$id] = array
+		$_SESSION[Module::SESSION_UPLOAD_RESPONSE][$id] = array
 		(
 			'name' => $name,
 			'path' => $path,

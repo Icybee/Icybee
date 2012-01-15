@@ -9,16 +9,15 @@
  * file that was distributed with this source code.
  */
 
-namespace ICanBoogie\Module;
+namespace ICanBoogie\Modules\Pages;
 
 use ICanBoogie\ActiveRecord\Node;
 use ICanBoogie\ActiveRecord\Page;
 use BrickRouge\Element;
 use BrickRouge\Form;
 use BrickRouge\Text;
-use Icybee\Manager;
 
-class Pages extends Nodes
+class Module extends \ICanBoogie\Modules\Nodes\Module
 {
 	/**
 	 * Only the "list" view is available and it is used to create the sitemap.
@@ -101,7 +100,7 @@ class Pages extends Nodes
 
 	protected function block_manage()
 	{
-		return new Manager\Pages
+		return new Manager
 		(
 			$this, array
 			(

@@ -9,13 +9,13 @@
  * file that was distributed with this source code.
  */
 
-namespace ICanBoogie\Operation\Pages;
+namespace ICanBoogie\Modules\Pages;
 
 use ICanBoogie\ActiveRecord\Page;
 use ICanBoogie\Event;
 use ICanBoogie\Route;
 
-class Save extends \ICanBoogie\Operation\Nodes\Save
+class SaveOperation extends \ICanBoogie\Modules\Nodes\SaveOperation
 {
 	protected function __get_properties()
 	{

@@ -9,28 +9,20 @@
  * file that was distributed with this source code.
  */
 
-namespace ICanBoogie\Module;
+namespace ICanBoogie\Modules\Sites;
 
 use BrickRouge\Element;
 use BrickRouge\Form;
 use BrickRouge\Text;
 use BrickRouge\Widget;
-use Icybee\Manager;
 
 // http://labs.apache.org/webarch/uri/rfc/rfc3986.html
 
-class Sites extends \Icybee\Module
+class Module extends \Icybee\Module
 {
-	public function update_cache()
-	{
-		global $core;
-
-		$core->vars['sites'] = serialize($this->model->all);
-	}
-
 	protected function block_manage()
 	{
-		return new Manager\Sites
+		return new Manager
 		(
 			$this, array
 			(

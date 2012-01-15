@@ -9,9 +9,9 @@
  * file that was distributed with this source code.
  */
 
-namespace ICanBoogie\Operation\Pages;
+namespace ICanBoogie\Modules\Pages;
 
-class QueryOperation extends \ICanBoogie\Operation\Nodes\QueryOperation
+class QueryOperationOperation extends \ICanBoogie\Modules\Nodes\QueryOperationOperation
 {
 
 }

@@ -9,15 +9,14 @@
  * file that was distributed with this source code.
  */
 
-namespace ICanBoogie\Module\Users;
+namespace ICanBoogie\Modules\Users\Members;
 
-use ICanBoogie\Module;
 use BrickRouge\Date;
 use BrickRouge\Element;
 use BrickRouge\Form;
 use BrickRouge\Text;
 
-class Members extends Module\Users
+class Module extends \ICanBoogie\Modules\Users\Module
 {
 	protected function block_edit(array $properties, $permission)
 	{

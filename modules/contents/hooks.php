@@ -9,13 +9,13 @@
  * file that was distributed with this source code.
  */
 
-namespace ICanBoogie\Hooks;
+namespace ICanBoogie\Modules\Contents;
 
 use ICanBoogie;
 use ICanBoogie\Event;
 use ICanBoogie\Operation;
 
-class Contents
+class Hooks
 {
 	static public function alter_block_manage(Event $event)
 	{
@@ -32,21 +32,21 @@ class Contents
 		);
 	}
 
-	static public function enable_cache(Operation\System\Cache\Enable $operation)
+	static public function enable_cache(\ICanBoogie\Modules\System\Cache\EnableOperation $operation)
 	{
 		global $core;
 
 		return $core->registry['contents.cache_rendered_body'] = true;
 	}
 
-	static public function disable_cache(Operation\System\Cache\Disable $operation)
+	static public function disable_cache(\ICanBoogie\Modules\System\Cache\DisableOperation $operation)
 	{
 		global $core;
 
 		return $core->registry['contents.cache_rendered_body'] = false;
 	}
 
-	static public function stat_cache(Operation\System\Cache\Stat $operation)
+	static public function stat_cache(\ICanBoogie\Modules\System\Cache\StatOperation $operation)
 	{
 		global $core;
 
@@ -62,7 +62,7 @@ class Contents
 		return array($count, $count . ' enregistrements<br /><span class="small">' . wd_format_size($size) . '</span>');
 	}
 
-	static public function clear_cache(Operation\System\Cache\Clear $operation)
+	static public function clear_cache(\ICanBoogie\Modules\System\Cache\ClearOperation $operation)
 	{
 		global $core;
 

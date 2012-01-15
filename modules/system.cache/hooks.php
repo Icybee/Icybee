@@ -9,13 +9,13 @@
  * file that was distributed with this source code.
  */
 
-namespace ICanBoogie\Hooks\System;
+namespace ICanBoogie\Modules\System\Cache;
 
 use ICanBoogie\Event;
 use ICanBoogie\HTTP\Request;
 use ICanBoogie\Operation;
 
-class Cache
+class Hooks
 {
 	public static function clear_modules_cache()
 	{

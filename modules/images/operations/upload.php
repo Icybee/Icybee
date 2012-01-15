@@ -9,17 +9,16 @@
  * file that was distributed with this source code.
  */
 
-namespace ICanBoogie\Operation\Images;
+namespace ICanBoogie\Modules\Images;
 
-use ICanBoogie\Operation;
 use BrickRouge\Element;
 
 /**
  * Appends a preview to the response of the operation.
  *
- * @see ICanBoogie\Operation\Files\Upload
+ * @see ICanBoogie\Modules\Files\UploadOperation
  */
-class Upload extends Operation\Files\Upload
+class UploadOperation extends \ICanBoogie\Modules\Files\UploadOperation
 {
 	protected $accept = array
 	(

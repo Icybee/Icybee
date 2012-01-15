@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace ICanBoogie\Module;
+namespace ICanBoogie\Modules\Articles;
 
 use ICanBoogie\ActiveRecord\Content;
 use ICanBoogie\ActiveRecord\Query;
@@ -17,7 +17,7 @@ use BrickRouge;
 use BrickRouge\Form;
 use BrickRouge\Element;
 
-class Articles extends Contents
+class Module extends \ICanBoogie\Modules\Contents\Module
 {
 	/**
 	 * Adds the "archives" view type and adds assets to the inherited "list" view type.

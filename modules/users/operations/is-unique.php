@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace ICanBoogie\Operation\Users;
+namespace ICanBoogie\Modules\Users;
 
 use ICanBoogie\ActiveRecord\User;
 use ICanBoogie\Operation;
@@ -17,7 +17,7 @@ use ICanBoogie\Operation;
 /**
  * Checks whether the specified email or username is unique, as in _not already used_.
  */
-class IsUnique extends Operation
+class IsUniqueOperation extends Operation
 {
 	protected function __get_controls()
 	{

@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace ICanBoogie\Operation\Users;
+namespace ICanBoogie\Modules\Users;
 
 use ICanBoogie\Exception;
 use ICanBoogie\Exception\HTTP as HTTPException;
@@ -23,7 +23,7 @@ use ICanBoogie\Security;
  * - token (string) Token to unlock the account.
  * - continue (string)[optional] Destination of the operation successful process. Default to '/'.
  */
-class UnlockLogin extends Operation
+class UnlockLoginOperation extends Operation
 {
 	protected function __get_record()
 	{

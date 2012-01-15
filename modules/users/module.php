@@ -9,11 +9,10 @@
  * file that was distributed with this source code.
  */
 
-namespace ICanBoogie\Module;
+namespace ICanBoogie\Modules\Users;
 
 use ICanBoogie;
 use ICanBoogie\ActiveRecord\User;
-use ICanBoogie\ActiveRecord\Model;
 use ICanBoogie\Exception;
 use ICanBoogie\Operation;
 use BrickRouge;
@@ -22,9 +21,8 @@ use BrickRouge\Element;
 use BrickRouge\Form;
 use BrickRouge\Text;
 use BrickRouge\Widget;
-use Icybee\Manager;
 
-class Users extends \Icybee\Module
+class Module extends \Icybee\Module
 {
 	const OPERATION_LOGIN = 'login';
 	const OPERATION_LOGOUT = 'logout';
@@ -60,7 +58,7 @@ Cordialement'
 	{
 		return parent::resolve_model_tags($tags, 'primary') + array
 		(
-			Model\Users::T_CONSTRUCTOR => $this->id
+			Model::T_CONSTRUCTOR => $this->id
 		);
 	}
 
@@ -520,7 +518,7 @@ EOT;
 
 	protected function block_manage()
 	{
-		return new Manager\Users
+		return new Manager
 		(
 			$this, array
 			(

@@ -4,7 +4,7 @@ return array
 (
 	'events' => array
 	(
-		'ICanBoogie\Operation\Users\Logout::process:before' => 'Icybee\Hooks::before_user_logout',
+		'ICanBoogie\Modules\Users\LogoutOperation::process:before' => 'Icybee\Hooks::before_user_logout',
 
 		'operation.components/*:before' => 'publisher_WdHooks::before_operation_components_all', // FIXME-20120108: is this still relevant ?
 		'operation.components/*' => 'publisher_WdHooks::operation_components_all', // FIXME-20120108: is this still relevant ?

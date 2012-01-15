@@ -9,16 +9,16 @@
  * file that was distributed with this source code.
  */
 
-use ICanBoogie\ActiveRecord,
-	ICanBoogie\Core,
-	ICanBoogie\Debug,
-	ICanBoogie\Event,
-	ICanBoogie\Exception,
-	ICanBoogie\HTTP\Request,
-	ICanBoogie\Module,
-	ICanBoogie\Operation,
-	ICanBoogie\Route,
-	ICanBoogie\I18n\Translator\Proxi;
+use ICanBoogie\ActiveRecord;
+use ICanBoogie\Core;
+use ICanBoogie\Debug;
+use ICanBoogie\Event;
+use ICanBoogie\Exception;
+use ICanBoogie\HTTP\Request;
+use ICanBoogie\Module;
+use ICanBoogie\Operation;
+use ICanBoogie\Route;
+use ICanBoogie\I18n\Translator\Proxi;
 
 class Icybee extends WdPatron
 {
@@ -178,7 +178,7 @@ class Icybee extends WdPatron
 			// we get a site that the user can actually access, this is required to redirect the
 			// user to the first available site when '/' is requested.
 
-			$site = \ICanBoogie\Hooks\Sites::find_by_request($request, $core->user);
+			$site = \ICanBoogie\Modules\Sites\Hooks::find_by_request($request, $core->user);
 
 			if ($site->siteid && $site->siteid != $core->site_id)
 			{

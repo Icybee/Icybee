@@ -4,7 +4,7 @@ return array
 (
 	'events' => array
 	(
-		'ICanBoogie\Module\Nodes::alter.block.edit' => 'ICanBoogie\Hooks\Nodes\Onlinr::on_alter_block_edit',
+		'ICanBoogie\Modules\Nodes\Module::alter.block.edit' => 'ICanBoogie\Modules\Nodes\Onlinr\Hooks::on_alter_block_edit',
 
 		'operation.save' => array
 		(

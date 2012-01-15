@@ -18,103 +18,6 @@ use BrickRouge\Element;
 
 class view_WdEditorElement extends WdEditorElement
 {
-	/*
-	static protected $views = array();
-
-	static public function __static_construct()
-	{
-		global $core;
-
-		self::$views = $core->configs->synthesize('views', array(__CLASS__, '__static_construct_callback'));
-	}
-
-	static public function __static_construct_callback($configs)
-	{
-		global $core;
-
-		$modules_paths = array();
-
-		foreach ($core->modules->descriptors as $descriptor)
-		{
-			$modules_paths[$descriptor['path']] = $descriptor;
-		}
-
-		$views = array();
-
-		//wd_log('callback configs: \1', array($configs));
-
-		foreach ($configs as $root => $definitions)
-		{
-			$module_id = null;
-
-			if (isset($modules_paths[$root]))
-			{
-				$module_id = $modules_paths[$root][Module::T_ID];
-			}
-
-			foreach ($definitions as $id => $definition)
-			{
-				if ($module_id && empty($view['module']))
-				{
-					$definition['module'] = $module_id;
-				}
-
-				$local_module_id = isset($definition['module']) ? $definition['module'] : $module_id;
-
-				#
-				# view short identifiers are expanded by adding the module id.
-				#
-
-				if ($id{0} == '/')
-				{
-					if (!$local_module_id)
-					{
-						throw new Exception('Missing module id to expand view short identifier');
-					}
-
-					$id = $local_module_id . $id;
-				}
-
-
-				$definition['root'] = $root;
-
-				if (empty($definition['file']) && empty($definition['block']))
-				{
-					list($name, $type) = explode('/', $id) + array(1 => null);
-
-					$definition['file'] = ($type ? $type : $name);// . '.html';
-				}
-
-				if (isset($definition['block']) && empty($definition['module']))
-				{
-					$definition['module'] = $local_module_id;
-				}
-
-				if ($local_module_id && empty($definition['scope']))
-				{
-					$definition['scope'] = strtr($local_module_id, '.', '_');
-				}
-
-				if (isset($definition['file']) && $definition['file'][0] != '/')
-				{
-					$file = $root . '/views/' . $definition['file'];
-
-					if (!file_exists($file))
-					{
-						$file = file_exists($file . '.php') ? $file . '.php' : $file . '.html';
-					}
-
-					$definition['file'] = $file;
-				}
-
-				$views[$id] = $definition;
-			}
-		}
-
-		return $views;
-	}
-	*/
-
 	static public function to_content(array $params, $content_id, $page_id)
 	{
 		global $core;
@@ -146,24 +49,6 @@ class view_WdEditorElement extends WdEditorElement
 				$page = $core->site->home;
 			}
 		}
-
-		/*
-
-		if (empty(self::$views[$id]))
-		{
-			throw new Exception('Unknown view: %id', array('%id' => $id));
-		}
-
-		$class = 'BriskView\View';
-
-		if (isset(self::$views[$id]['class']))
-		{
-			$class = self::$views[$id]['class'];
-		}
-
-		$view = new $class($id, self::$views[$id], $patron, $core->document, $page);
-
-		*/
 
 		$views = \Icybee\Views::get();
 
@@ -310,7 +195,8 @@ class view_WdEditorElement extends WdEditorElement
 						continue;
 					}
 
-					$title = $view['title'];
+					$title = t($view['title'], $view['title args']);
+
 					$description = null;
 
 					if (isset($view['description']))

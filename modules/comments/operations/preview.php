@@ -9,14 +9,14 @@
  * file that was distributed with this source code.
  */
 
-namespace ICanBoogie\Operation\Comments;
+namespace ICanBoogie\Modules\Comments;
 
 use ICanBoogie\Operation;
 
 /**
  * Gives the user a visual feedback of the message he's typing.
  */
-class Preview extends Operation
+class PreviewOperation extends Operation
 {
 	protected function validate(\ICanboogie\Errors $errors)
 	{

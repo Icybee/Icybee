@@ -9,13 +9,14 @@
  * file that was distributed with this source code.
  */
 
-namespace ICanBoogie\Module\Nodes;
+namespace ICanBoogie\Modules\Nodes\Onlinr;
 
 use ICanBoogie\Event;
 use ICanBoogie\Operation;
+
 use BrickRouge\Element;
 
-class Onlinr extends \Icybee\Module
+class Module extends \Icybee\Module
 {
 	const REGISTRY_NEXTUPDATE = 'nodes_onlinr.next_update';
 
@@ -122,7 +123,7 @@ class Onlinr extends \Icybee\Module
 		}
 	}
 
-	public function event_operation_save(Event $event, Operation\Nodes\Save $sender)
+	public function event_operation_save(Event $event, \ICanBoogie\Modules\Nodes\SaveOperation $sender)
 	{
 		$params = &$sender->params;
 

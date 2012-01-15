@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace ICanBoogie\Module;
+namespace ICanBoogie\Modules\Files;
 
 use ICanBoogie;
 use ICanBoogie\ActiveRecord\File;
@@ -19,9 +19,7 @@ use BrickRouge\Element;
 use BrickRouge\Form;
 use BrickRouge\Text;
 
-use Icybee\Manager;
-
-class Files extends Nodes
+class Module extends \ICanBoogie\Modules\Nodes\Module
 {
 	const OPERATION_UPLOAD = 'upload';
 	const OPERATION_UPLOAD_RESPONSE = 'uploadResponse';
@@ -368,7 +366,7 @@ class Files extends Nodes
 
 	protected function block_manage()
 	{
-		return new Manager\Files
+		return new Manager
 		(
 			$this, array
 			(

@@ -9,13 +9,12 @@
  * file that was distributed with this source code.
  */
 
-namespace ICanBoogie\ActiveRecord\Model;
+namespace ICanBoogie\Modules\Comments;
 
 use ICanBoogie\Exception;
 use ICanBoogie\ActiveRecord\Comment;
-use ICanBoogie\ActiveRecord\Model;
 
-class Comments extends Model
+class Model extends \ICanBoogie\ActiveRecord\Model
 {
 	public function save(array $properties, $key=null, array $options=array())
 	{

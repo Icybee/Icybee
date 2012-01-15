@@ -114,6 +114,14 @@ document.addEvent
 					target.addClass('active');
 				}
 
+				function checkChecked(input)
+				{
+					var container = input.getParent('li');
+
+					container.getParent().getChildren().removeClass('active');
+					container.addClass('active');
+				}
+
 				editor.addEvent
 				(
 					'click', function(ev)
@@ -143,9 +151,22 @@ document.addEvent
 							return;
 						}
 
-						//console.log('click on: %a, ev: %a', target, ev);
+						if (target.tagName == 'INPUT' && target.type == 'radio')
+						{
+							checkChecked(target);
+						}
 					}
 				);
+
+				var selected = editor.getElement('input[checked]');
+
+				if (selected)
+				{
+					var container = selected.getParent('li');
+
+					container.addClass('selected');
+					container.addClass('active');
+				}
 			}
 		);
 	}

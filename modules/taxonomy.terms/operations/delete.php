@@ -9,9 +9,9 @@
  * file that was distributed with this source code.
  */
 
-namespace ICanBoogie\Operation\Terms;
+namespace ICanBoogie\Modules\Taxonomy\Terms;
 
-class Delete extends \ICanBoogie\Operation\ActiveRecord\Delete
+class DeleteOperation extends \ICanBoogie\Operation\ActiveRecord\Delete
 {
 
 }
