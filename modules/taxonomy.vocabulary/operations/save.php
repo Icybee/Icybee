@@ -11,7 +11,7 @@
 
 namespace ICanBoogie\Operation\Taxonomy\Vocabulary;
 
-use ICanBoogie\Module;
+use ICanBoogie\Modules;
 
 class Save extends \Icybee\Operation\ActiveRecord\Save
 {
@@ -27,7 +27,7 @@ class Save extends \Icybee\Operation\ActiveRecord\Save
 			$properties['scope'] = $request['scope'];
 		}
 
-		if (!$this->key || !$core->user->has_permission(Module\Nodes::PERMISSION_MODIFY_BELONGING_SITE))
+		if (!$this->key || !$core->user->has_permission(Modules\Nodes\Module::PERMISSION_MODIFY_BELONGING_SITE))
 		{
 			$properties['siteid'] = $core->site_id;
 		}

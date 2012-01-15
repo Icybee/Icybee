@@ -9,13 +9,13 @@
  * file that was distributed with this source code.
  */
 
-namespace ICanBoogie\Hooks;
+namespace ICanBoogie\Modules\Contents;
 
 use ICanBoogie;
 use ICanBoogie\Event;
 use ICanBoogie\Operation;
 
-class Contents
+class Hooks
 {
 	static public function alter_block_manage(Event $event)
 	{

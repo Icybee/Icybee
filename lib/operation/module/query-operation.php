@@ -14,6 +14,13 @@ namespace Icybee\Operation\Module;
 use ICanBoogie\Exception;
 use ICanBoogie\Operation;
 
+/**
+ * Queries a module about an operation.
+ *
+ * This class is the base classe for operation queries, it is used by default by the
+ * {@link Icybee\Hooks::dispatch_query_operation} controler if the target module doesn't define
+ * a suitale operation class.
+ */
 class QueryOperation extends Operation
 {
 	private $callback;

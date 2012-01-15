@@ -9,11 +9,11 @@
  * file that was distributed with this source code.
  */
 
-namespace Icybee\Manager;
+namespace ICanBoogie\Modules\Sites;
 
 use ICanBoogie\ActiveRecord\Site;
 
-class Sites extends \WdManager
+class Manager extends \WdManager
 {
 	public function __construct($module, array $tags=array())
 	{

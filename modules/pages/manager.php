@@ -9,15 +9,16 @@
  * file that was distributed with this source code.
  */
 
-namespace Icybee\Manager;
+namespace ICanBoogie\Modules\Pages;
 
 use ICanBoogie\ActiveRecord\Query;
 use ICanBoogie\Exception;
 use ICanBoogie\Route;
+
 use BrickRouge\Element;
 use BrickRouge\Text;
 
-class Pages extends Nodes
+class Manager extends \ICanBoogie\Modules\Nodes\Manager
 {
 	public function __construct($module, $tags)
 	{

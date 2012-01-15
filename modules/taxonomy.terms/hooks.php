@@ -1,11 +1,20 @@
 <?php
 
-namespace ICanBoogie\Hooks\Taxonomy;
+/*
+ * This file is part of the Icybee package.
+ *
+ * (c) Olivier Laviale <olivier.laviale@gmail.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+namespace ICanBoogie\Modules\Taxonomy\Terms;
 
 use ICanBoogie\ActiveRecord;
 use ICanBoogie\Exception;
 
-class Terms
+class Hooks
 {
 	public static function on_nodes_delete(Event $event)
 	{

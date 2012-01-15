@@ -9,9 +9,8 @@
  * file that was distributed with this source code.
  */
 
-namespace ICanBoogie\Module\Users;
+namespace ICanBoogie\Modules\Users\Roles;
 
-use ICanBoogie\Module;
 use ICanBoogie\Operation;
 use ICanBoogie\Route;
 use ICanBoogie\ActiveRecord\Users\Role;
@@ -20,18 +19,18 @@ use BrickRouge\Element;
 use BrickRouge\Form;
 use BrickRouge\Text;
 
-class Roles extends \Icybee\Module
+class Module extends \Icybee\Module
 {
 	const OPERATION_PERMISSIONS = 'permissions';
 
 	public static $levels = array
 	(
-		Module::PERMISSION_NONE => 'none',
-		Module::PERMISSION_ACCESS => 'access',
-		Module::PERMISSION_CREATE => 'create',
-		Module::PERMISSION_MAINTAIN => 'maintain',
-		Module::PERMISSION_MANAGE => 'manage',
-		Module::PERMISSION_ADMINISTER => 'administer'
+		self::PERMISSION_NONE => 'none',
+		self::PERMISSION_ACCESS => 'access',
+		self::PERMISSION_CREATE => 'create',
+		self::PERMISSION_MAINTAIN => 'maintain',
+		self::PERMISSION_MANAGE => 'manage',
+		self::PERMISSION_ADMINISTER => 'administer'
 	);
 
 	/**
@@ -150,25 +149,25 @@ class Roles extends \Icybee\Module
 				continue;
 			}
 
-			$name = isset($descriptor[Module::T_TITLE]) ? $descriptor[Module::T_TITLE] : $m_id;
+			$name = isset($descriptor[self::T_TITLE]) ? $descriptor[self::T_TITLE] : $m_id;
 
-			if (isset($descriptor[Module::T_PERMISSION]))
+			if (isset($descriptor[self::T_PERMISSION]))
 			{
-				if ($descriptor[Module::T_PERMISSION] != self::PERMISSION_NONE)
+				if ($descriptor[self::T_PERMISSION] != self::PERMISSION_NONE)
 				{
 					$name .= ' <em>(';
-					$name .= self::$levels[$descriptor[Module::T_PERMISSION]];
+					$name .= self::$levels[$descriptor[self::T_PERMISSION]];
 					$name .= ')</em>';
 				}
-				else if (empty($descriptor[Module::T_PERMISSIONS]))
+				else if (empty($descriptor[self::T_PERMISSIONS]))
 				{
 					continue;
 				}
 			}
 
-			if (isset($descriptor[Module::T_CATEGORY]))
+			if (isset($descriptor[self::T_CATEGORY]))
 			{
-				$package = $descriptor[Module::T_CATEGORY];
+				$package = $descriptor[self::T_CATEGORY];
 			}
 			else
 			{
@@ -345,11 +344,11 @@ EOT;
 				{
 					$rc .= '<td>';
 
-					if (isset($m_desc[Module::T_PERMISSION]))
+					if (isset($m_desc[self::T_PERMISSION]))
 					{
-						if ($m_desc[Module::T_PERMISSION] != self::PERMISSION_NONE)
+						if ($m_desc[self::T_PERMISSION] != self::PERMISSION_NONE)
 						{
-							$level = $m_desc[Module::T_PERMISSION];
+							$level = $m_desc[self::T_PERMISSION];
 
 							$rc .= new Element
 							(
@@ -413,12 +412,12 @@ EOT;
 				# e.g. "modify own profile"
 				#
 
-				if (empty($m_desc[Module::T_PERMISSIONS]))
+				if (empty($m_desc[self::T_PERMISSIONS]))
 				{
 					continue;
 				}
 
-				$perms = $m_desc[Module::T_PERMISSIONS];
+				$perms = $m_desc[self::T_PERMISSIONS];
 
 				foreach ($perms as $pname)
 				{

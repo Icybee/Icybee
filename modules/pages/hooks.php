@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace ICanBoogie\Hooks;
+namespace ICanBoogie\Modules\Pages;
 
 use ICanBoogie\ActiveRecord;
 use ICanBoogie\ActiveRecord\Site;
@@ -17,7 +17,7 @@ use ICanBoogie\Event;
 use ICanBoogie\FileCache;
 use BrickRouge\Element;
 
-class Pages
+class Hooks
 {
 	/**
 	 * The callback is called when the `resources.files.path.change` is triggered, allowing us to
@@ -72,6 +72,11 @@ class Pages
 
 		$old = $event->from;
 		$new = $event->to;
+
+		if (!$old)
+		{
+			return;
+		}
 
 		$records = $model->where('content LIKE ?', '%' . $old . '%')->all;
 

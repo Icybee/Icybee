@@ -285,7 +285,7 @@ class View extends Object
 				'Provider class %class for view %id does not exists', array
 				(
 					'class' => $provider,
-					'id' => $id
+					'id' => $this->id
 				)
 			));
 		}

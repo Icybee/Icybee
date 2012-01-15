@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace ICanBoogie\Module\Sites;
+namespace ICanBoogie\Modules;
 
 class Firstposition extends \Icybee\Module
 {

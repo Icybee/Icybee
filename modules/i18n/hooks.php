@@ -9,16 +9,16 @@
  * file that was distributed with this source code.
  */
 
-namespace ICanBoogie\Hooks;
+namespace ICanBoogie\Modules\I18n;
 
 use ICanBoogie\ActiveRecord\Node;
 use ICanBoogie\Event;
-use ICanBoogie\Module;
+use ICanBoogie\Modules;
 
 use BrickRouge\Element;
 use BrickRouge\Form;
 
-class I18n
+class Hooks
 {
 	/**
 	 * Alters system.nodes module and submodules edit block with I18n options, allowing the user
@@ -38,7 +38,7 @@ class I18n
 	 *
 	 * @param Event $event
 	 */
-	public static function on_alter_block_edit(Event $event, Module\Nodes $sender)
+	public static function on_alter_block_edit(Event $event, Modules\Nodes\Module $sender)
 	{
 		global $core;
 

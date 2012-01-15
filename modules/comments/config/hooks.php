@@ -4,24 +4,24 @@ return array
 (
 	'events' => array
 	(
-		'ICanBoogie\Operation\Nodes\Save::process:before' => 'ICanBoogie\Hooks\Comments::before_node_save',
-		'ICanBoogie\Operation\Nodes\Delete::process' => 'ICanBoogie\Hooks\Comments::on_node_delete',
-		'ICanBoogie\Module\Forms::alter.block.edit' => 'ICanBoogie\Hooks\Comments::alter_block_edit',
-		'ICanBoogie\View::render' => 'ICanBoogie\Hooks\Comments::on_view_render'
+		'ICanBoogie\Operation\Nodes\Save::process:before' => 'ICanBoogie\Modules\Comments\Hooks::before_node_save',
+		'ICanBoogie\Operation\Nodes\Delete::process' => 'ICanBoogie\Modules\Comments\Hooks::on_node_delete',
+		'ICanBoogie\Modules\Forms\Module::alter.block.edit' => 'ICanBoogie\Modules\Comments\Hooks::alter_block_edit',
+		'ICanBoogie\View::render' => 'ICanBoogie\Modules\Comments\Hooks::on_view_render'
 	),
 
 	'objects.methods' => array
 	(
-		'ICanBoogie\ActiveRecord\Node::__get_comments' => 'ICanBoogie\Hooks\Comments::get_comments',
-		'ICanBoogie\ActiveRecord\Node::__get_comments_count' => 'ICanBoogie\Hooks\Comments::get_comments_count',
-		'ICanBoogie\ActiveRecord\Node::__get_rendered_comments_count' => 'ICanBoogie\Hooks\Comments::get_rendered_comments_count'
+		'ICanBoogie\ActiveRecord\Node::__get_comments' => 'ICanBoogie\Modules\Comments\Hooks::get_comments',
+		'ICanBoogie\ActiveRecord\Node::__get_comments_count' => 'ICanBoogie\Modules\Comments\Hooks::get_comments_count',
+		'ICanBoogie\ActiveRecord\Node::__get_rendered_comments_count' => 'ICanBoogie\Modules\Comments\Hooks::get_rendered_comments_count'
 	),
 
 	'patron.markups' => array
 	(
 		'feedback:comments' => array
 		(
-			array('ICanBoogie\Hooks\Comments', 'comments'), array
+			'ICanBoogie\Modules\Comments\Hooks::comments', array
 			(
 				'node' => null,
 				'order' => 'created asc',
@@ -34,7 +34,7 @@ return array
 
 		'feedback:comments:form' => array
 		(
-			array('ICanBoogie\Hooks\Comments', 'form'), array
+			'ICanBoogie\Modules\Comments\Hooks::form', array
 			(
 				'select' => array('expression' => true, 'default' => 'this', 'required' => true)
 			)

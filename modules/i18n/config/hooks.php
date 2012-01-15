@@ -4,6 +4,6 @@ return array
 (
 	'events' => array
 	(
-		'ICanBoogie\Module\Nodes::alter.block.edit' => 'ICanBoogie\Hooks\I18n::on_alter_block_edit'
+		'ICanBoogie\Modules\Nodes\Module::alter.block.edit' => 'ICanBoogie\Modules\I18n\Hooks::on_alter_block_edit'
 	)
 );

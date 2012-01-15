@@ -12,6 +12,7 @@
 namespace ICanBoogie\Operation\Files;
 
 use ICanBoogie\Module;
+use ICanBoogie\Modules;
 use ICanBoogie\Operation;
 use ICanBoogie\Uploaded;
 
@@ -126,7 +127,7 @@ EOT;
 
 		$id = uniqid();
 
-		$_SESSION[Module\Files::SESSION_UPLOAD_RESPONSE][$id] = array
+		$_SESSION[Modules\Files\Module::SESSION_UPLOAD_RESPONSE][$id] = array
 		(
 			'name' => $name,
 			'path' => $path,

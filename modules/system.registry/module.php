@@ -9,11 +9,9 @@
  * file that was distributed with this source code.
  */
 
-namespace ICanBoogie\Module\System;
+namespace ICanBoogie\Modules\System\Registry;
 
-use ICanBoogie\Module;
-
-class Registry extends Module
+class Module extends \ICanBoogie\Module
 {
 
 }

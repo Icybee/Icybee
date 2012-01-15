@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-use ICanBoogie\Module;
+use ICanBoogie\Modules;
 use ICanBoogie\Operation;
 
 use BrickRouge\Element;
@@ -56,7 +56,7 @@ class moo_WdEditorElement extends WdEditorElement
 
 		if (!$css)
 		{
-			$info = Module\Pages::get_template_info('page.html');
+			$info = Modules\Pages\Module::get_template_info('page.html');
 
 			if (isset($info[1]))
 			{

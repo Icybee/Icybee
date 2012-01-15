@@ -9,21 +9,19 @@
  * file that was distributed with this source code.
  */
 
-namespace ICanBoogie\Module\Organize;
+namespace ICanBoogie\Modules\Organize\Lists;
 
 use ICanBoogie\ActiveRecord\Model;
-use ICanBoogie\Module;
+use ICanBoogie\Modules;
 
 use BrickRouge\Element;
 use BrickRouge\Form;
 
-use Icybee\Manager;
-
-class Lists extends Module\Nodes
+class Module extends Modules\Nodes\Module
 {
 	protected function block_manage()
 	{
-		return new Manager\Organize\Lists
+		return new Manager
 		(
 			$this, array
 			(

@@ -17,7 +17,7 @@ class Delete extends \ICanBoogie\Operation\ActiveRecord\Delete
 	{
 		$rc = parent::process();
 
-		$this->module->update_cache();
+		unset($core->vars['sites']);
 
 		return $rc;
 	}

@@ -9,12 +9,11 @@
  * file that was distributed with this source code.
  */
 
-namespace ICanBoogie\Module;
+namespace ICanBoogie\Modules\Dashboard;
 
 use ICanBoogie\Event;
-use ICanBoogie\Module;
 
-class Dashboard extends Module
+class Module extends \ICanBoogie\Module
 {
 	protected function block_dashboard()
 	{

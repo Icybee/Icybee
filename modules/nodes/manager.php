@@ -9,13 +9,15 @@
  * file that was distributed with this source code.
  */
 
-namespace Icybee\Manager;
+namespace ICanBoogie\Modules\Nodes;
 
 use ICanBoogie\ActiveRecord\Node;
 use ICanBoogie\ActiveRecord\Query;
+
+use BrickRouge\Document;
 use BrickRouge\Element;
 
-class Nodes extends \WdManager
+class Manager extends \WdManager
 {
 	public function __construct($module, array $tags=array())
 	{
@@ -29,7 +31,7 @@ class Nodes extends \WdManager
 		);
 	}
 
-	protected static function add_assets(\BrickRouge\Document $document)
+	protected static function add_assets(Document $document)
 	{
 		parent::add_assets($document);
 

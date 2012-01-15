@@ -8,6 +8,6 @@ return array
 		'BrickRouge\Widget\PopThumbnailVersion' => $path . 'elements/pop-thumbnail-version.php',
 		'BrickRouge\Widget\AdjustThumbnailOptions' => $path . 'elements/adjust-thumbnail-options.php',
 
-		'ICanBoogie\Module\Thumbnailer\Thumbnail' => $path . 'lib/thumbnail.php'
+		'ICanBoogie\Modules\Thumbnailer\Thumbnail' => $path . 'lib/thumbnail.php'
 	)
 );

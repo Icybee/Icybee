@@ -35,7 +35,7 @@ class Login extends Form
 				Form::HIDDENS => array
 				(
 					Operation::DESTINATION => 'users',
-					Operation::NAME => \ICanBoogie\Module\Users::OPERATION_LOGIN,
+					Operation::NAME => \ICanBoogie\Modules\Users\Module::OPERATION_LOGIN,
 					Operation::SESSION_TOKEN => $core->session->token
 				),
 

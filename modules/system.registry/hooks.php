@@ -9,16 +9,16 @@
  * file that was distributed with this source code.
  */
 
-namespace ICanBoogie\Hooks\System;
+namespace ICanBoogie\Modules\System\Registry;
 
 use ICanBoogie\ActiveRecord;
 use ICanBoogie\Core;
 use ICanBoogie\Event;
 use ICanBoogie\Exception;
-use ICanBoogie\Module;
+use ICanBoogie\Modules;
 use ICanBoogie\Operation;
 
-class Registry
+class Hooks
 {
 	/**
 	 * This is the callback for the `metas` virtual property added to the "nodes", "users" and
@@ -56,7 +56,7 @@ class Registry
 	 *
 	 * @throws Exception
 	 */
-	static public function on_alter_block_edit(Event $event, Module $sender)
+	static public function on_alter_block_edit(Event $event, \ICanBoogie\Module $sender)
 	{
 		global $core;
 
@@ -65,15 +65,15 @@ class Registry
 			return;
 		}
 
-		if ($sender instanceof Module\Nodes)
+		if ($sender instanceof Modules\Nodes\Module)
 		{
 			$type = 'node';
 		}
-		else if ($sender instanceof Module\Users)
+		else if ($sender instanceof Modules\Users\Module)
 		{
 			$type = 'user';
 		}
-		else if ($sender instanceof Module\Sites)
+		else if ($sender instanceof Modules\Sites\Module)
 		{
 			$type = 'site';
 		}
@@ -206,15 +206,15 @@ class Registry
 
 		$module = $sender->module;
 
-		if ($module instanceof Module\Nodes)
+		if ($module instanceof Modules\Nodes\Module)
 		{
 			$type = 'node';
 		}
-		else if ($module instanceof Module\Users)
+		else if ($module instanceof Modules\Users\Module)
 		{
 			$type = 'user';
 		}
-		else if ($module instanceof Module\Sites)
+		else if ($module instanceof Modules\Sites\Module)
 		{
 			$type = 'site';
 		}

@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace ICanBoogie\Hooks;
+namespace ICanBoogie\Modules\Comments;
 
 use ICanBoogie,
 	ICanBoogie\ActiveRecord\Node,
@@ -22,7 +22,7 @@ use ICanBoogie,
 	BrickRouge\Form,
 	BrickRouge\Text;
 
-class Comments
+class Hooks
 {
 	public static function before_node_save(Event $event, Operation\Nodes\Save $sender)
 	{

@@ -4,8 +4,8 @@ return array
 (
 	'events' => array
 	(
-		'ICanBoogie\Operation\System\Modules\Activate::process' => 'ICanBoogie\Hooks\Nodes::on_modules_activate',
-		'ICanBoogie\Operation\System\Modules\Deactivate::process' => 'ICanBoogie\Hooks\Nodes::on_modules_deactivate'
+		'ICanBoogie\Operation\System\Modules\Activate::process' => 'ICanBoogie\Modules\Nodes\Hooks::on_modules_activate',
+		'ICanBoogie\Operation\System\Modules\Deactivate::process' => 'ICanBoogie\Modules\Nodes\Hooks::on_modules_deactivate'
 	),
 
 	'patron.markups' => array
@@ -33,7 +33,7 @@ return array
 
 		'node:navigation' => array
 		(
-			'ICanBoogie\Hooks\Nodes::markup_node_navigation'
+			'ICanBoogie\Modules\Nodes\Hooks::markup_node_navigation'
 		)
 	)
 );

@@ -9,14 +9,15 @@
  * file that was distributed with this source code.
  */
 
-namespace Icybee\Manager;
+namespace ICanBoogie\Modules\Comments;
 
 use ICanBoogie\ActiveRecord\Comment;
 use ICanBoogie\ActiveRecord\Query;
-use BrickRouge\Element;
-use ICanBoogie\Module;
 
-class Comments extends \WdManager
+use BrickRouge\Document;
+use BrickRouge\Element;
+
+class Manager extends \WdManager
 {
 	const T_LIST_SPAM = '#manager-list-spam';
 
@@ -31,7 +32,7 @@ class Comments extends \WdManager
 		);
 	}
 
-	protected static function add_assets(\BrickRouge\Document $document)
+	protected static function add_assets(Document $document)
 	{
 		parent::add_assets($document);
 
@@ -155,7 +156,7 @@ class Comments extends \WdManager
 
 	protected function get_cell_score($record)
 	{
-		return Module\Comments::score_spam($record->contents, $record->author_url, $record->author);
+		return Module::score_spam($record->contents, $record->author_url, $record->author);
 	}
 
 	protected function get_cell_nid($record, $property)

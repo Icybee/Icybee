@@ -15,6 +15,8 @@ class Save extends \Icybee\Operation\ActiveRecord\Save
 {
 	protected function process()
 	{
+		global $core;
+
 		$rc = parent::process();
 
 		$record = $this->module->model[$rc['key']];
@@ -29,7 +31,7 @@ class Save extends \Icybee\Operation\ActiveRecord\Save
 			'save'
 		);
 
-		$this->module->update_cache();
+		unset($core->vars['sites']);
 
 		return $rc;
 	}

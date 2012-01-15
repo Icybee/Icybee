@@ -9,14 +9,13 @@
  * file that was distributed with this source code.
  */
 
-namespace ICanBoogie\Module;
+namespace ICanBoogie\Modules\Forms;
 
 use BrickRouge\Element;
 use BrickRouge\Form;
 use BrickRouge\Text;
-use Icybee\Manager;
 
-class Forms extends Nodes
+class Module extends \ICanBoogie\Modules\Nodes\Module
 {
 	const OPERATION_POST = 'post';
 	const OPERATION_POST_ID = '#post-id';
@@ -24,7 +23,7 @@ class Forms extends Nodes
 
 	protected function block_manage()
 	{
-		return new Manager\Forms
+		return new Manager
 		(
 			$this, array
 			(

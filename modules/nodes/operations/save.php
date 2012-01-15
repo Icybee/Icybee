@@ -12,7 +12,7 @@
 namespace ICanBoogie\Operation\Nodes;
 
 use ICanBoogie\ActiveRecord\Node;
-use ICanBoogie\Module;
+use ICanBoogie\Modules\Nodes\Module;
 
 /**
  * Saves a node.
@@ -51,7 +51,7 @@ class Save extends \Icybee\Operation\ActiveRecord\Save
 			unset($properties[Node::UID]);
 		}
 
-		if (!$this->key || !$user->has_permission(Module\Nodes::PERMISSION_MODIFY_BELONGING_SITE))
+		if (!$this->key || !$user->has_permission(Module::PERMISSION_MODIFY_BELONGING_SITE))
 		{
 			$properties[Node::SITEID] = $core->site_id;
 		}

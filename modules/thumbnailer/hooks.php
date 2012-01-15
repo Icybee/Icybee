@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace ICanBoogie\Hooks;
+namespace ICanBoogie\Modules\Thumbnailer;
 
 use ICanBoogie\ActiveRecord;
 use ICanBoogie\Event;
@@ -20,7 +20,7 @@ use BrickRouge\Element;
 use BrickRouge\Form;
 use BrickRouge\Widget;
 
-class Thumbnailer
+class Hooks
 {
 	/**
 	 * Callback for the `thumbnail` getter added to the active records of the "images" module.
@@ -45,30 +45,8 @@ class Thumbnailer
 	 */
 	static public function method_thumbnail(ActiveRecord\Image $ar, $version)
 	{
-		/*
-		$base = '/api/' . $ar->constructor . '/' . $ar->nid . '/thumbnail';
-
-		if (strpos($version, ':') !== false)
-		{
-			$args = self::parse_style($version);
-
-			return $base . '?' . http_build_query($args, null, '&');
-		}
-
-		return $base . 's/' . $version;
-		*/
-
-		return new Module\Thumbnailer\Thumbnail($ar, $version);
+		return new Thumbnail($ar, $version);
 	}
-
-	/*
-	static private function parse_style($style)
-	{
-		preg_match_all('#([^:]+):\s*([^;]+);?#', $style, $matches, PREG_PATTERN_ORDER);
-
-		return array_combine($matches[1], $matches[2]);
-	}
-	*/
 
 	/**
 	 * Callback for the `alter.block.config` event, adding AdjustThumbnail elements to the

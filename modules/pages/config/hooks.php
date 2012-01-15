@@ -1,26 +1,28 @@
 <?php
 
+namespace ICanBoogie\Modules\Pages\Hooks;
+
 return array
 (
 	'events' => array
 	(
-		'resources.files.path.change' => 'ICanBoogie\Hooks\Pages::resources_files_path_change',
-		'ICanBoogie\ActiveRecord\Page::urlchange' => 'ICanBoogie\Hooks\Pages::on_urlchange',
+		'resources.files.path.change' => __NAMESPACE__ . '::resources_files_path_change',
+		'ICanBoogie\ActiveRecord\Page::urlchange' => __NAMESPACE__ . '::on_urlchange',
 
 		/*
 		 * cache support
 		 */
 
-		'ICanBoogie\Module\System\Cache::alter.block.manage' => 'ICanBoogie\Hooks\Pages::alter_block_manage',
+		'ICanBoogie\Modules\System\Cache\Module::alter.block.manage' => __NAMESPACE__ . '::alter_block_manage',
 
-		'Icybee::render:before' => 'ICanBoogie\Hooks\Pages::before_icybee_render',
+		'Icybee::render:before' => __NAMESPACE__ . '::before_icybee_render',
 
-		'ICanBoogie\Operation\ActiveRecord\Save::process' => 'ICanBoogie\Hooks\Pages::invalidate_cache',
-		'ICanBoogie\Operation\ActiveRecord\Delete::process' => 'ICanBoogie\Hooks\Pages::invalidate_cache',
-		'ICanBoogie\Operation\Nodes\Online::process' => 'ICanBoogie\Hooks\Pages::invalidate_cache',
-		'ICanBoogie\Operation\Nodes\Offline::process' => 'ICanBoogie\Hooks\Pages::invalidate_cache',
+		'ICanBoogie\Operation\ActiveRecord\Save::process' => __NAMESPACE__ . '::invalidate_cache',
+		'ICanBoogie\Operation\ActiveRecord\Delete::process' => __NAMESPACE__ . '::invalidate_cache',
+		'ICanBoogie\Operation\Nodes\Online::process' => __NAMESPACE__ . '::invalidate_cache',
+		'ICanBoogie\Operation\Nodes\Offline::process' => __NAMESPACE__ . '::invalidate_cache',
 
-		'BrickRouge\Document::render_title:before' => 'ICanBoogie\Hooks\Pages::on_document_render_title'
+		'BrickRouge\Document::render_title:before' => __NAMESPACE__ . '::on_document_render_title'
 	),
 
 	'objects.methods' => array
@@ -29,16 +31,16 @@ return array
 		'ICanBoogie\ActiveRecord\Node::absolute_url' => 'site_pages_view_WdHooks::absolute_url',
 		'ICanBoogie\ActiveRecord\Node::__get_url' => 'site_pages_view_WdHooks::get_url',
 		'ICanBoogie\ActiveRecord\Node::__get_absolute_url' => 'site_pages_view_WdHooks::get_absolute_url',
-		'ICanBoogie\ActiveRecord\Site::__get_home' => 'ICanBoogie\Hooks\Pages::get_home',
+		'ICanBoogie\ActiveRecord\Site::__get_home' => __NAMESPACE__ . '::get_home',
 
 		/*
 		 * The following hooks are for the unified cache support
 		 */
 
-		'ICanBoogie\Operation\System\Cache\Enable::enable_pages' => 'ICanBoogie\Hooks\Pages::enable_cache',
-		'ICanBoogie\Operation\System\Cache\Disable::disable_pages' => 'ICanBoogie\Hooks\Pages::disable_cache',
-		'ICanBoogie\Operation\System\Cache\Stat::stat_pages' => 'ICanBoogie\Hooks\Pages::stat_cache',
-		'ICanBoogie\Operation\System\Cache\Clear::clear_pages' => 'ICanBoogie\Hooks\Pages::clear_cache',
+		'ICanBoogie\Operation\System\Cache\Enable::enable_pages' => __NAMESPACE__ . '::enable_cache',
+		'ICanBoogie\Operation\System\Cache\Disable::disable_pages' => __NAMESPACE__ . '::disable_cache',
+		'ICanBoogie\Operation\System\Cache\Stat::stat_pages' => __NAMESPACE__ . '::stat_cache',
+		'ICanBoogie\Operation\System\Cache\Clear::clear_pages' => __NAMESPACE__ . '::clear_cache',
 
 		/*
 		 * views
@@ -64,7 +66,7 @@ return array
 
 		'page:translations' => array
 		(
-			'ICanBoogie\Hooks\Pages::markup_page_translations', array
+			__NAMESPACE__ . '::markup_page_translations', array
 			(
 				'select' => array('expression' => true, 'required' => true, 'default' => '$page')
 			)
@@ -111,7 +113,7 @@ return array
 
 		'breadcrumb' => array
 		(
-			'ICanBoogie\Hooks\Pages::markup_breadcrumb', array
+			__NAMESPACE__ . '::markup_breadcrumb', array
 			(
 				'page' => array('expression' => true, 'required' => true, 'default' => 'this')
 			)
@@ -153,7 +155,7 @@ return array
 
 		'page:region' => array
 		(
-			'ICanBoogie\Hooks\Pages::markup_page_region', array
+			__NAMESPACE__ . '::markup_page_region', array
 			(
 				'id' => array('required' => true)
 			)

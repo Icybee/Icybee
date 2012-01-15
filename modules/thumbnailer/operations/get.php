@@ -18,7 +18,7 @@ use ICanBoogie\Image;
 use ICanBoogie\Operation;
 
 /**
- * @property Module\Thumbnailer $module
+ * @property Modules\Thumbnailer $module
  * @property string $repository Path to the thumbnails repository.
  * @property FileCache $cache Thumbnails cache manager.
  */

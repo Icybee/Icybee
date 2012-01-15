@@ -293,7 +293,7 @@ class User extends ActiveRecord
 	 *
 	 * @return boolean true if the login is successful.
 	 *
-	 * @see \ICanBoogie\Hooks\Users\get_user_id
+	 * @see \ICanBoogie\Modules\Users\Hooks\get_user_id
 	 */
 	public function login()
 	{

@@ -4,8 +4,8 @@ return array
 (
 	'objects.methods' => array
 	(
-		'ICanBoogie\Core::__get_user' => 'ICanBoogie\Hooks\Users::get_user',
-		'ICanBoogie\Core::__get_user_id' => 'ICanBoogie\Hooks\Users::get_user_id'
+		'ICanBoogie\Core::__get_user' => 'ICanBoogie\Modules\Users\Hooks::get_user',
+		'ICanBoogie\Core::__get_user_id' => 'ICanBoogie\Modules\Users\Hooks::get_user_id'
 	),
 
 	'patron.markups' => array

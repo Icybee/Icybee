@@ -9,14 +9,13 @@
  * file that was distributed with this source code.
  */
 
-namespace ICanBoogie\Module\Features;
+namespace ICanBoogie\Modules\Search;
 
-use ICanBoogie\Module;
 use BrickRouge\Element;
 use BrickRouge\Form;
 use BrickRouge\Text;
 
-class Search extends \Icybee\Module
+class Module extends \Icybee\Module
 {
 	protected function block_config()
 	{
@@ -34,12 +33,12 @@ class Search extends \Icybee\Module
 				continue;
 			}
 
-			if (!Module::is_extending($module_id, 'contents') && !Module::is_extending($module_id, 'pages'))
+			if (!self::is_extending($module_id, 'contents') && !self::is_extending($module_id, 'pages'))
 			{
 				continue;
 			}
 
-			$options[$module_id] = t($descriptor[Module::T_TITLE]);
+			$options[$module_id] = t($descriptor[self::T_TITLE]);
 		}
 
 		$options['google'] = '<em>Google</em>';

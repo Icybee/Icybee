@@ -9,10 +9,9 @@
  * file that was distributed with this source code.
  */
 
-namespace ICanBoogie\Module\System;
+namespace ICanBoogie\Modules\System\Modules;
 
 use ICanBoogie\Exception\HTTP as HTTPException;
-use ICanBoogie\Module;
 use ICanBoogie\Operation;
 use ICanBoogie\Route;
 
@@ -21,7 +20,7 @@ use BrickRouge\Form;
 
 use Icybee;
 
-class Modules extends \Icybee\Module
+class Module extends \Icybee\Module
 {
 	const MANAGE_MODE = '#manage-mode';
 	const MANAGE_MODE_INSTALLER = 'installer';
@@ -89,9 +88,9 @@ EOT
 
 		foreach ($descriptors as $id => $descriptor)
 		{
-			if (isset($descriptor[Module::T_CATEGORY]))
+			if (isset($descriptor[self::T_CATEGORY]))
 			{
-				$category = $descriptor[Module::T_CATEGORY];
+				$category = $descriptor[self::T_CATEGORY];
 			}
 			else
 			{
@@ -107,7 +106,7 @@ EOT
 		uksort($packages, 'wd_unaccent_compare_ci');
 
 		$categories = $packages;
-		$mandatories = $core->modules->ids_by_property(Module::T_REQUIRED);
+		$mandatories = $core->modules->ids_by_property(self::T_REQUIRED);
 
 		$rows = '';
 
@@ -205,9 +204,9 @@ EOT
 						$d = $descriptor;
 						$n_errors = count($errors);
 
-						while (isset($descriptor[Module::T_EXTENDS]))
+						while (isset($descriptor[self::T_EXTENDS]))
 						{
-							$extends = $descriptor[Module::T_EXTENDS];
+							$extends = $descriptor[self::T_EXTENDS];
 
 							if (empty($core->modules->descriptors[$extends]))
 							{

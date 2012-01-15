@@ -9,9 +9,9 @@
  * file that was distributed with this source code.
  */
 
-namespace ICanBoogie\Module;
+namespace ICanBoogie\Modules\Editor;
 
-class Editor extends \Icybee\Module
+class Module extends \Icybee\Module
 {
 	const OPERATION_GET = 'get';
 }

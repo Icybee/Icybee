@@ -9,13 +9,12 @@
  * file that was distributed with this source code.
  */
 
-namespace Icybee\Manager\Images;
+namespace ICanBoogie\Modules\Images;
 
 use ICanBoogie\Operation;
 use BrickRouge\Element;
-use Icybee\Manager;
 
-class Gallery extends Manager\Images
+class GalleryManager extends Manager
 {
 	public function __construct($module, array $tags=array())
 	{

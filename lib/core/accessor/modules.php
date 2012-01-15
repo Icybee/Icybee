@@ -59,14 +59,12 @@ class Modules extends ICanBoogie\Accessor\Modules
 	protected function index_module(array $descriptor)
 	{
 		$index = parent::index_module($descriptor);
+
 		$path = $descriptor[Module::T_PATH];
 
 		if (file_exists($path . 'manager.php'))
 		{
-			$id = $descriptor[Module::T_ID];
-			$class = 'Icybee\Manager\\' . ICanBoogie\normalize_namespace_part($id);
-
-			$index['autoload'][$class] = $path . 'manager.php';
+			$index['autoload'][$descriptor[Module::T_NAMESPACE] . '\Manager'] = $path . 'manager.php';
 		}
 
 		return $index;

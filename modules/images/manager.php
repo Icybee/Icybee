@@ -9,12 +9,11 @@
  * file that was distributed with this source code.
  */
 
-namespace Icybee\Manager;
+namespace ICanBoogie\Modules\Images;
 
 use ICanBoogie\ActiveRecord\Query;
-use ICanBoogie\Module;
 
-class Images extends Files
+class Manager extends \ICanBoogie\Modules\Files\Manager
 {
 	protected static function add_assets(\BrickRouge\Document $document)
 	{

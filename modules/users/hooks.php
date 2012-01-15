@@ -9,13 +9,13 @@
  * file that was distributed with this source code.
  */
 
-namespace ICanBoogie\Hooks;
+namespace ICanBoogie\Modules\Users;
 
 use ICanBoogie\ActiveRecord\User;
 use ICanBoogie\Core;
 use ICanBoogie\Session;
 
-class Users
+class Hooks
 {
 	/**
 	 * Returns the user's identifier.

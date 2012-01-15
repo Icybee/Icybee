@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace ICanBoogie\Module;
+namespace ICanBoogie\Modules\Comments;
 
 use ICanBoogie\ActiveRecord\Comment;
 use ICanBoogie\ActiveRecord\Query;
@@ -17,9 +17,7 @@ use BrickRouge\Element;
 use BrickRouge\Form;
 use BrickRouge\Text;
 
-use Icybee\Manager;
-
-class Comments extends \Icybee\Module
+class Module extends \Icybee\Module
 {
 	protected function __get_views()
 	{
@@ -160,7 +158,7 @@ Aucune autre notification ne vous sera envoyée.
 
 	protected function block_manage()
 	{
-		return new Manager\Comments
+		return new Manager
 		(
 			$this, array
 			(
@@ -170,14 +168,14 @@ Aucune autre notification ne vous sera envoyée.
 				),
 
 				Manager::T_ORDER_BY => array('created', 'desc'),
-				Manager\Comments::T_LIST_SPAM => false
+				Manager::T_LIST_SPAM => false
 			)
 		);
 	}
 
 	protected function block_manage_spam()
 	{
-		return new Manager\Comments
+		return new Manager
 		(
 			$this, array
 			(
@@ -188,7 +186,7 @@ Aucune autre notification ne vous sera envoyée.
 
 				Manager::T_ORDER_BY => array('created', 'desc'),
 
-				Manager\Comments::T_LIST_SPAM => true
+				Manager::T_LIST_SPAM => true
 			)
 		);
 	}

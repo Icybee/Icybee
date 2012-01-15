@@ -1,12 +1,10 @@
 <?php
 
-namespace ICanBoogie\Hooks\Taxonomy;
-
-use Icybee\Views\Provider;
+namespace ICanBoogie\Modules\Taxonomy\Vocabulary;
 
 use ICanBoogie\ActiveRecord;
 use ICanBoogie\Event;
-use ICanBoogie\Module;
+use ICanBoogie\Modules;
 use ICanBoogie\Operation;
 
 use BrickRouge;
@@ -14,7 +12,9 @@ use BrickRouge\Element;
 use BrickRouge\Form;
 use BrickRouge\Text;
 
-class Vocabulary
+use Icybee\Views\Provider;
+
+class Hooks
 {
 	protected static $cache_ar_vocabularies = array();
 	protected static $cache_ar_terms = array();
@@ -116,7 +116,7 @@ class Vocabulary
 		}
 	}
 
-	public static function alter_block_edit(Event $event, Module $sender)
+	public static function alter_block_edit(Event $event, Modules\Nodes\Module $sender)
 	{
 		global $core;
 
@@ -355,11 +355,15 @@ class Vocabulary
 
 				if (isset($views[$extend_id]))
 				{
-					$views["$constructor/taxonomy:$vocabulary_slug/home"] = array
+					$views["$constructor/vocabulary--$vocabulary_slug--home"] = array
 					(
 						'title' => 'Home for vocabulary %name',
-						'title args' => array('name' => $v->vocabulary)
-					);
+						'title args' => array('name' => $v->vocabulary),
+						'type' => $vocabulary_slug . '-home',
+						'renders' => \Icybee\Views\View::RENDERS_MANY
+					)
+
+					+ $views[$constructor . '/home'];
 
 					$views["$constructor/taxonomy:$vocabulary_slug/list"] = array
 					(
@@ -380,7 +384,10 @@ class Vocabulary
 							'title' => 'Records home, in vocabulary %vocabulary and term %term',
 							'title args' => array('vocabulary' => $vocabulary_name, 'term' => $term_name),
 							'taxonomy vocabulary' => $v,
-							'taxonomy term' => $term
+							'taxonomy term' => $term,
+							'type' => wd_normalize($constructor) . "/taxonomy:$vocabulary_slug/$term_slug/home",
+							'module' => $constructor,
+							'renders' => \Icybee\Views\View::RENDERS_MANY
 						);
 
 						$views["$constructor/taxonomy:$vocabulary_slug/$term_slug/list"] = array
@@ -401,6 +408,13 @@ class Vocabulary
 	public static function on_alter_provider_query(Event $event, Provider $provider)
 	{
 		global $core;
+
+		$options = $event->view->options;
+
+		if (isset($options['taxonomy vocabulary']) && isset($options['taxonomy term']))
+		{
+			return self::for_vocabulary_and_term($event, $provider, $options, $options['taxonomy vocabulary'], $options['taxonomy term']);
+		}
 
 		if (empty($event->view->options['taxonomy vocabulary']))
 		{
@@ -428,5 +442,21 @@ class Vocabulary
 		global $page;
 
 		$page->title = \ICanBoogie\format($page->title, array(':term' => $term->term));
+	}
+
+	private static function for_vocabulary_and_term(Event $event, Provider $provider, $options, ActiveRecord\Taxonomy\Vocabulary $vocabulary, ActiveRecord\Taxonomy\Term $term)
+	{
+		$event->query->where('nid IN (SELECT nid FROM {prefix}taxonomy_terms
+		INNER JOIN {prefix}taxonomy_terms__nodes USING(vtid) WHERE vtid = ?)', $term ? $term->vtid : 0);
+
+		/*
+		Event::add
+		(
+			'ICanBoogie\ActiveRecord\Page::render_title', function()
+			{
+				var_dump(func_get_args());
+			}
+		);
+		*/
 	}
 }

@@ -5,7 +5,7 @@ return array
 	'feedback-comments-last' => array
 	(
 		'title' => "Derniers commentaires",
-		'callback' => array('ICanBoogie\Hooks\Comments', 'dashboard_last'),
+		'callback' => 'ICanBoogie\Modules\Comments\Hooks::dashboard_last',
 		'column' => 1
 	)
 );

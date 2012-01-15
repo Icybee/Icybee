@@ -205,7 +205,7 @@ EOT;
 						$items[] = '<a href="/admin/' . $this->id . '/' . $key . '/delete">' . t('label.delete') . '</a>';
 					}
 
-					if ($this instanceof ICanBoogie\Module\Nodes && $entry->url[0] != '#')
+					if ($this instanceof ICanBoogie\Modules\Nodes\Module && $entry->url[0] != '#')
 					{
 						$url = $entry->url;
 

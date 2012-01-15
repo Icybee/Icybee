@@ -27,6 +27,11 @@ class Term extends ActiveRecord implements \IteratorAggregate
 	public $termslug;
 	public $weight;
 
+	public function __construct($model='taxonomy.terms')
+	{
+		parent::__construct($model);
+	}
+
 	public function __toString()
 	{
 		return $this->term;

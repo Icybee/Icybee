@@ -634,11 +634,11 @@ class Manager extends Element
 
 		$module = $this->module;
 
-		if ($module instanceof ICanBoogie\Module\Vocabulary)
+		if ($module instanceof ICanBoogie\Modules\Vocabulary\Module)
 		{
 			$where['siteid'] = '(siteid = 0 OR siteid = ' . $core->site_id . ')';
 		}
-		else if ($module instanceof ICanBoogie\Module\Users)
+		else if ($module instanceof ICanBoogie\Modules\Users\Module)
 		{
 			#
 			# we load only the entries that where created by the module

@@ -9,14 +9,13 @@
  * file that was distributed with this source code.
  */
 
-namespace ICanBoogie\Module\Nodes;
+namespace ICanBoogie\Modules\Nodes\Attachments;
 
 use ICanBoogie\Debug;
 use ICanBoogie\Event;
-use ICanBoogie\Module;
 use ICanBoogie\Operation;
 
-class Attachments extends \Icybee\Module
+class Module extends \Icybee\Module
 {
 	const OPERATION_UPLOAD = 'upload';
 
@@ -25,7 +24,7 @@ class Attachments extends \Icybee\Module
 		$key = $event->operation->key;
 
 		#
-		# since Module\Files is an instance of Module\Nodes, we have to
+		# since Modules\Files\Module is an instance of Modules\Nodes\Module, we have to
 		# check it first.
 		#
 

@@ -9,11 +9,11 @@
  * file that was distributed with this source code.
  */
 
-namespace Icybee\Manager\Taxonomy;
+namespace ICanBoogie\Modules\Taxonomy\Terms;
 
 use ICanBoogie\ActiveRecord\Query;
 
-class Terms extends \WdManager
+class Manager extends \WdManager
 {
 	public function __construct($module, array $tags=array())
 	{

@@ -9,20 +9,20 @@
  * file that was distributed with this source code.
  */
 
-namespace ICanBoogie\Hooks;
+namespace ICanBoogie\Modules\Images;
 
 use ICanBoogie\ActiveRecord;
 use ICanBoogie\ActiveRecord\Node;
 use ICanBoogie\Debug;
 use ICanBoogie\Event;
-use ICanBoogie\Module;
+use ICanBoogie\Modules;
 use ICanBoogie\Operation;
 
 use BrickRouge\Element;
 use BrickRouge\Form;
 use BrickRouge\Widget;
 
-class Images
+class Hooks
 {
 	/**
 	 * Getter for the mixin magic property `image`
@@ -40,7 +40,7 @@ class Images
 		return $imageid ? $core->models['images'][$imageid] : null;
 	}
 
-	static public function on_alter_block_edit(Event $event, Module $sender)
+	static public function on_alter_block_edit(Event $event, Modules\Nodes\Module $sender)
 	{
 		global $core;
 
@@ -88,7 +88,7 @@ class Images
 		);
 	}
 
-	static public function on_alter_block_config(Event $event, Module\Contents $sender)
+	static public function on_alter_block_config(Event $event, Modules\Contents\Module $sender)
 	{
 		global $core;
 

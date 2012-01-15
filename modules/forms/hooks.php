@@ -9,15 +9,14 @@
  * file that was distributed with this source code.
  */
 
-namespace ICanBoogie\Hooks;
+namespace ICanBoogie\Modules\Forms;
 
 use ICanBoogie\Event;
 use ICanBoogie\Exception;
-use ICanBoogie\Module;
 use ICanBoogie\Operation;
 use ICanBoogie\Mailer;
 
-class Forms
+class Hooks
 {
 	public static function event_alter_editor_options(Event $event)
 	{
@@ -85,12 +84,12 @@ class Forms
 
 		$request = $event->request;
 
-		if (!$request[Module\Forms::OPERATION_POST_ID])
+		if (!$request[Module::OPERATION_POST_ID])
 		{
 			return;
 		}
 
-		$record = $core->models['forms'][(int) $request[Module\Forms::OPERATION_POST_ID]];
+		$record = $core->models['forms'][(int) $request[Module::OPERATION_POST_ID]];
 		$form = $record->form;
 
 		$event->rc = $form;

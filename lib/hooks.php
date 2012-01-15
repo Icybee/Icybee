@@ -207,22 +207,20 @@ class Hooks
 	{
 		global $core;
 
-		$module = $core->modules[$request['module']];
+		$try_module = $module = $core->modules[$request['module']];
 
-		$try = get_class($module);
-		$class = null;
-
-		while ($try && strpos($try, 'ICanBoogie\Module\\') === 0)
+		while ($try_module)
 		{
-			$class = str_replace('\Module\\', '\Operation\\', $try) . '\QueryOperation';
+			$try = 'ICanBoogie\Operation\\' . \ICanBoogie\normalize_namespace_part($try_module->id) . '\QueryOperation';
 
-			if (class_exists($class, true))
+			if (class_exists($try, true))
 			{
+				$class = $try;
+
 				break;
 			}
 
-			$class = null;
-			$try = get_parent_class($try);
+			$try_module = $try_module->parent;
 		}
 
 		if (!$class)
