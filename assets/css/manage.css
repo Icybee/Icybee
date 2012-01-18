@@ -221,6 +221,18 @@ table.manage td.key label
 	display: block;
 }
 
+table.manage tr.section-title td
+{
+	background: #F6F6F6;
+	font-weight: bold;
+}
+
+table.manage tr + tr.section-title td,
+table.manage tr.section-title + tr td
+{
+	border-color: #cfcfcf;
+}
+
 table.manage th.operations,
 table.manage td.operations
 {
