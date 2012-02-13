@@ -12,7 +12,7 @@ class form_WdEditorElement extends WdEditorElement
 			(
 				Element::CHILDREN => array
 				(
-					$this->selector = new BrickRouge\FormSelectorElement
+					$this->selector = new Brickrouge\FormSelectorElement
 					(
 						'select', array
 						(

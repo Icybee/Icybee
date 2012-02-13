@@ -15,9 +15,9 @@ use ICanBoogie;
 use ICanBoogie\ActiveRecord\File;
 use ICanBoogie\Uploaded;
 
-use BrickRouge\Element;
-use BrickRouge\Form;
-use BrickRouge\Text;
+use Brickrouge\Element;
+use Brickrouge\Form;
+use Brickrouge\Text;
 
 class Module extends \ICanBoogie\Modules\Nodes\Module
 {
@@ -227,13 +227,13 @@ class Module extends \ICanBoogie\Modules\Nodes\Module
 				(
 					array
 					(
-						Form::LABEL => '.max_file_size',
-						Element::LABEL => 'Ko', // TODO-20110206: use conventions
-						Element::GROUP => 'primary',
+						Text::ADDON => 'Ko', // TODO-20110206: use conventions
+
+						Form::LABEL => 'max_file_size',
 						Element::DEFAULT_VALUE => 16000,
 
-						'size' => 6,
-						'style' => 'text-align: right'
+						'class' => 'measure',
+						'size' => 6
 					)
 				)
 			)
@@ -341,11 +341,11 @@ class Module extends \ICanBoogie\Modules\Nodes\Module
 					(
 						array
 						(
-							Form::LABEL => '.file',
+							Form::LABEL => 'file',
 							Element::REQUIRED => empty($entry_nid),
 							Element::FILE_WITH_LIMIT => $core->site->metas[$this->flat_id . '.max_file_size'],
 							Element::WEIGHT => -100,
-							\BrickRouge\File::T_UPLOAD_URL => '/api/' . $this->id . '/upload'
+							\Brickrouge\File::T_UPLOAD_URL => '/api/' . $this->id . '/upload'
 						)
 					),
 
@@ -353,7 +353,7 @@ class Module extends \ICanBoogie\Modules\Nodes\Module
 					(
 						array
 						(
-							Form::LABEL => '.description',
+							Form::LABEL => 'description',
 							Element::WEIGHT => 50,
 
 							'rows' => 5

@@ -9,10 +9,10 @@
  * file that was distributed with this source code.
  */
 
-use BrickRouge\Element;
+use Brickrouge\Element;
 use ICanBoogie\Uploaded;
 
-class WdFileUploadElement extends BrickRouge\File
+class WdFileUploadElement extends Brickrouge\File
 {
 	protected function infos()
 	{

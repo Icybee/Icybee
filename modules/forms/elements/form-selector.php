@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-use BrickRouge\Element;
+use Brickrouge\Element;
 
 class WdFormSelectorElement extends Element
 {

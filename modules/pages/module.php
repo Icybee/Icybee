@@ -13,9 +13,9 @@ namespace ICanBoogie\Modules\Pages;
 
 use ICanBoogie\ActiveRecord\Node;
 use ICanBoogie\ActiveRecord\Page;
-use BrickRouge\Element;
-use BrickRouge\Form;
-use BrickRouge\Text;
+use Brickrouge\Element;
+use Brickrouge\Form;
+use Brickrouge\Text;
 
 class Module extends \ICanBoogie\Modules\Nodes\Module
 {
@@ -138,9 +138,9 @@ class Module extends \ICanBoogie\Modules\Nodes\Module
 			(
 				'select', array
 				(
-					Form::LABEL => '.parentid',
+					Form::LABEL => 'parentid',
 					Element::OPTIONS_DISABLED => $nid ? array($nid => true) : null,
-					Element::DESCRIPTION => '.parentid'
+					Element::DESCRIPTION => 'parentid'
 				)
 			);
 		}
@@ -157,11 +157,11 @@ class Module extends \ICanBoogie\Modules\Nodes\Module
 			(
 				'select', array
 				(
-					Form::LABEL => '.location',
+					Form::LABEL => 'location',
 					Element::GROUP => 'advanced',
 					Element::WEIGHT => 10,
 					Element::OPTIONS_DISABLED => $nid ? array($nid => true) : null,
-					Element::DESCRIPTION => '.location'
+					Element::DESCRIPTION => 'location'
 				)
 			);
 		}
@@ -180,8 +180,7 @@ class Module extends \ICanBoogie\Modules\Nodes\Module
 				(
 					'advanced' => array
 					(
-						'title' => '.advanced',
-						'class' => 'form-section flat',
+						'title' => 'Advanced',
 						'weight' => 30
 					)
 				),
@@ -195,7 +194,7 @@ class Module extends \ICanBoogie\Modules\Nodes\Module
 					(
 						Element::TYPE_CHECKBOX, array
 						(
-							Element::LABEL => '.is_navigation_excluded',
+							Element::LABEL => 'is_navigation_excluded',
 							Element::GROUP => 'visibility'
 						)
 					),
@@ -204,9 +203,9 @@ class Module extends \ICanBoogie\Modules\Nodes\Module
 					(
 						array
 						(
-							Form::LABEL => '.label',
+							Form::LABEL => 'label',
 							Element::GROUP => 'advanced',
-							Element::DESCRIPTION => '.label'
+							Element::DESCRIPTION => 'label'
 						)
 					),
 
@@ -214,9 +213,9 @@ class Module extends \ICanBoogie\Modules\Nodes\Module
 					(
 						array
 						(
-							Form::LABEL => '.pattern',
+							Form::LABEL => 'pattern',
 							Element::GROUP => 'advanced',
-							Element::DESCRIPTION => '.pattern'
+							Element::DESCRIPTION => 'pattern'
 						)
 					),
 
@@ -250,7 +249,7 @@ class Module extends \ICanBoogie\Modules\Nodes\Module
 				(
 					array
 					(
-						Element::LABEL => '.template',
+						Element::LABEL => 'template',
 						Element::LABEL_POSITION => 'before',
 						Element::GROUP => 'contents',
 						Element::DESCRIPTION => $template_description
@@ -281,16 +280,14 @@ class Module extends \ICanBoogie\Modules\Nodes\Module
 				(
 					'contents' => array
 					(
-						'title' => '.contents',
-						'class' => 'form-section flat',
+						'title' => 'Contents',
 						'weight' => 10
 					),
 
 					'contents.inherit' => array
 					(
-						'class' => 'form-section flat',
 						'weight' => 11,
-						'description' => '.contents.inherit'
+						'description' => 'contents.inherit'
 					)
 				),
 
@@ -396,14 +393,14 @@ class Module extends \ICanBoogie\Modules\Nodes\Module
 								Element::INNER_HTML => '',
 								Element::DESCRIPTION => t
 								(
-									'This content is currently inherited from the <q><a href="!url">!title</a></q> parent page – <a href="#edit">Edit the content</a>', array
+									'This content is currently inherited from the <q><a href="!url">!title</a></q> parent page. <a href="#edit" class="btn">Edit the content</a>', array
 									(
 										'!url' => $context . '/admin/' . $this->id . '/' . $inherited->nid . '/edit',
 										'!title' => $inherited->title
 									)
 								),
 
-								\BrickRouge\Section::T_PANEL_CLASS => 'inherit-toggle'
+								\Brickrouge\Section::T_PANEL_CLASS => 'inherit-toggle'
 							)
 						);
 					}

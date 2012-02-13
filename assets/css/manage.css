@@ -23,14 +23,13 @@ SEARCH (in MENU OPTIONS)
 {
 	border: none;
 	background: transparent;
-	font-size: inherit;
+	font-size: 14px;
 	padding: 0;
 	position: relative;
-	top: 1px;
 	border-radius: 0;
-	-moz-border-radius: 0;
-	-webkit-border-radius: 0;
 	box-shadow: none;
+	height: 16px;
+	line-height: 16px;
 }
 
 #menu-options form.search input.empty
@@ -56,16 +55,12 @@ SEARCH (in MENU OPTIONS)
 	background: #EEE;
 	border: none;
 	font-weight: normal;
-	font-size: 10px;
+	font-size: 12px;
 	text-shadow: none;
+	line-height: 16px;
 	padding: 0;
 	margin-left: 1ex;
-	border-radius: 1em;
-	-moz-border-radius: 1em;
-	-webkit-border-radius: 1em;
 	box-shadow: none;
-	-moz-box-shadow: none;
-	-webkit-box-shadow: none;
 	visibility: hidden;
 }
 
@@ -110,11 +105,13 @@ table.manage tbody tr + tr td
 	border-top: 1px solid #EEE;
 }
 
+/*
 table.manage tbody,
 table.manage tfoot
 {
 	font-size: .9em;
 }
+*/
 
 #manager div.empty
 {
@@ -134,7 +131,7 @@ table.manage th
 	text-align: left;
 	border-bottom: 1px solid #CCC;
 	white-space: nowrap;
-	font-size: .9em;
+	/*font-size: .9em;*/
 }
 
 table.manage a
@@ -365,6 +362,7 @@ table.manage div.limiter
 #menu-options div.manage form
 {
 	display: inline-block;
+	margin: 0;
 }
 
 #menu-options span.browse,
@@ -486,18 +484,23 @@ RECORDS
 **
 */
 
-table.manage td.key label.checkbox-wrapper
+table.manage .key label.checkbox-wrapper
 {
 	border: 1px solid #CFCFCF;
 	background: #E8E8E8;
 }
 
-table.manage tfoot td.key label.checkbox-wrapper
+table.manage thead .key label.checkbox-wrapper
 {
 	background: #F6F6F6;
 }
 
-table.manage td.key label.checkbox-wrapper.checked
+table.manage thead .key label.checkbox-wrapper.checked
+{
+	background: #B5D5FF;
+}
+
+table.manage .key label.checkbox-wrapper.checked
 {
 	background: #B5D5FF;
 	border-color: #a3c0e5;

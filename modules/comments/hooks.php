@@ -18,9 +18,9 @@ use ICanBoogie\Event;
 use ICanBoogie\Exception;
 use ICanBoogie\Operation;
 
-use BrickRouge\Element;
-use BrickRouge\Form;
-use BrickRouge\Text;
+use Brickrouge\Element;
+use Brickrouge\Form;
+use Brickrouge\Text;
 
 class Hooks
 {
@@ -346,7 +346,7 @@ EOT;
 
 		if (!$core->user->has_permission(ICanBoogie\Module::PERMISSION_CREATE, 'comments'))
 		{
-			return new \BrickRouge\AlertMessage
+			return new \Brickrouge\AlertMessage
 			(
 				<<<EOT
 You don't have permission the create comments,
@@ -393,7 +393,7 @@ EOT
 		return $template ? $patron($template, $form) : $form;
 	}
 
-	public static function on_view_render(Event $event, ICanBoogie\View $view)
+	public static function on_view_render(Event $event, \Icybee\Views\View $view)
 	{
 		if ($event->id != 'articles/view')
 		{

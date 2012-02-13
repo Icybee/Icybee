@@ -7,10 +7,10 @@ use ICanBoogie\Event;
 use ICanBoogie\Modules;
 use ICanBoogie\Operation;
 
-use BrickRouge;
-use BrickRouge\Element;
-use BrickRouge\Form;
-use BrickRouge\Text;
+use Brickrouge;
+use Brickrouge\Element;
+use Brickrouge\Form;
+use Brickrouge\Text;
 
 use Icybee\Views\Provider;
 
@@ -131,7 +131,7 @@ class Hooks
 		->order('weight')
 		->all;
 
-		// TODO-20101104: use BrickRouge\Form::VALUES instead of setting the 'values' of the elements.
+		// TODO-20101104: use Brickrouge\Form::VALUES instead of setting the 'values' of the elements.
 		// -> because 'properties' are ignored, and that's bad.
 
 		$terms_model = $core->models['taxonomy.terms'];
@@ -233,8 +233,7 @@ class Hooks
 				(
 					'organize' => array
 					(
-						'title' => '.organize',
-						'class' => 'form-section flat',
+						'title' => 'Organize',
 						'weight' => 500
 					)
 				),

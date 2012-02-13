@@ -12,6 +12,7 @@ window.addEvent
 	'domready', function()
 	{
 		var ids = [];
+		var table = $(document.body).getElement('table.manage');
 		var stat = $$('table.manage td.usage');
 
 		$$('table.manage td.state input').each
@@ -25,7 +26,6 @@ window.addEvent
 					'click', function(ev)
 					{
 						var target = ev.target;
-						var cacheName = target.name;
 
 						var req = new Request.API
 						({
@@ -53,16 +53,24 @@ window.addEvent
 
 							url: 'system.cache/' + ids[i] + '/clear',
 
+							/*
 							onRequest: function()
 							{
-								//el.disabled = true;
+								el.disabled = true;
 							},
 
 							onComplete: function()
 							{
-								//el.disabled = false;
+								el.disabled = false;
+							},
+							*/
 
-								updateStat(stat[i]);
+							onSuccess: function(response)
+							{
+								var target = el.getParent('tr').getElement('td.usage');
+
+								target[(response.rc[0] ? 'remove' : 'add') + 'Class']('empty');
+								target.innerHTML = response.rc[1];
 							}
 
 						});
@@ -70,6 +78,85 @@ window.addEvent
 						req.send();
 					}
 				);
+			}
+		);
+
+		var popover = null;
+		var popoverTrigger = null;
+
+		table.addEvent
+		(
+			'click', function(ev)
+			{
+				var target = ev.target;
+
+				if (target.tagName == 'BUTTON' && target.getParent('td.config'))
+				{
+					var cacheId = target.getParent('tr').get('data-cache-id');
+
+					if (popover)
+					{
+						if (popoverTrigger == cacheId)
+						{
+							return;
+						}
+
+						popover.hide();
+
+						delete popover;
+
+						popover = null;
+					}
+
+					popoverTrigger = cacheId;
+
+					new Request.API
+					({
+						url: 'system.cache/' + cacheId + '/editor',
+						onSuccess: function(response)
+						{
+							var popover=null;
+
+							popover = new Brickrouge.Popover
+							(
+								Elements.from(response.rc).shift(),
+								{
+									anchor: target,
+									placement: 'above',
+									onAction: function(ev)
+									{
+										if (ev.action == 'cancel')
+										{
+											popover.hide();
+											popover = null;
+										}
+										else if (ev.action == 'ok')
+										{
+											var form = popover.element.getElement('form');
+
+											popover.hide();
+											popover = null;
+
+											new Request.API
+											({
+												url: 'system.cache/' + cacheId + '/config',
+												onSuccess: function(response)
+												{
+													target.innerHTML = response.rc;
+												}
+
+											}).post(form);
+										}
+									}
+								}
+							);
+
+							document.body.appendChild(popover.element);
+
+							popover.show();
+						}
+					}).get();
+				}
 			}
 		);
 
@@ -92,6 +179,6 @@ window.addEvent
 			req.get();
 		}
 
-		stat.each(updateStat);
+		Brickrouge.awakeWidgets();
 	}
 );

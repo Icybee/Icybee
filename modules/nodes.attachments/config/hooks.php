@@ -10,6 +10,7 @@ return array
 		'ICanBoogie\Modules\Nodes\Module::alter.block.edit' => __NAMESPACE__ . '::on_alter_block_edit',
 		'ICanBoogie\Modules\Nodes\SaveOperation::process' => __NAMESPACE__ . '::on_node_save',
 		'ICanBoogie\Modules\Nodes\DeleteOperation::process' => __NAMESPACE__ . '::on_node_delete',
+		'ICanBoogie\Modules\Files\DeleteOperation::process' => __NAMESPACE__ . '::on_file_delete',
 		'ICanBoogie\Modules\Files\ConfigOperation::process:before' => __NAMESPACE__ . '::before_operation_config',
 		'ICanBoogie\Modules\Files\ConfigOperation::process' => __NAMESPACE__ . '::on_operation_config'
 	),

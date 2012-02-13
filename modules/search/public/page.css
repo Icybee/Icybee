@@ -6,48 +6,48 @@
 	font-style: italic;
 }
 
-#view-features-search-search div.set
+#view-search-home div.set
 {
 	margin-top: 3em;
 	border-top: 1px dashed #ccc;
 }
 
-#view-features-search-search h2
+#view-search-home h2
 {
 	margin-bottom: 0;
 }
 
-#view-features-search-search h2 + p
+#view-search-home h2 + p
 {
 	margin-top: .4em;
 }
 
-#view-features-search-search ol
+#view-search-home ol
 {
 	margin: 1em 0;
 	padding: 0;
 	list-style: none;
 }
 
-#view-features-search-search h3
+#view-search-home h3
 {
 	font-size: 1em;
 	margin-bottom: 0;
 }
 
-#view-features-search-search p.excerpt
+#view-search-home p.excerpt
 {
 	margin-top: 0;
 	margin-bottom: 0;
 }
 
-#view-features-search-search cite
+#view-search-home cite
 {
 	color: #0E774A;
 	font-style: normal;
 }
 
-#view-features-search-search p.more:before
+#view-search-home p.more:before
 {
 	content: "\2192\00A0";
 }

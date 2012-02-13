@@ -90,9 +90,11 @@ form.edit input[type=text]:not([size])
 {
 	width: 40%;
 	min-width: 32ex;
+	/*
 	box-sizing: border-box;
 	-moz-box-sizing: border-box;
 	-webkit-box-sizing: border-box;
+	*/
 }
 
 form.edit input[type=text].short:not([size])
@@ -101,13 +103,10 @@ form.edit input[type=text].short:not([size])
 	min-width: 16ex;
 }
 
-form.edit div.save-mode
-{
-	margin: 1em 0;
-	font-size: 14px;
+form.edit .group--save {
+	background: white;
+	border-top: 1px solid #ccc;
 }
-
-
 
 
 
@@ -120,6 +119,7 @@ form div.alert-message
 	border-radius: 0;
 }
 
+/*
 div.form-section-description
 {
 	background: white;
@@ -130,6 +130,27 @@ div.form-section-description div.contents
 {
 	margin: .5em 16px;
 	font-size: .8em;
+}
+*/
+
+fieldset > .group-description {
+	padding: .5em 16px;
+	font-size: 12px;
+	background: white;
+	border-top: 1px solid #ccc;
+	border-bottom: 1px solid #ccc;
+}
+
+fieldset > legend + .group-description {
+	border-top: 0;
+}
+
+.group-description p {
+	margin: 0;
+}
+
+.group-description p + p {
+	margin-top: 1.33em;
 }
 
 
@@ -310,9 +331,4 @@ SAVE MIRROR
 #save-mirror.settings div.settings
 {
 	display: block;
-}
-
-form.edit .checkbox-group.list
-{
-	background: white;
 }

@@ -18,9 +18,9 @@ use ICanBoogie\Event;
 use ICanBoogie\Modules;
 use ICanBoogie\Operation;
 
-use BrickRouge\Element;
-use BrickRouge\Form;
-use BrickRouge\Widget;
+use Brickrouge\Element;
+use Brickrouge\Form;
+use Brickrouge\Widget;
 
 class Hooks
 {
@@ -140,21 +140,19 @@ class Hooks
 				(
 					'resources_images__inject' => array
 					(
-						'title' => 'Associated image',
-						'class' => 'form-section flat'
+						'title' => 'Associated image'
 					),
 
 					'resources_images__inject_options' => array
 					(
-						'class' => 'form-section flat'
+
 					),
 
 					'resources_images__inject_thumbnails' => array
 					(
 						'description' => 'Use the following elements to configure the
 						thumbnails to create for the associated image. Each view provided by the
-						module has its own thumbnail configuration:',
-						'class' => 'form-section flat'
+						module has its own thumbnail configuration:'
 					)
 				),
 

@@ -1,43 +1,24 @@
-table.manage th.is_online,
-table.manage td.is_online
-{
-	width: 1%;
-	text-align: center;
-}
-
-table.manage td.url
-{
-	width: 14px;
-}
-
-table.manage td.url a.view
-{
-	background-position: left center;
-}
-
-table.manage td.url a.view:hover
-{
-	background-position: -30px center;
-}
-
-table.manage td.is_online label.checkbox-wrapper.circle.checked
-{
-	background-color: #ccffcc;
-	border-color: #b8e5b8;
-	background-color: #FFC;
-	border-color: #CC0;
-	
-	background-color: #cfc;
-	border-color: #9c9;
-}
 
 table.manage span.translations
 {
 	color: #808080;
-	font-size: .8em;
+	font-size: .8571em;
 }
 
 table.manage span.translations a
 {
 	color: #404040;
+}
+
+.cell--is-online {
+	width: 20px;
+}
+
+.cell--is-online .checkbox-wrapper {
+	margin: auto;
+}
+
+.cell--is-online .checkbox-wrapper.checked {
+	background-color: #cfc;
+	border-color: #9c9;
 }

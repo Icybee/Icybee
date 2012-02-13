@@ -1,17 +1,8 @@
 @CHARSET "UTF-8";
 
-.widget-pop-image
-{
-	padding: .5em;
-	font-size: .8em;
-	font-weight: normal;
-	text-shadow: 1px 2px 2px white;
-	text-align: center;
-}
-
 .widget-pop-image img
 {
-	border: 1px solid #cfcfcf;
+	border-radius: 3px;
 	display: block;
 }
 

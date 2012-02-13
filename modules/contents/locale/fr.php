@@ -2,7 +2,7 @@
 
 return array
 (
-	'element.description' => array
+	'description' => array
 	(
 		'is_home_excluded' => "Lorsque la case est cochée, l'enregistrement n'apparait pas en page
 		d'accueil. Que la case soit cochée ou non, l'enregistrement apparait en page de liste.",
@@ -29,7 +29,7 @@ return array
 
 	'module_category.title.contents' => 'Contenu',
 
-	'section.title' => array
+	'group.legend' => array
 	(
 		'contents' => 'Contenu',
 		'limits' => 'Limites'

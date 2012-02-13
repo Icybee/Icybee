@@ -9,14 +9,16 @@
  * file that was distributed with this source code.
  */
 
-namespace BrickRouge\Widget;
+namespace Brickrouge\Widget;
 
 use ICanBoogie\ActiveRecord;
 use ICanBoogie\ActiveRecord\Query;
-use BrickRouge\Element;
-use BrickRouge\Pager;
 
-class AdjustNode extends \BrickRouge\Widget
+use Brickrouge\Element;
+use Brickrouge\Pager;
+use Brickrouge\Text;
+
+class AdjustNode extends \Brickrouge\Widget
 {
 	const T_CONSTRUCTOR = '#adjust-constructor';
 
@@ -28,14 +30,15 @@ class AdjustNode extends \BrickRouge\Widget
 			(
 				self::T_CONSTRUCTOR => 'nodes',
 
-				'class' => 'adjust'
+				'class' => 'adjust',
+				'data-adjust' => 'adjust-node'
 			)
 		);
 
-		$this->dataset['adjust'] = 'adjust-node';
+// 		$this->dataset['adjust'] = 'adjust-node';
 	}
 
-	protected static function add_assets(\BrickRouge\Document $document)
+	protected static function add_assets(\Brickrouge\Document $document)
 	{
 		parent::add_assets($document);
 
@@ -51,7 +54,7 @@ class AdjustNode extends \BrickRouge\Widget
 		$constructor = $this->get(self::T_CONSTRUCTOR);
 
 		$rc .= '<div class="search">';
-		$rc .= '<input type="text" class="search" data-placeholder="' . t('Search') . '" />';
+		$rc .= new Text(array('class' => 'search', 'placeholder' => t('Search')));
 		$rc .= $this->get_results(array('selected' => $this->get('value')), $constructor);
 		$rc .= '</div>';
 
@@ -183,8 +186,8 @@ class AdjustNode extends \BrickRouge\Widget
 				Element::INNER_HTML => wd_shorten($record->title),
 				Element::DATASET => array
 				(
-					Node::NID => $recordid,
-					Node::TITLE => $record->title
+					ActiveRecord\Node::NID => $recordid,
+					ActiveRecord\Node::TITLE => $record->title
 				),
 
 				'class' => $recordid == $selected ? 'selected' : null

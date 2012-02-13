@@ -7,13 +7,10 @@ return array
 	'events' => array
 	(
 		'resources.files.path.change' => __NAMESPACE__ . '::resources_files_path_change',
+
+		'Brickrouge\Document::render_title:before' => __NAMESPACE__ . '::on_document_render_title',
+
 		'ICanBoogie\ActiveRecord\Page::urlchange' => __NAMESPACE__ . '::on_urlchange',
-
-		/*
-		 * cache support
-		 */
-
-		'ICanBoogie\Modules\System\Cache\Module::alter.block.manage' => __NAMESPACE__ . '::alter_block_manage',
 
 		'Icybee::render:before' => __NAMESPACE__ . '::before_icybee_render',
 
@@ -21,8 +18,7 @@ return array
 		'ICanBoogie\Operation\ActiveRecord\Delete::process' => __NAMESPACE__ . '::invalidate_cache',
 		'ICanBoogie\Modules\Nodes\OnlineOperation::process' => __NAMESPACE__ . '::invalidate_cache',
 		'ICanBoogie\Modules\Nodes\OfflineOperation::process' => __NAMESPACE__ . '::invalidate_cache',
-
-		'BrickRouge\Document::render_title:before' => __NAMESPACE__ . '::on_document_render_title'
+		'ICanBoogie\Modules\System\Cache\Collection::alter' => __NAMESPACE__ . '::on_alter_cache_collection'
 	),
 
 	'objects.methods' => array
@@ -32,15 +28,6 @@ return array
 		'ICanBoogie\ActiveRecord\Node::__get_url' => 'site_pages_view_WdHooks::get_url',
 		'ICanBoogie\ActiveRecord\Node::__get_absolute_url' => 'site_pages_view_WdHooks::get_absolute_url',
 		'ICanBoogie\ActiveRecord\Site::__get_home' => __NAMESPACE__ . '::get_home',
-
-		/*
-		 * The following hooks are for the unified cache support
-		 */
-
-		'ICanBoogie\Modules\System\Cache\EnableOperation::enable_pages' => __NAMESPACE__ . '::enable_cache',
-		'ICanBoogie\Modules\System\Cache\DisableOperation::disable_pages' => __NAMESPACE__ . '::disable_cache',
-		'ICanBoogie\Modules\System\Cache\StatOperation::stat_pages' => __NAMESPACE__ . '::stat_cache',
-		'ICanBoogie\Modules\System\Cache\ClearOperation::clear_pages' => __NAMESPACE__ . '::clear_cache',
 
 		/*
 		 * views
@@ -54,7 +41,7 @@ return array
 	(
 		'page:content' => array
 		(
-			array('site_pages_WdMarkups', 'content'), array
+			'site_pages_WdMarkups::content', array
 			(
 				'id' => array('required' => true),
 				'title' => array('required' => true),

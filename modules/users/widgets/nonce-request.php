@@ -9,14 +9,14 @@
  * file that was distributed with this source code.
  */
 
-namespace BrickRouge\Widget\Users;
+namespace Brickrouge\Widget\Users;
 
 use ICanBoogie\Operation;
-use BrickRouge;
-use BrickRouge\Button;
-use BrickRouge\Element;
-use BrickRouge\Form;
-use BrickRouge\Text;
+use Brickrouge;
+use Brickrouge\Button;
+use Brickrouge\Element;
+use Brickrouge\Form;
+use Brickrouge\Text;
 
 class NonceRequest extends Form
 {
@@ -64,9 +64,9 @@ class NonceRequest extends Form
 	/**
 	 * Adds the "widget.css" and "widget.js" assets.
 	 *
-	 * @param \BrickRouge\Document $document
+	 * @param \Brickrouge\Document $document
 	 */
-	protected static function add_assets(\BrickRouge\Document $document)
+	protected static function add_assets(\Brickrouge\Document $document)
 	{
 		$document->css->add('../assets/widget.css');
 		$document->js->add('../assets/widget.js');

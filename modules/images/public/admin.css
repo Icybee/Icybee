@@ -1,18 +1,14 @@
 @CHARSET "UTF-8";
 
-form.config #section-resources-images-inject .panel
+.group--resources-images-inject > .control-group
 {
 	background: white;
-	margin: 0;
-	overflow: hidden;
+	margin: 0 !important;
+	padding: 16px;
+	border-bottom: 1px solid #ccc;
 }
 
-form.config #section-resources-images-inject .panel .form-element
-{
-	margin: 1em;
-}
-
-#section-resources-images-inject-thumbnails .panel
+.group--resources-images-inject-thumbnails > .control-group
 {
 	display: inline-block;
 	vertical-align: top;

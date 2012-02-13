@@ -19,7 +19,7 @@ $wddebug_time_reference = microtime(true);
 /**
  * @var string Version string for the Icybee package.
  */
-define('Icybee\VERSION', '1.0-dev (2012-01-08)');
+define('Icybee\VERSION', '1.0-dev (2012-01-17)');
 
 /**
  * @var string Root path for the Icybee package.
@@ -32,38 +32,25 @@ define('Icybee\ROOT', rtrim(__DIR__, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR)
 define('Icybee\ASSETS', ROOT . 'assets' . DIRECTORY_SEPARATOR);
 
 /*
- * Icybee requires the ICanBoogie framework, the BrickRouge framework and the Patron engine.
+ * Icybee requires the ICanBoogie framework, the Brickrouge framework and the Patron engine.
  *
  * If Phar versions of theses packages are available they are used instead. You should pay
  * attention to this as this might cause a hit on performance.
  */
-if (file_exists(ROOT . 'framework/ICanBoogie.phar'))
-{
-	require_once ROOT . 'framework/ICanBoogie.phar';
-}
-else
-{
-	require_once ROOT . 'framework/ICanBoogie/startup.php';
-}
 
-if (file_exists(ROOT . 'framework/BrickRouge.phar'))
-{
-	require_once ROOT . 'framework/BrickRouge.phar';
-}
-else
-{
-	require_once ROOT . 'framework/BrickRouge/BrickRouge.php';
-}
+$framework = array('ICanBoogie', 'Brickrouge', 'Patron');
 
-if (file_exists(ROOT . 'framework/Patron.phar'))
+foreach ($framework as $name)
 {
-	require_once ROOT . 'framework/Patron.phar';
+	if (file_exists(ROOT . "framework/$name.phar"))
+	{
+		require_once ROOT . "framework/$name.phar";
+	}
+	else
+	{
+		require_once ROOT . "framework/$name/startup.php";
+	}
 }
-else
-{
-	require_once ROOT . 'framework/Patron/startup.php';
-}
-
 
 if (!class_exists('Icybee\Core', false))
 {
@@ -84,20 +71,28 @@ $core = Core::get_singleton
 		(
 			'config' => array
 			(
-				\BrickRouge\ROOT,
+				\Brickrouge\ROOT,
 				\Patron\ROOT,
 				ROOT
 			),
 
 			'locale' => array
 			(
-				\BrickRouge\ROOT,
+				\Brickrouge\ROOT,
 				\Patron\ROOT,
 				ROOT
 			)
 		)
 	)
 );
+
+/**
+ * @var bool The views are cached when the Icybee\CACHE_VIEWS is defined.
+ */
+if (!defined('Icybee\CACHE_VIEWS'))
+{
+	define('Icybee\CACHE_VIEWS', $core->config['cache views']);
+}
 
 // wd_log_time('core created');
 
@@ -107,7 +102,7 @@ $core->run();
 
 /*
  * The following code is a tiny router to handle "/admin/" routes. It may redirect the user to the
- * properter "admin" location e.g. '/admin/' => '/fr/admin/'. If the "admin" route is detected, the
+ * proper "admin" location e.g. '/admin/' => '/fr/admin/'. If the "admin" route is detected, the
  * Icybee admin interface is presented, granted the user has an access permission, otherwise the
  * user is asked to authenticate.
  */
@@ -127,7 +122,7 @@ if (preg_match('#^/admin/#', $uri) || preg_match('#^/admin$#', $uri))
 	{
 		throw new Exception('No site id');
 		/*
-		$site = \ICanBoogie\Hooks\Sites::find_by_request(array('REQUEST_PATH' => '/', 'HTTP_HOST' => $_SERVER['HTTP_HOST']));
+		$site = \ICanBoogie\Modules\Sites\Hooks::find_by_request(array('REQUEST_PATH' => '/', 'HTTP_HOST' => $_SERVER['HTTP_HOST']));
 
 		if ($site->path)
 		{

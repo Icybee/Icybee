@@ -11,12 +11,12 @@ return array
 	'contact' => array
 	(
 		'title' => 'Contact',
-		'class' => 'BrickRouge\Form\Contact'
+		'class' => 'Brickrouge\Form\Contact'
 	),
 
 	'quickContact' => array
 	(
 		'title' => 'Contact rapide',
-		'class' => 'BrickRouge\quick_contact_WdForm'
+		'class' => 'Brickrouge\quick_contact_WdForm'
 	)
 );

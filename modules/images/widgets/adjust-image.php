@@ -9,27 +9,27 @@
  * file that was distributed with this source code.
  */
 
-namespace BrickRouge\Widget;
+namespace Brickrouge\Widget;
 
 use ICanBoogie\ActiveRecord;
-use BrickRouge\Element;
+use Brickrouge\Element;
 
 class AdjustImage extends AdjustNode
 {
-	public function __construct($tags=array(), $dummy=null)
+	public function __construct(array $attributes=array())
 	{
 		parent::__construct
 		(
-			$tags + array
+			$attributes + array
 			(
-				self::T_CONSTRUCTOR => 'images'
+				self::T_CONSTRUCTOR => 'images',
+
+				'data-adjust' => 'adjust-image'
 			)
 		);
-
-		$this->dataset['adjust'] = 'adjust-image';
 	}
 
-	protected static function add_assets(\BrickRouge\Document $document)
+	protected static function add_assets(\Brickrouge\Document $document)
 	{
 		parent::add_assets($document);
 
@@ -70,7 +70,8 @@ class AdjustImage extends AdjustNode
 							'alt' => $record->alt,
 							'width' => 64,
 							'height' => 64,
-							'class' => 'pop-preview'
+							'class' => 'pop-preview',
+							'title' => $record->title
 						)
 					)
 				),

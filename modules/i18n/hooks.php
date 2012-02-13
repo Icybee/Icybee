@@ -15,8 +15,8 @@ use ICanBoogie\ActiveRecord\Node;
 use ICanBoogie\Event;
 use ICanBoogie\Modules;
 
-use BrickRouge\Element;
-use BrickRouge\Form;
+use Brickrouge\Element;
+use Brickrouge\Form;
 
 class Hooks
 {
@@ -64,9 +64,8 @@ class Hooks
 
 		$tags[Element::GROUPS]['i18n'] = array
 		(
-			'title' => '.i18n',
-			'weight' => 100,
-			'class' => 'form-section flat'
+			'title' => 'i18n',
+			'weight' => 100
 		);
 
 		$constructor = (string) $sender;

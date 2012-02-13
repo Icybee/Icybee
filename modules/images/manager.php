@@ -15,7 +15,7 @@ use ICanBoogie\ActiveRecord\Query;
 
 class Manager extends \ICanBoogie\Modules\Files\Manager
 {
-	protected static function add_assets(\BrickRouge\Document $document)
+	protected static function add_assets(\Brickrouge\Document $document)
 	{
 		parent::add_assets($document);
 

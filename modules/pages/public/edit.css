@@ -1,41 +1,31 @@
-#section-contents .panel:first-child
-{
+.control-group--template {
 	background: white;
-	border-radius: 0;
-	-moz-border-radius: 0;
-	-webkit-border-radius: 0;
-	margin: 0;
+	margin: 0 !important;
 	overflow: hidden;
+	padding: 16px;
 }
 
-#section-contents .panel:first-child:not(:last-child)
-{
+.control-group--template:not(:last-child) {
 	border-bottom: 1px solid #ccc;
 }
 
-#section-contents .panel:first-child .form-element
-{
-	margin: 1em;
-}
-
-#section-contents .panel:first-child select
-{
+.control-group--template select {
 	background: #F6F6F6;
 }
 
-
-.panel.inherit-toggle .element-description
-{
+.group--contents-inherit > .control-group:nth-child(even) .element-description {
 	max-width: none;
 }
 
-.panel.inherit-toggle + .panel,
-.panel.inherit-toggle + .panel .form-label
+.group--contents-inherit > .control-group:nth-child(odd)
 {
 	display: none;
 }
 
-.panel.inherit-toggle.edit + .panel
-{
+.group--contents-inherit > .control-group.editing {
+	display: none;
+}
+
+.group--contents-inherit > .control-group.editing + .control-group {
 	display: block;
 }

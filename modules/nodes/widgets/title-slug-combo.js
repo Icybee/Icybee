@@ -1,5 +1,5 @@
 
-BrickRouge.Widget.TitleSlugCombo = new Class
+Brickrouge.Widget.TitleSlugCombo = new Class
 ({
 	initialize: function(el, options)
 	{

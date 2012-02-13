@@ -11,9 +11,9 @@
 
 use ICanBoogie\Modules;
 use ICanBoogie\Operation;
-use BrickRouge\Button;
-use BrickRouge\Element;
-use BrickRouge\Form;
+use Brickrouge\Button;
+use Brickrouge\Element;
+use Brickrouge\Form;
 
 class user_users_WdMarkups
 {

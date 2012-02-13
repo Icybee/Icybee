@@ -266,4 +266,9 @@ class Hooks
 		}
 		catch (\Exception $e) {  };
 	}
+
+	public static function on_alter_cache_collection(Event $event, \ICanBoogie\Modules\System\Cache\Collection $collection)
+	{
+		$event->collection['icybee.views'] = new \Icybee\Views\CacheManager;
+	}
 }

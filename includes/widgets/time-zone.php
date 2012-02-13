@@ -9,11 +9,11 @@
  * file that was distributed with this source code.
  */
 
-namespace BrickRouge\Widget;
+namespace Brickrouge\Widget;
 
-use BrickRouge\Element;
+use Brickrouge\Element;
 
-class TimeZone extends \BrickRouge\Widget
+class TimeZone extends \Brickrouge\Widget
 {
 	public function __construct($tags=array(), $dummy=null)
 	{

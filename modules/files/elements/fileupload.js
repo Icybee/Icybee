@@ -7,7 +7,7 @@
  * file that was distributed with this source code.
  */
 
-BrickRouge.Widget.File = new Class
+Brickrouge.Widget.File = new Class
 ({
 	Implements: [ Options, Events ],
 

@@ -2,5 +2,6 @@
 
 return array
 (
-	'label.url' => 'URL'
+	'label.url' => 'URL',
+	'module_category.title.site' => 'Site'
 );

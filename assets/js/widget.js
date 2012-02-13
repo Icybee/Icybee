@@ -7,7 +7,8 @@
  * file that was distributed with this source code.
  */
 
-BrickRouge.Widget.Popup = new Class
+/*
+Brickrouge.Widget.Popup = new Class
 ({
 	Implements: [ Options, Events ],
 
@@ -262,56 +263,48 @@ BrickRouge.Widget.Popup = new Class
 		}
 	}
 });
+*/
 
-BrickRouge.Widget.Popup.Adjust = new Class
-({
-	Implements: [ Options, Events ],
-	Extends: BrickRouge.Widget.Popup,
+var Icybee = {
 
-	initialize: function(el, options)
-	{
-		this.parent(el, options);
+	Widget: {
 
-		this.selected = '';
-		this.element.addClass('black');
+		AdjustPopover: new Class
+		({
+			Implements: [ Options, Events ],
 
-		['cancel', 'continue', 'none'].each
-		(
-			function(mode)
+			Extends: Brickrouge.Popover,
+
+			initialize: function(el, options)
 			{
-				var el = this.element.getElement('button.' + mode);
+				this.parent(el, options)
 
-				if (!el)
-				{
-					return;
-				}
-
-				el.addEvent
-				(
-					'click', function(ev)
-					{
-						ev.stop();
-
-						this.fireEvent('closeRequest', { target: this, mode: mode });
-					}
-					.bind(this)
-				);
+				this.adjust = null
+				this.selected = null
 			},
 
-			this
-		);
-	},
+			show: function()
+			{
+				this.element.setStyle('display', 'none')
+				document.body.appendChild(this.element)
 
-	open: function()
-	{
-		this.parent();
+				this.parent()
 
-		this.adjust = this.element.getElement(':first-child').get('widget');
+				this.adjust = this.element.getElement('.popover-content :first-child').get('widget')
 
-		if (this.adjust)
-		{
-			this.adjust.addEvent('results', this.repositionCallback);
-			this.adjust.addEvent('adjust', this.repositionCallback);
-		}
+				if (this.adjust)
+				{
+					this.adjust.addEvent('results', this.repositionCallback)
+					this.adjust.addEvent('adjust', this.quickRepositionCallback)
+				}
+			},
+
+			close: function()
+			{
+				this.parent()
+
+				this.element.dispose()
+			}
+		})
 	}
-});
+}

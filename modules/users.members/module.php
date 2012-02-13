@@ -11,10 +11,10 @@
 
 namespace ICanBoogie\Modules\Users\Members;
 
-use BrickRouge\Date;
-use BrickRouge\Element;
-use BrickRouge\Form;
-use BrickRouge\Text;
+use Brickrouge\Date;
+use Brickrouge\Element;
+use Brickrouge\Form;
+use Brickrouge\Text;
 
 class Module extends \ICanBoogie\Modules\Users\Module
 {
@@ -29,7 +29,6 @@ class Module extends \ICanBoogie\Modules\Users\Module
 					'numbers' => array
 					(
 						'title' => 'Numéros de téléphone',
-						'class' => 'form-section flat',
 						'template' => <<<EOT
 <table class="panel">
 <tr><td class="label">{\$number_work.label:}</td><td>{\$number_work}</td>
@@ -44,7 +43,6 @@ EOT
 					'private' => array
 					(
 						'title' => 'Données privées',
-						'class' => 'form-section flat',
 						'template' => <<<EOT
 <table class="panel">
 <tr><td class="label">{\$street.label:}</td><td colspan="3">{\$street}</td></tr>
@@ -62,7 +60,6 @@ EOT
 					'professional' => array
 					(
 						'title' => 'Données professionnelles',
-						'class' => 'form-section flat',
 						'template' => <<<EOT
 <table class="panel">
 <tr><td class="label">{\$position.label:}</td><td>{\$position}</td>
@@ -82,7 +79,6 @@ EOT
 					'misc' => array
 					(
 						'title' => 'Informations complémentaires',
-						'class' => 'form-section flat',
 						'template' => <<<EOT
 <table class="panel">
 <tr><td class="label">{\$misc1.label:}</td><td>{\$misc1}</td></tr>
@@ -96,8 +92,7 @@ EOT
 
 					'attached' => array
 					(
-						'title' => 'Pièces attachées',
-						'class' => 'form-section flat'
+						'title' => 'Pièces attachées'
 					)
 				),
 
@@ -391,7 +386,7 @@ EOT
 					# photo
 					#
 
-					'photo' => new \BrickRouge\File
+					'photo' => new \Brickrouge\File
 					(
 						array
 						(

@@ -23,9 +23,7 @@ class Module extends \ICanBoogie\Module
 	 */
 	protected function __get_repository()
 	{
-		global $core;
-
-		return $core->config['repository.cache'] ? $core->config['repository.cache'] . '/thumbnailer' : null;
+		return \ICanBoogie\REPOSITORY . 'thumbnailer' . DIRECTORY_SEPARATOR;
 	}
 
 	/**
@@ -35,30 +33,20 @@ class Module extends \ICanBoogie\Module
 	 */
 	public function install(Errors $errors)
 	{
-		$root = \ICanBoogie\DOCUMENT_ROOT;
-		$path = $this->repository;
+		$path = \ICanBoogie\REPOSITORY . 'thumbnailer' .  DIRECTORY_SEPARATOR;
 
-		if ($path)
+		if (!file_exists($path))
 		{
-			$path = $root . $path;
+			$parent = dirname($path);
 
-			if (!file_exists($path))
+			if (is_writable($parent))
 			{
-				$parent = dirname($path);
-
-				if (is_writable($parent))
-				{
-					mkdir($root . $repository, 0755, true);
-				}
-				else
-				{
-					$errors[$this->id] = t('Unable to create %directory directory, its parent is not writtable', array('%directory' => $path));
-				}
+				mkdir($path, 0755, true);
 			}
-		}
-		else
-		{
-			$errors[$this->id] = t('The %var var is empty is core config', array('%var' => 'repository.cache'));
+			else
+			{
+				$errors[$this->id] = t('Unable to create %directory directory, its parent is not writable', array('%directory' => wd_strip_root($path)));
+			}
 		}
 
 		return 0 == count($errors);
@@ -71,12 +59,11 @@ class Module extends \ICanBoogie\Module
 	 */
 	public function is_installed(Errors $errors)
 	{
-		$root = \ICanBoogie\DOCUMENT_ROOT;
-		$path = $this->repository;
+		$path = \ICanBoogie\REPOSITORY . 'thumbnailer';
 
-		if (!file_exists($root . $path))
+		if (!file_exists($path))
 		{
-			$errors[$this->id] = t('The %directory directory is missing.', array('%directory' => $path));
+			$errors[$this->id] = t('The %directory directory is missing.', array('%directory' => wd_strip_root($path)));
 		}
 
 		return 0 == count($errors);

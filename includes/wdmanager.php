@@ -15,12 +15,12 @@ class WdManager extends \Icybee\Manager
 {
 	public function __construct($module, array $tags=array())
 	{
+		global $core;
+
 		$model_id = 'primary';
 
 		if (is_string($module))
 		{
-			global $core;
-
 			list($module_id, $model_id) = explode('/', $module) + array(1 => $model_id);
 
 			$module = $core->modules[$module_id];

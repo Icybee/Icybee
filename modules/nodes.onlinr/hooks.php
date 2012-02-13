@@ -14,8 +14,8 @@ namespace ICanBoogie\Modules\Nodes\Onlinr;
 use ICanBoogie\Event;
 use ICanBoogie\Exception;
 
-use BrickRouge\Element;
-use BrickRouge\Form;
+use Brickrouge\Element;
+use Brickrouge\Form;
 
 class Hooks
 {

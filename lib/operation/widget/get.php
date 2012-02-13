@@ -13,7 +13,10 @@ namespace Icybee\Operation\Widget;
 
 use ICanBoogie\Exception;
 use ICanBoogie\Operation;
-use BrickRouge\Widget;
+
+use Brickrouge\Button;
+use Brickrouge\Popover;
+use Brickrouge\Widget;
 
 class Get extends Operation
 {
@@ -31,7 +34,7 @@ class Get extends Operation
 
 	protected function validate(\ICanboogie\Errors $errors)
 	{
-		$this->widget_class = $class = 'BrickRouge\Widget\\' . wd_camelize('-' . $this->request['class'], '-');
+		$this->widget_class = $class = 'Brickrouge\Widget\\' . wd_camelize('-' . $this->request['class'], '-');
 
 		if (!class_exists($class, true))
 		{
@@ -48,6 +51,13 @@ class Get extends Operation
 		if (!$core->user_id)
 		{
 			throw new Exception('Unauthorized', array(), 401);
+		}
+
+		$user = $core->user;
+
+		if ($user->language)
+		{
+			$core->language = $user->language;
 		}
 
 		$request = $this->request;
@@ -79,25 +89,24 @@ class Get extends Operation
 		}
 		else if ($mode == 'popup')
 		{
-			$label_cancel = t('label.cancel');
-			$label_use = t('label.use');
-			$label_remove = t('label.remove');
+			$rc = (string) new Popover
+			(
+				array
+				(
+					Popover::ACTIONS => array
+					(
+						new Button('Cancel', array('data-action' => 'cancel')),
+						new Button('Remove', array('data-action' => 'remove', 'class' => 'btn-danger')),
+						new Button('Use', array('data-action' => 'use', 'class' => 'btn-primary'))
+					),
 
-			$rc = <<<EOT
-<div class="popup">
+					Popover::FIT_CONTENT => true,
 
-$el
+					Popover::INNER_HTML => $el,
 
-<div class="confirm">
-<button type="button" class="cancel">$label_cancel</button>
-<button type="button" class="none warn">$label_remove</button>
-<button type="button" class="continue">$label_use</button>
-</div>
-
-<div class="arrow"><div>&nbsp;</div></div>
-
-</div>
-EOT;
+					'class' => 'popover popover--' . wd_normalize($this->request['class']) . ' contrast'
+				)
+			);
 		}
 		else if ($mode == 'results')
 		{

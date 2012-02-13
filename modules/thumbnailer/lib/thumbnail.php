@@ -1,11 +1,20 @@
 <?php
 
+/*
+ * This file is part of the Icybee package.
+ *
+ * (c) Olivier Laviale <olivier.laviale@gmail.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace ICanBoogie\Modules\Thumbnailer;
 
 use ICanBoogie;
 use ICanBoogie\ActiveRecord;
 
-use BrickRouge\Element;
+use Brickrouge\Element;
 
 /**
  * Cette classes est une aide à la création de miniatures. Elle prend en paramètres une source et
@@ -22,21 +31,21 @@ use BrickRouge\Element;
  * @property $method string|null Méthode de redimensionnement de la miniature, extraite des options
  * ou de la version.
  */
-class Thumbnail extends ICanBoogie\Object
+class Thumbnail extends \ICanBoogie\Object
 {
-	public $options;
 	public $src;
+	public $options;
 
 	protected $version_name;
 
 	/**
 	 * Constructor.
 	 *
+	 * @param ICanBoogie\ActiveRecord\Image|int|string|null
+	 *
 	 * @param string|array $options The options to create the thumbnail can be provided as a
 	 * version name or an array of options. If a version name is provided, the `image` parameter
 	 * must also be provided.
-	 *
-	 * @param ICanBoogie\ActiveRecord\Image|int|null
 	 */
 	public function __construct($src, $options)
 	{
@@ -167,7 +176,6 @@ class Thumbnail extends ICanBoogie\Object
 		$src = $this->src;
 		$options = $this->options;
 		$version_name = $this->version_name;
-
 		$url = '/api/';
 
 		if (is_string($src))
@@ -176,14 +184,85 @@ class Thumbnail extends ICanBoogie\Object
 
 			$options['src'] = $src;
 			$options['version'] = $version_name;
+
+			if (isset($options['w']) || isset($options['h']))
+			{
+				$url .= '/';
+
+				if (isset($options['w']) && isset($options['h']))
+				{
+					$url .= $options['w'] . 'x' . $options['h'];
+
+					unset($options['w']);
+					unset($options['h']);
+				}
+				else if (isset($options['w']))
+				{
+					$url .= $options['w'];
+
+					unset($options['w']);
+				}
+				else if (isset($options['h']))
+				{
+					$url .= $options['h'];
+
+					unset($options['h']);
+				}
+
+				if (isset($options['m']))
+				{
+					$url .= '/' . $options['m'];
+
+					unset($options['m']);
+				}
+
+				unset($options['w']);
+				unset($options['h']);
+			}
 		}
 		else
 		{
-			$url .= $src->constructor . '/' . $src->nid . '/thumbnail';
+			$url .= $src->constructor . '/' . $src->nid;
 
 			if ($version_name)
 			{
-				$url .= 's/' . $version_name;
+				$url .= '/thumbnails/' . $version_name;
+			}
+			else
+			{
+				if (isset($options['w']) || isset($options['h']))
+				{
+					if (isset($options['w']) && isset($options['h']))
+					{
+						$url .= '/' . $options['w'] . 'x' . $options['h'];
+
+						unset($options['w']);
+						unset($options['h']);
+					}
+					else if (isset($options['w']))
+					{
+						$url .= '/' . $options['w'];
+
+						unset($options['w']);
+					}
+					else if (isset($options['h']))
+					{
+						$url .= '/x' . $options['h'];
+
+						unset($options['h']);
+					}
+
+					if (isset($options['m']))
+					{
+						$url .= '/' . $options['m'];
+
+						unset($options['m']);
+					}
+				}
+				else
+				{
+					$url .= '/thumbnail';
+				}
 			}
 		}
 
@@ -193,6 +272,38 @@ class Thumbnail extends ICanBoogie\Object
 		}
 
 		return $url;
+	}
+
+	public function to_element(array $tags=array())
+	{
+		$path = $this->src;
+		$src = $this->url;
+		$alt = '';
+
+		if ($this->src instanceof Image)
+		{
+			$alt = $this->src->alt;
+			$path = $this->src->path;
+		}
+
+		$w = $this->w;
+		$h = $this->h;
+
+		if (is_string($path))
+		{
+			list($w, $h) = \ICanBoogie\Image::compute_final_size($w, $h, $this->method, $_SERVER['DOCUMENT_ROOT'] . $path);
+		}
+
+		return new Element
+		(
+			'img', $tags + array
+			(
+				'src' => $src,
+				'alt' => $alt,
+				'widht' => $w,
+				'height' => $h
+			)
+		);
 	}
 
 	/**
@@ -205,38 +316,11 @@ class Thumbnail extends ICanBoogie\Object
 	{
 		try
 		{
-			$path = $this->src;
-			$src = $this->url;
-			$alt = '';
-
-			if ($this->src instanceof ActiveRecord\Image)
-			{
-				$alt = $this->src->alt;
-				$path = $this->src->path;
-			}
-
-			$w = $this->w;
-			$h = $this->h;
-			$method = $this->method;
-
-			list($final_w, $final_h) = ICanBoogie\Image::compute_final_size($w, $h, $method, $_SERVER['DOCUMENT_ROOT'] . $path);
-
-			$rc = (string) new Element
-			(
-				'img', array
-				(
-					'src' => $src,
-					'alt' => $alt,
-					'width' => $final_w,
-					'height' => $final_h
-				)
-			);
-
-			return $rc;
+			return (string) $this->to_element();
 		}
 		catch (\Exception $e)
 		{
-			echo (string) $e;
+			echo \ICanBoogie\Debug::format_alert($e);
 		}
 	}
 }

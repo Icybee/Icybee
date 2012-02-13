@@ -13,12 +13,11 @@ namespace ICanBoogie\Modules\Thumbnailer;
 
 use ICanBoogie\ActiveRecord;
 use ICanBoogie\Event;
-use ICanBoogie\Module;
 use ICanBoogie\Operation;
 
-use BrickRouge\Element;
-use BrickRouge\Form;
-use BrickRouge\Widget;
+use Brickrouge\Element;
+use Brickrouge\Form;
+use Brickrouge\Widget;
 
 class Hooks
 {
@@ -54,7 +53,7 @@ class Hooks
 	 *
 	 * @param Event $ev
 	 */
-	static public function on_alter_block_config(Event $event, Module $sender)
+	static public function on_alter_block_config(Event $event, \ICanBoogie\Module $sender)
 	{
 		global $core;
 
@@ -96,7 +95,7 @@ class Hooks
 			(
 				array
 				(
-					Form::LABEL => $config['title'] . ' <small>(' . $version_name . ')</small>',
+					Form::LABEL => new Element('span', array(Element::INNER_HTML => $config['title'] . ' <small>(' . $version_name . ')</small>')),
 					Element::DEFAULT_VALUE => $defaults,
 					Element::GROUP => 'thumbnailer',
 					Element::DESCRIPTION => $config['description'],
@@ -115,7 +114,6 @@ class Hooks
 					'thumbnailer' => array
 					(
 						'title' => 'Miniatures',
-						'class' => 'form-section flat',
 						'description' => "Ce groupe permet de configurer les différentes
 						versions de miniatures qu'il est possible d'utiliser pour
 						les entrées de ce module."
@@ -168,47 +166,10 @@ class Hooks
 		}
 	}
 
-	/*
-	 * SYSTEM.CACHE SUPPORT
-	 */
-
-	static public function on_alter_block_manage(Event $event)
+	static public function on_alter_cache_collection(Event $event, \ICanBoogie\Modules\System\Cache\Collection $collection)
 	{
 		global $core;
 
-		$event->caches['thumbnails'] = array
-		(
-			'title' => 'Miniatures',
-			'description' => "Miniatures générées à la volée par le module <q>Thumbnailer</q>.",
-			'group' => 'resources',
-			'state' => null,
-			'size_limit' => array(4, 'Mo'),
-			'time_limit' => array(7, 'Jours')
-		);
-	}
-
-	static public function method_stat_cache(\ICanBoogie\Modules\System\Cache\StatOperation $operation)
-	{
-		global $core;
-
-		$path = $core->config['repository.cache'] . '/thumbnailer';
-
-		return $operation->get_files_stat($path);
-	}
-
-	static public function method_clear_cache(\ICanBoogie\Modules\System\Cache\ClearOperation $operation)
-	{
-		global $core;
-
-		$path = $core->config['repository.cache'] . '/thumbnailer';
-
-		$files = glob($_SERVER['DOCUMENT_ROOT'] . $path . '/*');
-
-		foreach ($files as $file)
-		{
-			unlink($file);
-		}
-
-		return count($files);
+		$event->collection['thumbnails'] = new CacheManager();
 	}
 }

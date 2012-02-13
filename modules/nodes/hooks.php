@@ -13,7 +13,7 @@ namespace ICanBoogie\Modules\Nodes;
 
 use ICanBoogie\Event;
 
-use BrickRouge\Element;
+use Brickrouge\Element;
 
 class Hooks
 {

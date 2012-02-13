@@ -13,7 +13,7 @@ namespace ICanBoogie\Modules\Users;
 
 use ICanBoogie\ActiveRecord\User;
 
-use BrickRouge\Element;
+use Brickrouge\Element;
 
 class Manager extends \WdManager
 {
@@ -28,7 +28,7 @@ class Manager extends \WdManager
 		);
 	}
 
-	protected static function add_assets(\BrickRouge\Document $document)
+	protected static function add_assets(\Brickrouge\Document $document)
 	{
 		parent::add_assets($document);
 

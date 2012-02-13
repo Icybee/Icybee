@@ -14,10 +14,10 @@ namespace ICanBoogie\Modules\Contents;
 use ICanBoogie\ActiveRecord\Content;
 use ICanBoogie\ActiveRecord\Query;
 
-use BrickRouge;
-use BrickRouge\Element;
-use BrickRouge\Form;
-use BrickRouge\Text;
+use Brickrouge;
+use Brickrouge\Element;
+use Brickrouge\Form;
+use Brickrouge\Text;
 
 use WdPatron;
 use WdMultiEditorElement;
@@ -84,8 +84,7 @@ class Module extends \ICanBoogie\Modules\Nodes\Module
 			(
 				'limits' => array
 				(
-					'title' => '.limits',
-					'class' => 'form-section flat'
+					'title' => 'limits'
 				)
 			),
 
@@ -95,7 +94,7 @@ class Module extends \ICanBoogie\Modules\Nodes\Module
 				(
 					array
 					(
-						Form::LABEL => '.default_editor'
+						Form::LABEL => 'default_editor'
 					)
 				),
 
@@ -103,7 +102,7 @@ class Module extends \ICanBoogie\Modules\Nodes\Module
 				(
 					Element::TYPE_CHECKBOX, array
 					(
-						Element::LABEL => '.use_multi_editor'
+						Element::LABEL => 'use_multi_editor'
 					)
 				),
 
@@ -111,7 +110,7 @@ class Module extends \ICanBoogie\Modules\Nodes\Module
 				(
 					array
 					(
-						Form::LABEL => '.limits_home',
+						Form::LABEL => 'limits_home',
 						Element::DEFAULT_VALUE => 3,
 						Element::GROUP => 'limits'
 					)
@@ -121,7 +120,7 @@ class Module extends \ICanBoogie\Modules\Nodes\Module
 				(
 					array
 					(
-						Form::LABEL => '.limits_list',
+						Form::LABEL => 'limits_list',
 						Element::DEFAULT_VALUE => 10,
 						Element::GROUP => 'limits'
 					)
@@ -156,8 +155,7 @@ class Module extends \ICanBoogie\Modules\Nodes\Module
 				(
 					'contents' => array
 					(
-						'title' => '.contents',
-						'class' => 'form-section flat'
+						'title' => 'Contents'
 					),
 
 					'date' => array
@@ -172,7 +170,7 @@ class Module extends \ICanBoogie\Modules\Nodes\Module
 					(
 						array
 						(
-							Form::LABEL => '.subtitle'
+							Form::LABEL => 'subtitle'
 						)
 					),
 
@@ -180,7 +178,7 @@ class Module extends \ICanBoogie\Modules\Nodes\Module
 					(
 						$properties['editor'] ? $properties['editor'] : $default_editor, array
 						(
-							Element::LABEL_MISSING => 'Contents', // TODO-20110205: scope => 'element', 'missing', 'label'
+							Element::LABEL_MISSING => 'Contents',
 							Element::GROUP => 'contents',
 							Element::REQUIRED => true,
 
@@ -192,15 +190,15 @@ class Module extends \ICanBoogie\Modules\Nodes\Module
 					(
 						array
 						(
-							Form::LABEL => '.excerpt',
+							Form::LABEL => 'excerpt',
 							Element::GROUP => 'contents',
-							Element::DESCRIPTION => ".excerpt",
+							Element::DESCRIPTION => "excerpt",
 
 							'rows' => 3
 						)
 					),
 
-					Content::DATE => new BrickRouge\Date
+					Content::DATE => new Brickrouge\Date
 					(
 						array
 						(
@@ -214,9 +212,9 @@ class Module extends \ICanBoogie\Modules\Nodes\Module
 					(
 						Element::TYPE_CHECKBOX, array
 						(
-							Element::LABEL => ".is_home_excluded",
+							Element::LABEL => "is_home_excluded",
 							Element::GROUP => 'visibility',
-							Element::DESCRIPTION => ".is_home_excluded"
+							Element::DESCRIPTION => "is_home_excluded"
 						)
 					)
 				)

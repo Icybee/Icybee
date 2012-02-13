@@ -15,13 +15,9 @@ class DisableOperation extends BaseOperation
 {
 	protected function process()
 	{
-		$cache_id = $this->key;
+		$collection = new Collection();
+		$cache = $collection[$this->key];
 
-		if (in_array($cache_id, self::$internal))
-		{
-			return $this->alter_core_config(substr($cache_id, 5), false);
-		}
-
-		return $this->{$this->callback}();
+		return $cache->disable();
 	}
 }

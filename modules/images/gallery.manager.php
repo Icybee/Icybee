@@ -12,7 +12,7 @@
 namespace ICanBoogie\Modules\Images;
 
 use ICanBoogie\Operation;
-use BrickRouge\Element;
+use Brickrouge\Element;
 
 class GalleryManager extends Manager
 {
@@ -27,7 +27,7 @@ class GalleryManager extends Manager
 		);
 	}
 
-	protected static function add_assets(\BrickRouge\Document $document)
+	protected static function add_assets(\Brickrouge\Document $document)
 	{
 		parent::add_assets($document);
 

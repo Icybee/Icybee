@@ -11,8 +11,8 @@
 
 use ICanBoogie\Debug;
 
-use BrickRouge\Element;
-use BrickRouge\Form;
+use Brickrouge\Element;
+use Brickrouge\Form;
 
 class WdSectionedForm extends Form
 {
@@ -105,7 +105,7 @@ class WdSectionedForm extends Form
 			{
 				if (1)
 				{
-					$class = empty($group['no-panels']) ? 'BrickRouge\Section' : 'BrickRouge\Element';
+					$class = empty($group['no-panels']) ? 'Brickrouge\Section' : 'Brickrouge\Element';
 
 					$children[] = new $class
 					(

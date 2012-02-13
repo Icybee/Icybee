@@ -15,7 +15,7 @@ use ICanBoogie\ActiveRecord;
 use ICanBoogie\ActiveRecord\Site;
 use ICanBoogie\Event;
 use ICanBoogie\FileCache;
-use BrickRouge\Element;
+use Brickrouge\Element;
 
 class Hooks
 {
@@ -42,10 +42,7 @@ class Hooks
 				);
 			}
 		}
-		catch (\Exception $e)
-		{
-			return;
-		}
+		catch (\Exception $e) { return; }
 	}
 
 	/**
@@ -65,10 +62,7 @@ class Hooks
 		{
 			$model = $core->models['pages/contents'];
 		}
-		catch (\Exception $e)
-		{
-			return;
-		}
+		catch (\Exception $e) { return; }
 
 		$old = $event->from;
 		$new = $event->to;
@@ -100,85 +94,6 @@ class Hooks
 		}
 	}
 
-	/*
-	 * The following hooks are for the unified cache support
-	 */
-
-	static public function alter_block_manage(Event $event)
-	{
-		global $core;
-
-		$event->caches['pages'] = array
-		(
-			'title' => 'Pages',
-			'description' => "Pages rendues par Icybee.",
-			'group' => 'contents',
-			'state' => !empty($core->vars['cache_rendered_pages']),
-			'size_limit' => false,
-			'time_limit' => array(7, 'Jours')
-		);
-	}
-
-	/**
-	 * Enables page caching.
-	 *
-	 * @param ICanBoogie\Modules\System\Cache\EnableOperation $operation
-	 */
-	static public function enable_cache(\ICanBoogie\Modules\System\Cache\EnableOperation $operation)
-	{
-		global $core;
-
-		$root = $_SERVER['DOCUMENT_ROOT'];
-		$path = $core->config['repository.cache'] . '/pages';
-
-		if (!is_writable($root . $path))
-		{
-			wd_log_error("%path is missing or not writable", array('%path' => $path));
-
-			return false;
-		}
-
-		return $core->vars['cache_rendered_pages'] = true;
-	}
-
-	/**
-	 * Disables page caching.
-	 *
-	 * @param ICanBoogie\Modules\System\Cache\DisableOperation $operation
-	 */
-	static public function disable_cache(\ICanBoogie\Modules\System\Cache\DisableOperation $operation)
-	{
-		global $core;
-
-		return $core->vars['cache_rendered_pages'] = false;
-	}
-
-	/**
-	 * Returns usage of the page cache.
-	 *
-	 * @param ICanBoogie\Modules\System\Cache\StatOperation $operation
-	 */
-	static public function stat_cache(\ICanBoogie\Modules\System\Cache\StatOperation $operation)
-	{
-		global $core;
-
-		$path = $core->config['repository.cache'] . '/pages';
-
-		return $operation->get_files_stat($path);
-	}
-
-	/**
-	 * Clears the page cache.
-	 */
-	static public function clear_cache(\ICanBoogie\Modules\System\Cache\ClearOperation $operation)
-	{
-		global $core;
-
-		$path = $core->config['repository.cache'] . '/pages';
-
-		return $operation->clear_files($path);
-	}
-
 	/**
 	 * An operation (save, delete, online, offline) has invalidated the cache, this we have to
 	 * reset it.
@@ -202,7 +117,7 @@ class Hooks
 	{
 		global $core;
 
-		if ($_POST || !$core->vars['cache_rendered_pages'])
+		if ($_POST || !$core->vars['enable_pages_cache'])
 		{
 			return;
 		}
@@ -352,7 +267,7 @@ EOT;
 	/**
 	 * Returns the breadcrumb for the current page.
 	 *
-	 * The breadcrumb is build and rendered using the #{@link \BrickRouge\Element\Breadcrumb}
+	 * The breadcrumb is build and rendered using the #{@link \Brickrouge\Element\Breadcrumb}
 	 * element.
 	 *
 	 * @param array $args
@@ -372,5 +287,16 @@ EOT;
 				Element\Breadcrumb::T_PAGE => $page
 			)
 		);
+	}
+
+	/**
+	 * Alters cache collection to add pages cache manager.
+	 *
+	 * @param Event $event
+	 * @param \ICanBoogie\Modules\System\Cache\Collection $collection
+	 */
+	public static function on_alter_cache_collection(Event $event, \ICanBoogie\Modules\System\Cache\Collection $collection)
+	{
+		$event->collection['contents.pages'] = new CacheManager;
 	}
 }

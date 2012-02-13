@@ -11,17 +11,20 @@
 
 namespace ICanBoogie\Modules\System\Cache;
 
+/**
+ * Enables a cache.
+ *
+ * Before the cache is enabled it is first cleared.
+ */
 class EnableOperation extends BaseOperation
 {
 	protected function process()
 	{
-		$cache_id = $this->key;
+		$collection = new Collection();
+		$cache = $collection[$this->key];
 
-		if (in_array($cache_id, self::$internal))
-		{
-			return $this->alter_core_config(substr($cache_id, 5), true);
-		}
+		$cache->clear();
 
-		return $this->{$this->callback}();
+		return $cache->enable();
 	}
 }

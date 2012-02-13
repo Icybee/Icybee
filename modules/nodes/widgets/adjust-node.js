@@ -1,5 +1,5 @@
 
-BrickRouge.Widget.AdjustNode = new Class
+Brickrouge.Widget.AdjustNode = new Class
 ({
 	Implements: [ Options, Events ],
 

@@ -16,9 +16,9 @@ use ICanBoogie\ActiveRecord\Query;
 use ICanBoogie\Event;
 use ICanBoogie\Exception\HTTP as HTTPException;
 
-use BrickRouge\Element;
-use BrickRouge\Form;
-use BrickRouge\Widget;
+use Brickrouge\Element;
+use Brickrouge\Form;
+use Brickrouge\Widget;
 
 use WdAdjustNodeWidget;
 
@@ -90,7 +90,7 @@ class Module extends \Icybee\Module
 				(
 					'select', array
 					(
-						Element::LABEL => '.user',
+						Element::LABEL => 'User',
 						Element::LABEL_POSITION => 'before',
 						Element::OPTIONS => array(null => '')	+ $users,
 						Element::REQUIRED => true,
@@ -114,7 +114,7 @@ class Module extends \Icybee\Module
 				(
 					'select', array
 					(
-						Element::LABEL => '.siteid',
+						Element::LABEL => 'siteid',
 						Element::LABEL_POSITION => 'before',
 						Element::OPTIONS => array(null => '') + $sites,
 						Element::GROUP => 'admin',
@@ -137,14 +137,12 @@ class Module extends \Icybee\Module
 				'node' => array
 				(
 					'weight' => -10,
-					'title' => 'do not use node section anymore!',
-					'class' => 'form-section flat'
+					'title' => 'do not use node section anymore!'
 				),
 
 				'visibility' => array
 				(
-					'title' => '.visibility',
-					'class' => 'form-section flat',
+					'title' => 'Visibility',
 					'weight' => 400
 				)
 			),
@@ -155,7 +153,7 @@ class Module extends \Icybee\Module
 				(
 					array
 					(
-						Form::LABEL => '.title',
+						Form::LABEL => 'title',
 						Element::REQUIRED => true,
 						Widget\TitleSlugCombo::T_NODEID => $properties[Node::NID],
 						Widget\TitleSlugCombo::T_SLUG_NAME => 'slug'
@@ -170,8 +168,8 @@ class Module extends \Icybee\Module
 				(
 					Element::TYPE_CHECKBOX, array
 					(
-						Element::LABEL => '.is_online',
-						Element::DESCRIPTION => '.is_online',
+						Element::LABEL => 'is_online',
+						Element::DESCRIPTION => 'is_online',
 						Element::GROUP => 'visibility'
 					)
 				)
@@ -193,6 +191,7 @@ class Module extends \Icybee\Module
 		);
 	}
 
+	/*
 	protected function block_adjust(array $params)
 	{
 		return new WdAdjustNodeWidget
@@ -327,6 +326,7 @@ class Module extends \Icybee\Module
 
 		return $rc;
 	}
+	*/
 
 	static public function dashboard_now()
 	{
@@ -562,9 +562,9 @@ EOT;
 	}
 }
 
-namespace BrickRouge\Element\Nodes;
+namespace Brickrouge\Element\Nodes;
 
-class Pager extends \BrickRouge\Pager
+class Pager extends \Brickrouge\Pager
 {
 	protected function getURL($n)
 	{

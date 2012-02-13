@@ -6,6 +6,7 @@
 	margin-top: .5em;
 }
 
+/*
 .widget-adjust-thumbnail-version [name="method"],
 .widget-adjust-thumbnail-version [name="background"]
 {
@@ -13,10 +14,18 @@
 	box-sizing: border-box;
 	-moz-box-sizing: border-box;
 }
+*/
 
+/*
 .widget-adjust-thumbnail-version [name="w"],
 .widget-adjust-thumbnail-version [name="h"],
 .widget-adjust-thumbnail-version [name="quality"]
 {
 	text-align: right;
+}
+*/
+
+.widget-adjust-thumbnail-version .control-group + .control-group--no-upscale,
+.widget-adjust-thumbnail-version .control-group + .control-group--interlace {
+	margin-top: 5px;
 }

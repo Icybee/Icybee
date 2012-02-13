@@ -1,8 +1,8 @@
 <?php
 
-use BrickRouge;
-use BrickRouge\Element;
-use BrickRouge\Form;
+use Brickrouge;
+use Brickrouge\Element;
+use Brickrouge\Form;
 
 function _route_add_available_sites()
 {

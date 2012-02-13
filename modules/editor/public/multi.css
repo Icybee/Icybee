@@ -4,6 +4,12 @@ div.editor-options
 	margin-top: .5em;
 }
 
+div.editor-options select {
+	line-height: normal;
+	height: auto;
+	width: auto;
+}
+
 div.editor-wrapper textarea[name="contents[body][contents]"]
 {
 	height: 24em;

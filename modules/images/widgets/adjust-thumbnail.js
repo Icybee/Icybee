@@ -1,5 +1,5 @@
 
-BrickRouge.Widget.AdjustThumbnailOptions = new Class
+Brickrouge.Widget.AdjustThumbnailOptions = new Class
 ({
 	Implements: [ Events ],
 
@@ -139,15 +139,13 @@ BrickRouge.Widget.AdjustThumbnailOptions = new Class
 });
 
 
-BrickRouge.Widget.AdjustThumbnail = new Class
+Brickrouge.Widget.AdjustThumbnail = new Class
 ({
 	Implements: [ Events ],
 
 	initialize: function(el, options)
 	{
 		this.element = $(el);
-
-		console.log('element:', el);
 
 		this.thumbnailOptions = this.element.getElement('.widget-adjust-thumbnail-options').get('widget');
 		this.thumbnailOptions.addEvent('change', this.onChange.bind(this));

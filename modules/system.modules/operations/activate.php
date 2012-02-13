@@ -28,17 +28,7 @@ class ActivateOperation extends Operation
 
 	protected function validate(\ICanboogie\Errors $errors)
 	{
-		return true;
-	}
-
-	protected function process()
-	{
 		global $core;
-
-		$errors = $this->response->errors;
-
-		$enabled = array_keys($core->modules->enabled_modules_descriptors);
-		$enabled = array_flip($enabled);
 
 		foreach ((array) $this->key as $key => $dummy)
 		{
@@ -46,7 +36,6 @@ class ActivateOperation extends Operation
 			{
 				$core->modules[$key] = true;
 				$module = $core->modules[$key];
-
 				$rc = $module->is_installed($errors);
 
 				if (!$rc || count($errors))
@@ -58,8 +47,24 @@ class ActivateOperation extends Operation
 			}
 			catch (\Exception $e)
 			{
-				$errors[$e->getMessage()];
+				$core->modules[$key] = false;
+				$errors[] = $e->getMessage();
 			}
+		}
+
+		return count($errors) == 0;
+	}
+
+	protected function process()
+	{
+		global $core;
+
+		$enabled = array_keys($core->modules->enabled_modules_descriptors);
+		$enabled = array_flip($enabled);
+
+		foreach ((array) $this->key as $key => $dummy)
+		{
+			$enabled[$key] = true;
 		}
 
 		$core->vars['enabled_modules'] = array_keys($enabled);

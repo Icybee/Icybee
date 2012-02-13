@@ -9,14 +9,14 @@
  * file that was distributed with this source code.
  */
 
-namespace Icybee\Accessor;
+namespace Icybee;
 
 use ICanBoogie\Module;
 
 /**
  * Accessor class for the modules of the framework.
  */
-class Modules extends \ICanBoogie\Accessor\Modules
+class Modules extends \ICanBoogie\Modules
 {
 	/**
 	 * Overrides the method to disable selected modules before they are run.

@@ -9,11 +9,11 @@
  * file that was distributed with this source code.
  */
 
-namespace BrickRouge\Form;
+namespace Brickrouge\Form;
 
-use BrickRouge\Element;
-use BrickRouge\Form;
-use BrickRouge\Text;
+use Brickrouge\Element;
+use Brickrouge\Form;
+use Brickrouge\Text;
 
 class Contact extends Form
 {
@@ -71,7 +71,7 @@ class Contact extends Form
 							(
 								Form::LABEL => 'E-mail',
 								Element::REQUIRED => true,
-								Element::VALIDATOR => array('BrickRouge\Form::validate_email')
+								Element::VALIDATOR => array('Brickrouge\Form::validate_email')
 							)
 						),
 

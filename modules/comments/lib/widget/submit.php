@@ -11,13 +11,13 @@
 
 use ICanBoogie\ActiveRecord\Comment;
 use ICanBoogie\Operation;
-use BrickRouge\Element;
-use BrickRouge\Form;
-use BrickRouge\Text;
+use Brickrouge\Element;
+use Brickrouge\Form;
+use Brickrouge\Text;
 
 class feedback_comments_WdForm extends Form
 {
-	public function __construct($tags, $dummy=null)
+	public function __construct(array $tags=array(), $dummy=null)
 	{
 		global $core;
 
@@ -63,7 +63,7 @@ class feedback_comments_WdForm extends Form
 							(
 								Element::LABEL => 'E-mail',
 								Element::REQUIRED => true,
-								Element::VALIDATOR => array('BrickRouge\Form::validate_email'),
+								Element::VALIDATOR => array('Brickrouge\Form::validate_email'),
 // 								'readonly' => $is_member
 							)
 						),
@@ -90,6 +90,8 @@ class feedback_comments_WdForm extends Form
 						(
 							Element::TYPE_RADIO_GROUP, array
 							(
+								Form::LABEL => "Shouhaitez-vous être informé d'une réponse à votre message ?",
+
 								Element::OPTIONS => array
 								(
 									'yes' => "Bien sûr !",
@@ -98,9 +100,6 @@ class feedback_comments_WdForm extends Form
 								),
 
 								Element::DEFAULT_VALUE => 'no',
-								Element::LABEL => "Shouhaitez-vous être informé d'une réponse à votre message&nbsp;?",
-								Element::LABEL_POSITION => 'above',
-								Element::LABEL_SEPARATOR => false,
 
 								'class' => 'inputs-list'
 							)

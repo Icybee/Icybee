@@ -13,8 +13,8 @@ use ICanBoogie\ActiveRecord;
 use ICanBoogie\Uploaded;
 use ICanBoogie\Operation;
 
-use BrickRouge\Element;
-use BrickRouge\Document;
+use Brickrouge\Element;
+use Brickrouge\Document;
 
 class WdAttachmentsElement extends Element
 {
@@ -29,7 +29,7 @@ class WdAttachmentsElement extends Element
 		$this->add_class('resources-files-attached');
 	}
 
-	protected static function add_assets(\BrickRouge\Document $document)
+	protected static function add_assets(\Brickrouge\Document $document)
 	{
 		parent::add_assets($document);
 
@@ -87,12 +87,12 @@ class WdAttachmentsElement extends Element
 		$label_join = t('Add a new attachment');
 		$label_limit = t('The maximum size for each attachment is :size', array(':size' => $limit_formated));
 
-		$label_join = new \BrickRouge\File
+		$label_join = new \Brickrouge\File
 		(
 			array
 			(
-				\BrickRouge\File::FILE_WITH_LIMIT => $limit / 1024,
-				\BrickRouge\File::T_UPLOAD_URL => '/api/nodes.attachments/upload'
+				\Brickrouge\File::FILE_WITH_LIMIT => $limit / 1024,
+				\Brickrouge\File::T_UPLOAD_URL => '/api/nodes.attachments/upload'
 			)
 		);
 
@@ -129,7 +129,7 @@ EOT;
 
 			$links = array
 			(
-				'<a href="#remove" class="remove">' . t('label.remove') . '</a>'
+				'<a href="#remove" class="btn btn-warning">' . t('label.remove') . '</a>'
 			);
 		}
 		else
@@ -142,9 +142,9 @@ EOT;
 
 			$links = array
 			(
-				'<a href="' . \ICanBoogie\Route::contextualize('/admin/files/' . $fid . '/edit') . '">' . t('label.edit') .'</a>',
-				'<a href="' . Operation::encode('files/' . $fid . '/download') . '">' . t('label.download') . '</a>',
-				$hard_bond ? '<a href="#delete" class="danger">' . t('Delete file') .'</a>' : '<a href="#remove" class="warn">' . t('Break link') . '</a>'
+				'<a href="' . \ICanBoogie\Route::contextualize('/admin/files/' . $fid . '/edit') . '" class="btn">' . t('label.edit') .'</a>',
+				'<a href="' . Operation::encode('files/' . $fid . '/download') . '" class="btn">' . t('label.download') . '</a>',
+				$hard_bond ? '<a href="#delete" class="btn btn-danger">' . t('Delete file') .'</a>' : '<a href="#remove" class="btn btn-warning">' . t('Break link') . '</a>'
 			);
 
 			$node = $core->models['nodes'][$entry->nid];
@@ -156,7 +156,7 @@ EOT;
 		}
 
 		$title = wd_entities($title);
-		$links = empty($links) ? '' : (' &ndash; ' . implode(', ', $links));
+		$links = empty($links) ? '' : (' &ndash; ' . implode(' ', $links));
 
 		if ($extension)
 		{

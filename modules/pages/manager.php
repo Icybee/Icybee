@@ -15,8 +15,8 @@ use ICanBoogie\ActiveRecord\Query;
 use ICanBoogie\Exception;
 use ICanBoogie\Route;
 
-use BrickRouge\Element;
-use BrickRouge\Text;
+use Brickrouge\Element;
+use Brickrouge\Text;
 
 class Manager extends \ICanBoogie\Modules\Nodes\Manager
 {

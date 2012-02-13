@@ -6,7 +6,7 @@ use ICanBoogie\ActiveRecord\Model;
 return array
 (
 	Module::T_TITLE => 'Pages',
-	Module::T_CATEGORY => 'contents',
+	Module::T_CATEGORY => 'site',
 	Module::T_EXTENDS => 'nodes',
 	Module::T_REQUIRED => true,
 	Module::T_MODELS => array

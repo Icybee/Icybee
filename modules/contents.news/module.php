@@ -13,8 +13,8 @@ namespace ICanBoogie\Modules\Contents\News;
 
 use ICanBoogie\ActiveRecord\Content;
 use ICanBoogie\Modules\Contents\Manager;
-use BrickRouge\Element;
-use BrickRouge\Form;
+use Brickrouge\Element;
+use Brickrouge\Form;
 
 class Module extends \ICanBoogie\Modules\Contents\Module
 {
@@ -40,7 +40,7 @@ class Module extends \ICanBoogie\Modules\Contents\Module
 			(
 				Element::CHILDREN => array
 				(
-					Content::DATE => new \BrickRouge\Date
+					Content::DATE => new \Brickrouge\Date
 					(
 						array
 						(

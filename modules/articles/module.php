@@ -13,9 +13,9 @@ namespace ICanBoogie\Modules\Articles;
 
 use ICanBoogie\ActiveRecord\Content;
 use ICanBoogie\ActiveRecord\Query;
-use BrickRouge;
-use BrickRouge\Form;
-use BrickRouge\Element;
+use Brickrouge;
+use Brickrouge\Form;
+use Brickrouge\Element;
 
 class Module extends \ICanBoogie\Modules\Contents\Module
 {
@@ -63,7 +63,7 @@ class Module extends \ICanBoogie\Modules\Contents\Module
 			(
 				Element::CHILDREN => array
 				(
-					Content::DATE => new BrickRouge\DateTime
+					Content::DATE => new Brickrouge\DateTime
 					(
 						array
 						(

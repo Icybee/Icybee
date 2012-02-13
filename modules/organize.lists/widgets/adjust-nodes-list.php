@@ -9,11 +9,11 @@
  * file that was distributed with this source code.
  */
 
-namespace BrickRouge\Widget;
+namespace Brickrouge\Widget;
 
 use ICanBoogie\Operation;
 
-class AdjustNodesList extends \BrickRouge\Widget
+class AdjustNodesList extends \Brickrouge\Widget
 {
 	const T_SCOPE = '#adjust-scope';
 	const T_SEARCH_DESCRIPTION = '#adjust-search-description';

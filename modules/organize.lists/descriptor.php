@@ -40,5 +40,10 @@ return array
 
 			Model::T_ALIAS => 'lnode'
 		)
+	),
+
+	Module::T_REQUIRES => array
+	(
+		'nodes' => '1.x'
 	)
 );

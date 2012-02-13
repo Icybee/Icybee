@@ -1,8 +1,8 @@
 <?php
 
-if (file_exists(ICanBoogie\DOCUMENT_ROOT . '/repository/lib/default_nodes_routes'))
+if (file_exists(ICanBoogie\REPOSITORY . 'vars/default_nodes_routes'))
 {
-	return require ICanBoogie\DOCUMENT_ROOT . '/repository/lib/default_nodes_routes';
+	return require ICanBoogie\REPOSITORY . 'vars/default_nodes_routes';
 }
 
 return array();

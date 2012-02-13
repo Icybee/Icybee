@@ -18,7 +18,7 @@ use ICanBoogie\Module;
 use ICanBoogie\Operation;
 use ICanBoogie\Route;
 
-use BrickRouge\Document;
+use Brickrouge\Document;
 
 /**
  * The following properties are injected by the "system.registry" module.
@@ -128,7 +128,7 @@ class Core extends ICanBoogie\Core
 			$version = preg_replace('#\s\([^\)]+\)#', '', VERSION);
 			$css = array
 			(
-				Document::resolve_url(\BrickRouge\ASSETS . 'brickrouge.css'),
+				Document::resolve_url(\Brickrouge\ASSETS . 'brickrouge.css'),
 				Document::resolve_url(ASSETS . 'css/base.css')
 			);
 
@@ -149,7 +149,7 @@ class Core extends ICanBoogie\Core
 	{
 		$config = $this->config;
 
-		return new Accessor\Modules($config['modules'], $config['cache modules'], $this->vars);
+		return new Modules($config['modules'], $config['cache modules'], $this->vars);
 	}
 
 	/**

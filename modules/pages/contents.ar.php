@@ -91,7 +91,7 @@ class Content extends ActiveRecord
 		}
 		catch (Exception $e)
 		{
-			return (string) $e;
+			return \ICanBoogie\Debug::format_alert($e);
 		}
 
 		return $rc;

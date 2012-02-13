@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace BrickRouge;
+namespace Brickrouge;
 
 class quick_contact_WdForm extends Form
 {
@@ -31,7 +31,7 @@ class quick_contact_WdForm extends Form
 							(
 								Element::LABEL => 'Votre e-mail',
 								Element::REQUIRED => true,
-								Element::VALIDATOR => array('BrickRouge\Form::validate_email')
+								Element::VALIDATOR => array('Brickrouge\Form::validate_email')
 							)
 						),
 

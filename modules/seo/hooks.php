@@ -9,15 +9,15 @@
  * file that was distributed with this source code.
  */
 
-namespace ICanBoogie\Modules\FirstPosition;
+namespace ICanBoogie\Modules\Seo;
 
 use ICanBoogie\ActiveRecord\Content;
 use ICanBoogie\Event;
 use ICanBoogie\Modules;
 
-use BrickRouge\Element;
-use BrickRouge\Form;
-use BrickRouge\Text;
+use Brickrouge\Element;
+use Brickrouge\Form;
+use Brickrouge\Text;
 
 use WdPatron as Patron;
 
@@ -93,7 +93,7 @@ EOT;
 
 		if ($description)
 		{
-			$description = html_entity_decode($description, ENT_QUOTES, ICanBoogie\CHARSET);
+			$description = html_entity_decode($description, ENT_QUOTES, \ICanBoogie\CHARSET);
 			$description = trim(strip_tags($description));
 
 			$event->metas['Description'] = $description;
@@ -132,48 +132,61 @@ EOT;
 		}
 	}
 
+	/**
+	 * Extends the site edit block with a `SEO` group and controls for the Google Analytics UA
+	 * and Google Site Verification keys.
+	 *
+	 * @param Event $event
+	 * @param \ICanBoogie\Modules\Sites\Module $sender
+	 */
+	public static function on_site_alter_block_edit(Event $event, \ICanBoogie\Modules\Sites\Module $sender)
+	{
+		$event->tags = wd_array_merge_recursive
+		(
+			$event->tags, array
+			(
+				Element::GROUPS => array
+				(
+					'seo' => array
+					(
+						'title' => 'SEO',
+						'weight' => 40
+					)
+				),
+
+				Element::CHILDREN => array
+				(
+					'metas[google_analytics_ua]' => new Text
+					(
+						array
+						(
+							Form::LABEL => 'Google Analytics UA',
+							Element::GROUP => 'seo'
+						)
+					),
+
+					'metas[google_site_verification]' => new Text
+					(
+						array
+						(
+							Form::LABEL => 'Google Site Verification',
+							Element::GROUP => 'seo'
+						)
+					)
+				)
+			)
+		);
+	}
+
 	static public function event_alter_block_edit(Event $event, \ICanBoogie\Module $sender)
 	{
 		global $core;
 
+		var_dump($event, $sender);
+
 		if ($sender instanceof Modules\Sites\Module)
 		{
-			$event->tags = wd_array_merge_recursive
-			(
-				$event->tags, array
-				(
-					Element::GROUPS => array
-					(
-						'firstposition' => array
-						(
-							'title' => '.seo',
-							'class' => 'form-section flat',
-							'weight' => 40
-						)
-					),
 
-					Element::CHILDREN => array
-					(
-						'metas[google_analytics_ua]' => new Text
-						(
-							array
-							(
-								Form::LABEL => 'Google Analytics UA',
-								Element::GROUP => 'firstposition'
-							)
-						),
-
-						'metas[google_site_verification]' => new Text
-						(
-							array
-							(
-								Form::LABEL => 'Google Site Verification',
-								Element::GROUP => 'firstposition'
-							)
-						)
-					)
-				)
-			);
 
 			return;
 		}
@@ -194,10 +207,9 @@ EOT;
 			(
 				Element::GROUPS => array
 				(
-					'firstposition' => array
+					'seo' => array
 					(
 						'title' => '.seo',
-						'class' => 'form-section flat',
 						'weight' => 40
 					)
 				),

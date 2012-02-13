@@ -5,7 +5,11 @@ return array
 	'section.title' => array
 	(
 		'admin' => 'Administration',
-		'organize' => 'Organize',
+		'organize' => 'Organize'
+	),
+
+	'legend' => array
+	(
 		'primary' => 'Main'
 	),
 

@@ -8,7 +8,9 @@ return array
 
 		'operation.components/*:before' => 'publisher_WdHooks::before_operation_components_all', // FIXME-20120108: is this still relevant ?
 		'operation.components/*' => 'publisher_WdHooks::operation_components_all', // FIXME-20120108: is this still relevant ?
-		'Icybee::nodes_load' => 'Icybee::on_nodes_load'
+		'Icybee::nodes_load' => 'Icybee::on_nodes_load',
+
+		'ICanBoogie\Modules\System\Cache\Collection::alter' => 'Icybee\Hooks::on_alter_cache_collection'
 	),
 
 	'objects.methods' => array

@@ -14,13 +14,11 @@ namespace ICanBoogie\Modules\Comments;
 use ICanBoogie\ActiveRecord\Comment;
 use ICanBoogie\ActiveRecord\Query;
 
-use BrickRouge\Document;
-use BrickRouge\Element;
+use Brickrouge\Document;
+use Brickrouge\Element;
 
 class Manager extends \WdManager
 {
-	const T_LIST_SPAM = '#manager-list-spam';
-
 	public function __construct($module, array $tags=array())
 	{
 		parent::__construct
@@ -43,9 +41,23 @@ class Manager extends \WdManager
 	{
 		return parent::columns() + array
 		(
-			Comment::CREATED => array
+			'comment' => array
 			(
-				'class' => 'contents'
+				'orderable' => false
+			),
+
+			'status' => array
+			(
+				'orderable' => false,
+				'filters' => array
+				(
+					'options' => array
+					(
+						'=approved' => "Approved",
+						'=pending' => "Pending",
+						'=spam' => "Spam"
+					)
+				),
 			),
 
 			'score' => array
@@ -62,8 +74,39 @@ class Manager extends \WdManager
 			Comment::NID => array
 			(
 				'orderable' => false
+			),
+
+			Comment::CREATED => array
+			(
+				'class' => 'date'
 			)
 		);
+	}
+
+	/**
+	 * Update filters with the `status` modifier.
+	 *
+	 * @see Icybee.Manager::update_filters()
+	 */
+	protected function update_filters(array $filters, array $modifiers)
+	{
+		$filters = parent::update_filters($filters, $modifiers);
+
+		if (isset($modifiers['status']))
+		{
+			$value = $modifiers['status'];
+
+			if (in_array($value, array('approved', 'pending', 'spam')))
+			{
+				$filters['status'] = $value;
+			}
+			else if (!$value)
+			{
+				unset($filters['status']);
+			}
+		}
+
+		return $filters;
 	}
 
 	protected function alter_query(Query $query, array $filters)
@@ -72,11 +115,25 @@ class Manager extends \WdManager
 
 		$query = parent::alter_query($query, $filters);
 
-		$query->where($this->get(self::T_LIST_SPAM) ? 'status = "spam"' : 'status != "spam"');
-
 		$query->where('(SELECT 1 FROM {prefix}nodes WHERE nid = comment.nid AND (siteid = 0 OR siteid = ?)) IS NOT NULL', $core->site_id);
 
 		return $query;
+	}
+
+	protected function render_cell_comment($record, $property)
+	{
+		$rc  = $this->render_cell_url($record);
+
+		$rc .= '<span class="contents">';
+		$rc .= parent::modify_code(strip_tags($record->excerpt(24)), $record->commentid, $this);
+		$rc .= '</span><br />';
+
+		return $rc;
+	}
+
+	protected function render_cell_status($record, $property)
+	{
+		return $this->render_filter_cell($record, $property, $this->t->__invoke($record->$property), array('scope' => '.status'));
 	}
 
 	protected function render_cell_url($record)
@@ -93,24 +150,9 @@ class Manager extends \WdManager
 		);
 	}
 
-	protected function render_cell_created($record, $property)
-	{
-		$rc  = $this->render_cell_url($record);
-
-		$rc .= '<span class="contents">';
-		$rc .= parent::modify_code(strip_tags($record->excerpt(24)), $record->commentid, $this);
-		$rc .= '</span><br />';
-
-		$rc .= '<span class="datetime small">';
-		$rc .= $this->render_cell_datetime($record, $property);
-		$rc .= '</span>';
-
-		return $rc;
-	}
-
 	protected $last_rendered_author;
 
-	protected function get_cell_author($record, $property)
+	protected function render_cell_author($record, $property)
 	{
 		if ($this->last_rendered_author == $record->author_email)
 		{
@@ -154,12 +196,12 @@ class Manager extends \WdManager
 		return $rc;
 	}
 
-	protected function get_cell_score($record)
+	protected function render_cell_score($record)
 	{
 		return Module::score_spam($record->contents, $record->author_url, $record->author);
 	}
 
-	protected function get_cell_nid($record, $property)
+	protected function render_cell_nid($record, $property)
 	{
 		$node = $record->node;
 
@@ -188,5 +230,10 @@ class Manager extends \WdManager
 		}
 
 		return $rc . $this->render_filter_cell($record, $property, $label);
+	}
+
+	protected function render_cell_created($record, $property)
+	{
+		return $this->render_cell_datetime($record, $property);
 	}
 }

@@ -9,23 +9,25 @@
  * file that was distributed with this source code.
  */
 
-namespace BrickRouge\Widget;
+namespace Brickrouge\Widget;
 
 use ICanBoogie\Image;
-use BrickRouge\Element;
-use BrickRouge\Text;
 
-class AdjustThumbnailVersion extends \BrickRouge\Widget
+use Brickrouge\Element;
+use Brickrouge\Form;
+use Brickrouge\Text;
+
+class AdjustThumbnailVersion extends \Brickrouge\Group
 {
 	private $elements = array();
 
-	public function __construct($tags, $dummy=null)
+	public function __construct(array $attributes=array())
 	{
 		global $core;
 
 		parent::__construct
 		(
-			'div', wd_array_merge_recursive
+			wd_array_merge_recursive
 			(
 				array
 				(
@@ -35,14 +37,16 @@ class AdjustThumbnailVersion extends \BrickRouge\Widget
 						(
 							'div', array
 							(
-								Element::LABEL => 'Dimensions',
-								Element::LABEL_POSITION => 'above',
+								Form::LABEL => 'Dimensions',
 								Element::CHILDREN => array
 								(
 									'w' => $this->elements['w'] = new Text
 									(
 										array
 										(
+											Text::ADDON => 'px',
+
+											'class' => 'measure',
 											'size' => 5
 										)
 									),
@@ -53,11 +57,12 @@ class AdjustThumbnailVersion extends \BrickRouge\Widget
 									(
 										array
 										(
+											Text::ADDON => 'px',
+
+											'class' => 'measure',
 											'size' => 5
 										)
-									),
-
-									'&nbsp;px',
+									)
 								)
 							)
 						),
@@ -66,8 +71,7 @@ class AdjustThumbnailVersion extends \BrickRouge\Widget
 						(
 							'select', array
 							(
-								Element::LABEL => 'Méthode',
-								Element::LABEL_POSITION => 'above',
+								Form::LABEL => 'Méthode',
 								Element::OPTIONS => array
 								(
 									Image::RESIZE_FILL => 'Remplir',
@@ -86,7 +90,7 @@ class AdjustThumbnailVersion extends \BrickRouge\Widget
 						(
 							Element::TYPE_CHECKBOX, array
 							(
-								Element::LABEL => 'Redimensionner, mais ne pas agrandir'
+								Element::LABEL => 'Redimensionner mais ne pas agrandir'
 							)
 						),
 
@@ -94,8 +98,8 @@ class AdjustThumbnailVersion extends \BrickRouge\Widget
 						(
 							'div', array
 							(
-								self::LABEL => 'Format de la miniature',
-								self::LABEL_POSITION => 'above',
+								Form::LABEL => 'Format de la miniature',
+
 								self::CHILDREN => array
 								(
 									'format' => $this->elements['format'] = new Element
@@ -111,7 +115,7 @@ class AdjustThumbnailVersion extends \BrickRouge\Widget
 
 											self::DEFAULT_VALUE => 'jpeg',
 
-											'style' => 'display: inline-block'
+											'style' => 'display: inline-block; width: auto'
 										)
 									),
 
@@ -121,10 +125,11 @@ class AdjustThumbnailVersion extends \BrickRouge\Widget
 									(
 										array
 										(
-											self::LABEL => 'Qualité',
-											self::LABEL_POSITION => 'before',
+											Text::ADDON => 'Qualité',
+											Text::ADDON_POSITION => 'before',
 											self::DEFAULT_VALUE => 80,
 
+											'class' => 'measure',
 											'size' => 3
 										)
 									)
@@ -132,6 +137,7 @@ class AdjustThumbnailVersion extends \BrickRouge\Widget
 							)
 						),
 
+						/*
 						'interlace' => $this->elements['interlace'] = new Element
 						(
 							Element::TYPE_CHECKBOX, array
@@ -139,26 +145,26 @@ class AdjustThumbnailVersion extends \BrickRouge\Widget
 								self::LABEL => 'Affichage progressif'
 							)
 						),
+						*/
 
 						'background' => $this->elements['background'] = new Text
 						(
 							array
 							(
-								self::LABEL => 'Remplissage',
-								self::LABEL_POSITION => 'above'
+								Form::LABEL => 'Remplissage'
 							)
 						)
 					),
 
-					'class' => 'adjust'
+					'class' => 'adjust widget-adjust-thumbnail-version'
 				),
 
-				$tags
+				$attributes
 			)
 		);
 	}
 
-	protected static function add_assets(\BrickRouge\Document $document)
+	protected static function add_assets(\Brickrouge\Document $document)
 	{
 		parent::add_assets($document);
 

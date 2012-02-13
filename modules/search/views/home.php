@@ -14,15 +14,15 @@ use ICanBoogie\Modules\Pages\Model as PagesModel;
 use ICanBoogie\Event;
 use ICanBoogie\Exception;
 use ICanBoogie\Module;
-use BrickRouge\Button;
-use BrickRouge\Element;
-use BrickRouge\Form;
-use BrickRouge\Text;
+use Brickrouge\Button;
+use Brickrouge\Element;
+use Brickrouge\Form;
+use Brickrouge\Text;
 
 require_once dirname(__DIR__) . '/api.php';
 
-$_home_limit = $core->site->metas->get('site_search.limits.home', 5);
-$_list_limit = $core->site->metas->get('site_search.limits.list', 10);
+$_home_limit = $core->site->metas->get('search.limits.home', 5);
+$_list_limit = $core->site->metas->get('search.limits.list', 10);
 
 $core->document->css->add('../public/page.css');
 
@@ -30,9 +30,9 @@ $core->document->css->add('../public/page.css');
 #
 #
 
-$module = $core->modules['features.search'];
+$module = $core->modules['search'];
 
-$constructors = $core->site->metas['features_search.scope'];
+$constructors = $core->site->metas['search.scope'];
 
 if (!count($constructors))
 {
@@ -69,11 +69,11 @@ foreach ($constructors as $constructor)
 
 $document->js->add('../public/widget.js');
 
-$form = new BrickRouge\Form
+$form = new Brickrouge\Form
 (
 	array
 	(
-		BrickRouge\Form::VALUES => $_GET,
+		Brickrouge\Form::VALUES => $_GET,
 
 		Element::CHILDREN => array
 		(

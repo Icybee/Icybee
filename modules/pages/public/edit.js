@@ -1,102 +1,96 @@
-/**
- * This file is part of the Publishr software
- *
- * @author Olivier Laviale <olivier.laviale@gmail.com>
- * @link http://www.wdpublisher.com/
- * @copyright Copyright (c) 2007-2011 Olivier Laviale
- * @license http://www.wdpublisher.com/license.html
- */
 
 document.addEvent
 (
 	'elementsready', function()
 	{
-		var selector = $(document.body).getElement('[name=template]');
+		var selector = $(document.body).getElement('[name="template"]')
+		, form
+		, req
 
-		if (!selector)
-		{
-			return;
-		}
+		if (!selector) return
 
-		var form = selector.form;
+		form = selector.form
 
-		if (selector.retrieve('loader'))
-		{
-			return;
-		}
+		if (selector.retrieve('loader')) return
 
-		selector.store('loader', true);
+		selector.store('loader', true)
 
-		var req = new Request.Element
+		req = new Request.Element
 		({
 			url: '/api/pages/template-editors',
 
 			onSuccess: function(el)
 			{
-				var previous_hiddens = form.getElements('input[type=hidden][name^="contents["][name$="editor]"]');
+				var previous_hiddens = form.getElements('input[type=hidden][name^="contents["][name$="editor]"]')
+				, container = form.getElement('.group--contents')
+				, inheritContainer = form.getElement('.group--contents-inherit')
 
-				previous_hiddens.destroy();
+				previous_hiddens.destroy()
 
-				var after = $('section-title-contents');
-				var next = after.getNext();
-				var remove = null;
-
-				while (next)
-				{
-					remove = next;
-
-					if (!remove || remove.tagName == 'H3')
+				el.getChildren('input[type="hidden"]').each
+				(
+					function(input)
 					{
-						break;
+						form.adopt(input);
 					}
+				)
 
-					next = remove.getNext();
-					remove.destroy();
+				container.getChildren('.control-group').each
+				(
+					function(group)
+					{
+						if (group.hasClass('control-group--template')) return
+
+						group.destroy()
+					}
+				)
+
+				if (inheritContainer)
+				{
+					inheritContainer.destroy()
 				}
 
-				el.getElement('h3').destroy();
-
-				var insert = el.getChildren();
-
-				var i = insert.length;
-
-				while (i--)
-				{
-					var insertElement = insert[i];
-
-					if (insertElement.match('input[type=hidden]'))
+				el.getElements('.group--contents .control-group').each
+				(
+					function(group)
 					{
-						insertElement.inject(form);
+						console.log('group:', group);
 
-						continue;
+						if (group.hasClass('control-group--template')) return
+
+						container.adopt(group);
 					}
+				)
 
-					insert[i].inject(after, 'after');
+				inheritContainer = el.getElement('.group--contents-inherit')
+
+				if (inheritContainer)
+				{
+					inheritContainer.inject(container, 'after')
 				}
 
-				document.fireEvent('elementsready', { target: form });
-				document.fireEvent('editors');
+				document.fireEvent('elementsready', { target: form })
+				document.fireEvent('editors')
 			}
-		});
+		})
 
 		selector.addEvent
 		(
 			'change', function(ev)
 			{
-				var form = selector.form;
-				var pageid = form.elements['#key'] ? form.elements['#key'].value : null;
+				var pageid = form.elements['#key'] ? form.elements['#key'].value : null
 
-				req.get({ pageid: pageid, template: selector.get('value') });
+				req.get({ pageid: pageid, template: selector.get('value') })
 			}
-		);
+		)
 	}
-);
+)
 
 window.addEvent
 (
 	'domready', function()
 	{
-		$$('.panel.inherit-toggle a[href="#edit"]').each
+		$$('.group--contents-inherit > .control-group a[href="#edit"]').each
 		(
 			function(el)
 			{
@@ -104,9 +98,8 @@ window.addEvent
 				(
 					'click', function(ev)
 					{
-						ev.stop();
-
-						el.getParent('.panel').toggleClass('edit');
+						ev.stop()
+						el.getParent('.control-group').toggleClass('editing')
 					}
 				);
 			}

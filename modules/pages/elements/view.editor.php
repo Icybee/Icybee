@@ -14,7 +14,7 @@ use ICanBoogie\Exception;
 use ICanBoogie\Exception\HTTP as HTTPException;
 use ICanBoogie\I18n;
 use ICanBoogie\Module;
-use BrickRouge\Element;
+use Brickrouge\Element;
 
 class view_WdEditorElement extends WdEditorElement
 {
@@ -233,7 +233,7 @@ class view_WdEditorElement extends WdEditorElement
 					);
 				}
 
-				uksort($items, 'wd_unaccent_compare_ci');
+// 				uksort($items, 'wd_unaccent_compare_ci');
 
 				$rc .= "<ul$active><li>" . implode('</li><li>', $items) . '</li></ul>';
 			}

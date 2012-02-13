@@ -12,7 +12,7 @@
 use ICanBoogie\Modules;
 use ICanBoogie\Operation;
 
-use BrickRouge\Element;
+use Brickrouge\Element;
 
 class moo_WdEditorElement extends WdEditorElement
 {
@@ -68,7 +68,7 @@ class moo_WdEditorElement extends WdEditorElement
 
 		if (count($css) == 1)
 		{
-			$css[] = $document->resolve_url(\BrickRouge\ASSETS . 'brickrouge.css');
+			$css[] = $document->resolve_url(\Brickrouge\ASSETS . 'brickrouge.css');
 		}
 
 		$try = \ICanBoogie\DOCUMENT_ROOT . 'public/page.css';

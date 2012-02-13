@@ -1,7 +1,7 @@
 
-BrickRouge.Widget.Login = new Class({
+Brickrouge.Widget.Login = new Class({
 
-	Extends: BrickRouge.Form,
+	Extends: Brickrouge.Form,
 
 	options: {
 
@@ -21,9 +21,9 @@ BrickRouge.Widget.Login = new Class({
 	}
 });
 
-BrickRouge.Widget.NonceRequest = new Class({
+Brickrouge.Widget.NonceRequest = new Class({
 
-	Extends: BrickRouge.Form,
+	Extends: Brickrouge.Form,
 
 	options: {
 
@@ -31,7 +31,7 @@ BrickRouge.Widget.NonceRequest = new Class({
 	}
 });
 
-BrickRouge.Widget.LoginCombo = new Class({
+Brickrouge.Widget.LoginCombo = new Class({
 
 	initialize: function(el, options)
 	{

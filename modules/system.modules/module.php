@@ -15,8 +15,8 @@ use ICanBoogie\Exception\HTTP as HTTPException;
 use ICanBoogie\Operation;
 use ICanBoogie\Route;
 
-use BrickRouge\Element;
-use BrickRouge\Form;
+use Brickrouge\Element;
+use Brickrouge\Form;
 
 use Icybee;
 
@@ -46,23 +46,6 @@ class Module extends \Icybee\Module
 			$form->hiddens[Operation::NAME] = self::OPERATION_DEACTIVATE;
 			$form->hiddens[Operation::DESTINATION] = $this;
 		}
-
-		/*
-
-		$rc = <<<EOT
-
-<div class="group">
-<div class="element-description">
-<p>Epsum factorial non deposit quid pro quo hic escorol. Olypian quarrels et gorilla congolium sic ad nauseum. Souvlaki ignitus carborundum e pluribus unum. Defacto lingo est igpay atinlay. Marquee selectus non provisio incongruous feline nolo contendre. Gratuitous octopus niacin.</p>
-</div>
-</div>
-
-EOT
-
-		. $form;
-
-		return $rc;
-		*/
 
 		return $form;
 	}
@@ -106,8 +89,6 @@ EOT
 		uksort($packages, 'wd_unaccent_compare_ci');
 
 		$categories = $packages;
-		$mandatories = $core->modules->ids_by_property(self::T_REQUIRED);
-
 		$rows = '';
 
 		$span = $is_installer_mode ? 4 : 5;
@@ -122,7 +103,6 @@ EOT
 
 			foreach ($descriptors as $m_id => $descriptor)
 			{
-				$is_required = isset($mandatories[$m_id]);
 				$title = $descriptor['_locale_title'];
 
 				#
@@ -149,7 +129,7 @@ EOT
 					Element::TYPE_CHECKBOX, array
 					(
 						'name' => Operation::KEY . '[' . $m_id . ']',
-						'disabled' => $is_required
+						'disabled' => $descriptor[self::T_REQUIRED]
 					)
 				);
 
@@ -330,7 +310,7 @@ EOT;
 			$th_installed = '<th><div>' . t('Installed') . '</div></th>';
 		}
 
-// 		$alert_message = new \BrickRouge\AlertMessage($errors);
+// 		$alert_message = new \Brickrouge\AlertMessage($errors);
 
 		$contents  = <<<EOT
 <table class="manage" cellpadding="4" cellspacing="0">
@@ -345,7 +325,7 @@ EOT;
 
 	<tfoot>
 		<tr>
-		<td colspan="5"><button type="submit" class="danger">$label_button</button></td>
+		<td colspan="5"><button type="submit" class="btn-danger">$label_button</button></td>
 		</tr>
 	</tfoot>
 
@@ -534,7 +514,7 @@ EOT;
 
 	<tfoot>
 		<tr>
-		<td colspan="5"><button type="submit" class="danger">$label_button</button></td>
+		<td colspan="5"><button type="submit" class="btn-danger">$label_button</button></td>
 		</tr>
 	</tfoot>
 

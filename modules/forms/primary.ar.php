@@ -14,11 +14,12 @@ namespace ICanBoogie\ActiveRecord;
 use ICanBoogie\Event;
 use ICanBoogie\Exception;
 use ICanBoogie\Operation;
+use ICanBoogie\Module;
 use ICanBoogie\Modules;
 
-use BrickRouge;
-use BrickRouge\Button;
-use BrickRouge\Element;
+use Brickrouge;
+use Brickrouge\Button;
+use Brickrouge\Element;
 
 class Form extends Node
 {
@@ -83,8 +84,8 @@ class Form extends Node
 		(
 			array
 			(
-				BrickRouge\Form::VALUES => $_REQUEST,
-				BrickRouge\Form::HIDDENS => array
+				Brickrouge\Form::VALUES => $_REQUEST,
+				Brickrouge\Form::HIDDENS => array
 				(
 					Operation::DESTINATION => 'forms',
 					Operation::NAME => Modules\Forms\Module::OPERATION_POST,
@@ -99,7 +100,7 @@ class Form extends Node
 						(
 							Element::WEIGHT => 1000,
 
-							'class' => 'primary',
+							'class' => 'btn-primary',
 							'type' => 'submit'
 						)
 					)
@@ -147,7 +148,7 @@ class Form extends Node
 
 				if (!$core->user->has_permission($access, $destination))
 				{
-					return (string) new \BrickRouge\AlertMessage
+					return (string) new \Brickrouge\AlertMessage
 					(
 						<<<EOT
 <p>You don't have permission to execute the <q>$name</q> operation on the <q>$destination</q> module,
@@ -208,7 +209,7 @@ EOT
 		}
 		catch (\Exception $e)
 		{
-			return (string) $e;
+			return \ICanBoogie\Debug::format_alert($e);
 		}
 	}
 }

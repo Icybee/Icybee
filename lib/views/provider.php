@@ -51,7 +51,7 @@ abstract class Provider
 	 *
 	 * @param array $context
 	 */
-	abstract protected function alter_context(array $context);
+	abstract protected function alter_context(array $context, Query $query, array $conditions);
 }
 
 namespace Icybee\Views\ActiveRecord;

@@ -55,6 +55,35 @@
 	outline: none;
 }
 
+/*
+ * Brickrouge overrides
+ */
+/*
+input, textarea, select, .uneditable-input, .like-input {
+	color: inherit;
+	line-height: normal;
+	height: auto;
+}
+
+.help-block, .element-description {
+	color: inherit;
+	font-size: .75em;
+	margin-top: .5em;
+	max-width: 76ex;
+}
+*/
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+
 html, body
 {
 	height: 100%; /* required by the sticky footer */
@@ -281,46 +310,43 @@ NAVIGATION
 {
 	border-top: 1px solid #333;
 	background: black url(base/navigation.png) repeat-x top left;
-	/*padding: 1em 0;*/
+	padding: 0;
 	position: relative;
 }
 
-#navigation ul
-{
+#navigation ul {
 	margin: 0;
 	padding: 0;
 	line-height: 1em;
 	list-style: none;
 }
 
-#navigation li
-{
+#navigation li {
 	display: inline;
 }
 
-#navigation li + li
-{
-	padding-left: 16px;
-}
-
-#navigation li a
-{
+#navigation li a {
 	color: #AAA;
 	text-decoration: none;
 	text-transform: uppercase;
 	font-size: .9em;
+	display: inline-block;
+	padding: 16px 8px 12px 8px;
+	border-bottom: 4px solid transparent;
 }
 
-#navigation li a:hover
-{
-	text-decoration: underline;
+#navigation li a:hover {
+	border-bottom-color: rgba(51, 181, 229, 0.6);
 }
 
-#navigation li.selected a
-{
+#navigation li.selected a {
 	color: white;
 	text-shadow: 1px 1px #333;
-	/*font-weight: bold;*/
+	border-bottom-color: rgba(51, 181, 229, 1); 
+}
+
+#navigation li:first-child a {
+	padding-left: 16px;
 }
 
 #loader
@@ -408,8 +434,7 @@ CONTENTS
 **
 */
 
-#contents-wrapper,
-#navigation
+#contents-wrapper
 {
 	padding: 16px;
 }

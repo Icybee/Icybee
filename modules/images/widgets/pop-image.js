@@ -1,5 +1,5 @@
 
-BrickRouge.Widget.PopImage = new Class
+Brickrouge.Widget.PopImage = new Class
 ({
-	Extends: BrickRouge.Widget.PopNode
+	Extends: Brickrouge.Widget.PopNode
 });

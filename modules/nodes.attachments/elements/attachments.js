@@ -1,5 +1,5 @@
 
-BrickRouge.Widget.NodeAttachments = new Class({
+Brickrouge.Widget.NodeAttachments = new Class({
 
 	initialize: function(el, options)
 	{

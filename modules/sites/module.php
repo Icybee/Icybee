@@ -11,10 +11,10 @@
 
 namespace ICanBoogie\Modules\Sites;
 
-use BrickRouge\Element;
-use BrickRouge\Form;
-use BrickRouge\Text;
-use BrickRouge\Widget;
+use Brickrouge\Element;
+use Brickrouge\Form;
+use Brickrouge\Text;
+use Brickrouge\Widget;
 
 // http://labs.apache.org/webarch/uri/rfc/rfc3986.html
 
@@ -35,7 +35,7 @@ class Module extends \Icybee\Module
 	{
 		global $core, $document;
 
-		$document->css->add('public/edit.css');
+		$document->css->add('public/admin.css');
 
 		$translation_sources_el = null;
 		$translation_sources_options = $this->model
@@ -76,19 +76,17 @@ class Module extends \Icybee\Module
 				'location' => array
 				(
 					'title' => 'Emplacement',
-					'class' => 'form-section flat location'
+					'class' => 'location'
 				),
 
 				'i18n' => array
 				(
-					'title' => 'Internationalisation',
-					'class' => 'form-section flat'
+					'title' => 'Internationalisation'
 				),
 
-				'visibility' => array
+				'advanced' => array
 				(
-					'title' => 'Visibilité',
-					'class' => 'form-section flat'
+					'title' => 'Advanced parameters'
 				)
 			),
 
@@ -98,7 +96,7 @@ class Module extends \Icybee\Module
 				(
 					array
 					(
-						Form::LABEL => 'Titre',
+						Form::LABEL => 'Title',
 						Element::REQUIRED => true
 					)
 				),
@@ -107,22 +105,20 @@ class Module extends \Icybee\Module
 				(
 					array
 					(
-						Form::LABEL => 'Titre administratif',
+						Form::LABEL => 'Admin title',
 						Element::DESCRIPTION => "Il s'agit du titre utilisé par l'interface d'administration."
 					)
 				),
 
-				'model' => new Element
+				'email' => new Text
 				(
-					'select', array
+					array
 					(
-						Form::LABEL => 'Modèle',
-						Element::OPTIONS => array
-						(
-							null => '<défaut>'
-						)
-
-						+ $this->get_site_models()
+						Form::LABEL => 'Email',
+						Element::REQUIRED => true,
+						Element::VALIDATOR => array('Brickrouge\Form::validate_email'),
+						Element::DESCRIPTION => "The site's email is usually used as default sender email,
+						but can also be used as a contact address."
 					)
 				),
 
@@ -197,6 +193,7 @@ class Module extends \Icybee\Module
 					'select', array
 					(
 						Form::LABEL => 'Status',
+						Element::GROUP => 'advanced',
 						Element::OPTIONS => array
 						(
 							0 => 'Le site est hors ligne',
@@ -204,6 +201,16 @@ class Module extends \Icybee\Module
 							2 => 'Le site est en travaux',
 							3 => "Le site est interdit d'accès"
 						)
+					)
+				),
+
+				'model' => new Element
+				(
+					'select', array
+					(
+						Form::LABEL => 'Modèle',
+						Element::GROUP => 'advanced',
+						Element::OPTIONS => array(null => '<défaut>') + $this->get_site_models()
 					)
 				)
 			)

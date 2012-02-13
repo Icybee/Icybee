@@ -244,3 +244,43 @@ window.addEvent
 		);
 	}
 );
+
+
+/*
+ * Reset button for default values
+ */
+
+!function() {
+
+	var controls = []
+
+	window.addEvent('domready', function() {
+
+		$(document.body).getElements('[data-default-value]').each(function(el) {
+
+			if (controls.indexOf(el) !== -1) return;
+
+			controls.push(el)
+
+			var reset = new Element('span.btn.btn-warning.reset-default-value', { html: '<i class="icon-edit"></i> Reset' })
+			, defaultValue = el.get('data-default-value')
+
+			if (el.get('value') == defaultValue) reset.addClass('hidden')
+
+			reset.addEvent('click', function() {
+
+				el.set('value', defaultValue)
+				reset.addClass('hidden')
+
+			})
+
+			el.addEvent('change', function () {
+
+				reset[el.get('value') == defaultValue ? 'addClass' : 'removeClass']('hidden');
+			})
+
+			reset.inject(el, 'after')
+		})
+	})
+
+} ()

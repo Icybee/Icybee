@@ -46,13 +46,13 @@ class Views implements \ArrayAccess, \IteratorAggregate
 
 		if (CACHE_VIEWS)
 		{
-			$views = $core->vars['views'];
+			$views = $core->vars['cached_views'];
 
 			if (!$views)
 			{
 				$views = $this->collect();
 
-				$core->vars['views'] = $views;
+				$core->vars['cached_views'] = $views;
 			}
 		}
 		else
@@ -63,6 +63,19 @@ class Views implements \ArrayAccess, \IteratorAggregate
 		$this->views = $views;
 	}
 
+	/**
+	 * Collects views defined by modules.
+	 *
+	 * After the views defined by modules have been collected the object fires the "alter" event,
+	 * with the following parameter:
+	 *
+	 * - (array) &views: The views to alter.
+	 *
+	 * @throws \UnexpectedValueException when the `title`, `type`, `module` or `renders`
+	 * properties are empty.
+	 *
+	 * @return array[string]array
+	 */
 	protected function collect()
 	{
 		global $core;
@@ -88,26 +101,15 @@ class Views implements \ArrayAccess, \IteratorAggregate
 					'type' => $type
 				);
 
-				if (empty($definition['renders']))
-				{
-					throw new \UnexpectedValueException(\ICanBoogie\format
-					(
-						'%property is empty for the view type %type defined by the module %module.', array
-						(
-							'property' => 'renders',
-							'type' => $type,
-							'module' => $id
-						)
-					));
-				}
-
 				$views[$id . '/' . $type] = $definition;
 			}
 		}
 
 		Event::fire('alter', array('views' => &$views), $this);
 
-		foreach ($views as &$view)
+		$required = array('title', 'type', 'module', 'renders');
+
+		foreach ($views as $id => &$view)
 		{
 			$view += array
 			(
@@ -115,6 +117,21 @@ class Views implements \ArrayAccess, \IteratorAggregate
 				'class' => null,
 				'title args' => array()
 			);
+
+			foreach ($required as $property)
+			{
+				if (empty($view[$property]))
+				{
+					throw new \UnexpectedValueException(\ICanBoogie\format
+					(
+						'%property is empty for the view %id.', array
+						(
+							'property' => $property,
+							'id' => $id
+						)
+					));
+				}
+			}
 		}
 
 		return $views;

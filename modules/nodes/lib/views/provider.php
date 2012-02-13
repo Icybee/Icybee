@@ -14,6 +14,7 @@ namespace Icybee\Views\Nodes;
 use ICanBoogie\ActiveRecord\Node;
 use ICanBoogie\ActiveRecord\Query;
 use ICanBoogie\Event;
+use ICanBoogie\Exception;
 
 class Provider extends \Icybee\Views\ActiveRecord\Provider
 {
@@ -36,14 +37,14 @@ class Provider extends \Icybee\Views\ActiveRecord\Provider
 		{
 			if (!$rc)
 			{
-				throw new HTTPException('The requested record was not found.', array(), 404);
+				throw new Exception\HTTP('The requested record was not found.', array(), 404);
 			}
 
 			if (!$rc->is_online)
 			{
 				if (!$core->user->has_permission(Module::PERMISSION_ACCESS, $rc->constructor))
 				{
-					throw new HTTPException('The requested record requires authentication.', array(), 401);
+					throw new Exception\HTTP('The requested record requires authentication.', array(), 401);
 				}
 
 				$rc->title .= ' ✎';
@@ -76,16 +77,6 @@ class Provider extends \Icybee\Views\ActiveRecord\Provider
 	}
 
 	/**
-	 * Returns the rendering context unaltered.
-	 *
-	 * @see Icybee\Views.Provider::alter_context()
-	 */
-	protected function alter_context(array $context)
-	{
-		return $context;
-	}
-
-	/**
 	 * Alters the query to search for records from the same constructor, a similar site and a
 	 * similar language.
 	 *
@@ -115,6 +106,16 @@ class Provider extends \Icybee\Views\ActiveRecord\Provider
 		}
 
 		return parent::alter_query($query, $conditions)->order('created DESC');
+	}
+
+	/**
+	 * Returns the rendering context unaltered.
+	 *
+	 * @see Icybee\Views.Provider::alter_context()
+	 */
+	protected function alter_context(array $context, Query $query, array $conditions)
+	{
+		return $context;
 	}
 
 	/**

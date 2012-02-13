@@ -107,6 +107,7 @@ class Icybee extends WdPatron
 		$queries_stats = array();
 
 		$profiling = null;
+		$dbtime = 0;
 
 		foreach ($core->connections as $id => $connection)
 		{
@@ -114,27 +115,31 @@ class Icybee extends WdPatron
 			$queries_count += $count;
 			$queries_stats[] = $id . ': ' . $count;
 
-			if ($core->user_id == 1)
+			foreach ($connection->profiling as $note)
 			{
-				foreach ($connection->profiling as $note)
-				{
-					$profiling .= number_format($note[0], 6, '.', ' ') . ': ' . $note[1] . PHP_EOL;
-				}
+				$dbtime += $note[0];
+				$profiling .= number_format($note[0], 6, '.', ' ') . ': ' . $note[1] . PHP_EOL;
 			}
 		}
 
-		$comment = '<!-- ' . t
+		if ($core->user_id != 1)
+		{
+			$profiling = null;
+		}
+
+		$comment = '<!-- ' . \ICanBoogie\format
 		(
-			'icybee v:version (core: :core_version) # rendering time: :elapsed sec (global time: :framework_elapsed), memory usage :memory-usage (peak: :memory-peak), queries: :queries-count (:queries-details)', array
+			'icybee v:version - in :elapsed ms (rendering: :rendering_elapsed ms, db: :dbtime ms), using :memory-usage (peak: :memory-peak), :queries-count queries (:queries-details)', array
 			(
-				':core_version' => ICanBoogie\VERSION,
-				':elapsed' => number_format($time, 3, '.', ''),
-				':framework_elapsed' => number_format($time_end - $wddebug_time_reference, 3, '.', ''),
-				':memory-usage' => memory_get_usage(),
-				':memory-peak' => memory_get_peak_usage(),
+				':version' => \Icybee\VERSION,
+				':core_version' => \ICanBoogie\VERSION,
+				':elapsed' => number_format(($time_end - $wddebug_time_reference) * 1000, 2, '.', ''),
+				':rendering_elapsed' => number_format($time * 1000, 2, '.', ''),
+				':dbtime' => number_format($dbtime * 1000, 2, '.', ''),
+				':memory-usage' => number_format(memory_get_usage() / (1024 * 1024), 3) . 'Mb',
+				':memory-peak' => number_format(memory_get_peak_usage() / (1024 * 1024), 3) . 'Mb',
 				':queries-count' => $queries_count,
-				':queries-details' => $queries_stats ? implode(', ', $queries_stats) : 'none',
-				':version' => Icybee\VERSION
+				':queries-details' => $queries_stats ? implode(', ', $queries_stats) : 'none'
 			)
 		)
 

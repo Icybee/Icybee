@@ -34,7 +34,10 @@ return array
 		the depth of this tree.",
 
 		'pattern' => "The pattern is used to distribute the URL parameters to create a semantic
-		URL."
+		URL.",
+
+		'contents.inherit' => "The following contents can be inherited. That is, if the page
+		does not define a content, the content of a parent page is used."
 	),
 
 	'label' => array
@@ -45,12 +48,6 @@ return array
 		'parentid' => 'Parent page',
 		'pattern' => 'Pattern',
 		'template' => 'Template'
-	),
-
-	'section.description' => array
-	(
-		'contents.inherit' => "The following contents can be inherited. That is, if the page
-		does not define a content, the content of a parent page is used."
 	),
 
 	'section.title' => array

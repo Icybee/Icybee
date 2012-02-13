@@ -14,10 +14,10 @@ namespace ICanBoogie\Modules\Users\Roles;
 use ICanBoogie\Operation;
 use ICanBoogie\Route;
 use ICanBoogie\ActiveRecord\Users\Role;
-use BrickRouge\Button;
-use BrickRouge\Element;
-use BrickRouge\Form;
-use BrickRouge\Text;
+use Brickrouge\Button;
+use Brickrouge\Element;
+use Brickrouge\Form;
+use Brickrouge\Text;
 
 class Module extends \Icybee\Module
 {

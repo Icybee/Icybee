@@ -13,7 +13,7 @@
 .widget-adjust-thumbnail .widget-adjust-image,
 .widget-adjust-thumbnail .widget-adjust-thumbnail-options
 {
-	display: table-cell;
+	float: left;
 	min-width: 200px;
 }
 
@@ -27,28 +27,31 @@
 	padding-left: 1em;
 }
 
+/*
 .widget-adjust-thumbnail div.form-element + div.form-element
 {
 	margin-top: 1em;
 }
+*/
 
 .widget-adjust-thumbnail > .more
 {
 	background: white;
-	border: 1px solid #ccc;
+	border: 3px solid rgba(0, 0, 0, 0.8);
+	border-left: 0;
 	padding: .5em;
 	position: absolute;
 	top: 1em;
 	left: 100%;
-	border-left: none;
-	-moz-border-radius: 0 4px 4px 0;
+	border-radius: 0 4px 4px 0;
 	cursor: e-resize;
+	margin-left: 14px;
 }
 
-.popup.black .widget-adjust-thumbnail > .more
+.contrast .widget-adjust-thumbnail > .more
 {
-	background: -moz-linear-gradient(left, transparent 50%, rgba(0,0,0,.8) 50%);
-	border-color: #222;
+	background: black;
+	margin-left: 10px;
 }
 
 .widget-adjust-thumbnail.unfold-thumbnail > .more

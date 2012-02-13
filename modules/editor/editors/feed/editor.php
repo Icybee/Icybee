@@ -11,8 +11,8 @@
 
 use ICanBoogie\Module,
 
-	BrickRouge\Element,
-	BrickRouge\Text;
+	Brickrouge\Element,
+	Brickrouge\Text;
 
 class feed_WdEditorElement extends WdEditorElement
 {

@@ -4,7 +4,7 @@ return array
 (
 	'comments.manager.label' => array
 	(
-		'created' => 'Comment',
+ 		'comment' => 'Comment',
 		'nid' => 'Attached to'
 	),
 

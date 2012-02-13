@@ -6,7 +6,7 @@ use ICanBoogie\ActiveRecord\Model;
 return array
 (
 	Module::T_TITLE => 'Sites',
-	Module::T_CATEGORY => 'organize',
+	Module::T_CATEGORY => 'site',
 	Module::T_REQUIRED => true,
 	Module::T_MODELS => array
 	(
@@ -28,6 +28,7 @@ return array
 					'language' => array('varchar', 8),
 					'nativeid' => 'foreign',
 					'timezone' => array('varchar', 32), // widest is "America/Argentina/Buenos_Aires" with 30 characters
+					'email' => 'varchar',
 					'status' => array('integer', 'tiny')
 				)
 			)

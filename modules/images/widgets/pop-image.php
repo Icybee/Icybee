@@ -9,9 +9,9 @@
  * file that was distributed with this source code.
  */
 
-namespace BrickRouge\Widget;
+namespace Brickrouge\Widget;
 
-use BrickRouge\Element;
+use Brickrouge\Element;
 
 class PopImage extends PopNode
 {
@@ -27,13 +27,14 @@ class PopImage extends PopNode
 				self::T_PREVIEW_WIDTH => 64,
 				self::T_PREVIEW_HEIGHT => 64,
 				self::T_CONSTRUCTOR => 'images',
-				self::T_PLACEHOLDER => 'Sélectionner une image'
+				self::T_PLACEHOLDER => 'Sélectionner une image',
+
+				'data-adjust' => 'adjust-image'
 			)
 		);
 
 		$this->dataset = array
 		(
-			'adjust' => 'adjust-image',
 			'preview-width' => $this->get(self::T_PREVIEW_WIDTH),
 			'preview-height' => $this->get(self::T_PREVIEW_HEIGHT)
 		)
@@ -41,7 +42,7 @@ class PopImage extends PopNode
 		+ $this->dataset;
 	}
 
-	protected static function add_assets(\BrickRouge\Document $document)
+	protected static function add_assets(\Brickrouge\Document $document)
 	{
 		parent::add_assets($document);
 

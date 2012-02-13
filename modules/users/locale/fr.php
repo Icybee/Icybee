@@ -45,6 +45,7 @@ return array
 		'password_confirm' => 'Confirmation',
 		'Roles' => 'Rôles',
 		'Timezone' => 'Zone horaire',
+		'username' => 'Identifiant',
 		'Username' => 'Identifiant',
 		'your_email' => 'Votre adresse e-mail'
 	),

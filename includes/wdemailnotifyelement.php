@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of the Element package.
+ * This file is part of the Icybee package.
  *
  * (c) Olivier Laviale <olivier.laviale@gmail.com>
  *
@@ -9,19 +9,21 @@
  * file that was distributed with this source code.
  */
 
-use BrickRouge\Element;
-use BrickRouge\Form;
-use BrickRouge\Text;
+use Brickrouge\Element;
+use Brickrouge\Form;
+use Brickrouge\Text;
 
-class WdEMailNotifyElement extends \BrickRouge\Group
+class WdEMailNotifyElement extends \Brickrouge\Group
 {
 	protected $elements;
 
-	public function __construct($tags)
+	public function __construct(array $attributes=array())
 	{
+		global $core;
+
 		parent::__construct
 		(
-			$tags + array
+			$attributes + array
 			(
 				Element::CHILDREN => array
 				(
@@ -29,7 +31,7 @@ class WdEMailNotifyElement extends \BrickRouge\Group
 					(
 						array
 						(
-							Form::LABEL => 'Sujet du message',
+							Form::LABEL => "Subject",
 							Element::REQUIRED => true
 						)
 					),
@@ -38,8 +40,10 @@ class WdEMailNotifyElement extends \BrickRouge\Group
 					(
 						array
 						(
-							Form::LABEL => 'Adresse d\'expédition',
-							Element::REQUIRED => true
+							Form::LABEL => "Sender address",
+							Element::REQUIRED => true,
+							Element::DEFAULT_VALUE => $core->site->email,
+							Element::VALIDATOR => array('Brickrouge\Form::validate_email')
 						)
 					),
 
@@ -47,7 +51,7 @@ class WdEMailNotifyElement extends \BrickRouge\Group
 					(
 						array
 						(
-							Form::LABEL => 'Copie cachée',
+							Form::LABEL => "Blind copy",
 						)
 					),
 
@@ -55,8 +59,9 @@ class WdEMailNotifyElement extends \BrickRouge\Group
 					(
 						'textarea', array
 						(
-							Form::LABEL => 'Patron du message',
+							Form::LABEL => "Message template",
 							Element::REQUIRED => true,
+
 							'rows' => 8
 						)
 					)
@@ -65,33 +70,22 @@ class WdEMailNotifyElement extends \BrickRouge\Group
 				'class' => 'combo'
 			)
 		);
-
-		$group = $this->get(self::GROUP);
-
-		if ($group)
-		{
-			$this->set(self::GROUP, $group);
-		}
 	}
 
-	public function set($name, $value=null)
+	/**
+	 * Forward the `DEFAULT_VALUE` and `name` attribute to its children.
+	 *
+	 * @see Brickrouge.Element::offsetSet()
+	 */
+	public function offsetSet($offset, $value)
 	{
-		switch ($name)
+		switch ($offset)
 		{
-			case self::GROUP:
-			{
-				foreach ($this->elements as $el)
-				{
-					$el->set($name, $value);
-				}
-			}
-			break;
-
 			case self::DEFAULT_VALUE:
 			{
 				foreach ($value as $identifier => $default)
 				{
-					$this->elements[$identifier]->set(self::DEFAULT_VALUE, $default);
+					$this->elements[$identifier][self::DEFAULT_VALUE] = $default;
 				}
 			}
 			break;
@@ -100,24 +94,12 @@ class WdEMailNotifyElement extends \BrickRouge\Group
 			{
 				foreach ($this->elements as $identifier => $el)
 				{
-					$el->set($name, $value . '[' . $identifier . ']');
+					$el[$offset] = $value . '[' . $identifier . ']';
 				}
-
-				return;
-			}
-			break;
-
-			case 'value':
-			{
-				// TODO-20091204: should handle value
-
-				//wd_log(__CLASS__ . '# set value: \1', array($value));
-
-				return;
 			}
 			break;
 		}
 
-		parent::set($name, $value);
+		parent::offsetSet($offset, $value);
 	}
 }

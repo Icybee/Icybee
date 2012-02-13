@@ -14,7 +14,7 @@ namespace ICanBoogie\Modules\Nodes\Onlinr;
 use ICanBoogie\Event;
 use ICanBoogie\Operation;
 
-use BrickRouge\Element;
+use Brickrouge\Element;
 
 class Module extends \Icybee\Module
 {
@@ -47,10 +47,7 @@ class Module extends \Icybee\Module
 
 			$core->registry[self::REGISTRY_NEXTUPDATE] = $nextUpdateTime ? date('Y-m-d', strtotime('+1 day', $nextUpdateTime)) : date('Y-m-d');
 		}
-		catch (Exception $e)
-		{
-			return;
-		}
+		catch (Exception $e) { return; }
 
 		#
 		#

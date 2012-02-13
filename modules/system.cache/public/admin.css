@@ -16,32 +16,26 @@ table.manage th.right
 	text-align: right;
 }
 
-table.manage tr.group-title td
+table.manage tbody td.title
 {
-	background: #F6F6F6;
-	font-weight: bold;
-}
-
-table.manage tbody tr + tr td
-{
-	border-top: 1px solid #EEE;
+	padding-top: 1em;
+	padding-bottom: 1em;	
 }
 
 table.manage tbody td.state
 {
-	text-align: center;
-	padding-top: 1em;
-	vertical-align: top;
+	width: 20px;
 }
 
-table.manage tbody td.limit
-{
-	text-align: right;
+table.manage tbody td.state .checkbox-wrapper {
+	margin: auto;
 }
 
-table.manage tbody td.limit input
+table.manage tbody td.config,
+table.manage tbody td.usage.empty,
+table.manage tbody div.element-description
 {
-	text-align: right;
+	font-size: 12px;	
 }
 
 table.manage tbody td.usage
@@ -53,8 +47,6 @@ table.manage tbody td.usage.empty
 {
 	color: #808080;
 	font-style: italic;
-	vertical-align: middle;
-	font-size: .9em;
 }
 
 table.manage tbody td.usage.empty + td button
@@ -69,6 +61,5 @@ table.manage tbody td.erase
 
 table.manage tbody div.element-description
 {
-	font-size: .8em;
-	margin-top: .5em;
+	margin: .5em 0 0 0;
 }

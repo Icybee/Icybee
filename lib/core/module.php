@@ -19,10 +19,10 @@ use ICanBoogie\Operation;
 use ICanBoogie\ActiveRecord\Query;
 use ICanBoogie\ActiveRecord\Site;
 
-use BrickRouge;
-use BrickRouge\Button;
-use BrickRouge\Element;
-use BrickRouge\Form;
+use Brickrouge;
+use Brickrouge\Button;
+use Brickrouge\Element;
+use Brickrouge\Form;
 
 /**
  * Extends the Module class with the following features:
@@ -202,7 +202,9 @@ EOT;
 
 					if ($key && $core->user->has_permission(self::PERMISSION_MANAGE, $this))
 					{
-						$items[] = '<a href="/admin/' . $this->id . '/' . $key . '/delete">' . t('label.delete') . '</a>';
+						// TODO-20120117: use Route::contextualize();
+
+						$items[] = '<a href="' . $core->site->path . '/admin/' . $this->id . '/' . $key . '/delete">' . t('label.delete') . '</a>';
 					}
 
 					if ($this instanceof ICanBoogie\Modules\Nodes\Module && $entry->url[0] != '#')
@@ -287,14 +289,12 @@ EOT;
 						(
 							'primary' => array
 							(
-								'title' => '.primary',
-								'class' => 'form-section flat'
+								'title' => 'primary'
 							),
 
 							'admin' => array
 							(
-								'title' => '.admin',
-								'class' => 'form-section flat',
+								'title' => 'admin',
 								'weight' => 900
 							),
 
@@ -317,7 +317,7 @@ EOT;
 									Element::OPTIONS => $save_mode_options,
 
 									'value' => $mode,
-									'class' => 'list save-mode'
+									'class' => 'inputs-list save-mode'
 								)
 							),
 
@@ -326,7 +326,7 @@ EOT;
 								'Save', array
 								(
 									Element::GROUP => 'save',
-									'class' => 'save',
+									'class' => 'btn-primary',
 									'type' => 'submit'
 								)
 							)
@@ -365,7 +365,9 @@ EOT;
 				#
 				#
 
-				$form = new \WdSectionedForm($tags);
+// 				$form = new \WdSectionedForm($tags);
+
+				$form = new Form($tags + array(Form::RENDERER => 'Simple'));
 
 				$form->save();
 
@@ -410,6 +412,8 @@ EOT;
 					Operation::NAME => self::OPERATION_CONFIG
 				),
 
+				Form::RENDERER => 'Simple',
+
 				Form::VALUES => array
 				(
 				),
@@ -418,8 +422,7 @@ EOT;
 				(
 					'primary' => array
 					(
-						'title' => '.primary',
-						'class' => 'form-section flat'
+						'title' => 'primary'
 					),
 
 					'save' => array
@@ -436,7 +439,7 @@ EOT;
 						'Save', array
 						(
 							Element::GROUP => 'save',
-							'class' => 'save',
+							'class' => 'btn-primary',
 							'type' => 'submit'
 						)
 					)
@@ -447,8 +450,6 @@ EOT;
 			),
 
 			$this->block_config($this->flat_id)
-
-			//call_user_func_array((PHP_MAJOR_VERSION > 5 || (PHP_MAJOR_VERSION == 5 && PHP_MINOR_VERSION > 2)) ? 'parent::' . __FUNCTION__ : array($this, 'parent::' . __FUNCTION__), $args)
 		);
 
 		Event::fire
@@ -462,7 +463,7 @@ EOT;
 			$this
 		);
 
-		$form = new \WdSectionedForm($tags);
+		$form = new Form($tags);
 
 		$registry = $core->registry;
 		$local = $core->site->metas;

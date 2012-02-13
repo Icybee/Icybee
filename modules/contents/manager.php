@@ -13,7 +13,7 @@ namespace ICanBoogie\Modules\Contents;
 
 use ICanBoogie\ActiveRecord;
 use ICanBoogie\ActiveRecord\Query;
-use BrickRouge\Element;
+use Brickrouge\Element;
 
 class Manager extends \ICanBoogie\Modules\Nodes\Manager
 {
@@ -28,7 +28,7 @@ class Manager extends \ICanBoogie\Modules\Nodes\Manager
 		);
 	}
 
-	protected static function add_assets(\BrickRouge\Document $document)
+	protected static function add_assets(\Brickrouge\Document $document)
 	{
 		parent::add_assets($document);
 

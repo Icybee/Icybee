@@ -60,7 +60,7 @@ class TemplateEditorsOperation extends Operation
 
 		$this->response['template'] = $template_info;
 
-		$form = (string) new \WdSectionedForm($contents_tags);
+		$form = (string) new \Brickrouge\Form(array(\Brickrouge\Form::RENDERER => 'Simple') + $contents_tags);
 
 		$this->response['assets'] = $core->document->assets;
 

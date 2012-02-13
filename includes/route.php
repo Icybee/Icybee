@@ -370,9 +370,9 @@ function _route_add_tabs($requested, $req_pattern)
 	{
 		if ($route['module'] == $req_module)
 		{
-			$rc .= '<li class="selected">';
+			$rc .= '<li class="active">';
 
-			$document->title = $route['tab-title'];
+			$document->title = $document->page_title = $route['tab-title'];
 		}
 		else
 		{
@@ -384,9 +384,8 @@ function _route_add_tabs($requested, $req_pattern)
 	}
 
 	$rc .= '</ul>';
-	$rc .= '<div class="clear"></div>';
 
-	$document->addToBlock($rc, 'contents-header');
+	$document->addToBlock($rc, 'subnav');
 }
 
 /*

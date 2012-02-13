@@ -13,15 +13,15 @@ namespace ICanBoogie\Modules\Comments;
 
 use ICanBoogie\ActiveRecord\Comment;
 use ICanBoogie\ActiveRecord\Query;
-use BrickRouge\Element;
-use BrickRouge\Form;
-use BrickRouge\Text;
+use Brickrouge\Element;
+use Brickrouge\Form;
+use Brickrouge\Text;
 
 class Module extends \Icybee\Module
 {
 	protected function __get_views()
 	{
-		$assets = array('css' => $this->descriptor[self::T_PATH] . 'public/page.css');
+		$assets = array('css' => __DIR__ . '/public/page.css');
 
 		return array
 		(
@@ -29,7 +29,7 @@ class Module extends \Icybee\Module
 			(
 				'title' => "Comments associated to a node",
 				'assets' => $assets,
-				'provider' => true,
+				'provider' => 'ICanBoogie\Modules\Comments\Provider',
 				'renders' => \Icybee\Views\View::RENDERS_MANY
 			),
 
@@ -133,7 +133,7 @@ Aucune autre notification ne vous sera envoyée.
 						Element::DESCRIPTION => (($properties[Comment::NOTIFY] == 'done') ? "Un
 						message de notification a été envoyé." : null),
 
-						'class' => 'list'
+						'class' => 'inputs-list'
 					)
 				),
 
@@ -164,11 +164,11 @@ Aucune autre notification ne vous sera envoyée.
 			(
 				Manager::T_COLUMNS_ORDER => array
 				(
-					'created', 'author', /*'score',*/ 'nid'
+					'comment', 'status', 'author', /*'score',*/ 'nid', 'created'
 				),
 
 				Manager::T_ORDER_BY => array('created', 'desc'),
-				Manager::T_LIST_SPAM => false
+// 				Manager::T_LIST_SPAM => false
 			)
 		);
 	}
@@ -215,20 +215,17 @@ Aucune autre notification ne vous sera envoyée.
 			(
 				'primary' => array
 				(
-					'title' => 'Général',
-					'class' => 'form-section flat'
+					'title' => 'Général'
 				),
 
 				'response' => array
 				(
-					'title' => "Message de notification à l'auteur lors d'une réponse",
-					'class' => 'form-section flat'
+					'title' => "Message de notification à l'auteur lors d'une réponse"
 				),
 
 				'spam' => array
 				(
 					'title' => 'Paramètres du filtre anti-spam',
-					'class' => 'form-section flat',
 					'description' => "Les paramètres du filtre anti-spam s'appliquent à tous les
 					sites."
 				)

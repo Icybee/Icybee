@@ -14,8 +14,8 @@ namespace ICanBoogie\Modules\Nodes;
 use ICanBoogie\ActiveRecord\Node;
 use ICanBoogie\ActiveRecord\Query;
 
-use BrickRouge\Document;
-use BrickRouge\Element;
+use Brickrouge\Document;
+use Brickrouge\Element;
 
 class Manager extends \WdManager
 {

@@ -9,6 +9,8 @@
  * file that was distributed with this source code.
  */
 
+// TODO-20120117: should be in the module's namespace
+
 namespace Icybee\Views\Contents;
 
 use ICanBoogie\ActiveRecord;

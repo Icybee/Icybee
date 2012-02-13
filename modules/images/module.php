@@ -13,9 +13,9 @@ namespace ICanBoogie\Modules\Images;
 
 use ICanBoogie\Image;
 
-use BrickRouge\Element;
-use BrickRouge\Form;
-use BrickRouge\Text;
+use Brickrouge\Element;
+use Brickrouge\Form;
+use Brickrouge\Text;
 
 class Module extends \ICanBoogie\Modules\Files\Module
 {
@@ -29,7 +29,7 @@ class Module extends \ICanBoogie\Modules\Files\Module
 		'image/gif', 'image/png', 'image/jpeg'
 	);
 
-	protected $uploader_class = 'BrickRouge\Widget\ImageUpload';
+	protected $uploader_class = 'Brickrouge\Widget\ImageUpload';
 
 	/*
 	public function install(\ICanBoogie\Errors $errors)
@@ -106,7 +106,7 @@ class Module extends \ICanBoogie\Modules\Files\Module
 					(
 						array
 						(
-							Form::LABEL => '.alt'
+							Form::LABEL => 'alt'
 						)
 					)
 				)
@@ -154,7 +154,7 @@ class Module extends \ICanBoogie\Modules\Files\Module
 	}
 }
 
-class resources_images_adjustimage_WdPager extends \BrickRouge\Pager
+class resources_images_adjustimage_WdPager extends \Brickrouge\Pager
 {
 	protected function getURL($n)
 	{

@@ -1,27 +1,8 @@
-table.manage th.score,
-table.manage td.score
-{
-	text-align: right;
-}
-
-
-table.manage td.contents
-{
-	width: 45%;
-}
-
-table.manage td.contents span.contents
-{
-	font-size: .9em;
-}
-
-table.manage td.contents span.datetime
-{
-	display: block;
-	text-align: right;
-}
-
-table.manage td.author img
+/*
+ * index table
+ */
+ 
+.cell--author img
 {
 	float: left;
 	width: 32px;
@@ -29,10 +10,18 @@ table.manage td.author img
 	border-radius: 4px;
 }
 
-table.manage td.author img + div.details
+.cell--author img + .details
 {
 	margin-left: 32px;
 	padding-left: 1ex;
+}
+
+.cell--comment {
+	max-width: 32ex;
+}
+
+.cell--comment span {
+	font-size: .8571em;
 }
 
 /* DASHBOARD */
@@ -74,11 +63,6 @@ table.manage td.author img + div.details
 #feedback-comments-last div.contents
 {
 	margin-left: 62px;
-}
-
-#feedback-comments-last .author
-{
-	font-weight: bold;
 }
 
 #feedback-comments-last .date

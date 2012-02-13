@@ -2,9 +2,9 @@
 
 return array
 (
-	'title' => array
+	'legend' => array
 	(
-		'attachments' => "Pièces jointes"
+		'Attachments' => "Pièces jointes"
 	),
 
 	'nodes_attachments.element.label.scope' => 'Activer les pièces jointes pour les modules suivants',

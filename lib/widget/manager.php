@@ -18,12 +18,12 @@ use ICanBoogie\ActiveRecord\Query;
 use ICanBoogie\Exception;
 use ICanBoogie\I18n\Translator\Proxi;
 use ICanBoogie\Operation;
-use BrickRouge;
-use BrickRouge\Button;
-use BrickRouge\Element;
-use BrickRouge\Form;
-use BrickRouge\Ranger;
-use BrickRouge\Text;
+use Brickrouge;
+use Brickrouge\Button;
+use Brickrouge\Element;
+use Brickrouge\Form;
+use Brickrouge\Ranger;
+use Brickrouge\Text;
 
 class Manager extends Element
 {
@@ -284,7 +284,7 @@ class Manager extends Element
 		return $rc;
 	}
 
-	protected static function add_assets(\BrickRouge\Document $document)
+	protected static function add_assets(\Brickrouge\Document $document)
 	{
 		parent::add_assets($document);
 
@@ -825,7 +825,7 @@ EOT;
 	 */
 	protected function render_column(array $column, $id)
 	{
-		$class = $column['class'];
+		$class = 'cell--' . \Brickrouge\normalize($id) . ' ' . $column['class'];
 
 		if ($this->count > 1 || $this->options['filters'] || $this->options['search'])
 		{
@@ -858,7 +858,7 @@ EOT;
 		}
 
 		$rc = '';
-		$rc .= $class ? '<th class="' . trim($class) . '">' : '<th>';
+		$rc .= '<th class="' . trim($class) . '">';
 		$rc .= '<div>';
 
 		$t = $this->t;
@@ -870,34 +870,63 @@ EOT;
 			$label = $t($id, array(), array('scope' => '.title', 'default' => $t($id, array(), array('scope' => '.label', 'default' => $label))));
 		}
 
-		if ($filtering)
+		if ($id == $this->idtag)
 		{
-			$rc .= '<a href="' . $column['reset'] . '" title="' . $t('View all') . '"><span class="title">' . ($label ? $label : '&nbsp;') . '</span></a>';
-		}
-		else if ($label && $orderable)
-		{
-			$order = $column['order'];
-			$reverse = ($order === null) ? $column['default_order'] : -$order;
-
-			$rc .= new Element
-			(
-				'a', array
+			if ($this->checkboxes)
+			{
+				$rc .= new Element
 				(
-					Element::INNER_HTML => '<span class="title">' . $label . '</span>',
+					'label', array
+					(
+						Element::CHILDREN => array
+						(
+							new Element
+							(
+								Element::TYPE_CHECKBOX
+							)
+						),
 
-					'title' => $t('Sort by: :identifier', array(':identifier' => $label)),
-					'href' => "?order=$id:" . ($reverse < 0 ? 'desc' : 'asc'),
-					'class' => $order ? ($order < 0 ? 'desc' : 'asc') : null
-				)
-			);
-		}
-		else if ($label)
-		{
-			$rc .= $label;
+						'class' => 'checkbox-wrapper rectangle',
+						'title' => t('Toggle selection for the entries ([alt] to toggle selection)')
+					)
+				);
+			}
+			else
+			{
+				$rc .= '&nbsp;';
+			}
 		}
 		else
 		{
-			$rc .= '&nbsp;';
+			if ($filtering)
+			{
+				$rc .= '<a href="' . $column['reset'] . '" title="' . $t('View all') . '"><span class="title">' . ($label ? $label : '&nbsp;') . '</span></a>';
+			}
+			else if ($label && $orderable)
+			{
+				$order = $column['order'];
+				$reverse = ($order === null) ? $column['default_order'] : -$order;
+
+				$rc .= new Element
+				(
+					'a', array
+					(
+						Element::INNER_HTML => '<span class="title">' . $label . '</span>',
+
+						'title' => $t('Sort by: :identifier', array(':identifier' => $label)),
+						'href' => "?order=$id:" . ($reverse < 0 ? 'desc' : 'asc'),
+						'class' => $order ? ($order < 0 ? 'desc' : 'asc') : null
+					)
+				);
+			}
+			else if ($label)
+			{
+				$rc .= $label;
+			}
+			else
+			{
+				$rc .= '&nbsp;';
+			}
 		}
 
 		if ($filters)
@@ -1009,8 +1038,6 @@ EOT;
 
 	protected function render_cell($record, $property, array $column)
 	{
-		$class = isset($column['class']) ? ' class="' . $column['class'] . '"' : null;
-
 		try
 		{
 			$content = call_user_func($column[self::COLUMN_HOOK], $record, $property, $this);
@@ -1032,7 +1059,9 @@ EOT;
 			}
 		}
 
-		return "<td$class>$content</td>";
+		$class = 'cell--' . \Brickrouge\normalize($property) . ' ' . $column['class'];
+
+		return '<td class="' . trim($class) . '">' . $content . '</td>';
 	}
 
 	protected function render_key_cell(ActiveRecord $record, $property)
@@ -1458,33 +1487,7 @@ EOT;
 
 		if ($this->idtag)
 		{
-			$rc .= '<td class="key">';
-
-			if ($this->checkboxes)
-			{
-				$rc .= new Element
-				(
-					'label', array
-					(
-						Element::CHILDREN => array
-						(
-							new Element
-							(
-								Element::TYPE_CHECKBOX
-							)
-						),
-
-						'class' => 'checkbox-wrapper rectangle',
-						'title' => t('Toggle selection for the entries ([alt] to toggle selection)')
-					)
-				);
-			}
-			else
-			{
-				$rc .= '&nbsp;';
-			}
-
-			$rc .= '</td>';
+			$rc .= '<td class="key">&nbsp;</td>';
 		}
 
 		$ncolumns = count($this->columns);

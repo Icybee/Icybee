@@ -13,9 +13,9 @@ namespace ICanBoogie\Modules\Search;
 
 use ICanBoogie\Exception;
 
-use BrickRouge\Element;
-use BrickRouge\Form;
-use BrickRouge\Searchbox;
+use Brickrouge\Element;
+use Brickrouge\Form;
+use Brickrouge\Searchbox;
 
 use WdPatron;
 
@@ -51,6 +51,7 @@ class Hooks
 			),
 
 			'id' => 'search-quick',
+			'class' => 'search-query',
 			'method' => 'get',
 			'action' => $page->url
 		);

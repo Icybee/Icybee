@@ -14,8 +14,8 @@ namespace ICanBoogie\Modules\Organize\Lists;
 use ICanBoogie\ActiveRecord\Model;
 use ICanBoogie\Modules;
 
-use BrickRouge\Element;
-use BrickRouge\Form;
+use Brickrouge\Element;
+use Brickrouge\Form;
 
 class Module extends Modules\Nodes\Module
 {

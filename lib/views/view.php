@@ -18,8 +18,8 @@ use ICanBoogie\I18n;
 use ICanBoogie\Module;
 use ICanBoogie\Object;
 
-use BrickRouge\Document;
-use BrickRouge\Element;
+use Brickrouge\Document;
+use Brickrouge\Element;
 
 /**
  * A view on provided data.
@@ -459,6 +459,8 @@ class View extends Object
 		{
 			$try = $core->site->resolve_path("templates/views/$id.$extension");
 
+			wd_log("tried: templates/views/$id.$extension");
+
 			if ($try)
 			{
 				return ICanBoogie\DOCUMENT_ROOT . $try;
@@ -478,6 +480,8 @@ class View extends Object
 
 			foreach ($handled as $extension)
 			{
+				wd_log("tried: {$base}{$extension}");
+
 				if (file_exists($base . $extension))
 				{
 					return $base . $extension;

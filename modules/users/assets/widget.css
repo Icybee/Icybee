@@ -124,13 +124,18 @@ body.admin #login div.element-description
 	font-size: 1rem;
 }
 
-#login .stacked .field > label
+#login .stacked .control-group > label
 {
 	font-weight: normal;
 	font-size: 1rem;
 }
 
-#login .field--submit
+#login .control-group--submit
 {
 	text-align: center;
+}
+
+
+body.page-slug-authenticate {
+	background: black;
 }

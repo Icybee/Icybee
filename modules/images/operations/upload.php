@@ -11,7 +11,7 @@
 
 namespace ICanBoogie\Modules\Images;
 
-use BrickRouge\Element;
+use ICanBoogie\Modules\Thumbnailer\Thumbnail;
 
 /**
  * Appends a preview to the response of the operation.
@@ -41,25 +41,15 @@ class UploadOperation extends \ICanBoogie\Modules\Files\UploadOperation
 
 			.
 
-			new Element
+			new Thumbnail
 			(
-				'img', array
+				$path, array
 				(
-					'src' => Operation::encode
-					(
-						'thumbnailer/get', array
-						(
-							'src' => $path,
-							'w' => 64,
-							'h' => 64,
-							'format' => 'png',
-							'background' => 'silver,white,medium',
-							'm' => 'surface',
-							'uniqid' => uniqid()
-						)
-					),
-
-					'alt' => ''
+					'w' => 64,
+					'h' => 64,
+					'format' => 'png',
+					'background' => 'silver,white,medium',
+					'm' => 'surface'
 				)
 			)
 

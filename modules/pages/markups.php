@@ -11,7 +11,7 @@
 
 use ICanBoogie\ActiveRecord;
 use ICanBoogie\Event;
-use BrickRouge\Element;
+use Brickrouge\Element;
 
 class site_pages_WdMarkups extends patron_markups_WdHooks
 {
@@ -536,6 +536,13 @@ class site_pages_navigation_WdMarkup extends patron_WdMarkup
 			if ($entry->navigation_children)
 			{
 				$class .= ' has-children';
+
+				/*
+				if ($level + 1 < $depth)
+				{
+					$class .= ' dropdown';
+				}
+				*/
 			}
 
 			$rc .=  $class ? '<li class="' . $class . '">' : '<li>';
@@ -554,7 +561,7 @@ class site_pages_navigation_WdMarkup extends patron_WdMarkup
 			return;
 		}
 
-		return '<ol class="lv' . $level . ($level == 1 ? ' nav' : '') . '">' . $rc . '</ol>';
+		return '<ol class="' . ($level == 1 ? 'nav' : 'dropdown-menu') . ' lv' . $level . '">' . $rc . '</ol>';
 	}
 
 

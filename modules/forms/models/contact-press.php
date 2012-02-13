@@ -9,8 +9,8 @@
  * file that was distributed with this source code.
  */
 
-use BrickRouge\Element;
-use BrickRouge\Form;
+use Brickrouge\Element;
+use Brickrouge\Form;
 
 class press_WdForm extends Form
 {
@@ -66,7 +66,7 @@ class press_WdForm extends Form
 							(
 								Form::LABEL => 'E-Mail',
 								Element::REQUIRED => true,
-								Element::VALIDATOR => array('BrickRouge\Form::validate_email')
+								Element::VALIDATOR => array('Brickrouge\Form::validate_email')
 							)
 						),
 

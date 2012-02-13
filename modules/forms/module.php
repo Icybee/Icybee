@@ -11,9 +11,9 @@
 
 namespace ICanBoogie\Modules\Forms;
 
-use BrickRouge\Element;
-use BrickRouge\Form;
-use BrickRouge\Text;
+use Brickrouge\Element;
+use Brickrouge\Form;
+use Brickrouge\Text;
 
 class Module extends \ICanBoogie\Modules\Nodes\Module
 {
@@ -63,19 +63,17 @@ class Module extends \ICanBoogie\Modules\Nodes\Module
 				(
 					'messages' => array
 					(
-						'title' => '.messages',
-						'class' => 'form-section flat'
+						'title' => 'messages'
 					),
 
 					'notify' => array
 					(
-						'title' => '.notify',
-						'class' => 'form-section flat'
+						'title' => 'notify'
 					),
 
 					'operation' => array
 					(
-						'title' => '.operation'
+						'title' => 'operation'
 					)
 				),
 
@@ -85,27 +83,29 @@ class Module extends \ICanBoogie\Modules\Nodes\Module
 					(
 						'select', array
 						(
-							Form::LABEL => '.modelid',
+							Form::LABEL => 'modelid',
 							Element::REQUIRED => true,
 							Element::OPTIONS => array(null => '') + $models_options,
 							Element::LABEL_POSITION => 'before'
 						)
 					),
 
+					/*
 					'pageid' => new \WdPageSelectorElement
 					(
 						'select', array
 						(
-							Form::LABEL => '.pageid',
+							Form::LABEL => 'pageid',
 							Element::LABEL_POSITION => 'before'
 						)
 					),
+					*/
 
 					'before' => new \moo_WdEditorElement
 					(
 						array
 						(
-							Form::LABEL => '.before',
+							Form::LABEL => 'before',
 							Element::GROUP => 'messages',
 
 							'rows' => 5
@@ -116,7 +116,7 @@ class Module extends \ICanBoogie\Modules\Nodes\Module
 					(
 						array
 						(
-							Form::LABEL => '.after',
+							Form::LABEL => 'after',
 							Element::GROUP => 'messages',
 
 							'rows' => 5
@@ -127,10 +127,10 @@ class Module extends \ICanBoogie\Modules\Nodes\Module
 					(
 						array
 						(
-							Form::LABEL => '.complete',
+							Form::LABEL => 'complete',
 							Element::GROUP => 'messages',
 							Element::REQUIRED => true,
-							Element::DESCRIPTION => '.complete',
+							Element::DESCRIPTION => 'complete',
 							Element::DEFAULT_VALUE => '<p>' . t('default.complete') . '</p>',
 
 							'rows' => 5
@@ -152,9 +152,9 @@ class Module extends \ICanBoogie\Modules\Nodes\Module
 								(
 									Element::TYPE_CHECKBOX, array
 									(
-										Element::LABEL => '.is_notify',
+										Element::LABEL => 'is_notify',
 										Element::GROUP => 'notify',
-										Element::DESCRIPTION => '.is_notify'
+										Element::DESCRIPTION => 'is_notify'
 									)
 								),
 
@@ -162,7 +162,7 @@ class Module extends \ICanBoogie\Modules\Nodes\Module
 								(
 									array
 									(
-										Form::LABEL => '.notify_destination',
+										Form::LABEL => 'notify_destination',
 										Element::GROUP => 'notify',
 										Element::DEFAULT_VALUE => $core->user->email
 									)
@@ -172,8 +172,9 @@ class Module extends \ICanBoogie\Modules\Nodes\Module
 								(
 									array
 									(
-										Form::LABEL => '.notify_from',
-										Element::GROUP => 'notify'
+										Form::LABEL => 'notify_from',
+										Element::GROUP => 'notify',
+										Element::DEFAULT_VALUE => $core->site->email
 									)
 								),
 
@@ -181,7 +182,7 @@ class Module extends \ICanBoogie\Modules\Nodes\Module
 								(
 									array
 									(
-										Form::LABEL => '.notify_bcc',
+										Form::LABEL => 'notify_bcc',
 										Element::GROUP => 'notify'
 									)
 								),
@@ -190,7 +191,7 @@ class Module extends \ICanBoogie\Modules\Nodes\Module
 								(
 									array
 									(
-										Form::LABEL => '.notify_subject',
+										Form::LABEL => 'notify_subject',
 										Element::GROUP => 'notify'
 									)
 								),
@@ -199,7 +200,7 @@ class Module extends \ICanBoogie\Modules\Nodes\Module
 								(
 									'textarea', array
 									(
-										Form::LABEL => '.notify_template',
+										Form::LABEL => 'notify_template',
 										Element::GROUP => 'notify'
 									)
 								)

@@ -16,8 +16,8 @@ use ICanBoogie\Event;
 use ICanBoogie\Modules;
 use ICanBoogie\Operation;
 
-use BrickRouge\Element;
-use BrickRouge\Form;
+use Brickrouge\Element;
+use Brickrouge\Form;
 
 class Hooks
 {
@@ -148,6 +148,34 @@ class Hooks
 	}
 
 	/**
+	 * Deletes attachment when the associated node is delete.
+	 *
+	 * @param Event $event
+	 * @param Modules\Nodes\DeleteOperation $operation
+	 */
+	public static function on_node_delete(Event $event, Modules\Nodes\DeleteOperation $operation)
+	{
+		global $core;
+
+		//TODO-20120115: if the attachment is hard we should also delete assocated files.
+
+		$core->models['nodes.attachments']->find_by_nodeid($operation->key)->delete();
+	}
+
+	/**
+	 * Deletes attachment when the associated file is deleted.
+	 *
+	 * @param Event $event
+	 * @param Modules\Files\DeleteOperation $operation
+	 */
+	public static function on_file_delete(Event $event, Modules\Files\DeleteOperation $operation)
+	{
+		global $core;
+
+		$core->models['nodes.attachments']->find_by_fileid($operation->key)->delete();
+	}
+
+	/**
 	 * Returns the attachments of the given node.
 	 *
 	 * @param Node $ar
@@ -234,8 +262,7 @@ class Hooks
 				(
 					'attachments' => array
 					(
-						'title' => '.attachments',
-						'class' => 'form-section flat'
+						'title' => 'Attachments'
 					)
 				),
 
@@ -301,8 +328,8 @@ class Hooks
 				(
 					'attachments' => array
 					(
-						'title' => '.attachments',
-						'class' => 'form-section flat'
+						'title' => 'Attachments',
+						'weight' => 10
 					)
 				),
 
@@ -335,7 +362,7 @@ class Hooks
 
 	private static $config_scope;
 
-	public static function before_operation_config(Event $event, Operation\Files\Config $sender)
+	public static function before_operation_config(Event $event, \ICanBoogie\Modules\Files\ConfigOperation $sender)
 	{
 		$params = &$event->request->params;
 
@@ -347,7 +374,7 @@ class Hooks
 		unset($params['global']['nodes_attachments.scope']);
 	}
 
-	public static function on_operation_config(Event $event, Operation\Files\Config $sender)
+	public static function on_operation_config(Event $event, \ICanBoogie\Modules\Files\ConfigOperation $sender)
 	{
 		global $core;
 

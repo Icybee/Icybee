@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-use BrickRouge\Widget;
+use Brickrouge\Widget;
 
 class adjustnode_WdEditorElement extends WdEditorElement
 {
@@ -63,11 +63,11 @@ class adjustnode_WdEditorElement extends WdEditorElement
 			$scope = (isset($config['scope'])) ? $config['scope'] : 'nodes';
 		}
 
-		$class = 'BrickRouge\Widget\PopNode';
+		$class = 'Brickrouge\Widget\PopNode';
 
 		if ($scope == 'images')
 		{
-			$class = 'BrickRouge\Widget\PopImage';
+			$class = 'Brickrouge\Widget\PopImage';
 		}
 
 		$rc .= (string) new $class

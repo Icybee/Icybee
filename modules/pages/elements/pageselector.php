@@ -10,7 +10,7 @@
  */
 
 use ICanBoogie\Modules\Pages\Model as PagesModel;
-use BrickRouge\Element;
+use Brickrouge\Element;
 
 class WdPageSelectorElement extends Element
 {

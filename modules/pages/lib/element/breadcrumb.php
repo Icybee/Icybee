@@ -9,10 +9,10 @@
  * file that was distributed with this source code.
  */
 
-namespace BrickRouge\Element;
+namespace Brickrouge\Element;
 
 use ICanBoogie\Event;
-use BrickRouge\Element;
+use Brickrouge\Element;
 
 /**
  * Breadcrumb
@@ -47,7 +47,7 @@ use BrickRouge\Element;
  *     * separator - (&string) The separator for the slices.
  *     * page - (ICanBoogie\ActiveRecord\Page) The current page object.
  *
- * * sender - (BrickRouge\Element\Breadcrumb) The breadcrumb element that fired the event.
+ * * sender - (Brickrouge\Element\Breadcrumb) The breadcrumb element that fired the event.
  *
  *
  * Event: render_inner_html
@@ -65,7 +65,7 @@ use BrickRouge\Element;
  *     * rc - (&string) The rendered inner HTML.
  *     * page - (ICanBoogie\ActiveRecord\Page) The current page object.
  *
- * * sender - (BrickRouge\Element\Breadcrumb) The breadcrumb element that fired the event.
+ * * sender - (Brickrouge\Element\Breadcrumb) The breadcrumb element that fired the event.
  *
  */
 class Breadcrumb extends Element

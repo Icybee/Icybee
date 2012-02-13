@@ -26,85 +26,7 @@ class GetOperation extends Operation
 {
 	const VERSION = '1.2.0';
 
-	/**
-	 * Configuration for the module.
-	 *
-	 * - cleanup_interval: The interval between cleanups, in minutes.
-	 *
-	 * - repository_size: The size of the repository, in Mo.
-	 */
-	static public $config = array
-	(
-		'cleanup_interval' => 15,
-		'repository_size' => 8
-	);
-
-	static protected $defaults = array
-	(
-		'background' => 'transparent',
-		'default' => null,
-		'format' => 'jpeg',
-		'height' => null,
-		'interlace' => false,
-		'method' => 'fill',
-		'no-upscale' => false,
-		'overlay' => null,
-		'path' => null,
-		'quality' => 85,
-		'src' => null,
-		'width' => null
-	);
-
-	static protected $shorthands = array
-	(
-		'b' => 'background',
-		'd' => 'default',
-		'f' => 'format',
-		'h' => 'height',
-		'i' => 'interlace',
-		'm' => 'method',
-		'nu' => 'no-upscale',
-		'o' => 'overlay',
-		'p' => 'path',
-		'q' => 'quality',
-		's' => 'src',
-		'v' => 'version',
-		'w' => 'width'
-	);
-
 	static public $background;
-
-	public function reset()
-	{
-		global $core;
-
-		parent::reset();
-
-		$this->module = $core->modules['thumbnailer'];
-	}
-
-	/**
-	 * Getter for the $repository magic property.
-	 */
-	protected function __get_repository()
-	{
-		return $this->module->repository;
-	}
-
-	/**
-	 * Getter for the $cache magic property.
-	 */
-	protected function __get_cache()
-	{
-		return new FileCache
-		(
-			array
-			(
-				FileCache::T_REPOSITORY => $this->repository,
-				FileCache::T_REPOSITORY_SIZE => self::$config['repository_size'] * 1024
-			)
-		);
-	}
 
 	/**
 	 * Parse, filter and sort options.
@@ -127,45 +49,13 @@ class GetOperation extends Operation
 
 		if (isset($params['version']))
 		{
-			$version = $params['version'];
-			$version_params = json_decode($core->registry['thumbnailer.versions.' . $version], true);
-
-			// COMPAT
-
-			if (!$version_params)
-			{
-				$version_params = (array) $core->registry['thumbnailer.versions.' . $version . '.'];
-			}
-
-			// /COMPAT
-
-			if (!$version_params)
-			{
-				throw new Exception('Unknown version %version', array('%version' => $version), 404);
-			}
-
-			$params += $version_params;
+			$version = Versions::get();
+			$params += $version[$params['version']];
 
 			unset($params['version']);
 		}
 
-		#
-		# transform shorthands
-		#
-
-		foreach (self::$shorthands as $shorthand => $full)
-		{
-			if (isset($params[$shorthand]))
-			{
-				$params[$full] = $params[$shorthand];
-			}
-		}
-
-		#
-		# add defaults so that all options are defined
-		#
-
-		$params += self::$defaults;
+		$params = Versions::nomalize_version($params);
 
 		if (empty($params['background']))
 		{
@@ -176,15 +66,6 @@ class GetOperation extends Operation
 		{
 			$params['background'] = 'white';
 		}
-
-		#
-		# The parameters are filtered and sorted, making extraneous parameters and parameters order
-		# non important.
-		#
-
-		$params = array_intersect_key($params, self::$defaults);
-
-		ksort($params);
 
 		#
 		# check options
@@ -207,9 +88,9 @@ class GetOperation extends Operation
 					(
 						'Missing width or height for the %method method: %width × %height', array
 						(
-							'%method' => $m,
-							'%width' => $w,
-							'%height' => $h
+							'method' => $m,
+							'width' => $w,
+							'height' => $h
 						)
 					);
 				}
@@ -246,7 +127,7 @@ class GetOperation extends Operation
 		}
 
 		$src = $path . $src;
-		$location = $_SERVER['DOCUMENT_ROOT'] . DIRECTORY_SEPARATOR . $src;
+		$location = \ICanBoogie\DOCUMENT_ROOT . DIRECTORY_SEPARATOR . $src;
 
 		if (!is_file($location))
 		{
@@ -262,7 +143,7 @@ class GetOperation extends Operation
 			}
 
 			$src = $path . $default;
-			$location = $_SERVER['DOCUMENT_ROOT'] . DIRECTORY_SEPARATOR . $src;
+			$location = \ICanBoogie\DOCUMENT_ROOT . DIRECTORY_SEPARATOR . $src;
 
 			if (!is_file($location))
 			{
@@ -282,7 +163,9 @@ class GetOperation extends Operation
 		# Use the cache object to get the file
 		#
 
-		return $this->cache->get($key, array($this, 'get_construct'), array($location, $params));
+		$cache = new CacheManager;
+
+		return $cache->retrieve($key, array($this, 'get_construct'), array($location, $params));
 	}
 
 	/**
@@ -304,7 +187,7 @@ class GetOperation extends Operation
 		{
 			self::$background = self::decode_background($options['background']);
 
-			$callback = array(__CLASS__, 'fill_callback');
+			$callback = __CLASS__ . '::fill_callback';
 		}
 
         $image = Image::load($path, $info);
@@ -369,7 +252,7 @@ class GetOperation extends Operation
 
 		if ($options['overlay'])
 		{
-			$overlay_file = $_SERVER['DOCUMENT_ROOT'] . $options['overlay'];
+			$overlay_file = \ICanBoogie\DOCUMENT_ROOT . $options['overlay'];
 
 			list($o_w, $o_h) = getimagesize($overlay_file);
 
@@ -382,7 +265,7 @@ class GetOperation extends Operation
 		# interlace
 		#
 
-		if ($options['interlace'])
+		if (!$options['no-interlace'])
 		{
 			imageinterlace($image, true);
 		}
@@ -440,27 +323,6 @@ class GetOperation extends Operation
 	}
 
 	/**
-	 * Periodically clears the cache.
-	 */
-	public function clear_cache()
-	{
-		$marker = $_SERVER['DOCUMENT_ROOT'] . $this->repository . '/.cleanup';
-
-		$time = file_exists($marker) ? filemtime($marker) : 0;
-		$interval = self::$config['cleanup_interval'] * 60;
-		$now = time();
-
-		if ($time + $interval > $now)
-		{
-			return;
-		}
-
-		$this->cache->clean();
-
-		touch($marker);
-	}
-
-	/**
 	 * Operation interface to the @get() method.
 	 *
 	 * The function uses the @get() method to obtain the location of the image version.
@@ -473,14 +335,13 @@ class GetOperation extends Operation
 	 */
 	protected function process()
 	{
-		$this->clear_cache();
 		$this->rescue_uri();
 
 		$path = $this->get($this->request->params);
 
 		if (!$path)
 		{
-			throw new HTTPException('Unable to create thumbnail for: %src', array('%src' => $this->request->params['src']), 404);
+			throw new Exception\HTTP('Unable to create thumbnail for: %src', array('%src' => $this->request->params['src']), 404);
 		}
 
 		$server_location = \ICanBoogie\DOCUMENT_ROOT . $path;
@@ -517,8 +378,6 @@ class GetOperation extends Operation
 
 		$response->last_modified = $stat['mtime'];
 		$response->content_type = "image/$type";
-
-	    //return file_get_contents($server_location);
 
 		return function() use ($server_location)
 		{

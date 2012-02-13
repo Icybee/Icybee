@@ -33,7 +33,7 @@ class ThumbnailOperation extends GetOperation
 		if (function_exists('glob'))
 		{
 			$root = \ICanBoogie\DOCUMENT_ROOT;
-			$files = glob($root . $core->config['repository.files'] . '/*/' . $nid . '-*');
+			$files = glob(\ICanBoogie\REPOSITORY . 'files/*/' . $nid . '-*');
 
 			if ($files)
 			{
@@ -42,8 +42,7 @@ class ThumbnailOperation extends GetOperation
 		}
 		else
 		{
-			$path = $core->config['repository.files'] . '/image';
-			$root = \ICanBoogie\DOCUMENT_ROOT . $path;
+			$root = \ICanBoogie\REPOSITORY . 'files/image';
 
 			$nid .= '-';
 			$nid_length = strlen($nid);

@@ -1,6 +1,6 @@
 <?php
 
-use BrickRouge\Pager;
+use Brickrouge\Pager;
 use ICanBoogie\Module;
 
 if (!defined('PREG_CLASS_SEARCH_EXCLUDE'))

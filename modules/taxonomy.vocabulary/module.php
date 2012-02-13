@@ -16,9 +16,9 @@ use ICanBoogie\Event;
 use ICanBoogie\Modules;
 use ICanBoogie\Operation;
 
-use BrickRouge\Element;
-use BrickRouge\Form;
-use BrickRouge\Widget;
+use Brickrouge\Element;
+use Brickrouge\Form;
+use Brickrouge\Widget;
 
 class Module extends \Icybee\Module
 {
@@ -104,8 +104,7 @@ class Module extends \Icybee\Module
 				'settings' => array
 				(
 					'title' => '.options',
-					'weight' => 100,
-					'class' => 'form-section flat'
+					'weight' => 100
 				)
 			),
 

@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-use BrickRouge\Element;
+use Brickrouge\Element;
 use ICanBoogie\Event;
 
 class WdMultiEditorElement extends Element
@@ -104,7 +104,7 @@ class WdMultiEditorElement extends Element
 				Element::LABEL_POSITION => 'before',
 				Element::OPTIONS => $options,
 
-				'name' => $this->get(self::T_SELECTOR_NAME),
+				'name' => $this[self::T_SELECTOR_NAME],
 				'class' => 'editor-selector',
 				'value' => $this->editor_name
 			)
@@ -119,7 +119,7 @@ class WdMultiEditorElement extends Element
 
 		if ($this->get(self::T_NOT_SWAPPABLE))
 		{
-			$rc .= '<input type="hidden" name="' . $this->get(self::T_SELECTOR_NAME) .'" value="' . $this->editor_name . '" />';
+			$rc .= '<input type="hidden" name="' . $this[self::T_SELECTOR_NAME] .'" value="' . $this->editor_name . '" />';
 		}
 		else
 		{
@@ -127,15 +127,12 @@ class WdMultiEditorElement extends Element
 
 			if ($options)
 			{
-				$rc .= '<div class="editor-options">';
-				$rc .= $options;
-				$rc .= '<div class="clear"></div>';
-				$rc .= '</div>';
+				$rc .= '<div class="editor-options clearfix">' . $options . '</div>';
 			}
 		}
 
-		$this->dataset['contents-name'] = $this->get('name');
-		$this->dataset['selector-name'] = $this->get(self::T_SELECTOR_NAME);
+		$this->dataset['contents-name'] = $this['name'];
+		$this->dataset['selector-name'] = $this[self::T_SELECTOR_NAME];
 
 		return $rc;
 	}

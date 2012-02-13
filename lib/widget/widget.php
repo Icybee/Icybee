@@ -9,9 +9,9 @@
  * file that was distributed with this source code.
  */
 
-namespace BrickRouge;
+namespace Brickrouge;
 
-use BrickRouge\Element;
+use Brickrouge\Element;
 use ICanBoogie\Exception;
 
 abstract class Widget extends Element
@@ -26,9 +26,9 @@ abstract class Widget extends Element
 	{
 		$class = get_class($this);
 
-		if (strpos($class, 'BrickRouge\Widget') !== 0)
+		if (strpos($class, 'Brickrouge\Widget') !== 0)
 		{
-			throw new Exception('The widget class must be in the <em>BrickRouge\Widget</em> namespace');
+			throw new Exception('The widget class must be in the <em>Brickrouge\Widget</em> namespace');
 		}
 
 		$class = substr($class, 18);

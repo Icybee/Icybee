@@ -9,13 +9,13 @@
  * file that was distributed with this source code.
  */
 
-namespace BrickRouge\Widget;
+namespace Brickrouge\Widget;
 
-use BrickRouge;
-use BrickRouge\Element;
-use BrickRouge\Text;
+use Brickrouge;
+use Brickrouge\Element;
+use Brickrouge\Text;
 
-class TitleSlugCombo extends \BrickRouge\Widget
+class TitleSlugCombo extends \Brickrouge\Widget
 {
 	const T_NODEID = '#node-id';
 	const T_SLUG_NAME = '#slug-name';
@@ -97,7 +97,7 @@ class TitleSlugCombo extends \BrickRouge\Widget
 		parent::offsetSet($offset, $value);
 	}
 
-	protected static function add_assets(\BrickRouge\Document $document)
+	protected static function add_assets(\Brickrouge\Document $document)
 	{
 		parent::add_assets($document);
 

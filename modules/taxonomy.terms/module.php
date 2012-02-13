@@ -14,9 +14,9 @@ namespace ICanBoogie\Modules\Taxonomy\Terms;
 use ICanBoogie\ActiveRecord\Taxonomy\Term;
 use ICanBoogie\Event;
 
-use BrickRouge\Element;
-use BrickRouge\Form;
-use BrickRouge\Widget;
+use Brickrouge\Element;
+use Brickrouge\Form;
+use Brickrouge\Widget;
 
 class Module extends \Icybee\Module
 {

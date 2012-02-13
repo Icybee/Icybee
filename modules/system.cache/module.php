@@ -11,8 +11,8 @@
 
 namespace ICanBoogie\Modules\System\Cache;
 
-use BrickRouge\Element;
-use BrickRouge\Text;
+use Brickrouge\Element;
+use Brickrouge\Text;
 use ICanBoogie\Event;
 
 class Module extends \Icybee\Module
@@ -25,89 +25,30 @@ class Module extends \Icybee\Module
 		$document->css->add('public/admin.css');
 		$document->js->add('public/admin.js');
 
-		$caches = array
-		(
-			'core.assets' => array
-			(
-				'title' => 'CSS et Javascript',
-				'description' => "Jeux compilés de sources CSS et Javascript.",
-				'group' => 'system',
-				'state' => $core->config['cache assets'],
-				'size_limit' => false,
-				'time_limit' => false
-			),
-
-			'core.catalogs' => array
-			(
-				'title' => 'Traductions',
-				'description' => "Traductions par langue pour l'ensemble du framework.",
-				'group' => 'system',
-				'state' => $core->config['cache catalogs'],
-				'size_limit' => false,
-				'time_limit' => false
-			),
-
-			'core.configs' => array
-			(
-				'title' => 'Configurations',
-				'description' => "Configurations des différents composants du framework.",
-				'group' => 'system',
-				'state' => $core->config['cache configs'],
-				'size_limit' => false,
-				'time_limit' => false
-			),
-
-			'core.modules' => array
-			(
-				'title' => 'Modules',
-				'description' => "Index des modules disponibles pour le framework.",
-				'group' => 'system',
-				'state' => $core->config['cache modules'],
-				'size_limit' => false,
-				'time_limit' => false
-			)
-		);
-
-		Event::fire
-		(
-			'alter.block.manage', array
-			(
-				'target' => $this,
-				'caches' => &$caches
-			),
-
-			$this
-		);
-
 		$groups = array();
-
-		asort($caches);
+		$caches = new Collection();
 
 		foreach ($caches as $cache_id => $cache)
 		{
-			$group = $cache['group'];
-			$group = t($group, array(), array('scope' => array('system', 'modules', 'categories'), 'default' => ucfirst($group)));
-
-			$groups[$group][$cache_id] = $cache;
+			$section_title = t(ucfirst($cache->group), array(), array('scope' => 'cache.section'));
+			$groups[$section_title][$cache_id] = $cache;
 		}
-
-//		uksort($groups, 'wd_unaccent_compare_ci');
 
 		$rows = '';
 
 		foreach ($groups as $group_title => $group)
 		{
 			$rows .= <<<EOT
-<tr class="group-title">
+<tr class="section-title">
 	<td>&nbsp;</td>
 	<td>$group_title</td>
-	<td colspan="5">&nbsp;</td>
+	<td colspan="3">&nbsp;</td>
 </tr>
 EOT;
 
-			foreach ($group as $cache_id => $definition)
+			foreach ($group as $cache_id => $cache)
 			{
-				$checked = $definition['state'];
+				$checked = $cache->state;
 
 				$checkbox = new Element
 				(
@@ -120,65 +61,42 @@ EOT;
 								Element::TYPE_CHECKBOX, array
 								(
 									'checked' => $checked,
-									'disabled' => $definition['state'] === null,
+									'disabled' => $cache->state === null,
 									'name' => $cache_id
 								)
 							)
 						),
 
-						'title' => "Cliquer pour activer ou désactiver le cache",
+						'title' => "Cliquez pour activer ou désactiver le cache",
 						'class' => 'checkbox-wrapper circle' . ($checked ? ' checked': '')
 					)
 				);
 
-				$title = wd_entities($definition['title']);
-				$description = $definition['description'];
+				$title = wd_entities($cache->title);
+				$description = $cache->description;
 
-				$size_limit = null;
+				$config_preview = $cache->config_preview;
 
-				if ($definition['size_limit'])
+				if ($config_preview)
 				{
-					list($value, $unit) = $definition['size_limit'];
-
-					$size_limit = new Text
-					(
-						array
-						(
-							Element::LABEL => $unit,
-
-							'name' => 'size_limit',
-							'size' => 4,
-							'value' => $value
-						)
-					);
+					$config_preview = '<button title="Configurer le cache" class="spinner btn-info">' . $config_preview . '</button>';
+				}
+				else
+				{
+					$config_preview = '&nbsp;';
 				}
 
-				$time_limit = null;
+				list($n, $stat) = $cache->stat();
 
-				if ($definition['time_limit'])
-				{
-					list($value, $unit) = $definition['time_limit'];
-
-					$time_limit = new Text
-					(
-						array
-						(
-							Element::LABEL => $unit,
-
-							'name' => 'time_limit',
-							'size' => 4,
-							'value' => $value
-						)
-					);
-				}
+				$usage_empty = $n ? '' : 'empty';
 
 				$rows .= <<<EOT
-<tr>
+<tr data-cache-id="$cache_id">
 	<td class="state">$checkbox</td>
 	<td class="title">$title<div class="element-description">$description</div></td>
-	<td class="limit">$size_limit &nbsp; $time_limit</td>
-	<td class="usage empty">&nbsp;</td>
-	<td class="erase"><button type="button" class="warn" name="clear">Vider</button></td>
+	<td class="limit config">$config_preview</td>
+	<td class="usage {$usage_empty}">$stat</td>
+	<td class="erase"><button type="button" class="btn-warning" name="clear">Vider</button></td>
 </tr>
 EOT;
 			}
@@ -188,8 +106,9 @@ EOT;
 <table class="manage" cellpadding="0" cellspacing="0" border="0" width="100%">
 	<thead>
 		<tr>
-			<th colspan="2"><div>&nbsp;</div></th>
-			<th><div>Limites <span class="small">(Taille et durée)</span></div></th>
+			<th><div>&nbsp;</div></th>
+			<th><div>Type de cache</div></th>
+			<th><div>Configuration</span></div></th>
 			<th class="right"><div>Utilisation</div></th>
 			<th><div>&nbsp;</div></th>
 		</tr>
@@ -199,6 +118,144 @@ EOT;
 </table>
 EOT;
 
+		/*
+		$rc = new \Brickrouge\PopoverWidget
+		(
+			array
+			(
+// 				\Brickrouge\Popover::ANCHOR => '[data-cache-id="thumbnails"] td.erase button',
+// 				\Brickrouge\Popover::ANCHOR => '[data-cache-id="contents.pages"] input',
+				\Brickrouge\Popover::ANCHOR => '#menu li a',
+				\Brickrouge\Popover::LEGEND => 'Configuration',
+				\Brickrouge\Popover::INNER_HTML => new \feedback_comments_WdForm(),
+				\Brickrouge\Popover::ACTIONS => 'boolean'
+			)
+		)
+
+		. $rc;
+		*/
+
 		return $rc;
+	}
+
+	public static function get_files_stat($path, $pattern=null)
+	{
+		$root = \ICanBoogie\DOCUMENT_ROOT;
+
+		if (!file_exists($path))
+		{
+			$path = $root . $path;
+		}
+
+		if (!file_exists($path))
+		{
+			mkdir($path, 0777, true);
+
+			if (!file_exists($path))
+			{
+				return array
+				(
+					0, '<span class="warn">Impossible de créer le dossier&nbsp: <em>' . wd_strip_root($path) . '</em></span>'
+				);
+			}
+		}
+
+		if (!is_writable($path))
+		{
+			return array
+			(
+				0, '<span class="warn">Dossier vérouillé en écriture&nbsp: <em>' . wd_strip_root($path) . '</em></span>'
+			);
+		}
+
+		$n = 0;
+		$size = 0;
+
+		$iterator = new \DirectoryIterator($path);
+
+		if ($pattern)
+		{
+			$iterator = new \RegexIterator($iterator, $pattern);
+		}
+
+		foreach ($iterator as $file)
+		{
+			$filename = $file->getFilename();
+
+			if ($filename{0} == '.')
+			{
+				continue;
+			}
+
+			++$n;
+			$size += $file->getSize();
+		}
+
+		if (!$n)
+		{
+			return array(0, 'Le cache est vide');
+		}
+
+		return array
+		(
+			$n, $n . ' fichiers<br /><span class="small">' . wd_format_size($size) . '</span>'
+		);
+	}
+
+	public static function get_vars_stat($regex)
+	{
+		global $core;
+
+		$n = 0;
+		$size = 0;
+
+		foreach ($core->vars->matching($regex) as $pathname => $fileinfo)
+		{
+			++$n;
+			$size += $fileinfo->getSize();
+		}
+
+		if (!$n)
+		{
+			return array(0, 'Le cache est vide');
+		}
+
+		return array
+		(
+			$n, $n . ' fichiers<br /><span class="small">' . wd_format_size($size) . '</span>'
+		);
+	}
+
+	/**
+	 * Deletes files in a directory according to a RegEx pattern.
+	 *
+	 * @param string $path Path to the directory where the files shoud be deleted.
+	 * @param string|null $pattern RegEx pattern to delete matching files, or null to delete all
+	 * files.
+	 */
+	public static function clear_files($path, $pattern=null)
+	{
+		$root = \ICanBoogie\DOCUMENT_ROOT;
+
+		if (!is_dir($root . $path))
+		{
+			return false;
+		}
+
+		$n = 0;
+		$dh = opendir($root . $path);
+
+		while (($file = readdir($dh)) !== false)
+		{
+			if ($file{0} == '.' || ($pattern && !preg_match($pattern, $file)))
+			{
+				continue;
+			}
+
+			$n++;
+			unlink($root . $path . '/' . $file);
+		}
+
+		return $n;
 	}
 }

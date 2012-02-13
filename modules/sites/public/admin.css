@@ -1,0 +1,10 @@
+@CHARSET "UTF-8";
+
+.group--location .control-group
+{
+	float: left;
+}
+
+.group--location .control-group + .control-group {
+	margin-left: 0;
+}

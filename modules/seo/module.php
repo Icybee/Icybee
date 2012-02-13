@@ -9,9 +9,9 @@
  * file that was distributed with this source code.
  */
 
-namespace ICanBoogie\Modules;
+namespace ICanBoogie\Modules\Seo;
 
-class Firstposition extends \Icybee\Module
+class Module extends \Icybee\Module
 {
 
 }

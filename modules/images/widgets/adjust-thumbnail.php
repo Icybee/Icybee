@@ -9,22 +9,25 @@
  * file that was distributed with this source code.
  */
 
-namespace BrickRouge\Widget;
+namespace Brickrouge\Widget;
 
-use BrickRouge\Element;
+use Brickrouge\Element;
 
-class AdjustThumbnail extends \BrickRouge\Widget
+class AdjustThumbnail extends \Brickrouge\Widget
 {
-	public function __construct($tags)
+	protected $adjust_image;
+	protected $adjust_thumbnail_options;
+
+	public function __construct(array $attributes=array())
 	{
 		parent::__construct
 		(
-			'div', $tags + array
+			'div', $attributes + array
 			(
 				Element::CHILDREN => array
 				(
-					$this->adjust_image = new AdjustImage(array()),
-					$this->adjust_thumbnail_options = new AdjustThumbnailOptions(array())
+					$this->adjust_image = new AdjustImage,
+					$this->adjust_thumbnail_options = new AdjustThumbnailOptions
 				),
 
 				'class' => 'adjust'
@@ -32,7 +35,7 @@ class AdjustThumbnail extends \BrickRouge\Widget
 		);
 	}
 
-	protected static function add_assets(\BrickRouge\Document $document)
+	protected static function add_assets(\Brickrouge\Document $document)
 	{
 		parent::add_assets($document);
 

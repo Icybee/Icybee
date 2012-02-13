@@ -1,5 +1,5 @@
 
-BrickRouge.Widget.SearchCombo = new Class ({
+Brickrouge.Widget.SearchCombo = new Class ({
 
 	initialize: function(el, options)
 	{

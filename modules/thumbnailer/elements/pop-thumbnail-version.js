@@ -1,4 +1,4 @@
-BrickRouge.Widget.Pop = new Class
+Brickrouge.Widget.Pop = new Class
 ({
 	Implements: [ Options, Events ],
 
@@ -24,6 +24,11 @@ BrickRouge.Widget.Pop = new Class
 
 	},
 
+	setValue: function(value)
+	{
+
+	},
+
 	getValue: function()
 	{
 
@@ -35,18 +40,18 @@ BrickRouge.Widget.Pop = new Class
 	}
 });
 
-BrickRouge.Widget.PopThumbnailVersion = new Class
+Brickrouge.Widget.PopThumbnailVersion = new Class
 ({
-	Extends: BrickRouge.Widget.Pop,
+	Extends: Brickrouge.Widget.Pop,
 
 	pop: function()
 	{
 		this.resetValue = this.getValue();
 
-		if (this.popup)
+		if (this.popover)
 		{
-			this.popup.adjust.setValue(this.resetValue);
-			this.popup.open();
+			this.popover.adjust.setValue(this.resetValue);
+			this.popover.show();
 		}
 		else
 		{
@@ -56,15 +61,15 @@ BrickRouge.Widget.PopThumbnailVersion = new Class
 				{
 					this.attachAdjust(widget);
 
-					this.popup.open();
+					this.popover.show();
 
 					/*
 					 * The adjust object is available after the `elementsready` event has been fired. The event
-					 * is fired when the popup is opened.
+					 * is fired when the popover is opened.
 					 */
 
-					//this.popup.adjust.addEvent('change', this.change.bind(this));
-					this.popup.addEvent('closeRequest', this.onCloseRequest.bind(this));
+					//this.popover.adjust.addEvent('change', this.change.bind(this));
+					this.popover.addEvent('action', this.onAction.bind(this));
 				}
 				.bind(this)
 			)
@@ -76,28 +81,20 @@ BrickRouge.Widget.PopThumbnailVersion = new Class
 	{
 		if (typeOf(value) == 'object')
 		{
-			value = JSON.encode(value);
+			value = JSON.encode(value)
 		}
 
-		this.element.getElement('input').set('value', value);
+		this.element.set('value', value)
 	},
 
 	getValue: function()
 	{
-		return this.element.getElement('input').get('value');
+		return this.element.get('value')
 	},
 
 	attachAdjust: function(adjust)
 	{
-		this.popup = new BrickRouge.Widget.Popup.Adjust
-		(
-			adjust,
-			{
-				anchor: this.element
-			}
-		);
-
-		this.popup.element.addClass('black');
+		this.popover = new Icybee.Widget.AdjustPopover(adjust, { anchor: this.element })
 	},
 
 	change: function(ev)
@@ -105,30 +102,32 @@ BrickRouge.Widget.PopThumbnailVersion = new Class
 		console.log('change: ', ev);
 	},
 
-	onCloseRequest: function(ev)
+	onAction: function(ev)
 	{
-		switch (ev.mode)
+		console.log('action:', ev)
+
+		switch (ev.action)
 		{
 			case 'continue':
-				var value = ev.target.element.toQueryString().parseQueryString();
+				var value = this.element.toQueryString().parseQueryString()
 
 				if (!value.w && !value.h)
 				{
-					value = null;
+					value = null
 				}
 
-				this.setValue(value);
-				break;
+				this.setValue(value)
+				break
 
 			case 'none':
-				this.setValue(null);
-				break;
+				this.setValue(null)
+				break
 
 			case 'cancel':
-				this.setValue(this.resetValue);
-				break;
+				this.setValue(this.resetValue)
+				break
 		}
 
-		this.popup.close();
+		this.popover.hide()
 	}
 });

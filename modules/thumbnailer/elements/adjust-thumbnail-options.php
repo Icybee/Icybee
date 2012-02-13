@@ -9,152 +9,179 @@
 * file that was distributed with this source code.
 */
 
-namespace BrickRouge\Widget;
+namespace Brickrouge\Widget;
+
+use Brickrouge\Form;
 
 use ICanBoogie\Image;
-use BrickRouge\Element;
-use BrickRouge\Text;
+use Brickrouge\Element;
+use Brickrouge\Text;
 
-class AdjustThumbnailOptions extends Element
+class AdjustThumbnailOptions extends \Brickrouge\Group
 {
 	protected $elements = array();
 
-	public function __construct($tags, $dummy=null)
+	public function __construct(array $attributes=array())
 	{
 		$versions = array(null => '<personnalisé>');
 
 		parent::__construct
 		(
-			'div', wd_array_merge_recursive
+			$attributes + array
 			(
-				array
+				self::CHILDREN => array
 				(
-					self::CHILDREN => array
+					/*
+					'v' => $this->elements['v'] = new Element
 					(
-						'v' => $this->elements['v'] = new Element
+						'select', array
 						(
-							'select', array
-							(
-								Element::OPTIONS => $versions
-							)
-						),
+							Element::OPTIONS => $versions
+						)
+					),
+					*/
 
-						'w' => $this->elements['w'] = new Text
+					new Element
+					(
+						'div', array
 						(
-							array
+							Element::CHILDREN => array
 							(
-								/*
-								Element::LABEL => 'Dimensions',
-								Element::LABEL_POSITION => 'before',
-								*/
-								'size' => 5
-							)
-						),
-
-						'h' => $this->elements['h'] = new Text
-						(
-							array
-							(
-								'size' => 5
-							)
-						),
-
-						'method' => $this->elements['method'] = new Element
-						(
-							'select', array
-							(
-								self::LABEL => 'Méthode',
-								self::LABEL_POSITION => 'above',
-
-								Element::OPTIONS => array
+								'w' => $this->elements['w'] = new Text
 								(
-									Image::RESIZE_FILL => 'Remplir',
-									Image::RESIZE_FIT => 'Ajuster',
-									Image::RESIZE_SURFACE => 'Surface',
-									Image::RESIZE_FIXED_HEIGHT => 'Hauteur fixe, largeur ajustée',
-									Image::RESIZE_FIXED_HEIGHT_CROPPED => 'Hauteur fixe, largeur respectée',
-									Image::RESIZE_FIXED_WIDTH => 'Largeur fixe, hauteur ajustée',
-									Image::RESIZE_FIXED_WIDTH_CROPPED => 'Largeur fixe, hauteur respectée',
-									Image::RESIZE_CONSTRAINED => 'Contraindre'
-								)
-							)
-						),
+									array
+									(
+										Text::ADDON => 'px',
 
-						'no-upscale' => $this->elements['no-upscale'] = new Element
-						(
-							Element::TYPE_CHECKBOX, array
-							(
-								Element::LABEL => 'Ne pas agrandir'
-							)
-						),
-
-						'format' => $this->elements['format'] = new Element
-						(
-							'select', array
-							(
-								self::LABEL => 'Format',
-								self::LABEL_POSITION => 'before',
-
-								self::OPTIONS => array
-								(
-									'jpeg' => 'JPEG',
-									'png' => 'PNG',
-									'gif' => 'GIF'
+										'class' => 'measure',
+										'size' => 5
+									)
 								),
 
-								self::DEFAULT_VALUE => 'jpeg',
+								'&nbsp;&times;&nbsp;',
 
-								'style' => 'display: inline-block'
-							)
-						),
+								'h' => $this->elements['h'] = new Text
+								(
+									array
+									(
+										Text::ADDON => 'px',
 
-						'quality' => $this->elements['quality'] = new Text
-						(
-							array
-							(
-								self::LABEL => 'Qualité',
-								self::LABEL_POSITION => 'before',
-								self::DEFAULT_VALUE => 80,
-
-								'size' => 3
-							)
-						),
-
-						'interlace' => $this->elements['interlace'] = new Element
-						(
-							Element::TYPE_CHECKBOX, array
-							(
-								self::LABEL => 'Affichage progressif'
-							)
-						),
-
-						'background' => $this->elements['background'] = new Text
-						(
-							array
-							(
-								self::LABEL => 'Remplissage',
-								self::LABEL_POSITION => 'above'
-							)
-						),
-
-						'lightbox' => $this->elements['lightbox'] = new Element
-						(
-							Element::TYPE_CHECKBOX, array
-							(
-								self::LABEL => "Afficher l'original en lightbox"
+										'class' => 'measure',
+										'size' => 5
+									)
+								)
 							)
 						)
 					),
 
-					'class' => 'widget-adjust-thumbnail-options'
+
+					'method' => $this->elements['method'] = new Element
+					(
+						'select', array
+						(
+							Form::LABEL => 'Méthode',
+
+							Element::OPTIONS => array
+							(
+								Image::RESIZE_FILL => 'Remplir',
+								Image::RESIZE_FIT => 'Ajuster',
+								Image::RESIZE_SURFACE => 'Surface',
+								Image::RESIZE_FIXED_HEIGHT => 'Hauteur fixe, largeur ajustée',
+								Image::RESIZE_FIXED_HEIGHT_CROPPED => 'Hauteur fixe, largeur respectée',
+								Image::RESIZE_FIXED_WIDTH => 'Largeur fixe, hauteur ajustée',
+								Image::RESIZE_FIXED_WIDTH_CROPPED => 'Largeur fixe, hauteur respectée',
+								Image::RESIZE_CONSTRAINED => 'Contraindre'
+							)
+						)
+					),
+
+					/*
+					'no-upscale' => $this->elements['no-upscale'] = new Element
+					(
+						Element::TYPE_CHECKBOX, array
+						(
+							Element::LABEL => 'Redimensionner mais ne pas agrandir'
+						)
+					),
+					*/
+
+					new Element
+					(
+						'div', array
+						(
+							Form::LABEL => 'Format',
+
+							Element::CHILDREN => array
+							(
+								'format' => $this->elements['format'] = new Element
+								(
+									'select', array
+									(
+										self::OPTIONS => array
+										(
+											'jpeg' => 'JPEG',
+											'png' => 'PNG',
+											'gif' => 'GIF'
+										),
+
+										self::DEFAULT_VALUE => 'jpeg',
+
+										'style' => 'display: inline-block; width: auto;'
+									)
+								),
+
+								'&nbsp;',
+
+								'quality' => $this->elements['quality'] = new Text
+								(
+									array
+									(
+										Text::ADDON => 'Qualité',
+										Text::ADDON_POSITION => 'before',
+										self::DEFAULT_VALUE => 80,
+
+										'class' => 'measure',
+										'size' => 3
+									)
+								)
+							)
+						)
+					),
+
+
+					/*
+					'interlace' => $this->elements['interlace'] = new Element
+					(
+						Element::TYPE_CHECKBOX, array
+						(
+							self::LABEL => 'Affichage progressif'
+						)
+					),
+					*/
+
+					'background' => $this->elements['background'] = new Text
+					(
+						array
+						(
+							Form::LABEL => 'Remplissage'
+						)
+					),
+
+					'lightbox' => $this->elements['lightbox'] = new Element
+					(
+						Element::TYPE_CHECKBOX, array
+						(
+							self::LABEL => "Afficher l'original en lightbox"
+						)
+					)
 				),
 
-				$tags
+				'class' => 'widget-adjust-thumbnail-options'
 			)
 		);
 	}
 
-	protected static function add_assets(\BrickRouge\Document $document)
+	protected static function add_assets(\Brickrouge\Document $document)
 	{
 		parent::add_assets($document);
 
@@ -196,6 +223,7 @@ class AdjustThumbnailOptions extends Element
 		parent::set($name, $value);
 	}
 
+	/*
 	protected function render_inner_html()
 	{
 		extract($this->elements);
@@ -203,11 +231,12 @@ class AdjustThumbnailOptions extends Element
 		$no_upscale = $this->elements['no-upscale'];
 
 		return <<<EOT
-<div class="form-element">$w × $h <span class="label">px</span></div>
+<div class="form-element">$w × $h</div>
 <div class="form-element">$method</div>
 <div class="form-element">$background</div>
 <div class="form-element">$format $quality</div>
-<div class="form-element checkbox-group list">$no_upscale $interlace $lightbox</div>
+<div class="form-element checkbox-group list">$no_upscale $lightbox</div>
 EOT;
 	}
+	*/
 }

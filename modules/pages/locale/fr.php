@@ -34,7 +34,10 @@ return array
 		arborescence. Il n'y a pas de limites à la profondeur de cette arborescence.",
 
 		'pattern' => "Le motif permet de distribuer les paramètres d'une URL pour créer une URL
-		sémantique."
+		sémantique.",
+
+		'contents.inherit' => "Les contenus suivants peuvent être hérités. Si la page ne définit
+		pas un contenu, alors celui d'une page parente est utilisé."
 	),
 
 	'label' => array
@@ -45,12 +48,6 @@ return array
 		'parentid' => 'Page parente',
 		'pattern' => 'Motif',
 		'template' => 'Gabarit'
-	),
-
-	'section.description' => array
-	(
-		'contents.inherit' => "Les contenus suivants peuvent être hérités. Si la page ne définit
-		pas un contenu, alors celui d'une page parente est utilisé."
 	),
 
 	'section.title' => array

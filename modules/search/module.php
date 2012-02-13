@@ -11,12 +11,24 @@
 
 namespace ICanBoogie\Modules\Search;
 
-use BrickRouge\Element;
-use BrickRouge\Form;
-use BrickRouge\Text;
+use Brickrouge\Element;
+use Brickrouge\Form;
+use Brickrouge\Text;
 
 class Module extends \Icybee\Module
 {
+	protected function __get_views()
+	{
+		return array
+		(
+			'home' => array
+			(
+				'title' => 'Rechercher sur le site',
+				'renders' => \Icybee\Views\View::RENDERS_MANY
+			)
+		);
+	}
+
 	protected function block_config()
 	{
 		global $core;
@@ -115,9 +127,9 @@ class Module extends \Icybee\Module
 				(
 					'div', array
 					(
-						Form::LABEL => '.scope',
+						Form::LABEL => 'scope',
 						Element::INNER_HTML => $el,
-						Element::DESCRIPTION => '.scope'
+						Element::DESCRIPTION => 'scope'
 					)
 				),
 

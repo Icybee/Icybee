@@ -71,9 +71,9 @@ MooEditable.UI.ImageDialog = new Class
 
 	close: function()
 	{
-		if (this.popup)
+		if (this.popover)
 		{
-			this.popup.close();
+			this.popover.hide();
 		}
 
 		this.fireEvent('close', this);
@@ -107,9 +107,9 @@ MooEditable.UI.ImageDialog = new Class
 		(
 			'load', function(ev)
 			{
-				if (this.popup)
+				if (this.popover)
 				{
-					this.popup.reposition();
+					this.popover.reposition();
 				}
 			}
 			.bind(this)
@@ -121,11 +121,11 @@ MooEditable.UI.ImageDialog = new Class
 		// We create the adjust element if it's not created yet
 		//
 
-		if (this.popup)
+		if (this.popover)
 		{
-			this.popup.attachAnchor(this.node);
-			this.popup.adjust.setValues(this.node);
-			this.popup.open();
+			this.popover.attachAnchor(this.node);
+			this.popover.adjust.setValues(this.node);
+			this.popover.show();
 		}
 		else
 		{
@@ -133,7 +133,7 @@ MooEditable.UI.ImageDialog = new Class
 			{
 				this.fetchAdjustOperation = new Request.Widget
 				(
-					'adjust-thumbnail/popup', this.setupPopup.bind(this)
+					'adjust-thumbnail/popup', this.setupPopover.bind(this)
 				);
 			}
 
@@ -141,49 +141,51 @@ MooEditable.UI.ImageDialog = new Class
 		}
 	},
 
-	setupPopup: function(popElement)
+	setupPopover: function(popElement)
 	{
-		this.popup = new BrickRouge.Widget.Popup.Adjust
+		this.popover = new Icybee.Widget.AdjustPopover
 		(
 			popElement,
 			{
 				anchor: this.node,
 				iframe: this.editor.iframe
 			}
-		);
+		)
 
-		this.popup.addEvent
+		this.popover.iframe = this.editor.iframe // FIXME-20120201: because 'iframe' was missing from options.
+
+		this.popover.addEvent
 		(
-			'closeRequest', function(ev)
+			'action', function(ev)
 			{
-				var mode = ev.mode;
-				var src = this.node.src;
+				var action = ev.action
+				, src = this.node.src
 
-				if (mode == 'cancel')
+				if (action == 'cancel')
 				{
-					this.node.src = src = this.previousImage;
+					this.node.src = src = this.previousImage
 				}
-				else if (mode == 'none')
+				else if (action == 'remove')
 				{
-					src = null;
+					src = null
 				}
 
 				if (!src || src.substring(0, 5) == 'data:')
 				{
-					this.node.destroy();
+					this.node.destroy()
 
-					delete this.node;
+					delete this.node
 				}
 
-				this.close();
+				this.close()
 			}
 			.bind(this)
 		);
 
-		this.popup.open();
-		this.popup.adjust.setValues(this.node);
+		this.popover.show();
+		this.popover.adjust.setValues(this.node);
 
-		this.popup.adjust.addEvent
+		this.popover.adjust.addEvent
 		(
 			'change', function(ev)
 			{
@@ -201,7 +203,7 @@ MooEditable.UI.ImageDialog = new Class
 					this.node.removeAttribute('data-lightbox');
 				}
 
-				if (options.w)
+				if (options.w && options.method != 'surface')
 				{
 					this.node.set('width', options.w);
 				}
@@ -210,7 +212,7 @@ MooEditable.UI.ImageDialog = new Class
 					this.node.removeAttribute('width');
 				}
 
-				if (options.h)
+				if (options.h && options.method != 'surface')
 				{
 					this.node.set('height', options.h);
 				}

@@ -44,7 +44,7 @@ class LoginOperation extends Operation
 	 */
 	protected function __get_form()
 	{
-		return new \BrickRouge\Widget\Users\Login;
+		return new \Brickrouge\Widget\Users\Login;
 	}
 
 	protected function validate(\ICanboogie\Errors $errors)

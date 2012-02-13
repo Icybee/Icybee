@@ -23,5 +23,10 @@ return array
 				)
 			)
 		)
+	),
+
+	Module::T_REQUIRES => array
+	(
+		'nodes' => '1.x'
 	)
 );

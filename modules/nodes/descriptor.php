@@ -12,6 +12,7 @@ return array
 	Module::T_REQUIRED => true,
 	Module::T_REQUIRES => array
 	(
+		'sites' => 'x.x',
 		'users' => 'x.x'
 	),
 

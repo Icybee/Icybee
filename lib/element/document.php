@@ -19,7 +19,7 @@ use ICanBoogie\Exception;
 use ICanBoogie\Operation;
 use ICanBoogie\Route;
 
-class Document extends \BrickRouge\Document
+class Document extends \Brickrouge\Document
 {
 	public $on_setup = false;
 	protected $changed_site;
@@ -98,67 +98,35 @@ class Document extends \BrickRouge\Document
 
 		$rc .= $this->getNavigation();
 
+
+		$subnav = $this->getBlock('subnav');
+
 		$rc .= '<div id="contents-wrapper">';
 		$rc .= '<h1>' . t($this->page_title) . '</h1>';
 
+
+
+		$rc .= new \Brickrouge\Alert(Debug::fetch_messages('done'), array(\Brickrouge\Alert::CONTEXT => 'success'));
+		$rc .= new \Brickrouge\Alert(Debug::fetch_messages('error'), array(\Brickrouge\Alert::CONTEXT => 'error'));
+
+
+
 		$rc .= '<div id="contents-header">';
+
+		if ($subnav)
+		{
+			$rc .= '<div>' . $subnav . '</div>';
+		}
+
 		$rc .= $contents_header;
 		$rc .= '</div>';
 
 		$rc .= '<div id="contents">';
 
-		#
-		# messages
-		#
-
-		$messages = Debug::fetch_messages('error');
-
-		if ($messages)
-		{
-			$rc .= '<ul class="wddebug error">';
-
-			foreach ($messages as $message)
-			{
-				$rc .= '<li>' . $message . '</li>' . PHP_EOL;
-			}
-
-			$rc .= '</ul>';
-		}
-
-		$messages = Debug::fetch_messages('done');
-
-		if ($messages)
-		{
-			$rc .= '<ul class="wddebug done">';
-
-			foreach ($messages as $message)
-			{
-				$rc .= '<li>' . $message . '</li>' . PHP_EOL;
-			}
-
-			$rc .= '</ul>';
-		}
-
-		#
-		#
-		#
-
 		$rc .= $contents;
 		$rc .= $main;
 
-		$messages = Debug::fetch_messages('debug');
-
-		if ($messages && $user->is_admin)
-		{
-			$rc .= '<ul class="wddebug debug">';
-
-			foreach ($messages as $message)
-			{
-				$rc .= '<li>' . $message . '</li>' . PHP_EOL;
-			}
-
-			$rc .= '</ul>';
-		}
+		$rc .= new \Brickrouge\Alert(Debug::fetch_messages('debug'), array(\Brickrouge\Alert::CONTEXT => 'debug'));
 
 		$rc .= '</div>';
 		$rc .= '</div>';
@@ -331,89 +299,14 @@ EOT;
 
 		$user = $core->user;
 
-		$rc = '<div id="navigation">';
-
 		if ($user->is_guest || $user instanceof Users\Member)
 		{
 			$this->title = 'Icybee';
 
 			return;
 		}
-		else
-		{
-			$links = array();
-			$routes = Route::routes();
 
-			foreach ($routes as $route)
-			{
-				if (empty($route['index']) || empty($route['workspace']))
-				{
-					continue;
-				}
-
-				$module_id = $route['module'];
-
-				if (!isset($core->modules[$module_id]))
-				{
-					continue;
-				}
-
-				$permission = isset($route['permission']) ? $route['permission'] : Module::PERMISSION_ACCESS;
-
-				if (!$user->has_permission($permission, $module_id))
-				{
-					continue;
-				}
-
-				$ws = $route['workspace'];
-
-				$links[$ws] = t($ws, array(), array('scope' => array('module_category', 'title')));
-			}
-
-			uasort($links, 'wd_unaccent_compare_ci');
-
-			$links = array_merge
-			(
-				array
-				(
-					'dashboard' => 'Dashboard'
-				),
-
-				$links
-			);
-
-			$matching_route = Route::find($_SERVER['REQUEST_URI'], 'any', 'admin');
-			$selected = $matching_route ? $matching_route[0]['workspace'] : 'dashboard';
-			$context = $core->site->path;
-
-			$rc .= '<ul>';
-
-			foreach ($links as $path => $label)
-			{
-				if (strpos($selected, $path) === 0)
-				{
-					$rc .= '<li class="selected">';
-
-					$this->page_title = $label;
-				}
-				else
-				{
-					$rc .= '<li>';
-				}
-
-				$path = Route::contextualize('/admin/'. $path);
-
-				$rc .= '<a href="' . $path . '">' . $label . '</a></li>';
-			}
-
-			$rc .= '</ul>';
-		}
-
-		$rc .= '<span id="loader">loading</span>';
-
-		$rc .= '</div>';
-
-		return $rc;
+		return new Admin\Element\Navigation(array('id' => 'navigation'));
 	}
 
 	protected function getMain()
@@ -548,7 +441,7 @@ EOT;
 	{
 		global $document;
 
-		return $document = new \BrickRouge\Document();
+		return $document = new \Brickrouge\Document();
 	}
 
 	public static function markup_document_title(array $args, \WdPatron $patron, $template)

@@ -11,7 +11,7 @@
 
 use ICanBoogie\ActiveRecord\Node;
 use ICanBoogie\Modules\Pages\Model as PagesModel;
-use BrickRouge\Element;
+use Brickrouge\Element;
 
 class WdI18nElement extends Element
 {

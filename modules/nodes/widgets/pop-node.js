@@ -1,12 +1,12 @@
 
-BrickRouge.Widget.PopNode = new Class
+Brickrouge.Widget.PopNode = new Class
 ({
 	Implements: [ Options, Events ],
 
 	options:
 	{
 		placeholder: 'Select an entry',
-		constructor: 'system.nodes',
+		constructor: 'nodes',
 		adjust: 'adjust-node',
 		previewWidth: 64,
 		previewHeight: 64
@@ -14,51 +14,51 @@ BrickRouge.Widget.PopNode = new Class
 
 	initialize: function(el, options)
 	{
-		this.element = $(el);
+		this.element = $(el)
+		this.popover = null
+		this.fetchAdjustOperation = null
+		this.title = this.element.getElement('span.title')
+		this.preview = this.element.getElement('img')
 
-		this.setOptions(options);
+		this.setOptions(options)
 
-		this.element.addEvent
-		(
-			'click', this.fetchAdjust.bind(this)
-		);
+		this.element.addEvent('click', this.onClick.bind(this))
+	},
 
-		this.title_el = this.element.getElement('span.title');
-		this.key_el = this.element.getElement('input.key');
-		this.preview_el = this.element.getElement('img');
+	onClick: function()
+	{
+		this.fetchAdjust()
 	},
 
 	fetchAdjust: function()
 	{
-		this.title_back = this.title_el.get('html');
-		this.key_back = this.key_el.value;
+		var preview = this.preview
+		, value = this.element.get('value')
 
-		var preview_el = this.preview_el;
+		this.title_back = this.title.get('html')
+		this.key_back = value
 
-		if (preview_el)
+		if (preview)
 		{
-			this.preview_back = preview_el.get('src');
+			this.preview_back = preview.get('src')
 		}
 
-		if (this.popup)
+		if (this.popover)
 		{
-			this.popup.open({ selected: this.key_el.value });
+			this.popover.show({ selected: value })
 
-			return;
+			return
 		}
 
-		if (preview_el)
+		if (preview)
 		{
-			preview_el.addEvent
+			preview.addEvent
 			(
 				'load', function()
 				{
-					if (!this.popup)
-					{
-						return;
-					}
+					if (!this.popover) return
 
-					this.popup.reposition();
+					this.popover.reposition()
 				}
 				.bind(this)
 			);
@@ -66,28 +66,18 @@ BrickRouge.Widget.PopNode = new Class
 
 		if (!this.fetchAdjustOperation)
 		{
-			/*
-			this.fetchAdjustOperation = new Request.Element
-			({
-				url: '/api/components/' + this.options.adjust + '/popup',
-				onSuccess: this.setupAdjust.bind(this)
-			});
-			*/
-
 			this.fetchAdjustOperation = new Request.Widget
 			(
 				this.options.adjust + '/popup', this.setupAdjust.bind(this)
-			);
-
-//			this.fetchAdjustOperation = new Request.Widget(this.options.adjust + '/popup', this.setupAdjust.bind(this));
+			)
 		}
 
-		this.fetchAdjustOperation.get({ selected: this.key_el.value, constructor: this.options.constructor });
+		this.fetchAdjustOperation.get({ selected: value, constructor: this.options.constructor })
 	},
 
 	setupAdjust: function(popElement)
 	{
-		this.popup = new BrickRouge.Widget.Popup.Adjust
+		this.popover = this.popup = new Icybee.Widget.AdjustPopover
 		(
 			popElement,
 			{
@@ -95,98 +85,78 @@ BrickRouge.Widget.PopNode = new Class
 			}
 		);
 
-		this.popup.open();
+		this.popover.show()
 
 		/*
 		 * The adjust object is available after the `elementsready` event has been fired. The event
 		 * is fired when the popup is opened.
 		 */
 
-		this.popup.adjust.addEvent('change', this.onChange.bind(this));
-		this.popup.addEvent('closeRequest', this.onCloseRequest.bind(this));
+		this.popover.adjust.addEvent('change', this.onChange.bind(this))
+		this.popover.addEvent('action', this.onAction.bind(this))
+	},
+
+	onAction: function(ev)
+	{
+		switch (ev.action)
+		{
+			case 'cancel': this.cancel(); break
+			case 'remove': this.remove() // continue
+			case 'use': this.use()
+		}
+
+		this.element[(0 + this.element.get('value').toInt() ? 'remove' : 'add') + 'Class']('placeholder')
+
+		this.popover.hide()
 	},
 
 	onChange: function(ev)
 	{
-		var entry = ev.target;
+		var entry = ev.target
+		, nid = entry.get('data-nid')
+		, title = entry.get('data-title')
+		, preview = this.preview
 
-		var entry_nid = entry.get('data-nid');
-		var entry_title = entry.get('data-title');
-		var entry_path = entry.get('data-path');
+		this.title.set('text', title).set('title', title)
+		this.element.set('value', nid)
 
-		var title_el = this.title_el;
-		var key_el = this.key_el;
-		var preview_el = this.preview_el;
+		this.element.removeClass('placeholder')
 
-		title_el.set('text', entry_title);
-		title_el.set('title', entry_title);
-		key_el.set('value', entry_nid);
-
-		this.element.removeClass('placeholder');
-
-		if (preview_el && entry_nid)
+		if (preview && nid)
 		{
-			preview_el.src = '/api/resources.images/' + entry_nid + '/thumbnail?w=' + this.options.previewWidth + '&h=' + this.options.previewHeight + '&m=surface&f=png';
+			preview.src = '/api/resources.images/' + nid + '/' + this.options.previewWidth + 'x' + this.options.previewHeight + '?m=surface&f=png'
 		}
 		else
 		{
-			this.popup.reposition();
+			this.popover.reposition()
 		}
-	},
-
-	onCloseRequest: function(ev)
-	{
-		var title_el = this.title_el;
-		var key_el = this.key_el;
-		var preview_el = this.preview_el;
-
-		switch (ev.mode)
-		{
-			case 'cancel':
-			{
-				this.cancel();
-			}
-			break;
-
-			case 'none':
-			{
-				title_el.set('html', '<em>' + this.options.placeholder + '</em>');
-				key_el.value = '';
-
-				if (preview_el)
-				{
-					preview_el.set('src', '');
-				}
-			}
-			// continue
-
-			case 'continue':
-			{
-				this.use();
-			}
-			break;
-		}
-
-		this.element[(0 + key_el.value.toInt() ? 'remove' : 'add') + 'Class']('placeholder');
-
-		this.popup.close();
 	},
 
 	cancel: function()
 	{
-		this.title_el.set('html', this.title_back);
-		this.key_el.value = this.key_back;
+		this.title.set('html', this.title_back)
+		this.element.set('value', this.key_back)
 
-		if (this.preview_el)
+		if (this.preview)
 		{
-			this.preview_el.set('src', this.preview_back);
+			this.preview.set('src', this.preview_back)
+		}
+	},
+
+	remove: function()
+	{
+		this.title.set('html', '<em>' + this.options.placeholder + '</em>');
+		this.element.set('value', '');
+
+		if (this.preview)
+		{
+			this.preview.set('src', '');
 		}
 	},
 
 	use: function()
 	{
 		this.element.fireEvent('change', {});
-		this.key_el.fireEvent('change', {});
 	},
 
 	reset: function()

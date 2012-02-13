@@ -9,32 +9,32 @@
  * file that was distributed with this source code.
  */
 
-namespace BrickRouge\Widget;
+namespace Brickrouge\Widget;
 
-use BrickRouge\Element;
+use Brickrouge\Element;
 
-class PopNode extends \BrickRouge\Widget
+class PopNode extends \Brickrouge\Widget
 {
 	const T_CONSTRUCTOR = '#popnode-constructor';
 	const T_PLACEHOLDER = '#popnode-placeholder';
 
-	public function __construct($tags=array(), $dummy=null)
+	public function __construct(array $attributes=array())
 	{
 		parent::__construct
 		(
-			'div', $tags + array
+			'button', $attributes + array
 			(
 				self::T_CONSTRUCTOR => 'nodes',
 				self::T_PLACEHOLDER => 'Sélectionner un enregistrement',
 
-				'class' => 'like-input'
+				'class' => 'spinner',
+				'data-adjust' => 'adjust-node',
+				'type' => 'button'
 			)
 		);
-
-		$this->dataset['adjust'] = 'adjust-node';
 	}
 
-	protected static function add_assets(\BrickRouge\Document $document)
+	protected static function add_assets(\Brickrouge\Document $document)
 	{
 		parent::add_assets($document);
 
@@ -42,12 +42,12 @@ class PopNode extends \BrickRouge\Widget
 		$document->js->add('pop-node.js');
 	}
 
-	protected function render_outer_html()
+	protected function render_dataset(array $dataset)
 	{
-		$this->dataset['constructor'] = $this->get(self::T_CONSTRUCTOR);
-		$this->dataset['placeholder'] = $this->get(self::T_PLACEHOLDER);
+		$dataset['constructor'] = $this[self::T_CONSTRUCTOR];
+		$dataset['placeholder'] = $this[self::T_PLACEHOLDER];
 
-		return parent::render_outer_html();
+		return parent::render_dataset($dataset);
 	}
 
 	protected function render_inner_html()
@@ -56,8 +56,8 @@ class PopNode extends \BrickRouge\Widget
 
 		$rc = parent::render_inner_html();
 
-		$constructor = $this->get(self::T_CONSTRUCTOR);
-		$value = $this->get('value', 0);
+		$constructor = $this[self::T_CONSTRUCTOR];
+		$value = $this['value'] ?: 0;
 		$entry = null;
 
 		if ($value)
@@ -68,7 +68,7 @@ class PopNode extends \BrickRouge\Widget
 			{
 				$entry = is_numeric($value) ? $model[$value] : $this->getEntry($model, $value);
 			}
-			catch (Exception $e)
+			catch (\Exception $e)
 			{
 				wd_log_error('PopNode: Missing record %nid', array('%nid' => $value));
 			}
@@ -81,22 +81,6 @@ class PopNode extends \BrickRouge\Widget
 		}
 
 		$rc .= $this->getPreview($entry);
-
-		$name = $this->get('name');
-
-		if ($name)
-		{
-			$rc .= new Element
-			(
-				'input', array
-				(
-					'name' => $name,
-					'type' => 'hidden',
-					'value' => $value,
-					'class' => 'key'
-				)
-			);
-		}
 
 		return $rc;
 	}

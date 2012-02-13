@@ -1,5 +1,5 @@
 
-BrickRouge.Widget.AdjustThumbnailOptions = new Class
+Brickrouge.Widget.AdjustThumbnailOptions = new Class
 ({
 	Implements: [ Events ],
 
@@ -33,6 +33,9 @@ BrickRouge.Widget.AdjustThumbnailOptions = new Class
 			{
 				h.readOnly = false;
 				w.readOnly = true;
+
+				h.getParent('.input-append').removeClass('readonly');
+				w.getParent('.input-append').addClass('readonly');
 			}
 			break;
 
@@ -40,6 +43,9 @@ BrickRouge.Widget.AdjustThumbnailOptions = new Class
 			{
 				h.readOnly = true;
 				w.readOnly = false;
+
+				h.getParent('.input-append').addClass('readonly');
+				w.getParent('.input-append').removeClass('readonly');
 			}
 			break;
 
@@ -47,6 +53,9 @@ BrickRouge.Widget.AdjustThumbnailOptions = new Class
 			{
 				w.readOnly = false;
 				h.readOnly = false;
+
+				h.getParent('.input-append').removeClass('readonly');
+				w.getParent('.input-append').removeClass('readonly');
 			}
 			break;
 		}
@@ -61,6 +70,7 @@ BrickRouge.Widget.AdjustThumbnailOptions = new Class
 
 	getValues: function()
 	{
+		/*
 		var values =
 		{
 			w: this.w.get('value'),
@@ -69,10 +79,12 @@ BrickRouge.Widget.AdjustThumbnailOptions = new Class
 			background: this.background.get('value'),
 			format: this.format.get('value'),
 			quality: this.quality.get('value'),
-			'no-upscale': this['no-upscale'].checked,
-			interlace: this.interlace.checked,
+			'no-upscale': this['no-upscale'] ? this['no-upscale'].checked : null,
+			interlace: this.interlace ? this.interlace.checked : null,
 			lightbox: this.lightbox.checked
 		};
+
+		console.log('qs:', this.element.toQueryString().parseQueryString());
 
 		if (!values['no-upscale'])
 		{
@@ -83,6 +95,9 @@ BrickRouge.Widget.AdjustThumbnailOptions = new Class
 		{
 			delete values.interlace;
 		}
+		*/
+
+		var values = this.element.toQueryString().parseQueryString();
 
 		if (values.format != 'jpeg')
 		{

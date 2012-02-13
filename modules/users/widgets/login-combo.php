@@ -9,9 +9,9 @@
  * file that was distributed with this source code.
  */
 
-namespace BrickRouge\Widget\Users;
+namespace Brickrouge\Widget\Users;
 
-use BrickRouge\Element;
+use Brickrouge\Element;
 
 class LoginCombo extends Element
 {

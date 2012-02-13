@@ -1,5 +1,6 @@
 @CHARSET "UTF-8";
 
+/*
 .widget-adjust-thumbnail-options select[name=v],
 .widget-adjust-thumbnail-options select[name=method],
 .widget-adjust-thumbnail-options input[name=background][type=text]:not([size])
@@ -9,8 +10,13 @@
 	-moz-box-sizing: border-box;
 	-webkit-box-sizing: border-box;
 }
+*/
 
 .widget-adjust-thumbnail-options input[readonly]
 {
 	color: transparent;
+}
+
+.widget-adjust-thumbnail-options .control-group + .control-group--no-upscale {
+	margin-top: 5px;
 }

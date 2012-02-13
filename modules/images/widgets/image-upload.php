@@ -9,17 +9,17 @@
  * file that was distributed with this source code.
  */
 
-namespace BrickRouge\Widget;
+namespace Brickrouge\Widget;
 
 use ICanBoogie\Operation;
-use BrickRouge\Element;
+use Brickrouge\Element;
 
 class ImageUpload extends \WdFileUploadElement
 {
 	const THUMBNAIL_WIDTH = 64;
 	const THUMBNAIL_HEIGHT = 64;
 
-	protected static function add_assets(\BrickRouge\Document $document)
+	protected static function add_assets(\Brickrouge\Document $document)
 	{
 		parent::add_assets($document);
 

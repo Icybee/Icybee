@@ -31,6 +31,11 @@ return array
 				)
 			)
 		)
+	),
+
+	Module::T_REQUIRES => array
+	(
+		'nodes' => 'x.x'
 	)
 );
 

@@ -4,7 +4,7 @@ return array
 (
 	'autoload' => array
 	(
-		'BrickRouge\Element\Breadcrumb' => $path . 'lib/element/breadcrumb.php',
+		'Brickrouge\Element\Breadcrumb' => $path . 'lib/element/breadcrumb.php',
 
 		'WdPageSelectorElement' => $path . 'elements/pageselector.php',
 		'WdAdjustTemplateElement' => $path . 'elements/adjusttemplate.php',
@@ -13,6 +13,8 @@ return array
 		'site_pages_WdMarkups' => $path . 'markups.php',
 		'site_pages_languages_WdMarkup' => $path . 'markups.php',
 		'site_pages_navigation_WdMarkup' => $path . 'markups.php',
-		'site_pages_sitemap_WdMarkup' => $path . 'markups.php'
+		'site_pages_sitemap_WdMarkup' => $path . 'markups.php',
+
+		'ICanBoogie\Modules\Pages\CacheManager' => $path . 'lib/cache-manager.php'
 	)
 );
