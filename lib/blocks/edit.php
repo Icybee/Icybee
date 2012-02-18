@@ -143,6 +143,38 @@ class EditBlock extends Form
 
 	public function __toString()
 	{
+		global $core;
+
+		$key = $this->key;
+
+		if ($key)
+		{
+			$locked = $this->module->lock_entry($key, $lock);
+
+			if (!$locked)
+			{
+				$luser = $core->models['users'][$lock['uid']];
+				$url = $core->request->path;
+
+				$time = round((strtotime($lock['until']) - time()) / 60);
+				$message = $time ? "Le verrou devrait disparaitre dans $time minutes." : "Le verrou devrait disparaitre dans moins d'une minutes.";
+
+				return <<<EOT
+<div class="block-alert">
+<h2>Édition impossible</h2>
+<p>Impossible d'éditer l'enregistrement parce qu'il est en cours d'édition par <em>$luser->name</em> <span class="small">($luser->username)</span>.</p>
+<form method="get">
+<input type="hidden" name="retry" value="1" />
+<button class="btn-success">Réessayer</button> <span class="small light">$message</span>
+</form>
+</div>
+EOT;
+			}
+		}
+
+		#
+		#
+		#
 		$this->save();
 
 		I18n::push_scope($this->module->flat_id . '.edit');
@@ -175,18 +207,15 @@ class EditBlock extends Form
 		$user = $core->user;
 		$permission = $user->has_permission(Module::PERMISSION_CREATE, $this->module);
 
+		#
+		# check user ownership
+		#
+
 		$record = $this->record;
 
-		if ($record)
+		if ($record && isset($record->uid))
 		{
-			#
-			# check user ownership
-			#
-
-			if (isset($record->uid))
-			{
-				$permission = $user->has_ownership($this, $record);
-			}
+			$permission = $user->has_ownership($this->module, $record);
 		}
 
 		return $permission;
@@ -194,9 +223,31 @@ class EditBlock extends Form
 
 	protected function access_control()
 	{
-		if (!$this->key && !$this->permission)
+		global $core;
+
+		$key = $this->key;
+		$module_id = $this->module->id;
+
+		if (!$key && !$this->permission)
 		{
-			throw new Exception\HTTP("You don't have permission to create entries in the %id module.", array('id' => $this->module->id), 403);
+			throw new Exception\HTTP("You don't have permission to create records in the %id module.", array('id' => $module_id), 403);
+		}
+
+		#
+		# Records that belong to a site can only be edited on that site, thus we need to change
+		# site if the current site if not the one associated with the record.
+		#
+
+		$record = $this->record;
+
+		if ($record && !($record instanceof \ICanBoogie\ActiveRecord\Site)
+		&& !empty($record->siteid) && $record->siteid != $core->site_id)
+		{
+			$url = $core->models['sites'][$record->siteid]->url;
+
+			header("Location: $url/admin/$module_id/$key/edit");
+
+			exit;
 		}
 	}
 

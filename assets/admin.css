@@ -898,19 +898,19 @@ body.page-slug-authenticate h1 {
 /*
  * Site access denied block
  */
-#block--site-access-denied {
+.block-alert {
 	padding: 16px;
 }
 
-#block--site-access-denied h2 {
+.block-alert h2 {
 	margin-top: 0;
 }
 
-#block--site-access-denied .form-actions {
+.block-alert .form-actions {
 	padding: 16px 0 0 0;
 	border-top: 0;
 }
 
-#block--site-access-denied .controls-label { /* fix missing bold on control label */
+.block-alert .controls-label { /* fix missing bold on control label */
 	font-weight: bold;
 }

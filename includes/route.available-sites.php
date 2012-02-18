@@ -69,7 +69,7 @@ function _route_add_available_sites()
 	);
 
 	$rc = <<<EOT
-<div id="block--site-access-denied">
+<div id="block--site-access-denied" class="block-alert">
 <h2>Access denied</h2>
 <p>You don't have permission to access the administration interface for the website <q>$ws_title</q>,
 please select another website to work with:</p>

@@ -92,37 +92,24 @@ class Module extends \ICanBoogie\Module
 
 		$args = func_get_args();
 
-		if ($name == 'edit' && !$core->user->is_guest)
+		$class_name = $this->resolve_block_class($name);
+
+		if ($class_name)
 		{
-			if (!empty($args[1]))
-			{
-				$key = $args[1];
+			\ICanBoogie\log_info("Block instanciated from <q>$class_name</q>.");
 
-				$locked = $this->lock_entry($key, $lock);
+			array_shift($args);
 
-				if (!$locked)
-				{
-					$luser = $core->models['users'][$lock['uid']];
-					$url = $_SERVER['REQUEST_URI'];
+			$block = new $class_name($this, $args);
 
-					$time = round((strtotime($lock['until']) - time()) / 60);
-					$message = $time ? "Le verrou devrait disparaitre dans $time minutes." : "Le verrou devrait disparaitre dans moins d'une minutes.";
+			I18n::push_scope($module->flat_id . '.edit');
 
-					return <<<EOT
-<div class="group">
-<h3>Édition impossible</h3>
-<p>Impossible d'éditer l'entrée parce qu'elle est en cours d'édition par <em>$luser->name</em> <span class="small">($luser->username)</span>.</p>
-<form method="get">
-<input type="hidden" name="retry" value="1" />
-<button class="continue">Réessayer</button> <span class="small light">$message</span>
-</form>
-</div>
-EOT;
-				}
-			}
+			$rendered_block = (string) $block;
+
+			I18n::pop_scope();
+
+			return $rendered_block;
 		}
-
-
 
 		switch ($name)
 		{
@@ -144,15 +131,6 @@ EOT;
 
 			case 'edit':
 			{
-				$class_name = $this->resolve_block_class('edit');
-
-				if ($class_name)
-				{
-					\ICanBoogie\log_info("Block instanciated from <q>$class_name</q>.");
-
-					return new $class_name($this, isset($args[1]) ? $args[1] : null);
-				}
-
 				return $this->handle_block_edit(isset($args[1]) ? $args[1] : null);
 			}
 			break;
@@ -609,6 +587,19 @@ EOT;
 		return array();
 	}
 
+	private function create_activerecord_lock_name($key)
+	{
+		return "activerecord_locks.$this->flat_id.$key";
+	}
+
+	/**
+	 * Locks an activerecord.
+	 *
+	 * @param int $key
+	 *
+	 * @throws Exception
+	 * @return array|false
+	 */
 	public function lock_entry($key, &$lock=null)
 	{
 		global $core;
@@ -617,7 +608,7 @@ EOT;
 
 		if (!$user_id)
 		{
-			throw new Exception('Guest users cannot lock entries');
+			throw new Exception('Guest users cannot lock records');
 		}
 
 		if (!$key)
@@ -628,48 +619,42 @@ EOT;
 		#
 		# is the node already locked by another user ?
 		#
-
-		$until = date('Y-m-d H:i:s', time() + 2 * 60);
-
-		$base = 'admin.locks.' . $this->flat_id . '.' . $key;
-		$lock_uid_key = $base . '.uid';
-		$lock_until_key = $base . '.until';
-
 		$registry = $core->registry;
-		$lock = $registry[$base . '.'];
 
-//		wd_log('all: \1, lock: \2', array($registry['admin.locks.'], $lock));
+		$lock_name = $this->create_activerecord_lock_name($key);
+		$lock = json_decode($registry[$lock_name], true);
+		$lock_uid = $user_id;
+		$lock_until = null;
 
-		if ($registry[$lock_uid_key])
+		$now = time();
+		$until = date('Y-m-d H:i:s', $now + 2 * 60);
+
+		if ($lock)
 		{
-			$now = time();
+			$lock_uid = $lock['uid'];
+			$lock_until = $lock['until'];
 
-			// TODO-20100903: too much code, cleanup needed !
-
-			if ($now > strtotime($registry[$lock_uid_key]))
+			if ($now > strtotime($lock_until))
 			{
 				#
-				# there _was_ a lock, but its time has expired, we can claim it.
+				# Because the lock has expired we can claim it.
 				#
 
-				$registry[$lock_uid_key] = $user_id;
-				$registry[$lock_until_key] = $until;
+				$lock_uid = $user_id;
 			}
-			else
+			else if ($lock_uid != $user_id)
 			{
-				if ($registry[$lock_uid_key] != $user_id)
-				{
-					return false;
-				}
-
-				$registry[$lock_until_key] = $until;
+				return false;
 			}
 		}
-		else
-		{
-			$registry[$lock_uid_key] = $user_id;
-			$registry[$lock_until_key] = $until;
-		}
+
+		$lock = array
+		(
+			'uid' => $lock_uid,
+			'until' => $until
+		);
+
+		$registry[$lock_name] = json_encode($lock);
 
 		return true;
 	}
@@ -678,25 +663,22 @@ EOT;
 	{
 		global $core;
 
-		$base = "admin.locks.$this->flat_id.$key.";
-		$lock_uid_key = $base . 'uid';
-		$lock_until_key = $base . 'until';
-
 		$registry = $core->registry;
-		$lock_uid = $registry[$lock_uid_key];
 
-		if (!$lock_uid)
+		$lock_name = $this->create_activerecord_lock_name($key);
+		$lock = json_decode($registry[$lock_name], true);
+
+		if (!$lock)
 		{
 			return;
 		}
 
-		if ($lock_uid != $core->user_id)
+		if ($lock['uid'] != $core->user_id)
 		{
 			return false;
 		}
 
-		$registry[$lock_uid_key] = null;
-		$registry[$lock_until_key] = null;
+		unset($registry[$lock_name]);
 
 		return true;
 	}

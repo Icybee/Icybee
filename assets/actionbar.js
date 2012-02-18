@@ -1,7 +1,11 @@
 window.addEvent('domready', function()
 {
 	var actionbar = document.id(document.body).getElement('.actionbar')
-	, y = actionbar.getPosition().y
+	, y
+
+	if (!actionbar) return
+
+	y = actionbar.getPosition().y
 
 	function updateActionBar()
 	{
