@@ -187,48 +187,4 @@ EOT;
 			)
 		);
 	}
-
-	protected function block_config()
-	{
-		return array
-		(
-			Element::GROUPS => array
-			(
-				'notifies.password' => array
-				(
-					'title' => 'Envoie des informations de connexion'
-				)
-			),
-
-			Element::CHILDREN => array
-			(
-				/*
-				"local[$this->flat_id.notifies.password]" => new WdEMailNotifyElement
-				(
-					array
-					(
-						Element::GROUP => 'notifies.password',
-						//Element::DEFAULT_VALUE => self::$config_default['notifies']['password']
-
-						Element::DEFAULT_VALUE => array
-						(
-							'subject' => 'Vos paramètres de connexion à Icybee',
-							'from' => 'no-reply@' . $_SERVER['HTTP_HOST'],
-							'template' => 'Bonjour,
-
-Voici vos paramètres de connexion à la plateforme de gestion de contenu Publishr :
-
-Identifiant : "#{@username}" ou "#{@email}"
-Mot de passe : "#{@password}"
-
-Une fois connecté vous pourrez modifier votre mot de passe. Pour cela cliquez sur votre nom dans la barre de titre et éditez votre profil.
-
-Cordialement'
-						)
-					)
-				)
-				*/
-			)
-		);
-	}
 }

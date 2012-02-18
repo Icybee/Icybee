@@ -15,10 +15,6 @@ use ICanBoogie;
 use ICanBoogie\ActiveRecord\File;
 use ICanBoogie\Uploaded;
 
-use Brickrouge\Element;
-use Brickrouge\Form;
-use Brickrouge\Text;
-
 class Module extends \ICanBoogie\Modules\Nodes\Module
 {
 	const OPERATION_UPLOAD = 'upload';
@@ -211,37 +207,6 @@ class Module extends \ICanBoogie\Modules\Nodes\Module
 		chdir($location);
 
 		closedir($dh);
-	}
-
-	/*
-	**
-
-	BLOCKS
-
-	**
-	*/
-
-	protected function block_config()
-	{
-		return array
-		(
-			Element::CHILDREN => array
-			(
-				"local[$this->flat_id.max_file_size]" => new Text
-				(
-					array
-					(
-						Text::ADDON => 'Ko', // TODO-20110206: use conventions
-
-						Form::LABEL => 'max_file_size',
-						Element::DEFAULT_VALUE => 16000,
-
-						'class' => 'measure',
-						'size' => 6
-					)
-				)
-			)
-		);
 	}
 
 	protected function block_manage()

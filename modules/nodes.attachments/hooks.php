@@ -277,11 +277,11 @@ class Hooks
 		);
 	}
 
-	public static function on_alter_block_config(Event $event, Modules\Files\Module $sender)
+	public static function on_files_configblock_alter_children(Event $event, \ICanBoogie\Modules\Files\ConfigBlock $block)
 	{
 		global $core;
 
-		if (get_class($sender) != 'ICanBoogie\Modules\Files\Module')
+		if (get_class($event->module) != 'ICanBoogie\Modules\Files\Module')
 		{
 			return;
 		}
@@ -314,34 +314,22 @@ class Hooks
 			$scope_value = array_combine($scope_value, array_fill(0, count($scope_value), true));
 		}
 
-		$event->tags = wd_array_merge_recursive
+		$event->attributes[Element::GROUPS]['attachments'] = array
 		(
-			$event->tags, array
+			'title' => 'Attachments',
+			'weight' => 10
+		);
+
+		$event->children['global[nodes_attachments.scope]'] = new Element
+		(
+			Element::TYPE_CHECKBOX_GROUP, array
 			(
-				Element::GROUPS => array
-				(
-					'attachments' => array
-					(
-						'title' => 'Attachments',
-						'weight' => 10
-					)
-				),
+				Form::LABEL => t('nodes_attachments.element.label.scope'),
+				Element::OPTIONS => $scope,
+				Element::GROUP => 'attachments',
 
-				Element::CHILDREN => array
-				(
-					'global[nodes_attachments.scope]' => new Element
-					(
-						Element::TYPE_CHECKBOX_GROUP, array
-						(
-							Form::LABEL => t('nodes_attachments.element.label.scope'),
-							Element::OPTIONS => $scope,
-							Element::GROUP => 'attachments',
-
-							'class' => 'list combo',
-							'value' => $scope_value
-						)
-					)
-				)
+				'class' => 'list combo',
+				'value' => $scope_value
 			)
 		);
 	}

@@ -43,11 +43,13 @@ class EditBlock extends Form
 	 * Constructor.
 	 *
 	 * @param Module $module
-	 * @param int|null $key
+	 * @param array $params
 	 * @param array $attributes
 	 */
-	public function __construct(Module $module, $key=null, array $attributes=array())
+	public function __construct(Module $module, array $attributes=array(), array $params=array())
 	{
+		$key = isset($params[0]) ? $params[0] : null;
+
 		$this->module = $module;
 		$this->key = $key;
 

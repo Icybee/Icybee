@@ -53,11 +53,11 @@ class Hooks
 	 *
 	 * @param Event $ev
 	 */
-	static public function on_alter_block_config(Event $event, \ICanBoogie\Module $sender)
+	static public function on_configblock_alter_children(Event $event, \Icybee\ConfigBlock $block)
 	{
 		global $core;
 
-		$module_id = (string) $sender;
+		$module_id = (string) $event->module->id;
 
 		$c = $core->configs->synthesize('thumbnailer', 'merge');
 
@@ -105,24 +105,15 @@ class Hooks
 			);
 		}
 
-		$event->tags = wd_array_merge_recursive
+		$event->attributes[Element::GROUPS]['thumbnailer'] = array
 		(
-			$event->tags, array
-			(
-				Element::GROUPS => array
-				(
-					'thumbnailer' => array
-					(
-						'title' => 'Miniatures',
-						'description' => "Ce groupe permet de configurer les différentes
-						versions de miniatures qu'il est possible d'utiliser pour
-						les entrées de ce module."
-					)
-				),
-
-				Element::CHILDREN => $children
-			)
+			'title' => 'Miniatures',
+			'description' => "Ce groupe permet de configurer les différentes
+			versions de miniatures qu'il est possible d'utiliser pour
+			les entrées de ce module."
 		);
+
+		$event->children = array_merge($event->children, $children);
 	}
 
 	/**

@@ -50,7 +50,9 @@ return array
 		'Icybee\Views\Provider' => $path . 'lib/views/provider.php',
 		'Icybee\Views\View' => $path . 'lib/views/view.php',
 
+		'Icybee\ConfigBlock' => $path . 'lib/blocks/config.php',
 		'Icybee\EditBlock' => $path . 'lib/blocks/edit.php',
+		'Icybee\FormBlock' => $path . 'lib/blocks/form.php',
 
 		'WdSectionedForm' => $includes . 'wdsectionedform.php',
 

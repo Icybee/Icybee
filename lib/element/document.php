@@ -123,7 +123,7 @@ class Document extends \Brickrouge\Document
 		$alert_error = new Alert(Debug::fetch_messages('error'), array(Alert::CONTEXT => 'error'));
 		$alert_debug = new Alert(Debug::fetch_messages('debug'), array(Alert::CONTEXT => 'debug'));
 
-		$alert = trim($alert_success . $alert_info . $alert_error);
+		$alert = trim($alert_success . $alert_error . $alert_info . $alert_debug);
 
 		return <<<EOT
 <body class="admin{$body_class}">

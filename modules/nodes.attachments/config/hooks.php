@@ -6,7 +6,7 @@ return array
 (
 	'events' => array
 	(
-		'ICanBoogie\Modules\Files\Module::alter.block.config' => __NAMESPACE__ . '::on_alter_block_config',
+		'ICanBoogie\Modules\Files\ConfigBlock::alter_children' => __NAMESPACE__ . '::on_files_configblock_alter_children',
 		'ICanBoogie\Modules\Nodes\EditBlock::alter_children' => __NAMESPACE__ . '::editblock__on_alter_children',
 		'ICanBoogie\Modules\Nodes\SaveOperation::process' => __NAMESPACE__ . '::on_node_save',
 		'ICanBoogie\Modules\Nodes\DeleteOperation::process' => __NAMESPACE__ . '::on_node_delete',

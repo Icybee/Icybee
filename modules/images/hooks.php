@@ -40,7 +40,7 @@ class Hooks
 		return $imageid ? $core->models['images'][$imageid] : null;
 	}
 
-	static public function editblock__on_alter_children(Event $event, \ICanBoogie\Modules\Nodes\EditBlock $block)
+	public static function on_contents_editblock_alter_children(Event $event, \ICanBoogie\Modules\Nodes\EditBlock $block)
 	{
 		global $core;
 
@@ -79,30 +79,62 @@ class Hooks
 		);
 	}
 
-	static public function on_alter_block_config(Event $event, Modules\Contents\Module $sender)
+	public static function on_contents_configblock_alter_children(Event $event, \ICanBoogie\Modules\Contents\ConfigBlock $block)
 	{
 		global $core;
 
 		$core->document->css->add('public/admin.css');
 		$core->document->js->add('public/admin.js');
 
-		$sender_flat_id = $sender->flat_id;
+		$module_id = $event->module->id;
 
 		$views = array
 		(
-			$sender . '/home' => array
+			$module_id . '/home' => array
 			(
 				'title' => 'Accueil des enregistrements'
 			),
 
-			$sender . '/list' => array
+			$module_id . '/list' => array
 			(
 				'title' => 'Liste des enregistrements'
 			),
 
-			$sender . '/view' => array
+			$module_id . '/view' => array
 			(
 				'title' => "Detail d'un enregistrement"
+			)
+		);
+
+		$sender_flat_id = $event->module->flat_id;
+
+		$event->attributes[Element::GROUPS] = array_merge
+		(
+			$event->attributes[Element::GROUPS], array
+			(
+				'resources_images__inject' => array
+				(
+					'title' => 'Associated image',
+					'title' => new Element(Element::TYPE_CHECKBOX, array
+					(
+						Element::LABEL => 'Associated image',
+
+						'name' => 'global[resources_images.inject][' . $sender_flat_id . ']',
+						'checked' => !empty($core->registry['resources_images.inject.' . $sender_flat_id])
+					))
+				),
+
+				'resources_images__inject_options' => array
+				(
+
+				),
+
+				'resources_images__inject_thumbnails' => array
+				(
+					'description' => 'Use the following elements to configure the
+					thumbnails to create for the associated image. Each view provided by the
+					module has its own thumbnail configuration:'
+				)
 			)
 		);
 
@@ -123,72 +155,43 @@ class Hooks
 			);
 		}
 
-		$event->tags = wd_array_merge_recursive
+		$event->children = array_merge
 		(
-			$event->tags, array
+			$event->children, array
 			(
-				Element::GROUPS => array
+				/*
+				'global[resources_images.inject][' . $sender_flat_id . ']' => new Element
 				(
-					'resources_images__inject' => array
+					Element::TYPE_CHECKBOX, array
 					(
-						'title' => 'Associated image',
-						'title' => new Element(Element::TYPE_CHECKBOX, array
-						(
-							Element::LABEL => 'Associated image',
+						Element::LABEL => 'Associer une image aux enregistrements',
+						Element::GROUP => 'resources_images__inject'
+					)
+				),
+				*/
 
-							'name' => 'global[resources_images.inject][' . $sender_flat_id . ']',
-							'checked' => !empty($core->registry['resources_images.inject.' . $sender_flat_id])
-						))
-					),
-
-					'resources_images__inject_options' => array
+				'global[resources_images.inject][' . $sender_flat_id . '.required]' => new Element
+				(
+					Element::TYPE_CHECKBOX, array
 					(
-
-					),
-
-					'resources_images__inject_thumbnails' => array
-					(
-						'description' => 'Use the following elements to configure the
-						thumbnails to create for the associated image. Each view provided by the
-						module has its own thumbnail configuration:'
+						Element::LABEL => "L'association est obligatoire",
+						Element::GROUP => 'resources_images__inject'
 					)
 				),
 
-				Element::CHILDREN => array
+				'global[resources_images.inject][' . $sender_flat_id . '.default]' => new Widget\PopImage
 				(
-					/*
-					'global[resources_images.inject][' . $sender_flat_id . ']' => new Element
+					array
 					(
-						Element::TYPE_CHECKBOX, array
-						(
-							Element::LABEL => 'Associer une image aux enregistrements',
-							Element::GROUP => 'resources_images__inject'
-						)
-					),
-					*/
-
-					'global[resources_images.inject][' . $sender_flat_id . '.required]' => new Element
-					(
-						Element::TYPE_CHECKBOX, array
-						(
-							Element::LABEL => "L'association est obligatoire",
-							Element::GROUP => 'resources_images__inject'
-						)
-					),
-
-					'global[resources_images.inject][' . $sender_flat_id . '.default]' => new Widget\PopImage
-					(
-						array
-						(
-							Form::LABEL => "Image par défaut",
-							Element::GROUP => 'resources_images__inject'
-						)
+						Form::LABEL => "Image par défaut",
+						Element::GROUP => 'resources_images__inject'
 					)
 				)
+			),
 
-				+ $thumbnails
-			)
+			$thumbnails
 		);
+
 	}
 
 	public static function on_nodes_save(Event $event, \ICanBoogie\Modules\Nodes\SaveOperation $operation)

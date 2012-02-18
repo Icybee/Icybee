@@ -12,17 +12,6 @@
 namespace ICanBoogie\Modules\Contents;
 
 use ICanBoogie\ActiveRecord\Content;
-use ICanBoogie\ActiveRecord\Query;
-
-use Brickrouge;
-use Brickrouge\Element;
-use Brickrouge\Form;
-use Brickrouge\Text;
-
-use WdPatron;
-use WdMultiEditorElement;
-use moo_WdEditorElement;
-use WdDateElement;
 
 /**
  * The "contents" module extends the "system.nodes" module by offrering a subtitle, a body
@@ -71,59 +60,6 @@ class Module extends \ICanBoogie\Modules\Nodes\Module
 				Manager::T_COLUMNS_ORDER => array
 				(
 					'title', 'is_home_excluded', 'is_online', 'uid', 'date', 'modified'
-				)
-			)
-		);
-	}
-
-	protected function block_config()
-	{
-		return array
-		(
-			Element::GROUPS => array
-			(
-				'limits' => array
-				(
-					'title' => 'limits'
-				)
-			),
-
-			Element::CHILDREN => array
-			(
-				"local[$this->flat_id.default_editor]" => new Text
-				(
-					array
-					(
-						Form::LABEL => 'default_editor'
-					)
-				),
-
-				"local[$this->flat_id.use_multi_editor]" => new Element
-				(
-					Element::TYPE_CHECKBOX, array
-					(
-						Element::LABEL => 'use_multi_editor'
-					)
-				),
-
-				"local[$this->flat_id.limits.home]" => new Text
-				(
-					array
-					(
-						Form::LABEL => 'limits_home',
-						Element::DEFAULT_VALUE => 3,
-						Element::GROUP => 'limits'
-					)
-				),
-
-				"local[$this->flat_id.limits.list]" => new Text
-				(
-					array
-					(
-						Form::LABEL => 'limits_list',
-						Element::DEFAULT_VALUE => 10,
-						Element::GROUP => 'limits'
-					)
 				)
 			)
 		);
