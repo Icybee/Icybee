@@ -24,10 +24,15 @@ return array
 	),
 	*/
 
+	/**
+	 * A route to the user's profile.
+	 *
+	 * The route is not attached to a workspace.
+	 */
 	'users:admin/profile' => array
 	(
 		'pattern' => '/admin/profile',
-		'title' => 'Profil',
+		'title' => 'Profile',
 		'block' => 'profile',
 		'visibility' => 'auto',
 		'workspace' => ''

@@ -1,15 +1,12 @@
 @CHARSET "UTF-8";
 
-.group--resources-images-inject > .control-group
-{
-	background: white;
-	margin: 0 !important;
-	padding: 16px;
-	border-bottom: 1px solid #ccc;
-}
-
 .group--resources-images-inject-thumbnails > .control-group
 {
 	display: inline-block;
 	vertical-align: top;
+}
+
+.group--resources-images-inject:not(.enabled) > .control-group,
+.group--resources-images-inject:not(.enabled) + .group--resources-images-inject-thumbnails {
+	display: none;
 }

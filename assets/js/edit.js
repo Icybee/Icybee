@@ -194,6 +194,7 @@
 	 * floating save box
 	 */
 
+	/*
 	(function(){
 
 		var target = $('section-save');
@@ -299,13 +300,9 @@
 
 		$('footer').addClass('sticky');
 
-		/*
-		 * visibility
-		 */
+		// visibility
 
 		var fx = new Fx.Tween(mirror, { property: 'opacity', link: 'cancel' });
-
-		//fx.set(.5);
 
 		function updateVisibility()
 		{
@@ -330,6 +327,60 @@
 		document.body.appendChild(mirror);
 
 	})();
+	*/
+
+	var navSaveModeElement = $(document.body).getElement('.actionbar .record-save-mode')
+	, saveModesContainer = $(document.body).getElement('.form-actions .save-mode')
+	, saveModes = saveModesContainer ? saveModesContainer.getElements('input[type="radio"]') : []
+	, primaryButton = $(document.body).getElement('.form-actions .btn-primary')
+
+	if (navSaveModeElement && saveModes)
+	{
+		navSaveModeElement.addEvent('click', function(ev) {
+
+			var target = ev.target
+			, mode = target.get('data-key')
+
+			if (target.match('.btn-primary:first-child')) {
+				ev.stop()
+				primaryButton.click()
+				return
+			}
+
+			if (!mode) return
+
+			ev.stop()
+
+			saveModes.each(function(el) {
+				el.checked = (el.value == mode)
+			})
+
+			primaryButton.click()
+		})
+
+		saveModesContainer.addEvent('click', function(ev) {
+
+			var mode = ev.target.get('value')
+
+			if (!mode) return
+
+			navSaveModeElement.getElements('li').each(function(el) {
+
+				var anchor = el.getElement('a')
+				, anchorMode = anchor.get('data-key')
+
+				if (mode == anchorMode)
+				{
+					el.addClass('active')
+					navSaveModeElement.getElement('.btn').set('html', anchor.get('html'))
+				}
+				else
+				{
+					el.removeClass('active')
+				}
+			})
+		})
+	}
 
 })();
 

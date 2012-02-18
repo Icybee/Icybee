@@ -1,12 +1,3 @@
-/*
- * This file is part of the Publishr package.
- *
- * (c) Olivier Laviale <olivier.laviale@gmail.com>
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
-
 manager.addEvent
 (
 	'ready', function()
@@ -15,14 +6,12 @@ manager.addEvent
 		(
 			'click', function(ev)
 			{
-				var target = ev.target;
+				var target = ev.target,
+				property = target.get('data-property')
 
-				if (!target.match('input.is_online'))
-				{
-					return;
-				}
+				if (property != 'is_online') return
 
-				var operation = new Request.API
+				operation = new Request.API
 				({
 					url: manager.destination + '/' + target.value + '/' + (target.checked ? 'online' : 'offline'),
 					onSuccess: function(response)
@@ -34,16 +23,14 @@ manager.addEvent
 							// we reset the checkbox
 							//
 
-							target.checked = !target.checked;
-
-							target.fireEvent('change', {});
+							target.checked = !target.checked
+							target.fireEvent('change', {})
 						}
 					}
 
-				});
-
-				operation.post();
+				})
+				.post();
 			}
-		);
+		)
 	}
-);
+)

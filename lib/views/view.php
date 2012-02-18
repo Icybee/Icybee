@@ -11,6 +11,8 @@
 
 namespace Icybee\Views;
 
+use ICanBoogie\ActiveRecord\Node;
+
 use ICanBoogie;
 use ICanBoogie\Event;
 use ICanBoogie\Exception;
@@ -242,7 +244,7 @@ class View extends Object
 
 			if ($rc)
 			{
-				$rc = '<div class="alert-message">' . $rc . '</div>';
+				$rc = '<div class="alert">' . $rc . '</div>';
 			}
 		}
 
@@ -322,7 +324,15 @@ class View extends Object
 
 			$engine->context['range'] = $this->range;
 
-			if (!$bind)
+			if (is_array($bind) && current($bind) instanceof Node)
+			{
+				Event::fire('nodes_load', array('nodes' => $bind), $engine);
+			}
+			else if ($bind instanceof Node)
+			{
+				Event::fire('nodes_load', array('nodes' => array($bind)), $engine);
+			}
+			else if (!$bind)
 			{
 				$this->element->add_class('empty');
 
@@ -459,7 +469,7 @@ class View extends Object
 		{
 			$try = $core->site->resolve_path("templates/views/$id.$extension");
 
-			wd_log("tried: templates/views/$id.$extension");
+// 			wd_log("tried: templates/views/$id.$extension");
 
 			if ($try)
 			{
@@ -480,7 +490,7 @@ class View extends Object
 
 			foreach ($handled as $extension)
 			{
-				wd_log("tried: {$base}{$extension}");
+// 				wd_log("tried: {$base}{$extension}");
 
 				if (file_exists($base . $extension))
 				{

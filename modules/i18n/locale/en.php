@@ -24,7 +24,7 @@ return array
 		'none' => '<none>'
 	),
 
-	'section.title' => array
+	'group.legend' => array
 	(
 		'i18n' => 'Internationalization'
 	)

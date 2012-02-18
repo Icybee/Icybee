@@ -38,7 +38,7 @@ class Hooks
 	 *
 	 * @param Event $event
 	 */
-	public static function on_alter_block_edit(Event $event, Modules\Nodes\Module $sender)
+	public static function on_nodes_editblock_alter_children(Event $event, \ICanBoogie\Modules\Nodes\EditBlock $block)
 	{
 		global $core;
 
@@ -47,30 +47,30 @@ class Hooks
 			return;
 		}
 
-		$languages = $sender->model->where('language != ""')->count('language');
+		$module = $event->module;
+		$languages = $module->model->where('language != ""')->count('language');
 
-		if (count($languages) < 2)
+		if (!count($languages)/* || current($languages) == $core->site->language*/)
 		{
 			return;
 		}
 
-		$tags = &$event->tags;
-		$children = &$tags[Element::CHILDREN];
+		$children = &$event->children;
 
-		if (array_key_exists(Node::LANGUAGE, $children) && empty($children[Node::LANGUAGE]))
+		if (array_key_exists(Node::LANGUAGE, $children) && !$children[Node::LANGUAGE])
 		{
 			return;
 		}
 
-		$tags[Element::GROUPS]['i18n'] = array
+		$event->attributes[Element::GROUPS]['i18n'] = array
 		(
 			'title' => 'i18n',
 			'weight' => 100
 		);
 
-		$constructor = (string) $sender;
+		$constructor = (string) $module;
 
-		if (array_key_exists(Node::LANGUAGE, $event->tags[Form::HIDDENS]))
+		if (array_key_exists(Node::LANGUAGE, $event->attributes[Form::HIDDENS]))
 		{
 			$children[Node::NATIVEID] = new \WdI18nLinkElement
 			(

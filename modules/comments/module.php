@@ -61,101 +61,6 @@ Aucune autre notification ne vous sera envoyée.
 	);
 	*/
 
-	protected function block_edit(array $properties, $permission)
-	{
-		return array
-		(
-			Element::CHILDREN => array
-			(
-				Comment::AUTHOR => new Text
-				(
-					array
-					(
-						Form::LABEL => 'Author',
-						Element::REQUIRED => true
-					)
-				),
-
-				Comment::AUTHOR_EMAIL => new Text
-				(
-					array
-					(
-						Form::LABEL => 'E-mail',
-						Element::REQUIRED => true
-					)
-				),
-
-				Comment::AUTHOR_URL => new Text
-				(
-					array
-					(
-						Form::LABEL => 'URL'
-					)
-				),
-
-				Comment::AUTHOR_IP => new Text
-				(
-					array
-					(
-						Form::LABEL => 'Adresse IP',
-						Element::DESCRIPTION => "Status spam: <em>en cours de vérification</em>.",
-
-						'disabled' => true
-					)
-				),
-
-				Comment::CONTENTS => new Element
-				(
-					'textarea', array
-					(
-						Form::LABEL => 'Message',
-						Element::REQUIRED => true,
-
-						'rows' => 10
-					)
-				),
-
-				Comment::NOTIFY => new Element
-				(
-					Element::TYPE_RADIO_GROUP, array
-					(
-						Form::LABEL => 'Notification',
-						Element::DEFAULT_VALUE => 'no',
-						Element::REQUIRED => true,
-						Element::OPTIONS => array
-						(
-							'yes' => 'Bien sûr !',
-							'author' => "Seulement si c'est l'auteur du billet qui répond",
-							'no' => 'Pas la peine, je viens tous les jours',
-							'done' => 'Notification envoyée'
-						),
-
-						Element::DESCRIPTION => (($properties[Comment::NOTIFY] == 'done') ? "Un
-						message de notification a été envoyé." : null),
-
-						'class' => 'inputs-list'
-					)
-				),
-
-				Comment::STATUS => new Element
-				(
-					'select', array
-					(
-						Form::LABEL => 'Status',
-						Element::REQUIRED => true,
-						Element::OPTIONS => array
-						(
-							null => '',
-							'pending' => 'Pending',
-							'approved' => 'Aprouvé',
-							'spam' => 'Spam'
-						)
-					)
-				)
-			)
-		);
-	}
-
 	protected function block_manage()
 	{
 		return new Manager
@@ -250,7 +155,7 @@ Aucune autre notification ne vous sera envoyée.
 					array
 					(
 						Form::LABEL => 'Intervale entre deux commentaires',
-						Element::LABEL => 'minutes',
+						Text::ADDON => 'minutes',
 						Element::DEFAULT_VALUE => 3,
 
 						'size' => 3,

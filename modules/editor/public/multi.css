@@ -1,16 +1,15 @@
-div.editor-options
-{
+.editor-options {
 	font-size: .8em;
 	margin-top: .5em;
 }
 
-div.editor-options select {
+.editor-options select {
 	line-height: normal;
 	height: auto;
 	width: auto;
+	padding: 2px;
 }
 
-div.editor-wrapper textarea[name="contents[body][contents]"]
-{
+.editor-wrapper textarea[name="contents[body][contents]"] {
 	height: 24em;
 }

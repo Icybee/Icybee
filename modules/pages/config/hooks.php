@@ -122,7 +122,7 @@ return array
 
 		'call-view' => array
 		(
-			array('site_pages_WdMarkups', 'call_view'), array
+			__NAMESPACE__ . '::markup_call_view', array
 			(
 				'name' => array('required' => true)
 			)

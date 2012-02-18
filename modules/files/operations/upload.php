@@ -73,7 +73,7 @@ class UploadOperation extends Operation
 
 		if ($file->er)
 		{
-			wd_log_error($file->er_message);
+			$errors['file'] = $file->er_message;
 
 			return false;
 		}

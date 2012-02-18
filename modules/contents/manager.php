@@ -140,7 +140,7 @@ class Manager extends \ICanBoogie\Modules\Nodes\Manager
 						(
 							'value' => $record->nid,
 							'checked' => ($record->$property != 0),
-							'class' => 'is_home_excluded'
+							'data-property' => $property
 						)
 					)
 				),

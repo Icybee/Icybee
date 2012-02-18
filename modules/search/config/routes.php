@@ -2,8 +2,11 @@
 
 return array
 (
-	':admin/config' => array
+	'search:admin/config' => array
 	(
-		'index' => true
+		'pattern' => '/admin/search',
+		'block' => 'config',
+		'index' => true,
+		'title' => 'Config.'
 	)
 );

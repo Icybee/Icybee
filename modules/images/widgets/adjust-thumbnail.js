@@ -69,8 +69,8 @@ Brickrouge.Widget.AdjustThumbnailOptions = new Class
 			background: this.background.get('value'),
 			format: this.format.get('value'),
 			quality: this.quality.get('value'),
-			'no-upscale': this['no-upscale'].checked,
-			interlace: this.interlace.checked,
+//			'no-upscale': this['no-upscale'].checked,
+//			interlace: this.interlace.checked,
 			lightbox: this.lightbox.checked
 		};
 

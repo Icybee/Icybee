@@ -17,29 +17,36 @@ class WdFormSelectorElement extends Element
 	{
 		global $core;
 
-		$site = $core->site;
-		$value = (int) $this->get('value');
-
-		$options = $core->models['forms']->select('nid, title')
-		->where('nid = ? OR ((siteid = 0 OR siteid = ?) AND (language = "" OR language = ?))', $value, $site->siteid, $site->language)
-		->order('title')
-		->pairs;
-
-		if (!$options)
+		try
 		{
-			$url = wd_entities($core->site->path . '/admin/forms/new');
+			$site = $core->site;
+			$value = (int) $this['value'];
 
-			return <<<EOT
-<p><a href="$url">Créer un premier formulaire...</a></p>
+			$options = $core->models['forms']->select('nid, title')
+			->where('nid = ? OR ((siteid = 0 OR siteid = ?) AND (language = "" OR language = ?))', $value, $site->siteid, $site->language)
+			->order('title')
+			->pairs;
+
+			if (!$options)
+			{
+				$url = wd_entities($core->site->path . '/admin/forms/new');
+
+				return <<<EOT
+<a href="$url" class="btn btn-info">Créer un premier formulaire...</a>
 EOT;
-		}
+			}
 
-		if ($this->type == 'select')
+			if ($this->type == 'select')
+			{
+				$options = array(null => '') + $options;
+			}
+
+			$this[self::OPTIONS] = $options;
+		}
+		catch (\Exception $e)
 		{
-			$options = array(null => '') + $options;
+			return \Brickrouge\render_exception($e);
 		}
-
-		$this->set(self::OPTIONS, $options);
 
 		return parent::__toString();
 	}

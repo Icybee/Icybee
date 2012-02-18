@@ -30,6 +30,18 @@ class Login extends Form
 		(
 			$tags + array
 			(
+				Form::ACTIONS => array
+				(
+					new Button
+					(
+						'Connect', array
+						(
+							'type' => 'submit',
+							'class' => 'btn-primary'
+						)
+					)
+				),
+
 				Form::RENDERER => 'Simple',
 
 				Form::HIDDENS => array
@@ -69,19 +81,10 @@ class Login extends Form
 
 							'type' => 'password'
 						)
-					),
-
-					'#submit' => new Button
-					(
-						'Connect', array
-						(
-							'type' => 'submit',
-							'class' => 'continue'
-						)
 					)
 				),
 
-				'class' => 'widget-login group login stacked',
+				'class' => 'widget-login',
 				'name' => 'users/login'
 			)
 		);

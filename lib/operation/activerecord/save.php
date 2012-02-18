@@ -9,14 +9,12 @@
  * file that was distributed with this source code.
  */
 
-namespace Icybee\Operation\ActiveRecord;
-
-use ICanBoogie\Operation;
+namespace Icybee;
 
 /**
  * Extends the ICanBoogie\Operation\ActiveRecord\Save class to add save mode (continue, list, new).
  */
-class Save extends Operation\ActiveRecord\Save
+class SaveOperation extends \ICanBoogie\Operation\ActiveRecord\Save
 {
 	const MODE = '#operation-save-mode';
 	const MODE_CONTINUE = 'continue';

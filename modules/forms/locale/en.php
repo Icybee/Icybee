@@ -31,22 +31,11 @@ return array
 		)
 	),
 
-	'section.title' => array
+	'group.legend' => array
 	(
 		'messages' => "Messages with the form",
 		'notify' => "Notify options",
 		'operation' => "Opération et configuration"
-	),
-
-	'label' => array
-	(
-		'is_notify' => "Enable notification",
-		'notify_destination' => "Destination address",
-		'notify_from' => "Sender address",
-		'notify_bcc' => "Blind copy",
-		'notify_subject' => "Message object",
-		'notify_template' => "Message template",
-		'your_message' => 'Your message'
 	),
 
 	'description' => array
@@ -58,5 +47,19 @@ return array
 	(
 		'modelid' => 'Model',
 		'subject' => 'Subject'
+	),
+
+	#
+	# BrickRouge\EmailComposer
+	#
+
+	'label' => array
+	(
+		'is_notify' => "Enable notification",
+		'email_destination' => "Destination address",
+		'email_from' => "Sender address",
+		'email_bcc' => "Blind copy",
+		'email_subject' => "Object",
+		'email_template' => "Template"
 	)
 );

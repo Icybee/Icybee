@@ -231,11 +231,11 @@ class Hooks
 	 *
 	 * @param Event $event
 	 */
-	public static function on_alter_block_edit(Event $event, Modules\Nodes\Module $sender)
+	public static function editblock__on_alter_children(Event $event, \ICanBoogie\Modules\Nodes\EditBlock $block)
 	{
 		global $core;
 
-		if ($sender instanceof Modules\Files\Module)
+		if ($block instanceof \ICanBoogie\Modules\Files\EditBlock)
 		{
 			return;
 		}
@@ -249,34 +249,28 @@ class Hooks
 
 		$scope = explode(',', $scope);
 
-		if (!in_array($sender->flat_id, $scope))
+		if (!in_array($event->module->flat_id, $scope))
 		{
 			return;
 		}
 
-		$event->tags = wd_array_merge_recursive
+		$event->attributes[Element::GROUPS]['attachments'] = array
 		(
-			$event->tags, array
+			'title' => 'Attachments'
+		);
+
+		$event->children = array_merge
+		(
+			$event->children, array
 			(
-				Element::GROUPS => array
+				new \WdAttachmentsElement
 				(
-					'attachments' => array
+					array
 					(
-						'title' => 'Attachments'
-					)
-				),
+						Element::GROUP => 'attachments',
 
-				Element::CHILDREN => array
-				(
-					new \WdAttachmentsElement
-					(
-						array
-						(
-							Element::GROUP => 'attachments',
-
-							\WdAttachmentsElement::T_NODEID => $event->key,
-							\WdAttachmentsElement::T_HARD_BOND => true
-						)
+						\WdAttachmentsElement::T_NODEID => $event->key,
+						\WdAttachmentsElement::T_HARD_BOND => true
 					)
 				)
 			)

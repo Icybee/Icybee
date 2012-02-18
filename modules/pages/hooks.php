@@ -290,6 +290,24 @@ EOT;
 	}
 
 	/**
+	 * Calls an renders the specified view.
+	 *
+	 * @param array $args
+	 * @param WdPatron $patron
+	 * @param mixed $template
+	 *
+	 * @return mixed
+	 */
+	public static function markup_call_view(array $args, \WdPatron $patron, $template)
+	{
+		// TODO-20101216: The view should handle parsing template or not
+
+		return $render = \view_WdEditorElement::render($args['name'], $patron, $template);
+
+		return $template ? $patron($template, $render) : $render;
+	}
+
+	/**
 	 * Alters cache collection to add pages cache manager.
 	 *
 	 * @param Event $event

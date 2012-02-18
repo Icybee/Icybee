@@ -14,7 +14,17 @@ namespace ICanBoogie\Modules\Users;
 /**
  * Deletes a user.
  */
+use ICanBoogie\Errors;
+
 class DeleteOperation extends \ICanBoogie\Operation\ActiveRecord\Delete
 {
+	protected function validate(Errors $errors)
+	{
+		if ($this->key == 1)
+		{
+			$errors['uid'] = t("Daddy cannot be deleted.");
+		}
 
+		return parent::validate($errors);
+	}
 }

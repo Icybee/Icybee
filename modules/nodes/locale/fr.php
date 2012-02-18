@@ -45,13 +45,15 @@ return array
 		'user' => 'Utilisateur'
 	),
 
-	'manager.label' => array
+	'manager.title' => array
 	(
 		'constructor' => 'Constructeur',
 		'created' => 'Crée le',
 		'is_online' => 'Publié',
 		'modified' => 'Modifié le',
-		'uid' => 'Utilisateur'
+		'uid' => 'Utilisateur',
+
+		'Translations' => 'Traductions'
 	),
 
 	'module_category.title.other' => 'Autre',
@@ -78,19 +80,4 @@ return array
 	'The requested record was not found.' => "L'enregistrement demandé n'a pu être trouvé.",
 	'Next: :title' => 'Suivant : :title', // il y a un espace non sécable ici
 	'Previous: :title' => 'Précédent : :title', // il y a un espace non sécable ici
-
-	/*DIRTY:I18N,
-
-	'@operation.online.title' => 'Mettre en ligne',
-	'@operation.online.confirm' => "Voulez-vous mettre l'entrée sélectionnée en ligne ?",
-	'@operation.online.confirmN' => "Voulez-vous mettre les :count entrées sélectionnées en ligne ?",
-	'@operation.online.do' => 'Mettre en ligne',
-	'@operation.online.dont' => "Ne pas mettre en ligne",
-
-	'@operation.offline.title' => 'Mettre hors ligne',
-	'@operation.offline.confirm' => "Voulez-vous mettre l'entrée sélectionnée hors ligne ?",
-	'@operation.offline.confirmN' => 'Voulez-vous mettre les :count entrées sélectionnées hors ligne ?',
-	'@operation.offline.do' => 'Mettre hors ligne',
-	'@operation.offline.dont' => "Ne pas mettre hors ligne"
-	*/
 );

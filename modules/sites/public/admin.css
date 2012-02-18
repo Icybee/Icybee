@@ -1,10 +1,26 @@
 @CHARSET "UTF-8";
 
-.group--location .control-group
-{
+.group--location {
+	overflow: hidden;
+}
+
+.group--location .control-group {
 	float: left;
 }
 
 .group--location .control-group + .control-group {
 	margin-left: 0;
+}
+
+.cell--status {
+	width: 8ex;
+}
+
+.cell--status .btn-group {
+	white-space: nowrap;
+}
+
+.cell--status .dropdown-menu {
+	left: auto;
+	right: 0;
 }

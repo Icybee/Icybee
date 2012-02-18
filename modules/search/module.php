@@ -33,8 +33,8 @@ class Module extends \Icybee\Module
 	{
 		global $core;
 
-		$core->document->css->add('public/config.css');
-		$core->document->js->add('public/config.js');
+		$core->document->css->add('public/admin.css');
+		$core->document->js->add('public/admin.js');
 
 		$options = array();
 
@@ -100,7 +100,7 @@ class Module extends \Icybee\Module
 		# description
 		#
 
-		$page = $core->site->resolve_view_target('features_search/search');
+		$page = $core->site->resolve_view_target('search/home');
 
 		if ($page)
 		{

@@ -70,7 +70,7 @@ class Module extends \ICanBoogie\Modules\Nodes\Module
 			(
 				Manager::T_COLUMNS_ORDER => array
 				(
-					'title', /*'category',*/ 'uid', 'is_home_excluded', 'is_online', 'date', 'modified'
+					'title', 'is_home_excluded', 'is_online', 'uid', 'date', 'modified'
 				)
 			)
 		);
@@ -123,99 +123,6 @@ class Module extends \ICanBoogie\Modules\Nodes\Module
 						Form::LABEL => 'limits_list',
 						Element::DEFAULT_VALUE => 10,
 						Element::GROUP => 'limits'
-					)
-				)
-			)
-		);
-	}
-
-	protected function block_edit(array $properties, $permission)
-	{
-		global $core;
-
-		$default_editor = $core->site->metas->get($this->flat_id . '.default_editor', 'moo');
-		$use_multi_editor = $core->site->metas->get($this->flat_id . '.use_multi_editor');
-
-		if ($use_multi_editor)
-		{
-
-		}
-		else
-		{
-
-		}
-
-		return wd_array_merge_recursive
-		(
-			parent::block_edit($properties, $permission),
-
-			array
-			(
-				Element::GROUPS => array
-				(
-					'contents' => array
-					(
-						'title' => 'Contents'
-					),
-
-					'date' => array
-					(
-
-					)
-				),
-
-				Element::CHILDREN => array
-				(
-					Content::SUBTITLE => new Text
-					(
-						array
-						(
-							Form::LABEL => 'subtitle'
-						)
-					),
-
-					Content::BODY => new WdMultiEditorElement
-					(
-						$properties['editor'] ? $properties['editor'] : $default_editor, array
-						(
-							Element::LABEL_MISSING => 'Contents',
-							Element::GROUP => 'contents',
-							Element::REQUIRED => true,
-
-							'rows' => 16
-						)
-					),
-
-					Content::EXCERPT => new moo_WdEditorElement
-					(
-						array
-						(
-							Form::LABEL => 'excerpt',
-							Element::GROUP => 'contents',
-							Element::DESCRIPTION => "excerpt",
-
-							'rows' => 3
-						)
-					),
-
-					Content::DATE => new Brickrouge\Date
-					(
-						array
-						(
-							Form::LABEL => 'Date',
-							Element::REQUIRED => true,
-							Element::DEFAULT_VALUE => date('Y-m-d')
-						)
-					),
-
-					Content::IS_HOME_EXCLUDED => new Element
-					(
-						Element::TYPE_CHECKBOX, array
-						(
-							Element::LABEL => "is_home_excluded",
-							Element::GROUP => 'visibility',
-							Element::DESCRIPTION => "is_home_excluded"
-						)
 					)
 				)
 			)

@@ -1,6 +1,8 @@
 <?php
 
-use Brickrouge;
+namespace Icybee;
+
+use Brickrouge\Button;
 use Brickrouge\Element;
 use Brickrouge\Form;
 
@@ -15,7 +17,7 @@ function _route_add_available_sites()
 	$site_model = $core->models['sites'];
 
 	$available = $site_model
-	->where('siteid IN(' . implode(',', $core->user->sites_ids) . ')')
+	->where('siteid IN(' . implode(',', $core->user->restricted_sites_ids) . ')')
 	->order('admin_title, title')
 	->all;
 
@@ -38,36 +40,36 @@ function _route_add_available_sites()
 	(
 		array
 		(
+			Form::ACTIONS => new Button
+			(
+				'Change', array
+				(
+					'class' => 'btn-primary',
+					'type' => 'submit'
+				)
+			),
+
+			Form::RENDERER => 'Simple',
+
 			Element::CHILDREN => array
 			(
 				new Element
 				(
 					'select', array
 					(
-						Element::LABEL => 'Available sites',
-						Element::LABEL_POSITION => 'before',
+						Form::LABEL => 'Available sites',
 						Element::OPTIONS => $options
-					)
-				),
-
-				' &nbsp; ',
-
-				new Button
-				(
-					'Change', array
-					(
-						'class' => 'continue',
-						'type' => 'submit'
 					)
 				)
 			),
 
-			'name' => 'change-working-site'
+			'name' => 'change-working-site',
+			'class' => 'form-primary'
 		)
 	);
 
 	$rc = <<<EOT
-<div class="group">
+<div id="block--site-access-denied">
 <h2>Access denied</h2>
 <p>You don't have permission to access the administration interface for the website <q>$ws_title</q>,
 please select another website to work with:</p>

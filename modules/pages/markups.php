@@ -244,15 +244,6 @@ class site_pages_WdMarkups extends patron_markups_WdHooks
 
 		return $parentid;
 	}
-
-	static public function call_view(array $args, WdPatron $patron, $template)
-	{
-		// TODO-20101216: The view should handle parsing template or not
-
-		return $render = view_WdEditorElement::render($args['name'], $patron, $template);
-
-		return $template ? $patron($template, $render) : $render;
-	}
 }
 
 class site_pages_languages_WdMarkup extends patron_WdMarkup
@@ -335,7 +326,7 @@ class site_pages_languages_WdMarkup extends patron_WdMarkup
 		{
 			$languages[$language] = array
 			(
-				'class' => $language . ($language == $page_language ? ' active' : ''),
+				'class' => "btn language--$language" . ($language == $page_language ? ' active' : ''),
 				'render' => $language == $page_language ? '<strong>' . $language . '</strong>' : '<a href="' . $translation->url . '">' . $language . '</a>',
 				'node' => $translation
 			);
@@ -350,6 +341,7 @@ class site_pages_languages_WdMarkup extends patron_WdMarkup
 			)
 		);
 
+		/*
 		$rc = '<ul>';
 
 		foreach ($languages as $language)
@@ -358,6 +350,16 @@ class site_pages_languages_WdMarkup extends patron_WdMarkup
 		}
 
 		$rc .= '</ul>';
+		*/
+
+		$rc = '<div class="btn-group i18n-languages">';
+
+		foreach ($languages as $language => $options)
+		{
+			$rc .= '<a class="' . $options['class'] . '" href="' . $options['node']->url . '">' . $language . '</a>';
+		}
+
+		$rc .= '</div>';
 
 		return $rc;
 	}

@@ -1,23 +1,20 @@
 @CHARSET "UTF-8";
 
-#contents-header
-{
-	display: none;
-}
-
 #contents
 {
 	background-color: transparent;
 	border: none;
 	box-shadow: none;
-	-moz-box-shadow: none;
-	-webkit-box-shadow: none;
+}
+
+#dashboard {
+	padding: 16px;
 }
 
 #dashboard-panels
 {
 	overflow: hidden;
-	margin-top: -1em;
+	margin-top: -16px;
 }
 
 #dashboard-panels > div.column
@@ -34,13 +31,11 @@
 
 div.panel
 {
-	margin: 1em 0 2em 0;
+	margin: 16px 0 32px 0;
 	background-color: #F6F6F6;
 	border:1px solid #CCC;
 	border-radius: 0.5em;
-	-moz-border-radius: 0.5em;
-	-webkit-border-radius: 0.5em;
-	font-size: .9em;
+	font-size: 12px;
 	
 	box-shadow: 0 25px 15px -20px rgba(0, 0, 0, 0.2);
 	-moz-box-shadow: 0 25px 15px -20px rgba(0, 0, 0, 0.2);

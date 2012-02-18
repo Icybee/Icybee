@@ -11,25 +11,27 @@
 
 namespace Brickrouge\Widget\Users;
 
+use Brickrouge\A;
+
 use Brickrouge\Element;
 
 class LoginCombo extends Element
 {
 	protected $elements=array();
 
-	public function __construct($tags=array())
+	public function __construct(array $attributes=array())
 	{
 		$login = new Login;
 		$password = new NonceRequest;
 
-		$password->children['email'][Element::DESCRIPTION] = '<a href="#" class="cancel">' . t('cancel', array(), array('scope' => 'element.label')) . '</a>';
+		$password->children['email'][Element::DESCRIPTION] = new A('cancel');
 
 		$this->elements['login'] = $login;
 		$this->elements['password'] = $password;
 
 		parent::__construct
 		(
-			'div', $tags + array
+			'div', $attributes + array
 			(
 				'id' => 'login',
 				'class' => 'widget-login-combo'
@@ -40,8 +42,8 @@ class LoginCombo extends Element
 	protected function render_inner_html()
 	{
 		return parent::render_inner_html() . <<<EOT
-<div class="wrapper login">{$this->elements['login']}</div>
-<div class="wrapper password" style="height: 0">{$this->elements['password']}</div>
+<div class="wrapper">{$this->elements['login']}</div>
+<div class="wrapper" style="height: 0">{$this->elements['password']}</div>
 EOT;
 	}
 }

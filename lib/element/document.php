@@ -19,6 +19,11 @@ use ICanBoogie\Exception;
 use ICanBoogie\Operation;
 use ICanBoogie\Route;
 
+use Brickrouge\A;
+use Brickrouge\Alert;
+use Brickrouge\DropdownMenu;
+use Brickrouge\Element;
+
 class Document extends \Brickrouge\Document
 {
 	public $on_setup = false;
@@ -88,64 +93,57 @@ class Document extends \Brickrouge\Document
 	{
 		global $core;
 
-		$contents = $this->getBlock('contents');
-		$contents_header = $this->getBlock('contents-header');
-		$main = $this->getMain();
-
 		$user = $core->user;
 
-		$rc  = $this->get_block_shortcuts();
+		$contents = $this->getBlock('contents');
 
-		$rc .= $this->getNavigation();
+		$shortcuts = $this->get_block_shortcuts();
+		$navigation = $this->getNavigation();
 
+		$actionbar = new \Icybee\Admin\Element\Actionbar;
 
-		$subnav = $this->getBlock('subnav');
-
-		$rc .= '<div id="contents-wrapper">';
-		$rc .= '<h1>' . t($this->page_title) . '</h1>';
-
-
-
-		$rc .= new \Brickrouge\Alert(Debug::fetch_messages('done'), array(\Brickrouge\Alert::CONTEXT => 'success'));
-		$rc .= new \Brickrouge\Alert(Debug::fetch_messages('error'), array(\Brickrouge\Alert::CONTEXT => 'error'));
-
-
-
-		$rc .= '<div id="contents-header">';
-
-		if ($subnav)
-		{
-			$rc .= '<div>' . $subnav . '</div>';
-		}
-
-		$rc .= $contents_header;
-		$rc .= '</div>';
-
-		$rc .= '<div id="contents">';
-
-		$rc .= $contents;
-		$rc .= $main;
-
-		$rc .= new \Brickrouge\Alert(Debug::fetch_messages('debug'), array(\Brickrouge\Alert::CONTEXT => 'debug'));
-
-		$rc .= '</div>';
-		$rc .= '</div>';
-		$rc .= '</div>';
-		$rc .= $this->getFooter();
-		$rc .= $this->js;
+		$alert_changed_site = null;
 
 		if ($this->changed_site)
 		{
-			$rc .= <<<EOT
-<div class="popup info below left" data-target="#quick .sites ul" data-position="below">
-	<div class="content">Vous avez changé de site.</div>
-	<div class="arrow"><div></div></div>
-</div>
-EOT;
-
+			\ICanBoogie\log_info("Vous avez changé de site.");
 		}
 
-		$rc .= '</body>';
+		$body_class = '';
+
+		if ($user->is_guest)
+		{
+			$body_class = ' page-slug-authenticate';
+		}
+
+		$js = $this->js;
+
+		$alert_success = new Alert(Debug::fetch_messages('done'), array(Alert::CONTEXT => 'success'));
+		$alert_info = new Alert(Debug::fetch_messages('info'), array(Alert::CONTEXT => 'info'));
+		$alert_error = new Alert(Debug::fetch_messages('error'), array(Alert::CONTEXT => 'error'));
+		$alert_debug = new Alert(Debug::fetch_messages('debug'), array(Alert::CONTEXT => 'debug'));
+
+		$alert = trim($alert_success . $alert_info . $alert_error);
+
+		return <<<EOT
+<body class="admin{$body_class}">
+	<div id="body-wrapper">
+
+		<div id="quick">$shortcuts</div>
+		$navigation
+		$actionbar
+
+		<div id="contents">
+			<div class="alert-wrapper">$alert</div>
+			$contents
+			$alert_debug
+		</div>
+	</div>
+
+	$alert_changed_site
+	$js
+</body>
+EOT;
 
 		return $rc;
 	}
@@ -157,6 +155,13 @@ EOT;
 		$user = $core->user;
 		$site = $core->site;
 
+		if ($user->is_guest)
+		{
+			$this->page_title = 'Icybee';
+
+			return '←&nbsp;<a href="' . $site->url . '" class="home">' . t($site->title) . '</a>';
+		}
+
 		$site_title = wd_entities($site->admin_title);
 
 		if (!$site_title)
@@ -164,131 +169,177 @@ EOT;
 			$site_title = wd_entities($site->title) . '<span class="language">:' . $site->language . '</span>';
 		}
 
-		$sites_list = '<a href="' . $site->url . '">' . $site_title . '</a>';
+		$options = array();
 
-		if (!$user->is_guest)
+		try
 		{
-			$rc  = '<body class="admin">';
-			$rc .= '<div id="body-wrapper">';
+			$query = $core->models['sites']->order('admin_title, title');
 
-			try
+			$restricted_sites = $user->restricted_sites_ids;
+
+			if ($restricted_sites)
 			{
-				$query = $core->models['sites']->where('siteid != ?', $site->siteid)->order('admin_title, title');
+				$query->where(array('siteid' => $restricted_sites));
+			}
 
-				$restricted_sites = $user->restricted_sites_ids;
+			$sites = $query->all;
 
-				if ($restricted_sites)
+			if (count($sites) > 1)
+			{
+				$path = Route::decontextualize($core->request->path);
+
+				foreach ($sites as $asite)
 				{
-					$query->where(array('siteid' => $restricted_sites));
-				}
+					$title = $asite->admin_title;
 
-				$sites = $query->all;
-
-				if ($sites)
-				{
-					$path = $_SERVER['REQUEST_PATH'];
-
-					if ($site->path)
+					if (!$title)
 					{
-						$path = substr($path, strlen($site->path));
+						$title = new Element('span', array(Element::INNER_HTML => $asite->title . '<span class="language">:' . $asite->language . '</span>'));
 					}
 
-					$sites_list = '<ul><li>' . $sites_list . '</li>';
-
-					foreach ($sites as $asite)
-					{
-						$title = $asite->admin_title;
-
-						if (!$title)
-						{
-							$title = $asite->title . '<span class="language">:' . $asite->language . '</span>';
-						}
-
-						$sites_list .= '<li data-siteid="' . $asite->siteid . '"><a href="' . wd_entities($asite->url . $path) . '?ssc=1">' . $title . '</a></li>';
-					}
-
-					$sites_list .= '</ul>';
+					$options[$asite->siteid] = new A($title, $asite->url . $path/* . '?ssc=1'*/);
 				}
 			}
-			catch (\Exception $e) { /**/ }
+		}
+		catch (\Exception $e) { /**/ }
 
-			if ($core->session->last_site_id)
-			{
-				if ($core->session->last_site_id != $core->site_id)
-				{
-					$core->session->last_site_id = $core->site_id;
-
-					if (empty($_GET['ssc']))
-					{
-						$this->changed_site = true;
-					}
-				}
-			}
-			else
+		if ($core->session->last_site_id)
+		{
+			if ($core->session->last_site_id != $core->site_id)
 			{
 				$core->session->last_site_id = $core->site_id;
-			}
 
-			$rc .= '<div id="quick">';
-
-			$rc .= '<div class="sites"><span style="float: left">←&nbsp;</span>' . $sites_list . '</div>';
-
-			$rc .= '<span style="float: right">';
-
-			$roles = '';
-
-			if ($user->is_admin)
-			{
-				$roles = 'Admin';
-			}
-			else if ($user->has_permission(Module::PERMISSION_ADMINISTER, 'users.roles'))
-			{
-				foreach ($user->roles as $role)
+				if (empty($_GET['ssc']))
 				{
-					$roles .= ', <a href="' . $site->path . '/admin/users.roles/' . $role->rid . '/edit">' . $role->name . '</a>';
+					$this->changed_site = true;
 				}
-
-				$roles = substr($roles, 2);
 			}
-			else
-			{
-				$n = count($user->roles);
-
-				foreach ($user->roles as $role)
-				{
-					if ($n > 1 && $role->rid == Role::USER_RID)
-					{
-						continue;
-					}
-
-					$roles .= ', ' . $role->name;
-				}
-
-				$roles = substr($roles, 2);
-			}
-
-			$rc .= t('Hello :username', array(':username' => '<a href="' . $site->path . '/admin/profile">' . $user->name . '</a>'));
-			$rc .= ' <span class="small">(' . $roles . ')</span>';
-			$rc .= ' <span class="separator">|</span> <a href="' . Operation::encode('users/logout') . '">' . t('label.logout') . '</a>';
-			$rc .= '</span>';
-
-			$rc .= '<div class="clear"></div>';
-			$rc .= '</div>';
 		}
 		else
 		{
-			$site = $core->site;
-
-			$this->page_title = 'Publish<span>r</span>';
-
-			$rc  = '<body class="admin page-slug-authenticate">';
-			$rc .= '<div id="body-wrapper">';
-
-			$rc .= '<div id="quick">';
-			$rc .= '←&nbsp;<a href="' . $site->url . '" class="home">' . t($site->title) . '</a>';
-			$rc .= '</div>';
+			$core->session->last_site_id = $core->site_id;
 		}
 
+		$menu = null;
+		$menu_toggler = null;
+
+		if ($options)
+		{
+			$menu = new DropdownMenu(array
+			(
+				DropdownMenu::OPTIONS => $options,
+
+				'value' => $site->siteid
+			));
+
+			$menu_toggler = <<<EOT
+<span class="dropdown-toggle" data-toggle="dropdown"><i class="icon-home icon-white"></i> <span class="caret"></span></span>
+EOT;
+		}
+		else
+		{
+			$menu_toggler = <<<EOT
+<i class="icon-home icon-white"></i>
+EOT;
+		}
+
+		$rc = <<<EOT
+<div class="btn-group">
+	<a href="$site->url">$site->title</a>
+	$menu_toggler
+	$menu
+</div>
+EOT;
+
+
+// 		$rc  = '<div class="sites"><span style="float: left">←&nbsp;</span>' . $sites_list . '</div>';
+		$rc .= $this->render_shortcut__user();
+
+		return $rc;
+	}
+
+	protected function render_shortcut__user()
+	{
+		global $core;
+
+		$user = $core->user;
+		$site = $core->site;
+
+		$rc = '<div class="pull-right">';
+
+		$roles = '';
+
+		if ($user->is_admin)
+		{
+			$roles = 'Admin';
+		}
+		else if ($user->has_permission(Module::PERMISSION_ADMINISTER, 'users.roles'))
+		{
+			foreach ($user->roles as $role)
+			{
+				$roles .= ', <a href="' . $site->path . '/admin/users.roles/' . $role->rid . '/edit">' . $role->name . '</a>';
+			}
+
+			$roles = substr($roles, 2);
+		}
+		else
+		{
+			$n = count($user->roles);
+
+			foreach ($user->roles as $role)
+			{
+				if ($n > 1 && $role->rid == Role::USER_RID)
+				{
+					continue;
+				}
+
+				$roles .= ', ' . $role->name;
+			}
+
+			$roles = substr($roles, 2);
+		}
+
+		$username = new A($user->name, Route::contextualize('/admin/profile'));
+
+		$options = array
+		(
+			Route::contextualize('/admin/profile') => 'Profile',
+			false,
+			Operation::encode('users/logout') => 'Logout'
+		);
+
+		array_walk
+		(
+			$options, function(&$v, $k)
+			{
+				if (!is_string($v))
+				{
+					return;
+				}
+
+				$v = new A($v, $k);
+			}
+		);
+
+		$menu = new DropdownMenu
+		(
+			array
+			(
+				DropdownMenu::OPTIONS => $options,
+
+				'value' => $core->request->path
+			)
+		);
+
+		$rc .= <<<EOT
+$username
+<span class="btn-group">
+	<span class="dropdown-toggle" data-toggle="dropdown"><i class="icon-user icon-white"></i> <span class="caret"></span></span>
+	$menu
+</span>
+EOT;
+
+		$rc .= '</div>';
 
 		return $rc;
 	}
@@ -309,36 +360,7 @@ EOT;
 		return new Admin\Element\Navigation(array('id' => 'navigation'));
 	}
 
-	protected function getMain()
-	{
-		return;
-
-		$main = $this->getBlock('main');
-
-		$rc = '';
-//		$rc .= '<div id="contents">';
-
-		if ($main)
-		{
-			$rc .= '<div class="group" style="-moz-box-shadow: 0 25px 15px -20px rgba(0, 0, 0, 0.2)">';
-			$rc .= $main;
-			$rc .= '</div>';
-		}
-
-		//$rc .= '</div>';
-
-		$journal = $this->getJournal();
-
-		if ($journal)
-		{
-			$rc .= '<div class="group" style="margin-top: 3em">';
-			$rc .= $journal;
-			$rc .= '</div>';
-		}
-
-		return $rc;
-	}
-
+	/*
 	protected function getFooter()
 	{
 		$phrases = array
@@ -362,16 +384,7 @@ EOT;
 
 		return $rc;
 	}
-
-	public function getJournal()
-	{
-		$rc = Debug::fetch_messages('debug');
-
-		if ($rc)
-		{
-			return '<div id="journal"><h2>Journal</h2>' . $rc . '</div>';
-		}
-	}
+	*/
 
 	/*
 	**

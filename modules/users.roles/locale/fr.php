@@ -22,8 +22,6 @@ return array
 	# management
 	#
 
-	'Title' => 'Titre',
 	'Create a role' => 'Créer un rôle',
-	'Edit a role' => 'Editer un rôle',
-
+	'Edit a role' => 'Editer un rôle'
 );

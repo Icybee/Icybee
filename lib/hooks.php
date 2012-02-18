@@ -207,7 +207,7 @@ class Hooks
 	{
 		global $core;
 
-		$class = 'Icybee\Operation\Module\QueryOperationOperation';
+		$class = 'Icybee\Operation\Module\QueryOperation';
 		$try_module = $module = $core->modules[$request['module']];
 
 		while ($try_module)

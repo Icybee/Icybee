@@ -41,7 +41,7 @@ class WdI18nElement extends Element
 					(
 						'select', array
 						(
-							Element::LABEL => '.language',
+							Element::LABEL => 'language',
 							Element::LABEL_POSITION => 'before',
 							Element::OPTIONS => array
 							(
@@ -50,7 +50,7 @@ class WdI18nElement extends Element
 
 							+ $languages,
 
-							Element::DESCRIPTION => '.language'
+							Element::DESCRIPTION => 'language'
 						)
 					),
 
@@ -60,7 +60,7 @@ class WdI18nElement extends Element
 					(
 						'em', array
 						(
-							Element::LABEL => '.nativeid',
+							Element::LABEL => 'nativeid',
 							Element::LABEL_POSITION => 'before',
 							Element::INNER_HTML => "Il n'y a pas d'entrée à traduire.",
 

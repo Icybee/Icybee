@@ -1,8 +1,3 @@
-table.manage tr.module td:first-child
-{
-	padding-left: 1ex;
-}
-
 table.manage tr + tr td
 {
 	border-top: 1px solid #EEE;
@@ -48,7 +43,7 @@ table.manage th.count,
 table.manage td.count
 {
 	text-align: right;
-	width: 4ex;
+	width: 10px;
 }
 
 table.manage td.not-applicable

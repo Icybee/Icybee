@@ -26,6 +26,15 @@ class NonceRequest extends Form
 		(
 			$tags + array
 			(
+				Form::ACTIONS => new Button
+				(
+					'Send', array
+					(
+						'type' => 'submit',
+						'class' => 'btn-warning'
+					)
+				),
+
 				Form::RENDERER => 'Simple',
 
 				Form::HIDDENS => array
@@ -43,19 +52,10 @@ class NonceRequest extends Form
 							Form::LABEL => 'your_email',
 							Element::REQUIRED => true
 						)
-					),
-
-					'submit' => new Button
-					(
-						'Send', array
-						(
-							'type' => 'submit',
-							'class' => 'warn'
-						)
 					)
 				),
 
-				'class' => 'widget-nonce-request group password login stacked',
+				'class' => 'widget-nonce-request',
 				'name' => 'users/nonce-request'
 			)
 		);

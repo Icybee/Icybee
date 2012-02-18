@@ -25,6 +25,9 @@ return array
 
 	'description' => array
 	(
+		'is_navigation_excluded' => "Pages excluded from the main navigation don't appear in menus.
+		They might still appear on the sitemap.",
+
 		'label' => "The label is a shorter version of the title. It is used in preference to the
 		title to create the links of the menus and the breadcrumb.",
 

@@ -17,6 +17,7 @@ Brickrouge.Widget.PopNode = new Class
 		this.element = $(el)
 		this.popover = null
 		this.fetchAdjustOperation = null
+		this.input = this.element.getElement('input');
 		this.title = this.element.getElement('span.title')
 		this.preview = this.element.getElement('img')
 
@@ -33,7 +34,7 @@ Brickrouge.Widget.PopNode = new Class
 	fetchAdjust: function()
 	{
 		var preview = this.preview
-		, value = this.element.get('value')
+		, value = this.input.get('value')
 
 		this.title_back = this.title.get('html')
 		this.key_back = value
@@ -105,7 +106,7 @@ Brickrouge.Widget.PopNode = new Class
 			case 'use': this.use()
 		}
 
-		this.element[(0 + this.element.get('value').toInt() ? 'remove' : 'add') + 'Class']('placeholder')
+		this.element[(0 + this.input.get('value').toInt() ? 'remove' : 'add') + 'Class']('placeholder')
 
 		this.popover.hide()
 	},
@@ -118,7 +119,7 @@ Brickrouge.Widget.PopNode = new Class
 		, preview = this.preview
 
 		this.title.set('text', title).set('title', title)
-		this.element.set('value', nid)
+		this.input.set('value', nid)
 
 		this.element.removeClass('placeholder')
 
@@ -135,7 +136,7 @@ Brickrouge.Widget.PopNode = new Class
 	cancel: function()
 	{
 		this.title.set('html', this.title_back)
-		this.element.set('value', this.key_back)
+		this.input.set('value', this.key_back)
 
 		if (this.preview)
 		{
@@ -146,7 +147,7 @@ Brickrouge.Widget.PopNode = new Class
 	remove: function()
 	{
 		this.title.set('html', '<em>' + this.options.placeholder + '</em>');
-		this.element.set('value', '');
+		this.input.set('value', '');
 
 		if (this.preview)
 		{

@@ -63,9 +63,9 @@ class TitleSlugCombo extends \Brickrouge\Widget
 					(
 						array
 						(
-							Element::LABEL => '.slug',
+							Element::LABEL => 'slug',
 							Element::LABEL_POSITION => 'above',
-							Element::DESCRIPTION => '.slug',
+							Element::DESCRIPTION => 'slug',
 
 							'name' => $slugname
 						)

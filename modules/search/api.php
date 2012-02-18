@@ -253,7 +253,7 @@ function make_set($constructor, $entries, $count, $search, $has_pager=false)
 					'div', array
 					(
 						Pager::T_COUNT => $count,
-						Pager::T_LIMIT => $core->site->metas->get('features_search.limits.list', 10),
+						Pager::T_LIMIT => $core->site->metas->get('search.limits.list', 10),
 						Pager::T_POSITION => isset($_GET['page']) ? (int) $_GET['page'] : 0,
 						Pager::T_WITH => 'q,constructor',
 

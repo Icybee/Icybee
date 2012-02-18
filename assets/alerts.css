@@ -1,0 +1,19 @@
+@CHARSET "UTF-8";
+
+.alert-wrapper {
+	background-color: white;
+	padding: 16px 16px 15px 16px;
+	border-bottom: 1px solid #cfcfcf;
+}
+
+.alert-wrapper:empty {
+	display: none;
+}
+
+.alert-wrapper .alert {
+	margin: 0;
+}
+
+.alert-wrapper .alert + .alert {
+	margin-top: 16px;
+}

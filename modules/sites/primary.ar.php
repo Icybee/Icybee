@@ -63,6 +63,19 @@ class Site extends ActiveRecord
 		unset($this->_model);
 	}
 
+	public function save()
+	{
+		global $core;
+
+		#
+		# before saving the site we clear the stes cache.
+		#
+
+		unset($core->vars['sites']);
+
+		return parent::save();
+	}
+
 	protected function __get_url()
 	{
 		$parts = explode('.', $_SERVER['HTTP_HOST']);

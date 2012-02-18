@@ -11,7 +11,7 @@
 
 namespace ICanBoogie\Modules\Nodes;
 
-class DeleteOperation extends \Icybee\Operation\ActiveRecord\Delete
+class DeleteOperation extends \Icybee\DeleteOperation
 {
 	/**
 	 * Overrides the method to create a nicer log entry.

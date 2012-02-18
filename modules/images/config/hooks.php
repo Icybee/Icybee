@@ -8,7 +8,7 @@ return array
 	(
 		'ICanBoogie\Modules\Nodes\SaveOperation::process' => __NAMESPACE__ . '::on_nodes_save',
 		'ICanBoogie\Modules\Contents\ConfigOperation::process:before' => __NAMESPACE__ . '::before_contents_config',
-		'ICanBoogie\Modules\Contents\Module::alter.block.edit' => __NAMESPACE__ . '::on_alter_block_edit',
+		'ICanBoogie\Modules\Contents\EditBlock::alter_children' => __NAMESPACE__ . '::editblock__on_alter_children',
 		'ICanBoogie\Modules\Contents\Module::alter.block.config' => __NAMESPACE__ . '::on_alter_block_config',
 
 		'Icybee::render' => __NAMESPACE__ . '::on_icybee_render',

@@ -9,9 +9,9 @@
  * file that was distributed with this source code.
  */
 
-namespace Icybee\Operation\ActiveRecord;
+namespace Icybee;
 
-class Delete extends \ICanBoogie\Operation\ActiveRecord\Delete
+class DeleteOperation extends \ICanBoogie\Operation\ActiveRecord\Delete
 {
 
 }

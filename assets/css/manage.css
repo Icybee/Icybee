@@ -3,87 +3,11 @@
 /*
 **
 
-SEARCH (in MENU OPTIONS)
-
-**
-*/
-
-#menu-options form.search
-{
-	border: 1px solid #CFCFCF;
-	font-size: 12px; /* we use a fixed value so that the height of the form is the same of the browse element*/
-	padding: 2px 0.5ex;
-	background-color: white;
-	border-radius: 4px;
-	-moz-border-radius: 4px;
-	-webkit-border-radius: 4px;
-}
-
-#menu-options form.search input
-{
-	border: none;
-	background: transparent;
-	font-size: 14px;
-	padding: 0;
-	position: relative;
-	border-radius: 0;
-	box-shadow: none;
-	height: 16px;
-	line-height: 16px;
-}
-
-#menu-options form.search input.empty
-{
-	font-style: italic;
-}
-
-#menu-options form.search input:focus
-{
-	box-shadow: none;
-	-moz-box-shadow: none;
-	-webkit-box-shadow: none;
-}
-
-#menu-options form.search.active:not(.focus)
-{
-	background-color: #FFC;
-}
-
-#menu-options form.search button
-{
-	color: #808080;
-	background: #EEE;
-	border: none;
-	font-weight: normal;
-	font-size: 12px;
-	text-shadow: none;
-	line-height: 16px;
-	padding: 0;
-	margin-left: 1ex;
-	box-shadow: none;
-	visibility: hidden;
-}
-
-#menu-options form.search.active:not(.focus) button
-{
-	color: #808000;
-	background-color: #EE0;
-}
-
-#menu-options form.search input:not(.empty) + button
-{
-	visibility: visible;
-}
-
-/*
-**
-
 TABLE
 
 **
 */
 
-table.group,
 table.manage
 {
 	width: 100%;
@@ -105,6 +29,24 @@ table.manage tbody tr + tr td
 	border-top: 1px solid #EEE;
 }
 
+table.manage tfoot {
+	font-size: 12px;
+}
+
+table.manage tfoot select {
+	line-height: 24px;
+	height: 24px;
+	padding: 2px;
+}
+
+table.manage tfoot .limiter select {
+	width: auto;
+}
+
+table.manage tfoot input {
+	padding: 2px;
+}
+
 /*
 table.manage tbody,
 table.manage tfoot
@@ -113,11 +55,12 @@ table.manage tfoot
 }
 */
 
-#manager div.empty
+#manager div.alert
 {
 	line-height: 4em;
 	text-align: center;
-	font-size: 14px;
+	margin: 0;
+	border-radius: 0;
 }
 
 table.manage thead tr
@@ -189,21 +132,27 @@ table.manage tr.no-ownership label.checkbox-wrapper
 	visibility: hidden;
 }
 
+table.manage tr.no-ownership td {
+	opacity: .6;
+}
+
+/*
 table.manage tr.no-ownership a.edit
 {
 	color: #808080;
 }
+*/
 
 table.manage td:first-child,
 table.manage th:first-child > div
 {
-	padding-left: 8px;
+	padding-left: 16px;
 }
 
 table.manage td:last-child,
 table.manage th:last-child > div
 {
-	padding-right: 8px;
+	padding-right: 16px;
 }
 
 table.manage th.key,
@@ -357,6 +306,7 @@ OPTIONS
 table.manage div.limiter
 {
 	float: right;
+	line-height: 24px;
 }
 
 #menu-options div.manage form

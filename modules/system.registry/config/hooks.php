@@ -6,9 +6,9 @@ return array
 (
 	'events' => array
 	(
-		'ICanBoogie\Modules\Nodes\Module::alter.block.edit' => __NAMESPACE__ . '::on_alter_block_edit',
-		'ICanBoogie\Modules\Users\Module::alter.block.edit' => __NAMESPACE__ . '::on_alter_block_edit',
-		'ICanBoogie\Modules\Sites\Module::alter.block.edit' => __NAMESPACE__ . '::on_alter_block_edit',
+		'ICanBoogie\Modules\Nodes\EditBlock::alter_properties' => __NAMESPACE__ . '::on_editblock_alter_properties',
+		'ICanBoogie\Modules\Users\EditBlock::alter_properties' => __NAMESPACE__ . '::on_editblock_alter_properties',
+		'ICanBoogie\Modules\Sites\EditBlock::alter_properties' => __NAMESPACE__ . '::on_editblock_alter_properties',
 
 		'ICanBoogie\Modules\Nodes\SaveOperation::process' => __NAMESPACE__ . '::on_operation_save',
 		'ICanBoogie\Modules\Users\SaveOperation::process' => __NAMESPACE__ . '::on_operation_save',

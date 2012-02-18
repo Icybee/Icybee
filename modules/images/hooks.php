@@ -40,11 +40,11 @@ class Hooks
 		return $imageid ? $core->models['images'][$imageid] : null;
 	}
 
-	static public function on_alter_block_edit(Event $event, Modules\Nodes\Module $sender)
+	static public function editblock__on_alter_children(Event $event, \ICanBoogie\Modules\Nodes\EditBlock $block)
 	{
 		global $core;
 
-		$flat_id = $sender->flat_id;
+		$flat_id = $event->module->flat_id;
 		$inject = $core->registry['resources_images.inject.' . $flat_id];
 
 		if (!$inject)
@@ -54,36 +54,27 @@ class Hooks
 
 		$group = null;
 
-		if (isset($event->tags[Element::GROUPS]['contents']))
+		if (isset($event->attributes[Element::GROUPS]['contents']))
 		{
 			$group = 'contents';
 		}
 
 		$imageid = null;
 
-		if ($event->entry)
+		if ($block->record)
 		{
-			$imageid = $event->entry->metas['resources_images.imageid'];
+			$imageid = $block->record->metas['resources_images.imageid'];
 		}
 
-		$event->tags = wd_array_merge_recursive
+		$event->children['resources_images[imageid]'] = new Widget\PopImage
 		(
-			$event->tags, array
+			array
 			(
-				Element::CHILDREN => array
-				(
-					'resources_images[imageid]' => new Widget\PopImage
-					(
-						array
-						(
-							Form::LABEL => 'Image',
-							Element::GROUP => $group,
-							Element::REQUIRED => $core->registry['resources_images.inject.' . $flat_id . '.required'],
+				Form::LABEL => 'Image',
+				Element::GROUP => $group,
+				Element::REQUIRED => $core->registry['resources_images.inject.' . $flat_id . '.required'],
 
-							'value' => $imageid
-						)
-					)
-				)
+				'value' => $imageid
 			)
 		);
 	}
@@ -140,7 +131,14 @@ class Hooks
 				(
 					'resources_images__inject' => array
 					(
-						'title' => 'Associated image'
+						'title' => 'Associated image',
+						'title' => new Element(Element::TYPE_CHECKBOX, array
+						(
+							Element::LABEL => 'Associated image',
+
+							'name' => 'global[resources_images.inject][' . $sender_flat_id . ']',
+							'checked' => !empty($core->registry['resources_images.inject.' . $sender_flat_id])
+						))
 					),
 
 					'resources_images__inject_options' => array
@@ -158,6 +156,7 @@ class Hooks
 
 				Element::CHILDREN => array
 				(
+					/*
 					'global[resources_images.inject][' . $sender_flat_id . ']' => new Element
 					(
 						Element::TYPE_CHECKBOX, array
@@ -166,13 +165,14 @@ class Hooks
 							Element::GROUP => 'resources_images__inject'
 						)
 					),
+					*/
 
 					'global[resources_images.inject][' . $sender_flat_id . '.required]' => new Element
 					(
 						Element::TYPE_CHECKBOX, array
 						(
 							Element::LABEL => "L'association est obligatoire",
-							Element::GROUP => 'resources_images__inject_options'
+							Element::GROUP => 'resources_images__inject'
 						)
 					),
 
@@ -181,7 +181,7 @@ class Hooks
 						array
 						(
 							Form::LABEL => "Image par défaut",
-							Element::GROUP => 'resources_images__inject_options'
+							Element::GROUP => 'resources_images__inject'
 						)
 					)
 				)

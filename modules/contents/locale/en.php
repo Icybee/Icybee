@@ -2,7 +2,7 @@
 
 return array
 (
-	'element.description' => array
+	'description' => array
 	(
 		'is_home_excluded' => "When the box is checked, the record does not appear on the home
 		page. Wheter the box is checked or not, the record still appears in the listing page.",
@@ -30,7 +30,7 @@ return array
 
 	'module_category.title.contents' => 'Contents',
 
-	'section.title' => array
+	'group.legend' => array
 	(
 		'contents' => 'Contents',
 		'limits' => 'Limits'

@@ -55,5 +55,9 @@ return array
 	'Edit: !title' => "Éditer : !title",
 	'Search' => 'Rechercher',
 	':page_limit_selector by page' => ':page_limit_selector par page',
-	'For the selection…' => 'Pour la sélection…'
+	'For the selection…' => 'Pour la sélection…',
+
+	# Icybee\Admin\Element\ActionbarTitle
+
+	"List page on the website" => "Page de la liste sur le site"
 );

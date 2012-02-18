@@ -30,11 +30,11 @@ return array
 		(
 			'description' => 'Le moteur de recherche se trouve actuellement sur la page <q>:link</q>',
 
-			'description_nopage' => "Il n'y a pas de page définie poue l'affichage des résulats de
-			recherche. Si vous souhaitez proposer le moteur de recherche à vos visiteurs, rendez-vous
-			dans l'onglet :link, choisissez la page que vous souhaitez dédier à la recherche, changez
-			l'éditeur du corps de la page pour <q>Vue</q> et choisissez la vue
-			<q>Structure/Rechercher/Rechercher sur le site</q>.",
+			'description_nopage' => "Aucune page n'est définie pour afficher les résulats de
+			recherche. Si vous souhaitez proposer les fonctionnalités de recherche à vos visiteurs,
+			rendez-vous dans l'onglet :link, choisissez la page que vous souhaitez dédier à la
+			recherche, changez l'éditeur du corps de la page pour <q>Vue</q> et choisissez la vue
+			<q>Fonctionnalités/Rechercher/Rechercher sur le site</q>.",
 
 			'limits_home' => "Nombre de résultats maximum par module lors de la recherche initiale",
 			'limits_list' => "Nombre de résultats maximum lors de la recherche ciblée",

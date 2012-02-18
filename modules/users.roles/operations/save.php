@@ -11,7 +11,7 @@
 
 namespace ICanBoogie\Modules\Users\Roles;
 
-class SaveOperation extends \Icybee\Operation\ActiveRecord\Save
+class SaveOperation extends \Icybee\SaveOperation
 {
 
 }

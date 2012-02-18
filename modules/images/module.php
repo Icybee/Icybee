@@ -24,12 +24,14 @@ class Module extends \ICanBoogie\Modules\Files\Module
 	const THUMBNAIL_WIDTH = 200;
 	const THUMBNAIL_HEIGHT = 200;
 
+	/*
 	protected $accept = array
 	(
 		'image/gif', 'image/png', 'image/jpeg'
 	);
 
 	protected $uploader_class = 'Brickrouge\Widget\ImageUpload';
+	*/
 
 	/*
 	public function install(\ICanBoogie\Errors $errors)
@@ -94,26 +96,7 @@ class Module extends \ICanBoogie\Modules\Files\Module
 		);
 	}
 
-	protected function block_edit(array $properties, $permission, array $options=array())
-	{
-		return wd_array_merge_recursive
-		(
-			parent::block_edit($properties, $permission, $options), array
-			(
-				Element::CHILDREN => array
-				(
-					'alt' => new Text
-					(
-						array
-						(
-							Form::LABEL => 'alt'
-						)
-					)
-				)
-			)
-		);
-	}
-
+	/*
 	public function adjust_createEntry($entry)
 	{
 		$img = new Element
@@ -138,6 +121,7 @@ class Module extends \ICanBoogie\Modules\Files\Module
 
 		return $rc;
 	}
+	*/
 
 	protected function block_adjust(array $params)
 	{

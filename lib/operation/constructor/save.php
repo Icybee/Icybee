@@ -11,7 +11,7 @@
 
 namespace Icybee\Operation\Constructor;
 
-class Save extends \Icybee\Operation\ActiveRecord\Save
+class Save extends \Icybee\SaveOperation
 {
 	/**
 	 * Adds the constructor id to the properties.

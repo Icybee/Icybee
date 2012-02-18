@@ -12,17 +12,23 @@
 namespace Icybee;
 
 use ICanBoogie;
+use ICanBoogie\ActiveRecord\Query;
+use ICanBoogie\ActiveRecord\Site;
 use ICanBoogie\Exception;
 use ICanBoogie\Event;
 use ICanBoogie\I18n;
+use ICanBoogie\Object;
 use ICanBoogie\Operation;
-use ICanBoogie\ActiveRecord\Query;
-use ICanBoogie\ActiveRecord\Site;
+use ICanBoogie\Route;
 
 use Brickrouge;
+use Brickrouge\A;
 use Brickrouge\Button;
 use Brickrouge\Element;
 use Brickrouge\Form;
+use Brickrouge\SplitButton;
+
+use Icybee\Operation\Module\Config as ConfigOperation;
 
 /**
  * Extends the Module class with the following features:
@@ -96,8 +102,6 @@ class Module extends \ICanBoogie\Module
 
 				if (!$locked)
 				{
-					global $core;
-
 					$luser = $core->models['users'][$lock['uid']];
 					$url = $_SERVER['REQUEST_URI'];
 
@@ -133,249 +137,23 @@ EOT;
 					# the dashboard.
 					#
 
-					throw new HTTPException("You don't have permission to access the block type %name.", array('%name' => $name), 403);
+					throw new Exception\HTTP("You don't have permission to access the block %name.", array('%name' => $name), 403);
 				}
 			}
 			break;
 
 			case 'edit':
 			{
-				global $document;
+				$class_name = $this->resolve_block_class('edit');
 
-				$document->css->add(ASSETS . 'css/edit.css');
-				$document->js->add(ASSETS . 'js/edit.js');
-
-				$key = null;
-				$permission = $core->user->has_permission(Module::PERMISSION_CREATE, $this);
-				$entry = null;
-				$properties = array();
-				$url = null;
-
-//				echo "has permission: $permission<br />";
-
-				if (isset($args[1]))
+				if ($class_name)
 				{
-					$key = $args[1];
+					\ICanBoogie\log_info("Block instanciated from <q>$class_name</q>.");
 
-					$entry = $this->model[$key];
-
-					#
-					# check user ownership
-					#
-
-					if (isset($entry->uid))
-					{
-						// TODO-20091110: changed from hasPermission to hasOwnership, maybe I should rename the $permission
-						// variable to a $ownership one ??
-
-						$permission = $core->user->has_ownership($this, $entry);
-
-//						echo "has ownrship: $permission<br />";
-					}
+					return new $class_name($this, isset($args[1]) ? $args[1] : null);
 				}
 
-				if (!$key && !$permission)
-				{
-					throw new Exception\HTTP("You don't have permission to create entries in the %id module.", array('%id' => $this->id), 403);
-				}
-
-				#
-				# edit menu
-				#
-
-				if ($entry)
-				{
-					#
-					# is the working site the good one ?
-					#
-
-					if (!($entry instanceof Site) && !empty($entry->siteid) && $entry->siteid != $core->site_id)
-					{
-						$url = $core->models['sites'][$entry->siteid]->url;
-
-						header("Location: $url/admin/$this->id/$key/edit");
-
-						exit;
-					}
-
-					$items = array();
-
-					if ($key && $core->user->has_permission(self::PERMISSION_MANAGE, $this))
-					{
-						// TODO-20120117: use Route::contextualize();
-
-						$items[] = '<a href="' . $core->site->path . '/admin/' . $this->id . '/' . $key . '/delete">' . t('label.delete') . '</a>';
-					}
-
-					if ($this instanceof ICanBoogie\Modules\Nodes\Module && $entry->url[0] != '#')
-					{
-						$url = $entry->url;
-
-						$items[] = '<a href="' . $url . '">' . t('label.display') . '</a>';
-					}
-
-					if ($items)
-					{
-						$items = '<li>' . implode('</li><li>', $items) . '</li>';
-						$menu = '<div class="edit-actions"><ul class="items">' . $items . '</ul></div>';
-
-						$document->addToBlock($menu, 'menu-options');
-					}
-				}
-
-
-
-
-				I18n::push_scope(array($this->flat_id, $name));
-
-
-
-				$nulls = array();
-
-				#
-				# all values missing from the schema are defined as null
-				#
-
-				$schema = $this->model->extended_schema;
-
-				if ($schema)
-				{
-					$nulls = array_fill_keys(array_keys($schema['fields']), null);
-				}
-
-				$properties = array_merge($nulls, (array) $entry, $_POST);
-
-				#
-				# convert arguments [$name, $id, ...] to [$name, $properties, $permission, ...]
-				#
-
-				array_shift($args);
-				array_shift($args);
-
-				array_unshift($args, $name, $properties, $permission);
-
-				#
-				# get save mode used for this module
-				#
-
-				$mode = isset($core->session->wdpmodule[\Icybee\Operation\ActiveRecord\Save::MODE][$this->id]) ? $core->session->wdpmodule[\Icybee\Operation\ActiveRecord\Save::MODE][$this->id] : \Icybee\Operation\ActiveRecord\Save::MODE_LIST;
-
-				$save_mode_options = array
-				(
-					\Icybee\Operation\ActiveRecord\Save::MODE_LIST => '.save_mode_list',
-					\Icybee\Operation\ActiveRecord\Save::MODE_CONTINUE => '.save_mode_continue',
-					\Icybee\Operation\ActiveRecord\Save::MODE_NEW => '.save_mode_new'
-				);
-
-				if ($url)
-				{
-					$save_mode_options[\ICanBoogie\Modules\Nodes\SaveOperation::MODE_DISPLAY] = '.save_mode_display';
-				}
-
-				$tags = wd_array_merge_recursive
-				(
-					array
-					(
-						Form::VALUES => &$properties,
-						Form::DISABLED => !$permission,
-						Form::HIDDENS => array
-						(
-							Operation::DESTINATION => $this->id,
-							Operation::NAME => 'save',
-							Operation::KEY => $key
-						),
-
-						Element::GROUPS => array
-						(
-							'primary' => array
-							(
-								'title' => 'primary'
-							),
-
-							'admin' => array
-							(
-								'title' => 'admin',
-								'weight' => 900
-							),
-
-							'save' => array
-							(
-								'weight' => 1000,
-								'no-panels' => true
-							)
-						),
-
-						// TODO-20091228: create an element for this lovely submit-save-mode-combo
-
-						Element::CHILDREN => $permission ? array
-						(
-							\Icybee\Operation\ActiveRecord\Save::MODE => new Element
-							(
-								Element::TYPE_RADIO_GROUP, array
-								(
-									Element::GROUP => 'save',
-									Element::OPTIONS => $save_mode_options,
-
-									'value' => $mode,
-									'class' => 'inputs-list save-mode'
-								)
-							),
-
-							'#submit' => new Button
-							(
-								'Save', array
-								(
-									Element::GROUP => 'save',
-									'class' => 'btn-primary',
-									'type' => 'submit'
-								)
-							)
-						) : array(),
-
-						'id' => 'editor',
-						'action' => '',
-						'class' => 'stacked group edit',
-						'name' => (string) $this
-					),
-
-					call_user_func_array((PHP_MAJOR_VERSION > 5 || (PHP_MAJOR_VERSION == 5 && PHP_MINOR_VERSION > 2)) ? 'parent::' . __FUNCTION__ : array($this, 'parent::' . __FUNCTION__), $args)
-				);
-
-				#
-				# alterators
-				#
-
-				// FIXME: permission won't get updated !!
-
-				Event::fire
-				(
-					'alter.block.edit', array
-					(
-						'tags' => &$tags,
-						'key' => $key,
-						'entry' => $entry,
-						'properties' => &$properties,
-						'permission' => &$permission
-					),
-
-					$this
-				);
-
-				#
-				#
-				#
-
-// 				$form = new \WdSectionedForm($tags);
-
-				$form = new Form($tags + array(Form::RENDERER => 'Simple'));
-
-				$form->save();
-
-				$form = (string) $form;
-
-				I18n::pop_scope();
-
-				return $form;
+				return $this->handle_block_edit(isset($args[1]) ? $args[1] : null);
 			}
 			break;
 
@@ -389,6 +167,271 @@ EOT;
 		return call_user_func_array((PHP_MAJOR_VERSION > 5 || (PHP_MAJOR_VERSION == 5 && PHP_MINOR_VERSION > 2)) ? 'parent::' . __FUNCTION__ : array($this, 'parent::' . __FUNCTION__), $args);
 	}
 
+	protected function resolve_block_class($name)
+	{
+		$module = $this;
+		$class_name = wd_camelize('-' . $name) . 'Block';
+
+		while ($module)
+		{
+			$try = $module->descriptor[self::T_NAMESPACE] . '\\' . $class_name;
+
+			if (class_exists($try, true))
+			{
+				return $try;
+			}
+
+			$module = $module->parent;
+		}
+	}
+
+	private function handle_block_edit($key)
+	{
+		global $core, $document;
+
+		$entry = null;
+		$record = null;
+		$url = null;
+		$properties = array();
+
+		$document->js->add(ASSETS . 'js/edit.js');
+
+		$permission = $core->user->has_permission(Module::PERMISSION_CREATE, $this);
+
+		if ($key)
+		{
+			$entry = $record = $this->model[$key];
+
+			#
+			# check user ownership
+			#
+
+			if (isset($record->uid))
+			{
+				$permission = $core->user->has_ownership($this, $record);
+			}
+		}
+
+		if (!$key && !$permission)
+		{
+			throw new Exception\HTTP("You don't have permission to create entries in the %id module.", array('%id' => $this->id), 403);
+		}
+
+		#
+		# Records that belong to a site can only be edited on that site, thus we need to change
+		# site if the current site if not the one associated with the record.
+		#
+
+		if ($record && !($record instanceof Site) && !empty($record->siteid) && $record->siteid != $core->site_id)
+		{
+			$url = $core->models['sites'][$record->siteid]->url;
+
+			header("Location: $url/admin/$this->id/$key/edit");
+
+			exit;
+		}
+
+		#
+		# Initialize properties from the record and the request params.
+		#
+		# All values missing from the schema are defined as null.
+		#
+
+		$nulls = array();
+		$schema = $this->model->extended_schema;
+
+		if ($schema)
+		{
+			$nulls = array_fill_keys(array_keys($schema['fields']), null);
+		}
+
+		$properties = array_merge($nulls, $record ? get_object_vars($record) : array(), $core->request->params);
+
+		#
+		#
+		#
+
+		I18n::push_scope($this->flat_id . '.edit');
+
+		#
+		# get save mode used for this module
+		#
+
+		$mode = isset($core->session->wdpmodule[SaveOperation::MODE][$this->id]) ? $core->session->wdpmodule[SaveOperation::MODE][$this->id] : SaveOperation::MODE_LIST;
+
+		$save_mode_options = array
+		(
+			SaveOperation::MODE_LIST => t('save_mode_list', array(), array('scope' => 'option')),
+			SaveOperation::MODE_CONTINUE => t('save_mode_continue', array(), array('scope' => 'option')),
+			SaveOperation::MODE_NEW => t('save_mode_new', array(), array('scope' => 'option')),
+		);
+
+		if ($record instanceof Object && $record->has_property('url'))
+		{
+			$url = $record->url;
+
+			if ($url)
+			{
+				$save_mode_options[\ICanBoogie\Modules\Nodes\SaveOperation::MODE_DISPLAY] = t('save_mode_display', array(), array('scope' => 'option'));
+			}
+		}
+
+		if (empty($save_mode_options[$mode]))
+		{
+			$mode = key($save_mode_options);
+		}
+
+		#
+		#
+		#
+
+		$tags = wd_array_merge_recursive
+		(
+			array
+			(
+				Form::ACTIONS => !$permission ? array() : array
+				(
+					SaveOperation::MODE => new Element
+					(
+						Element::TYPE_RADIO_GROUP, array
+						(
+							Element::GROUP => 'save',
+							Element::OPTIONS => $save_mode_options,
+
+							'value' => $mode,
+							'class' => 'inputs-list save-mode'
+						)
+					),
+
+					new Button
+					(
+						'Save', array
+						(
+							Element::GROUP => 'save',
+
+							'class' => 'btn-primary',
+							'type' => 'submit'
+						)
+					)
+				),
+
+				Form::DISABLED => !$permission,
+				Form::HIDDENS => array
+				(
+					Operation::DESTINATION => $this->id,
+					Operation::NAME => 'save',
+					Operation::KEY => $key
+				),
+
+				Form::RENDERER => new \Brickrouge\Renderer\Simple(array(\Brickrouge\Renderer\Simple::GROUP_CLASS => 'Icybee\Element\Group')),
+				Form::VALUES => &$properties,
+
+				Element::GROUPS => array
+				(
+					'primary' => array
+					(
+
+					),
+
+					'admin' => array
+					(
+						'title' => 'admin',
+						'weight' => 900
+					),
+
+					'save' => array
+					(
+						'weight' => 1000,
+						'no-panels' => true
+					)
+				),
+
+				// TODO-20091228: create an element for this lovely submit-save-mode-combo
+
+				Element::CHILDREN => array(),
+
+				'id' => 'editor',
+				'action' => '',
+				'class' => 'form-primary edit',
+				'name' => (string) $this
+			),
+
+			$this->block_edit($properties, $permission)
+		);
+
+		#
+		# alterators
+		#
+
+		// FIXME: permission won't get updated !!
+
+		Event::fire
+		(
+			'alter.block.edit', array
+			(
+				'tags' => &$tags,
+				'key' => $key,
+				'entry' => $entry,
+				'properties' => &$properties,
+				'permission' => &$permission
+			),
+
+			$this
+		);
+
+		#
+		#
+		#
+
+		$form = new Form($tags);
+
+		$form->save();
+
+		$form = (string) $form;
+
+		I18n::pop_scope();
+
+		$record = $entry;
+		$module = $this;
+
+		Event::add
+		(
+			'Icybee\Admin\Element\ActionbarToolbar::alter_buttons', function(Event $event, \Icybee\Admin\Element\ActionbarToolbar $sender) use($record, $module, $key, $save_mode_options, $mode)
+			{
+				global $core;
+
+				if ($record instanceof ICanBoogie\ActiveRecord\Node && $record->url[0] != '#')
+				{
+					$event->buttons[] = '<a href="' . $record->url . '" class="actionbar-link">' . t('label.display') . '</a>';
+				}
+
+				if ($key && $core->user->has_permission(Module::PERMISSION_MANAGE, $module))
+				{
+					$event->buttons[] = new A
+					(
+						'Delete', Route::contextualize('/admin/' . $module . '/' . $key . '/delete'), array
+						(
+							'class' => 'btn btn-danger'
+						)
+					);
+				}
+
+				$event->buttons[] = new SplitButton
+				(
+					$save_mode_options[$mode], array
+					(
+						Element::OPTIONS => $save_mode_options,
+
+						'value' => $mode,
+						'class' => 'btn-primary record-save-mode'
+					)
+				);
+			}
+		);
+
+		return $form;
+	}
+
 	protected function handle_block_config()
 	{
 		global $core;
@@ -400,52 +443,41 @@ EOT;
 
 		I18n::push_scope(array($this->flat_id, 'config'));
 
-		$core->document->css->add(ASSETS . 'css/edit.css');
-
 		$tags = wd_array_merge_recursive
 		(
 			array
 			(
-				Form::HIDDENS => array
-				(
-					Operation::DESTINATION => $this->id,
-					Operation::NAME => self::OPERATION_CONFIG
-				),
-
-				Form::RENDERER => 'Simple',
-
-				Form::VALUES => array
-				(
-				),
-
-				Element::GROUPS => array
-				(
-					'primary' => array
-					(
-						'title' => 'primary'
-					),
-
-					'save' => array
-					(
-						'weight' => 1000,
-						'no-panels' => true
-					)
-				),
-
-				Element::CHILDREN => array
+				Form::ACTIONS => array
 				(
 					new Button
 					(
 						'Save', array
 						(
-							Element::GROUP => 'save',
 							'class' => 'btn-primary',
 							'type' => 'submit'
 						)
 					)
 				),
 
-				'class' => 'stacked group config edit',
+				Form::HIDDENS => array
+				(
+					Operation::DESTINATION => $this->id,
+					Operation::NAME => self::OPERATION_CONFIG
+				),
+
+				Form::RENDERER => new \Brickrouge\Renderer\Simple(array(\Brickrouge\Renderer\Simple::GROUP_CLASS => 'Icybee\Element\Group')),
+				Form::VALUES => array(),
+
+				Element::CHILDREN => array(),
+				Element::GROUPS => array
+				(
+					'primary' => array
+					(
+// 						'title' => 'primary'
+					)
+				),
+
+				'class' => 'form-primary config edit',
 				'name' => (string) $this
 			),
 
@@ -533,7 +565,7 @@ EOT;
 		}
 		catch (\Exception $e)
 		{
-			return '<div class="group">' . t('Unknown record id: %key', array('%key' => $key)) . '</div>';
+			return '<div class="group--delete">' . t('Unknown record id: %key', array('%key' => $key)) . '</div>';
 		}
 
 		$form = (string) new Form
@@ -546,7 +578,7 @@ EOT;
 					Operation::NAME => self::OPERATION_DELETE,
 					Operation::KEY => $key,
 
-					'#location' => "/admin/{$this->id}"
+					'#location' => Route::contextualize("/admin/{$this->id}")
 				),
 
 				Element::CHILDREN => array
@@ -555,7 +587,7 @@ EOT;
 					(
 						'Delete', array
 						(
-							'class' => 'danger',
+							'class' => 'btn-danger',
 							'type' => 'submit'
 						)
 					)
@@ -564,7 +596,7 @@ EOT;
 		);
 
 		return <<<EOT
-<div class="group">
+<div class="block--delete">
 <h3>Delete a record</h3>
 <p>Are you sure you want to delete this record?</p>
 $form

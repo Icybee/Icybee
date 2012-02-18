@@ -18,7 +18,7 @@ use ICanBoogie\ActiveRecord\Node;
  *
  * Adds the "display" save mode.
  */
-class SaveOperation extends \Icybee\Operation\ActiveRecord\Save
+class SaveOperation extends \Icybee\SaveOperation
 {
 	const MODE_DISPLAY = 'display';
 
@@ -35,7 +35,7 @@ class SaveOperation extends \Icybee\Operation\ActiveRecord\Save
 	 * `siteid`: If the user is creating a new record or the user has no permission to choose the
 	 * record's site, the property is set to the value of the working site's id.
 	 *
-	 * @see Icybee\Operation\ActiveRecord\Save::__get_properties()
+	 * @see Icybee\SaveOperation::__get_properties()
 	 */
 	protected function __get_properties()
 	{
@@ -67,7 +67,7 @@ class SaveOperation extends \Icybee\Operation\ActiveRecord\Save
 	 * Overrides the method to provide a nicer log message, and change the operation location to
 	 * the node URL if the save mode is "display".
 	 *
-	 * @see Icybee\Operation\ActiveRecord\Save::process()
+	 * @see Icybee\SaveOperation::process()
 	 */
 	protected function process()
 	{

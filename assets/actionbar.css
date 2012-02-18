@@ -1,0 +1,228 @@
+@CHARSET "UTF-8";
+
+.actionbar {
+	background: white;
+	border-bottom: 1px solid #CFCFCF;
+	padding: 16px 16px 15px 16px;
+	font-size: 12px;
+	height: 28px;
+}
+
+.actionbar.fixed {
+	color: white;
+	left: 0;
+	position: fixed;
+	right: 0;
+	top: 0;
+	z-index: 1030;
+	background: black;
+	background: -moz-linear-gradient(top, rgba(0,0,0,.8), rgba(0,0,0,1));
+	background: -webkit-linear-gradient(top, rgba(0,0,0,.8), rgba(0,0,0,1));
+	background: -o-linear-gradient(top, rgba(0,0,0,.8), rgba(0,0,0,1));
+	background: -ms-linear-gradient(top, rgba(0,0,0,.8), rgba(0,0,0,1));
+	background: linear-gradient(top, rgba(0,0,0,.8), rgba(0,0,0,1));
+	border-bottom: 1px solid #cfcfcf;
+	border-bottom: 1px solid black;
+	padding: 8px 16px 7px 16px;
+	box-shadow: 0 5px 20px rgba(0, 0, 0, .5);
+}
+
+.actionbar.fixed + #contents {
+	padding-top: 60px;
+}
+
+.actionbar .pull-left + .pull-left {
+	margin-left: 16px;
+}
+
+/*
+ * Links to the various parts of the module.
+ */
+
+.actionbar-search,
+.actionbar-toolbar {
+	float: left;
+}
+
+.actionbar-link {
+	color: inherit;
+	padding: 8px 10px 5px 10px;
+	display: inline-block;
+	line-height: 1em;
+	text-transform: uppercase;
+	border-bottom: 3px solid transparent;
+}
+
+.actionbar-link:hover {
+	text-decoration: none;
+	background-color: rgba(51, 181, 229, .3);
+	border-bottom-color: rgba(51, 181, 229, .3);
+	border-radius: 3px;
+}
+
+.actionbar-link.active {
+	border-bottom-color: rgba(51, 181, 229, 1);
+	background: rgba(51, 181, 229, 1);
+	border-radius: 3px;
+	color: white;
+}
+
+.actionbar .btn-toolbar {
+	margin: 0 0 0 16px;
+}
+
+.actionbar .btn-toolbar > * {
+	vertical-align: top;
+}
+
+.actionbar button {
+	padding: 3px 10px;
+}
+
+/*
+ *
+ */
+ 
+form.navbar-search {
+	border: 1px solid #CFCFCF;
+	font-size: 12px; /* we use a fixed value so that the height of the form is the same of the browse element*/
+	padding: 2px 0.5ex;
+	background-color: #F6F6F6;
+	border-radius: 4px;
+}
+
+form.navbar-search input {
+	border: none;
+	background: transparent;
+	padding: 0;
+	position: relative;
+	border-radius: 0;
+	box-shadow: none;
+	padding: 2px 0;
+	width: 32ex !important;
+}
+
+form.navbar-search input.placeholder {
+	font-style: italic;
+	color: #808080;
+}
+
+form.navbar-search input:focus {
+	box-shadow: none;
+}
+
+form.navbar-search.active:not(.focus) {
+	background-color: #FFC;
+}
+
+form.navbar-search button {
+	color: #808080;
+	border: none;
+	font-weight: normal;
+	font-size: 12px;
+	text-shadow: none;
+	line-height: 16px;
+	padding: 0;
+	margin-left: 1ex;
+	box-shadow: none;
+	visibility: hidden;
+	text-indent: 14px;
+	opacity: .6;
+	overflow: hidden;
+}
+
+form.navbar-search button:hover,
+form.navbar-search button:active {
+	opacity: .8;
+	background-color: transparent;
+	background-position: -312px 0;	
+}
+
+form.navbar-search button:active {
+	opacity: 1;
+}
+
+form.navbar-search.active:not(.focus) button {
+	color: #808080;
+}
+
+form.navbar-search input:not(.placeholder) + button {
+	visibility: visible;
+}
+
+.actionbar-toolbar > * + * {
+	margin-left: 8px;
+}
+
+.actionbar-toolbar .dropdown-menu {
+	left: auto;
+	right: 0;
+}
+
+.actionbar-title {
+	display: inline-block;
+}
+
+.actionbar-title h1 {
+	margin: 0;
+	padding: 0;
+	display: inline;
+	font-size: 22px;
+	font-weight: normal;
+}
+
+.actionbar-title h1 a {
+	color: inherit;
+}
+
+.actionbar .btn-group {
+	display: inline-block;
+	vertical-align: top;
+}
+
+.actionbar-title .dropdown-toggle {
+	border: 1px solid transparent;
+	border-radius: 3px;
+	box-shadow: none;
+	padding: 5px;
+}
+
+.actionbar-title .dropdown-toggle:hover,
+.actionbar-title .btn-group.open .dropdown-toggle {
+	border-color: #ccc;
+}
+
+.actionbar.fixed .actionbar-title .dropdown-toggle:hover,
+.actionbar.fixed .actionbar-title .btn-group.open .dropdown-toggle {
+	border-color: #444;
+}
+
+.actionbar-title .btn-group .caret {
+	vertical-align: middle;
+}
+
+.actionbar.fixed .actionbar-title .caret {
+	border-top-color: white;
+}
+
+
+
+#contents {
+	border: 0;
+	margin-bottom: 0;
+}
+
+.actionbar .pull-left > *,
+.actionbar .pull-right > * {
+	float: left;
+}
+
+.actionbar .pull-left > * + *,
+.actionbar .pull-right > * + * {
+	margin-left: 16px;
+}
+
+.actionbar + #contents > .alert-wrapper {
+	margin-top: -1px;
+	padding-top: 1px;
+}

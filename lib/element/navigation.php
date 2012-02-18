@@ -26,7 +26,7 @@ class Navigation extends \Brickrouge\Element
 		(
 			'div', $attributes + array
 			(
-
+				'class' => 'navbar'
 			)
 		);
 	}
@@ -40,20 +40,26 @@ class Navigation extends \Brickrouge\Element
 		$links = array();
 		$routes = Route::routes();
 		$user = $core->user;
+		$menus = array();
+
+		$modules = $core->modules;
+		$descriptors = $modules->descriptors;
 
 		foreach ($routes as $route)
 		{
-			if (empty($route['index']) || empty($route['workspace']))
+			if (empty($route['index']) || empty($route['module']))
 			{
 				continue;
 			}
 
 			$module_id = $route['module'];
 
-			if (!isset($core->modules[$module_id]))
+			if (!isset($modules[$module_id]))
 			{
 				continue;
 			}
+
+			$category = $descriptors[$module_id][Module::T_CATEGORY];
 
 			$permission = isset($route['permission']) ? $route['permission'] : Module::PERMISSION_ACCESS;
 
@@ -62,9 +68,9 @@ class Navigation extends \Brickrouge\Element
 				continue;
 			}
 
-			$ws = $route['workspace'];
+			$menus[$category][$route['pattern']] = $route;
 
-			$links[$ws] = t($ws, array(), array('scope' => 'module_category.title'));
+			$links[$category] = t($category, array(), array('scope' => 'module_category.title')); // TODO: a same category is translated multiple time
 		}
 
 		uasort($links, 'wd_unaccent_compare_ci');
@@ -80,10 +86,15 @@ class Navigation extends \Brickrouge\Element
 			$links
 		);
 
-		$matching_route = Route::find($_SERVER['REQUEST_URI'], 'any', 'admin'); // FIXME-20120201: use the primary request object
-		$selected = $matching_route ? $matching_route[0]['workspace'] : 'dashboard';
+		if (empty($menus['features']))
+		{
+			unset($links['features']);
+		}
 
-		$rc .= '<ul>';
+		$matching_route = Route::find($_SERVER['REQUEST_URI'], 'any', 'admin'); // FIXME-20120201: use the primary request object
+		$selected = $matching_route ? $descriptors[$matching_route[0]['module']][Module::T_CATEGORY] : 'dashboard';
+
+		$rc .= '<ul class="nav">';
 
 		foreach ($links as $path => $label)
 		{
@@ -98,10 +109,43 @@ class Navigation extends \Brickrouge\Element
 				$rc .= '<li>';
 			}
 
-			$path = Route::contextualize('/admin/'. $path);
+			$url = Route::contextualize('/admin/'. $path);
 
-			$rc .= '<a href="' . \ICanBoogie\escape($path) . '">' . $label . '</a>';
+			$rc .= '<a href="' . \ICanBoogie\escape($url) . '">' . $label . '</a>';
+
+			if (isset($menus[$path]))
+			{
+				$rc .= $this->render_dropdown_menu($menus[$path]);
+			}
+
 			$rc .= '</li>';
+		}
+
+		$rc .= '</ul>';
+
+		return $rc;
+	}
+
+	protected function render_dropdown_menu(array $routes)
+	{
+		global $core;
+
+		$descriptors = $core->modules->descriptors;
+
+		$rc = '<ul class="dropdown-menu">';
+
+		foreach ($routes as $route)
+		{
+			$title = $route['title'];
+
+			$module_id = $route['module'];
+			$module_flat_id = strtr($module_id, '.', '_');
+
+			$default = $descriptors[$module_id][Module::T_TITLE];
+
+			$title = t($module_flat_id, array(), array('scope' => 'module.title', 'default' => $default));
+
+			$rc .= '<li><a href="' . Route::contextualize($route['pattern']) . '">' . $title . '</a></li>';
 		}
 
 		$rc .= '</ul>';

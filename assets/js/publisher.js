@@ -145,7 +145,7 @@ var init = function(ev)
 
 			if (!el.value)
 			{
-				el.addClass('empty');
+				el.addClass('placeholder');
 				el.value = label;
 			}
 
@@ -153,10 +153,10 @@ var init = function(ev)
 			({
 				focus: function()
 				{
-					if (this.hasClass('empty'))
+					if (this.hasClass('placeholder'))
 					{
 						this.value = '';
-						this.removeClass('empty');
+						this.removeClass('placeholder');
 					}
 				},
 
@@ -164,7 +164,7 @@ var init = function(ev)
 				{
 					if (!this.value)
 					{
-						this.addClass('empty');
+						this.addClass('placeholder');
 						this.value = label;
 					}
 				}
@@ -262,7 +262,7 @@ window.addEvent
 
 			controls.push(el)
 
-			var reset = new Element('span.btn.btn-warning.reset-default-value', { html: '<i class="icon-edit"></i> Reset' })
+			var reset = new Element('span.btn.btn-warning.reset-default-value', { html: '<i class="icon-edit icon-white"></i> Reset' })
 			, defaultValue = el.get('data-default-value')
 
 			if (el.get('value') == defaultValue) reset.addClass('hidden')

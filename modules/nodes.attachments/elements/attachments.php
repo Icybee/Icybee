@@ -58,7 +58,7 @@ class WdAttachmentsElement extends Element
 					$nid
 				)
 			)
-			->fetchAll(PDO::FETCH_OBJ);
+			->all(PDO::FETCH_OBJ);
 
 			foreach ($entries as $entry)
 			{
@@ -142,9 +142,9 @@ EOT;
 
 			$links = array
 			(
-				'<a href="' . \ICanBoogie\Route::contextualize('/admin/files/' . $fid . '/edit') . '" class="btn">' . t('label.edit') .'</a>',
-				'<a href="' . Operation::encode('files/' . $fid . '/download') . '" class="btn">' . t('label.download') . '</a>',
-				$hard_bond ? '<a href="#delete" class="btn btn-danger">' . t('Delete file') .'</a>' : '<a href="#remove" class="btn btn-warning">' . t('Break link') . '</a>'
+				'<a href="' . \ICanBoogie\Route::contextualize('/admin/files/' . $fid . '/edit') . '" class="btn"><i class="icon-pencil"></i> ' . t('label.edit') .'</a>',
+				'<a href="' . Operation::encode('files/' . $fid . '/download') . '" class="btn"><i class="icon-download-alt"></i> ' . t('label.download') . '</a>',
+				$hard_bond ? '<a href="#delete" class="btn btn-danger"><i class="icon-remove icon-white"></i> ' . t('Delete file') .'</a>' : '<a href="#remove" class="btn btn-warning"><i class="icon-remove"></i> ' . t('Break link') . '</a>'
 			);
 
 			$node = $core->models['nodes'][$entry->nid];

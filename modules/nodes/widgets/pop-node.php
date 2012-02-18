@@ -22,7 +22,7 @@ class PopNode extends \Brickrouge\Widget
 	{
 		parent::__construct
 		(
-			'button', $attributes + array
+			'div', $attributes + array
 			(
 				self::T_CONSTRUCTOR => 'nodes',
 				self::T_PLACEHOLDER => 'Sélectionner un enregistrement',
@@ -57,8 +57,8 @@ class PopNode extends \Brickrouge\Widget
 		$rc = parent::render_inner_html();
 
 		$constructor = $this[self::T_CONSTRUCTOR];
-		$value = $this['value'] ?: 0;
-		$entry = null;
+		$value = $this['value'] ?: $this[self::DEFAULT_VALUE];
+		$record = null;
 
 		if ($value)
 		{
@@ -66,7 +66,7 @@ class PopNode extends \Brickrouge\Widget
 
 			try
 			{
-				$entry = is_numeric($value) ? $model[$value] : $this->getEntry($model, $value);
+				$record = is_numeric($value) ? $model[$value] : $this->getEntry($model, $value);
 			}
 			catch (\Exception $e)
 			{
@@ -74,13 +74,15 @@ class PopNode extends \Brickrouge\Widget
 			}
 		}
 
-		if (!$entry)
+		if (!$record)
 		{
 			$this->add_class('placeholder');
 			$value = null;
 		}
 
-		$rc .= $this->getPreview($entry);
+		$rc .= new Element('input', array('type' => 'hidden', 'name' => $this['name'], 'value' => $value));
+
+		$rc .= $this->getPreview($record);
 
 		return $rc;
 	}

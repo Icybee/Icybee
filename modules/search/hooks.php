@@ -25,11 +25,11 @@ class Hooks
 	{
 		global $core, $document;
 
-		$page = $core->site->resolve_view_target('features_search/search');
+		$page = $core->site->resolve_view_target('search/home');
 
 		if (!$page)
 		{
-			throw new Exception\Config($core->modules['features.search']);
+			throw new Exception\Config($core->modules['search']);
 		}
 
 		$label = t('search.label.search');

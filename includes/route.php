@@ -56,9 +56,13 @@ else
 
 	try
 	{
-		$restricted_sites = $user->sites_ids;
+		$restricted_sites = $user->restricted_sites_ids;
 	}
-	catch (\Exception $e) { /* */ }
+	catch (Exception\PropertyNotFound $e)
+	{
+		throw $e;
+	}
+	catch (\Exception $e) { }
 
 	if ($restricted_sites && !in_array($core->site_id, $restricted_sites))
 	{
@@ -163,7 +167,7 @@ function _route_add_block($route, $params)
 	}
 	catch (\Exception $e)
 	{
-		$block = '<div class="group">' . ICanBoogie\Debug::format_alert($e) . '</div>';
+		$block = '<div class="alert-wrapper">' . ICanBoogie\Debug::format_alert($e) . '</div>';
 	}
 
 	//$document->addToBlock((string) $block, 'contents');
@@ -171,6 +175,7 @@ function _route_add_block($route, $params)
 	$document->addToBlock(is_object($block) ? $block->__toString() : (string) $block, 'contents');
 }
 
+/*
 function _route_add_options($requested, $req_pattern)
 {
 	global $core, $document;
@@ -208,28 +213,6 @@ function _route_add_options($requested, $req_pattern)
 		{
 			continue;
 		}
-
-		/*
-		 * TODO: implement acces callback
-		 *
-		 */
-
-		// TODO: les blocs qui utilisent des patterns devrait avoir une visibility = true
-
-		/*
-		if (empty($route['visibility']))
-		{
-			throw new Exception
-			(
-				'Missing %parameter for route %pattern !definition', array
-				(
-					'%parameter' => 'visibility',
-					'%pattern' => $pattern,
-					'!definition' => $route
-				)
-			);
-		}
-		*/
 
 		if (empty($route['visibility']) || ($route['visibility'] == 'auto' && $pattern != $req_pattern))
 		{
@@ -297,11 +280,13 @@ EOT;
 
 	$document->addToBlock($block, 'contents-header');
 }
+*/
 
 /*
  *
  */
 
+/*
 function _route_add_tabs($requested, $req_pattern)
 {
 	global $core;
@@ -387,16 +372,23 @@ function _route_add_tabs($requested, $req_pattern)
 
 	$document->addToBlock($rc, 'subnav');
 }
+*/
 
 /*
+ * We search for a route matching the request.
  *
+ * The route is saved under the `route` property of the request, or null if no matching route
+ * was found.
  */
-
 $match = Route::find($request_route, 'any', 'admin');
+
+$core->request->route = null;
 
 if ($match)
 {
 	list($route, $capture, $pattern) = $match;
+
+	$core->request->route = $route;
 
 	if (isset($route['location']))
 	{
@@ -412,22 +404,33 @@ if ($request_route == '/admin/available-sites')
 {
 	require_once 'route.available-sites.php';
 
-	_route_add_available_sites();
+	\Icybee\_route_add_available_sites();
 }
 else if ($match)
 {
 	_route_add_block($route, is_array($capture) ? $capture : array());
-	_route_add_tabs($route, $pattern);
-	_route_add_options($route, $pattern);
+// 	_route_add_tabs($route, $pattern);
+// 	_route_add_options($route, $pattern);
 }
 else
 {
+	if ($core->user_id == 1)
+	{
+		var_dump(Route::routes());
+	}
+
+	throw new Exception('There is no matching route for %path.', array('path' => $request_route));
+
 	wd_log_error('unable to find matching pattern for route %route', array('%route' => $request_route));
 
 	if ($core->user_id == 1)
 	{
-		$rc = wd_dump(Route::routes());
+		$rc = \ICanBoogie\dump(Route::routes());
 
 		$document->addToBlock($rc, 'contents');
+	}
+	else
+	{
+
 	}
 }

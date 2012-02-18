@@ -139,61 +139,48 @@ EOT;
 	 * @param Event $event
 	 * @param \ICanBoogie\Modules\Sites\Module $sender
 	 */
-	public static function on_site_alter_block_edit(Event $event, \ICanBoogie\Modules\Sites\Module $sender)
+	public static function on_site_editblock_alter_children(Event $event, \ICanBoogie\Modules\Sites\EditBlock $block)
 	{
-		$event->tags = wd_array_merge_recursive
+		$event->attributes[Element::GROUPS]['seo'] = array
 		(
-			$event->tags, array
+			'title' => 'SEO',
+			'weight' => 40
+		);
+
+		$event->children = array_merge
+		(
+			$event->children, array
 			(
-				Element::GROUPS => array
+				'metas[google_analytics_ua]' => new Text
 				(
-					'seo' => array
+					array
 					(
-						'title' => 'SEO',
-						'weight' => 40
+						Form::LABEL => 'Google Analytics UA',
+						Element::GROUP => 'seo'
 					)
 				),
 
-				Element::CHILDREN => array
+				'metas[google_site_verification]' => new Text
 				(
-					'metas[google_analytics_ua]' => new Text
+					array
 					(
-						array
-						(
-							Form::LABEL => 'Google Analytics UA',
-							Element::GROUP => 'seo'
-						)
-					),
-
-					'metas[google_site_verification]' => new Text
-					(
-						array
-						(
-							Form::LABEL => 'Google Site Verification',
-							Element::GROUP => 'seo'
-						)
+						Form::LABEL => 'Google Site Verification',
+						Element::GROUP => 'seo'
 					)
 				)
 			)
 		);
 	}
 
-	static public function event_alter_block_edit(Event $event, \ICanBoogie\Module $sender)
+	static public function on_page_editblock_alter_children(Event $event, \ICanBoogie\Modules\Pages\EditBlock $block)
 	{
 		global $core;
 
-		var_dump($event, $sender);
-
-		if ($sender instanceof Modules\Sites\Module)
-		{
-
-
-			return;
-		}
-		else if (!$sender instanceof Modules\Pages\Module)
-		{
-			return;
-		}
+		$event->attributes[Element::GROUPS]['seo'] = array
+		(
+			'title' => 'SEO',
+			'weight' => 40
+		);
 
 		#
 		# http://www.google.com/support/webmasters/bin/answer.py?answer=35264&hl=fr
@@ -201,41 +188,29 @@ EOT;
 		# http://www.google.com/support/webmasters/bin/answer.py?answer=79812
 		#
 
-		$event->tags = wd_array_merge_recursive
+		$event->children = array_merge
 		(
-			$event->tags, array
+			$event->children, array
 			(
-				Element::GROUPS => array
+				'metas[document_title]' => new Text
 				(
-					'seo' => array
+					array
 					(
-						'title' => '.seo',
-						'weight' => 40
+						Form::LABEL => 'document_title',
+						Element::GROUP => 'seo',
+						Element::DESCRIPTION => 'document_title'
 					)
 				),
 
-				Element::CHILDREN => array
+				'metas[description]' => new Element
 				(
-					'metas[document_title]' => new Text
+					'textarea', array
 					(
-						array
-						(
-							Form::LABEL => '.document_title',
-							Element::GROUP => 'firstposition',
-							Element::DESCRIPTION => '.document_title'
-						)
-					),
+						Form::LABEL => 'description',
+						Element::GROUP => 'seo',
+						Element::DESCRIPTION => 'description',
 
-					'metas[description]' => new Element
-					(
-						'textarea', array
-						(
-							Form::LABEL => '.description',
-							Element::GROUP => 'firstposition',
-							Element::DESCRIPTION => '.description',
-
-							'rows' => 3
-						)
+						'rows' => 3
 					)
 				)
 			)

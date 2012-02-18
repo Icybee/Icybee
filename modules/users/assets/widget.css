@@ -1,141 +1,70 @@
-#contents-wrapper
-{
-	width: 50%;
-	margin: 1em auto 0 auto;
+
+.widget-login-combo div.wrapper {
+	position: static;
+	overflow: hidden;
 }
 
-body.admin #login form
-{
+.widget-login-combo .help-block {
+	max-width: none;
+}
+
+.widget-login .form-actions,
+.widget-nonce-request .form-actions {
+	padding: 0;
+	border: 0;
+	margin: 1em 0 0 0;
+	background: transparent;
+	text-align: center;
+}
+
+body.admin .widget-login-combo form {
 	font-size: 2em;
 	background-image: -moz-linear-gradient(top, white 70%, #f0f0f0);
+	background-image: -webkit-linear-gradient(top, white 70%, #f0f0f0);
+	background-image: linear-gradient(top, white 70%, #f0f0f0);
 	padding: 1em;
 	margin: 0;
 }
-/*
-#login label sup
-{
-	vertical-align: text-top;
-	color: #21759B;
-}
 
-#login label span.separator
-{
-	display: none;
-}
-*/
-
-/*
-body.admin #login div.form-label
-{
-	font-size: .6em;
-	margin-bottom: .4em;
-}
-*/
-/*
-#login div.form-element
-{
-	margin-bottom: 1em;
-}
-
-#login div.form-element:last-child
-{
-	margin-bottom: 0;
-}
-*/
-
-body.admin #login input
-{
+body.admin .widget-login-combo input {
+	height: auto;
 	width: 100%;
 	-moz-box-sizing: border-box;
 	-webkit-box-sizing: border-box;
 	box-sizing: border-box;
 }
 
-/*
-#login div.form-element-submit
-{
-	text-align: center;
-}
-*/
-
-body.admin #login button
-{
+body.admin .widget-login-combo button {
 	font-size: .9em;
+	border-width: 2px;
+	border-radius: 6px;
+	padding: 0.3em 1ex;
+	line-height: normal;
 }
 
-/*
-#login ul.missing,
-#login ul.success
-{
-	margin: 0 0 1em 0;
-	padding: .5em;
-	list-style: none;
-	text-align: center;
-}
-
-body.admin #login ul.missing,
-body.admin #login ul.success
-{
-	font-size: .4em;
-}
-
-form.login ul.missing
-{
-	color: #EE2222;
-	background-color: #FFDDDD;
-	border: 1px solid #FFAAAA;
-}
-
-form.login ul.success
-{
-	color: #22EE22;
-	background-color: #DDFFDD;
-	border: 1px solid #AAFFAA;
-}
-*/
-
-body.admin #login div.element-description
-{
+body.admin .widget-login-combo .element-description {
 	text-align: right;
 	font-size: .9rem;
 	margin: .5em 0;
 }
 
-/*
-#login h3
-{
-	background-color: #E8E8E8;
-	border-bottom: 1px solid #CCCCCC;
-	padding: 4px 1em;
-	font-size: .9em;
-	font-weight: normal;
-	margin: 0;
-}
-*/
-
-#login div.wrapper
-{
-	position: static;
-	overflow: hidden;
+body.admin .widget-login-combo .control-group + .control-group {
+	margin-top: 1em;
 }
 
-#login div.alert-message
-{
+body.admin .widget-login-combo div.alert {
 	font-size: 1rem;
 }
 
-#login .stacked .control-group > label
-{
-	font-weight: normal;
+body.admin .widget-login-combo .control-group > label {
 	font-size: 1rem;
 }
 
-#login .control-group--submit
-{
+body.admin .widget-login-combo .control-group--submit {
 	text-align: center;
 }
 
-
-body.page-slug-authenticate {
-	background: black;
+body.admin #contents {
+	width: 600px;
+	margin: 1em auto 0 auto;
 }

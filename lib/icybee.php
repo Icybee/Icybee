@@ -65,7 +65,6 @@ class Icybee extends WdPatron
 				'render:before', array
 				(
 					'request' => $request,
-// 					'uri' => $_SERVER['REQUEST_URI'],
 					'constructor' => array($this, 'run_callback'),
 					'constructor_data' => &$constructor_data,
 					'rc' => &$html
@@ -147,6 +146,16 @@ class Icybee extends WdPatron
 
 		. ' -->' . PHP_EOL;
 
+		#
+		# clear alert messages so that they don't show up in the admin
+		#
+
+		Debug::fetch_messages('success');
+		Debug::fetch_messages('alert');
+		Debug::fetch_messages('warning');
+		Debug::fetch_messages('info');
+		Debug::fetch_messages('debug');
+
 		echo $html . $comment;
 	}
 
@@ -154,30 +163,38 @@ class Icybee extends WdPatron
 	{
 		global $core, $page;
 
-		$status = $core->site->status;
+		$path = $request->path;
+		$site = $core->site;
 
-		if ($status != 1 && $core->user->is_guest)
+		if (!$site->siteid)
 		{
-			if ($status == 2)
-			{
-				throw new Exception\HTTP
-				(
-					'The website is currently down for maintenance.', array(), 503
-				);
-			}
-			else if ($status == 3)
-			{
-				throw new Exception\HTTP
-				(
-					'Access to the requested URL %uri is forbidden.', array
-					(
-						'uri' => $request->uri
-					),
+			throw new Exception\HTTP('Unable to find matching website.', array(), 404);
+		}
 
-					403
-				);
-			}
+		$status = $core->site->status;
+		$user = $core->user;
 
+		if ($status == 2)
+		{
+			throw new Exception\HTTP
+			(
+				'The website is currently down for maintenance.', array(), 503
+			);
+		}
+		else if ($status == 3)
+		{
+			throw new Exception\HTTP
+			(
+				'Access to the requested URL %uri is forbidden.', array
+				(
+					'uri' => $request->uri
+				),
+
+				403
+			);
+		}
+		if ($status != 1 && $path == '/' && $user->is_guest)
+		{
 			// TODO-20111101: we could use $core->site to get the current site, still we need to
 			// check user permission to access the site. Using find_by_request() with the user
 			// we get a site that the user can actually access, this is required to redirect the
@@ -185,40 +202,23 @@ class Icybee extends WdPatron
 
 			$site = \ICanBoogie\Modules\Sites\Hooks::find_by_request($request, $core->user);
 
-			if ($site->siteid && $site->siteid != $core->site_id)
+			if ($site->siteid != $core->site_id)
 			{
 				header('Location: ' . $site->url);
 
 				exit;
 			}
 
-			throw new Exception\HTTP
-			(
-				'The requested URL %uri requires authentication.', array
-				(
-					'uri' => $request->uri
-				),
-
-				401
-			);
+			throw new Exception\HTTP('The requested URL requires authentication.', array(), 401);
 		}
 
-		$path = $request->path;
 		$page = $this->find_page_by_uri($path, $request->query_string);
 
 		if (!$page)
 		{
-			throw new Exception\HTTP
-			(
-				'The requested URL %uri was not found on this server.', array
-				(
-					'uri' => $request->uri
-				),
-
-				404
-			);
+			throw new Exception\HTTP('The requested URL was not found on this server.', array(), 404);
 		}
-		else if (!$page->is_online)
+		else if (!$page->is_online || $page->site->status != 1)
 		{
 			#
 			# Offline pages are displayed if the user has ownership, otherwise an HTTP exception
@@ -283,6 +283,14 @@ class Icybee extends WdPatron
 		{
 			$e->alter_header();
 			$body = $e->getMessage();
+		}
+		catch (\Exception $e)
+		{
+			header('HTTP/1.0 ' . $e->getCode() . ' ' . strip_tags($e->getMessage()));
+
+			$body = Debug::format_alert($e);
+
+			Debug::report($body);
 		}
 
 		$root = \ICanBoogie\DOCUMENT_ROOT;

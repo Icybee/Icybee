@@ -141,9 +141,8 @@ MooEditable.UI.PasteDialog = new Class
 		(
 			ok = new Element
 			(
-				'button',
+				'button.btn-primary',
 				{
-					'class': 'continue',
 					type: 'button',
 					html: 'Coller'
 				}

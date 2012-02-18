@@ -1,7 +1,24 @@
-window.addEvent
-(
-	'domready', function()
+window.addEvent('domready', function() {
+
+	var toggle = document.id(document.body).getElement('[name="is_notify"]')
+	, toggleContainer = null
+
+	function checkToggle()
 	{
+		toggleContainer[toggle.checked ? 'addClass' : 'removeClass']('enabled')
+	}
+
+	if (toggle)
+	{
+		toggleContainer = toggle.getParent('.control-group')
+		toggleContainer.addClass('group-description')
+
+		toggle.addEvent('change', checkToggle)
+
+		checkToggle()
+	}
+
+		/*
 		$$('form.edit div.is_notify').each
 		(
 			function(is_notify_target)
@@ -20,7 +37,7 @@ window.addEvent
 				/*
 				 * The URL used to get the default values if defined using the 'value' attribute of
 				 * the button element.
-				 */
+				 * /
 
 				var reset_trigger = is_notify_target.getParent().getElement('button.reset');
 
@@ -71,5 +88,6 @@ window.addEvent
 				);
 			}
 		);
+		*/
 	}
 );

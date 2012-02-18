@@ -13,7 +13,7 @@ namespace ICanBoogie\Modules\Taxonomy\Vocabulary;
 
 use ICanBoogie\Modules;
 
-class SaveOperation extends \Icybee\Operation\ActiveRecord\Save
+class SaveOperation extends \Icybee\SaveOperation
 {
 	protected function __get_properties()
 	{

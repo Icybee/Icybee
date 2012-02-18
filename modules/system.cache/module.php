@@ -79,7 +79,7 @@ EOT;
 
 				if ($config_preview)
 				{
-					$config_preview = '<button title="Configurer le cache" class="spinner btn-info">' . $config_preview . '</button>';
+					$config_preview = '<button title="Configurer le cache" class="spinner">' . $config_preview . '</button>';
 				}
 				else
 				{

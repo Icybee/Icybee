@@ -16,7 +16,7 @@ use ICanBoogie\Exception;
 use ICanBoogie\Mailer;
 use ICanBoogie\Operation;
 
-class SaveOperation extends \Icybee\Operation\ActiveRecord\Save
+class SaveOperation extends \Icybee\SaveOperation
 {
 	protected function __get_properties()
 	{

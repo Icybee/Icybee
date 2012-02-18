@@ -156,17 +156,14 @@ class Model extends \ICanBoogie\Modules\Nodes\Model
 			->order('weight, created')
 			->one;
 
-			if ($page)
+			if (!$page)
 			{
-				if (!$this->retrieve($page->nid))
-				{
-					$this->store($page);
-				}
+				return;
+			}
 
-				if ($site->status != 1)
-				{
-					$page->is_online = false;
-				}
+			if (!$this->retrieve($page->nid))
+			{
+				$this->store($page);
 			}
 
 			return $page;
@@ -303,6 +300,7 @@ class Model extends \ICanBoogie\Modules\Nodes\Model
 			$parent = $page;
 		}
 
+		/*
 		if ($site->status != 1)
 		{
 			$node = $page;
@@ -313,6 +311,7 @@ class Model extends \ICanBoogie\Modules\Nodes\Model
 				$node = $node->parent;
 			}
 		}
+		*/
 
 		return $page;
 	}

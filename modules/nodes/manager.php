@@ -14,6 +14,7 @@ namespace ICanBoogie\Modules\Nodes;
 use ICanBoogie\ActiveRecord\Node;
 use ICanBoogie\ActiveRecord\Query;
 
+use Brickrouge\A;
 use Brickrouge\Document;
 use Brickrouge\Element;
 
@@ -113,7 +114,7 @@ class Manager extends \WdManager
 			{
 				$expanded[$identifier] = $column;
 
-				if ($identifier == 'title')
+				if ($identifier == 'is_online')
 				{
 					$expanded['translations'] = array
 					(
@@ -345,13 +346,10 @@ class Manager extends \WdManager
 			return;
 		}
 
-		return new Element
+		return new A
 		(
-			'a', array
+			'Display', $url, array
 			(
-				Element::INNER_HTML => t('Display'),
-
-				'href' => $url,
 				'title' => t('View this entry on the website'),
 				'class' => 'view'
 			)
@@ -385,15 +383,12 @@ class Manager extends \WdManager
 			$rc .= ' ';
 		}
 
-		$rc .= new Element
+		$rc .= new A
 		(
-			'a', array
+			$label, $core->site->path . '/admin/' . $record->constructor . '/' . $record->nid . '/edit', array
 			(
-				Element::INNER_HTML => $label,
-
 				'class' => 'edit',
 				'title' => $shortened ? $this->t->__invoke('manager.edit_named', array(':title' => $title ? $title : 'unnamed')) : $this->t->__invoke('manager.edit'),
-				'href' => $core->site->path . '/admin/' . $record->constructor . '/' . $record->nid . '/edit'
 			)
 		);
 
@@ -467,13 +462,12 @@ class Manager extends \WdManager
 						(
 							'value' => $entry->nid,
 							'checked' => ($entry->$tag != 0),
-							'class' => 'is_online'
+							'data-property' => 'is_online'
 						)
 					)
 				),
 
-				'class' => 'checkbox-wrapper circle',
-				'title' => '.is_online'
+				'class' => 'checkbox-wrapper circle'
 			)
 		);
 	}

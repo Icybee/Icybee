@@ -9,6 +9,8 @@ return array
 
 		'Brickrouge\Form\Contact' => $path . 'models/contact.php',
 		'press_WdForm' => $path . 'models/contact-press.php',
-		'Brickrouge\quick_contact_WdForm' => $path . 'models/contact-quick.php'
+		'Brickrouge\quick_contact_WdForm' => $path . 'models/contact-quick.php',
+
+		'BrickRouge\EmailComposer' => $path . 'lib/elements/email-composer.php'
 	)
 );

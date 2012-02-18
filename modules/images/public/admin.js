@@ -5,26 +5,26 @@ window.addEvent
 		var trigger = document.body.getElement('.group--resources-images-inject input[type="checkbox"]')
 		, options
 		, thumbnails
-		, thumbnailsDescription = null;
+		, thumbnailsDescription = null
 
-		if (!trigger)
-		{
-			return;
-		}
+		if (!trigger) return
 
-		options = document.body.getElement('.group--resources-images-inject-options');
-		thumbnails = document.body.getElement('.group--resources-images-inject-thumbnails');
+		options = document.body.getElement('.group--resources-images-inject-options')
+		thumbnails = document.body.getElement('.group--resources-images-inject-thumbnails')
 
 		if (thumbnails)
 		{
-			thumbnailsDescription = thumbnails.getPrevious('.form-section-description');
+			thumbnailsDescription = thumbnails.getPrevious('.form-section-description')
 		}
 
 		function check()
 		{
+			trigger.getParent('.group')[trigger.checked ? 'addClass' : 'removeClass']('enabled')
+
+			/*
 			var display = trigger.checked ? 'block' : 'none';
 
-			options.setStyle('display', display);
+			options.setStyle('display', display)
 
 			if (thumbnails)
 			{
@@ -35,6 +35,7 @@ window.addEvent
 					thumbnailsDescription.setStyle('display', display);
 				}
 			}
+			*/
 		}
 
 		trigger.addEvent('change', check);

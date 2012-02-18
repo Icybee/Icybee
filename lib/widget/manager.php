@@ -11,13 +11,17 @@
 
 namespace Icybee;
 
+use Brickrouge\Alert;
+
 use ICanBoogie;
 use ICanBoogie\ActiveRecord;
 use ICanBoogie\ActiveRecord\Model;
 use ICanBoogie\ActiveRecord\Query;
+use ICanBoogie\Event;
 use ICanBoogie\Exception;
 use ICanBoogie\I18n\Translator\Proxi;
 use ICanBoogie\Operation;
+
 use Brickrouge;
 use Brickrouge\Button;
 use Brickrouge\Element;
@@ -1013,25 +1017,23 @@ EOT;
 
 		$search = $this->options['search'];
 		$filters = implode(', ', $this->options['filters']);
-
-		$rc  = '<div class="empty">';
+		$context = null;
 
 		if ($search)
 		{
-			$rc .= t('Your search <q><strong>!search</strong></q> did not match any record.', array('!search' => $search));
+			$message = t('Your search <q><strong>!search</strong></q> did not match any record.', array('!search' => $search));
 		}
 		else if ($filters)
 		{
-			$rc .= t('Your selection <q><strong>!selection</strong></q> dit not match any record.', array('!selection' => $filters));
+			$message = t('Your selection <q><strong>!selection</strong></q> dit not match any record.', array('!selection' => $filters));
 		}
 		else
 		{
-			$rc .= t('manager.create_first', array('!url' => $core->site->path . '/admin/' . $this->module . '/new'));
+			$message = t('manager.create_first', array('!url' => $core->site->path . '/admin/' . $this->module . '/new'));
+			$context = 'info';
 		}
 
-		$rc .= '</div>';
-
-		return $rc;
+		return (string) new Alert($message, array(Alert::CONTEXT => $context));
 	}
 
 	protected $last_rendered_cell = array();
@@ -1328,7 +1330,7 @@ EOT;
 	{
 		$search = $this->options['search'];
 
-		return (string) new Form
+		$html = (string) new Form
 		(
 			array
 			(
@@ -1355,15 +1357,26 @@ EOT;
 					(
 						'×', array
 						(
-							'type' => 'button'
+							'type' => 'button',
+							'class' => 'icon-remove'
 						)
 					)
 				),
 
-				'class' => 'search' . ($search ? ' active' : ''),
+				'class' => 'navbar-search search' . ($search ? ' active' : ''),
 				'method' => 'get'
 			)
 		);
+
+		Event::add
+		(
+			'Icybee\Admin\Element\ActionbarSearch::alter_inner_html', function(Event $event, \Icybee\Admin\Element\ActionbarSearch $sender) use($html)
+			{
+				$event->html .= $html;
+			}
+		);
+
+		return $html;
 	}
 
 	protected function inject_search()

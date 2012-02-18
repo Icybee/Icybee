@@ -65,6 +65,24 @@ class Modules extends \ICanBoogie\Modules
 			$descriptor['__autoload'][$descriptor[Module::T_NAMESPACE] . '\Manager'] = $path . 'manager.php';
 		}
 
+		$p = $path . 'lib' . DIRECTORY_SEPARATOR . 'blocks';
+
+		if (file_exists($p))
+		{
+			$di = new \DirectoryIterator($p);
+
+			foreach ($di as $file)
+			{
+				if ($file->getExtension() != 'php')
+				{
+					continue;
+				}
+
+				$class_name = $descriptor[Module::T_NAMESPACE] . '\\' . wd_camelize('-' . $file->getBasename('.php')) . 'Block';
+				$descriptor['__autoload'][$class_name] = $file->getPathname();
+			}
+		}
+
 		return $descriptor;
 	}
 

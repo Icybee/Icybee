@@ -116,7 +116,7 @@ class Hooks
 		}
 	}
 
-	public static function alter_block_edit(Event $event, Modules\Nodes\Module $sender)
+	public static function on_nodes_editblock_alter_children(Event $event, Modules\Nodes\EditBlock $block)
 	{
 		global $core;
 
@@ -127,7 +127,7 @@ class Hooks
 
 		$vocabularies = $core->models['taxonomy.vocabulary']
 		->joins('INNER JOIN {self}__scopes USING(vid)')
-		->where('constructor = ? AND (siteid = 0 OR siteid = ?)', (string) $sender, $core->site_id)
+		->where('constructor = ? AND (siteid = 0 OR siteid = ?)', (string) $event->module, $core->site_id)
 		->order('weight')
 		->all;
 
@@ -139,7 +139,7 @@ class Hooks
 
 		$nid = $event->key;
 		$identifier_base = 'vocabulary[vid]';
-		$children = array();
+		$children = &$event->children;
 
 		foreach ($vocabularies as $vocabulary)
 		{
@@ -214,7 +214,7 @@ class Hooks
 						Element::GROUP => 'organize',
 						Element::OPTIONS => array(null => '') + $options,
 						Element::REQUIRED => $vocabulary->is_required,
-						Element::DESCRIPTION => '<a href="' . $edit_url . '">' . t('Edit the vocabulary <q>!vocabulary</q>', array('!vocabulary' => $vocabulary->vocabulary)) . '</a>.',
+						Element::INLINE_HELP => '<a href="' . $edit_url . '">' . t('Edit the vocabulary <q>!vocabulary</q>', array('!vocabulary' => $vocabulary->vocabulary)) . '</a>.',
 
 						'value' => $value
 					)
@@ -225,21 +225,10 @@ class Hooks
 		// FIXME: There is no class to create a _tags_ element. They are created using a collection
 		// of objects in a div, so the key is a numeric, not an identifier.
 
-		$event->tags = wd_array_merge_recursive
+		$event->attributes[Element::GROUPS]['organize'] = array
 		(
-			$event->tags, array
-			(
-				Element::GROUPS => array
-				(
-					'organize' => array
-					(
-						'title' => 'Organize',
-						'weight' => 500
-					)
-				),
-
-				Element::CHILDREN => $children
-			)
+			'title' => 'Organize',
+			'weight' => 500
 		);
 	}
 

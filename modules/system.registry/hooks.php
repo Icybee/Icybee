@@ -56,7 +56,7 @@ class Hooks
 	 *
 	 * @throws Exception
 	 */
-	static public function on_alter_block_edit(Event $event, \ICanBoogie\Module $sender)
+	static public function on_editblock_alter_properties(Event $event, \Icybee\EditBlock $block)
 	{
 		global $core;
 
@@ -65,15 +65,17 @@ class Hooks
 			return;
 		}
 
-		if ($sender instanceof Modules\Nodes\Module)
+		$module = $event->module;
+
+		if ($module instanceof Modules\Nodes\Module)
 		{
 			$type = 'node';
 		}
-		else if ($sender instanceof Modules\Users\Module)
+		else if ($module instanceof Modules\Users\Module)
 		{
 			$type = 'user';
 		}
-		else if ($sender instanceof Modules\Sites\Module)
+		else if ($module instanceof Modules\Sites\Module)
 		{
 			$type = 'site';
 		}

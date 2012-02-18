@@ -34,7 +34,7 @@ class view_WdEditorElement extends WdEditorElement
 		return $content;
 	}
 
-	static public function render($id)
+	static public function render($id, $engine=null, $template=null)
 	{
 		global $core, $page;
 
@@ -63,7 +63,14 @@ class view_WdEditorElement extends WdEditorElement
 
 		$view = new $class($id, $definition, $patron, $core->document, $page);
 
-		return $view();
+		$rc = $view();
+
+		if ($template)
+		{
+			return $engine($template, $rc);
+		}
+
+		return $rc;
 	}
 
 	public function __construct($tags, $dummy=null)

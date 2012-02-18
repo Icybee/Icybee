@@ -1,0 +1,10 @@
+@CHARSET "UTF-8";
+
+.control-group--is-notify:not(.enabled) + .control-group--notify {
+	display: none;
+}
+
+textarea[name="notify_template"] {
+	font-family: Droid Sans Mono, Consolas, Monaco, monospace;
+	font-size: .8em;
+}

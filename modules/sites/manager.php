@@ -11,12 +11,16 @@
 
 namespace ICanBoogie\Modules\Sites;
 
+use Brickrouge\DropdownMenu;
+
 use ICanBoogie\ActiveRecord\Site;
 
 class Manager extends \WdManager
 {
 	public function __construct($module, array $tags=array())
 	{
+		global $core;
+
 		parent::__construct
 		(
 			$module, $tags + array
@@ -25,6 +29,9 @@ class Manager extends \WdManager
 				self::T_ORDER_BY => 'title'
 			)
 		);
+
+		$core->document->css->add('public/admin.css');
+		$core->document->js->add('public/admin.js');
 	}
 
 	protected function columns()
@@ -38,7 +45,7 @@ class Manager extends \WdManager
 
 			'url' => array
 			(
-				'class' => 'url'
+
 			),
 
 			'status' => array
@@ -103,12 +110,40 @@ class Manager extends \WdManager
 	{
 		static $labels = array
 		(
-			'<span class="warn">Offline</span>',
+			'Offline',
 			'Online',
 			'Under maintenance',
-			'Deneid access'
+			'Denied access'
 		);
 
-		return $labels[$record->status];
+		static $classes = array
+		(
+			'btn-danger',
+			'btn-success',
+			'btn-warning',
+			'btn-danger'
+		);
+
+		$status = $record->status;
+		$status_label = $labels[$status];
+		$status_class = $classes[$status];
+		$site_id = $record->siteid;
+
+		$menu = new DropdownMenu
+		(
+			array
+			(
+				DropdownMenu::OPTIONS => $labels,
+
+				'value' => $status
+			)
+		);
+
+		return <<<EOT
+<div class="btn-group" data-property="status" data-site-id="$site_id">
+	<span class="btn $status_class dropdown-toggle" data-toggle="dropdown"><span class="text">$status_label</span> <span class="caret"></span></span>
+    $menu
+</div>
+EOT;
 	}
 }

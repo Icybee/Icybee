@@ -114,24 +114,6 @@ class Module extends \Icybee\Module
 		}
 	}
 
-	protected function block_edit($properties, $permission)
-	{
-		return array
-		(
-			Element::CHILDREN => array
-			(
-				Role::NAME => new Text
-				(
-					array
-					(
-						Form::LABEL => '.title',
-						Element::REQUIRED => true
-					)
-				)
-			)
-		);
-	}
-
 	protected function block_manage()
 	{
 		global $core, $document;
@@ -214,6 +196,7 @@ class Module extends \Icybee\Module
 
 		$rc .= '<form name="roles" action="" method="post" enctype="multipart/form-data">';
 		$rc .= '<input type="hidden" name="' . Operation::DESTINATION . '" value="' . $this . '" />';
+		$rc .= '<input type="hidden" name="' . Operation::NAME . '" value="' . self::OPERATION_PERMISSIONS . '" />';
 
 		// table
 
@@ -457,13 +440,13 @@ EOT;
 
 		if ($user_has_access)
 		{
-			$rc .= '<div class="group">';
+			$rc .= '<div class="form-actions">';
 
 			$rc .= new Button
 			(
 				'Save permissions', array
 				(
-					'class' => 'save',
+					'class' => 'btn-primary',
 					'type' => 'submit',
 					'value' => self::OPERATION_PERMISSIONS
 				)

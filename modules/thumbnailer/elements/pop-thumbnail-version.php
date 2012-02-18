@@ -85,9 +85,13 @@ class PopThumbnailVersion extends \Brickrouge\Widget
 			{
 				$options = '&ndash; ' . implode(', ', $options);
 			}
+			else
+			{
+				$options = '';
+			}
 
 			$rc .= <<<EOT
-{$w}×{$h} {$method}, $format <span class="small light">$options</span>
+{$w}×{$h} {$method} $format <span class="small light">$options</span>
 EOT;
 		}
 		else

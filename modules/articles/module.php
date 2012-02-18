@@ -54,27 +54,4 @@ class Module extends \ICanBoogie\Modules\Contents\Module
 			)
 		);
 	}
-
-	protected function block_edit(array $properties, $permission)
-	{
-		return wd_array_merge_recursive
-		(
-			parent::block_edit($properties, $permission), array
-			(
-				Element::CHILDREN => array
-				(
-					Content::DATE => new Brickrouge\DateTime
-					(
-						array
-						(
-							Form::LABEL => 'Date',
-
-							Element::REQUIRED => true,
-							Element::DEFAULT_VALUE => date('Y-m-d H:i:s')
-						)
-					)
-				)
-			)
-		);
-	}
 }

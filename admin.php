@@ -19,13 +19,15 @@ $core->document = $document = new Icybee\Document();
 require 'includes/route.php';
 
 $document->css->add(Brickrouge\ASSETS . 'brickrouge.css', -250);
+$document->css->add(Icybee\ASSETS . 'icybee.css', -240);
 $document->css->add(Icybee\ASSETS . 'admin.css', -200);
+$document->css->add(Icybee\ASSETS . 'forms.css', -200);
+$document->css->add(Icybee\ASSETS . 'actionbar.css', -200);
+$document->css->add(Icybee\ASSETS . 'alerts.css', -200);
 
 /*
-$document->css->add(Brickrouge\ASSETS . 'brickrouge.css', -250);
 $document->css->add(Icybee\ASSETS . 'css/base.css', -200);
 $document->css->add(Icybee\ASSETS . 'css/input.css', -190);
-$document->css->add(Icybee\ASSETS . 'css/holo.css', 10);
 */
 $document->js->add(Icybee\ASSETS . 'js/mootools-core.js', -200);
 $document->js->add(Icybee\ASSETS . 'js/mootools-more.js', -200);
@@ -34,6 +36,8 @@ $document->js->add(Brickrouge\ASSETS . 'brickrouge.js', -190);
 $document->js->add(Icybee\ASSETS . 'js/widget.js', -185);
 $document->js->add(Icybee\ASSETS . 'js/spinner.js', -180);
 $document->js->add(Icybee\ASSETS . 'js/publisher.js', -180);
+
+$document->js->add(Icybee\ASSETS . 'actionbar.js');
 
 echo $document;
 
