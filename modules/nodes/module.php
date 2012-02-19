@@ -385,6 +385,19 @@ EOT;
 
 			+ $common;
 
+
+			# config'
+
+			$routes["/admin/$module_id/config"] = array
+			(
+				'pattern' => "/admin/$module_id/config",
+				'title' => '.config',
+				'block' => 'config',
+				'permission' => self::PERMISSION_ADMINISTER,
+			)
+
+			+ $common;
+
 			# create
 
 			$routes["/admin/$module_id/new"] = array
@@ -416,18 +429,6 @@ EOT;
 				'title' => '.delete',
 				'block' => 'delete',
 				'visibility' => 'auto'
-			)
-
-			+ $common;
-
-			# config'
-
-			$routes["/admin/$module_id/config"] = array
-			(
-				'pattern' => "/admin/$module_id/config",
-				'title' => '.config',
-				'block' => 'config',
-				'permission' => self::PERMISSION_ADMINISTER,
 			)
 
 			+ $common;

@@ -40,7 +40,14 @@ class ManageBlock extends Form
 		(
 			$attributes + array
 			(
-				self::ACTIONS => new Button('Disable selected module', array('class' => 'btn-primary btn-danger')),
+				self::ACTIONS => new Button
+				(
+					'Disable selected module', array
+					(
+						'class' => 'btn-primary btn-danger',
+						'type' => 'submit'
+					)
+				),
 
 				'class' => 'form-primary block--modules-manage'
 			)

@@ -201,7 +201,8 @@ EOT;
 				(
 					'Activate the selected modules', array
 					(
-						'class' => 'btn-primary btn-danger'
+						'class' => 'btn-primary btn-danger',
+						'type' => 'submit'
 					)
 				),
 

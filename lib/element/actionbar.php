@@ -153,7 +153,7 @@ class ActionbarNav extends Element
 
 		$skip = array
 		(
-			"/admin/$module/config" => true,
+// 			"/admin/$module/config" => true,
 			"/admin/$module/manage" => true
 		);
 

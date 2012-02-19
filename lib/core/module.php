@@ -96,8 +96,6 @@ class Module extends \ICanBoogie\Module
 
 		if ($class_name)
 		{
-			\ICanBoogie\log_info("Block instanciated from <q>$class_name</q>.");
-
 			array_shift($args);
 
 			$block = new $class_name($this, array(), $args);
@@ -111,30 +109,7 @@ class Module extends \ICanBoogie\Module
 			return $rendered_block;
 		}
 
-		switch ($name)
-		{
-			case 'manage':
-			{
-				$permission = $core->user->has_permission(Module::PERMISSION_ACCESS, $this);
-
-				if (!$permission)
-				{
-					#
-					# The user don't have the permission to acces this block, we redirect him to
-					# the dashboard.
-					#
-
-					throw new Exception\HTTP("You don't have permission to access the block %name.", array('%name' => $name), 403);
-				}
-			}
-			break;
-
-			case 'edit':
-			{
-				return $this->handle_block_edit(isset($args[1]) ? $args[1] : null);
-			}
-			break;
-		}
+		\ICanBoogie\log_info("Block class not found for <q>$name</q> falling to callbacks.");
 
 		return call_user_func_array((PHP_MAJOR_VERSION > 5 || (PHP_MAJOR_VERSION == 5 && PHP_MINOR_VERSION > 2)) ? 'parent::' . __FUNCTION__ : array($this, 'parent::' . __FUNCTION__), $args);
 	}
