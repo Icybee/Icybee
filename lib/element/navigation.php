@@ -91,7 +91,9 @@ class Navigation extends \Brickrouge\Element
 			unset($links['features']);
 		}
 
-		$matching_route = Route::find($_SERVER['REQUEST_URI'], 'any', 'admin'); // FIXME-20120201: use the primary request object
+		$path = Route::decontextualize($core->request->path);
+
+		$matching_route = Route::find($path, 'any', 'admin'); // FIXME-20120201: use the primary request object
 		$selected = $matching_route ? $descriptors[$matching_route[0]['module']][Module::T_CATEGORY] : 'dashboard';
 
 		$rc .= '<ul class="nav">';
