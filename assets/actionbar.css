@@ -67,6 +67,10 @@
 	color: white;
 }
 
+.actionbar-link + .actionbar-link {
+	margin-left: 2px;
+}
+
 .actionbar .btn-toolbar {
 	margin: 0 0 0 16px;
 }
