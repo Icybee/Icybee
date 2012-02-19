@@ -23,7 +23,7 @@ class ManageBlock extends \ICanBoogie\Modules\Files\ManageBlock
 			(
 				self::T_COLUMNS_ORDER => array
 				(
-					'title', 'uid', 'is_online', 'surface', 'size', 'modified'
+					'title', 'is_online', 'uid', 'surface', 'size', 'modified'
 				)
 			)
 		);

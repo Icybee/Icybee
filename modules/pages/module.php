@@ -31,7 +31,7 @@ class Module extends \ICanBoogie\Modules\Nodes\Module
 			'list' => array
 			(
 				'title' => 'Sitemap',
-				'class' => 'Icybee\Modules\Pages\ListView',
+				'class' => __NAMESPACE__ . '\ListView',
 				'assets' => array(),
 				'renders' => \Icybee\Views\View::RENDERS_MANY
 			)

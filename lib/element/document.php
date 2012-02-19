@@ -96,11 +96,9 @@ class Document extends \Brickrouge\Document
 		$user = $core->user;
 
 		$contents = $this->getBlock('contents');
-
-		$shortcuts = $this->get_block_shortcuts();
-		$navigation = $this->getNavigation();
-
 		$actionbar = new \Icybee\Admin\Element\Actionbar;
+		$navigation = $this->getNavigation();
+		$shortcuts = $this->get_block_shortcuts();
 
 		$alert_changed_site = null;
 

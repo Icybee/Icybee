@@ -120,7 +120,7 @@ if (preg_match('#^/admin/#', $uri) || preg_match('#^/admin$#', $uri))
 {
 	if (!$site->siteid)
 	{
-		throw new Exception('No site id');
+// 		throw new \Exception('No site id');
 		/*
 		$site = \ICanBoogie\Modules\Sites\Hooks::find_by_request(array('REQUEST_PATH' => '/', 'HTTP_HOST' => $_SERVER['HTTP_HOST']));
 

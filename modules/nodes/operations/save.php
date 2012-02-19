@@ -76,9 +76,9 @@ class SaveOperation extends \Icybee\SaveOperation
 
 		wd_log_done
 		(
-			$rc['mode'] == 'update' ? '%title has been updated in %module.' : '%title has been created in %module.', array
+			$rc['mode'] == 'update' ? '%title has been updated in :module.' : '%title has been created in %module.', array
 			(
-				'%title' => wd_shorten($record->title), '%module' => $this->module->title
+				'title' => wd_shorten($record->title), 'module' => $this->module->title
 			),
 
 			'save'

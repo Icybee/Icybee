@@ -13,7 +13,7 @@ namespace ICanBoogie\Modules\Contents;
 
 use ICanBoogie\ActiveRecord;
 
-class DeleteBlock extends \Icybee\DeleteBlock
+class DeleteBlock extends \ICanBoogie\Modules\Nodes\DeleteBlock
 {
 	/**
 	 * Returns the record excerpt as preview.

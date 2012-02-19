@@ -78,7 +78,7 @@ class Module extends \ICanBoogie\Module
 			return $rendered_block;
 		}
 
-		\ICanBoogie\log_info("Block class not found for <q>$name</q> falling to callbacks.");
+// 		\ICanBoogie\log_info("Block class not found for <q>$name</q> falling to callbacks.");
 
 		return call_user_func_array((PHP_MAJOR_VERSION > 5 || (PHP_MAJOR_VERSION == 5 && PHP_MINOR_VERSION > 2)) ? 'parent::' . __FUNCTION__ : array($this, 'parent::' . __FUNCTION__), $args);
 	}
@@ -100,55 +100,6 @@ class Module extends \ICanBoogie\Module
 			$module = $module->parent;
 		}
 	}
-
-	/*
-	protected function block_delete($key)
-	{
-		try
-		{
-			$record = $this->model[$key];
-		}
-		catch (\Exception $e)
-		{
-			return '<div class="group--delete">' . t('Unknown record id: %key', array('%key' => $key)) . '</div>';
-		}
-
-		$form = (string) new Form
-		(
-			array
-			(
-				Form::HIDDENS => array
-				(
-					Operation::DESTINATION => $this,
-					Operation::NAME => self::OPERATION_DELETE,
-					Operation::KEY => $key,
-
-					'#location' => Route::contextualize("/admin/{$this->id}")
-				),
-
-				Element::CHILDREN => array
-				(
-					new Button
-					(
-						'Delete', array
-						(
-							'class' => 'btn-danger',
-							'type' => 'submit'
-						)
-					)
-				)
-			)
-		);
-
-		return <<<EOT
-<div class="block--delete">
-<h3>Delete a record</h3>
-<p>Are you sure you want to delete this record?</p>
-$form
-</div>
-EOT;
-	}
-	*/
 
 	private function create_activerecord_lock_name($key)
 	{

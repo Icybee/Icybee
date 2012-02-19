@@ -910,15 +910,15 @@ body.page-slug-authenticate h1 {
 	margin: 0;
 }
 
-.block-alert p + p {
+.block-alert p + * {
 	margin-top: 1.33em;
 }
 
 .block-alert .form-actions {
-	background: transparent;
+	background-color: transparent;
 	border-top: 0;
 	margin: 0;
-	padding: 16px 0 0 0;
+	padding: 16px 0 0 0 !important;
 }
 
 .block-alert .controls-label { /* fix missing bold on control label */
@@ -942,4 +942,25 @@ body.page-slug-authenticate h1 {
 
 .block--delete .preview:empty {
 	display: none;
+}
+
+
+
+
+
+body.exception {
+	background: white;
+}
+
+body.exception h1 {
+	margin-top: 0;
+}
+
+body.exception footer {
+	color: #999;
+	text-align: right;
+}
+
+body.exception footer a:not(:hover) {
+	color: inherit;
 }

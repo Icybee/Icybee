@@ -1,5 +1,7 @@
 <?php
 
+namespace ICanBoogie\Modules\Pages;
+
 return array
 (
 	'autoload' => array
@@ -15,6 +17,7 @@ return array
 		'site_pages_navigation_WdMarkup' => $path . 'markups.php',
 		'site_pages_sitemap_WdMarkup' => $path . 'markups.php',
 
-		'ICanBoogie\Modules\Pages\CacheManager' => $path . 'lib/cache-manager.php'
+		__NAMESPACE__ . '\CacheManager' => $path . 'lib/cache-manager.php',
+		__NAMESPACE__ . '\ListView' => $path . 'lib/views/list.php'
 	)
 );

@@ -22,13 +22,14 @@ class PopNode extends \Brickrouge\Widget
 	{
 		parent::__construct
 		(
-			'div', $attributes + array
+			'a', $attributes + array
 			(
 				self::T_CONSTRUCTOR => 'nodes',
 				self::T_PLACEHOLDER => 'Sélectionner un enregistrement',
 
 				'class' => 'spinner',
 				'data-adjust' => 'adjust-node',
+				'href' => 'javascript:void()',
 				'type' => 'button'
 			)
 		);

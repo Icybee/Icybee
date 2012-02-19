@@ -153,6 +153,8 @@ class EditBlock extends Form
 		{
 			$locked = $this->module->lock_entry($key, $lock);
 
+			$this->locked = $locked;
+
 			if (!$locked)
 			{
 				$luser = $core->models['users'][$lock['uid']];
@@ -165,9 +167,11 @@ class EditBlock extends Form
 <div class="block-alert">
 <h2>Édition impossible</h2>
 <p>Impossible d'éditer l'enregistrement parce qu'il est en cours d'édition par <em>$luser->name</em> <span class="small">($luser->username)</span>.</p>
-<form method="get">
+<form method="get" action="">
 <input type="hidden" name="retry" value="1" />
+<div class="form-actions">
 <button class="btn-success">Réessayer</button> <span class="small light">$message</span>
+</div>
 </form>
 </div>
 EOT;
@@ -427,32 +431,37 @@ EOT;
 
 				if ($record instanceof \ICanBoogie\ActiveRecord\Node && $record->url[0] != '#')
 				{
-					$event->buttons[] = '<a href="' . $record->url . '" class="actionbar-link">' . t('label.display') . '</a>';
+					$event->buttons[] = '<a href="' . $record->url . '" class="actionbar-link">' . t('View', array(), array('scope' => 'label')) . '</a>';
 				}
 
-				if ($key && $core->user->has_permission(Module::PERMISSION_MANAGE, $module))
-				{
-					$event->buttons[] = new A
-					(
-						'Delete', Route::contextualize('/admin/' . $module . '/' . $key . '/delete'), array
-						(
-							'class' => 'btn btn-danger'
-						)
-					);
-				}
+				$locked = $module->lock_entry($key, $lock);
 
-				if (isset($block[Form::ACTIONS][SaveOperation::MODE]))
+				if ($locked)
 				{
-					$event->buttons[] = new SplitButton
-					(
-						$save_mode_options[$mode], array
+					if ($key && $core->user->has_permission(Module::PERMISSION_MANAGE, $module) && $core->user->has_ownership($module, $record))
+					{
+						$event->buttons[] = new A
 						(
-							Element::OPTIONS => $save_mode_options,
+							'Delete', Route::contextualize('/admin/' . $module . '/' . $key . '/delete'), array
+							(
+								'class' => 'btn btn-danger'
+							)
+						);
+					}
 
-							'value' => $mode,
-							'class' => 'btn-primary record-save-mode'
-						)
-					);
+					if (isset($block[Form::ACTIONS][SaveOperation::MODE]))
+					{
+						$event->buttons[] = new SplitButton
+						(
+							$save_mode_options[$mode], array
+							(
+								Element::OPTIONS => $save_mode_options,
+
+								'value' => $mode,
+								'class' => 'btn-primary record-save-mode'
+							)
+						);
+					}
 				}
 			}
 		);

@@ -60,11 +60,6 @@ class Modules extends \ICanBoogie\Modules
 
 		$path = $descriptor[Module::T_PATH];
 
-		if (file_exists($path . 'manager.php'))
-		{
-			$descriptor['__autoload'][$descriptor[Module::T_NAMESPACE] . '\Manager'] = $path . 'manager.php';
-		}
-
 		$p = $path . 'lib' . DIRECTORY_SEPARATOR . 'blocks';
 
 		if (file_exists($p))

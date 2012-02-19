@@ -25,7 +25,7 @@ class ManageBlock extends \ICanBoogie\Modules\Nodes\ManageBlock
 		(
 			$module, $attributes + array
 			(
-				self::T_COLUMNS_ORDER => array('title', 'uid', 'mime', 'is_online', 'size', 'modified')
+				self::T_COLUMNS_ORDER => array('title', 'is_online', 'uid', 'mime', 'size', 'modified')
 			)
 		);
 	}

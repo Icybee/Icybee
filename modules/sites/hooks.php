@@ -13,6 +13,7 @@ namespace ICanBoogie\Modules\Sites;
 
 use ICanBoogie\ActiveRecord;
 use ICanBoogie\ActiveRecord\Site;
+use ICanBoogie\Exception;
 use ICanBoogie\HTTP\Request;
 
 class Hooks
@@ -32,6 +33,10 @@ class Hooks
 				$sites = $core->models['sites']->all;
 
 				$core->vars['sites'] = $sites;
+			}
+			catch (Exception\DatabaseConnection $e)
+			{
+				throw $e;
 			}
 			catch (\Exception $e)
 			{

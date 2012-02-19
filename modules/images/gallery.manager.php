@@ -14,7 +14,7 @@ namespace ICanBoogie\Modules\Images;
 use ICanBoogie\Operation;
 use Brickrouge\Element;
 
-class GalleryManager extends Manager
+class GalleryManager extends ManageBlock
 {
 	public function __construct($module, array $tags=array())
 	{

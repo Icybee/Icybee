@@ -76,8 +76,8 @@ class Module extends \ICanBoogie\Modules\Files\Module
 		(
 			$this, array
 			(
-				Manager::T_COLUMNS_ORDER => array('title', 'surface', 'size', 'modified'),
-				Manager::T_ORDER_BY => 'title'
+				ManageBlock::T_COLUMNS_ORDER => array('title', 'surface', 'size', 'modified'),
+				ManageBlock::T_ORDER_BY => 'title'
 			)
 		);
 	}

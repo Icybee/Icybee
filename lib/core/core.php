@@ -129,10 +129,11 @@ class Core extends ICanBoogie\Core
 			$css = array
 			(
 				Document::resolve_url(\Brickrouge\ASSETS . 'brickrouge.css'),
-				Document::resolve_url(ASSETS . 'css/base.css')
+				Document::resolve_url(ASSETS . 'admin.css'),
+				Document::resolve_url(ASSETS . 'alerts.css')
 			);
 
-			$formated_exception = require(__DIR__ . '/exception.template');
+			$formated_exception = require(__DIR__ . '/exception.tpl.php');
 		}
 
 		exit($formated_exception);
