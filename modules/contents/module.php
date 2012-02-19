@@ -50,18 +50,4 @@ class Module extends \ICanBoogie\Modules\Nodes\Module
 			)
 		);
 	}
-
-	protected function block_manage()
-	{
-		return new Manager
-		(
-			$this, array
-			(
-				Manager::T_COLUMNS_ORDER => array
-				(
-					'title', 'is_home_excluded', 'is_online', 'uid', 'date', 'modified'
-				)
-			)
-		);
-	}
 }

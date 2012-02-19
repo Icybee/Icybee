@@ -14,15 +14,27 @@ namespace ICanBoogie\Modules\Files;
 use ICanBoogie\ActiveRecord\File;
 use ICanBoogie\ActiveRecord\Query;
 
-class Manager extends \ICanBoogie\Modules\Nodes\Manager
+/**
+ * A block to manage files.
+ */
+class ManageBlock extends \ICanBoogie\Modules\Nodes\ManageBlock
 {
-	public function __construct($module, array $tags=array())
+	public function __construct(Module $module, array $attributes)
 	{
-		global $core;
+		parent::__construct
+		(
+			$module, $attributes + array
+			(
+				self::T_COLUMNS_ORDER => array('title', 'uid', 'mime', 'is_online', 'size', 'modified')
+			)
+		);
+	}
 
-		parent::__construct($module, $tags);
+	protected static function add_assets(\Brickrouge\Document $document)
+	{
+		parent::add_assets($document);
 
-		$core->document->css->add('public/manage.css');
+		$document->css->add('../../public/manage.css');
 	}
 
 	protected function columns()

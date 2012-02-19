@@ -61,41 +61,6 @@ Aucune autre notification ne vous sera envoyée.
 	);
 	*/
 
-	protected function block_manage()
-	{
-		return new Manager
-		(
-			$this, array
-			(
-				Manager::T_COLUMNS_ORDER => array
-				(
-					'comment', 'status', 'author', /*'score',*/ 'nid', 'created'
-				),
-
-				Manager::T_ORDER_BY => array('created', 'desc'),
-// 				Manager::T_LIST_SPAM => false
-			)
-		);
-	}
-
-	protected function block_manage_spam()
-	{
-		return new Manager
-		(
-			$this, array
-			(
-				Manager::T_COLUMNS_ORDER => array
-				(
-					'created', 'author', 'score', 'nid'
-				),
-
-				Manager::T_ORDER_BY => array('created', 'desc'),
-
-				Manager::T_LIST_SPAM => true
-			)
-		);
-	}
-
 	protected static $spam_score_keywords;
 	protected static $forbidden_urls;
 

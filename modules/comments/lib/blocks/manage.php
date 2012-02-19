@@ -17,15 +17,21 @@ use ICanBoogie\ActiveRecord\Query;
 use Brickrouge\Document;
 use Brickrouge\Element;
 
-class Manager extends \WdManager
+class ManageBlock extends \WdManager
 {
-	public function __construct($module, array $tags=array())
+	public function __construct($module, array $attributes=array())
 	{
 		parent::__construct
 		(
-			$module, $tags + array
+			$module, $attributes + array
 			(
-				self::T_KEY => 'commentid'
+				self::T_KEY => 'commentid',
+				self::T_COLUMNS_ORDER => array
+				(
+					'comment', 'status', 'author', /*'score',*/ 'nid', 'created'
+				),
+
+				self::T_ORDER_BY => array('created', 'desc'),
 			)
 		);
 	}
@@ -34,7 +40,7 @@ class Manager extends \WdManager
 	{
 		parent::add_assets($document);
 
-		$document->css->add('public/admin.css');
+		$document->css->add('../../public/admin.css');
 	}
 
 	protected function columns()

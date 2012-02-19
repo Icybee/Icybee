@@ -98,22 +98,6 @@ class Module extends \ICanBoogie\Modules\Nodes\Module
 		);
 	}
 
-	protected function block_manage()
-	{
-		return new Manager
-		(
-			$this, array
-			(
-				Manager::T_COLUMNS_ORDER => array
-				(
-					'title', 'url', 'is_navigation_excluded', 'is_online', 'uid', 'modified'
-				),
-
-				Manager::T_ORDER_BY => null
-			)
-		);
-	}
-
 	public function get_contents_section($nid, $template=null)
 	{
 		list($template, $template_description, $is_inherited) = $this->resolve_template($nid, $template);

@@ -13,14 +13,5 @@ namespace ICanBoogie\Modules\Sites;
 
 class Module extends \Icybee\Module
 {
-	protected function block_manage()
-	{
-		return new Manager
-		(
-			$this, array
-			(
-				Manager::T_COLUMNS_ORDER => array('title', 'url', 'language', 'timezone', 'status')
-			)
-		);
-	}
+
 }

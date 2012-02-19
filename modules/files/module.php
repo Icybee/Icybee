@@ -208,15 +208,4 @@ class Module extends \ICanBoogie\Modules\Nodes\Module
 
 		closedir($dh);
 	}
-
-	protected function block_manage()
-	{
-		return new Manager
-		(
-			$this, array
-			(
-				Manager::T_COLUMNS_ORDER => array('title', 'uid', 'mime', 'is_online', 'size', 'modified')
-			)
-		);
-	}
 }

@@ -70,20 +70,6 @@ class Module extends \ICanBoogie\Modules\Files\Module
 	}
 	*/
 
-	protected function block_manage()
-	{
-		return new Manager
-		(
-			$this, array
-			(
-				Manager::T_COLUMNS_ORDER => array
-				(
-					'title', 'uid', 'is_online', 'surface', 'size', 'modified'
-				)
-			)
-		);
-	}
-
 	protected function block_gallery()
 	{
 		return new GalleryManager

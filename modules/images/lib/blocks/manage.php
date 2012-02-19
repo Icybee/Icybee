@@ -13,14 +13,30 @@ namespace ICanBoogie\Modules\Images;
 
 use ICanBoogie\ActiveRecord\Query;
 
-class Manager extends \ICanBoogie\Modules\Files\Manager
+class ManageBlock extends \ICanBoogie\Modules\Files\ManageBlock
 {
+	public function __construct(Module $module, array $attributes)
+	{
+		parent::__construct
+		(
+			$module, $attributes + array
+			(
+				self::T_COLUMNS_ORDER => array
+				(
+					'title', 'uid', 'is_online', 'surface', 'size', 'modified'
+				)
+			)
+		);
+	}
+
 	protected static function add_assets(\Brickrouge\Document $document)
 	{
 		parent::add_assets($document);
 
-		$document->js->add('public/slimbox.js')->add('public/manage.js');
-		$document->css->add('public/slimbox.css')->add('public/manage.css');
+		$document->js->add('../../public/slimbox.js');
+		$document->css->add('../../public/slimbox.css');
+		$document->js->add('manage.js');
+		$document->css->add('manage.css');
 	}
 
 	protected function columns()

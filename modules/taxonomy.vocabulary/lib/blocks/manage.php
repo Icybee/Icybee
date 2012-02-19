@@ -13,13 +13,13 @@ namespace ICanBoogie\Modules\Taxonomy\Vocabulary;
 
 use ICanBoogie\ActiveRecord;
 
-class Manager extends \WdManager
+class ManageBlock extends \WdManager
 {
-	public function __construct($module, array $tags=array())
+	public function __construct($module, array $attributes=array())
 	{
 		parent::__construct
 		(
-			$module, $tags += array
+			$module, $attributes += array
 			(
 				self::T_KEY => 'vid'
 			)

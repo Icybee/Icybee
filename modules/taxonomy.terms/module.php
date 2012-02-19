@@ -13,8 +13,5 @@ namespace ICanBoogie\Modules\Taxonomy\Terms;
 
 class Module extends \Icybee\Module
 {
-	protected function block_manage()
-	{
-		return new Manager($this);
-	}
+
 }

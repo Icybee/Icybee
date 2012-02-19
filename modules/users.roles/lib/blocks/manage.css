@@ -26,32 +26,21 @@ table.manage tr + tr td
 	border-top: 1px solid #EEE;
 }
 
-table.manage tr.admin
+.block--roles-manage tr.admin
 {
 	background-color: white;
 }
 
-table.manage tr.module td:first-child
+.block--roles-manage tr.admin td:first-child
 {
-	padding-left: 1ex;
+	padding-left: 32px;
 }
 
-table.manage tr.admin td:first-child
+.block--roles-manage tr.perm td:first-child
 {
-	padding-left: 3ex;
+	padding-left: 48px;
 }
 
-table.manage tr.perm td:first-child
-{
-	padding-left: 6ex;
-}
-
-table.manage tfoot td
-{
-	border-bottom: 1px solid #CCC;
-}
-
-table.manage + div.group
-{
+.block--roles-manage .form-actions {
 	text-align: center;
 }

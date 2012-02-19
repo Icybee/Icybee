@@ -15,14 +15,19 @@ use ICanBoogie\ActiveRecord;
 use ICanBoogie\ActiveRecord\Query;
 use Brickrouge\Element;
 
-class Manager extends \ICanBoogie\Modules\Nodes\Manager
+class ManageBlock extends \ICanBoogie\Modules\Nodes\ManageBlock
 {
-	public function __construct($module, array $tags=array())
+	public function __construct(Module $module, array $attributes=array())
 	{
 		parent::__construct
 		(
-			$module, $tags + array
+			$module, $attributes + array
 			(
+				self::T_COLUMNS_ORDER => array
+				(
+					'title', 'is_home_excluded', 'is_online', 'uid', 'date', 'modified'
+				),
+
 				self::T_ORDER_BY => array('date', 'desc')
 			)
 		);
@@ -32,8 +37,8 @@ class Manager extends \ICanBoogie\Modules\Nodes\Manager
 	{
 		parent::add_assets($document);
 
-		$document->css->add('public/manage.css');
-		$document->js->add('public/manage.js');
+		$document->css->add('manage.css');
+		$document->js->add('manage.js');
 	}
 
 	protected function columns()

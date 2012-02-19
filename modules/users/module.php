@@ -176,15 +176,4 @@ EOT;
 
 		return $module->getBlock('edit', $user->uid);
 	}
-
-	protected function block_manage()
-	{
-		return new Manager
-		(
-			$this, array
-			(
-				Manager::T_COLUMNS_ORDER => array(User::USERNAME, User::EMAIL, 'role', User::IS_ACTIVATED, User::CREATED, User::LASTCONNECTION)
-			)
-		);
-	}
 }

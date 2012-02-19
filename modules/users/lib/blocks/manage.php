@@ -15,7 +15,7 @@ use ICanBoogie\ActiveRecord\User;
 
 use Brickrouge\Element;
 
-class Manager extends \WdManager
+class ManageBlock extends \WdManager
 {
 	public function __construct($module, array $tags=array())
 	{
@@ -23,7 +23,8 @@ class Manager extends \WdManager
 		(
 			$module, $tags + array
 			(
-				self::T_KEY => User::UID
+				self::T_KEY => User::UID,
+				self::T_COLUMNS_ORDER => array(User::USERNAME, User::EMAIL, 'role', User::IS_ACTIVATED, User::CREATED, User::LASTCONNECTION)
 			)
 		);
 	}
@@ -32,8 +33,8 @@ class Manager extends \WdManager
 	{
 		parent::add_assets($document);
 
-		$document->css->add('assets/admin.css');
-		$document->js->add('assets/manager.js');
+		$document->css->add('../../assets/admin.css');
+		$document->js->add('manage.js');
 	}
 
 	protected function columns()

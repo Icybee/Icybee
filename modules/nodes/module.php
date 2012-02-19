@@ -72,20 +72,6 @@ class Module extends \Icybee\Module
 		);
 	}
 
-	protected function block_manage()
-	{
-		return new Manager\Nodes
-		(
-			$this, array
-			(
-				Manager::T_COLUMNS_ORDER => array
-				(
-					'title', 'uid', 'constructor', 'created', 'modified', 'is_online'
-				)
-			)
-		);
-	}
-
 	/*
 	protected function block_adjust(array $params)
 	{

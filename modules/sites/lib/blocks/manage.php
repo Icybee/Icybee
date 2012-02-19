@@ -15,7 +15,7 @@ use Brickrouge\DropdownMenu;
 
 use ICanBoogie\ActiveRecord\Site;
 
-class Manager extends \WdManager
+class ManageBlock extends \WdManager
 {
 	public function __construct($module, array $tags=array())
 	{
@@ -26,12 +26,18 @@ class Manager extends \WdManager
 			$module, $tags + array
 			(
 				self::T_KEY => 'siteid',
-				self::T_ORDER_BY => 'title'
+				self::T_ORDER_BY => 'title',
+				self::T_COLUMNS_ORDER => array('title', 'url', 'language', 'timezone', 'status')
 			)
 		);
+	}
 
-		$core->document->css->add('public/admin.css');
-		$core->document->js->add('public/admin.js');
+	public static function add_assets(\Brickrouge\Document $document)
+	{
+		parent::add_assets($document);
+
+		$document->css->add('../../public/admin.css');
+		$document->js->add('../../public/admin.js');
 	}
 
 	protected function columns()

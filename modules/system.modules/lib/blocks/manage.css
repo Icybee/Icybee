@@ -5,8 +5,7 @@ table.manage tr + tr td
 
 
 
-table.manage tfoot
-{
+.form-primary .form-actions {
 	text-align: center;
 }
 
@@ -52,24 +51,8 @@ table.manage td.not-applicable
 	font-size: .8em;
 }
 
-table.manage div.checkbox.disabled
-{
-	
-	cursor: auto;
-}
-
-table.manage label.checkbox-wrapper.disabled
-{
-	visibility: hidden;
-}
-
-table.manage tr.module
+.form-primary .row--category
 {
 	background: #F6F6F6;
 	font-weight: bold;
-}
-
-table.manage div.jobs
-{
-	visibility: visible;
 }

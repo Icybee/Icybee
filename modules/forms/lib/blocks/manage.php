@@ -11,8 +11,19 @@
 
 namespace ICanBoogie\Modules\Forms;
 
-class Manager extends \ICanBoogie\Modules\Nodes\Manager
+class ManageBlock extends \ICanBoogie\Modules\Nodes\ManageBlock
 {
+	public function __construct(Module $module, array $attributes=array())
+	{
+		parent::__construct
+		(
+			$module, $attributes + array
+			(
+				self::T_COLUMNS_ORDER => array('title', 'is_online', 'modelid', 'uid', 'modified')
+			)
+		);
+	}
+
 	protected function columns()
 	{
 		return parent::columns() + array

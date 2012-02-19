@@ -18,13 +18,16 @@ use Brickrouge\A;
 use Brickrouge\Document;
 use Brickrouge\Element;
 
-class Manager extends \WdManager
+/**
+ * A block to manage nodes.
+ */
+class ManageBlock extends \WdManager
 {
-	public function __construct($module, array $tags=array())
+	public function __construct(Module $module, array $attributes=array())
 	{
 		parent::__construct
 		(
-			$module, $tags + array
+			$module, $attributes + array
 			(
 				self::T_KEY => Node::NID,
 				self::T_ORDER_BY => array(Node::MODIFIED, 'desc')
@@ -36,8 +39,8 @@ class Manager extends \WdManager
 	{
 		parent::add_assets($document);
 
-		$document->css->add('public/manage.css');
-		$document->js->add('public/manage.js');
+		$document->css->add('manage.css');
+		$document->js->add('manage.js');
 	}
 
 	protected function columns()

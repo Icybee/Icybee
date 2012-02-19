@@ -20,15 +20,4 @@ class Module extends \ICanBoogie\Modules\Nodes\Module
 	const OPERATION_POST = 'post';
 	const OPERATION_POST_ID = '#post-id';
 	const OPERATION_DEFAULTS = 'defaults';
-
-	protected function block_manage()
-	{
-		return new Manager
-		(
-			$this, array
-			(
-				Manager::T_COLUMNS_ORDER => array('title', 'is_online', 'modelid', 'uid', 'modified')
-			)
-		);
-	}
 }

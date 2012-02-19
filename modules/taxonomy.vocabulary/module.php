@@ -24,11 +24,6 @@ class Module extends \Icybee\Module
 {
 	const OPERATION_ORDER = 'order';
 
-	protected function block_manage()
-	{
-		return new Manager($this);
-	}
-
 	protected function block_order($vid)
 	{
 		global $core;
