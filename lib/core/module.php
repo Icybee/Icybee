@@ -101,6 +101,7 @@ class Module extends \ICanBoogie\Module
 		}
 	}
 
+	/*
 	protected function block_delete($key)
 	{
 		try
@@ -147,6 +148,7 @@ $form
 </div>
 EOT;
 	}
+	*/
 
 	private function create_activerecord_lock_name($key)
 	{
