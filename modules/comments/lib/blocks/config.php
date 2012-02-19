@@ -26,7 +26,7 @@ class ConfigBlock extends \Icybee\ConfigBlock
 
 		$ns = $this->module->flat_id;
 
-		$keywords = $core->registry[$flat_id . '.spam.keywords'];
+		$keywords = $core->registry[$ns . '.spam.keywords'];
 		$keywords = preg_split('#[\s,]+#', $keywords, 0, PREG_SPLIT_NO_EMPTY);
 
 		sort($keywords);
