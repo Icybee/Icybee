@@ -385,18 +385,20 @@ EOT;
 
 			+ $common;
 
+			if ($module_id == 'contents' || self::is_extending($module_id, 'contents'))
+			{
+				# config'
 
-			# config'
+				$routes["/admin/$module_id/config"] = array
+				(
+					'pattern' => "/admin/$module_id/config",
+					'title' => '.config',
+					'block' => 'config',
+					'permission' => self::PERMISSION_ADMINISTER,
+				)
 
-			$routes["/admin/$module_id/config"] = array
-			(
-				'pattern' => "/admin/$module_id/config",
-				'title' => '.config',
-				'block' => 'config',
-				'permission' => self::PERMISSION_ADMINISTER,
-			)
-
-			+ $common;
+				+ $common;
+			}
 
 			# create
 
