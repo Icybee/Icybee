@@ -41,37 +41,6 @@ class Module extends \ICanBoogie\Module
 	const OPERATION_CONFIG = 'config';
 
 	/**
-	 * Fires the "alter_views" event with the module as sender:
-	 *
-	 * - &views: The views to alter.
-	 *
-	 * @param array $params
-	 *
-	 * @return Event|null
-	 */
-	protected function fire_alter_views(array $params)
-	{
-		return Event::fire('alter_views', $params, $this);
-	}
-
-	/**
-	 * Fires the "alter_views" event before the value of the `views` property is returned.
-	 *
-	 * @see ICanBoogie.Object::__get()
-	 */
-	public function __get($property)
-	{
-		$rc = parent::__get($property);
-
-		if ($property === 'views')
-		{
-			$this->fire_alter_views(array('views' => &$rc));
-		}
-
-		return $rc;
-	}
-
-	/**
 	 * Returns the views defined by the module.
 	 *
 	 * Each _key/value_ pair defines a view, _key_ is its type, _value_ its definition:
