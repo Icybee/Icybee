@@ -1,10 +1,12 @@
 <?php
 
+namespace ICanBoogie\Modules\I18n;
+
 return array
 (
 	'autoload' => array
 	(
-		'WdI18nElement' => $path . 'elements/i18n.php',
-		'WdI18nLinkElement' => $path . 'elements/i18n_link.php'
+		__NAMESPACE__ . '\NodeLanguageElement' => $path . 'lib/elements/node-language.php',
+		__NAMESPACE__ . '\NodeNativeElement' => $path . 'lib/elements/node-native.php'
 	)
 );

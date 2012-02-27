@@ -89,6 +89,7 @@ class moo_WdEditorElement extends WdEditorElement
 		$document->js->add('public/source/MooEditable.UI.MenuList.js');
 		$document->js->add('public/source/MooEditable.Extras.js');
 		$document->js->add('public/source/MooEditable.Paste.js');
+		$document->js->add('public/source/MooEditable.CleanPaste.js');
 		$document->js->add('public/source/MooEditable.Outline.js');
 
 		$document->js->add('public/auto.js');

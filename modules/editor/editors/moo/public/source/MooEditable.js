@@ -57,7 +57,7 @@ this.MooEditable = new Class({
 		baseCSS: 'html{ height: 100%; cursor: text; } body{ font-family: sans-serif; }',
 		extraCSS: '',
 		externalCSS: '',
-		html: '<!DOCTYPE html><html id="{HTMLID}"><head><meta charset="UTF-8">{BASEHREF}<style>{BASECSS} {EXTRACSS}</style>{EXTERNALCSS}</head><body></body></html>',
+		html: '<!DOCTYPE html><html id="{HTMLID}" lang="{LANGUAGE}"><head><meta charset="UTF-8">{BASEHREF}<style>{BASECSS} {EXTRACSS}</style>{EXTERNALCSS}</head><body></body></html>',
 		rootElement: 'p',
 		baseURL: '',
 		dimensions: null,
@@ -65,6 +65,12 @@ this.MooEditable = new Class({
 	},
 
 	initialize: function(el, options){
+
+		// check for content editable and design mode support
+		if (!("contentEditable" in document.body) && !("designMode" in document)){
+			return;
+		}
+
 		this.setOptions(options);
 		this.textarea = document.id(el);
 		this.textarea.store('MooEditable', this);
@@ -128,6 +134,9 @@ this.MooEditable = new Class({
 			}
 		});
 
+		// Build resizer
+		this.resizer = new Element('div.mooeditable-resizer')
+
 		this.toolbar = new MooEditable.UI.Toolbar({
 			onItemAction: function(){
 				var args = Array.from(arguments);
@@ -171,6 +180,7 @@ this.MooEditable = new Class({
 		this.textarea.setStyle('display', 'none');
 
 		this.iframe.setStyle('display', '').inject(this.textarea, 'before');
+		this.resizer.inject(this.textarea, 'after');
 
 		Object.each(this.dialogs, function(action, name){
 			Object.each(action, function(dialog){
@@ -230,7 +240,8 @@ this.MooEditable = new Class({
 			EXTERNALCSS: externalCSS,
 			//BASEHREF: (this.options.baseURL) ? '<base href="' + this.options.baseURL + '" />': '',
 			BASEHREF: '<base href="' + this.baseHREF + '" />',
-			HTMLID: this.options.htmlId
+			HTMLID: this.options.htmlId,
+			LANGUAGE: this.textarea.get('lang') || document.html.get('lang')
 		});
 		this.doc.open();
 		this.doc.write(docHTML);
@@ -399,10 +410,12 @@ this.MooEditable = new Class({
 			return;
 		}
 
+		/*@olvlvl: disabled, is it usefull to check the text on mousenter ?
 		if (this.oldContent && this.getContent() != this.oldContent){
 			this.focus();
 			this.fireEvent('editorPaste', [e, this]);
 		}
+		*/
 
 		this.fireEvent('editorMouseEnter', [e, this]);
 	},
@@ -646,7 +659,26 @@ this.MooEditable = new Class({
 		});
 
 		// because webkit trashes img src relative URL
-		content = content.replace(/src="\//gi, 'src="' + this.baseHREF + '/');
+//		content = content.replace(/src="\//gi, 'src="' + this.baseHREF + '/');
+
+		  content = content.replace(/src="([^"]+)/gi, function(match, src) {
+
+			  if (!src.match(/^http:\/\//))
+			  {
+				  if (src[0] != '/')
+				  {
+					  src = '/' + src
+				  }
+
+				  src = this.baseHREF + src
+
+//				  console.log('restore:', src)
+			  }
+
+//			  console.log(src)
+
+			  return 'src="' + src
+		  }.bind(this))
 
 		this.doc.body.set('html', this.ensureRootElement(content));
 		return this;
@@ -654,8 +686,8 @@ this.MooEditable = new Class({
 
 	saveContent: function(){
 		var value;
-		value = (this.mode == 'iframe') ? this.getContent() : this.textearea.get('value');
-		value = value.replace(new RegExp('="' + this.baseHREF, 'gi'), '="');
+		value = (this.mode == 'iframe') ? this.getContent() : this.textearea.innerHTML;
+		value = value.replace(new RegExp('="' + this.baseHREF, 'gi'), '="'); //@olvlvl: transform absolute URLs into relative ones
 		this.textarea.set('value', value);
 		return this;
 	},
@@ -760,6 +792,21 @@ this.MooEditable = new Class({
 	},
 
 	cleanup: function(source){
+
+		source = this.cleanHtml(source)
+
+//		console.log('shoudl cleanup:', source)
+
+		return source
+
+
+
+
+
+
+
+
+
 		if (!this.options.cleanup) return source.trim();
 
 		do {
@@ -1462,6 +1509,25 @@ MooEditable.Actions = {
 		states: {
 			tags: ['u'],
 			css: {'text-decoration': 'underline'}
+		},
+		events: {
+			beforeToggleView: function(){
+				if(Browser.firefox || Browser.ie){
+					var value = this.textarea.get('value');
+					var newValue = value.replace(/<span style="text-decoration: underline;"([^>]*)>/gi, '<u$1>').replace(/<\/span>/gi, '</u>');
+					if (value != newValue) this.textarea.set('value', newValue);
+				}
+			},
+			attach: function(){
+				if(Browser.firefox || Browser.ie){
+					var value = this.textarea.get('value');
+					var newValue = value.replace(/<span style="text-decoration: underline;"([^>]*)>/gi, '<u$1>').replace(/<\/span>/gi, '</u>');
+					if (value != newValue){
+						this.textarea.set('value', newValue);
+						this.setContent(newValue);
+					}
+				}
+			}
 		}
 	},
 
@@ -1603,5 +1669,65 @@ Element.implement({
 	}
 
 });
+
+var resizingTarget = null
+	, resizingTargetH = null
+	, resizingStartY = null
+
+function resizerOnMouseMove(ev) {
+
+	var h = Math.max(resizingTargetH + ev.client.y - resizingStartY, 100)
+	, mirror
+
+	if (resizingTarget.tagName == 'IFRAME')
+	{
+		mirror = resizingTarget.getNext()
+	}
+	else
+	{
+		mirror = resizingTarget.getPrevious()
+	}
+
+	resizingTarget.setStyle('height', h)
+	mirror.setStyle('height', h)
+}
+
+function resizerDone(ev) {
+
+	window.removeEvent('mousemove', resizerOnMouseMove)
+	window.removeEvent('mouseup', resizerDone)
+
+	if (resizingTarget.tagName == 'IFRAME')
+	{
+		resizingTarget.setStyle('visibility', '')
+	}
+
+	resizingTarget = null
+}
+
+window.addEvent('mousedown:relay(.mooeditable-resizer)', function(ev, el) {
+
+	ev.preventDefault()
+
+	resizingTarget = el.getPrevious()
+
+	if (resizingTarget.getStyle('display') == 'none')
+	{
+		resizingTarget = resizingTarget.getPrevious()
+	}
+
+	resizingTargetH = resizingTarget.getSize().y
+	resizingStartY = ev.client.y
+
+	if (resizingTarget.tagName == 'IFRAME')
+	{
+		resizingTarget.setStyle('visibility', 'hidden')
+	}
+
+	window.addEvents({
+		mousemove: resizerOnMouseMove,
+		mouseup: resizerDone
+	})
+})
 
 })();

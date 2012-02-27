@@ -15,7 +15,7 @@ return array
 		la page.",
 
 		'nativeid' => "Permet d'établir un lien avec l'enregistrement dans la langue native
-		(<q>:native</q>) et ses traductions (ici <q>:language</q>). Les enregistrements qui ont
+		%native et ses traductions, ici %language. Les enregistrements qui ont
 		une langue neutre ne peuvent pas être traduits, c'est pourquoi ils n'apparaissent pas dans
 		la liste."
 	),

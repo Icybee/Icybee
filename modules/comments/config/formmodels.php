@@ -4,7 +4,7 @@ return array
 (
 	'feedback.comments' => array
 	(
-		'title' => 'Laisser un commentaire',
+		'title' => 'Add a comment',
 		'class' => 'feedback_comments_WdForm'
 	)
 );

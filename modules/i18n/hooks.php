@@ -42,7 +42,9 @@ class Hooks
 	{
 		global $core;
 
-		if (!$core->site->nativeid || !isset($core->modules['i18n']))
+		$site = $core->site;
+
+		if (!$site->nativeid || !isset($core->modules['i18n']))
 		{
 			return;
 		}
@@ -68,28 +70,26 @@ class Hooks
 			'weight' => 100
 		);
 
-		$constructor = (string) $module;
-
-		if (array_key_exists(Node::LANGUAGE, $event->attributes[Form::HIDDENS]))
+		if (!array_key_exists(Node::LANGUAGE, $event->attributes[Form::HIDDENS]))
 		{
-			$children[Node::NATIVEID] = new \WdI18nLinkElement
-			(
-				array
-				(
-					\WdI18nElement::T_CONSTRUCTOR => $constructor
-				)
-			);
-		}
-		else
-		{
-			$children['i18n'] = new \WdI18nElement
+			$children[Node::LANGUAGE] = new NodeLanguageElement
 			(
 				array
 				(
 					Element::GROUP => 'i18n',
-					\WdI18nElement::T_CONSTRUCTOR => $constructor
+					'data-native-language' => $site->native->language,
+					'data-site-language' => $site->language
 				)
 			);
 		}
+
+		$children[Node::NATIVEID] = new NodeNativeElement
+		(
+			array
+			(
+				Element::GROUP => 'i18n',
+				NodeNativeElement::CONSTRUCTOR => $module->id
+			)
+		);
 	}
 }

@@ -24,3 +24,16 @@
 	left: auto;
 	right: 0;
 }
+
+td.cell--url {
+	color: #808080;
+}
+
+td.cell--url strong {
+	color: #404040;
+	font-weight: normal;
+}
+
+tr:hover .cell--url strong {
+	color: inherit;
+}

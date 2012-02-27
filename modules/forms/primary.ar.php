@@ -84,7 +84,15 @@ class Form extends Node
 		(
 			array
 			(
-				Brickrouge\Form::VALUES => $_REQUEST,
+				Brickrouge\Form::ACTIONS => new Button
+				(
+					'Send', array
+					(
+						'class' => 'btn-primary',
+						'type' => 'submit'
+					)
+				),
+
 				Brickrouge\Form::HIDDENS => array
 				(
 					Operation::DESTINATION => 'forms',
@@ -92,19 +100,7 @@ class Form extends Node
 					Modules\Forms\Module::OPERATION_POST_ID => $this->nid
 				),
 
-				Element::CHILDREN => array
-				(
-					'#submit' => new Button
-					(
-						'Send', array
-						(
-							Element::WEIGHT => 1000,
-
-							'class' => 'btn-primary',
-							'type' => 'submit'
-						)
-					)
-				),
+				Brickrouge\Form::VALUES => $_POST + $_GET,
 
 				'id' => $this->slug
 			)

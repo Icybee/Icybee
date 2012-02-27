@@ -92,7 +92,6 @@ class Navigation extends \Brickrouge\Element
 		}
 
 		$path = Route::decontextualize($core->request->path);
-
 		$matching_route = Route::find($path, 'any', 'admin'); // FIXME-20120201: use the primary request object
 		$selected = $matching_route ? $descriptors[$matching_route[0]['module']][Module::T_CATEGORY] : 'dashboard';
 
@@ -103,8 +102,6 @@ class Navigation extends \Brickrouge\Element
 			if (strpos($selected, $path) === 0)
 			{
 				$rc .= '<li class="selected">';
-
-// 				$this->page_title = $label; FIXME-20120201: we use to set the page title here
 			}
 			else
 			{

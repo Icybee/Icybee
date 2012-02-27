@@ -180,6 +180,13 @@
 	padding: 10px;
 }
 
+.mooeditable-resizer {
+	height: 8px;
+	background-color: #eee;
+	border-top: 1px solid #ddd;
+	cursor: s-resize;
+}
+
 /*
 **
 
@@ -190,35 +197,35 @@ CUSTOM
 .mooeditable-container
 {
 	border: 1px solid #CFCFCF;
-	-moz-border-radius: 4px;
-	-webkit-border-radius: 4px;
+	border-radius: 4px;
 }
 
 .mooeditable-ui-toolbar
 {
 	background-color: #E8E8E8;
 	border-bottom: 1px solid #CFCFCF;
-	-moz-border-radius: 4px 4px 0 0;
-	-webkit-border-radius: 4px 4px 0 0;
+	border-radius: 4px 4px 0 0;
 }
 	
 .mooeditable-iframe
 {
 	background-color: white;
-	-moz-border-radius: 0 0 4px 4px;
-	-webkit-border-radius: 0 0 4px 4px;
+	border-radius: 0 0 4px 4px;
 }
 
 .mooeditable-ui-button
 {
-	-moz-border-radius: 0;
-	-webkit-border-radius: 0;
-	-moz-box-shadow: none;
-	-webkit-box-shadow: none;
+	border-radius: 0;
+	box-shadow: none;
 	background: transparent;
 }
 
 textarea.editor.moo
 {
 	visibility: hidden;
+}
+
+.mooeditable-resizer {
+	background-color: #E8E8E8;
+	border-top-color: #cfcfcf;
 }

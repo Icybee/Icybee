@@ -5,6 +5,5 @@
 }
 
 textarea[name="notify_template"] {
-	font-family: Droid Sans Mono, Consolas, Monaco, monospace;
-	font-size: .8em;
+	font-family: DejaVu Sans Mono, Consolas, Monaco, monospace;
 }

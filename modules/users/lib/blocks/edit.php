@@ -49,11 +49,6 @@ class EditBlock extends \Icybee\EditBlock
 			(
 				Element::GROUPS => array
 				(
-					'contact' => array
-					(
-						'title' => 'Contact'
-					),
-
 					'connection' => array
 					(
 						'title' => 'Connection'
@@ -152,8 +147,7 @@ class EditBlock extends \Icybee\EditBlock
 				(
 					array
 					(
-						Form::LABEL => 'firstname',
-						Element::GROUP => 'contact'
+						Form::LABEL => 'firstname'
 					)
 				),
 
@@ -161,8 +155,7 @@ class EditBlock extends \Icybee\EditBlock
 				(
 					array
 					(
-						Form::LABEL => 'lastname',
-						Element::GROUP => 'contact'
+						Form::LABEL => 'lastname'
 					)
 				),
 
@@ -171,7 +164,6 @@ class EditBlock extends \Icybee\EditBlock
 					array
 					(
 						Form::LABEL => 'username',
-						Element::GROUP => 'contact',
 						Element::REQUIRED => true
 					)
 				) : null,
@@ -181,7 +173,6 @@ class EditBlock extends \Icybee\EditBlock
 					'select', array
 					(
 						Form::LABEL => 'display_as',
-						Element::GROUP => 'contact',
 						Element::OPTIONS => $display_options
 					)
 				),

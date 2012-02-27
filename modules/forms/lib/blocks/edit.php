@@ -41,9 +41,9 @@ class EditBlock extends \ICanBoogie\Modules\Nodes\EditBlock
 						'title' => 'messages'
 					),
 
-					'notify' => array
+					'options' => array
 					(
-						'title' => 'notify'
+						'title' => 'options'
 					),
 
 					'operation' => array
@@ -142,7 +142,7 @@ class EditBlock extends \ICanBoogie\Modules\Nodes\EditBlock
 					Element::TYPE_CHECKBOX, array
 					(
 						Element::LABEL => 'is_notify',
-						Element::GROUP => 'notify',
+						Element::GROUP => 'options',
 						Element::DESCRIPTION => 'is_notify'
 					)
 				),
@@ -151,7 +151,7 @@ class EditBlock extends \ICanBoogie\Modules\Nodes\EditBlock
 				(
 					array
 					(
-						Element::GROUP => 'notify',
+						Element::GROUP => 'options',
 						Element::DEFAULT_VALUE => array
 						(
 							'from' => $core->site->email,

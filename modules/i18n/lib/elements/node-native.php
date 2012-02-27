@@ -9,15 +9,21 @@
  * file that was distributed with this source code.
  */
 
-use Brickrouge\Element;
-use ICanBoogie\ActiveRecord\Node;
+namespace ICanBoogie\Modules\I18n;
+
 use ICanBoogie\Modules\Pages\Model as PagesModel;
 
-class WdI18nLinkElement extends Element
-{
-	const T_CONSTRUCTOR = '#i18n-constructor';
+use Brickrouge\Element;
+use Brickrouge\Form;
 
-	public function __construct($tags)
+/**
+ * An element to select the language of a node.
+ */
+class NodeNativeElement extends Element
+{
+	const CONSTRUCTOR = '#node-native-constructor';
+
+	public function __construct(array $attributes=array())
 	{
 		global $core;
 
@@ -26,25 +32,21 @@ class WdI18nLinkElement extends Element
 
 		parent::__construct
 		(
-			'select', $tags + array
+			'select', $attributes + array
 			(
-				Element::LABEL => '.nativeid',
-				Element::LABEL_POSITION => 'before',
+				Form::LABEL => 'nativeid',
 				Element::GROUP => 'i18n',
-
-				Element::DESCRIPTION => t('nativeid', array(':native' => $native, ':language' => $site->language), array('scope' => array('element', 'description'))),
-
-				'name' => Node::NATIVEID
+				Element::DESCRIPTION => t('nativeid', array('native' => $native, 'language' => $site->language), array('scope' => 'element.description'))
 			)
 		);
 	}
 
-	public function __toString()
+	protected function render_inner_html_for_select()
 	{
 		global $core;
 
 		$native = $core->site->native->language;
-		$constructor = $this->get(self::T_CONSTRUCTOR);
+		$constructor = $this[self::CONSTRUCTOR];
 		$options = array();
 
 		if ($constructor == 'pages')
@@ -53,7 +55,7 @@ class WdI18nLinkElement extends Element
 			->select('nid, parentid, title')
 			->find_by_language($native)
 			->order('weight, created')
-			->all(PDO::FETCH_OBJ);
+			->all(\PDO::FETCH_OBJ);
 
 			$tree = PagesModel::nestNodes($nodes);
 
@@ -84,8 +86,8 @@ class WdI18nLinkElement extends Element
 			unset($label);
 		}
 
-		$this->set(self::OPTIONS, array(null => '.none') + $options);
+		$this[self::OPTIONS] = array(null => 'none') + $options;
 
-		return parent::__toString();
+		return parent::render_inner_html_for_select();
 	}
 }

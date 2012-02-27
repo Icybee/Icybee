@@ -52,36 +52,34 @@ class EditBlock extends \Icybee\EditBlock
 
 		$core->document->css->add('../../public/admin.css');
 
-		$translation_sources_el = null;
-		$translation_sources_options = $this->module->model
-		->select('siteid, concat(title, ":", language) title')
-		->where('siteid != ?', (int) $properties['siteid'])
-		->pairs;
-
-		$tz = ini_get('date.timezone');
-
-		if ($translation_sources_options)
-		{
-			$translation_sources_el = new Element
-			(
-				'select', array
-				(
-					Form::LABEL => 'Source de traduction',
-					Element::GROUP => 'i18n',
-					Element::OPTIONS => array(0 => '<aucune>') + $translation_sources_options
-				)
-			);
-		}
-
 		$languages = $core->locale->conventions['localeDisplayNames']['languages'];
 
 		asort($languages);
 
-		$path = trim($properties['path'], '/');
+		$tz = ini_get('date.timezone');
 
-		if ($path)
+		#
+
+		$placeholder_tld = null;
+		$placeholder_domain = null;
+		$placeholder_subdomain = null;
+
+		$parts = explode('.', $_SERVER['HTTP_HOST']);
+		$parts = array_reverse($parts);
+
+		if (!$properties['tld'] && isset($parts[0]))
 		{
-			$path = '/' . $path;
+			$placeholder_tld = $parts[0];
+		}
+
+		if (!$properties['domain'] && isset($parts[1]))
+		{
+			$placeholder_domain = $parts[1];
+		}
+
+		if (!$properties['subdomain'] && isset($parts[2]))
+		{
+			$placeholder_subdomain = $parts[2];
 		}
 
 		return array_merge
@@ -125,7 +123,8 @@ class EditBlock extends \Icybee\EditBlock
 						Form::LABEL => 'Sous-domaine',
 						Element::GROUP => 'location',
 
-						'size' => 16
+						'size' => 16,
+						'placeholder' => $placeholder_subdomain
 					)
 				),
 
@@ -136,7 +135,9 @@ class EditBlock extends \Icybee\EditBlock
 						Form::LABEL => 'Domaine',
 						Text::ADDON => '.',
 						Text::ADDON_POSITION => 'before',
-						Element::GROUP => 'location'
+						Element::GROUP => 'location',
+
+						'placeholder' => $placeholder_domain
 					)
 				),
 
@@ -149,7 +150,8 @@ class EditBlock extends \Icybee\EditBlock
 						Text::ADDON_POSITION => 'before',
 						Element::GROUP => 'location',
 
-						'size' => 8
+						'size' => 8,
+						'placeholder' => $placeholder_tld
 					)
 				),
 
@@ -162,7 +164,7 @@ class EditBlock extends \Icybee\EditBlock
 						Text::ADDON_POSITION => 'before',
 						Element::GROUP => 'location',
 
-						'value' => ltrim($path, '/')
+						'value' => trim($properties['path'], '/')
 					)
 				),
 
@@ -177,7 +179,7 @@ class EditBlock extends \Icybee\EditBlock
 					)
 				),
 
-				'nativeid' =>  $translation_sources_el,
+				'nativeid' =>  $this->get_control_translation_sources($properties, $attributes),
 
 				'timezone' => new Widget\TimeZone
 				(
@@ -243,5 +245,28 @@ class EditBlock extends \Icybee\EditBlock
 		sort($models);
 
 		return array_combine($models, $models);
+	}
+
+	protected function get_control_translation_sources(array &$properties, array &$attributes)
+	{
+		$options = $this->module->model
+		->select('siteid, concat(title, ":", language) title')
+		->where('siteid != ?', (int) $properties['siteid'])
+		->pairs;
+
+		if (!$options)
+		{
+			return;
+		}
+
+		return new Element
+		(
+			'select', array
+			(
+				Form::LABEL => 'Traduction source',
+				Element::GROUP => 'i18n',
+				Element::OPTIONS => array(0 => '<none>') + $options
+			)
+		);
 	}
 }

@@ -231,6 +231,8 @@ class Manager extends Element
 
 		$this->columns = $this->extend_columns($this->columns);
 
+		Event::fire('alter_columns', array('columns' => &$this->columns, 'records' => &$this->entries), $this);
+
 		$rc  = PHP_EOL;
 		$rc .= '<form id="manager" method="get" action="">' . PHP_EOL;
 

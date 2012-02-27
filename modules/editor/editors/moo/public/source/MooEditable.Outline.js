@@ -2,17 +2,23 @@
  *
  */
 
-(function() {
+!function() {
 
-	var rulesByStylesheets = {};
+//	var rulesByStylesheets = []
 
 	MooEditable.Actions.outline = {
+
 		title : 'Outline blocks',
 
 		load : function(editor) {
 
-			return;
+			/*
+			editor.addEvent('editorClick', function(ev, editor) {
+				console.log('editorClick', arguments)
+			})
+			*/
 
+			/*
 			var styleSheets = editor.doc.styleSheets;
 			var regex = /([\w-]+)?\.([\w-]+)/;
 
@@ -68,18 +74,21 @@
 				return rulesByStylesheets[href] = [ globalRules, elementsRules ];
 			}
 
-			var globalRules = {};
-			var elementsRules = {};
+			var globalRules = {}
+			, elementsRules = {}
+			, x
+			, y
 
-			for ( var x = 0, y = styleSheets.length; x < y; x++) {
+			for (x = 0, y = styleSheets.length; x < y; ++x) {
 
-				var a = parseStylesheet(styleSheets[x]);
+				var a = parseStylesheet(styleSheets[x])
 
-				Object.merge(globalRules, a[0]);
-				Object.merge(elementsRules, a[1]);
+				Object.merge(globalRules, a[0])
+				Object.merge(elementsRules, a[1])
 			}
 
 //			console.log('attach: %a, globalRules: %a, elementsRules: %a', editor, globalRules, elementsRules);
+*/
 		},
 
 		command : function() {
@@ -87,4 +96,4 @@
 		}
 	};
 
-})();
+} ()

@@ -31,7 +31,7 @@ return array
 					'constructor' => array('varchar', 64, 'indexed' => true),
 					'title' => 'varchar',
 					'slug' => array('varchar', 80, 'indexed' => true),
-					'language' => array('varchar', 8),
+					'language' => array('varchar', 8, 'indexed' => true),
 					'created' => array('timestamp', 'default' => 'current_timestamp()'),
 					'modified' => 'timestamp',
 					'is_online' => array('boolean', 'indexed' => true)

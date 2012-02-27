@@ -334,8 +334,6 @@ class ActionbarNew extends SplitButton
 	{
 		$options = $this->collect_routes();
 
-// 		var_dump($options);
-
 		parent::__construct
 		(
 			$label, $attributes + array
@@ -356,9 +354,28 @@ class ActionbarNew extends SplitButton
 		}
 	}
 
+	private $render_as_button=false;
+
 	protected function render_splitbutton_label($label, $class)
 	{
+		if ($this->render_as_button)
+		{
+			return '';
+		}
+
 		return new A($label, Route::contextualize($this[self::PATTERN]), array('class' => 'btn ' . $class));
+	}
+
+	protected function render_splitbutton_toggle($class)
+	{
+		if ($this->render_as_button)
+		{
+			return <<<EOT
+<a href="javascript:void()" class="btn dropdown-toggle $class" data-toggle="dropdown">$this->inner_html <span class="caret"></span></a>
+EOT;
+		}
+
+		return parent::render_splitbutton_toggle($class);
 	}
 
 	public function __toString()
@@ -369,7 +386,9 @@ class ActionbarNew extends SplitButton
 		$module_id = $route['module'];
 		$match = Route::find("/admin/$module_id/new");
 
-		if (!$match)
+		$this->render_as_button = !$match;
+
+		if ($route['pattern'] != '/admin/dashboard' && !$match)
 		{
 			return '';
 		}
@@ -402,7 +421,6 @@ class ActionbarNew extends SplitButton
 				continue;
 			}
 
-// 			$collection[$pattern] = new A($descriptors[$route['module']][Module::T_TITLE], $pattern);
 			$collection[$pattern] = $descriptors[$module_id][Module::T_TITLE];
 		}
 
@@ -415,8 +433,6 @@ class ActionbarNew extends SplitButton
 				$v = new A(\ICanBoogie\singularize($v), Route::contextualize($k));
 			}
 		);
-
-// 		var_dump($collection);
 
 		return $collection;
 	}

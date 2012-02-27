@@ -181,6 +181,20 @@ EOT;
 		#
 		#
 		#
+
+		try
+		{
+			$this->alter_elements_lang();
+		}
+		catch (\Exception $e)
+		{
+			return \Brickrouge\render_exception($e);
+		}
+
+		#
+		#
+		#
+
 		$this->save();
 
 		I18n::push_scope($this->module->flat_id . '.edit');
@@ -434,7 +448,12 @@ EOT;
 					$event->buttons[] = '<a href="' . $record->url . '" class="actionbar-link">' . t('View', array(), array('scope' => 'label')) . '</a>';
 				}
 
-				$locked = $module->lock_entry($key, $lock);
+				$locked = true;
+
+				if ($key)
+				{
+					$locked = $module->lock_entry($key, $lock);
+				}
 
 				if ($locked)
 				{
@@ -495,5 +514,23 @@ EOT;
 	protected function fire_alter_actions(array $params)
 	{
 		Event::fire('alter_actions', $params, $this);
+	}
+
+	protected function alter_elements_lang()
+	{
+		global $core;
+
+		$iterator = new \RecursiveIteratorIterator($this, \RecursiveIteratorIterator::SELF_FIRST);
+		$language = $core->site->language;
+
+		foreach ($iterator as $element)
+		{
+			if ($element->tag_name != 'textarea')
+			{
+				continue;
+			}
+
+			$element['lang'] = $language;
+		}
 	}
 }

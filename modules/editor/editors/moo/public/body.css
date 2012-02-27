@@ -45,3 +45,7 @@ body.mooeditable-outline td
 	padding: 8px;
 	border: 1px dashed #ccc;
 }
+
+:focus {
+	outline: none;
+}

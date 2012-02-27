@@ -14,7 +14,7 @@ return array
 		language as the page, or a neutral language, appear on the page.",
 
 		'nativeid' => "Establishes a connection with the record in the native language
-		(<q>:native</q>) and its translations (here <q>:language</q>). Records that have a neutral
+		%native and its translations, here %language. Records that have a neutral
 		language can not be translated, therefore they do not appear in the list."
 	),
 
