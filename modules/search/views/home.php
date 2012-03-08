@@ -64,7 +64,7 @@ foreach ($constructors as $constructor)
 		continue;
 	}
 
-	$constructors_options[$constructor] = t(strtr($constructor, '.', '_'), array(), array('scope' => array('module', 'title'), 'default' => $core->modules->descriptors[$constructor][Module::T_TITLE]));
+	$constructors_options[$constructor] = t(strtr($constructor, '.', '_'), array(), array('scope' => 'module_title', 'default' => $core->modules->descriptors[$constructor][Module::T_TITLE]));
 }
 
 $document->js->add('../public/widget.js');
@@ -109,7 +109,7 @@ $form = new Brickrouge\Form
 			)
 		),
 
-		'method' => 'get',
+		'method' => 'GET',
 		'class' => 'widget-search-combo'
 	)
 );
@@ -131,7 +131,7 @@ Event::fire
 	$sender
 );
 
-echo $form;
+echo '<div class="conditions">' . $form . '</div>';
 
 if (empty($_GET['q']))
 {

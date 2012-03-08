@@ -21,5 +21,7 @@ return array
 		'none' => 'No comments'
 	),
 
-	'@form.log.spam' => 'Your message has been scored as spam.'
+	'@form.log.spam' => 'Your message has been scored as spam.',
+
+	'module_title.comments' => 'Comments'
 );

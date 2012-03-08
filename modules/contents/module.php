@@ -29,7 +29,7 @@ class Module extends \ICanBoogie\Modules\Nodes\Module
 	 */
 	protected function __get_views()
 	{
-		return wd_array_merge_recursive
+		return \ICanBoogie\array_merge_recursive
 		(
 			parent::__get_views(), array
 			(

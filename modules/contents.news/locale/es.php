@@ -7,5 +7,5 @@ return array
 		'All records' => 'Todas las noticias'
 	),
 
-	'module.title.contents_news' => 'Actualidades'
+	'module_title.contents_news' => 'Actualidades'
 );

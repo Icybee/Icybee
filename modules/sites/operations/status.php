@@ -19,7 +19,7 @@ class StatusOperation extends \ICanBoogie\Operation
 
 	protected function validate(Errors $errors)
 	{
-		if ($this->request->method == 'put' && $this->request['status'] === null)
+		if ($this->request->is_put && $this->request['status'] === null)
 		{
 			throw new Exception('Missing status');
 		}
@@ -31,7 +31,7 @@ class StatusOperation extends \ICanBoogie\Operation
 	{
 		global $core;
 
-		if ($this->request->method == 'put')
+		if ($this->request->is_put)
 		{
 			$this->record->status = $this->request['status'];
 			$this->record->save();

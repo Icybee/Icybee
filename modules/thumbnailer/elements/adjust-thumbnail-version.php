@@ -27,7 +27,7 @@ class AdjustThumbnailVersion extends \Brickrouge\Group
 
 		parent::__construct
 		(
-			wd_array_merge_recursive
+			\ICanBoogie\array_merge_recursive
 			(
 				array
 				(

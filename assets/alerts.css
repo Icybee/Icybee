@@ -17,3 +17,26 @@
 .alert-wrapper .alert + .alert {
 	margin-top: 16px;
 }
+
+.xhr-dummy {
+	position: fixed;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	background: rgba(232, 232, 232, .3) url(spinner.gif) center no-repeat;
+}
+
+.xhr-message {
+	display: none;
+	position: fixed;
+	top: 50%;
+	margin-top: -15px;
+	left: 0;
+	right: 0;
+	text-align: center;
+	color: white;
+	text-shadow: 0 0 10px gray;
+	font-size: 30px;
+	line-height: 1em;
+}

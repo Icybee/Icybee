@@ -15,11 +15,12 @@ return array
 		'max_file_size' => 'Maximum size of uploaded files'
 	),
 
-	'manager.label' => array
+	'manage.label' => array
 	(
 		'mime' => 'MIME type',
 		'size' => 'Size'
 	),
 
-	'module_category.title.resources' => 'Resources'
+	'module_category.resources' => 'Resources',
+	'module_title.files' => 'Files'
 );

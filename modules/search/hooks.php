@@ -52,7 +52,7 @@ class Hooks
 
 			'id' => 'search-quick',
 			'class' => 'search-query',
-			'method' => 'get',
+			'method' => \ICanBoogie\HTTP\Request::METHOD_GET,
 			'action' => $page->url
 		);
 

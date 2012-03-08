@@ -44,6 +44,13 @@ Brickrouge.Widget.PopThumbnailVersion = new Class
 ({
 	Extends: Brickrouge.Widget.Pop,
 
+	initialize: function(el, options)
+	{
+		this.parent(el, options)
+
+		this.input = this.element.getElement('input')
+	},
+
 	pop: function()
 	{
 		this.resetValue = this.getValue();
@@ -84,12 +91,12 @@ Brickrouge.Widget.PopThumbnailVersion = new Class
 			value = JSON.encode(value)
 		}
 
-		this.element.set('value', value)
+		this.input.set('value', value)
 	},
 
 	getValue: function()
 	{
-		return this.element.get('value')
+		return this.input.get('value')
 	},
 
 	attachAdjust: function(adjust)
@@ -104,8 +111,6 @@ Brickrouge.Widget.PopThumbnailVersion = new Class
 
 	onAction: function(ev)
 	{
-		console.log('action:', ev)
-
 		switch (ev.action)
 		{
 			case 'continue':

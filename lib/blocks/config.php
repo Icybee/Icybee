@@ -59,7 +59,7 @@ class ConfigBlock extends FormBlock
 
 	protected function alter_attributes(array $attributes)
 	{
-		return wd_array_merge_recursive
+		return \ICanBoogie\array_merge_recursive
 		(
 			parent::alter_attributes($attributes), array
 			(
@@ -100,8 +100,6 @@ class ConfigBlock extends FormBlock
 
 			$dotted_name = strtr($name, array('[' => '.', ']' => ''));
 
-//			wd_log("element: $name");
-
 			$value = null;
 
 			if (strpos($dotted_name, 'local.') === 0)
@@ -121,12 +119,8 @@ class ConfigBlock extends FormBlock
 
 			if ($value === null)
 			{
-//				wd_log("$dotted_name := <em>null</em>");
-
 				continue;
 			}
-
-//			wd_log("$dotted_name := !value", array('!value' => $value));
 
 			$values[$name] = $value;
 		}

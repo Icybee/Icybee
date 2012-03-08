@@ -53,9 +53,11 @@ return array
 		'template' => 'Template'
 	),
 
-	'section.title' => array
+	'group.title' => array
 	(
 		'advanced' => 'Advanced options',
 		'contents' => 'Contents'
-	)
+	),
+
+	'module_title.pages' => 'Pages'
 );

@@ -85,14 +85,10 @@ class Model extends \ICanBoogie\Modules\Nodes\Model
 			$file = basename($properties[File::PATH]);
 			$path = $core->config['repository.temp'] . '/' . $file;
 
-//			wd_log("checking upload: $path");
-
 			if (is_file($root . $path))
 			{
 				$mime = Uploaded::getMIME($root . $path);
 				$size = filesize($root . $path);
-
-//				wd_log('found file: \3, mime: \1, size: \2', array($mime, $size, $path));
 
 				$delete = $previous_path;
 

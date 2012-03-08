@@ -39,14 +39,14 @@ class ConfigBlock extends \Icybee\ConfigBlock
 
 		if ($page)
 		{
-			$description_link = new A($page->title, Route::contextualize('/admin/pages/' . $page->nid . '/edit'));
+			$description_link = (string) new A($page->title, Route::contextualize("/admin/pages/$page->nid/edit"));
 		}
 		else
 		{
 			$description_link = '<q>' . new A('Pages', Route::contextualize('/admin/pages')) . '</q>';
 		}
 
-		return wd_array_merge_recursive
+		return \ICanBoogie\array_merge_recursive
 		(
 			parent::alter_attributes($attributes), array
 			(
@@ -112,7 +112,7 @@ class ConfigBlock extends \Icybee\ConfigBlock
 				continue;
 			}
 
-			$options[$module_id] = t($descriptor[Module::T_TITLE]);
+			$options[$module_id] = t($descriptor[Module::T_TITLE], array(), array('scope' => 'module_title'));
 		}
 
 		$options['google'] = '<em>Google</em>';

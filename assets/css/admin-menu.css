@@ -54,7 +54,7 @@
 	src: local('Droid Serif Bold'), local('DroidSerif-Bold'), url('http://themes.googleusercontent.com/font?kit=QQt14e8dY39u-eYBZmppwXe1Pd76Vl7zRpE7NLJQ7XU') format('truetype');
 }
 
-#wdpublisher-admin-menu
+#icybee-admin-menu
 {
 	position: fixed;
 	top: 1em;
@@ -79,20 +79,20 @@
 
 @media print
 {
-	#wdpublisher-admin-menu
+	#icybee-admin-menu
 	{
 		display: none;
 	}
 }
 
-#wdpublisher-admin-menu:hover
+#icybee-admin-menu:hover
 {
 	box-shadow: 0 25px 15px -20px rgba(0, 0, 0, 0.2);
 	-moz-box-shadow: 0 25px 15px -20px rgba(0, 0, 0, 0.2);
 	-webkit-box-shadow: 0 25px 15px -20px rgba(0, 0, 0, 0.2);
 }
 
-#wdpublisher-admin-menu div.panel-title
+#icybee-admin-menu div.panel-title
 {
 	background-image: -webkit-gradient(linear, left top, left bottom, from(#F6F6F6), color-stop(50%, #E8E8E8), to(#E8E8E8));
 	background-image: -moz-linear-gradient(center top , #F6F6F6, #E8E8E8 50%);
@@ -106,30 +106,30 @@
 	-webkit-border-radius: .5em;
 }
 
-#wdpublisher-admin-menu:hover div.panel-title
+#icybee-admin-menu:hover div.panel-title
 {
 	border-bottom: 1px solid #ccc;
 }
 
-#wdpublisher-admin-menu div.panel-title span
+#icybee-admin-menu div.panel-title span
 {
 	color: #808080;
 	/*font-family: Droid Serif, Georgia, "Times New Roman", "Bitstream Charter", Times, serif;
 	font-style:italic;*/
 }
 
-#wdpublisher-admin-menu:hover div.panel-title
+#icybee-admin-menu:hover div.panel-title
 {
 	-moz-border-radius: .5em .5em 0 0;
 	-webkit-border-radius: .5em .5em 0 0;
 }
 
-#wdpublisher-admin-menu div.panel-title a
+#icybee-admin-menu div.panel-title a
 {
 	color: inherit;
 }
 
-#wdpublisher-admin-menu div.panel-section-title
+#icybee-admin-menu div.panel-section-title
 {
 	border-top: 1px solid #CCC;
 	border-bottom: 1px solid #CCC;
@@ -144,7 +144,7 @@
 	padding: .2em 1em;
 }
 
-#wdpublisher-admin-menu div.contents
+#icybee-admin-menu div.contents
 {
 	display: none;
 	padding: 0;
@@ -153,23 +153,23 @@
 	min-width: 0;
 }
 
-#wdpublisher-admin-menu:hover div.contents
+#icybee-admin-menu:hover div.contents
 {
 	display: block;
 }
 
-#wdpublisher-admin-menu a
+#icybee-admin-menu a
 {
 	color: #4B8BB3;
 	text-decoration: none;
 }
 
-#wdpublisher-admin-menu a:hover
+#icybee-admin-menu a:hover
 {
 	text-decoration: underline;
 }
 
-#wdpublisher-admin-menu ul
+#icybee-admin-menu ul
 {
 	margin: 1em 0;
 	padding: 0 1em;

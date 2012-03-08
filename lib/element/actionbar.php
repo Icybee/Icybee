@@ -30,18 +30,6 @@ class Actionbar extends Element
 		parent::__construct('div', $attributes + array('class' => 'actionbar'));
 	}
 
-	public function __toString()
-	{
-		global $core;
-
-		if ($core->user->is_guest || $core->user instanceof Member)
-		{
-			return '';
-		}
-
-		return parent::__toString();
-	}
-
 	protected function render_inner_html()
 	{
 		global $core;
@@ -49,14 +37,19 @@ class Actionbar extends Element
 		$route = $core->request->route;
 		$module_id = $route['module'];
 
-		$actionbar_new = (string) new ActionbarNew
-		(
-			'New', array
+		$actionbar_new = null;
+
+		if (!$core->user->is_guest && !($core->user instanceof Member))
+		{
+			$actionbar_new = (string) new ActionbarNew
 			(
-				ActionbarNew::PATTERN => "/admin/$module_id/new",
-				ActionbarNew::ROUTE => $route
-			)
-		);
+				'New', array
+				(
+					ActionbarNew::PATTERN => "/admin/$module_id/new",
+					ActionbarNew::ROUTE => $route
+				)
+			);
+		}
 
 		$actionbar_title = (string) new ActionbarTitle;
 		$actionbar_navigation = (string) new ActionbarNav;
@@ -89,7 +82,7 @@ class ActionbarNav extends Element
 	{
 		global $core;
 
-		$path = Route::decontextualize($core->request->path);
+		$path = Route::decontextualize($core->request->pathinfo);
 		$match = Route::find($path, 'any', 'admin');
 
 		list($current_route) = $match;

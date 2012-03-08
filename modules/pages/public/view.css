@@ -79,9 +79,10 @@ div.view-editor td.view-editor-views li.active
 	background-color: #F2F8FF;
 }
 
-div.view-edutor td.view-editor-views ul
+div.view-editor td.view-editor-views ul
 {
-	padding: .5em 1ex;
+	max-height: 20em;
+	overflow: auto;
 }
 
 div.view-editor td.view-editor-views li

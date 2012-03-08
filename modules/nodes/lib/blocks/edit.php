@@ -32,7 +32,7 @@ class EditBlock extends \Icybee\EditBlock
 	 */
 	protected function alter_attributes(array $attributes)
 	{
-		return wd_array_merge_recursive
+		return \ICanBoogie\array_merge_recursive
 		(
 			parent::alter_attributes($attributes), array
 			(

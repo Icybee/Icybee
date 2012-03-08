@@ -43,12 +43,12 @@ return array
 		'your_email' => 'Your email address'
 	),
 
-	'manager.title' => array
+	'manage.title' => array
 	(
 		'is_activated' => 'Activated'
 	),
 
-	'module_category.title.users' => 'Users',
+	'module_category.users' => 'Users',
 
 	'activate.operation' => array
 	(
@@ -105,9 +105,11 @@ EOT
 
 	'permission.modify own profile' => "The user can modify its profile",
 
-	'section.title' => array
+	'group.title' => array
 	(
 		'contact' => 'Contact',
 		'connection' => 'Connection'
-	)
+	),
+
+	'module_title.users' => 'Users'
 );

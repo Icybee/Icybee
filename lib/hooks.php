@@ -11,11 +11,15 @@
 
 namespace Icybee;
 
-use ICanBoogie\HTTP\Request;
+use ICanBoogie\Events;
 
+use ICanBoogie\Debug;
 use ICanBoogie\Event;
 use ICanBoogie\Exception;
+use ICanBoogie\HTTP\Request;
 use ICanBoogie\Operation;
+
+use Brickrouge\Alert;
 
 class Hooks
 {
@@ -247,28 +251,98 @@ class Hooks
 		{
 			$registry = $core->registry;
 
-			$names = $registry->select('name')
-			->where('name LIKE "admin.locks.%.uid" AND value = ?', $uid)
-			->all(\PDO::FETCH_COLUMN);
-
-			if ($names)
-			{
-				$in = array();
-
-				foreach ($names as $name)
-				{
-					$in[] = $name;
-					$in[] = substr($name, 0, -3) . 'until';
-				}
-
-				$registry->where(array('name' => $in))->delete();
-			}
+			$names = $registry
+			->where('name LIKE "activerecord_locks.%" AND value LIKE ?', '{"uid":"' . $uid . '"%')
+			->delete();
 		}
-		catch (\Exception $e) {  };
+		catch (\Exception $e) { };
 	}
 
 	public static function on_alter_cache_collection(Event $event, \ICanBoogie\Modules\System\Cache\Collection $collection)
 	{
 		$event->collection['icybee.views'] = new \Icybee\Views\CacheManager;
+	}
+
+	/**
+	 * Displays the alerts issued during request processing.
+	 *
+	 * A marker is placed in the rendered HTML that will later be replaced by the actual alerts.
+	 *
+	 * @param array $args
+	 * @param mixed $engine
+	 * @param mixed $template
+	 *
+	 * @return string
+	 */
+	public static function markup_alerts(array $args, $engine, $template)
+	{
+		$key = 'alert-markup-placeholder-' . md5(uniqid());
+
+		Events::attach
+		(
+			'Icybee::render', function(\Icybee\RenderEvent $event) use($engine, $template, $key)
+			{
+				$types = array('success', 'info', 'error');
+
+				if (Debug::$mode == Debug::MODE_DEV)
+				{
+					$types[] = 'debug';
+				}
+
+				$alert = '';
+
+				foreach ($types as $type)
+				{
+					$alert .= new Alert(Debug::fetch_messages($type), array(Alert::CONTEXT => $type));
+				}
+
+				if ($template)
+				{
+					$alert = $engine($template, $alert);
+				}
+
+				$event->html = str_replace($key, $alert, $event->html);
+			}
+		);
+
+		return $key;
+	}
+}
+
+/**
+ * Event class for the `Icybee\Render` event.
+ */
+class RenderEvent extends Event
+{
+	/**
+	 * The request.
+	 *
+	 * @var \ICanBoogie\HTTP\Request
+	 */
+	public $request;
+
+	/**
+	 * The page being rendered.
+	 *
+	 * @var \ICanBoogie\ActiveRecord\Page
+	 */
+	public $page;
+
+	/**
+	 * The rendered HTML.
+	 *
+	 * @var string
+	 */
+	public $html;
+
+	/**
+	 * The event is constructed with the `render` type.
+	 *
+	 * @param \Icybee $target
+	 * @param array $properties
+	 */
+	public function __construct(\Icybee $target, array $properties)
+	{
+		parent::__construct($target, 'render', $properties);
 	}
 }

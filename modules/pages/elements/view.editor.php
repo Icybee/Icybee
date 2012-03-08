@@ -18,20 +18,23 @@ use Brickrouge\Element;
 
 class view_WdEditorElement extends WdEditorElement
 {
-	static public function to_content(array $params, $content_id, $page_id)
+	static public function to_content($value, $id, $page_id)
 	{
 		global $core;
-
-		$content = parent::to_content($params, $content_id, $page_id);
-
-		if ($content && strpos($content, '/') !== false)
+		
+		if (!$value)
 		{
-			$view_target_key = 'views.targets.' . strtr($content, '.', '_');
+			return;
+		}
+
+		if (strpos($value, '/') !== false)
+		{
+			$view_target_key = 'views.targets.' . strtr($value, '.', '_');
 
 			$core->site->metas[$view_target_key] = $page_id;
 		}
 
-		return $content;
+		return $value;
 	}
 
 	static public function render($id, $engine=null, $template=null)

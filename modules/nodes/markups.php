@@ -120,7 +120,7 @@ class system_nodes_view_WdMarkup extends patron_WdMarkup
 		(
 			'nodes_load', array
 			(
-				$entry
+				'nodes' => array($entry)
 			),
 
 			$patron

@@ -107,6 +107,34 @@ abstract class Provider extends \Icybee\Views\Provider
 
 		$rc = $this->extract_result($query);
 
+		/*
+		$this->fire_alter_result
+		(
+			array
+			(
+				'result' => &$rc,
+				'context' => &$this->context,
+				'query' => &$query,
+				'conditions' => &$conditions,
+				'view' => $this->view,
+				'module' => $this->module
+			)
+		);
+		*/
+
+		new Provider\AlterResultEvent
+		(
+			$this, array
+			(
+				'result' => &$rc,
+				'context' => &$this->context,
+				'query' => &$query,
+				'conditions' => &$conditions,
+				'view' => $this->view,
+				'module' => $this->module
+			)
+		);
+
 		return $rc;
 	}
 
@@ -114,7 +142,7 @@ abstract class Provider extends \Icybee\Views\Provider
 	 * Wraps a call to the #{@link alter_conditions()} method with the
 	 * `alter_conditions:before` and `alter_conditions` events.
 	 *
-	 * The following parameters are used for the event, subclasses might add others:
+	 * The following properties are used for the event, subclasses might add others:
 	 *
 	 * - &conditions (array): The conditions to alter.
 	 * - view (View): The view calling the provider.
@@ -122,13 +150,26 @@ abstract class Provider extends \Icybee\Views\Provider
 	 *
 	 * @param array $params
 	 */
-	protected function fire_alter_conditions(array $params)
+	protected function fire_alter_conditions(array $properties)
 	{
-		Event::fire('alter_conditions:before', $params, $this);
-		$params['conditions'] = $this->alter_conditions($params['conditions']);
-		Event::fire('alter_conditions', $params, $this);
+		new Provider\BeforeAlterConditionsEvent($this, $properties);
+		$properties['conditions'] = $this->alter_conditions($properties['conditions']);
+		new Provider\AlterConditionsEvent($this, $properties);
 
-		return $params['conditions'];
+		return $properties['conditions'];
+	}
+
+	/**
+	 * Alters the activerecord query using the provided conditions.
+	 *
+	 * @param Query $query
+	 * @param array $conditions
+	 *
+	 * @return Query
+	 */
+	protected function alter_query(Query $query, array $conditions)
+	{
+		return $query;
 	}
 
 	/**
@@ -184,19 +225,6 @@ abstract class Provider extends \Icybee\Views\Provider
 		return new Query($this->module->model);
 	}
 
-	/**
-	 * Alters the activerecord query using the provided conditions.
-	 *
-	 * @param Query $query
-	 * @param array $conditions
-	 *
-	 * @return Query
-	 */
-	protected function alter_query(Query $query, array $conditions)
-	{
-		return $query;
-	}
-
 	protected function count_result(Query $query)
 	{
 		$range = $this->view->range;
@@ -225,5 +253,142 @@ abstract class Provider extends \Icybee\Views\Provider
 		}
 
 		return $query->all;
+	}
+}
+
+namespace Icybee\Views\ActiveRecord\Provider;
+
+/**
+ * The event class for the `Icybee\Views\ActiveRecord\Provider::alter_conditions:before` event.
+ */
+class BeforeAlterConditionsEvent extends \ICanBoogie\Event
+{
+	/**
+	 * Reference to the conditions to alter.
+	 *
+	 * @var array
+	 */
+	public $conditions;
+
+	/**
+	 * The view invoked the provider.
+	 *
+	 * @var \Icybee\Views\View
+	 */
+	public $view;
+
+	/**
+	 * The module of the view.
+	 *
+	 * @var \ICanBoogie\Module
+	 */
+	public $module;
+
+	/**
+	 * The event is constructed with the type `alter_conditions:before`.
+	 *
+	 * @param Icybee\Views\ActiveRecord\Provider $target
+	 * @param array $properties
+	 */
+	public function __construct(\Icybee\Views\ActiveRecord\Provider $target, array $properties)
+	{
+		parent::__construct($target, 'alter_conditions:before', $properties);
+	}
+}
+
+/**
+ * The event class for the `Icybee\Views\ActiveRecord\Provider::alter_conditions` event.
+ */
+class AlterConditionsEvent extends \ICanBoogie\Event
+{
+	/**
+	 * Reference to the conditions to alter.
+	 *
+	 * @var array
+	 */
+	public $conditions;
+
+	/**
+	 * The view invoked the provider.
+	 *
+	 * @var \Icybee\Views\View
+	 */
+	public $view;
+
+	/**
+	 * The module of the view.
+	 *
+	 * @var \ICanBoogie\Module
+	 */
+	public $module;
+
+	/**
+	 * The event is constructed with the type `alter_conditions`.
+	 *
+	 * @param Icybee\Views\ActiveRecord\Provider $target
+	 * @param array $properties
+	 */
+	public function __construct(\Icybee\Views\ActiveRecord\Provider $target, array $properties)
+	{
+		parent::__construct($target, 'alter_conditions', $properties);
+	}
+}
+
+/**
+ * The event class for the `Icybee\Views\ActiveRecord\Provider::alter_result` event.
+ */
+class AlterResultEvent extends \ICanBoogie\Event
+{
+	/**
+	 * The view invoked the provider.
+	 *
+	 * @var \Icybee\Views\View
+	 */
+	public $view;
+
+	/**
+	 * The module of the view.
+	 *
+	 * @var \ICanBoogie\Module
+	 */
+	public $module;
+
+	/**
+	 * Reference to the conditions.
+	 *
+	 * @var array
+	 */
+	public $conditions;
+
+	/**
+	 * ActiveRecord query.
+	 *
+	 * @var \ICanBoogie\ActiveRecord\Query
+	 */
+	public $query;
+
+	/**
+	 * Rendering engine context.
+	 *
+	 * @var mixed
+	 */
+	public $context;
+
+	/**
+	 * The query result to alter.
+	 *
+	 * @var mixed
+	 */
+	public $result;
+
+	/**
+	 * The event is constructed with the type `alter_result`.
+	 *
+	 * @param \Icybee\Views\ActiveRecord\Provider $target
+	 * @param array $properties
+	 */
+	public function __construct(\Icybee\Views\ActiveRecord\Provider $target, array $properties)
+	{
+		parent::__construct($target, 'alter_result', $properties);
 	}
 }

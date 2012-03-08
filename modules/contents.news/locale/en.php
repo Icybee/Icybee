@@ -23,5 +23,5 @@ return array
 		)
 	),
 
-	'module.title.contents_news' => 'News'
+	'module_title.contents_news' => 'News'
 );

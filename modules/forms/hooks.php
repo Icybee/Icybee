@@ -77,8 +77,8 @@ class Hooks
 	 *
 	 * At the very end of the process, the `ICanBoogie\ActiveRecord\Form::sent` event is fired.
 	 *
-	 * Notifing
-	 * ========
+	 * Notifying
+	 * =========
 	 *
 	 * If defined, the `alter_notify` method of the form is invoked to alter the notify options.
 	 * The method is wrapped with the `ICanBoogie\ActiveRecord\Form::alter_notify:before` and
@@ -95,10 +95,10 @@ class Hooks
 	 * rendered to choose what to render. For example, if the value is empty, the form is rendered
 	 * with the `before` and `after` messages, otherwise only the `complete` message is rendered.
 	 *
-	 * @param Event $event
+	 * @param \ICanBoogie\Operation\GetFormEvent $event
 	 * @param Operation $operation
 	 */
-	public static function on_operation_get_form(Event $event, Operation $operation)
+	public static function on_operation_get_form(\ICanBoogie\Operation\GetFormEvent $event, Operation $operation)
 	{
 		global $core;
 
@@ -115,10 +115,12 @@ class Hooks
 		$event->rc = $form;
 		$event->stop();
 
-		Event::add
+		\ICanBoogie\Events::attach
 		(
-			get_class($operation) . '::process', function(Event $event, Operation $operation) use ($record, $form, $core)
+			get_class($operation) . '::process', function(\ICanBoogie\Operation\ProcessEvent $event, Operation $operation) use ($record, $form)
 			{
+				global $core;
+
 				$rc = $event->rc;
 				$bind = $event->request->params;
 				$template = $record->notify_template;
@@ -142,8 +144,8 @@ class Hooks
 						'template' => &$template,
 						'mailer' => &$mailer,
 						'mailer_tags' => &$mailer_tags,
-						'event' => &$event,
-						'operation' => &$operation
+						'event' => $event,
+						'operation' => $operation
 					),
 
 					$record
@@ -175,8 +177,8 @@ class Hooks
 						'template' => &$template,
 						'mailer' => &$mailer,
 						'mailer_tags' => &$mailer_tags,
-						'event' => &$event,
-						'operation' => &$operation
+						'event' => $event,
+						'operation' => $operation
 					),
 
 					$record
@@ -208,20 +210,70 @@ class Hooks
 					$mailer();
 				}
 
-				Event::fire
+				new SentEvent
 				(
-					'sent', array
+					$record, array
 					(
-						'rc' => &$rc,
-						'bind' => &$bind,
-						'event' => &$event,
-						'request' => &$event->request,
-						'operation' => &$operation
-					),
-
-					$record
+						'rc' => $rc,
+						'bind' => $bind,
+						'event' => $event,
+						'request' => $event->request,
+						'operation' => $operation
+					)
 				);
 			}
 		);
+	}
+}
+
+/**
+ * Event class for the `ICanBoogie\ActiveRecord\Form::sent` event.
+ */
+class SentEvent extends Event
+{
+	/**
+	 * Result of the operation.
+	 *
+	 * @var mixed
+	 */
+	public $rc;
+
+	/**
+	 * The bind value that was used to render the notify template.
+	 *
+	 * @var mixed
+	 */
+	public $bind;
+
+	/**
+	 * The operation `process` event.
+	 *
+	 * @var \ICanBoogie\OperationProcessEvent
+	 */
+	public $event;
+
+	/**
+	 * The request that triggered the operation.
+	 *
+	 * @var \ICanBoogie\HTTP\Request
+	 */
+	public $request;
+
+	/**
+	 * The operation that submitted the form.
+	 *
+	 * @var \ICanBoogie\Operation
+	 */
+	public $operation;
+
+	/**
+	 * The event is constructed with the type `sent`.
+	 *
+	 * @param \ICanBoogie\ActiveRecord\Form $target
+	 * @param array $properties
+	 */
+	public function __construct(\ICanBoogie\ActiveRecord\Form $target, array $properties)
+	{
+		parent::__construct($target, 'sent', $properties);
 	}
 }

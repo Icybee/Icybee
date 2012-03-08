@@ -264,6 +264,7 @@ window.addEvent
 
 			var reset = new Element('span.btn.btn-warning.reset-default-value', { html: '<i class="icon-edit icon-white"></i> Reset' })
 			, defaultValue = el.get('data-default-value')
+			, container = el.getParent('.controls')
 
 			if (el.get('value') == defaultValue) reset.addClass('hidden')
 
@@ -279,8 +280,58 @@ window.addEvent
 				reset[el.get('value') == defaultValue ? 'addClass' : 'removeClass']('hidden');
 			})
 
-			reset.inject(el, 'after')
+			if (container)
+			{
+				reset.inject(container)
+			}
+			else
+			{
+				reset.inject(el, 'after')
+			}
 		})
+	})
+
+} ()
+
+
+!function() {
+
+	var dummy = null
+	, dummyTween = null
+	, message = null
+	, messageTween = null
+
+	window.addEvent('icanboogie.xhr.shownotice', function() {
+
+		if (!dummy)
+		{
+			dummy = new Element('div.xhr-dummy')
+			message = new Element('div.xhr-message', { html: 'Loagin...' })
+			dummyTween = new Fx.Tween(dummy, { property: 'opacity', link: 'cancel' })
+			messageTween = new Fx.Tween(message, { property: 'opacity', link: 'cancel' })
+			dummyTween.set(0)
+			messageTween.set(0)
+		}
+
+		document.body.appendChild(dummy)
+		document.body.appendChild(message)
+
+		dummyTween.start(1)
+		messageTween.start(1)
+	})
+
+	window.addEvent('icanboogie.xhr.hidenotice', function() {
+
+		if (!dummy || !dummy.parentNode) return
+
+		messageTween.start(0)
+		dummyTween.start(0).chain(function() {
+
+			dummy.dispose()
+			message.dispose()
+
+		})
+
 	})
 
 } ()

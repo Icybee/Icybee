@@ -116,6 +116,13 @@ class Versions implements \ArrayAccess, \IteratorAggregate
 
 		foreach ($definitions as $name => $options)
 		{
+			if (!$options || !is_string($options) || $options{0} != '{')
+			{
+				wd_log_error('bad version: %name, :options', array('name' => $name, 'options' => $options));
+
+				continue;
+			}
+
 			$versions[$name] = self::nomalize_version(json_decode($options, true));
 		}
 

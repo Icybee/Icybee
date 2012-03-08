@@ -40,6 +40,22 @@ class SaveOperation extends \ICanBoogie\Modules\Nodes\SaveOperation
 
 		return $properties;
 	}
+	
+	protected function validate(\ICanBoogie\Errors $errors)
+	{
+		$contents = $this->request['contents'];
+		$editors = $this->request['editors'];
+
+		foreach ($contents as $name => $dummy)
+		{
+			if (!array_key_exists($name, $editors))
+			{
+				$errors['content'][] = \ICanBoogie\format('The editor is missing for the content %name', array('name' => $name));
+			}
+		}
+		
+		return parent::validate($errors);
+	}
 
 	protected function process()
 	{
@@ -68,17 +84,30 @@ class SaveOperation extends \ICanBoogie\Modules\Nodes\SaveOperation
 
 		$content_ids = array();
 		$contents_model = $this->module->model('contents');
+		
+		$contents = $this->request['contents'];
+		$editors = $this->request['editors'];
 
-		if (isset($this->request['contents']))
+		if ($contents && $editors)
 		{
-			$contents = $this->request['contents'];
-			$content_ids = array_keys($contents);
+			$content_ids = array_keys($editors);
 
-			foreach ($contents as $content_id => $values)
+			foreach ($contents as $content_id => $value)
 			{
-				$editor = $values['editor'];
+				$editor = $editors[$content_id];
 				$editor_class = $editor . '_WdEditorElement';
-				$content = call_user_func(array($editor_class, 'to_content'), $values, $content_id, $nid);
+				$content = call_user_func(array($editor_class, 'to_content'), $value, $content_id, $nid);
+
+				#
+				# if there is no content, the content object is deleted
+				#
+
+				if (!$content)
+				{
+					unset($content_ids[$content_id]);
+
+					continue;
+				}
 
 				#
 				# if the content is made of an array of values, the values are serialized in JSON.
@@ -89,18 +118,11 @@ class SaveOperation extends \ICanBoogie\Modules\Nodes\SaveOperation
 					$content = json_encode($content);
 				}
 
-				#
-				# if there is no content, the content object is deleted
-				#
-
-				if (!$content)
-				{
-					$contents_model->where(array('pageid' => $nid, 'contentid' => $content_id))->delete();
-
-					continue;
-				}
-
-				$values['content'] = $content;
+				$values = array
+				(
+					'content' => $content,
+					'editor' => $editor
+				);
 
 				$contents_model->insert
 				(

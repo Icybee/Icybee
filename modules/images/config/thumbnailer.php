@@ -28,5 +28,19 @@ return array
 
 		'module' => 'images',
 		'title' => 'Popup'
+	),
+
+	'$gallery' => array
+	(
+		array
+		(
+			'w' => 128,
+			'h' => 128,
+			'method' => 'scale-min',
+			'quality' => 90
+		),
+
+		'module' => 'images',
+		'title' => 'Gallery'
 	)
 );

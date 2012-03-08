@@ -7,7 +7,7 @@ return array
 	'events' => array
 	(
 		'Icybee\ConfigBlock::alter_children' => __NAMESPACE__ . '::on_configblock_alter_children',
-		'Icybee\Operation\Module\Config::properties:before' => __NAMESPACE__ . '::before_config_properties',
+		'Icybee\ConfigOperation::properties:before' => __NAMESPACE__ . '::before_config_properties',
 		'ICanBoogie\Modules\System\Cache\Collection::alter' => __NAMESPACE__ . '::on_alter_cache_collection'
 	),
 

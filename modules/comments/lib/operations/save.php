@@ -73,24 +73,34 @@ class SaveOperation extends \Icybee\SaveOperation
 		# the article id is required when creating a message
 		#
 
-		if (!$this->key && !$request[Comment::NID])
+		if (!$this->key)
 		{
-			$errors[Comment::NID] = t('The node id is required while creating a new comment');
+			if (!$request[Comment::NID])
+			{
+				$errors[Comment::NID] = t('The node id is required to create a comment.');
 
-			return false;
-		}
+				return false;
+			}
 
-		#
-		# validate IP
-		#
+			#
+			# validate IP
+			#
 
-		$ip = $request->ip;
+			$ip = $request->ip;
 
-		if (!filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_NO_RES_RANGE))
-		{
-			$errors[] = t('Invalid IP address: %ip', array('%ip' => $ip));
+			if (filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_NO_RES_RANGE))
+			{
+				if ($this->module->model->where('author_ip = ? AND status = "spam"', $ip)->rc)
+				{
+					$errors[] = t('A previous message from your IP was marked as spam.');
+				}
+			}
+			else
+			{
+				$errors[] = t('Invalid IP address: %ip.', array('%ip' => $ip));
 
-			return false;
+				return false;
+			}
 		}
 
 		if (!$core->user_id)
@@ -108,7 +118,7 @@ class SaveOperation extends \Icybee\SaveOperation
 			# delay between last post
 			#
 
-			$interval = $core->site->metas->get($this->module->flat_id . '.delay', 5);
+			$interval = $core->site->metas[$this->module->flat_id . '.delay'] ?: 5;
 
 			$last = $this->module->model
 			->select('created')
@@ -122,13 +132,13 @@ class SaveOperation extends \Icybee\SaveOperation
 
 			if ($last)
 			{
-				$errors[] = t("Les commentaires ne peuvent être fait à moins de $interval minutes d'intervale.");
+				$errors[] = t("Les commentaires ne peuvent être faits à moins de $interval minutes d'intervale.");
 
 				return false;
 			}
 		}
 
-		return true;
+		return !count($errors);
 	}
 
 	protected function process()
@@ -206,8 +216,6 @@ class SaveOperation extends \Icybee\SaveOperation
 		$patron = new \WdPatron();
 		$subject = $patron($options['subject'], $comment);
 		$message = $patron($options['template'], $comment);
-
-		wd_log('Notify message: <pre>!message</pre>', array('!message' => $message));
 
 		$from = $options['from'];
 		$bcc = $options['bcc'];

@@ -31,19 +31,6 @@ class moo_WdEditorElement extends WdEditorElement
 		);
 	}
 
-	static public function to_content(array $params, $content_id, $page_id)
-	{
-		$contents = $params['contents'];
-
-		//$contents = str_replace('<p>&nbsp;</p>', '', $contents);
-
-		$contents = preg_replace('#<([^>]+)>[\s' . "\xC2\xA0" . ']+</\1>#', '', $contents);
-
-		//wd_log('contents: ' . wd_entities($contents));
-
-		return $contents;
-	}
-
 	public function render_outer_html()
 	{
 		global $core;
@@ -137,11 +124,7 @@ class moo_WdEditorElement extends WdEditorElement
 				{
 					$attributes['src'] = Operation::encode
 					(
-						'images/' . $attributes['data-nid'] . '/thumbnail', array
-						(
-							'w' => $attributes['width'],
-							'h' => $attributes['height']
-						)
+						'images/' . $attributes['data-nid'] . '/' . $attributes['width'] . 'x' . $attributes['height']
 					);
 				}
 
@@ -152,6 +135,9 @@ class moo_WdEditorElement extends WdEditorElement
 					$attributes['src'] = preg_replace('#\&amp;lightbox=true#', '', $attributes['src']);
 					$path = $core->models['images']->select('path')->find_by_nid($attributes['data-nid'])->rc;
 				}
+
+				unset($attributes['data-nid']);
+				unset($attributes['data-lightbox']);
 
 				$rc = (string) new Element('img', $attributes);
 

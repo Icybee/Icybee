@@ -33,7 +33,7 @@ class ConfigBlock extends \Icybee\ConfigBlock
 
 		$keywords = implode(', ', $keywords);
 
-		return wd_array_merge_recursive
+		return \ICanBoogie\array_merge_recursive
 		(
 			parent::alter_attributes($attributes), array
 			(

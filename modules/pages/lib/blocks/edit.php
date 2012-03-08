@@ -24,7 +24,7 @@ class EditBlock extends \ICanBoogie\Modules\Nodes\EditBlock
 	{
 		global $core;
 
-		return wd_array_merge_recursive
+		return \ICanBoogie\array_merge_recursive
 		(
 			parent::alter_attributes($attributes), array
 			(
@@ -106,7 +106,7 @@ class EditBlock extends \ICanBoogie\Modules\Nodes\EditBlock
 
 			unset($contents_tags[Element::CHILDREN]);
 
-			$attributes = wd_array_merge_recursive($attributes, $contents_tags);
+			$attributes = \ICanBoogie\array_merge_recursive($attributes, $contents_tags);
 		}
 
 		return array_merge

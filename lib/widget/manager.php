@@ -181,113 +181,137 @@ class Manager extends Element
 	{
 		global $core;
 
-		static::handle_assets();
-
-		$module_id = $this->module->id;
-		$session = $core->session;
-
-		$options = $this->retrieve_options($module_id);
-
-		$modifiers = array_diff_assoc($_GET, $options);
-		// FIXME: if modifiers ?
-
-		$this->options = $this->update_options($options, $modifiers);
-
-		$this->store_options($this->options, $module_id);
-
-		#
-		# load entries
-		#
-
-		list($conditions, $conditions_args) = $this->get_query_conditions($this->options);
-
-		$query = $this->model->where(implode(' AND ', $conditions), $conditions_args);
-		$query = $this->alter_query($query, $this->options['filters']);
-
-		$this->count = $query->count;
-
-		$query = $this->alter_range_query($query, $this->options);
-
 		try
 		{
-			$records = $this->load_range($query);
-		}
-		catch (\Exception $e)
-		{
-			$options['order'] = array();
-			$options['filters'] = array();
+			static::handle_assets();
 
-			$this->store_options($options, $module_id);
+			$module_id = $this->module->id;
+			$session = $core->session;
 
-			return "There was an error in the SQL statement, orders and filters have been reseted,
-			plase reload the page.<br /><br />" . $e->getMessage();
-		}
+			$options = $this->retrieve_options($module_id);
 
-		$this->entries = $this->alter_records($records);
+			$modifiers = array_diff_assoc($_GET, $options);
+			// FIXME: if modifiers ?
 
-		#
-		# extend columns with additional information.
-		#
+			$this->options = $this->update_options($options, $modifiers);
 
-		$this->columns = $this->extend_columns($this->columns);
+			$this->store_options($this->options, $module_id);
 
-		Event::fire('alter_columns', array('columns' => &$this->columns, 'records' => &$this->entries), $this);
+			#
+			# load entries
+			#
 
-		$rc  = PHP_EOL;
-		$rc .= '<form id="manager" method="get" action="">' . PHP_EOL;
+			list($conditions, $conditions_args) = $this->get_query_conditions($this->options);
 
-		$rc .= new Element
-		(
-			'input', array
-			(
-				'name' => Operation::DESTINATION,
-				'type' => 'hidden',
-				'value' => (string) $this->module
-			)
-		);
+			$query = $this->model->where(implode(' AND ', $conditions), $conditions_args);
+			$query = $this->alter_query($query, $this->options['filters']);
 
-		$rc .= new Element
-		(
-			'input', array
-			(
-				'name' => self::T_BLOCK,
-				'type' => 'hidden',
-				'value' => $this->get(self::T_BLOCK, 'manage')
-			)
-		);
+			$this->count = $query->count;
 
-		if ($this->entries || $this->options['filters'])
-		{
-			if ($this->entries)
+			$query = $this->alter_range_query($query, $this->options);
+
+			try
 			{
-				$body  = '<tbody>';
-				$body .= $this->render_body();
-				$body .= '</tbody>';
+				$records = $this->load_range($query);
+			}
+			catch (\Exception $e)
+			{
+				$options['order'] = array();
+				$options['filters'] = array();
+
+				$this->store_options($options, $module_id);
+
+				return "There was an error in the SQL statement, orders and filters have been reseted,
+				plase reload the page.<br /><br />" . $e->getMessage();
+			}
+
+			$this->entries = $this->alter_records($records);
+
+			#
+			# extend columns with additional information.
+			#
+
+			$this->columns = $this->extend_columns($this->columns);
+
+			Event::fire('alter_columns', array('columns' => &$this->columns, 'records' => &$this->entries), $this);
+
+			$rc  = PHP_EOL;
+			$rc .= '<form id="manager" method="get" action="">' . PHP_EOL;
+
+			$rc .= new Element
+			(
+				'input', array
+				(
+					'name' => Operation::DESTINATION,
+					'type' => 'hidden',
+					'value' => (string) $this->module
+				)
+			);
+
+			$rc .= new Element
+			(
+				'input', array
+				(
+					'name' => self::T_BLOCK,
+					'type' => 'hidden',
+					'value' => $this->get(self::T_BLOCK, 'manage')
+				)
+			);
+
+			if ($this->entries || $this->options['filters'])
+			{
+				if ($this->entries)
+				{
+					$body  = '<tbody>';
+					$body .= $this->render_body();
+					$body .= '</tbody>';
+				}
+				else
+				{
+					$body  = '<tbody class="empty"><tr><td colspan="' . count($this->columns) . '">' . $this->render_empty_body() . '</td></tr></tbody>';
+				}
+
+				$head = $this->render_head();
+				$foot = $this->render_foot();
+
+				$rc .= '<table class="group manage" cellpadding="4" cellspacing="0">';
+
+				$rc .= $head . PHP_EOL . $foot . PHP_EOL . $body . PHP_EOL;
+
+				$rc .= '</table>' . PHP_EOL;
 			}
 			else
 			{
-				$body  = '<tbody><tr><td colspan="' . count($this->columns) . '">' . $this->render_empty_body() . '</td></tr></tbody>';
+				$rc .= $this->render_empty_body();
 			}
 
-			$head = $this->render_head();
-			$foot = $this->render_foot();
+			$rc .= '</form>' . PHP_EOL;
 
-			$rc .= '<table class="group manage" cellpadding="4" cellspacing="0">';
+			$this->inject_search();
 
-			$rc .= $head . PHP_EOL . $foot . PHP_EOL . $body . PHP_EOL;
 
-			$rc .= '</table>' . PHP_EOL;
+
+
+
+			$search = $this->rendered_search;
+			$browse = $this->browse;
+
+			\ICanBoogie\Events::attach
+			(
+				'Icybee\Admin\Element\ActionbarSearch::alter_inner_html', function(Event $event, \Icybee\Admin\Element\ActionbarSearch $sender) use($search, $browse)
+				{
+					$event->html .= $browse . $search;
+				}
+			);
+
+
+
+			return $rc;
 		}
-		else
+		catch (\Exception $e)
 		{
-			$rc .= $this->render_empty_body();
+			return \ICanBoogie\Debug::format_alert($e);
 		}
-
-		$rc .= '</form>' . PHP_EOL;
-
-		$this->inject_search();
-
-		return $rc;
 	}
 
 	protected static function add_assets(\Brickrouge\Document $document)
@@ -873,7 +897,17 @@ EOT;
 
 		if ($label)
 		{
-			$label = $t($id, array(), array('scope' => '.title', 'default' => $t($id, array(), array('scope' => '.label', 'default' => $label))));
+			$label = $t
+			(
+				$id, array(), array
+				(
+					'scope' => 'title',
+					'default' => $t
+					(
+						$id, array(), array('scope' => '.label', 'default' => $label)
+					)
+				)
+			);
 		}
 
 		if ($id == $this->idtag)
@@ -1099,7 +1133,7 @@ EOT;
 					)
 				),
 
-				'title' => t('Toggle selection for entry #\1', array($value)),
+				'title' => t('Toggle selection for record #:key', array('key' => $value)),
 				'class' => 'checkbox-wrapper rectangle'
 			)
 		);
@@ -1366,17 +1400,11 @@ EOT;
 				),
 
 				'class' => 'navbar-search search' . ($search ? ' active' : ''),
-				'method' => 'get'
+				'method' => \ICanBoogie\HTTP\Request::METHOD_GET
 			)
 		);
 
-		Event::add
-		(
-			'Icybee\Admin\Element\ActionbarSearch::alter_inner_html', function(Event $event, \Icybee\Admin\Element\ActionbarSearch $sender) use($html)
-			{
-				$event->html .= $html;
-			}
-		);
+		$this->rendered_search = $html;
 
 		return $html;
 	}
@@ -1384,6 +1412,8 @@ EOT;
 	protected function inject_search()
 	{
 		global $core;
+
+		$this->rendered_search = null;
 
 		$document = $core->document;
 

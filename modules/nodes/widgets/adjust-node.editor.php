@@ -13,44 +13,51 @@ use Brickrouge\Widget;
 
 class adjustnode_WdEditorElement extends WdEditorElement
 {
-	public function __construct($tags, $dummy=null)
+	public function __construct(array $attributes=array())
 	{
-		parent::__construct('div', $tags);
+		parent::__construct('div', $attributes);
 	}
 
-	static public function to_content(array $params, $content_id, $page_id)
+	static public function to_content($value, $content_id, $page_id)
 	{
-		if (empty($params['contents']))
+		if (!$value)
 		{
 			return;
 		}
 
-		return json_encode($params['contents']);
+		return $value;
 	}
 
-	static public function render($contents)
+	static public function render($content)
 	{
 		global $core;
 
-		$value = json_decode($contents);
+		if (!is_numeric($content))
+		{
+			$content = json_decode($content);
+		}
 
-		if ($value === null)
+		if (!$content)
 		{
 			return;
 		}
 
-		return $core->models['nodes'][$value];
+		return $core->models['nodes'][$content];
 	}
 
 	protected function render_inner_html()
 	{
 		$rc = parent::render_inner_html();
 
-		$value = $this->get('value');
-		$name = $this->get('name');
+		$value = $this['value'];
+		$name = $this['name'];
 
-		$value = json_decode($value);
-		$config = (array) $this->get(self::T_CONFIG, array());
+		if ($value && !is_numeric($value))
+		{
+			$value = json_decode($value);
+		}
+
+		$config = (array) $this[self::T_CONFIG] ?: array();
 
 		// TODO-20100816: rename 'scope' as 'contructor' ?
 

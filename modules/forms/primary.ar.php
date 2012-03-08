@@ -144,7 +144,7 @@ class Form extends Node
 
 				if (!$core->user->has_permission($access, $destination))
 				{
-					return (string) new \Brickrouge\AlertMessage
+					return (string) new \Brickrouge\Alert
 					(
 						<<<EOT
 <p>You don't have permission to execute the <q>$name</q> operation on the <q>$destination</q> module,

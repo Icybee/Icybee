@@ -46,7 +46,7 @@ return array
 		'uid' => 'User'
 	),
 
-	'module_category.title.other' => 'Other',
+	'module_category.other' => 'Other',
 
 	'offline.operation' => array
 	(

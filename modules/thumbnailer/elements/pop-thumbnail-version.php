@@ -19,7 +19,7 @@ class PopThumbnailVersion extends \Brickrouge\Widget
 	{
 		parent::__construct
 		(
-			'button', $attributes + array
+			'a', $attributes + array
 			(
 				'class' => 'spinner',
 				'type' => 'button'
@@ -50,6 +50,16 @@ class PopThumbnailVersion extends \Brickrouge\Widget
 
 		$value = $this['value'] ?: $this[self::DEFAULT_VALUE];
 		$value = json_decode($value, true);
+
+		$rc .= new Element
+		(
+			'input', array
+			(
+				'name' => $this['name'],
+				'type' => 'hidden',
+				'value' => json_encode($value)
+			)
+		);
 
 		if ($value)
 		{

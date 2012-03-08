@@ -237,9 +237,11 @@ provides: [MooEditable.CleanPaste]
 
 			// remove empty tags (three times, just to be sure - for nested empty tags).
 			// This also removes any empty anchors
+			/*
 			html = html.replace(/<([^\s>]+)(\s[^>]*)?>\s*<\/\1>/g, '');
 			html = html.replace(/<([^\s>]+)(\s[^>]*)?>\s*<\/\1>/g, '');
 			html = html.replace(/<([^\s>]+)(\s[^>]*)?>\s*<\/\1>/g, '');
+			*/
 
 			html = html.trim();
 
@@ -250,7 +252,7 @@ provides: [MooEditable.CleanPaste]
 				html.replace(/<\/p>/gi, '');
 			}
 			*/
-			/* this is stupid, the HTML might start with an H1 element or a table !
+			/*@olvlvl: this is stupid, the HTML might start with an H1 element or a table !
 			// Check if in paragraph - this fixes FF3.6 and it's <br id=""> issue
 			else {
 			  var check = html.substr(0,2);
@@ -276,7 +278,13 @@ provides: [MooEditable.CleanPaste]
 //			html = html.replace(/<p>&nbsp;<\/p>/gi,'');
 			html = html.replace(/<(\w+)[^>]*>\s*&nbsp;\s*<\/\1>/gi, '') //@olvlv P are not the only one that can end up with
 			html = html.replace(/<p>\s<\/p>/gi, '');
-			html = html.replace(/<([^\s>]+)(\s[^>]*)?>\s*<\/\1>/g, '');
+			html = html.replace
+			(
+				/<([^\s>]+)(\s[^>]*)?>\s*<\/\1>/g, function(captured, tagName) {
+
+					return tagName.match(/^iframe$/i) ? captured : '';
+				}
+			)
 
 			html = html.trim();
 		  }

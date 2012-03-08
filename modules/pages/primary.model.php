@@ -300,19 +300,6 @@ class Model extends \ICanBoogie\Modules\Nodes\Model
 			$parent = $page;
 		}
 
-		/*
-		if ($site->status != 1)
-		{
-			$node = $page;
-
-			while ($node)
-			{
-				$node->is_online = false;
-				$node = $node->parent;
-			}
-		}
-		*/
-
 		return $page;
 	}
 

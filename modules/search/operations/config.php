@@ -11,7 +11,7 @@
 
 namespace ICanBoogie\Modules\Search;
 
-class ConfigOperation extends \Icybee\Operation\Module\Config
+class ConfigOperation extends \Icybee\ConfigOperation
 {
 	protected function process()
 	{

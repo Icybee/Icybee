@@ -43,11 +43,13 @@ return array
 		'is_notify' => "This option triggers the sending of an email when a form is posted successfully."
 	),
 
-	'manager.label' => array
+	'manage.title' => array
 	(
 		'modelid' => 'Model',
 		'subject' => 'Subject'
 	),
+
+	'module_title.forms' => 'Forms',
 
 	#
 	# BrickRouge\EmailComposer

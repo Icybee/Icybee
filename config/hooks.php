@@ -4,13 +4,11 @@ return array
 (
 	'events' => array
 	(
+		'ICanBoogie\Modules\System\Cache\Collection::alter' => 'Icybee\Hooks::on_alter_cache_collection',
 		'ICanBoogie\Modules\Users\LogoutOperation::process:before' => 'Icybee\Hooks::before_user_logout',
+		'ICanBoogie\Operation::get_form' => 'Icybee\Element\Form::on_operation_get_form',
 
-		'operation.components/*:before' => 'publisher_WdHooks::before_operation_components_all', // FIXME-20120108: is this still relevant ?
-		'operation.components/*' => 'publisher_WdHooks::operation_components_all', // FIXME-20120108: is this still relevant ?
-		'Icybee::nodes_load' => 'Icybee::on_nodes_load',
-
-		'ICanBoogie\Modules\System\Cache\Collection::alter' => 'Icybee\Hooks::on_alter_cache_collection'
+		'Icybee::nodes_load' => 'Icybee::on_nodes_load'
 	),
 
 	'objects.methods' => array
@@ -22,12 +20,17 @@ return array
 	(
 		'document:metas' => array
 		(
-			'IcyBee\Document::markup_document_metas', array()
+			'Icybee\Document::markup_document_metas', array()
 		),
 
 		'document:title' => array
 		(
-			'IcyBee\Document::markup_document_title', array()
+			'Icybee\Document::markup_document_title', array()
+		),
+
+		'alerts' => array
+		(
+			'Icybee\Hooks::markup_alerts', array()
 		)
 	)
 );

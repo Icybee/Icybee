@@ -11,6 +11,10 @@
 
 namespace Icybee\Views;
 
+use ICanBoogie\ActiveRecord\Model;
+
+use Brickrouge\Pager;
+
 use ICanBoogie\ActiveRecord\Node;
 
 use ICanBoogie;
@@ -268,7 +272,7 @@ class View extends Object
 		global $core;
 
 		$limit_key = $this->module->flat_id . '.limits.' . $this->type;
-		$limit = $core->site->metas[$limit_key] ?: 10;
+		$limit = $core->site->metas[$limit_key] ?: null;
 
 		return array
 		(
@@ -351,6 +355,23 @@ class View extends Object
 			}
 		}
 
+		$engine->context['pagination'] = '';
+
+		if (isset($engine->context['range']['limit']) && isset($engine->context['range']['count']))
+		{
+			$range = $engine->context['range'];
+
+			$engine->context['pagination'] = new Pager
+			(
+				'div', array
+				(
+					Pager::T_COUNT => $range['count'],
+					Pager::T_LIMIT => $range['limit'],
+					Pager::T_POSITION => $range['page']
+				)
+			);
+		}
+
 		#
 		#
 		#
@@ -374,20 +395,36 @@ class View extends Object
 
 				ob_start();
 
-				//TODO: use a context and the alter_context() method
+				try
+				{
+					//TODO: use a context and the alter_context() method
 
-				wd_isolated_require
-				(
-					$template_path, array
+					$isolated_require = function ($__file__, $__exposed__)
+					{
+						extract($__exposed__);
+
+						return require $__file__;
+					};
+
+					$isolated_require
 					(
-						'bind' => $bind,
-						'context' => &$context,
-						'core' => $core,
-						'document' => $core->document,
-						'page' => $page,
-						'module' => $module
-					)
-				);
+						$template_path, array
+						(
+							'bind' => $bind,
+							'context' => &$context,
+							'core' => $core,
+							'document' => $core->document,
+							'page' => $page,
+							'module' => $module
+						)
+					);
+				}
+				catch (\Exception $e)
+				{
+					ob_clean();
+
+					throw $e;
+				}
 
 				$rc = ob_get_clean();
 			}
@@ -463,13 +500,45 @@ class View extends Object
 
 		$id = $this->id;
 		$type = $this->type;
+
+		if (0)
+		{
+			$templates = array
+			(
+				str_replace('/', '--', str_replace($this->module->id . '/', '', str_replace(':', '-', $id))),
+				$type
+			);
+
+			wd_log('templates: \1', array($templates));
+
+			$descriptors = $core->modules->descriptors;
+			$descriptor = $descriptors[$this->module->id];
+
+			while ($descriptor)
+			{
+				foreach ($templates as $template)
+				{
+					$pathname = 'templates/views/' . $descriptor[Module::T_ID] . '--' . $template;
+
+					wd_log($pathname);
+
+					$pathname = $descriptor[Module::T_PATH] . 'views/' . $template;
+
+					wd_log($pathname);
+				}
+
+				$descriptor = $descriptor[Module::T_EXTENDS] ? $descriptors[$descriptor[Module::T_EXTENDS]] : null;
+			}
+		}
+
 		$handled = array('php', 'html');
 
 		foreach ($handled as $extension)
 		{
-			$try = $core->site->resolve_path("templates/views/$id.$extension");
+			$pathname = 'templates/views/' . str_replace(':', '-', $id) . '.' . $extension;
+			$try = $core->site->resolve_path($pathname);
 
-// 			wd_log("tried: templates/views/$id.$extension");
+// 			wd_log("tried: $pathname");
 
 			if ($try)
 			{

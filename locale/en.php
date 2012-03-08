@@ -74,7 +74,7 @@ return array
 		'edit_named' => 'Edit the entry: :title'
 	),
 
-	'module_category.title' => array
+	'module_category' => array
 	(
 		'feedback' => 'Feedback',
 		'organize' => 'Organize',

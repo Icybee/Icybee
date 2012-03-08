@@ -38,6 +38,8 @@ return array
 
 		'nodes' => array
 		(
+			Model::T_ALIAS => 'term_node',
+
 			Model::T_IMPLEMENTS => array
 			(
 				array('model' => 'taxonomy.terms/primary')

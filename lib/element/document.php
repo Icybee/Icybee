@@ -116,12 +116,12 @@ class Document extends \Brickrouge\Document
 
 		$js = $this->js;
 
-		$alert_success = new Alert(Debug::fetch_messages('done'), array(Alert::CONTEXT => 'success'));
-		$alert_info = new Alert(Debug::fetch_messages('info'), array(Alert::CONTEXT => 'info'));
-		$alert_error = new Alert(Debug::fetch_messages('error'), array(Alert::CONTEXT => 'error'));
-		$alert_debug = new Alert(Debug::fetch_messages('debug'), array(Alert::CONTEXT => 'debug'));
+		$alert = '';
 
-		$alert = trim($alert_success . $alert_error . $alert_info . $alert_debug);
+		foreach (array('success', 'info', 'error', 'debug') as $type)
+		{
+			$alert .= new Alert(Debug::fetch_messages($type), array(Alert::CONTEXT => $type));
+		}
 
 		return <<<EOT
 <body class="admin{$body_class}">
@@ -134,7 +134,6 @@ class Document extends \Brickrouge\Document
 		<div id="contents">
 			<div class="alert-wrapper">$alert</div>
 			$contents
-			$alert_debug
 		</div>
 	</div>
 
@@ -157,7 +156,7 @@ EOT;
 		{
 			$this->page_title = 'Icybee';
 
-			return '←&nbsp;<a href="' . $site->url . '" class="home">' . t($site->title) . '</a>';
+			return '<a href="' . $site->url . '" class="home">' . t($site->title) . '</a> <i class="icon-home icon-white"></i>';
 		}
 
 		$site_title = wd_entities($site->admin_title);
@@ -184,7 +183,7 @@ EOT;
 
 			if (count($sites) > 1)
 			{
-				$path = Route::decontextualize($core->request->path);
+				$path = Route::decontextualize($core->request->pathinfo);
 
 				foreach ($sites as $asite)
 				{
@@ -250,7 +249,6 @@ EOT;
 EOT;
 
 
-// 		$rc  = '<div class="sites"><span style="float: left">←&nbsp;</span>' . $sites_list . '</div>';
 		$rc .= $this->render_shortcut__user();
 
 		return $rc;
@@ -325,7 +323,7 @@ EOT;
 			(
 				DropdownMenu::OPTIONS => $options,
 
-				'value' => $core->request->path
+				'value' => $core->request->pathinfo
 			)
 		);
 
@@ -357,32 +355,6 @@ EOT;
 
 		return new Admin\Element\Navigation(array('id' => 'navigation'));
 	}
-
-	/*
-	protected function getFooter()
-	{
-		$phrases = array
-		(
-			'Thank you for creating with :link',
-			'Light and sweet edition with :link',
-			':link is super green'
-		);
-
-		$phrase = $phrases[date('md') % count($phrases)];
-		$link = '<a href="http://www.wdpublisher.com/" target="_blank">Icybee</a>';
-
-		$rc  = '<div id="footer" class="-sticky">';
-		$rc .= '<p>';
-		$rc .= t($phrase, array(':link' => $link));
-		$rc .= ' › <a href="http://www.wdpublisher.com/docs/" target="_blank">Documentation</a>';// | <a href="http://www.wdpublisher.com/feedback/">Feedback</a>';
-		$rc .= '</p>';
-		$rc .= '<p class="version">v' . preg_replace('#\s*\(.*#', '', VERSION) . '</p>';
-		$rc .= '<div class="clear"></div>';
-		$rc .= '</div>';
-
-		return $rc;
-	}
-	*/
 
 	/*
 	**

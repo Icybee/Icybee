@@ -44,7 +44,7 @@ class Hooks
 			}
 		}
 
-		$path = $request->path;
+		$path = $request->pathinfo;
 
 		/* FIXME-20111101: do we still need that now that we use the Request object ?
 		if (preg_match('#/index\.(html|php)#', $path))

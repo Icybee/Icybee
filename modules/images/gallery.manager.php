@@ -117,7 +117,6 @@ class GalleryManager extends ManageBlock
 							'w' => $size,
 							'h' => $size,
 							'method' => 'constrained',
-							'interlace' => true,
 							'quality' => 90
 						)
 					),

@@ -23,5 +23,5 @@ return array
 		)
 	),
 
-	'module.title.contents_news' => 'Novinky'
+	'module_title.contents_news' => 'Novinky'
 );

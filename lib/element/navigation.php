@@ -11,6 +11,10 @@
 
 namespace Icybee\Admin\Element;
 
+use Brickrouge\DropdownMenu;
+
+use Brickrouge\A;
+
 use ICanBoogie\ActiveRecord\Users;
 use ICanBoogie\Module;
 use ICanBoogie\Route;
@@ -70,7 +74,7 @@ class Navigation extends \Brickrouge\Element
 
 			$menus[$category][$route['pattern']] = $route;
 
-			$links[$category] = t($category, array(), array('scope' => 'module_category.title')); // TODO: a same category is translated multiple time
+			$links[$category] = t($category, array(), array('scope' => 'module_category')); // TODO: a same category is translated multiple time
 		}
 
 		uasort($links, 'wd_unaccent_compare_ci');
@@ -91,7 +95,7 @@ class Navigation extends \Brickrouge\Element
 			unset($links['features']);
 		}
 
-		$path = Route::decontextualize($core->request->path);
+		$path = Route::decontextualize($core->request->pathinfo);
 		$matching_route = Route::find($path, 'any', 'admin'); // FIXME-20120201: use the primary request object
 		$selected = $matching_route ? $descriptors[$matching_route[0]['module']][Module::T_CATEGORY] : 'dashboard';
 
@@ -129,26 +133,27 @@ class Navigation extends \Brickrouge\Element
 	{
 		global $core;
 
+		$options = array();
 		$descriptors = $core->modules->descriptors;
-
-		$rc = '<ul class="dropdown-menu">';
 
 		foreach ($routes as $route)
 		{
 			$title = $route['title'];
-
 			$module_id = $route['module'];
 			$module_flat_id = strtr($module_id, '.', '_');
-
-			$default = $descriptors[$module_id][Module::T_TITLE];
-
-			$title = t($module_flat_id, array(), array('scope' => 'module.title', 'default' => $default));
-
-			$rc .= '<li><a href="' . Route::contextualize($route['pattern']) . '">' . $title . '</a></li>';
+			$title = t($module_flat_id, array(), array('scope' => 'module_title', 'default' => $descriptors[$module_id][Module::T_TITLE]));
+			$url = Route::contextualize($route['pattern']);
+			$options[$url] = new A($title, $url);
 		}
 
-		$rc .= '</ul>';
+		return new DropdownMenu
+		(
+			array
+			(
+				DropdownMenu::OPTIONS => $options,
 
-		return $rc;
+				'value' => $core->request->pathinfo
+			)
+		);
 	}
 }

@@ -3,5 +3,6 @@
 return array
 (
 	'label.url' => 'URL',
-	'module_category.title.site' => 'Site'
+	'module_category.site' => 'Site',
+	'module_title.sites' => 'Sites'
 );

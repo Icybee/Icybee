@@ -56,7 +56,7 @@ return array
 		'Translations' => 'Traductions'
 	),
 
-	'module_category.title.other' => 'Autre',
+	'module_category.other' => 'Autre',
 
 	'option' => array
 	(

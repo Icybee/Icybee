@@ -31,6 +31,11 @@ class ActionbarTitle extends Element
 	{
 		global $core;
 
+		if ($core->user->is_guest || $core->user instanceof Member)
+		{
+			return '<h1>Icybee</h1>';
+		}
+
 		$request = $core->request;
 		$route = $request->route;
 
@@ -52,7 +57,7 @@ class ActionbarTitle extends Element
 				(
 					DropdownMenu::OPTIONS => $options,
 
-					'value' => $request->path
+					'value' => $request->pathinfo
 				)
 			);
 

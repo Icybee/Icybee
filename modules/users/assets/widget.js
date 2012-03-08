@@ -104,12 +104,12 @@ Brickrouge.Widget.LoginCombo = new Class({
 			{
 				fx.start(-amplitude).chain
 				(
-					function () { this.start(amplitude); },
-					function () { this.start(-amplitude); },
-					function () { this.start(amplitude); },
-					function () { this.start(0); }
-				);
-			};
+					function () { this.start(amplitude) },
+					function () { this.start(-amplitude) },
+					function () { this.start(amplitude) },
+					function () { this.start(0) }
+				)
+			}
 
 		}) (el.getParent('shakable') || el, 50, 200);
 
@@ -119,8 +119,6 @@ Brickrouge.Widget.LoginCombo = new Class({
 		(
 			'success', function()
 			{
-				console.log('nonnc', arguments);
-
 				nonceOut.delay(4000);
 			}
 		);

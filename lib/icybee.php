@@ -15,6 +15,7 @@ use ICanBoogie\Debug;
 use ICanBoogie\Event;
 use ICanBoogie\Exception;
 use ICanBoogie\HTTP\Request;
+use ICanBoogie\HTTP\Response;
 use ICanBoogie\Module;
 use ICanBoogie\Operation;
 use ICanBoogie\Route;
@@ -46,13 +47,11 @@ class Icybee extends WdPatron
 		$this->templates_searched = true;
 	}
 
-	public function run()
+	public function run(Request $request, Response $response)
 	{
 		global $core, $wddebug_time_reference;
 
 		$time_start = microtime(true);
-
-// 		session_cache_limiter('public');
 
 		$html = null;
 		$request = $core->request;
@@ -65,6 +64,7 @@ class Icybee extends WdPatron
 				'render:before', array
 				(
 					'request' => $request,
+					'response' => $response,
 					'constructor' => array($this, 'run_callback'),
 					'constructor_data' => &$constructor_data,
 					'rc' => &$html
@@ -95,12 +95,12 @@ class Icybee extends WdPatron
 			throw $e;
 		}
 
-		$time_end = microtime(true);
-		$time = $time_end - $time_start;
-
 		#
 		# stats
 		#
+
+		$time_end = microtime(true);
+		$time = $time_end - $time_start;
 
 		$queries_count = 0;
 		$queries_stats = array();
@@ -131,7 +131,6 @@ class Icybee extends WdPatron
 			'icybee v:version - in :elapsed ms (rendering: :rendering_elapsed ms, db: :dbtime ms), using :memory-usage (peak: :memory-peak), :queries-count queries (:queries-details)', array
 			(
 				':version' => \Icybee\VERSION,
-				':core_version' => \ICanBoogie\VERSION,
 				':elapsed' => number_format(($time_end - $wddebug_time_reference) * 1000, 2, '.', ''),
 				':rendering_elapsed' => number_format($time * 1000, 2, '.', ''),
 				':dbtime' => number_format($dbtime * 1000, 2, '.', ''),
@@ -156,14 +155,14 @@ class Icybee extends WdPatron
 		Debug::fetch_messages('info');
 		Debug::fetch_messages('debug');
 
-		echo $html . $comment;
+		return $html . $comment;
 	}
 
 	public function run_callback(Request $request)
 	{
 		global $core, $page;
 
-		$path = $request->path;
+		$path = $request->pathinfo;
 		$site = $core->site;
 
 		if (!$site->siteid)
@@ -255,7 +254,7 @@ class Icybee extends WdPatron
 
 			$_REQUEST += $page->url_variables;
 
-			$request->path_parameters = $page->url_variables + $request->path_parameters;
+			$request->pathinfo_parameters = $page->url_variables + $request->pathinfo_parameters;
 
 			#
 			# we unset the request params, it will be reconstructed on the next access.
@@ -305,16 +304,14 @@ class Icybee extends WdPatron
 
 		$html = $this($template, $page, array('file' => $file));
 
-		Event::fire
+		new \Icybee\RenderEvent
 		(
-			'render', array
+			$this, array
 			(
 				'request' => $request,
 				'page' => $page,
-				'rc' => &$html
-			),
-
-			$this
+				'html' => &$html
+			)
 		);
 
 		#
@@ -356,6 +353,7 @@ class Icybee extends WdPatron
 			$html = str_replace('</body>', PHP_EOL . PHP_EOL . $document->js . PHP_EOL . '</body>', $html);
 		}
 
+		/*
 		$markup = '<!-- $log -->';
 		$pos = strpos($html, $markup);
 
@@ -363,6 +361,7 @@ class Icybee extends WdPatron
 		{
 			$html = substr($html, 0, $pos) . $this->get_log() . substr($html, $pos + strlen($markup));
 		}
+		*/
 
 		return $html;
 	}
@@ -448,7 +447,6 @@ class Icybee extends WdPatron
 		<a href="' . $core->site->path . '/admin/">' . $translator->__invoke('Admin') . '</a></li>';
 		$contents .= '</ul>';
 
-
 		#
 		# configurable
 		#
@@ -492,7 +490,7 @@ class Icybee extends WdPatron
 			$nodes[$node->nid] = $node;
 		}
 
-		$translator->scope = 'module_category.title';
+		$translator->scope = 'module_category';
 
 		foreach ($nodes as $node)
 		{
@@ -530,7 +528,7 @@ class Icybee extends WdPatron
 		if ($contents)
 		{
 			$rc  = <<<EOT
-<div id="wdpublisher-admin-menu">
+<div id="icybee-admin-menu">
 <div class="panel-title">Icybee</div>
 <div class="contents">$contents</div>
 </div>
@@ -540,11 +538,12 @@ EOT;
 		return $rc;
 	}
 
+	/*DIRTY
 	protected function get_log()
 	{
 		global $core;
 
-		$log_done = Debug::fetch_messages('done');
+		$log_done = Debug::fetch_messages('success');
 		$log_error = Debug::fetch_messages('error');
 		$log_debug = Debug::fetch_messages('debug');
 
@@ -571,6 +570,7 @@ EOT;
 
 		return $log;
 	}
+	*/
 
 	static protected $nodes = array();
 

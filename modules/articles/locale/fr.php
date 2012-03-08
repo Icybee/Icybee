@@ -21,7 +21,5 @@ return array
 				'other' => 'Voir les :count résultats trouvés pour %search dans les articles'
 			)
 		)
-	),
-
-	'module.title.articles' => 'Articles'
+	)
 );

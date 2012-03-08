@@ -14,7 +14,7 @@ namespace ICanBoogie\Modules\Users;
 /**
  * Disables a user account.
  */
-class DeactivateOperation extends Activate
+class DeactivateOperation extends ActivateOperation
 {
 	protected function process()
 	{

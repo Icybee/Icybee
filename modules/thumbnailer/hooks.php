@@ -11,6 +11,8 @@
 
 namespace ICanBoogie\Modules\Thumbnailer;
 
+use Icybee\ConfigOperation\BeforePropertiesEvent;
+
 use ICanBoogie\ActiveRecord;
 use ICanBoogie\Event;
 use ICanBoogie\Operation;
@@ -120,22 +122,22 @@ class Hooks
 	 * Callback for the `properties:before` event, pre-parsing thumbnailer versions if they are
 	 * defined.
 	 *
-	 * @param Event $ev
+	 * @param \Icybee\ConfigOperation\BeforePropertiesEvent $ev
 	 */
-	static public function before_config_properties(Event $event)
+	static public function before_config_properties(\Icybee\ConfigOperation\BeforePropertiesEvent $event)
 	{
 		global $core;
 
-		$properties = &$event->properties;
+		$params = &$event->request->params;
 
-		if (empty($properties['global']['thumbnailer.versions']))
+		if (empty($params['global']['thumbnailer.versions']))
 		{
 			return;
 		}
 
 		$config = $core->configs->synthesize('thumbnailer', 'merge');
 
-		foreach ($properties['global']['thumbnailer.versions'] as $name => &$options)
+		foreach ($params['global']['thumbnailer.versions'] as $name => &$options)
 		{
 			if (is_string($options))
 			{

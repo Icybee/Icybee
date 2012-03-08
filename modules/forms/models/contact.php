@@ -21,7 +21,7 @@ class Contact extends Form
 	{
 		parent::__construct
 		(
-			wd_array_merge_recursive
+			\ICanBoogie\array_merge_recursive
 			(
 				$tags, array
 				(
@@ -34,7 +34,18 @@ class Contact extends Form
 							Element::TYPE_RADIO_GROUP, array
 							(
 								Form::LABEL => 'Salutation',
-								Element::OPTIONS => array('salutation.misses', 'salutation.miss', 'salutation.mister'),
+								Element::OPTIONS => array('salutation.misses', 'salutation.mister'),
+								Element::REQUIRED => true,
+
+								'class' => 'inline-inputs'
+							)
+						),
+
+						'firstname' => new Text
+						(
+							array
+							(
+								Form::LABEL => 'Firstname',
 								Element::REQUIRED => true
 							)
 						),
@@ -44,15 +55,6 @@ class Contact extends Form
 							array
 							(
 								Form::LABEL => 'Lastname',
-								Element::REQUIRED => true
-							)
-						),
-
-						'firstname' => new Text
-						(
-							array
-							(
-								Form::LABEL => 'Firstname',
 								Element::REQUIRED => true
 							)
 						),

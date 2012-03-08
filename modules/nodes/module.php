@@ -33,7 +33,7 @@ class Module extends \Icybee\Module
 	 */
 	protected function __get_views()
 	{
-		return wd_array_merge_recursive
+		return \ICanBoogie\array_merge_recursive
 		(
 			parent::__get_views(), array
 			(
@@ -246,7 +246,7 @@ class Module extends \Icybee\Module
 				$category = $default_category;
 			}
 
-			$title = t($descriptor[self::T_TITLE], array(), array('scope' => 'module.title'));
+			$title = t($descriptor[self::T_TITLE], array(), array('scope' => 'module_title'));
 
 			$categories[$category][] = array
 			(
@@ -260,7 +260,7 @@ class Module extends \Icybee\Module
 		foreach ($categories as $category => $entries)
 		{
 			$max_by_category = max($max_by_category, count($entries));
-			$head .= '<th>&nbsp;</th><th>' . t($category, array(), array('scope' => 'module_category.title')) . '</th>';
+			$head .= '<th>&nbsp;</th><th>' . t($category, array(), array('scope' => 'module_category')) . '</th>';
 		}
 
 		$body = '';
@@ -385,7 +385,7 @@ EOT;
 
 			+ $common;
 
-			if ($module_id == 'contents' || self::is_extending($module_id, 'contents'))
+			if ($module_id == 'contents' || self::is_extending($module_id, 'contents') || $module_id == 'files' || self::is_extending($module_id, 'files'))
 			{
 				# config'
 

@@ -11,5 +11,7 @@ return array
 	(
 		'alt' => 'Alternative text',
 		'property_scope' => "Allow attachment of an image to the records of the following modules"
-	)
+	),
+
+	'module_title.images' => 'Images'
 );

@@ -39,7 +39,7 @@ return array
 		'edit_named' => "Éditer l'entrée : :title"
 	),
 
-	'module_category.title' => array
+	'module_category' => array
 	(
 		'features' => 'Fonctionalités',
 		'feedback' => 'Intéractions',

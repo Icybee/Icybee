@@ -17,7 +17,7 @@ class quick_contact_WdForm extends Form
 	{
 		parent::__construct
 		(
-			wd_array_merge_recursive
+			\ICanBoogie\array_merge_recursive
 			(
 				$tags, array
 				(
@@ -43,15 +43,13 @@ class quick_contact_WdForm extends Form
 								Element::REQUIRED => true
 							)
 						)
-					),
-
-					'class' => 'stacked'
+					)
 				)
 			)
 		);
 	}
 
-	static public function getConfig()
+	static public function getConfig() // TODO-20120304: refactor this
 	{
 		global $core;
 
@@ -79,7 +77,7 @@ class quick_contact_WdForm extends Form
 						Element::GROUP => 'config',
 						Element::DEFAULT_VALUE => array
 						(
-							'from' => 'Contact <no-reply@wdpublisher.com>',
+							'from' => "Contact <{$core->site->email}>",
 							'subject' => 'Formulaire de contact',
 							'template' => <<<EOT
 Un message a été posté depuis le formulaire de contact :

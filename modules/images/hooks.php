@@ -258,7 +258,7 @@ class Hooks
 			$matches[2] = $matches[3];
 			$matches[3] = $matches[4];
 
-			Debug::trigger('should call standard one !');
+			trigger_error('should call standard one !');
 
 			//return parent::_doImages_reference_callback($matches);
 
@@ -319,11 +319,11 @@ class Hooks
 	 *
 	 * @param Event $event
 	 */
-	public static function on_icybee_render(Event $event)
+	public static function on_icybee_render(\Icybee\RenderEvent $event)
 	{
 		global $document;
 
-		if (strpos($event->rc, 'rel="lightbox') === false)
+		if (strpos($event->html, 'rel="lightbox') === false)
 		{
 			return;
 		}

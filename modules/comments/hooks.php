@@ -93,7 +93,7 @@ class Hooks
 
 		$ns = wd_entities($metas_prefix);
 
-		$event->tags = wd_array_merge_recursive
+		$event->tags = \ICanBoogie\array_merge_recursive
 		(
 			$event->tags, array
 			(

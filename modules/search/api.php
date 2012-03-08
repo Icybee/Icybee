@@ -217,7 +217,7 @@ function make_set($constructor, $entries, $count, $search, $has_pager=false)
 	if (empty($_GET['constructor']))
 	{
 		$title = ($constructor == 'google' ? 'Google' : $core->modules->descriptors[$constructor][Module::T_TITLE]);
-		$title = t(strtr($constructor, '.', '_'), array(), array('scope' => array('module', 'title'), 'default' => $title));
+		$title = t(strtr($constructor, '.', '_'), array(), array('scope' => 'module_title', 'default' => $title));
 
 		$rc .= '<h2>' . $title . '</h2>';
 	}

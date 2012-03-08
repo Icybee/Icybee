@@ -19,7 +19,7 @@ $wddebug_time_reference = microtime(true);
 /**
  * @var string Version string for the Icybee package.
  */
-define('Icybee\VERSION', '1.0-dev (2012-01-17)');
+define('Icybee\VERSION', '1.0-dev (2012-03-01)');
 
 /**
  * @var string Root path for the Icybee package.
@@ -86,6 +86,12 @@ $core = Core::get_singleton
 	)
 );
 
+// wd_log_time('core created');
+
+$core->run();
+
+// wd_log_time('core is running');
+
 /**
  * @var bool The views are cached when the Icybee\CACHE_VIEWS is defined.
  */
@@ -94,44 +100,78 @@ if (!defined('Icybee\CACHE_VIEWS'))
 	define('Icybee\CACHE_VIEWS', $core->config['cache views']);
 }
 
-// wd_log_time('core created');
-
-$core->run();
-
-// wd_log_time('core is running');
-
 /*
- * The following code is a tiny router to handle "/admin/" routes. It may redirect the user to the
- * proper "admin" location e.g. '/admin/' => '/fr/admin/'. If the "admin" route is detected, the
- * Icybee admin interface is presented, granted the user has an access permission, otherwise the
- * user is asked to authenticate.
+ * Handler for the website.
  */
-
-$uri = $core->request->uri;
-$site = $core->site;
-$suffix = $site->path;
-
-if ($suffix && preg_match('#^' . preg_quote($suffix) . '/#', $uri))
-{
-	$uri = substr($uri, strlen($suffix));
-}
-
-if (preg_match('#^/admin/#', $uri) || preg_match('#^/admin$#', $uri))
-{
-	if (!$site->siteid)
+\ICanBoogie\Events::attach
+(
+	'Icybee\Core::dispatch', function(\ICanBoogie\Core\DispatchEvent $event, \Icybee\Core $core)
 	{
-// 		throw new \Exception('No site id');
+		require_once \ICanBoogie\DOCUMENT_ROOT . 'user-startup.php';
+
+		$icybee = \Icybee::get_singleton();
+		$event->response->body = $icybee->run($event->request, $event->response);
+
 		/*
-		$site = \ICanBoogie\Modules\Sites\Hooks::find_by_request(array('REQUEST_PATH' => '/', 'HTTP_HOST' => $_SERVER['HTTP_HOST']));
-
-		if ($site->path)
+		if ($core->user->is_guest && $event->request->method == \ICanBoogie\HTTP\Request::METHOD_GET)
 		{
-			header('Location: ' . $site->path . $uri);
-
-			exit;
+			$event->response->headers['Cache-Control'] = 'max-age=600';
+		}
+		else
+		{
+			$event->response->headers['Cache-Control'] = 'no-cache';
 		}
 		*/
 	}
+);
 
-	require ROOT . 'admin.php';
-}
+/*
+ * Handler for the admin.
+ *
+ * This event hook handles all "/admin/" routes. It may redirect the user to the proper "admin"
+ * location e.g. '/admin/' => '/fr/admin/'. If the "admin" route is detected, the Icybee admin
+ * interface is presented, granted the user has an access permission, otherwise the
+ * user is asked to authenticate.
+ */
+\ICanBoogie\Events::attach
+(
+	'Icybee\Core::dispatch', function(\ICanBoogie\Core\DispatchEvent $event, \Icybee\Core $core)
+	{
+
+		$uri = $event->request->uri;
+		$site = $core->site;
+		$suffix = $site->path;
+
+		if ($suffix && preg_match('#^' . preg_quote($suffix) . '/#', $uri))
+		{
+			$uri = substr($uri, strlen($suffix));
+		}
+
+		if (preg_match('#^/admin/#', $uri) || preg_match('#^/admin$#', $uri))
+		{
+			if (!$site->siteid)
+			{
+		// 		throw new \Exception('No site id');
+				/*
+				$site = \ICanBoogie\Modules\Sites\Hooks::find_by_request(array('REQUEST_PATH' => '/', 'HTTP_HOST' => $_SERVER['HTTP_HOST']));
+
+				if ($site->path)
+				{
+					header('Location: ' . $site->path . $uri);
+
+					exit;
+				}
+				*/
+			}
+
+// 			$event->response->headers['Cache-Control'] = 'private, no-cache';
+			$event->response->body = require ROOT . 'admin.php';
+			$event->stop();
+		}
+	}
+);
+
+/*
+ * Dispatch the request to the appropriate handlers.
+ */
+$core->dispatch();

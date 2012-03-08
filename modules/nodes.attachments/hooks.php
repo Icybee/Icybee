@@ -335,40 +335,32 @@ class Hooks
 	}
 
 	/**
-	 * Clears the current registry values for the 'nodes_attachments.scope' key, before the
-	 * new one are saved. This is beacause unchecked values don't return 'off', they are just not
-	 * defined.
+	 * Alters the `nodes_attachments.scope` config property.
 	 *
 	 * @param Event $event
 	 */
-
-	private static $config_scope;
-
-	public static function before_operation_config(Event $event, \ICanBoogie\Modules\Files\ConfigOperation $sender)
-	{
-		$params = &$event->request->params;
-
-		if (isset($params['global']['nodes_attachments.scope']))
-		{
-			self::$config_scope = $params['global']['nodes_attachments.scope'];
-		}
-
-		unset($params['global']['nodes_attachments.scope']);
-	}
-
-	public static function on_operation_config(Event $event, \ICanBoogie\Modules\Files\ConfigOperation $sender)
+	public static function before_config_operation_properties(Event $event, \ICanBoogie\Modules\Files\ConfigOperation $sender)
 	{
 		global $core;
 
-		$scope = null;
-
-		if (self::$config_scope)
+		if (!isset($event->request->params['global']['nodes_attachments.scope']))
 		{
-			$scope = array_keys(self::$config_scope);
-			$scope = implode(',', $scope);
+			return;
 		}
 
-		$core->registry['nodes_attachments.scope'] = $scope;
+		$scope = $event->request->params['global']['nodes_attachments.scope'];
+
+		array_walk
+		(
+			$scope, function(&$v)
+			{
+				$v = filter_var($v, FILTER_VALIDATE_BOOLEAN);
+			}
+		);
+
+		$scope = array_filter($scope);
+
+		$event->request->params['global']['nodes_attachments.scope'] = $scope ? implode(',', array_keys($scope)) : null;
 	}
 
 	/**

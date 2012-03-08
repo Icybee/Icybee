@@ -9,10 +9,10 @@
  * file that was distributed with this source code.
  */
 
-use ICanBoogie\Module,
+use ICanBoogie\Module;
 
-	Brickrouge\Element,
-	Brickrouge\Text;
+use Brickrouge\Element;
+use Brickrouge\Text;
 
 class feed_WdEditorElement extends WdEditorElement
 {
@@ -89,17 +89,17 @@ class feed_WdEditorElement extends WdEditorElement
 		);
 	}
 
-	public function set($name, $value=null)
+	public function offsetSet($offset, $value)
 	{
-		if (is_string($name) && $name == 'name')
+		if ($offset == 'name')
 		{
 			foreach ($this->elements as $identifier => $element)
 			{
-				$element->set('name', $value . '[' . $identifier . ']');
+				$element['name'] = $value . '[' . $identifier . ']';
 			}
 		}
 
-		return parent::set($name, $value);
+		parent::offsetSet($offset, $value);
 	}
 
 	public function render_inner_html()
@@ -119,11 +119,11 @@ class feed_WdEditorElement extends WdEditorElement
 		return parent::render_inner_html();
 	}
 
-	static public function to_content(array $params, $content_id, $page_id)
+	static public function to_content($value, $content_id, $page_id)
 	{
 		global $core;
 
-		$contents = parent::to_content($params, $content_id, $page_id);
+		$contents = parent::to_content($value, $content_id, $page_id);
 
 		if (!$contents)
 		{

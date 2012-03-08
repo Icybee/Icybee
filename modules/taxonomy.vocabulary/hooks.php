@@ -19,13 +19,13 @@ class Hooks
 	protected static $cache_ar_vocabularies = array();
 	protected static $cache_ar_terms = array();
 
-	public static function get_term(Event $event, ActiveRecord\Node $sender)
+	public static function get_term(\ICanBoogie\Object\PropertyEvent $event, ActiveRecord\Node $target)
 	{
 		global $core;
 
-		$constructor = $sender->constructor;
+		$constructor = $target->constructor;
 		$property = $vocabularyslug = $event->property;
-		$siteid = $sender->siteid;
+		$siteid = $target->siteid;
 
 		$use_slug = false;
 
@@ -41,7 +41,7 @@ class Hooks
 		{
 			self::$cache_ar_vocabularies[$key] = $core->models['taxonomy.vocabulary']
 			->joins('INNER JOIN {self}__scopes USING(vid)')
-			->where('constructor = ? AND vocabularyslug = ? AND (siteid = 0 OR siteid = ?)', (string) $constructor, $vocabularyslug, $sender->siteid)
+			->where('constructor = ? AND vocabularyslug = ? AND (siteid = 0 OR siteid = ?)', (string) $constructor, $vocabularyslug, $target->siteid)
 			->order('siteid DESC')
 			->one;
 		}
@@ -80,7 +80,7 @@ class Hooks
 			self::$cache_ar_terms[$key] = $terms;
 		}
 
-		$nid = $sender->nid;
+		$nid = $target->nid;
 
 		if ($vocabulary->is_multiple || $vocabulary->is_tags)
 		{
@@ -202,7 +202,7 @@ class Hooks
 					//continue;
 				}
 
-				$value = $nodes_model->select('node.vtid')->find_by_vid_and_nid($vid, $nid)->order('term')->rc;
+				$value = $nodes_model->select('term_node.vtid')->find_by_vid_and_nid($vid, $nid)->order('term')->rc;
 
 				$edit_url = $core->site->path . '/admin/taxonomy.vocabulary/' . $vocabulary->vid . '/edit';
 
@@ -348,7 +348,8 @@ class Hooks
 						'title' => 'Home for vocabulary %name',
 						'title args' => array('name' => $v->vocabulary),
 						'type' => $vocabulary_slug . '-home',
-						'renders' => \Icybee\Views\View::RENDERS_MANY
+						'renders' => \Icybee\Views\View::RENDERS_MANY,
+						'taxonomy vocabulary' => $v
 					)
 
 					+ $views[$constructor . '/home'];
@@ -397,6 +398,8 @@ class Hooks
 	{
 		global $core;
 
+// 		var_dump($event->view);
+
 		$options = $event->view->options;
 
 		if (isset($options['taxonomy vocabulary']) && isset($options['taxonomy term']))
@@ -410,11 +413,14 @@ class Hooks
 		}
 
 		$vocabulary = $event->view->options['taxonomy vocabulary'];
-
 		$condition = $vocabulary->vocabularyslug . 'slug';
 
 		if (empty($event->conditions[$condition]))
 		{
+			# show all by category ?
+
+			\ICanBoogie\Events::attach('Icybee\Views\ActiveRecord\Provider::alter_result', array(__CLASS__, 'on_alter_provider_result'));
+
 			return;
 		}
 
@@ -432,13 +438,93 @@ class Hooks
 		$page->title = \ICanBoogie\format($page->title, array(':term' => $term->term));
 	}
 
+	public static function on_alter_provider_result(\Icybee\Views\ActiveRecord\Provider\AlterResultEvent $event, \Icybee\Views\ActiveRecord\Provider $provider)
+	{
+		global $core;
+
+		$vocabulary = $event->view->options['taxonomy vocabulary'];
+
+		$ids = '';
+		$records_by_id = array();
+
+		foreach ($event->result as $record)
+		{
+			if (!($record instanceof \ICanBoogie\ActiveRecord\Node))
+			{
+				wd_log('Expected instance of <q>ICanBoogie\ActiveRecord\Node</q> given: \1', array($record));
+
+				continue;
+			}
+
+			$nid = $record->nid;
+			$ids .= ',' . $nid;
+			$records_by_id[$nid] = $record;
+		}
+
+		if (!$ids)
+		{
+			return;
+		}
+
+		$ids = substr($ids, 1);
+
+		/*
+		$ids_by_names = $core->models['taxonomy.terms/nodes']
+		->joins(':nodes')
+		->select('term, nid')
+		->order('term.weight, term.term')
+		->where('vid = ? AND nid IN(' . $ids . ')', $vocabulary->vid)
+		->all(\PDO::FETCH_GROUP | \PDO::FETCH_COLUMN);
+
+		var_dump($ids_by_names);
+
+		$result = array();
+
+		foreach ($ids_by_names as $name => $ids)
+		{
+			$ids = array_flip($ids);
+
+			foreach ($event->result as $record)
+			{
+				if (isset($ids[$record->nid]))
+				{
+					$result[$name][] = $record;
+				}
+			}
+		}
+
+		$event->result = $result;
+		*/
+
+		$ids_by_vtid = $core->models['taxonomy.terms/nodes']
+		->joins(':nodes')
+		->select('vtid, nid')
+		->order('term.weight, term.term')
+		->where('vid = ? AND nid IN(' . $ids . ')', $vocabulary->vid)
+		->all(\PDO::FETCH_GROUP | \PDO::FETCH_COLUMN);
+
+		$terms = $core->models['taxonomy.terms']->find(array_keys($ids_by_vtid));
+
+		$result = array();
+
+		foreach ($ids_by_vtid as $vtid => $ids)
+		{
+			$result[$vtid]['term'] = $terms[$vtid];
+			$result[$vtid]['nodes'] = array_intersect_key($records_by_id, array_combine($ids, $ids));
+		}
+
+		$event->result = $result;
+	}
+
 	private static function for_vocabulary_and_term(Event $event, Provider $provider, $options, ActiveRecord\Taxonomy\Vocabulary $vocabulary, ActiveRecord\Taxonomy\Term $term)
 	{
 		$event->query->where('nid IN (SELECT nid FROM {prefix}taxonomy_terms
 		INNER JOIN {prefix}taxonomy_terms__nodes USING(vtid) WHERE vtid = ?)', $term ? $term->vtid : 0);
 
+
+
 		/*
-		Event::add
+		\ICanBoogie\Events::attach
 		(
 			'ICanBoogie\ActiveRecord\Page::render_title', function()
 			{

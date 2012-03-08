@@ -13,6 +13,7 @@ namespace ICanBoogie\Modules\Nodes;
 
 use ICanBoogie\ActiveRecord\Node;
 use ICanBoogie\ActiveRecord\Query;
+use ICanBoogie\Route;
 
 use Brickrouge\A;
 use Brickrouge\Document;
@@ -386,11 +387,14 @@ class ManageBlock extends \WdManager
 			$rc .= ' ';
 		}
 
-		$rc .= new A
+		$rc .= new Element
 		(
-			$label, $core->site->path . '/admin/' . $record->constructor . '/' . $record->nid . '/edit', array
+			'a', array
 			(
+				Element::INNER_HTML => $label,
+
 				'class' => 'edit',
+				'href' => Route::contextualize('/admin/' . $record->constructor . '/' . $record->nid . '/edit'),
 				'title' => $shortened ? $this->t->__invoke('manager.edit_named', array(':title' => $title ? $title : 'unnamed')) : $this->t->__invoke('manager.edit'),
 			)
 		);

@@ -2,6 +2,8 @@
 
 return array
 (
+	'module_title.search' => 'Search',
+
 	'search' => array
 	(
 		'found' => array

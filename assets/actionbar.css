@@ -93,6 +93,7 @@ form.navbar-search {
 	padding: 2px 0.5ex;
 	background-color: #F6F6F6;
 	border-radius: 4px;
+	float: left;
 }
 
 form.navbar-search input {

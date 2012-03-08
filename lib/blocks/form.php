@@ -128,7 +128,7 @@ abstract class FormBlock extends Form
 
 	protected function alter_attributes(array $attributes)
 	{
-		return wd_array_merge_recursive
+		return \ICanBoogie\array_merge_recursive
 		(
 			array
 			(

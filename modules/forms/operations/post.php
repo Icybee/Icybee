@@ -11,17 +11,13 @@
 
 namespace ICanBoogie\Modules\Forms;
 
-use ICanBoogie\Exception;
-use ICanBoogie\Mailer;
-use ICanBoogie\Operation;
-
 /**
  * Post a form.
  *
- * Note: The form it retrieved using the {@link \ICanBoogie\Operation::get_form} event, just like
- * any other operation.
+ * Note: The form it retrieved by the hook that we attached to the
+ * {@link \ICanBoogie\Operation\GetFormEvent} event, just like any other operation.
  */
-class PostOperation extends Operation
+class PostOperation extends \ICanBoogie\Operation
 {
 	/**
 	 * Controls for the operation: form.
@@ -45,7 +41,7 @@ class PostOperation extends Operation
 	 */
 	protected function validate(\ICanboogie\Errors $errors)
 	{
-		return true;
+		return !count($errors);
 	}
 
 	/**

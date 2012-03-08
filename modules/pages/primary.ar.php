@@ -50,8 +50,44 @@ class Page extends Node
 	 * @var bool true if the page is cachable, false otherwise.
 	 */
 	public $cachable = true;
+	
+	/**
+	 * The site the page belongs too.
+	 *
+	 * @var \ICanBoogie\ActiveRecord\Site
+	 */
+	public $site;
 
-	public function __construct(Model $model)
+	/**
+	 * Whether the page is accessible or not.
+	 *
+	 * @var bool
+	 */
+	public $is_accessible;
+
+	/**
+	 * Wheter the page is active or not.
+	 *
+	 * @var bool
+	 */
+
+	public $is_active;
+
+	/**
+	 * Whether the page is the home page of the site or not.
+	 *
+	 * @var bool
+	 */
+	public $is_home;
+
+	/**
+	 * Whether the page is in the navigation trail or not.
+	 *
+	 * @var bool
+	 */
+	public $is_trail;
+
+	public function __construct($model='site.pages')
 	{
 		if (empty($this->language))
 		{
@@ -68,10 +104,16 @@ class Page extends Node
 			unset($this->template);
 		}
 
+		unset($this->site);
+		unset($this->is_accessible);
+		unset($this->is_active);
+		unset($this->is_home);
+		unset($this->is_trail);
+
 		parent::__construct($model);
 	}
 
-	protected function __get_language()
+	protected function __volatile_get_language()
 	{
 		return $this->siteid ? $this->site->language : null;
 	}
@@ -97,7 +139,6 @@ class Page extends Node
 	 *
 	 * @see ICanBoogie\ActiveRecord.Node::__get_next()
 	 */
-
 	protected function __get_next()
 	{
 		return $this->_model
@@ -438,7 +479,7 @@ class Page extends Node
 	{
 		global $core;
 
-		$entries = $core->models['pages/contents']->where('pageid = ?', $this->nid);
+		$entries = $core->models['pages/contents']->find_by_pageid($this->nid);
 		$contents = array();
 
 		foreach ($entries as $entry)

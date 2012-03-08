@@ -32,6 +32,8 @@ class Provider extends \Icybee\Views\ActiveRecord\Provider
 			$query->where('nid = ?', (int) $conditions['nid']);
 		}
 
+		$query->where('status != "spam" && status != "pending"');
+
 		return $query->order('created');
 	}
 

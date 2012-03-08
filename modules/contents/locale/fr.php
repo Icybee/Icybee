@@ -27,7 +27,7 @@ return array
 		'category' => 'Catégorie'
 	),
 
-	'module_category.title.contents' => 'Contenu',
+	'module_category.contents' => 'Contenu',
 
 	'group.legend' => array
 	(

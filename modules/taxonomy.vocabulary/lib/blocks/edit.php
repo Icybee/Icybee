@@ -20,7 +20,7 @@ class EditBlock extends \Icybee\EditBlock
 
 	protected function alter_attributes(array $attributes)
 	{
-		return wd_array_merge_recursive
+		return \ICanBoogie\array_merge_recursive
 		(
 			parent::alter_attributes($attributes), array
 			(
@@ -112,7 +112,7 @@ class EditBlock extends \Icybee\EditBlock
 				continue;
 			}
 
-			$scope_options[$module_id] = t($module_id, array(), array('scpope' => array('module', 'title'), 'default' => $descriptor[Module::T_TITLE]));
+			$scope_options[$module_id] = t($module_id, array(), array('scpope' => 'module_title', 'default' => $descriptor[Module::T_TITLE]));
 		}
 
 		uasort($scope_options, 'wd_unaccent_compare_ci');

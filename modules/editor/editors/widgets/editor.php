@@ -22,14 +22,14 @@ class widgets_WdEditorElement extends WdEditorElement
 		self::$config = $core->configs->synthesize('widgets', 'merge');
 	}
 
-	static public function to_content(array $params, $content_id, $page_id)
+	static public function to_content($value, $content_id, $page_id)
 	{
-		if (empty($params['contents']))
+		if (!$value)
 		{
 			return;
 		}
 
-		return json_encode(array_keys($params['contents']));
+		return json_encode(array_keys($value));
 	}
 
 	static public function render($contents)

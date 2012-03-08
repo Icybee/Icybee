@@ -18,5 +18,5 @@ return array
 		)
 	),
 
-	'module.title.site_pages' => 'Stránky'
+	'module_title.site_pages' => 'Stránky'
 );

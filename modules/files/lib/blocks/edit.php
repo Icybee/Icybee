@@ -108,7 +108,7 @@ class EditBlock extends \ICanBoogie\Modules\Nodes\EditBlock
 		# elements
 		#
 
-		$attributes = wd_array_merge_recursive
+		$attributes = \ICanBoogie\array_merge_recursive
 		(
 			$attributes, array
 			(

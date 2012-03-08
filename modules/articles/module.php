@@ -34,7 +34,7 @@ class Module extends \ICanBoogie\Modules\Contents\Module
 			)
 		);
 
-		return wd_array_merge_recursive
+		return \ICanBoogie\array_merge_recursive
 		(
 			parent::__get_views(), array
 			(

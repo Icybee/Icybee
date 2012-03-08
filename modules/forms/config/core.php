@@ -1,5 +1,7 @@
 <?php
 
+namespace ICanBoogie\Modules\Forms;
+
 return array
 (
 	'autoload' => array
@@ -11,6 +13,8 @@ return array
 		'press_WdForm' => $path . 'models/contact-press.php',
 		'Brickrouge\quick_contact_WdForm' => $path . 'models/contact-quick.php',
 
-		'BrickRouge\EmailComposer' => $path . 'lib/elements/email-composer.php'
+		'BrickRouge\EmailComposer' => $path . 'lib/elements/email-composer.php',
+
+		__NAMESPACE__ . '\SentEvent' => $path . 'hooks.php'
 	)
 );

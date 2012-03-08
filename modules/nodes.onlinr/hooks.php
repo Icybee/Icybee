@@ -44,7 +44,7 @@ class Hooks
 
 		//wd_log('onlinr: \1', array($onlinr));
 
-		$event->tags = wd_array_merge_recursive
+		$event->tags = \ICanBoogie\array_merge_recursive
 		(
 			$event->tags, array
 			(

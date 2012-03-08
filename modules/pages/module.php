@@ -201,7 +201,6 @@ class Module extends \ICanBoogie\Modules\Nodes\Module
 
 			$does_inherit = !empty($editable['inherit']);
 
-			$name = 'contents[' . $id . ']';
 			$value = null;
 
 			$editor = $editable['editor'];
@@ -297,7 +296,7 @@ class Module extends \ICanBoogie\Modules\Nodes\Module
 
 				if (!class_exists($class, true))
 				{
-					$elements[$name . '[contents]'] = new Element
+					$elements["contents[$id]"] = new Element
 					(
 						'div', array
 						(
@@ -312,84 +311,39 @@ class Module extends \ICanBoogie\Modules\Nodes\Module
 					continue;
 				}
 
-				if (empty($editable['multiple']))
-				{
-					$elements[$name . '[contents]'] = new $class
+				$elements["contents[$id]"] = new $class
+				(
+					array
 					(
-						array
-						(
-							Form::LABEL => $title,
+						Form::LABEL => $title,
 
-							\WdEditorElement::T_STYLESHEETS => $styles,
-							\WdEditorElement::T_CONFIG => $editor_config,
+						\WdEditorElement::T_STYLESHEETS => $styles,
+						\WdEditorElement::T_CONFIG => $editor_config,
 
-							Element::GROUP => $does_inherit ? 'contents.inherit' : 'contents',
-							Element::DESCRIPTION => $editor_description,
+						Element::GROUP => $does_inherit ? 'contents.inherit' : 'contents',
+						Element::DESCRIPTION => $editor_description,
 
-							'id' => 'editor-' . $id,
-// 							'name' => $name,
-							'value' => $value
-						)
-					);
-				}
-				else
-				{
-					$n = 3;
-					$fragments = array();
-
-					for ($i = 0 ; $i < $n ; $i++)
-					{
-						$fragments[] = '<div class="excerpt"><em>generating excerpt...</em></div>';
-
-						$fragments[$name . "[contents][$i]"] = new $class
-						(
-							array
-							(
-								\WdEditorElement::T_STYLESHEETS => $styles,
-								\WdEditorElement::T_CONFIG => $editor_config,
-
-// 								'name' => "$name[$i]",
-								'value' => $value
-							)
-						);
-					}
-
-					$fragments[] = '<p><button type="button" class="continue small">Ajouter un nouveau contenu</button></p>';
-
-					$elements[] = new Element
-					(
-						'div', array
-						(
-							Form::LABEL => $title,
-
-							Element::GROUP => $does_inherit ? 'contents.inherit' : 'contents',
-							Element::DESCRIPTION => $editor_description,
-							Element::CHILDREN => $fragments,
-
-							'id' => 'editor-' . $id,
-							'class' => 'editor multiple'
-						)
-					);
-
-					$hiddens[$name . '[is_multiple]'] = true;
-				}
+						'id' => 'editor-' . $id,
+						'value' => $value
+					)
+				);
 
 				#
 				# we add the editor's id as a hidden field
 				#
 
-				$hiddens[$name . '[editor]'] = $editable['editor'];
+				$hiddens["editors[$id]"] = $editable['editor'];
 			}
 			else
 			{
-				$elements[$name . '[contents]'] = new \WdMultiEditorElement
+				$elements["contents[$id]"] = new \WdMultiEditorElement
 				(
 					$editor, array
 					(
 						Form::LABEL => $title,
 
 						\WdMultiEditorElement::T_NOT_SWAPPABLE => isset($editable['editor']),
-						\WdMultiEditorElement::T_SELECTOR_NAME => $name . '[editor]',
+						\WdMultiEditorElement::T_SELECTOR_NAME => "editors[$id]",
 						\WdMultiEditorElement::T_EDITOR_TAGS => array
 						(
 							\WdEditorElement::T_STYLESHEETS => $styles,
@@ -522,9 +476,9 @@ class Module extends \ICanBoogie\Modules\Nodes\Module
 			(
 				'This page uses the <q>:template</q> template, inherited from the parent page <q><a href="!url">!title</a></q>.', array
 				(
-					':template' => $template,
-					'!url' => $core->site->path . "/admin/{$this->id}/{$definer->nid}/edit",
-					'!title' => $definer->title
+					'template' => $template,
+					'url' => \ICanBoogie\Route::contextualize("/admin/{$this->id}/{$definer->nid}/edit"),
+					'title' => $definer->title
 				)
 			);
 

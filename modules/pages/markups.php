@@ -309,9 +309,10 @@ class site_pages_languages_WdMarkup extends patron_WdMarkup
 		(
 			'alter.page.languages:before', array
 			(
-				'target' => $page,
 				'translations_by_languages' => &$translations_by_language
-			)
+			),
+
+			$page
 		);
 
 		if ($template)
@@ -336,9 +337,10 @@ class site_pages_languages_WdMarkup extends patron_WdMarkup
 		(
 			'alter.page.languages', array
 			(
-				'target' => $page,
 				'languages' => &$languages
-			)
+			),
+
+			$page
 		);
 
 		/*

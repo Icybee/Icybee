@@ -34,7 +34,7 @@ else
 		$core->language = $user->language;
 	}
 
-	$request_route = $request->path;
+	$request_route = $request->pathinfo;
 
 	if ($user instanceof ActionRecord\Users\Member)
 	{
@@ -147,7 +147,7 @@ _create_ws_locations($routes);
 
 function _route_add_block($route, $params)
 {
-	global $core, $document;
+	global $core;
 
 	try
 	{
@@ -155,8 +155,6 @@ function _route_add_block($route, $params)
 		$module = $core->modules[$module_id];
 
 		array_unshift($params, $route['block']);
-
-		//wd_log('params: \1', array($params));
 
 		$block = call_user_func_array(array($module, 'getBlock'), $params);
 
@@ -172,207 +170,8 @@ function _route_add_block($route, $params)
 
 	//$document->addToBlock((string) $block, 'contents');
 
-	$document->addToBlock(is_object($block) ? $block->__toString() : (string) $block, 'contents');
+	$core->document->addToBlock(is_object($block) ? $block->__toString() : (string) $block, 'contents');
 }
-
-/*
-function _route_add_options($requested, $req_pattern)
-{
-	global $core, $document;
-
-	if (empty($requested['workspace']))
-	{
-		return;
-	}
-
-	$req_ws = $requested['workspace'];
-	$req_module = $requested['module'];
-
-	$options = array();
-	$user = $core->user;
-
-	foreach (Route::routes() as $route)
-	{
-		if (empty($route['pattern']))
-		{
-			continue;
-		}
-
-		$pattern = $route['pattern'];
-
-		$module = isset($route['module']) ? $route['module'] : null;
-
-		if (!$module || $module != $req_module)
-		{
-			continue;
-		}
-
-		$permission = isset($route['permission']) ? $route['permission'] : Module::PERMISSION_ACCESS;
-
-		if (!$user->has_permission($permission, $module))
-		{
-			continue;
-		}
-
-		if (empty($route['visibility']) || ($route['visibility'] == 'auto' && $pattern != $req_pattern))
-		{
-			continue;
-		}
-
-		$options[$pattern] = $route;
-	}
-
-	$items = null;
-
-	global $request_route;
-
-	$suffix = $core->site->path;
-
-	foreach ($options as $route_id => $route)
-	{
-		if (empty($route['title']))
-		{
-			continue;
-		}
-
-		$pattern = $route['pattern'];
-		$title = $route['title'];
-
-		if ($title{0} == '.')
-		{
-			$title = t(substr($title, 1), array(), array('scope' => array('block', 'title')));
-		}
-		else
-		{
-			$title = t($title);
-		}
-
-		$title = wd_entities($title);
-
-		if ($req_pattern == $pattern)
-		{
-			$items .= '<li class="selected">';
-			$items .= '<a href="' . $suffix . $request_route . '">' . $title . '</a>';
-			$items .= '</li>';
-		}
-		else
-		{
-			$items .= '<li>';
-			$items .= '<a href="' . $suffix . $pattern . '">' . $title . '</a>';
-			$items .= '</li>';
-		}
-	}
-
-	if ($items)
-	{
-		$items = '<ul class="items">' . $items . '</ul>';
-	}
-
-	$options = $document->getBlock('menu-options');
-
-	$block = <<<EOT
-		<div id="menu">
-			$items
-			<div id="menu-options">$options</div>
-			<div class="clear"></div>
-		</div>
-EOT;
-
-	$document->addToBlock($block, 'contents-header');
-}
-*/
-
-/*
- *
- */
-
-/*
-function _route_add_tabs($requested, $req_pattern)
-{
-	global $core;
-
-	$user = $core->user;
-	$document = $core->document;
-	$modules = $core->modules;
-
-	if (!isset($requested['workspace']))
-	{
-		throw new Exception('Missing <em>workspace</em> for requested route !requested', array('!requested' => $requested));
-	}
-
-	$req_ws = $requested['workspace'];
-	$req_module = $requested['module'];
-
-	$tabs = array();
-
-	foreach (Route::routes() as $route_id => $route)
-	{
-		if (empty($route['workspace']) || $route['workspace'] != $req_ws)
-		{
-			//wd_log('discard pattern %pattern because ws %ws != %req', array('%pattern' => $pattern, '%ws' => isset($route['workspace']) ? $route['workspace'] : null, '%req' => $req_ws));
-
-			continue;
-		}
-
-		if (empty($route['index']) || empty($modules[$route['module']]))
-		{
-			continue;
-		}
-
-		if (!$user->has_permission(Module::PERMISSION_ACCESS, $route['module']))
-		{
-			continue;
-		}
-
-		$pattern = $route['pattern'];
-		$tabs[$pattern] = $route;
-	}
-
-	if (!$tabs)
-	{
-		return;
-	}
-
-	//wd_log('tabs routes: \1', array($tabs));
-
-	$descriptors = &$modules->descriptors;
-
-	foreach ($tabs as $pattern => &$route)
-	{
-		$module_id = $route['module'];
-		$module_flat_id = strtr($module_id, '.', '_');
-
-		$default = $descriptors[$module_id][Module::T_TITLE];
-
-		$route['tab-title'] = t($module_flat_id, array(), array('scope' => array('module', 'title'), 'default' => $default));
-	}
-
-	wd_array_sort_by($tabs, 'tab-title');
-
-	$rc = '<ul class="tabs">';
-
-	foreach ($tabs as $pattern => $route)
-	{
-		if ($route['module'] == $req_module)
-		{
-			$rc .= '<li class="active">';
-
-			$document->title = $document->page_title = $route['tab-title'];
-		}
-		else
-		{
-			$rc .= '<li>';
-		}
-
-
-		$rc .= '<a href="' . $core->site->path . $pattern . '">' . t($route['tab-title']) . '</a></li>';
-	}
-
-	$rc .= '</ul>';
-
-	$document->addToBlock($rc, 'subnav');
-}
-*/
 
 /*
  * We search for a route matching the request.
@@ -409,8 +208,6 @@ if ($request_route == '/admin/available-sites')
 else if ($match)
 {
 	_route_add_block($route, is_array($capture) ? $capture : array());
-// 	_route_add_tabs($route, $pattern);
-// 	_route_add_options($route, $pattern);
 }
 else
 {

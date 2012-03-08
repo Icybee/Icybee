@@ -28,7 +28,7 @@ return array
 
 		'config' => array
 		(
-			'description' => 'Le moteur de recherche se trouve actuellement sur la page <q>:link</q>',
+			'description' => 'Le moteur de recherche se trouve actuellement sur la page <q>:link</q>.',
 
 			'description_nopage' => "Aucune page n'est définie pour afficher les résulats de
 			recherche. Si vous souhaitez proposer les fonctionnalités de recherche à vos visiteurs,

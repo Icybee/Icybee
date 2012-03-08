@@ -28,7 +28,7 @@ use Brickrouge\Element;
 use Brickrouge\Form;
 use Brickrouge\SplitButton;
 
-use Icybee\Operation\Module\Config as ConfigOperation;
+use Icybee\ConfigOperation as ConfigOperation;
 
 /**
  * Extends the Module class with the following features:
@@ -67,11 +67,18 @@ class Module extends \ICanBoogie\Module
 		{
 			array_shift($args);
 
-			$block = new $class_name($this, array(), $args);
-
 			I18n::push_scope($this->flat_id . '.' . $name);
 
-			$rendered_block = (string) $block;
+			try
+			{
+				$block = new $class_name($this, array(), $args);
+
+				$rendered_block = (string) $block;
+			}
+			catch (\Exception $e)
+			{
+				$rendered_block = \ICanBoogie\Debug::format_alert($e);
+			}
 
 			I18n::pop_scope();
 

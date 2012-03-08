@@ -33,7 +33,7 @@ class feedback_comments_WdForm extends Form
 
 		parent::__construct
 		(
-			wd_array_merge_recursive
+			\ICanBoogie\array_merge_recursive
 			(
 				$tags, array
 				(
@@ -107,7 +107,7 @@ class feedback_comments_WdForm extends Form
 					),
 
 					'action' => '#view-comments-submit',
-					'class' => 'stacked'
+					'class' => 'widget-submit-comment'
 				)
 			),
 

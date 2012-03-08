@@ -64,7 +64,7 @@ class Core extends ICanBoogie\Core
 
 		return parent::get_singleton
 		(
-			wd_array_merge_recursive
+			\ICanBoogie\array_merge_recursive
 			(
 				$options, array
 				(

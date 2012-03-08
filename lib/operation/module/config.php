@@ -9,11 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Icybee\Operation\Module;
-
-use ICanBoogie\Event;
-use ICanBoogie\Module;
-use ICanBoogie\Operation;
+namespace Icybee;
 
 /**
  * Save the configuration of the module.
@@ -24,8 +20,26 @@ use ICanBoogie\Operation;
  * Configuration in the local space is saved in the `metas` of the working site object, whereas
  * the configuration in the global space is saved in the registry.
  *
+ *
+ * Event: properties:before
+ * ------------------------
+ *
+ * The `property:before` event of class `Icybee\ConfigOperation\BeforePropertiesEvent` is fired by
+ * the `Icybee\ConfigOperation` and its subclasses before the config properties are collected.
+ *
+ * One can attach a hook to this event to modify the operation request params before they are used
+ * to collect the config properties.
+ *
+ *
+ * Event: properties
+ * -----------------
+ *
+ * The `properties` event of class `Icybee\ConfigOperation\PropertiesEvent` is fired by the
+ * `Icybee\ConfigOperation` and its subclasses after the config properties were collected.
+ *
+ * One can attach a hook to this event to modify the properties before they are stored.
  */
-class Config extends Operation
+class ConfigOperation extends \ICanBoogie\Operation
 {
 	protected function __get_controls()
 	{
@@ -46,23 +60,23 @@ class Config extends Operation
 	 */
 	protected function __get_properties()
 	{
-		$properties = array_intersect_key($this->request->params, array('global' => true, 'local' => true));
-
-		Event::fire('properties:before', array('properties' => &$properties, 'request' => $this->request), $this);
-
-		return $properties;
+		return array_intersect_key($this->request->params, array('global' => true, 'local' => true));
 	}
 
 	protected function validate(\ICanboogie\Errors $errors)
 	{
-		return true;
+		return !count($errors);
 	}
 
 	protected function process()
 	{
 		global $core;
 
+		new ConfigOperation\BeforePropertiesEvent($this, array('request' => $this->request));
+
 		$properties = $this->properties;
+
+		new ConfigOperation\PropertiesEvent($this, array('request' => $this->request, 'properties' => &$properties));
 
 		if (isset($properties['global']))
 		{
@@ -94,10 +108,67 @@ class Config extends Operation
 			}
 		}
 
-		wd_log_done("La configuration a été renregistrée");
+		wd_log_done("The configuration has been saved.");
 
-		$this->response->location = $_SERVER['REQUEST_URI'];
+		$this->response->location = $this->request->pathinfo;
 
 		return true;
+	}
+}
+
+namespace Icybee\ConfigOperation;
+
+/**
+ * Event class for the `Icybee\ConfigOperation::properties:before` event.
+ */
+class BeforePropertiesEvent extends \ICanBoogie\Event
+{
+	/**
+	 * The HTTP request.
+	 *
+	 * @var \ICanBoogie\HTTP\Request
+	 */
+	public $request;
+
+	/**
+	 * The event is constructed with the type `properties:before`.
+	 *
+	 * @param \Icybee\ConfigOperation $target
+	 * @param array $properties
+	 */
+	public function __construct(\Icybee\ConfigOperation $target, array $properties)
+	{
+		parent::__construct($target, 'properties:before', $properties);
+	}
+}
+
+/**
+ * Event class for the `Icybee\ConfigOperation::properties` event.
+ */
+class PropertiesEvent extends \ICanBoogie\Event
+{
+	/**
+	 * The HTTP request.
+	 *
+	 * @var \ICanBoogie\HTTP\Request
+	 */
+	public $request;
+
+	/**
+	 * Reference to the config properties.
+	 *
+	 * @var array
+	 */
+	public $properties;
+
+	/**
+	 * The event is constructed with the type `properties`.
+	 *
+	 * @param \Icybee\ConfigOperation $target
+	 * @param array $properties
+	 */
+	public function __construct(\Icybee\ConfigOperation $target, array $properties)
+	{
+		parent::__construct($target, 'properties', $properties);
 	}
 }

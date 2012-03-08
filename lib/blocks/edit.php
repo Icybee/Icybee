@@ -158,7 +158,7 @@ class EditBlock extends Form
 			if (!$locked)
 			{
 				$luser = $core->models['users'][$lock['uid']];
-				$url = $core->request->path;
+				$url = $core->request->pathinfo;
 
 				$time = round((strtotime($lock['until']) - time()) / 60);
 				$message = $time ? "Le verrou devrait disparaitre dans $time minutes." : "Le verrou devrait disparaitre dans moins d'une minutes.";
@@ -287,7 +287,7 @@ EOT;
 
 	protected function alter_attributes(array $attributes)
 	{
-		return wd_array_merge_recursive
+		return \ICanBoogie\array_merge_recursive
 		(
 			array
 			(
@@ -317,14 +317,14 @@ EOT;
 		);
 	}
 
-	protected function fire_before_alter_attributes(array $params)
+	protected function fire_before_alter_attributes(array $properties)
 	{
-		Event::fire('alter_attributes:before', $params, $this);
+		new EditBlock\BeforeAlterAttributesEvent($this, $properties);
 	}
 
-	protected function fire_alter_attributes(array $params)
+	protected function fire_alter_attributes(array $properties)
 	{
-		Event::fire('alter_attributes', $params, $this);
+		new EditBlock\AlterAttributesEvent($this, $properties);
 	}
 
 	/*
@@ -362,14 +362,14 @@ EOT;
 		return $properties;
 	}
 
-	protected function fire_before_alter_properties(array $params)
+	protected function fire_before_alter_properties(array $properties)
 	{
-		Event::fire('alter_properties:before', $params, $this);
+		new EditBlock\BeforeAlterPropertiesEvent($this, $properties);
 	}
 
-	protected function fire_alter_properties(array $params)
+	protected function fire_alter_properties(array $properties)
 	{
-		Event::fire('alter_properties', $params, $this);
+		new EditBlock\AlterPropertiesEvent($this, $properties);
 	}
 
 	/*
@@ -386,14 +386,14 @@ EOT;
 		return $children;
 	}
 
-	protected function fire_before_alter_children(array $params)
+	protected function fire_before_alter_children(array $properties)
 	{
-		Event::fire('alter_children:before', $params, $this);
+		new EditBlock\BeforeAlterChildrenEvent($this, $properties);
 	}
 
-	protected function fire_alter_children(array $params)
+	protected function fire_alter_children(array $properties)
 	{
-		Event::fire('alter_children', $params, $this);
+		new EditBlock\AlterChildrenEvent($this, $properties);
 	}
 
 	/*
@@ -437,7 +437,7 @@ EOT;
 		$key = $this->key;
 		$block = $this;
 
-		Event::add
+		\ICanBoogie\Events::attach
 		(
 			'Icybee\Admin\Element\ActionbarToolbar::alter_buttons', function(Event $event, \Icybee\Admin\Element\ActionbarToolbar $sender) use($record, $module, $key, $save_mode_options, $mode, $block)
 			{
@@ -506,14 +506,14 @@ EOT;
 		);
 	}
 
-	protected function fire_before_alter_actions(array $params)
+	protected function fire_before_alter_actions(array $properties)
 	{
-		Event::fire('alter_actions:before', $params, $this);
+		new EditBlock\BeforeAlterActionsEvent($this, $properties);
 	}
 
-	protected function fire_alter_actions(array $params)
+	protected function fire_alter_actions(array $properties)
 	{
-		Event::fire('alter_actions', $params, $this);
+		new EditBlock\AlterActionsEvent($this, $properties);
 	}
 
 	protected function alter_elements_lang()
@@ -532,5 +532,395 @@ EOT;
 
 			$element['lang'] = $language;
 		}
+	}
+}
+
+namespace Icybee\EditBlock;
+
+/**
+ * Event class for the `Icybee\EditBlock::alter_attributes:before` event.
+ */
+class BeforeAlterAttributesEvent extends \ICanBoogie\Event
+{
+	/**
+	 * The module creating the block.
+	 *
+	 * @var \ICanBoogie\Module
+	 */
+	public $module;
+
+	/**
+	 * Key of the record being edited.
+	 *
+	 * @var int
+	 */
+	public $key;
+
+	/**
+	 * Reference to the attributes of the block.
+	 *
+	 * @var array
+	 */
+	public $attributes;
+
+	/**
+	 * The event is constructed with the type `alter_attributes:before`.
+	 *
+	 * @param \Icybee\EditBlock $target
+	 * @param array $properties
+	 */
+	public function __construct(\Icybee\EditBlock $target, array $properties)
+	{
+		parent::__construct($target, 'alter_attributes:before', $properties);
+	}
+}
+
+/**
+ * Event class for the `Icybee\EditBlock::alter_attributes` event.
+ */
+class AlterAttributesEvent extends \ICanBoogie\Event
+{
+	/**
+	 * The module creating the block.
+	 *
+	 * @var \ICanBoogie\Module
+	 */
+	public $module;
+
+	/**
+	 * Key of the record being edited.
+	 *
+	 * @var int
+	 */
+	public $key;
+
+	/**
+	 * Reference to the attributes of the block.
+	 *
+	 * @var array
+	 */
+	public $attributes;
+
+	/**
+	 * The event is constructed with the type `alter_attributes`.
+	 *
+	 * @param \Icybee\EditBlock $target
+	 * @param array $properties
+	 */
+	public function __construct(\Icybee\EditBlock $target, array $properties)
+	{
+		parent::__construct($target, 'alter_attributes', $properties);
+	}
+}
+
+/**
+ * Event class for the `Icybee\EditBlock::alter_properties:before` event.
+ */
+class BeforeAlterPropertiesEvent extends \ICanBoogie\Event
+{
+	/**
+	 * The module creating the block.
+	 *
+	 * @var \ICanBoogie\Module
+	 */
+	public $module;
+
+	/**
+	 * Key of the record being edited.
+	 *
+	 * @var int
+	 */
+	public $key;
+
+	/**
+	 * Reference to the attributes of the block.
+	 *
+	 * @var array
+	 */
+	public $attributes;
+
+	/**
+	 * Reference to the properties of the record being edited.
+	 *
+	 * @var array
+	 */
+	public $properties;
+
+	/**
+	 * The event is constructed with the type `alter_properties:before`.
+	 *
+	 * @param \Icybee\EditBlock $target
+	 * @param array $properties
+	 */
+	public function __construct(\Icybee\EditBlock $target, array $properties)
+	{
+		parent::__construct($target, 'alter_properties:before', $properties);
+	}
+}
+
+/**
+ * Event class for the `Icybee\EditBlock::alter_properties` event.
+ */
+class AlterPropertiesEvent extends \ICanBoogie\Event
+{
+	/**
+	 * The module creating the block.
+	 *
+	 * @var \ICanBoogie\Module
+	 */
+	public $module;
+
+	/**
+	 * Key of the record being edited.
+	 *
+	 * @var int
+	 */
+	public $key;
+
+	/**
+	 * Reference to the attributes of the block.
+	 *
+	 * @var array
+	 */
+	public $attributes;
+
+	/**
+	 * Reference to the properties of the record being edited.
+	 *
+	 * @var array
+	 */
+	public $properties;
+
+	/**
+	 * The event is constructed with the type `alter_properties`.
+	 *
+	 * @param \Icybee\EditBlock $target
+	 * @param array $properties
+	 */
+	public function __construct(\Icybee\EditBlock $target, array $properties)
+	{
+		parent::__construct($target, 'alter_properties', $properties);
+	}
+}
+
+/**
+ * Event class for the `Icybee\EditBlock::alter_children:before` event.
+ */
+class BeforeAlterChildrenEvent extends \ICanBoogie\Event
+{
+	/**
+	 * The module creating the block.
+	 *
+	 * @var \ICanBoogie\Module
+	 */
+	public $module;
+
+	/**
+	 * Key of the record being edited.
+	 *
+	 * @var int
+	 */
+	public $key;
+
+	/**
+	 * Reference to the attributes of the block.
+	 *
+	 * @var array
+	 */
+	public $attributes;
+
+	/**
+	 * Reference to the properties of the record being edited.
+	 *
+	 * @var array
+	 */
+	public $properties;
+
+	/**
+	 * Reference to the children of the block.
+	 *
+	 * @var array
+	 */
+	public $children;
+
+	/**
+	 * The event is constructed with the type `alter_children:before`.
+	 *
+	 * @param \Icybee\EditBlock $target
+	 * @param array $properties
+	 */
+	public function __construct(\Icybee\EditBlock $target, array $properties)
+	{
+		parent::__construct($target, 'alter_children:before', $properties);
+	}
+}
+
+/**
+ * Event class for the `Icybee\EditBlock::alter_children` event.
+ */
+class AlterChildrenEvent extends \ICanBoogie\Event
+{
+	/**
+	 * The module creating the block.
+	 *
+	 * @var \ICanBoogie\Module
+	 */
+	public $module;
+
+	/**
+	 * Key of the record being edited.
+	 *
+	 * @var int
+	 */
+	public $key;
+
+	/**
+	 * Reference to the attributes of the block.
+	 *
+	 * @var array
+	 */
+	public $attributes;
+
+	/**
+	 * Reference to the properties of the record being edited.
+	 *
+	 * @var array
+	 */
+	public $properties;
+
+	/**
+	 * Reference to the children of the block.
+	 *
+	 * @var array
+	 */
+	public $children;
+
+	/**
+	 * The event is constructed with the type `alter_children`.
+	 *
+	 * @param \Icybee\EditBlock $target
+	 * @param array $properties
+	 */
+	public function __construct(\Icybee\EditBlock $target, array $properties)
+	{
+		parent::__construct($target, 'alter_children', $properties);
+	}
+}
+
+/**
+ * Event class for the `Icybee\EditBlock::alter_actions:before` event.
+ */
+class BeforeAlterActionsEvent extends \ICanBoogie\Event
+{
+	/**
+	 * The module creating the block.
+	 *
+	 * @var \ICanBoogie\Module
+	 */
+	public $module;
+
+	/**
+	 * Key of the record being edited.
+	 *
+	 * @var int
+	 */
+	public $key;
+
+	/**
+	 * Reference to the attributes of the block.
+	 *
+	 * @var array
+	 */
+	public $attributes;
+
+	/**
+	 * Reference to the properties of the record being edited.
+	 *
+	 * @var array
+	 */
+	public $properties;
+
+	/**
+	 * Reference to the children of the block.
+	 *
+	 * @var array
+	 */
+	public $children;
+
+	/**
+	 * Reference to the actions of the block.
+	 *
+	 * @var array
+	 */
+	public $actions;
+
+	/**
+	 * The event is constructed with the type `alter_actions:before`.
+	 *
+	 * @param \Icybee\EditBlock $target
+	 * @param array $properties
+	 */
+	public function __construct(\Icybee\EditBlock $target, array $properties)
+	{
+		parent::__construct($target, 'alter_actions:before', $properties);
+	}
+}
+
+/**
+ * Event class for the `Icybee\EditBlock::alter_actions` event.
+ */
+class AlterActionsEvent extends \ICanBoogie\Event
+{
+	/**
+	 * The module creating the block.
+	 *
+	 * @var \ICanBoogie\Module
+	 */
+	public $module;
+
+	/**
+	 * Key of the record being edited.
+	 *
+	 * @var int
+	 */
+	public $key;
+
+	/**
+	 * Reference to the attributes of the block.
+	 *
+	 * @var array
+	 */
+	public $attributes;
+
+	/**
+	 * Reference to the properties of the record being edited.
+	 *
+	 * @var array
+	 */
+	public $properties;
+
+	/**
+	 * Reference to the children of the block.
+	 *
+	 * @var array
+	 */
+	public $children;
+
+	/**
+	 * Reference to the actions of the block.
+	 *
+	 * @var array
+	 */
+	public $actions;
+
+	/**
+	 * The event is constructed with the type `alter_actions`.
+	 *
+	 * @param \Icybee\EditBlock $target
+	 * @param array $properties
+	 */
+	public function __construct(\Icybee\EditBlock $target, array $properties)
+	{
+		parent::__construct($target, 'alter_actions', $properties);
 	}
 }

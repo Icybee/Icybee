@@ -142,7 +142,16 @@ class User extends ActiveRecord
 			array_unshift($rids, 2);
 		}
 
-		return $core->models['users.roles']->find($rids);
+		try
+		{
+			return $core->models['users.roles']->find($rids);
+		}
+		catch (\ICanBoogie\Exception\MissingRecord $e)
+		{
+			wd_log_error($e->getMessage());
+
+			return array_filter($e->rc);
+		}
 	}
 
 	/**

@@ -63,6 +63,10 @@ table.manage tfoot
 	border-radius: 0;
 }
 
+#manager div.alert .close {
+	display: none;
+}
+
 table.manage thead tr
 {
 	background-color: #E8E8E8;
@@ -154,6 +158,10 @@ table.manage td:last-child,
 table.manage th:last-child > div
 {
 	padding-right: 16px;
+}
+
+table.manage tbody.empty td {
+	padding: 0;
 }
 
 table.manage th.key,
@@ -316,20 +324,21 @@ table.manage div.limiter
 	margin: 0;
 }
 
-#menu-options span.browse,
+.actionbar span.browse,
 table.manage span.browse
 {
 	display: block;
 	float: right;
-}
-
-#menu-options span.browse,
-table.manage span.browse
-{
 	margin-left: 1ex;
 }
 
-#menu-options div.manage span.browse a,
+.actionbar span.browse {
+	float: left;
+	margin-left: 0;
+	margin-right: 8px;
+}
+
+.actionbar span.browse a,
 table.manage span.browse a
 {
 	border: 1px solid transparent;
@@ -344,37 +353,45 @@ table.manage span.browse a
 	float: left;
 }
 
+.actionbar span.browse a {
+	padding-top: 26px;
+}
+
 table.manage span.browse a
 {
 	padding-top: 22px;
 }
 
-#menu-options div.manage span.browse a.previous,
+.actionbar span.browse a.previous,
 table.manage span.browse a.previous
 {
 	background-image: url(manage/arrow-right.png);
 }
 
-#menu-options div.manage span.browse a.next,
+.actionbar span.browse a.next,
 table.manage span.browse a.next
 {
 	background-image: url(manage/arrow-left.png);
 }
 
-#menu-options div.manage span.browse a:hover,
 table.manage span.browse a:hover
 {
 	border-color: #CFCFCF;
 	background-color: white;
 }
 
-#menu-options div.manage span.browse a.previous:active,
+.actionbar span.browse a:hover {
+	border-color: #ccc;
+	background-color: #F6F6F6;	
+}
+
+.actionbar span.browse a.previous:active,
 table.manage span.browse a.previous:active
 {
 	left: -2px;
 }
 
-#menu-options div.manage span.browse a.next:active,
+.actionbar span.browse a.next:active,
 table.manage span.browse a.next:active
 {
 	left: 2px;

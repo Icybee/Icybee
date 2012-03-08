@@ -50,13 +50,12 @@ return array
 		'your_email' => 'Votre adresse e-mail'
 	),
 
-	'module_category.title.users' => 'Utilisateurs',
+	'module_category.users' => 'Utilisateurs',
 
-	'section.title' => array
+	'group.title' => array
 	(
 		'connection' => 'Connexion'
 	),
-
 
 	'users.manager.label.lastconnection' => 'Connecté le',
 

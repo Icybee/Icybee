@@ -23,6 +23,7 @@ return array
 		'Icybee\Core' => $path . 'lib/core/core.php',
 		'Icybee\Connection' => $path . 'lib/core/accessors/connections.php',
 		'Icybee\Document' => $path . 'lib/element/document.php',
+		'Icybee\Element\Form' => $path . 'lib/element/form.php',
 		'Icybee\Element\Group' => $path . 'lib/element/group.php',
 		'Icybee\Hooks' => $path . 'lib/hooks.php',
 		'Icybee\Kses' => $includes . 'external/kses/kses.php',
@@ -30,17 +31,19 @@ return array
 		'Icybee\Module' => $path . 'lib/core/module.php',
 		'Icybee\Modules' => $path . 'lib/core/accessors/modules.php',
 
+		'Icybee\RenderEvent' => $path . 'lib/hooks.php',
+
 		/*
 		 * Operations
 		 */
 
 		'Icybee\Operation\ActiveRecord\Lock' => $path . 'lib/operation/activerecord/lock.php',
 		'Icybee\Operation\ActiveRecord\Unlock' => $path . 'lib/operation/activerecord/unlock.php',
-		'Icybee\SaveOperation' => $path . 'lib/operation/activerecord/save.php',
+		'Icybee\ConfigOperation' => $path . 'lib/operation/module/config.php',
 		'Icybee\DeleteOperation' => $path . 'lib/operation/activerecord/delete.php',
+		'Icybee\SaveOperation' => $path . 'lib/operation/activerecord/save.php',
 		'Icybee\Operation\Constructor\Save' => $path . 'lib/operation/constructor/save.php',
 		'Icybee\Operation\Module\Blocks' => $path . 'lib/operation/module/blocks.php',
-		'Icybee\Operation\Module\Config' => $path . 'lib/operation/module/config.php',
 		'Icybee\Operation\Module\QueryOperation' => $path . 'lib/operation/module/query-operation.php',
 		'Icybee\Operation\Widget\Get' => $path . 'lib/operation/widget/get.php',
 
@@ -53,6 +56,16 @@ return array
 		'Icybee\ConfigBlock' => $path . 'lib/blocks/config.php',
 		'Icybee\DeleteBlock' => $path . 'lib/blocks/delete.php',
 		'Icybee\EditBlock' => $path . 'lib/blocks/edit.php',
+		/*
+		'Icybee\EditBlock\BeforeAlterAttributesEvent' => $path . 'lib/blocks/edit.php',
+		'Icybee\EditBlock\BeforeAlterPropertiesEvent' => $path . 'lib/blocks/edit.php',
+		'Icybee\EditBlock\BeforeAlterChildrenEvent' => $path . 'lib/blocks/edit.php',
+		'Icybee\EditBlock\BeforeAlterActionsEvent' => $path . 'lib/blocks/edit.php',
+		'Icybee\EditBlock\AlterAttributesEvent' => $path . 'lib/blocks/edit.php',
+		'Icybee\EditBlock\AlterPropertiesEvent' => $path . 'lib/blocks/edit.php',
+		'Icybee\EditBlock\AlterChildrenEvent' => $path . 'lib/blocks/edit.php',
+		'Icybee\EditBlock\AlterActionsEvent' => $path . 'lib/blocks/edit.php',
+		*/
 		'Icybee\FormBlock' => $path . 'lib/blocks/form.php',
 
 		'WdSectionedForm' => $includes . 'wdsectionedform.php',

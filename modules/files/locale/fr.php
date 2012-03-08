@@ -20,6 +20,6 @@ return array
 		'size' => 'Taille'
 	),
 
-	'module_category.title.resources' => 'Ressources',
-	'module.title.resources_files' => 'Fichiers'
+	'module_category.resources' => 'Ressources',
+	'module_title.resources_files' => 'Fichiers'
 );

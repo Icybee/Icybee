@@ -2,5 +2,5 @@
 
 return array
 (
-	'module.title.site_pages' => 'Páginas'
+	'module_title.site_pages' => 'Páginas'
 );

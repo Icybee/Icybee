@@ -59,11 +59,6 @@ html {
 	overflow-y: scroll;
 }
 
-html, body
-{
-	height: 100%; /* required by the sticky footer */
-}
-
 body
 {
 	color: #404040;
@@ -206,33 +201,6 @@ input:-moz-placeholder {
 
 
 
-.spinner {
-	border: 1px solid;
-	border-color: #CCC #CCC #BBB;
-	border-radius: 3px;
-	height: auto;
-	background: bottom right no-repeat white;
-	box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset;
-	padding: 6px;
-	display: inline-block;
-	cursor: default;
-}
-
-.spinner,
-button.spinner {
-	background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAMAgMAAAArG7R0AAAAA3NCSVQICAjb4U/gAAAACVBMVEX///8zMzMzMzOVNhaoAAAAA3RSTlMARJnnsGU/AAAACXBIWXMAAAsSAAALEgHS3X78AAAAHnRFWHRTb2Z0d2FyZQBBZG9iZSBGaXJld29ya3MgQ1M1LjGrH0jrAAAAKklEQVQImS3DoREAQAgDwcOgX1MdmqqiqfIj2JkFHtAQgvTyEbEivXz8fMU/CS+a0J12AAAAAElFTkSuQmCC');
-}
-
-button.spinner:active,
-button.spinner:hover {
-	background-position: bottom right;	
-}
-
-.spinner.placeholder {
-	color: #808080;
-	font-style: italic;
-	font-size: .8571em;
-}
 
 
 
@@ -776,20 +744,6 @@ CONTENTS
 
 
 
-
-
-body.page-slug-authenticate h1 {
-  color: white;
-  font-size: 80px;
-  height: 50px;
-  line-height: 1em;
-  overflow: hidden;
-  padding: 0;
-  text-align: center;
-  text-shadow: 1px 1px #CCC;
-}
-
-
 .sortable label {
 	display: inline;
 }
@@ -841,7 +795,7 @@ body.page-slug-authenticate h1 {
 #quick .dropdown-toggle {
 	box-shadow: none;
 	border-radius: 3px;
-	padding: 0 .5ex;
+	padding: 0;
 	cursor: default;
 }
 

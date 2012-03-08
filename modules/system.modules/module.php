@@ -103,7 +103,7 @@ class Module extends \Icybee\Module
 				list($category) = explode('.', $id);
 			}
 
-			$category = t($category, array(), array('scope' => 'module_category.title', 'default' => ucfirst($category)));
+			$category = t($category, array(), array('scope' => 'module_category', 'default' => ucfirst($category)));
 			$title = $descriptor['_locale_title'];
 
 			$categories[$category][$title] = array_merge
@@ -265,7 +265,7 @@ EOT;
 				(
 					strtr($id, '.', '_'), array(), array
 					(
-						'scope' => 'module.title',
+						'scope' => 'module_title',
 						'default' => isset($descriptor[Module::T_TITLE]) ? $descriptor[Module::T_TITLE] : $id
 					)
 				);

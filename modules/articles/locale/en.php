@@ -23,5 +23,5 @@ return array
 		)
 	),
 
-	'module.title.articles' => 'Articles'
+	'module_title.articles' => 'Articles'
 );

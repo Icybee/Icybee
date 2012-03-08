@@ -18,7 +18,7 @@ class press_WdForm extends Form
 	{
 		parent::__construct
 		(
-			wd_array_merge_recursive
+			\ICanBoogie\array_merge_recursive
 			(
 				$tags, array
 				(
@@ -100,7 +100,7 @@ class press_WdForm extends Form
 		(
 			'notify_destination' => $core->user->email,
 			'notify_bcc' => $core->user->email,
-			'notify_from' => 'Contact <no-reply@wdpublisher.com>',
+			'notify_from' => $core->site->email,
 			'notify_subject' => 'Formulaire de contact presse',
 			'notify_template' => <<<EOT
 Un message a été posté depuis le formulaire de contact presse :
