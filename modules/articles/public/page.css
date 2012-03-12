@@ -1,26 +1,5 @@
 @CHARSET "UTF-8";
 
-#view-articles-list .article + .article
-{
-	margin-top: 2em;
-}
-
-#view-articles-list h2 a:not(:hover)
-{
-	color: inherit;
-}
-
-#view-articles-list .metas
-{
-	font-size: .9em;
-}
-
-#view-articles-list .metas a:not(:hover)
-{
-	color: inherit;
-	text-decoration: none;
-}
-
 #view-articles-archives h2 sup,
 #view-articles-categories h2 sup
 {

@@ -304,7 +304,6 @@ class View extends Object
 	/**
 	 * Renders the inner HTML of the view.
 	 *
-	 * @throws WdException
 	 * @throws Exception
 	 *
 	 * @return html
@@ -458,40 +457,40 @@ class View extends Object
 	 */
 	protected function render_outer_html()
 	{
-		$page = $this->page;
-		$id = $this->id;
-		$class = 'view';
+		$class = '';
+		$type = $this->type;
+		$m = $this->module;
 
-		if (strpos($id, '/'))
+		while ($m)
 		{
-			list($constructor, $type) = explode('/', $id, 2);
+			$normalized_id = wd_normalize($m->id);
+			$class = "view--$normalized_id--$type $class";
 
-			$class .= ' constructor-' . wd_normalize($constructor) . ' ' . $type;
+			$m = $m->parent;
 		}
 
 		$this->element = new Element
 		(
 			'div', array
 			(
-				'id' => 'view-' . wd_normalize($id),
-				'class' => $class
+				'id' => 'view-' . wd_normalize($this->id),
+				'class' => trim("view view--$type $class"),
+				'data-constructor' => $this->module->id
 			)
 		);
 
 		$template_path = $this->resolve_template_location();
 
-		$engine = $this->engine;
+		$html = $this->render_inner_html($template_path, $this->engine);
 
-		$rc = $this->render_inner_html($template_path, $engine);
-
-		if (preg_match('#\.html$#', $page->template))
+		if (preg_match('#\.html$#', $this->page->template))
 		{
-			$this->element[Element::INNER_HTML] = $rc;
+			$this->element[Element::INNER_HTML] = $html;
 
-			$rc = (string) $this->element;
+			$html = (string) $this->element;
 		}
 
-		return $rc;
+		return $html;
 	}
 
 	protected function resolve_template_location()

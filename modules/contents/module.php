@@ -29,24 +29,26 @@ class Module extends \ICanBoogie\Modules\Nodes\Module
 	 */
 	protected function __get_views()
 	{
+		$options = array
+		(
+			'assets' => array
+			(
+				'css' => array
+				(
+					__DIR__ . '/assets/page.css'
+				)
+			),
+
+			'provider' => 'Icybee\Views\Contents\Provider'
+		);
+
 		return \ICanBoogie\array_merge_recursive
 		(
 			parent::__get_views(), array
 			(
-				'view' => array
-				(
-					'provider' => 'Icybee\Views\Contents\Provider'
-				),
-
-				'list' => array
-				(
-					'provider' => 'Icybee\Views\Contents\Provider'
-				),
-
-				'home' => array
-				(
-					'provider' => 'Icybee\Views\Contents\Provider'
-				)
+				'view' => $options,
+				'list' => $options,
+				'home' => $options
 			)
 		);
 	}
