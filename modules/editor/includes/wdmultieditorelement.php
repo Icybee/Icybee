@@ -51,23 +51,23 @@ class WdMultiEditorElement extends Element
 
 			$this->editor = new $editor_class
 			(
-				$this->get(self::T_EDITOR_TAGS, array()) + array
+				($this[self::T_EDITOR_TAGS] ?: array()) + array
 				(
-					Element::REQUIRED => $this->get(self::REQUIRED),
-					Element::DEFAULT_VALUE => $this->get(self::DEFAULT_VALUE),
+					Element::REQUIRED => $this[self::REQUIRED],
+					Element::DEFAULT_VALUE => $this[self::DEFAULT_VALUE],
 
-					'name' => $this->get('name'),
-					'value' => $this->get('value')
+					'name' => $this['name'],
+					'value' => $this['value']
 				)
 			);
 
 			if ($this->editor->type == 'textarea')
 			{
-				$rows = $this->get('rows');
+				$rows = $this['rows'];
 
 				if ($rows !== null)
 				{
-					$this->editor->set('rows', $rows);
+					$this->editor['rows'] = $rows;
 				}
 			}
 		}
@@ -117,7 +117,7 @@ class WdMultiEditorElement extends Element
 	{
 		$rc = $this->editor();
 
-		if ($this->get(self::T_NOT_SWAPPABLE))
+		if ($this[self::T_NOT_SWAPPABLE])
 		{
 			$rc .= '<input type="hidden" name="' . $this[self::T_SELECTOR_NAME] .'" value="' . $this->editor_name . '" />';
 		}

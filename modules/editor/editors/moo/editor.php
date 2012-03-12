@@ -37,7 +37,7 @@ class moo_WdEditorElement extends WdEditorElement
 
 		$document = $core->document;
 
-		$css = $this->get(self::T_STYLESHEETS, array());
+		$css = $this[self::T_STYLESHEETS] ?: array();
 
 //		wd_log('css: \1', array($css));
 
@@ -81,7 +81,7 @@ class moo_WdEditorElement extends WdEditorElement
 
 		$document->js->add('public/auto.js');
 
-		$actions = $this->get(self::T_ACTIONS, 'standard');
+		$actions = $this[self::T_ACTIONS] ?: 'standard';
 
 		if ($actions == 'standard')
 		{

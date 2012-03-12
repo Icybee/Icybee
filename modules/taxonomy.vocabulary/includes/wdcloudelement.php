@@ -17,7 +17,7 @@ class WdCloudElement extends Element
 
 	protected function render_inner_html()
 	{
-		$options = $this->get(self::OPTIONS);
+		$options = $this[self::OPTIONS];
 
 		if (!$options)
 		{
@@ -28,7 +28,7 @@ class WdCloudElement extends Element
     	$max = max($options);
 
     	$range = ($min == $max) ? 1 : $max - $min;
-    	$levels = $this->get(self::T_LEVELS, 8);
+    	$levels = $this[self::T_LEVELS] ?: 8;
 
 		$markup = $this->type == 'ul' ? 'li' : 'span';
 

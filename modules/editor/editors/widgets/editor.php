@@ -118,7 +118,7 @@ class widgets_WdEditorElement extends WdEditorElement
 			)
 		);
 
-		if ($this->get(Element::DESCRIPTION) === null)
+		if ($this[Element::DESCRIPTION] === null)
 		{
 			$this->set
 			(
@@ -135,8 +135,8 @@ class widgets_WdEditorElement extends WdEditorElement
 	{
 		$rc = parent::render_inner_html();
 
-		$value = $this->get('value');
-		$name = $this->get('name');
+		$value = $this['value'];
+		$name = $this['name'];
 
 		$value = json_decode($value);
 		$value = is_array($value) ? array_flip($value) : array();

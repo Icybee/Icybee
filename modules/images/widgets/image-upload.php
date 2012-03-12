@@ -72,7 +72,7 @@ class ImageUpload extends \WdFileUploadElement
 
 	protected function details($path)
 	{
-		$path = $this->get('value');
+		$path = $this['value'];
 
 		list($entry_width, $entry_height) = getimagesize($_SERVER['DOCUMENT_ROOT'] . $path);
 

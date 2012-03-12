@@ -70,11 +70,11 @@ class TimeZone extends \Brickrouge\Widget
 
 		$this->dataset['offsets'] = $offsets;
 
-		$value = $this->get('value');
+		$value = $this['value'];
 
-		if (!$value)
+		if ($value === null)
 		{
-			$value = $this->get(self::DEFAULT_VALUE);
+			$value = $this[self::DEFAULT_VALUE];
 		}
 
 		if ($value !== null)
@@ -99,7 +99,7 @@ class TimeZone extends \Brickrouge\Widget
 
 		$rc = parent::render_inner_html();
 
-		if (!$this->get(self::REQUIRED))
+		if (!$this[self::REQUIRED])
 		{
 			$options = array(null => '') + $options;
 		}
@@ -110,7 +110,7 @@ class TimeZone extends \Brickrouge\Widget
 			(
 				Element::OPTIONS => $options,
 
-				'name' => $this->get('name'),
+				'name' => $this['name'],
 				'value' => $value
 			)
 		);

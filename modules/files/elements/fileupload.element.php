@@ -16,7 +16,7 @@ class WdFileUploadElement extends Brickrouge\File
 {
 	protected function infos()
 	{
-		$path = $this->get('value');
+		$path = $this['value'];
 		$details = $this->details($path);
 		$preview = $this->preview($path);
 
@@ -55,7 +55,7 @@ class WdFileUploadElement extends Brickrouge\File
 	{
 		global $document;
 
-		$limit = $this->get(self::FILE_WITH_LIMIT, 2 * 1024);
+		$limit = $this[self::FILE_WITH_LIMIT] ?: 2 * 1024;
 
 		if ($limit === true)
 		{
@@ -64,7 +64,7 @@ class WdFileUploadElement extends Brickrouge\File
 
 		return array
 		(
-			'name' => $this->get('name'),
+			'name' => $this['name'],
 			'max-file-size' => $limit * 1024
 		);
 	}

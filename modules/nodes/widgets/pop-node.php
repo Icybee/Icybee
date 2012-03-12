@@ -95,7 +95,7 @@ class PopNode extends \Brickrouge\Widget
 
 	protected function getPreview($entry)
 	{
-		$title = $this->get(self::T_PLACEHOLDER);
+		$title = $this[self::T_PLACEHOLDER];
 
 		if (!$entry)
 		{

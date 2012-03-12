@@ -104,7 +104,7 @@ class feed_WdEditorElement extends WdEditorElement
 
 	public function render_inner_html()
 	{
-		$value = $this->get('value');
+		$value = $this['value'];
 
 		if ($value)
 		{
@@ -112,7 +112,7 @@ class feed_WdEditorElement extends WdEditorElement
 
 			foreach ($values as $identifier => $value)
 			{
-				$this->elements[$identifier]->set('value', $value);
+				$this->elements[$identifier]['value'] = $value;
 			}
 		}
 

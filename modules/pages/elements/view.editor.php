@@ -21,7 +21,7 @@ class view_WdEditorElement extends WdEditorElement
 	static public function to_content($value, $id, $page_id)
 	{
 		global $core;
-		
+
 		if (!$value)
 		{
 			return;
@@ -98,8 +98,8 @@ class view_WdEditorElement extends WdEditorElement
 
 		$rc = parent::render_inner_html();
 
-		$value = $this->get('value');
-		$name = $this->get('name');
+		$value = $this['value'];
+		$name = $this['name'];
 
 		$selected_category = null;
 		$selected_subcategory = null;

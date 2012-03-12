@@ -20,7 +20,6 @@ use Brickrouge\A;
 use Brickrouge\Button;
 use Brickrouge\Collector;
 use Brickrouge\Element;
-use Brickrouge\Exception\EmptyElement as EmptyElementException;
 use Brickrouge\SplitButton;
 
 class Actionbar extends Element
@@ -58,7 +57,7 @@ class Actionbar extends Element
 
 		if (!$actionbar_title && !$actionbar_new && !$actionbar_navigation && !$actionbar_toolbar && !$actionbar_search)
 		{
-			throw new EmptyElementException;
+			throw new \Brickrouge\EmptyElementException;
 		}
 
 		return <<<EOT
@@ -91,7 +90,7 @@ class ActionbarNav extends Element
 
 		if (empty($collection))
 		{
-			throw new EmptyElementException;
+			throw new \Brickrouge\EmptyElementException;
 		}
 
 		$html = '';
@@ -135,7 +134,7 @@ class ActionbarNav extends Element
 
 		if (empty($current_route['module']))
 		{
-			throw new EmptyElementException;
+			throw new \Brickrouge\EmptyElementException;
 		}
 
 		$module = $current_route['module'];
@@ -220,7 +219,7 @@ class ActionbarContextNav extends Element
 
 		if (empty($collection))
 		{
-			throw new EmptyElementException;
+			throw new \Brickrouge\EmptyElementException;
 		}
 
 		foreach ($collection as $route)
@@ -306,7 +305,7 @@ class ActionbarSearch extends Element
 
 		if (empty($html))
 		{
-			throw new EmptyElementException;
+			throw new \Brickrouge\EmptyElementException;
 		}
 
 		return $html;

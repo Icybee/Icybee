@@ -20,7 +20,7 @@ class WdSectionedForm extends Form
 	{
 		$this->contextPush();
 
-		$groups = $this->get(self::GROUPS, array());
+		$groups = $this[self::GROUPS] ?: array();
 
 		self::sort_by($groups, 'weight');
 
@@ -35,7 +35,7 @@ class WdSectionedForm extends Form
 				continue;
 			}
 
-			$group = is_object($element) ? $element->get(Element::GROUP, 'primary') : 'primary';
+			$group = is_object($element) ? ($element[Element::GROUP] ?: 'primary') : 'primary';
 
 			$groups[$group][self::CHILDREN][$name] = $element;
 		}
@@ -183,7 +183,7 @@ class WdSectionedForm extends Form
 				continue;
 			}
 
-			$order = is_object($value) ? $value->get($by) : $value[$by];
+			$order = is_object($value) ? $value[$by] : $value[$by];
 
 			$groups[$order][$key] = $value;
 		}
@@ -220,12 +220,12 @@ class WdSectionedForm extends Form
 			# label
 			#
 
-			$label = $child->get(self::LABEL);
+			$label = $child[self::LABEL];
 
 			if ($label)
 			{
 				$label = t($label);
-				$is_required = $child->get(self::REQUIRED);
+				$is_required = $child[self::REQUIRED];
 
 				$child_id = $child->id;
 
@@ -243,7 +243,7 @@ class WdSectionedForm extends Form
 				$start =  $is_required ? $markup_start . $label . '&nbsp;<sup>*</sup>' : $markup_start . $label;
 				$finish = '</label>';
 
-				$complement = $child->get(self::LABEL_COMPLEMENT);
+				$complement = $child[self::LABEL_COMPLEMENT];
 
 				if ($complement)
 				{

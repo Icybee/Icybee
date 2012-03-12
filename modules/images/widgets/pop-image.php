@@ -35,8 +35,8 @@ class PopImage extends PopNode
 
 		$this->dataset = array
 		(
-			'preview-width' => $this->get(self::T_PREVIEW_WIDTH),
-			'preview-height' => $this->get(self::T_PREVIEW_HEIGHT)
+			'preview-width' => $this[self::T_PREVIEW_WIDTH],
+			'preview-height' => $this[self::T_PREVIEW_HEIGHT]
 		)
 
 		+ $this->dataset;
@@ -57,8 +57,8 @@ class PopImage extends PopNode
 
 	protected function getPreview($record)
 	{
-		$w = $this->get(self::T_PREVIEW_WIDTH, 64);
-		$h = $this->get(self::T_PREVIEW_HEIGHT, 64);
+		$w = $this[self::T_PREVIEW_WIDTH] ?: 64;
+		$h = $this[self::T_PREVIEW_HEIGHT] ?: 64;
 
 		$rc = '<div class="preview">' . new Element
 		(

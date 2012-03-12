@@ -88,7 +88,7 @@ class Breadcrumb extends Element
 
 	protected function render_inner_html()
 	{
-		$page = $node = $this->get(self::T_PAGE);
+		$page = $node = $this[self::T_PAGE];
 		$slices = array();
 
 		while ($node)
@@ -117,7 +117,7 @@ class Breadcrumb extends Element
 		}
 
 		$slices = array_reverse($slices);
-		$divider = $this->get(self::T_DIVIDER, ' › ');
+		$divider = $this[self::T_DIVIDER] ?: ' › ';
 
 		Event::fire
 		(

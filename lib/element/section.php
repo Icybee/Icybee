@@ -31,13 +31,13 @@ class Section extends Element
 
 			$context_class = $name ? normalize($name) : ++self::$auto_panelname;
 
-			$class = 'panel panel-' . $context_class . ' ' . (is_object($element) ? $element->get(self::T_PANEL_CLASS) : '');
+			$class = 'panel panel-' . $context_class . ' ' . (is_object($element) ? $element[self::T_PANEL_CLASS] : '');
 
 			$rc .= '<div class="' . rtrim($class) . '">';
 
 			if (is_object($element))
 			{
-				$label = t($element->get(Form::LABEL));
+				$label = t($element[Form::LABEL]);
 
 				if ($label)
 				{
@@ -49,7 +49,7 @@ class Section extends Element
 					$rc .= '<div class="form-label form-label-' . $context_class . '">';
 					$rc .= $label;
 
-					if ($element->get(Element::REQUIRED))
+					if ($element[Element::REQUIRED])
 					{
 						$rc .= ' <sup>*</sup>';
 					}

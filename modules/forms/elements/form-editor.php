@@ -38,11 +38,11 @@ class form_WdEditorElement extends WdEditorElement
 		{
 			if ($name == 'name')
 			{
-				$this->selector->set('name', $value);
+				$this->selector['name'] = $value;
 			}
 			else if ($name == 'value')
 			{
-				$this->selector->set('value', $value);
+				$this->selector['value'] = $value;
 			}
 		}
 

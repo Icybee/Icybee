@@ -172,72 +172,69 @@ class AdjustThumbnailVersion extends \Brickrouge\Group
 		$document->js->add('adjust-thumbnail-version.js');
 	}
 
-	public function set($name, $value=null)
+	public function offsetSet($offset, $value)
 	{
-		if (is_string($name))
+		switch ($offset)
 		{
-			switch ($name)
+			case self::DEFAULT_VALUE:
 			{
-				case self::DEFAULT_VALUE:
+				$options = $value;
+
+				if (is_string($options))
 				{
-					$options = $value;
-
-					if (is_string($options))
-					{
-						$options = json_decode($options);
-					}
-
-					foreach ($options as $identifier => $v)
-					{
-						if (empty($this->elements[$identifier]))
-						{
-							continue;
-						}
-
-						$element->set($name, $v);
-					}
+					$options = json_decode($options);
 				}
-				break;
 
-				case 'name':
+				foreach ($options as $identifier => $v)
 				{
-					foreach ($this->elements as $identifier => $element)
+					if (empty($this->elements[$identifier]))
 					{
-						$element->set($name, $value . '[' . $identifier . ']');
+						continue;
 					}
+
+					$element[$offset] = $v;
 				}
-				break;
-
-				case 'value':
-				{
-					$options = $value;
-
-					if (is_string($options))
-					{
-						$options = json_decode($options);
-					}
-
-					if (!$options)
-					{
-						break;
-					}
-
-					foreach ($options as $identifier => $v)
-					{
-						if (empty($this->elements[$identifier]))
-						{
-							continue;
-						}
-
-						// FIXME-20110518: use handle_value() ?
-
-						$this->elements[$identifier]->set(($identifier == 'interlace' || $identifier == 'no-upscale') ? 'checked' : 'value', $v);
-					}
-				}
-				break;
 			}
+			break;
+
+			case 'name':
+			{
+				foreach ($this->elements as $identifier => $element)
+				{
+					$element[$offset] = $value . '[' . $identifier . ']';
+				}
+			}
+			break;
+
+			case 'value':
+			{
+				$options = $value;
+
+				if (is_string($options))
+				{
+					$options = json_decode($options);
+				}
+
+				if (!$options)
+				{
+					break;
+				}
+
+				foreach ($options as $identifier => $v)
+				{
+					if (empty($this->elements[$identifier]))
+					{
+						continue;
+					}
+
+					// FIXME-20110518: use handle_value() ?
+
+					$this->elements[$identifier][($identifier == 'interlace' || $identifier == 'no-upscale') ? 'checked' : 'value'] = $v;
+				}
+			}
+			break;
 		}
 
-		parent::set($name, $value);
+		parent::offsetSet($offset, $value);
 	}
 }

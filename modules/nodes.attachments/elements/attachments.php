@@ -41,8 +41,8 @@ class WdAttachmentsElement extends Element
 	{
 		global $core;
 
-		$nid = $this->get(self::T_NODEID);
-		$hard_bond = $this->get(self::T_HARD_BOND, false);
+		$nid = $this[self::T_NODEID];
+		$hard_bond = $this[self::T_HARD_BOND] ?: false;
 
 		$lines = null;
 

@@ -254,7 +254,7 @@ class Manager extends Element
 				(
 					'name' => self::T_BLOCK,
 					'type' => 'hidden',
-					'value' => $this->get(self::T_BLOCK, 'manage')
+					'value' => $this[self::T_BLOCK] ?: 'manage'
 				)
 			);
 
@@ -351,7 +351,7 @@ class Manager extends Element
 
 		if (!$options['order'])
 		{
-			$order = $this->get(self::T_ORDER_BY);
+			$order = $this[self::T_ORDER_BY];
 
 			if ($order)
 			{

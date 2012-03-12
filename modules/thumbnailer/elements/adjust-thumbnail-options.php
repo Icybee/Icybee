@@ -189,54 +189,28 @@ class AdjustThumbnailOptions extends \Brickrouge\Group
 		$document->js->add('adjust-thumbnail-options.js');
 	}
 
-	public function set($name, $value=null)
+	protected function offsetSet($offset, $value)
 	{
-		if (is_string($name))
+		if ($offset === self::DEFAULT_VALUE)
 		{
-			switch ($name)
+			foreach ($this->elements as $identifier => $element)
 			{
-				case self::DEFAULT_VALUE:
+				if (!array_key_exists($identifier, $value))
 				{
-					foreach ($this->elements as $identifier => $element)
-					{
-						if (!array_key_exists($identifier, $value))
-						{
-							continue;
-						}
-
-						$element->set($name, $value[$identifier]);
-					}
+					continue;
 				}
-				break;
 
-				case 'name':
-				{
-					foreach ($this->elements as $identifier => $element)
-					{
-						$element->set($name, $value . '[' . $identifier . ']');
-					}
-				}
-				break;
+				$element[$offset] = $value[$identifier];
+			}
+		}
+		else if ($offset === 'name')
+		{
+			foreach ($this->elements as $identifier => $element)
+			{
+				$element[$offset] = $value . '[' . $identifier . ']';
 			}
 		}
 
-		parent::set($name, $value);
+		parent::offsetSet($offset, $value);
 	}
-
-	/*
-	protected function render_inner_html()
-	{
-		extract($this->elements);
-
-		$no_upscale = $this->elements['no-upscale'];
-
-		return <<<EOT
-<div class="form-element">$w × $h</div>
-<div class="form-element">$method</div>
-<div class="form-element">$background</div>
-<div class="form-element">$format $quality</div>
-<div class="form-element checkbox-group list">$no_upscale $lightbox</div>
-EOT;
-	}
-	*/
 }

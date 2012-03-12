@@ -51,11 +51,11 @@ class AdjustNode extends \Brickrouge\Widget
 		global $core;
 
 		$rc = parent::render_inner_html();
-		$constructor = $this->get(self::T_CONSTRUCTOR);
+		$constructor = $this[self::T_CONSTRUCTOR];
 
 		$rc .= '<div class="search">';
 		$rc .= new Text(array('class' => 'search', 'placeholder' => t('Search')));
-		$rc .= $this->get_results(array('selected' => $this->get('value')), $constructor);
+		$rc .= $this->get_results(array('selected' => $this['value']), $constructor);
 		$rc .= '</div>';
 
 		$this->dataset['constructor'] = $constructor;
