@@ -285,7 +285,7 @@ class Icybee extends WdPatron
 		}
 		catch (\Exception $e)
 		{
-			header('HTTP/1.0 ' . $e->getCode() . ' ' . strip_tags($e->getMessage()));
+			header('HTTP/1.0 ' . $e->getCode() . ' ' . str_replace("\n", " ", strip_tags($e->getMessage())));
 
 			$body = Debug::format_alert($e);
 
@@ -390,10 +390,14 @@ class Icybee extends WdPatron
 				exit;
 			}
 		}
+
+		#
+		# if the index is requested but all sites have a path, we redirect the request to the site
+		# path.
+		#
+
 		else if ($path == '/' && $core->site->path)
 		{
-			exit(__FILE__ . '@' . __LINE__);
-
 			header('Location: ' . $core->site->url . ($query_string ? '?' . $query_string : ''));
 
 			exit;

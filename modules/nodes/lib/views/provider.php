@@ -42,7 +42,7 @@ class Provider extends \Icybee\Views\ActiveRecord\Provider
 
 			if (!$rc->is_online)
 			{
-				if (!$core->user->has_permission(Module::PERMISSION_ACCESS, $rc->constructor))
+				if (!$core->user->has_permission(\ICanBoogie\Module::PERMISSION_ACCESS, $rc->constructor))
 				{
 					throw new Exception\HTTP('The requested record requires authentication.', array(), 401);
 				}

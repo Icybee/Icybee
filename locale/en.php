@@ -2,7 +2,7 @@
 
 return array
 (
-	'section.title' => array
+	'group.title' => array
 	(
 		'admin' => 'Administration',
 		'organize' => 'Organize'

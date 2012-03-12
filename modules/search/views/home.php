@@ -114,6 +114,7 @@ $form = new Brickrouge\Form
 	)
 );
 
+/*
 class site_search__search_WdView
 {
 
@@ -130,6 +131,7 @@ Event::fire
 
 	$sender
 );
+*/
 
 echo '<div class="conditions">' . $form . '</div>';
 

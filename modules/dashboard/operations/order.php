@@ -38,8 +38,6 @@ class OrderOperation extends Operation
 	{
 		global $core;
 
-		sleep(1);
-
 		$core->user->metas['dashboard.order'] = json_encode($this->request['order']);
 
 		return true;

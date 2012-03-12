@@ -1,6 +1,6 @@
 window.addEvent('click:relay([data-property="status"] .dropdown-menu a)', function(ev, el) {
 
-	var classNames = [ 'btn-danger', 'btn-success', 'btn-warning', 'btn-wanger' ]
+	var classNames = [ 'btn-danger', 'btn-success', 'btn-warning', 'btn-danger' ]
 	, input = el.getParent('.btn-group')
 	, toggle = input.getElement('.dropdown-toggle')
 	, siteId = input.get('data-site-id')

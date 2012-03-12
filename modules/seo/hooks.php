@@ -25,7 +25,7 @@ use WdPatron as Patron;
 
 class Hooks
 {
-	public static function on_icybee_render(Event $event)
+	public static function on_icybee_render(\Icybee\RenderEvent $event)
 	{
 		global $core, $page;
 
@@ -66,7 +66,7 @@ class Hooks
 
 EOT;
 
-		$event->rc = str_replace('</body>', $insert . '</body>', $event->rc);
+		$event->html = str_replace('</body>', $insert . '</body>', $event->html);
 	}
 
 	public static function on_document_render_title(Event $event)
