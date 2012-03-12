@@ -246,10 +246,9 @@ window.addEvent
 );
 
 
-/*
+/**
  * Reset button for default values
  */
-
 !function() {
 
 	var controls = []
@@ -294,6 +293,9 @@ window.addEvent
 } ()
 
 
+/**
+ * Provides a notice for long XHR.
+ */
 !function() {
 
 	var dummy = null
@@ -301,14 +303,16 @@ window.addEvent
 	, message = null
 	, messageTween = null
 
+	ICanBoogie.XHR.NOTICE_DELAY = 500;
+
 	window.addEvent('icanboogie.xhr.shownotice', function() {
 
 		if (!dummy)
 		{
 			dummy = new Element('div.xhr-dummy')
-			message = new Element('div.xhr-message', { html: 'Loagin...' })
-			dummyTween = new Fx.Tween(dummy, { property: 'opacity', link: 'cancel' })
-			messageTween = new Fx.Tween(message, { property: 'opacity', link: 'cancel' })
+			message = new Element('div.xhr-message', { html: 'Loadin...' })
+			dummyTween = new Fx.Tween(dummy, { property: 'opacity', duration: 'short', link: 'cancel' })
+			messageTween = new Fx.Tween(message, { property: 'opacity', duration: 'short', link: 'cancel' })
 			dummyTween.set(0)
 			messageTween.set(0)
 		}
