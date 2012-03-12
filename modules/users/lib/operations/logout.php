@@ -52,7 +52,7 @@ class LogoutOperation extends Operation
 
 		$request = $this->request;
 
-		unset($core->session->users['user_id']);
+		$core->user->logout();
 
 		$this->response->location = isset($request['continue']) ? $request['continue'] : ($request->referer ? $request->referer : '/');
 

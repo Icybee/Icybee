@@ -322,6 +322,24 @@ class User extends ActiveRecord
 		return true;
 	}
 
+	/**
+	 * Log the user out.
+	 *
+	 * The following things happend when the user is logged out:
+	 *
+	 * - The `$core->user` property is unset.
+	 * - The `$core->user_id` property is unset.
+	 * - The `$core->session->users['user_id']` property is unset.
+	 */
+	public function logout()
+	{
+		global $core;
+
+		unset($core->user);
+		unset($core->user_id);
+		unset($core->session->users['user_id']);
+	}
+
 	public function url($id)
 	{
 		global $core;
