@@ -71,7 +71,7 @@ class Site extends ActiveRecord
 		# before saving the site we clear the stes cache.
 		#
 
-		unset($core->vars['sites']);
+		unset($core->vars['cached_sites']);
 
 		return parent::save();
 	}

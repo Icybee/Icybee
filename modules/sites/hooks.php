@@ -24,7 +24,7 @@ class Hooks
 	{
 		global $core;
 
-		$sites = $core->vars['sites'];
+		$sites = $core->vars['cached_sites'];
 
 		if (!$sites)
 		{
@@ -32,7 +32,7 @@ class Hooks
 			{
 				$sites = $core->models['sites']->all;
 
-				$core->vars['sites'] = $sites;
+				$core->vars['cached_sites'] = $sites;
 			}
 			catch (Exception\DatabaseConnection $e)
 			{

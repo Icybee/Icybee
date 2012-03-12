@@ -77,13 +77,13 @@ class Versions implements \ArrayAccess, \IteratorAggregate
 
 		if (CACHE_VERSIONS)
 		{
-			$versions = $core->vars['thumbnailer_versions'];
+			$versions = $core->vars['cached_thumbnailer_versions'];
 
 			if (!$versions)
 			{
 				$versions = $this->collect();
 
-				$core->vars['thumbnailer_versions'] = $versions;
+				$core->vars['cached_thumbnailer_versions'] = $versions;
 			}
 		}
 		else

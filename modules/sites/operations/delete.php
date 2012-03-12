@@ -17,7 +17,7 @@ class DeleteOperation extends \ICanBoogie\Operation\ActiveRecord\Delete
 	{
 		$rc = parent::process();
 
-		unset($core->vars['sites']);
+		unset($core->vars['cached_sites']);
 
 		return $rc;
 	}

@@ -31,7 +31,7 @@ class SaveOperation extends \Icybee\SaveOperation
 			'save'
 		);
 
-		unset($core->vars['sites']);
+		unset($core->vars['cached_sites']);
 
 		return $rc;
 	}
