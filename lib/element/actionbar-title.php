@@ -57,7 +57,7 @@ class ActionbarTitle extends Element
 				(
 					DropdownMenu::OPTIONS => $options,
 
-					'value' => $request->pathinfo
+					'value' => $request->path_info
 				)
 			);
 

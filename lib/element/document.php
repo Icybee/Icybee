@@ -183,7 +183,7 @@ EOT;
 
 			if (count($sites) > 1)
 			{
-				$path = Route::decontextualize($core->request->pathinfo);
+				$path = Route::decontextualize($core->request->path_info);
 
 				foreach ($sites as $asite)
 				{
@@ -323,7 +323,7 @@ EOT;
 			(
 				DropdownMenu::OPTIONS => $options,
 
-				'value' => $core->request->pathinfo
+				'value' => $core->request->path_info
 			)
 		);
 

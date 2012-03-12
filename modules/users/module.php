@@ -134,7 +134,7 @@ EOT;
 
 		$core->document->css->add('assets/authenticate.css');
 
-		$path = rtrim(\ICanBoogie\Route::decontextualize($core->request->pathinfo), '/');
+		$path = rtrim(\ICanBoogie\Route::decontextualize($core->request->path_info), '/');
 
 		if ($path != '/admin')
 		{

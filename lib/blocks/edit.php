@@ -158,7 +158,7 @@ class EditBlock extends Form
 			if (!$locked)
 			{
 				$luser = $core->models['users'][$lock['uid']];
-				$url = $core->request->pathinfo;
+				$url = $core->request->path_info;
 
 				$time = round((strtotime($lock['until']) - time()) / 60);
 				$message = $time ? "Le verrou devrait disparaitre dans $time minutes." : "Le verrou devrait disparaitre dans moins d'une minutes.";

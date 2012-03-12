@@ -81,7 +81,7 @@ class ActionbarNav extends Element
 	{
 		global $core;
 
-		$path = Route::decontextualize($core->request->pathinfo);
+		$path = Route::decontextualize($core->request->path_info);
 		$match = Route::find($path, 'any', 'admin');
 
 		list($current_route) = $match;

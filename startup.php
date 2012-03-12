@@ -12,43 +12,50 @@
 namespace Icybee;
 
 /**
- * @var float This is the time reference used by the wd_log_time() function.
+ * This is the time reference used by the {@link wd_log_time()} function.
+ *
+ * @var float
  */
 $wddebug_time_reference = microtime(true);
 
 /**
- * @var string Version string for the Icybee package.
+ * Version string for the Icybee package.
+ *
+ * @var string
  */
-define('Icybee\VERSION', '1.0-dev (2012-03-01)');
+define('Icybee\VERSION', '1.0-dev (2012-03-12)');
 
 /**
- * @var string Root path for the Icybee package.
+ * Root path for the Icybee package.
+ *
+ * @var string
  */
 define('Icybee\ROOT', rtrim(__DIR__, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR);
 
 /**
- * @var string Assets path for the Icybee package.
+ * Assets path for the Icybee package.
+ *
+ * @var string
  */
 define('Icybee\ASSETS', ROOT . 'assets' . DIRECTORY_SEPARATOR);
 
 /*
- * Icybee requires the ICanBoogie framework, the Brickrouge framework and the Patron engine.
+ * Icybee requires the ICanBoogie framework, the Brickrouge tookit and the Patron engine.
  *
- * If Phar versions of theses packages are available they are used instead. You should pay
- * attention to this as this might cause a hit on performance.
+ * If Phar packages are available they are used instead. You should pay attention to this as this
+ * might cause a hit on performance.
  */
-
-$framework = array('ICanBoogie', 'Brickrouge', 'Patron');
-
-foreach ($framework as $name)
+foreach (array('ICanBoogie', 'Brickrouge', 'Patron') as $name)
 {
-	if (file_exists(ROOT . "framework/$name.phar"))
+	$pathname = 'framework/' . $name;
+
+	if (file_exists(ROOT . $pathname . '.phar'))
 	{
-		require_once ROOT . "framework/$name.phar";
+		require_once ROOT . $pathname . '.phar';
 	}
 	else
 	{
-		require_once ROOT . "framework/$name/startup.php";
+		require_once ROOT . $pathname . '/startup.php';
 	}
 }
 
@@ -57,11 +64,12 @@ if (!class_exists('Icybee\Core', false))
 	require_once ROOT . 'lib/core/core.php';
 }
 
-require_once ROOT . 'includes/common.php';
 require_once ROOT . 'lib/helpers.php';
 
 /**
- * @var Icybee\Core The core instance is the heart of the ICanBoogie framework.
+ * The core instance is the heart of the ICanBoogie framework.
+ *
+ * @var Icybee\Core
  */
 $core = Core::get_singleton
 (
@@ -93,7 +101,9 @@ $core->run();
 // wd_log_time('core is running');
 
 /**
- * @var bool The views are cached when the Icybee\CACHE_VIEWS is defined.
+ * The views are cached when the Icybee\CACHE_VIEWS is defined.
+ *
+ * @var bool
  */
 if (!defined('Icybee\CACHE_VIEWS'))
 {
@@ -101,19 +111,29 @@ if (!defined('Icybee\CACHE_VIEWS'))
 }
 
 /*
- * Handler for the website.
+ * Request hooks
  */
-\ICanBoogie\Events::attach
+
+use ICanBoogie\Events;
+use ICanBoogie\HTTP\Request;
+
+/**
+ * Request hook for the website.
+ */
+Events::attach
 (
-	'Icybee\Core::dispatch', function(\ICanBoogie\Core\DispatchEvent $event, \Icybee\Core $core)
+	'ICanBoogie\HTTP\Request::dispatch', function(Request\DispatchEvent $event, Request $request)
 	{
+		global $core;
+
 		require_once \ICanBoogie\DOCUMENT_ROOT . 'user-startup.php';
 
 		$icybee = \Icybee::get_singleton();
-		$event->response->body = $icybee->run($event->request, $event->response);
+		$event->response->body = $icybee->run($request, $event->response);
+		$event->stop();
 
 		/*
-		if ($core->user->is_guest && $event->request->method == \ICanBoogie\HTTP\Request::METHOD_GET)
+		if ($core->user->is_guest && $event->request->method == Request::METHOD_GET)
 		{
 			$event->response->headers['Cache-Control'] = 'max-age=600';
 		}
@@ -125,53 +145,38 @@ if (!defined('Icybee\CACHE_VIEWS'))
 	}
 );
 
-/*
- * Handler for the admin.
+/**
+ * Request hook for the admin.
  *
  * This event hook handles all "/admin/" routes. It may redirect the user to the proper "admin"
  * location e.g. '/admin/' => '/fr/admin/'. If the "admin" route is detected, the Icybee admin
  * interface is presented, granted the user has an access permission, otherwise the
  * user is asked to authenticate.
  */
-\ICanBoogie\Events::attach
+Events::attach
 (
-	'Icybee\Core::dispatch', function(\ICanBoogie\Core\DispatchEvent $event, \Icybee\Core $core)
+	'ICanBoogie\HTTP\Request::dispatch', function(Request\DispatchEvent $event, request $request)
 	{
+		global $core;
 
-		$uri = $event->request->uri;
+		$path_info = $request->path_info;
 		$site = $core->site;
 		$suffix = $site->path;
 
-		if ($suffix && preg_match('#^' . preg_quote($suffix) . '/#', $uri))
+		# decontextualize path_info
+
+		if ($suffix && strpos($path_info, $suffix . '/') === 0)
 		{
-			$uri = substr($uri, strlen($suffix));
+			$path_info = substr($path_info, strlen($suffix));
 		}
 
-		if (preg_match('#^/admin/#', $uri) || preg_match('#^/admin$#', $uri))
+		$path_info = rtrim($path_info, '/') . '/';
+
+		if (strpos($path_info, '/admin/') === 0)
 		{
-			if (!$site->siteid)
-			{
-		// 		throw new \Exception('No site id');
-				/*
-				$site = \ICanBoogie\Modules\Sites\Hooks::find_by_request(array('REQUEST_PATH' => '/', 'HTTP_HOST' => $_SERVER['HTTP_HOST']));
-
-				if ($site->path)
-				{
-					header('Location: ' . $site->path . $uri);
-
-					exit;
-				}
-				*/
-			}
-
 // 			$event->response->headers['Cache-Control'] = 'private, no-cache';
 			$event->response->body = require ROOT . 'admin.php';
 			$event->stop();
 		}
 	}
 );
-
-/*
- * Dispatch the request to the appropriate handlers.
- */
-$core->dispatch();

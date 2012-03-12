@@ -23,7 +23,7 @@ class Hooks
 		(
 			array
 			(
-				'path' => '/api/system.cache/core.modules/clear'
+				'path_info' => '/api/system.cache/core.modules/clear'
 			)
 		)
 		->post();
@@ -32,7 +32,7 @@ class Hooks
 		(
 			array
 			(
-				'path' => '/api/system.cache/core.configs/clear'
+				'path_info' => '/api/system.cache/core.configs/clear'
 			)
 		)
 		->post();
@@ -41,7 +41,7 @@ class Hooks
 		(
 			array
 			(
-				'path' => '/api/system.cache/core.catalogs/clear'
+				'path_info' => '/api/system.cache/core.catalogs/clear'
 			)
 		)
 		->post();

@@ -95,7 +95,7 @@ class Navigation extends \Brickrouge\Element
 			unset($links['features']);
 		}
 
-		$path = Route::decontextualize($core->request->pathinfo);
+		$path = Route::decontextualize($core->request->path_info);
 		$matching_route = Route::find($path, 'any', 'admin'); // FIXME-20120201: use the primary request object
 		$selected = $matching_route ? $descriptors[$matching_route[0]['module']][Module::T_CATEGORY] : 'dashboard';
 
@@ -152,7 +152,7 @@ class Navigation extends \Brickrouge\Element
 			(
 				DropdownMenu::OPTIONS => $options,
 
-				'value' => $core->request->pathinfo
+				'value' => $core->request->path_info
 			)
 		);
 	}

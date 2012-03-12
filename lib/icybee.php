@@ -162,7 +162,7 @@ class Icybee extends WdPatron
 	{
 		global $core, $page;
 
-		$path = $request->pathinfo;
+		$path = $request->path_info;
 		$site = $core->site;
 
 		if (!$site->siteid)
@@ -254,7 +254,7 @@ class Icybee extends WdPatron
 
 			$_REQUEST += $page->url_variables;
 
-			$request->pathinfo_parameters = $page->url_variables + $request->pathinfo_parameters;
+			$request->path_info_parameters = $page->url_variables + $request->path_info_parameters;
 
 			#
 			# we unset the request params, it will be reconstructed on the next access.

@@ -34,7 +34,7 @@ else
 		$core->language = $user->language;
 	}
 
-	$request_route = $request->pathinfo;
+	$request_route = $request->path_info;
 
 	if ($user instanceof ActionRecord\Users\Member)
 	{
