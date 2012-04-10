@@ -1,3 +1,6 @@
+Icybee
+======
+
 Icybee is a CMS for PHP5.3.6+, brand new and wonderful, built on solid
 components, fresh ideas and years of experience from his dad.
 
