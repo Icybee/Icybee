@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-global $document, $wddebug_time_reference;
+global $document;
 
 $time = microtime(true);
 
@@ -68,8 +68,8 @@ $html .= PHP_EOL . PHP_EOL . '<!-- ' . \ICanBoogie\format
 	'icybee v:version - in :elapsed ms (core: :elapsed_core ms, db: :elapsed_queries ms), using :memory-usage (peak: :memory-peak), queries: :queries-count (:queries-details)', array
 	(
 		'version' => \Icybee\VERSION,
-		'elapsed' => number_format(($time_end - $wddebug_time_reference) * 1000, 2, '.', ''),
-		'elapsed_core' => number_format(($time - $wddebug_time_reference) * 1000, 2, '.', ''),
+		'elapsed' => number_format(($time_end - $_SERVER['REQUEST_TIME_FLOAT']) * 1000, 2, '.', ''),
+		'elapsed_core' => number_format(($time - $_SERVER['REQUEST_TIME_FLOAT']) * 1000, 2, '.', ''),
 		'elapsed_queries' => number_format($queries_time * 1000, 2, '.', ''),
 		'memory-usage' => number_format(memory_get_usage() / (1024 * 1024), 3) . 'Mb',
 		'memory-peak' => number_format(memory_get_peak_usage() / (1024 * 1024), 3) . 'Mb',

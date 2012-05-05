@@ -22,17 +22,13 @@ NOW
 {
 	color: #808080;
 	text-align: left;
-	font-family: Droid Serif, Georgia,"Times New Roman","Bitstream Charter",Times,serif;
 	font-weight: normal;
-	font-style: italic;
 	border-bottom: 1px solid #CCC;
 	background-color: white;
 }
 
 #system-nodes-now td.count
 {
-	font-size: 1.2em;
-	font-family: /*Droid Serif,*/ Georgia,"Times New Roman","Bitstream Charter",Times,serif;
 	font-style: italic;
 	text-align: right;
 	width: 4ex;
@@ -65,9 +61,7 @@ USER MODIFIED
 	padding: 0 1ex;
 	background: white;
 	border-right: 1px solid #CCC;
-	font-family: Droid Serif, Georgia,"Times New Roman","Bitstream Charter",Times,serif;
-	font-style: italic;
-	font-size: .9em;  
+	font-size: .8571em;  
 	white-space: nowrap;  
 }
 

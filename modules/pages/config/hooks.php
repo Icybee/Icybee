@@ -12,7 +12,7 @@ return array
 
 		'ICanBoogie\ActiveRecord\Page::urlchange' => __NAMESPACE__ . '::on_urlchange',
 
-		'Icybee::render:before' => __NAMESPACE__ . '::before_icybee_render',
+// 		'Icybee\Pagemaker::render:before' => __NAMESPACE__ . '::before_icybee_render', TODO-20120313: we need to use another event
 
 		'ICanBoogie\Operation\ActiveRecord\Save::process' => __NAMESPACE__ . '::invalidate_cache',
 		'ICanBoogie\Operation\ActiveRecord\Delete::process' => __NAMESPACE__ . '::invalidate_cache',
@@ -90,7 +90,7 @@ return array
 
 		'navigation:leaf' => array
 		(
-			array('site_pages_navigation_WdMarkup', 'navigation_leaf'), array
+			'site_pages_navigation_WdMarkup::navigation_leaf', array
 			(
 				'level' => 1,
 				'depth' => true,
@@ -146,6 +146,11 @@ return array
 			(
 				'id' => array('required' => true)
 			)
+		),
+
+		'page:title' => array
+		(
+			__NAMESPACE__ . '::markup_page_title', array()
 		)
 	)
 );

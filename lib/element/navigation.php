@@ -11,13 +11,13 @@
 
 namespace Icybee\Admin\Element;
 
-use Brickrouge\DropdownMenu;
-
-use Brickrouge\A;
-
 use ICanBoogie\ActiveRecord\Users;
 use ICanBoogie\Module;
 use ICanBoogie\Route;
+use ICanBoogie\Routes;
+
+use Brickrouge\A;
+use Brickrouge\DropdownMenu;
 
 /**
  * Admin navigation bar.
@@ -42,7 +42,7 @@ class Navigation extends \Brickrouge\Element
 		$rc = parent::render_inner_html();
 
 		$links = array();
-		$routes = Route::routes();
+		$routes = Routes::get();
 		$user = $core->user;
 		$menus = array();
 
@@ -77,7 +77,7 @@ class Navigation extends \Brickrouge\Element
 			$links[$category] = t($category, array(), array('scope' => 'module_category')); // TODO: a same category is translated multiple time
 		}
 
-		uasort($links, 'wd_unaccent_compare_ci');
+		uasort($links, 'ICanBoogie\unaccent_compare_ci');
 
 		$links = array_merge
 		(
@@ -95,9 +95,8 @@ class Navigation extends \Brickrouge\Element
 			unset($links['features']);
 		}
 
-		$path = Route::decontextualize($core->request->path_info);
-		$matching_route = Route::find($path, 'any', 'admin'); // FIXME-20120201: use the primary request object
-		$selected = $matching_route ? $descriptors[$matching_route[0]['module']][Module::T_CATEGORY] : 'dashboard';
+		$matching_route = $core->request->route;
+		$selected = $matching_route ? $descriptors[$matching_route->module][Module::T_CATEGORY] : 'dashboard';
 
 		$rc .= '<ul class="nav">';
 
@@ -152,7 +151,7 @@ class Navigation extends \Brickrouge\Element
 			(
 				DropdownMenu::OPTIONS => $options,
 
-				'value' => $core->request->path_info
+				'value' => $core->request->path
 			)
 		);
 	}

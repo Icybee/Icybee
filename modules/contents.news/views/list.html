@@ -3,7 +3,7 @@
 		<h2><a href="#{@url}">#{@title}</a></h2>
 
 		<div class="metas">
-			<wdp:if test="@category"><a href="#{@url('category')}" class="category">#{@category}</a><span class="separator"> &ndash;</span></wdp:if>
+			<wdp:if test="@category"><a href="#{@url('taxonomy:category/list')}" class="category #{@category.css_class('type id')}">#{@category}</a><span class="separator"> &ndash;</span></wdp:if>
 			<time datetime="#{@date}" pubdate="pubdate">#{@date.format_date()}</time>
 		</div>
 		
@@ -15,4 +15,4 @@
 	</div>
 </wdp:foreach>
 
-<wdp:pager />
+#{pagination=}

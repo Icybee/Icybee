@@ -11,12 +11,12 @@
 
 namespace Icybee;
 
-use ICanBoogie\Events;
-
 use ICanBoogie\Debug;
 use ICanBoogie\Event;
+use ICanBoogie\Events;
 use ICanBoogie\Exception;
 use ICanBoogie\HTTP\Request;
+use ICanBoogie\HTTP\Response;
 use ICanBoogie\Operation;
 
 use Brickrouge\Alert;
@@ -280,7 +280,7 @@ class Hooks
 
 		Events::attach
 		(
-			'Icybee::render', function(\Icybee\RenderEvent $event) use($engine, $template, $key)
+			'Icybee\Pagemaker::render', function(\Icybee\Pagemaker\RenderEvent $event) use($engine, $template, $key)
 			{
 				$types = array('success', 'info', 'error');
 
@@ -306,43 +306,5 @@ class Hooks
 		);
 
 		return $key;
-	}
-}
-
-/**
- * Event class for the `Icybee\Render` event.
- */
-class RenderEvent extends Event
-{
-	/**
-	 * The request.
-	 *
-	 * @var \ICanBoogie\HTTP\Request
-	 */
-	public $request;
-
-	/**
-	 * The page being rendered.
-	 *
-	 * @var \ICanBoogie\ActiveRecord\Page
-	 */
-	public $page;
-
-	/**
-	 * The rendered HTML.
-	 *
-	 * @var string
-	 */
-	public $html;
-
-	/**
-	 * The event is constructed with the `render` type.
-	 *
-	 * @param \Icybee $target
-	 * @param array $properties
-	 */
-	public function __construct(\Icybee $target, array $properties)
-	{
-		parent::__construct($target, 'render', $properties);
 	}
 }

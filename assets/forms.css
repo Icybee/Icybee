@@ -66,7 +66,7 @@ form {
 	line-height: inherit;
 }
 
-.form-primary .group > .group-description {
+.form-primary > .group > .group-description {
 	padding: 8px 16px 7px 16px;
 	font-size: 12px;
 	background: white;
@@ -74,13 +74,13 @@ form {
 	margin: 0;
 }
 
-.form-primary .group > .group-description.control-group {
+.form-primary  > .group > .group-description.control-group  {
 	font-size: inherit;
 	padding-top: 16px;
 	padding-bottom: 17px;
 }
 
-.form-primary .group > .group-legend + .group-description {
+.form-primary > .group > .group-legend + .group-description {
 	border-top: 0;
 }
 
@@ -165,7 +165,7 @@ div::not(.input-append) + .btn.reset-default-value {
 	padding: 6px;
 	display: inline-block;
 	cursor: default;
-	color: inherit;
+	color: inherit !important;
 	text-decoration: none !important;
 }
 

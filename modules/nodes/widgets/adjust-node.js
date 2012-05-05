@@ -12,41 +12,17 @@ Brickrouge.Widget.AdjustNode = new Class
 	initialize: function(el, options)
 	{
 		this.element = $(el);
-
 		this.setOptions(options);
-		this.setOptions(this.element.get('dataset'));
-
 		this.element.addEvent('click', this.uberOnClick.bind(this));
-		this.selected = this.element.getElement('.results li.selected');
+		this.selected = this.element.getElement('.records li.selected');
 		this.attachSearch();
 	},
 
 	uberOnClick: function(ev)
 	{
 		var target = ev.target;
-		var el = target;
 
-		if (target.tagName != 'LI')
-		{
-			el = target.getParent('li');
-		}
-
-		if (el)
-		{
-			if (el.hasClass('empty'))
-			{
-				return;
-			}
-
-			ev.stop();
-
-			this.element.getElements('.results li').removeClass('selected');
-			el.addClass('selected');
-			this.selected = el;
-			this.fireEvent('select', { target: el, event: ev });
-			this.fireEvent('change', { target: el, widget: this, event: ev });
-		}
-		else if (target.getParent('.pager'))
+		if (target.getParent('.pagination'))
 		{
 			ev.stop();
 
@@ -62,6 +38,29 @@ Brickrouge.Widget.AdjustNode = new Class
 				page: page,
 				search: (this.search && !this.search.hasClass('placeholder')) ? this.search.value : null
 			});
+		}
+		else if (target.getParent('.records'))
+		{
+			if (target.tagName != 'LI')
+			{
+				el = target.getParent('li');
+			}
+
+			if (el)
+			{
+				if (el.hasClass('empty'))
+				{
+					return;
+				}
+
+				ev.stop();
+
+				this.element.getElements('.records li').removeClass('selected');
+				el.addClass('selected');
+				this.selected = el;
+				this.fireEvent('select', { target: el, event: ev });
+				this.fireEvent('change', { target: el, widget: this, event: ev });
+			}
 		}
 	},
 

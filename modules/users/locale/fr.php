@@ -2,6 +2,29 @@
 
 return array
 (
+	'button' => array
+	(
+		'Connect' => 'Connexion'
+	),
+
+	'module_title.users' => 'Utilisateurs',
+
+	'users' => array
+	(
+		'count' => array
+		(
+			'none' => 'Aucun utilisateur',
+			'one' => 'Un utilisateur',
+			'other' => ':count utilisateurs'
+		),
+
+		'name' => array
+		(
+			'one' => 'Utilisateur',
+			'other' => 'Utilisateurs'
+		)
+	),
+
 	'description' => array
 	(
 		'is_activated' => "Seuls les utilisateurs dont le compte est activé peuvent se connecter.",
@@ -29,7 +52,6 @@ return array
 
 	'label' => array
 	(
-		'login' => 'Connexion',
 		'logout' => 'Déconnexion',
 		'display_as' => 'Afficher comme',
 		'email' => 'E-mail',

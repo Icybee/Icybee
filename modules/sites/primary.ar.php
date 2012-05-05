@@ -78,7 +78,7 @@ class Site extends ActiveRecord
 
 	protected function __get_url()
 	{
-		$parts = explode('.', $_SERVER['HTTP_HOST']);
+		$parts = explode('.', $_SERVER['SERVER_NAME']);
 		$parts = array_reverse($parts);
 
 		if ($this->tld)

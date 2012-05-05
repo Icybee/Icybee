@@ -71,7 +71,7 @@ class PopNode extends \Brickrouge\Widget
 			}
 			catch (\Exception $e)
 			{
-				wd_log_error('PopNode: Missing record %nid', array('%nid' => $value));
+				\ICanBoogie\log_error('PopNode: Missing record %nid', array('%nid' => $value));
 			}
 		}
 
@@ -105,7 +105,7 @@ class PopNode extends \Brickrouge\Widget
 		$value = $entry->nid;
 		$title = $entry->title;
 
-		$label = wd_shorten($title, 32, .75, $shortened);
+		$label = \ICanBoogie\shorten($title, 32, .75, $shortened);
 
 		$rc  = '<span class="title"' . ($shortened ? ' title="' . wd_entities($title) . '"' : '') . '>';
 		$rc .= wd_entities($label) . '</span>';

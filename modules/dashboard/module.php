@@ -17,11 +17,11 @@ class Module extends \ICanBoogie\Module
 {
 	protected function block_dashboard()
 	{
-		global $core, $document;
+		global $core;
 
-		$document->title = 'Dashboard';
-		$document->css->add('/public/dashboard.css');
-		$document->js->add('/public/dashboard.js');
+		$core->document->title = 'Dashboard';
+		$core->document->css->add('/public/dashboard.css');
+		$core->document->js->add('/public/dashboard.js');
 
 		if (0 && $core->user->is_admin)
 		{
@@ -41,7 +41,7 @@ class Module extends \ICanBoogie\Module
 					continue;
 				}
 
-				wd_log_error('Module %name is not correctly installed.', array('%name' => $module->title));
+				\ICanBoogie\log_error('Module %name is not correctly installed.', array('%name' => $module->title));
 			}
 		}
 
@@ -80,7 +80,7 @@ class Module extends \ICanBoogie\Module
 			}
 		}
 
-		uasort($panels, create_function('$a,$b', 'return $a[\'weight\'] - $b[\'weight\'];'));
+		uasort($panels, function($a, $b) { return $a['weight'] - $b['weight']; });
 
 		#
 		#
@@ -98,6 +98,11 @@ class Module extends \ICanBoogie\Module
 		{
 			try
 			{
+				if (empty($descriptor['callback']))
+				{
+					continue;
+				}
+
 				$callback = $descriptor['callback'];
 
 				if (is_array($callback) && $callback[0]{1} == ':' && $callback[0]{0} == 'm')

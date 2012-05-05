@@ -126,19 +126,19 @@ class Model extends \ICanBoogie\Modules\Nodes\Model
 
 		$path = self::makePath($key, array('path' => $previous_path) + $properties);
 
-		//wd_log('path: \1, preivous: \2', array($path, $previous_path));
+		//\ICanBoogie\log('path: \1, preivous: \2', array($path, $previous_path));
 
-		//wd_log('file: \1, values: \6 path: \2 ?= \3, title: \4 ?= \5, umask: \6 ', array($file, $previous_path, $path, $previous_title, $title, $properties, umask()));
+		//\ICanBoogie\log('file: \1, values: \6 path: \2 ?= \3, title: \4 ?= \5, umask: \6 ', array($file, $previous_path, $path, $previous_title, $title, $properties, umask()));
 
 		$root = $_SERVER['DOCUMENT_ROOT'];
 		$parent = dirname($path);
 
 		if (!is_dir($root . $parent))
 		{
-			mkdir($root . $parent, 0777, true);
+			mkdir($root . $parent, 0705, true);
 		}
 
-//		wd_log('path: \1', array($path));
+//		\ICanBoogie\log('path: \1', array($path));
 
 		if (!is_writable($root . $parent))
 		{
@@ -156,13 +156,13 @@ class Model extends \ICanBoogie\Modules\Nodes\Model
 		# change path according to node's title
 		#
 
-//		wd_log("path: $previous_path ?= $path, title: $previous_title ?= $title");
+//		\ICanBoogie\log("path: $previous_path ?= $path, title: $previous_title ?= $title");
 
 		if (($path != $previous_path) || (!$previous_title || ($previous_title != $title)))
 		{
 			$path = self::makePath($key, array('path' => $previous_path) + $properties);
 
-			//wd_log('previous_path: %previous_path, path: %path', array('%previous_path' => $previous_path, '%path' => $path));
+			//\ICanBoogie\log('previous_path: %previous_path, path: %path', array('%previous_path' => $previous_path, '%path' => $path));
 
 			if ($delete && is_file($root . $delete))
 			{
@@ -177,7 +177,7 @@ class Model extends \ICanBoogie\Modules\Nodes\Model
 			}
 			else
 			{
-				wd_log_error('Unable to rename %previous to %path', array('%previous' => $previous_path, '%path' => $path));
+				\ICanBoogie\log_error('Unable to rename %previous to %path', array('%previous' => $previous_path, '%path' => $path));
 			}
 		}
 
@@ -206,7 +206,7 @@ class Model extends \ICanBoogie\Modules\Nodes\Model
 	static protected function makePath($key, array $properties)
 	{
 		global $core;
-		//wd_log('makePath with: \1', array($properties));
+		//\ICanBoogie\log('makePath with: \1', array($properties));
 
 		$rc = $core->config['repository.files'];
 
@@ -224,7 +224,7 @@ class Model extends \ICanBoogie\Modules\Nodes\Model
 			$base = 'bin';
 		}
 
-		$rc .= '/' . $base . '/' . ($key ? $key : 'temp') . '-' . wd_normalize($properties[File::TITLE]);
+		$rc .= '/' . $base . '/' . ($key ? $key : 'temp') . '-' . \ICanBoogie\normalize($properties[File::TITLE]);
 
 		#
 		# append extension
@@ -245,7 +245,7 @@ class Model extends \ICanBoogie\Modules\Nodes\Model
 
 		$rc .= $extension;
 
-		//wd_log('path: \1', array($rc));
+		//\ICanBoogie\log('path: \1', array($rc));
 
 		return $rc;
 	}

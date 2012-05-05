@@ -298,7 +298,7 @@ class MetasHandler implements \ArrayAccess
 
 		if ($value === null)
 		{
-			//wd_log('delete %name because is has been set to null', array('%name' => $name));
+			//\ICanBoogie\log('delete %name because is has been set to null', array('%name' => $name));
 
 			$this->model->execute
 			(

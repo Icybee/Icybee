@@ -9,6 +9,22 @@ return array
 		'operation' => "Opération et configuration"
 	),
 
+	'forms' => array
+	(
+		'count' => array
+		(
+			'none' => 'Aucun formulaire',
+			'one' => 'Un formulaire',
+			'other' => ':count formulaires'
+		),
+
+		'name' => array
+		(
+			'one' => 'Formulaire',
+			'other' => 'Formulaires'
+		)
+	),
+
 	'forms.edit' => array
 	(
 		'element.label' => array
@@ -53,7 +69,7 @@ return array
 		'subject' => 'Objet'
 	),
 
-	'Forms' => 'Formulaires',
+	'module_title.forms' => 'Formulaires',
 
 	#
 	# forms.contact

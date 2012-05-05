@@ -229,10 +229,10 @@ EOT
 				$author = '<strong class="author">' . $author . '</strong>';
 			}
 
-			$excerpt = wd_shorten(strip_tags((string) html_entity_decode($entry, ENT_COMPAT, ICanBoogie\CHARSET)), 140);
+			$excerpt = \ICanBoogie\shorten(strip_tags((string) html_entity_decode($entry, ENT_COMPAT, ICanBoogie\CHARSET)), 140);
 
 			$target_url = $entry->node->url;
-			$target_title = wd_entities(wd_shorten($entry->node->title));
+			$target_title = wd_entities(\ICanBoogie\shorten($entry->node->title));
 
 			$image = wd_entities($entry->author_icon);
 
@@ -242,16 +242,15 @@ EOT
 
 			$date = wd_format_date($entry->created, 'dd MMM');
 
+			$txt_delete = t('Delete');
+			$txt_edit = t('Edit');
+			$txt_all_comments = t('All comments');
+			$txt_display_associated_node = t('Display associated node');
+
 			$rc .= <<<EOT
 <div class="record $entry_class">
 	<div class="options">
 		<img src="$image&amp;s=48" alt="" />
-
-		<!--span class="more-auto small">
-			<a href="$url_edit">Éditer</a>,
-			<a href="#delete" class="danger">Supprimer</a>,
-			<a href="#spam" class="warn">Spam</a>
-		</span-->
 	</div>
 
 	<div class="contents">
@@ -263,7 +262,7 @@ EOT
 		<div class="body"><a href="$url">$excerpt</a></div>
 
 		<div class="actions light">
-			<a href="$url_edit">Éditer</a>, <a href="$url_delete" class="danger">Supprimer</a> − <a href="$target_url" class="target" title="Afficher le nœud associé">$target_title</a>
+			<a href="$url_edit">$txt_edit</a>, <a href="$url_delete" class="danger">$txt_delete</a> − <a href="$target_url" class="target" title="$txt_display_associated_node">$target_title</a>
 		</div>
 	</div>
 </div>
@@ -271,7 +270,7 @@ EOT;
 		}
 
 		$rc .= <<<EOT
-<div class="go-to-list"><a href="$context/admin/comments">Tous les commentaires</a></div>
+<div class="panel-footer"><a href="$context/admin/comments">$txt_all_comments</a></div>
 EOT;
 
 		return $rc;
@@ -330,7 +329,7 @@ EOT;
 
 	static public function form(array $args, \WdPatron $patron, $template)
 	{
-		global $core, $page;
+		global $core;
 
 		#
 		# Obtain the form to use to add a comment from the 'forms' module.
@@ -384,10 +383,10 @@ EOT
 		#
 
 		$select = $args['select'];
-
 		$nid = is_object($select) ? $select->nid : $select;
+		$page = $core->request->context->page;
 
-		$form->form->hiddens[Comment::NID] = isset($page->node) ? $page->node->nid : $page->nid;
+		$form->form->hiddens[Comment::NID] = $page->node ? $page->node->nid : $page->nid;
 		$form->form->add_class('wd-feedback-comments');
 
 		return $template ? $patron($template, $form) : $form;

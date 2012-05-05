@@ -147,7 +147,7 @@ class AdjustNode extends \Brickrouge\Widget
 	{
 		$selected = $options['selected'];
 
-		$rc = '<ul>';
+		$rc = '<ul class="records">';
 
 		foreach ($records as $record)
 		{
@@ -168,7 +168,7 @@ class AdjustNode extends \Brickrouge\Widget
 		(
 			'div', $range + array
 			(
-				'class' => 'pager'
+
 			)
 		);
 
@@ -183,7 +183,7 @@ class AdjustNode extends \Brickrouge\Widget
 		(
 			'li', array
 			(
-				Element::INNER_HTML => wd_shorten($record->title),
+				Element::INNER_HTML => \ICanBoogie\shorten($record->title),
 				Element::DATASET => array
 				(
 					ActiveRecord\Node::NID => $recordid,

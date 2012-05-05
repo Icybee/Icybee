@@ -24,13 +24,13 @@ class Module extends \Icybee\Module
 
 		if (!file_exists($path))
 		{
-			mkdir($path, 0777, true);
+			mkdir($path, 0705, true);
 
 			if (!file_exists($path))
 			{
 				return array
 				(
-					0, '<span class="warn">Impossible de créer le dossier&nbsp: <em>' . wd_strip_root($path) . '</em></span>'
+					0, '<span class="warning">Impossible de créer le dossier&nbsp: <em>' . \ICanBoogie\strip_root($path) . '</em></span>'
 				);
 			}
 		}
@@ -39,13 +39,12 @@ class Module extends \Icybee\Module
 		{
 			return array
 			(
-				0, '<span class="warn">Dossier vérouillé en écriture&nbsp: <em>' . wd_strip_root($path) . '</em></span>'
+				0, '<span class="warning">Dossier vérouillé en écriture&nbsp: <em>' . \ICanBoogie\strip_root($path) . '</em></span>'
 			);
 		}
 
 		$n = 0;
 		$size = 0;
-
 		$iterator = new \DirectoryIterator($path);
 
 		if ($pattern)
@@ -66,14 +65,9 @@ class Module extends \Icybee\Module
 			$size += $file->getSize();
 		}
 
-		if (!$n)
-		{
-			return array(0, 'Le cache est vide');
-		}
-
 		return array
 		(
-			$n, $n . ' fichiers<br /><span class="small">' . wd_format_size($size) . '</span>'
+			$n, t(':count files<br /><span class="small">:size</span>', array(':count' => $n, 'size' => \ICanBoogie\I18n\format_size($size)))
 		);
 	}
 
@@ -90,14 +84,9 @@ class Module extends \Icybee\Module
 			$size += $fileinfo->getSize();
 		}
 
-		if (!$n)
-		{
-			return array(0, 'Le cache est vide');
-		}
-
 		return array
 		(
-			$n, $n . ' fichiers<br /><span class="small">' . wd_format_size($size) . '</span>'
+			$n, t(':count files<br /><span class="small">:size</span>', array(':count' => $n, 'size' => \ICanBoogie\I18n\format_size($size)))
 		);
 	}
 

@@ -6,7 +6,8 @@ return array
 (
 	'autoload' => array
 	(
-		'Brickrouge\Element\Breadcrumb' => $path . 'lib/element/breadcrumb.php',
+		__NAMESPACE__ . '\BreadcrumbElement' => $path . 'lib/elements/breadcrumb.php',
+		__NAMESPACE__ . '\NavigationBranchElement' => $path . 'lib/elements/navigation-branch.php',
 
 		'WdPageSelectorElement' => $path . 'elements/pageselector.php',
 		'WdAdjustTemplateElement' => $path . 'elements/adjusttemplate.php',
@@ -18,6 +19,7 @@ return array
 		'site_pages_sitemap_WdMarkup' => $path . 'markups.php',
 
 		__NAMESPACE__ . '\CacheManager' => $path . 'lib/cache-manager.php',
-		__NAMESPACE__ . '\ListView' => $path . 'lib/views/list.php'
+		__NAMESPACE__ . '\ListView' => $path . 'lib/views/list.php',
+		__NAMESPACE__ . '\Blueprint' => $path . 'lib/blueprint.php'
 	)
 );

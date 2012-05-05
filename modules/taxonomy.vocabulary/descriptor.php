@@ -10,7 +10,7 @@ return array
 	Module::T_CATEGORY => 'organize',
 	Module::T_REQUIRES => array
 	(
-		'taxonomy.terms' => '1.x'
+// 		'taxonomy.terms' => '1.x'
 	),
 
 	Module::T_MODELS => array

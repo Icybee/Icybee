@@ -156,14 +156,14 @@ class Module extends \ICanBoogie\Modules\Nodes\Module
 
 		if (!is_dir($root . $repository))
 		{
-			wd_log_error('The directory %directory does not exists', array('%directory' => $repository));
+			\ICanBoogie\log_error('The directory %directory does not exists', array('%directory' => $repository));
 
 			return;
 		}
 
 		if (!is_writable($root . $repository))
 		{
-			wd_log_error('The directory %directory is not writtable', array('%directory' => $repository));
+			\ICanBoogie\log_error('The directory %directory is not writtable', array('%directory' => $repository));
 
 			return;
 		}
@@ -193,7 +193,7 @@ class Module extends \ICanBoogie\Modules\Nodes\Module
 			{
 				unlink($file);
 
-				wd_log
+				\ICanBoogie\log
 				(
 					'The temporary file %file has been deleted form the repository %directory', array
 					(

@@ -25,11 +25,13 @@ use WdPatron as Patron;
 
 class Hooks
 {
-	public static function on_icybee_render(\Icybee\RenderEvent $event)
+	public static function on_icybee_render(\Icybee\Pagemaker\RenderEvent $event)
 	{
-		global $core, $page;
+		global $core;
 
-		if (strpos($_SERVER['HTTP_HOST'], 'localhost') !== false || $core->user_id == 1 || !$page->is_online || ($page->node && !$page->node->is_online))
+		$page = $core->request->context->page;
+
+		if (strpos($_SERVER['SERVER_NAME'], 'localhost') !== false || $core->user_id == 1 || !$page->is_online || ($page->node && !$page->node->is_online))
 		{
 			return;
 		}
@@ -71,8 +73,9 @@ EOT;
 
 	public static function on_document_render_title(Event $event)
 	{
-		global $page;
+		global $core;
 
+		$page = $core->request->context->page;
 		$title = $page->document_title;
 		$site_title = $page->site->title;
 
@@ -81,8 +84,9 @@ EOT;
 
 	public static function before_document_render_metas(Event $event)
 	{
-		global $page;
+		global $core;
 
+		$page = $core->request->context->page;
 		$node = isset($page->node) ? $page->node : null;
 		$description = $page->description;
 
@@ -116,8 +120,9 @@ EOT;
 
 	public static function on_document_render_metas(Event $event)
 	{
-		global $page;
+		global $core;
 
+		$page = $core->request->context->page;
 		$node = isset($page->node) ? $page->node : null;
 
 		#

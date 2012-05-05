@@ -108,9 +108,9 @@ class ConfigOperation extends \ICanBoogie\Operation
 			}
 		}
 
-		wd_log_done("The configuration has been saved.");
+		\ICanBoogie\log_success("The configuration has been saved.");
 
-		$this->response->location = $this->request->path_info;
+		$this->response->location = $this->request->path;
 
 		return true;
 	}

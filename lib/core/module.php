@@ -67,6 +67,7 @@ class Module extends \ICanBoogie\Module
 		{
 			array_shift($args);
 
+			I18n::push_scope($this->flat_id);
 			I18n::push_scope($this->flat_id . '.' . $name);
 
 			try
@@ -81,6 +82,7 @@ class Module extends \ICanBoogie\Module
 			}
 
 			I18n::pop_scope();
+			I18n::pop_scope();
 
 			return $rendered_block;
 		}
@@ -93,7 +95,7 @@ class Module extends \ICanBoogie\Module
 	protected function resolve_block_class($name)
 	{
 		$module = $this;
-		$class_name = wd_camelize('-' . $name) . 'Block';
+		$class_name = \ICanBoogie\camelize('-' . $name) . 'Block';
 
 		while ($module)
 		{

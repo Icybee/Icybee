@@ -80,7 +80,7 @@ class QueryOperationOperation extends \Icybee\Operation\Module\QueryOperation
 
 //				if (!$user->has_permission(self::PERMISSION_MANAGE, $this))
 				{
-					wd_log_error('You don\'t have the permission to query this operation');
+					\ICanBoogie\log_error('You don\'t have the permission to query this operation');
 
 					return false;
 				}

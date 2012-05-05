@@ -9,7 +9,7 @@ return array
 	Module::T_DESCRIPTION => 'Code de base pour gérer les contenus éditoriaux',
 	Module::T_CATEGORY => 'contents',
 	Module::T_EXTENDS => 'nodes',
-	Module::T_REQUIRED => true,
+// 	Module::T_REQUIRED => true, FIXME: true
 
 	Module::T_MODELS => array
 	(
@@ -43,5 +43,7 @@ return array
 				)
 			)
 		)
-	)
+	),
+
+	Module::T_VERSION => '1.0'
 );

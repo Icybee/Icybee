@@ -77,7 +77,7 @@ class TimeZone extends \Brickrouge\Widget
 			$value = $this[self::DEFAULT_VALUE];
 		}
 
-		if ($value !== null)
+		if ($value)
 		{
 			$offset = null;
 			$zone = null;

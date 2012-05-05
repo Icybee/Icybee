@@ -227,7 +227,7 @@ class Hooks
 
 		$event->attributes[Element::GROUPS]['organize'] = array
 		(
-			'title' => 'Organize',
+			'title' => 'Organization',
 			'weight' => 500
 		);
 	}
@@ -324,7 +324,7 @@ class Hooks
 		}
 	}
 
-	public static function on_alter_views(Event $event)
+	public static function on_alter_views(\Icybee\Views\AlterEvent $event)
 	{
 		global $core;
 
@@ -339,47 +339,57 @@ class Hooks
 
 			foreach ($scope as $constructor)
 			{
-				$extend_id = $constructor . '/list';
+				$view_home = $constructor . '/home';
+				$view_home = isset($views[$view_home]) ? $views[$view_home] : null;
 
-				if (isset($views[$extend_id]))
+				$view_list = $constructor . '/list';
+				$view_list = isset($views[$view_list]) ? $views[$view_list] : null;
+
+				if ($view_home)
 				{
-					$views["$constructor/vocabulary--$vocabulary_slug--home"] = array
+					$views["$constructor/vocabulary/$vocabulary_slug/vocabulary-home"] = array
 					(
 						'title' => 'Home for vocabulary %name',
 						'title args' => array('name' => $v->vocabulary),
-						'type' => $vocabulary_slug . '-home',
-						'renders' => \Icybee\Views\View::RENDERS_MANY,
 						'taxonomy vocabulary' => $v
 					)
 
-					+ $views[$constructor . '/home'];
+					+ $view_home;
+				}
 
-					$views["$constructor/taxonomy:$vocabulary_slug/list"] = array
+				if ($view_list)
+				{
+					$views["$constructor/vocabulary/$vocabulary_slug/list"] = array
 					(
 						'title' => 'Records list, in vocabulary %vocabulary and a term',
 						'title args' => array('vocabulary' => $vocabulary_name),
 						'taxonomy vocabulary' => $v
 					)
 
-					+ $views[$extend_id];
+					+ $view_list;
+				}
 
-					foreach ($v->terms as $term)
+				foreach ($v->terms as $term)
+				{
+					$term_name = $term->term;
+					$term_slug = $term->termslug;
+
+					if ($view_home)
 					{
-						$term_name = $term->term;
-						$term_slug = $term->termslug;
-
-						$views["$constructor/taxonomy:$vocabulary_slug/$term_slug/home"] = array
+						$views["$constructor/vocabulary/$vocabulary_slug/$term_slug/home"] = array
 						(
 							'title' => 'Records home, in vocabulary %vocabulary and term %term',
 							'title args' => array('vocabulary' => $vocabulary_name, 'term' => $term_name),
 							'taxonomy vocabulary' => $v,
 							'taxonomy term' => $term,
-							'type' => wd_normalize($constructor) . "/taxonomy:$vocabulary_slug/$term_slug/home",
-							'module' => $constructor,
-							'renders' => \Icybee\Views\View::RENDERS_MANY
-						);
+						)
 
-						$views["$constructor/taxonomy:$vocabulary_slug/$term_slug/list"] = array
+						+ $view_home;
+					}
+
+					if ($view_list)
+					{
+						$views["$constructor/vocabulary/$vocabulary_slug/$term_slug/list"] = array
 						(
 							'title' => 'Records list, in vocabulary %vocabulary and term %term',
 							'title args' => array('vocabulary' => $vocabulary_name, 'term' => $term_name),
@@ -387,7 +397,7 @@ class Hooks
 							'taxonomy term' => $term
 						)
 
-						+ $views[$extend_id];
+						+ $view_list;
 					}
 				}
 			}
@@ -419,6 +429,8 @@ class Hooks
 		{
 			# show all by category ?
 
+			$event->view->range['limit'] = null; // cancel limit TODO-20120403: this should be improved.
+
 			\ICanBoogie\Events::attach('Icybee\Views\ActiveRecord\Provider::alter_result', array(__CLASS__, 'on_alter_provider_result'));
 
 			return;
@@ -433,9 +445,14 @@ class Hooks
 
 		#
 
-		global $page;
+		global $core;
 
-		$page->title = \ICanBoogie\format($page->title, array(':term' => $term->term));
+		$page = isset($core->request->context->page) ? $core->request->context->page : null;
+
+		if ($page && $term)
+		{
+			$page->title = \ICanBoogie\format($page->title, array(':term' => $term->term));
+		}
 	}
 
 	public static function on_alter_provider_result(\Icybee\Views\ActiveRecord\Provider\AlterResultEvent $event, \Icybee\Views\ActiveRecord\Provider $provider)
@@ -451,7 +468,7 @@ class Hooks
 		{
 			if (!($record instanceof \ICanBoogie\ActiveRecord\Node))
 			{
-				wd_log('Expected instance of <q>ICanBoogie\ActiveRecord\Node</q> given: \1', array($record));
+				\ICanBoogie\log('Expected instance of <q>ICanBoogie\ActiveRecord\Node</q> given: \1', array($record));
 
 				continue;
 			}
@@ -532,5 +549,15 @@ class Hooks
 			}
 		);
 		*/
+	}
+
+	public static function before_breadcrumb_render_inner_html(\ICanBoogie\Modules\Pages\BreadcrumbElement\BeforeRenderInnerHTMLEvent $event, \ICanBoogie\Modules\Pages\BreadcrumbElement $target)
+	{
+		foreach ($event->slices as &$slice)
+		{
+			if (strpos($slice['label'], ':term') === false || empty($event->page->node)) continue;
+
+			$slice['label'] = \ICanBoogie\format($slice['label'], array('term' => (string) $event->page->node->category));
+		}
 	}
 }

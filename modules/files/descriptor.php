@@ -9,7 +9,7 @@ return array
 	Module::T_DESCRIPTION => 'Foundation for file management',
 	Module::T_CATEGORY => 'resources',
 	Module::T_EXTENDS => 'nodes',
-	Module::T_REQUIRED => true,
+// 	Module::T_REQUIRED => true,
 
 	Module::T_MODELS => array
 	(

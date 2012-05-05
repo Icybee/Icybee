@@ -112,7 +112,7 @@ class TitleSlugCombo extends \Brickrouge\Widget
 		$slug = $this->slug_el['value'];
 
 		$tease = '<strong>Slug&nbsp;:</strong> ';
-		$tease .= '<a href="#slug-edit" title="' . t('edit', array(), array('scope' => 'titleslugcombo.element')) . '">' . ($slug ? wd_entities(wd_shorten($slug)) : $this->dataset['auto-label']) . '</a>';
+		$tease .= '<a href="#slug-edit" title="' . t('edit', array(), array('scope' => 'titleslugcombo.element')) . '">' . ($slug ? wd_entities(\ICanBoogie\shorten($slug)) : $this->dataset['auto-label']) . '</a>';
 		$tease .= ' <span>&ndash; <a href="slug-delete" class="warn">' . t('reset', array(), array('scope' => 'titleslugcombo.element')) . '</a></span>';
 
 		$this->slug_tease->inner_html = $tease;
@@ -128,7 +128,7 @@ class TitleSlugCombo extends \Brickrouge\Widget
 			if ($node && $node->url && $node->url[0] != '#')
 			{
 				$url = $node->url;
-				$url_label = wd_shorten($url, 64);
+				$url_label = \ICanBoogie\shorten($url, 64);
 
 				$rc .= '<p class="small light">';
 				$rc .= '<strong>URL&nbsp;:</strong> ' . $url_label;

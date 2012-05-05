@@ -28,10 +28,10 @@ abstract class Provider
 	protected $conditions;
 	protected $returns;
 
-	public function __construct(View $view, array &$context, Module $module, array $conditions, $returns)
+	public function __construct(View $view, \BlueTihi\Context $context, Module $module, array $conditions, $returns)
 	{
 		$this->view = $view;
-		$this->context = &$context;
+		$this->context = $context;
 		$this->module = $module;
 		$this->conditions = $conditions;
 		$this->returns = $returns;
@@ -51,7 +51,7 @@ abstract class Provider
 	 *
 	 * @param array $context
 	 */
-	abstract protected function alter_context(array $context, Query $query, array $conditions);
+	abstract protected function alter_context(\BlueTihi\Context $context, Query $query, array $conditions);
 }
 
 namespace Icybee\Views\ActiveRecord;

@@ -47,6 +47,7 @@ return array
 	),
 
 	'module_category.other' => 'Other',
+	'module_title.nodes' => 'Nodes',
 
 	'offline.operation' => array
 	(

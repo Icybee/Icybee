@@ -101,7 +101,7 @@ class NonceLoginRequestOperation extends Operation
 		$url = $core->site->url . "/api/nonce-login/$user->email/$token";
 		$until = wd_format_date($expires, 'HH:mm');
 
-		$t = new Proxi(array('scope' => array(wd_normalize($user->constructor, '_'), 'nonce_login_request', 'operation')));
+		$t = new Proxi(array('scope' => array(\ICanBoogie\normalize($user->constructor, '_'), 'nonce_login_request', 'operation')));
 
 		$mailer = new Mailer
 		(

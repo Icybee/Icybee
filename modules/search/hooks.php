@@ -81,7 +81,7 @@ class Hooks
 
 		if (!$site)
 		{
-			$site = $_SERVER['HTTP_HOST'];
+			$site = $_SERVER['SERVER_NAME'];
 			$site = str_replace('www.', '', $site);
 		}
 

@@ -2,6 +2,8 @@
 
 return array
 (
+	'module_title.search' => 'Recherche',
+
 	'search' => array
 	(
 		'found' => array
@@ -40,8 +42,8 @@ return array
 			'limits_list' => "Nombre de résultats maximum lors de la recherche ciblée",
 
 			'element.label.scope' => "Portée de la recherche",
-			'element.description.scope' => "Sélectionner les modules pour lesquels activer la
-			recherche. Ordonner les modules par glisser-déposer pour définir l'ordre dans lequel
+			'element.description.scope' => "Sélectionner les modules pour activer la recherche.
+			Ordonner les modules par glisser-déposer pour définir l'ordre dans lequel
 			s'effectue la recherche."
 		)
 	)

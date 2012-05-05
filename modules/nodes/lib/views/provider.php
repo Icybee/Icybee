@@ -29,7 +29,7 @@ class Provider extends \Icybee\Views\ActiveRecord\Provider
 	 */
 	public function __invoke()
 	{
-		global $core, $page;
+		global $core;
 
 		$rc = parent::__invoke();
 
@@ -49,6 +49,8 @@ class Provider extends \Icybee\Views\ActiveRecord\Provider
 
 				$rc->title .= ' ✎';
 			}
+
+			$page = isset($core->request->context->page) ? $core->request->context->page : null;
 
 			if ($page)
 			{
@@ -113,7 +115,7 @@ class Provider extends \Icybee\Views\ActiveRecord\Provider
 	 *
 	 * @see Icybee\Views.Provider::alter_context()
 	 */
-	protected function alter_context(array $context, Query $query, array $conditions)
+	protected function alter_context(\BlueTihi\Context $context, Query $query, array $conditions)
 	{
 		return $context;
 	}

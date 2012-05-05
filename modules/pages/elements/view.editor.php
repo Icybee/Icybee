@@ -39,11 +39,12 @@ class view_WdEditorElement extends WdEditorElement
 
 	static public function render($id, $engine=null, $template=null)
 	{
-		global $core, $page;
+		global $core;
 
 		$patron = WdPatron::get_singleton();
+		$page = isset($core->request->context->page) ? $core->request->context->page : null;
 
-		if (empty($page))
+		if (!$page)
 		{
 			$page = $core->site->resolve_view_target($id);
 
@@ -107,8 +108,6 @@ class view_WdEditorElement extends WdEditorElement
 		$by_category = array();
 		$descriptors = $core->modules->descriptors;
 
-//		var_dump(self::$views);
-
 		$views = \Icybee\Views::get();
 
 		foreach ($views as $id => $view)
@@ -130,7 +129,7 @@ class view_WdEditorElement extends WdEditorElement
 				if (isset($descriptor[Module::T_CATEGORY]))
 				{
 					$category = $descriptors[$module_id][Module::T_CATEGORY];
-					$category = t($category, array(), array('scope' => array('module_category', 'title')));
+					$category = t($category, array(), array('scope' => 'module_category'));
 				}
 
 				$subcategory = $descriptor[Module::T_TITLE];
@@ -145,7 +144,7 @@ class view_WdEditorElement extends WdEditorElement
 			}
 		}
 
-		uksort($by_category, 'wd_unaccent_compare_ci');
+		uksort($by_category, 'ICanBoogie\unaccent_compare_ci');
 
 		$rc = '<table>';
 		$rc .= '<tr>';
@@ -167,7 +166,7 @@ class view_WdEditorElement extends WdEditorElement
 
 		foreach ($by_category as $category => $subcategories)
 		{
-			uksort($subcategories, 'wd_unaccent_compare_ci');
+			uksort($subcategories, 'ICanBoogie\unaccent_compare_ci');
 
 			$by_category[$category] = $subcategories;
 
@@ -243,7 +242,7 @@ class view_WdEditorElement extends WdEditorElement
 					);
 				}
 
-// 				uksort($items, 'wd_unaccent_compare_ci');
+// 				uksort($items, 'ICanBoogie\unaccent_compare_ci');
 
 				$rc .= "<ul$active><li>" . implode('</li><li>', $items) . '</li></ul>';
 			}

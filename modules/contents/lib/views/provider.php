@@ -109,7 +109,7 @@ class Provider extends \Icybee\Views\Nodes\Provider
 		{
 			$record = $model[$key];
 
-			wd_log_done('The record %title was rescued!', array('title' => $record->title));
+			\ICanBoogie\log_success('The record %title was rescued!', array('title' => $record->title));
 
 			//TODO-20120109: should we redirect to the correct record URL ?
 

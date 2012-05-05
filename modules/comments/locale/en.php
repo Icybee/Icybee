@@ -2,6 +2,14 @@
 
 return array
 (
+	'comments' => array
+	(
+		'delete' => array
+		(
+			'Delete a record' => 'Delete a comment'
+		)
+	),
+
 	'comments.manager.label' => array
 	(
  		'comment' => 'Comment',

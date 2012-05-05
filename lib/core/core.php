@@ -11,7 +11,6 @@
 
 namespace Icybee;
 
-use ICanBoogie;
 use ICanBoogie\Debug;
 use ICanBoogie\Exception;
 use ICanBoogie\Module;
@@ -35,22 +34,21 @@ use Brickrouge\Document;
  * @property ICanBoogie\ActiveRecord\User $user Current user object (might be a visitor).
  * @property int $user_id Identifier of the current user ("0" for visitors).
  */
-class Core extends ICanBoogie\Core
+class Core extends \ICanBoogie\Core
 {
 	/**
-	 * Returns the unique core instance.
+	 * Adds website config and locale paths.
 	 *
 	 * @param array $options
-	 * @param string $class
 	 *
-	 * @return Core The core object.
+	 * @see \ICanBoogie\Core::__construct
 	 */
-	public static function get_singleton(array $options=array())
+	public function __construct(array $options=array())
 	{
 		$config = array();
 		$locale = array();
 
-		$protected_path = ICanBoogie\DOCUMENT_ROOT . 'protected' . DIRECTORY_SEPARATOR . 'all' . DIRECTORY_SEPARATOR;
+		$protected_path = \ICanBoogie\DOCUMENT_ROOT . 'protected' . DIRECTORY_SEPARATOR . 'all' . DIRECTORY_SEPARATOR;
 
 		if (file_exists($protected_path . 'config'))
 		{
@@ -62,7 +60,7 @@ class Core extends ICanBoogie\Core
 			$locale[] = $protected_path;
 		}
 
-		return parent::get_singleton
+		return parent::__construct
 		(
 			\ICanBoogie\array_merge_recursive
 			(
@@ -95,7 +93,7 @@ class Core extends ICanBoogie\Core
 		{
 			$normalized_message = strip_tags($message);
 			$normalized_message = str_replace(array("\r\n", "\n"), ' ', $normalized_message);
-			$normalized_message = mb_convert_encoding($normalized_message, ICanBoogie\CHARSET, 'ASCII');
+			$normalized_message = mb_convert_encoding($normalized_message, \ICanBoogie\CHARSET, 'ASCII');
 
 			if (strlen($normalized_message) > 32)
 			{
@@ -116,10 +114,13 @@ class Core extends ICanBoogie\Core
 		}
 
 		$formated_exception = Debug::format_alert($exception);
+		$reported = false;
 
 		if (!($exception instanceof Exception\HTTP))
 		{
 			Debug::report($formated_exception);
+
+			$reported = true;
 		}
 
 		if (!headers_sent())
@@ -130,6 +131,7 @@ class Core extends ICanBoogie\Core
 			(
 				Document::resolve_url(\Brickrouge\ASSETS . 'brickrouge.css'),
 				Document::resolve_url(ASSETS . 'admin.css'),
+				Document::resolve_url(ASSETS . 'actionbar.css'),
 				Document::resolve_url(ASSETS . 'alerts.css')
 			);
 
@@ -142,7 +144,7 @@ class Core extends ICanBoogie\Core
 	/**
 	 * Override the method to provide our own accessor.
 	 *
-	 * @see ICanBoogie.Core::__get_modules()
+	 * @see \ICanBoogie.Core::__get_modules()
 	 *
 	 * @return Accessor\Modules
 	 */
@@ -150,18 +152,18 @@ class Core extends ICanBoogie\Core
 	{
 		$config = $this->config;
 
-		return new Modules($config['modules'], $config['cache modules'], $this->vars);
+		return new Modules($config['modules'], $config['cache modules'] ? $this->vars : null);
 	}
 
 	/**
 	 * Override the method to select the site corresponding to the URL and set the appropriate
 	 * language and timezone.
 	 *
-	 * @see ICanBoogie.Core::run_context()
+	 * @see \ICanBoogie.Core::run_context()
 	 */
 	protected function run_context()
 	{
-		$this->site = $site = \ICanBoogie\Modules\Sites\Hooks::find_by_request($this->request);
+		$this->site = $site = \ICanBoogie\Modules\Sites\Model::find_by_request($this->initial_request);
 		$this->language = $site->language;
 
 		if ($site->timezone)

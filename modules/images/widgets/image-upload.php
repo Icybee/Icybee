@@ -118,7 +118,7 @@ class ImageUpload extends \WdFileUploadElement
 			$details[] = t('Displayed as is');
 		}
 
-		$details[] = wd_format_size(filesize($_SERVER['DOCUMENT_ROOT'] . $path));
+		$details[] = \ICanBoogie\I18n\format_size(filesize($_SERVER['DOCUMENT_ROOT'] . $path));
 
 		return $details;
 	}

@@ -21,5 +21,5 @@ return array
 	),
 
 	'module_category.resources' => 'Ressources',
-	'module_title.resources_files' => 'Fichiers'
+	'module_title.files' => 'Fichiers'
 );

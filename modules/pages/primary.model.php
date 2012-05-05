@@ -11,6 +11,8 @@
 
 namespace ICanBoogie\Modules\Pages;
 
+use ICanBoogie\ActiveRecord\Query;
+
 use ICanBoogie\ActiveRecord\Page;
 use ICanBoogie\Exception;
 use ICanBoogie\Route;
@@ -26,8 +28,15 @@ class Model extends \ICanBoogie\Modules\Nodes\Model
 	{
 		if ($key && isset($properties[Page::PARENTID]) && $key == $properties[Page::PARENTID])
 		{
-			throw new Exception('A page connot be its own parent');
+			throw new Exception('A page connot be its own parent.');
 		}
+
+		if (empty($properties[Page::SITEID]))
+		{
+			throw new Exception('site_id is empty.');
+		}
+
+		unset(self::$blueprint_cache[$properties[Page::SITEID]]);
 
 		return parent::save($properties, $key, $options);
 	}
@@ -36,7 +45,7 @@ class Model extends \ICanBoogie\Modules\Nodes\Model
 	 * Before deleting the record, we make sure that it is not used as a parent page or as a
 	 * location target.
 	 *
-	 * @see @see ICanBoogie\Modules\Nodes.Model::delete()
+	 * @see ICanBoogie\Modules\Nodes.Model::delete()
 	 */
 	public function delete($key)
 	{
@@ -54,18 +63,141 @@ class Model extends \ICanBoogie\Modules\Nodes\Model
 			throw new Exception('Page record cannot be delete because it is used in :count redirections', array(':count' => $locations_count));
 		}
 
+		$site_id = $this->select('siteid')->find_by_nid($key)->rc;
+
+		if ($site_id)
+		{
+			unset(self::$blueprint_cache[$site_id]);
+		}
+
 		return parent::delete($key);
 	}
 
-	static private $home_by_siteid = array();
+	/**
+	 * Changes the order of the query with "weight, create".
+	 *
+	 * @param Query $query
+	 *
+	 * @return Query
+	 */
+	protected function scope_ordered(Query $query)
+	{
+		return $query->order('weight, created');
+	}
 
 	/**
-	 * Returns the home page a the specified site.
+	 * Returns the blueprint of the pages tree.
 	 *
-	 * The record cache is used to retrieve or store the home page. Additionnaly the home pages
-	 * found are stored for each site.
+	 * The blueprint return an array with three kind of information:
+	 *
+	 * - `relation`: The child/parent relation. An array where each key/value is the identifier of
+	 * a page and the idenfier of its parent, or zero `0` if the parent has no parent.
+	 *
+	 * - `children`: The parent/children relation. An array where each key/value is the identifier
+	 * of a parent and an array made of the identifiers of its children. Each key/value pair of the
+	 * children value is made of the child identifier.
+	 *
+	 * - `pages`: The blueprint of the pages. An array where each key/value pair is the identifier
+	 * of the page and the blueprint of a page. The blueprint of a page is an object with the
+	 * following properties:
+	 *
+	 *     - `nid`: The identifier of the page.
+	 *     - `parentid`: The identifier of the parent of the page.
+	 *     - `parent`: Blueprint object of the parent of the page.
+	 *     - `depth`: Depth of the page is the tree.
+	 *     - `chldren`: An array of the blueprint object of the children of the page.
+	 *
+	 * - `tree`: The blueprint of the pages nested as a tree.
+	 *
+	 * @param int $site_id Identifier of the website.
+	 *
+	 * @return array[int]object
+	 */
+	public function get_blueprint($site_id)
+	{
+		if (isset(self::$blueprint_cache[$site_id]))
+		{
+			return self::$blueprint_cache[$site_id];
+		}
+
+		$rows = $this->select('nid, parentid, is_online, is_navigation_excluded, pattern')
+		->where('siteid = ?', $site_id)
+		->ordered
+		->mode(\PDO::FETCH_OBJ);
+
+		$relation = array();
+		$children = array();
+		$index = array();
+
+		#
+		# In order to easily access entries, they are store by their Id in an array.
+		#
+
+		foreach ($rows as $row)
+		{
+			$row->parent = null;
+			$row->depth = null;
+			$row->children = array();
+
+			$nid = $row->nid;
+			$parent_id = $row->parentid;
+
+			$index[$nid] = $row;
+
+			$relation[$nid] = $parent_id;
+			$children[$parent_id][$nid] = $nid;
+		}
+
+		$tree = array();
+
+		foreach ($index as $nid => $page)
+		{
+			if (!$page->parentid || empty($index[$page->parentid]))
+			{
+				$tree[$nid] = $page;
+
+				continue;
+			}
+
+			$page->parent = $index[$page->parentid];
+			$page->parent->children[$nid] = $page;
+		}
+
+		$set_depth = function($index, $depth) use(&$set_depth)
+		{
+			foreach ($index as $page)
+			{
+				$page->depth = $depth;
+
+				if (!$page->children)
+				{
+					continue;
+				}
+
+				$set_depth($page->children, $depth + 1);
+			}
+		};
+
+		$set_depth($tree, 0);
+
+		return self::$blueprint_cache[$site_id] = new Blueprint($this, $relation, $children, $index, $tree);
+	}
+
+	/**
+	 * Holds the cached blueprint for each website.
+	 *
+	 * @var array
+	 */
+	private static $blueprint_cache = array();
+
+	/**
+	 * Returns the home page of the specified site.
+	 *
+	 * The record cache is used to retrieve or store the home page. Additionnaly the home page
+	 * found is stored for each site.
 	 *
 	 * @param int $siteid Identifier of the site.
+	 *
 	 * @return ICanBoogie\ActiveRecord\Page
 	 */
 	public function find_home($siteid)
@@ -75,7 +207,7 @@ class Model extends \ICanBoogie\Modules\Nodes\Model
 			return self::$home_by_siteid[$siteid];
 		}
 
-		$home = $this->where('siteid = ? AND parentid = 0', $siteid)->order('weight, created')->one;
+		$home = $this->where('siteid = ? AND parentid = 0 AND is_online = 1', $siteid)->ordered->one;
 
 		if ($home)
 		{
@@ -96,35 +228,33 @@ class Model extends \ICanBoogie\Modules\Nodes\Model
 		return $home;
 	}
 
-	public function find_by_url($url)
-	{
-		return $this->loadByPath($url);
-	}
+	private static $home_by_siteid = array();
 
 	/**
-	 * Load a page object given an URL path.
+	 * Finds a page by its path.
 	 *
-	 * @param string $url
-	 * @return ICanBoogie\ActiveRecord\Page
+	 * @param string $path
+	 *
+	 * @return \ICanBoogie\ActiveRecord\Page
 	 */
-	public function loadByPath($url)
+	public function find_by_path($path)
 	{
 		global $core;
 
-		$pos = strrpos($url, '.');
+		$pos = strrpos($path, '.');
 		$extension = null;
 
-		if ($pos && $pos > strrpos($url, '/'))
+		if ($pos && $pos > strrpos($path, '/'))
 		{
-			$extension = substr($url, $pos);
-		 	$url = substr($url, 0, $pos);
+			$extension = substr($path, $pos);
+		 	$path = substr($path, 0, $pos);
 		}
 
-		$l = strlen($url);
+		$l = strlen($path);
 
-		if ($l && $url{$l - 1} == '/')
+		if ($l && $path{$l - 1} == '/')
 		{
-			$url = substr($url, 0, -1);
+			$path = substr($path, 0, -1);
 		}
 
 		#
@@ -137,24 +267,21 @@ class Model extends \ICanBoogie\Modules\Nodes\Model
 
 		if ($site_path)
 		{
-			if (strpos($url, $site_path) !== 0)
+			if (strpos($path, $site_path) !== 0)
 			{
 				return;
 			}
 
-			$url = substr($url, strlen($site_path));
+			$path = substr($path, strlen($site_path));
 		}
 
-		if (!$url)
+		if (!$path)
 		{
 			#
 			# The home page is requested, we load the first parentless online page of the site.
 			#
 
-			$page = $this
-			->where('siteid = ? AND parentid = 0 AND is_online = 1', $siteid)
-			->order('weight, created')
-			->one;
+			$page = $this->find_home($siteid);
 
 			if (!$page)
 			{
@@ -169,7 +296,7 @@ class Model extends \ICanBoogie\Modules\Nodes\Model
 			return $page;
 		}
 
-		$parts = explode('/', $url);
+		$parts = explode('/', $path);
 
 		array_shift($parts);
 
@@ -182,7 +309,7 @@ class Model extends \ICanBoogie\Modules\Nodes\Model
 		# with it.
 		#
 
-		$tries = $this->select('nid, parentid, slug, pattern')->where('siteid = ?', $siteid)->order('weight, created')->all(\PDO::FETCH_OBJ);
+		$tries = $this->select('nid, parentid, slug, pattern')->find_by_siteid($siteid)->ordered->all(\PDO::FETCH_OBJ);
 		$tries = self::nestNodes($tries);
 
 		$try = null;
@@ -195,7 +322,7 @@ class Model extends \ICanBoogie\Modules\Nodes\Model
 				$tries = $try->children;
 			}
 
-			$part = $url_part = $parts[$i];
+			$part = $path_part = $parts[$i];
 
 			#
 			# first we search for a matching slug
@@ -211,8 +338,8 @@ class Model extends \ICanBoogie\Modules\Nodes\Model
 					$stripped = preg_replace('#<[^>]+>#', '', $pattern);
 
 					$nparts = substr_count($stripped, '/') + 1;
-					$url_part = implode('/', array_slice($parts, $i, $nparts));
-					$match = Route::match($url_part, $pattern);
+					$path_part = implode('/', array_slice($parts, $i, $nparts));
+					$match = Route::match($path_part, $pattern);
 
 					if ($match === false)
 					{
@@ -254,7 +381,7 @@ class Model extends \ICanBoogie\Modules\Nodes\Model
 
 			if (!$try)
 			{
-				return false;
+				return;
 			}
 
 			#
@@ -263,7 +390,7 @@ class Model extends \ICanBoogie\Modules\Nodes\Model
 
 			$pages_by_ids[$try->nid] = array
 			(
-				'url_part' => $url_part,
+				'url_part' => $path_part,
 				'url_variables' => $vars
 			);
 		}
@@ -304,43 +431,6 @@ class Model extends \ICanBoogie\Modules\Nodes\Model
 	}
 
 	/**
-	 * Load the nested nodes of a tree.
-	 *
-	 * Because the children
-	 *
-	 * @param unknown_type $parentid
-	 * @param unknown_type $max_depth
-	 */
-	public function loadAllNested($siteid, $parentid=null, $max_depth=false)
-	{
-		$ids = $this->select('nid, parentid')->where('siteid = ?', $siteid)->order('weight, created')->all(\PDO::FETCH_OBJ);
-
-		$tree = self::nestNodes($ids, $by_id);
-
-		if ($parentid)
-		{
-			if (empty($by_id[$parentid]))
-			{
-				return null;
-			}
-
-			$tree = $by_id[$parentid]->children;
-		}
-
-		if (!$tree)
-		{
-			return;
-		}
-
-		self::setNodesDepth($tree, $max_depth);
-
-		$nodes = self::levelNodesById($tree);
-		$records = $this->find(array_keys($nodes));
-
-		return self::nestNodes($records);
-	}
-
-	/**
 	 * Nest an array of nodes, using their `parentid` property.
 	 *
 	 * Children are stored in the `children` property of their parents.
@@ -350,7 +440,6 @@ class Model extends \ICanBoogie\Modules\Nodes\Model
 	 * @param array $entries The array of nodes.
 	 * @param array $parents The array of nodes, where the key is the entry's `nid`.
 	 */
-
 	static public function nestNodes($entries, &$entries_by_ids=null)
 	{
 		#

@@ -62,16 +62,37 @@ class Model extends \Icybee\ActiveRecord\Model\Constructor
 		return parent::delete($key);
 	}
 
+	/**
+	 * Alerts the query to match online records.
+	 *
+	 * @param Query $query
+	 *
+	 * @return Query
+	 */
 	protected function scope_online(Query $query)
 	{
 		return $query->where('is_online = 1');
 	}
 
+	/**
+	 * Alerts the query to match offline records.
+	 *
+	 * @param Query $query
+	 *
+	 * @return Query
+	 */
 	protected function scope_offline(Query $query)
 	{
 		return $query->where('is_online = 0');
 	}
 
+	/**
+	 * Alerts the query to match records visible on the current website.
+	 *
+	 * @param Query $query
+	 *
+	 * @return Query
+	 */
 	protected function scope_visible(Query $query)
 	{
 		global $core;
@@ -79,6 +100,18 @@ class Model extends \Icybee\ActiveRecord\Model\Constructor
 		return $query->where('is_online = 1 AND (siteid = 0 OR siteid = ?) AND (language = "" OR language = ?)', $core->site->siteid, $core->site->language);
 	}
 
+	/**
+	 * Alerts the query to match records of a similar site.
+	 *
+	 * A record is considered on a similar website when it doesn't belong to a website
+	 * (`siteid = 0') or it matches the specified website.
+	 *
+	 * @param Query $query
+	 * @param int $siteid The identifier of a website. If the identifier is `null` the current
+	 * website identifier is used instead.
+	 *
+	 * @return Query
+	 */
 	protected function scope_similar_site(Query $query, $siteid=null)
 	{
 		global $core;

@@ -105,7 +105,7 @@ class Views implements \ArrayAccess, \IteratorAggregate
 			}
 		}
 
-		Event::fire('alter', array('views' => &$views), $this);
+		new Views\AlterEvent($this, array('views' => &$views));
 
 		$required = array('title', 'type', 'module', 'renders');
 
@@ -170,5 +170,31 @@ class Views implements \ArrayAccess, \IteratorAggregate
 	public function getIterator()
 	{
 		return new \ArrayIterator($this->views);
+	}
+}
+
+namespace Icybee\Views;
+
+/**
+ * Event class for the event `Icybee\Views::alter`.
+ */
+class AlterEvent extends \ICanBoogie\Event
+{
+	/**
+	 * Reference to the views to alter.
+	 *
+	 * @var array[string]array
+	 */
+	public $views;
+
+	/**
+	 * The event is constructed with the type 'alter'.
+	 *
+	 * @param \Icybee\Views $target
+	 * @param array $properties
+	 */
+	public function __construct(\Icybee\Views $target, array $properties)
+	{
+		parent::__construct($target, 'alter', $properties);
 	}
 }

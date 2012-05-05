@@ -11,6 +11,8 @@
 
 namespace Icybee;
 
+use Brickrouge\DropdownMenu;
+
 use Brickrouge\Alert;
 
 use ICanBoogie;
@@ -887,9 +889,13 @@ EOT;
 			$filters = array();
 		}
 
-		$rc = '';
-		$rc .= '<th class="' . trim($class) . '">';
-		$rc .= '<div>';
+		$options = '';
+
+		if ($filters)
+		{
+			$options = $this->render_column_options($filters, $id, $column);
+			$class .= ' has-options';
+		}
 
 		$t = $this->t;
 
@@ -909,6 +915,13 @@ EOT;
 				)
 			);
 		}
+
+		if (!$label)
+		{
+			$class .= ' has-no-label';
+		}
+
+		$rc = '';
 
 		if ($id == $this->idtag)
 		{
@@ -963,21 +976,13 @@ EOT;
 			{
 				$rc .= $label;
 			}
-			else
-			{
-				$rc .= '&nbsp;';
-			}
 		}
 
-		if ($filters)
-		{
-			$rc .= $this->render_column_options($filters, $id, $column);
-		}
+		$class = trim($class);
 
-		$rc .= '</div>';
-		$rc .= '</th>';
-
-		return $rc;
+		return <<<EOT
+<th class="$class"><div>{$rc}{$options}</div></th>
+EOT;
 	}
 
 	/**
@@ -989,14 +994,13 @@ EOT;
 	 */
 	protected function render_column_options($filter, $id, $header)
 	{
-		$rc = '';
+		$options = array();
 
-		/*
 		if ($header['filtering'])
 		{
-			$rc .= '<li class="reset"><a href="' . $header['reset'] . '">View all</a></li>';
+			$options[$header['reset']] = t('Display all');
+			$options[] = false;
 		}
-		*/
 
 		foreach ($filter['options'] as $qs => $label)
 		{
@@ -1005,12 +1009,22 @@ EOT;
 				$qs = $id . $qs;
 			}
 
-			$label = t($label);
-
-			$rc .= '<li><a href="?' . $qs . '">' . wd_entities($label) . '</a></li>';
+			$options['?' . $qs] = t($label);
 		}
 
-		return '<ul>' . $rc . '</ul>';
+		$dropdown_menu = new DropdownMenu
+		(
+			array
+			(
+				DropdownMenu::OPTIONS => $options,
+
+				'value' => $header['filtering']
+			)
+		);
+
+		return <<<EOT
+<div class="dropdown navbar"><a href="#" data-toggle="dropdown"><i class="icon-cog"></i></a>$dropdown_menu</div>
+EOT;
 	}
 
 	protected function render_body()
@@ -1052,15 +1066,15 @@ EOT;
 		global $core;
 
 		$search = $this->options['search'];
-		$filters = implode(', ', $this->options['filters']);
 		$context = null;
 
 		if ($search)
 		{
 			$message = t('Your search <q><strong>!search</strong></q> did not match any record.', array('!search' => $search));
 		}
-		else if ($filters)
+		else if ($this->options['filters'])
 		{
+			$filters = implode(', ', $this->options['filters']);
 			$message = t('Your selection <q><strong>!selection</strong></q> dit not match any record.', array('!selection' => $filters));
 		}
 		else
@@ -1345,7 +1359,7 @@ EOT;
 	 */
 	protected function render_cell_size($record, $property)
 	{
-		$label = wd_format_size($record->$property);
+		$label = \ICanBoogie\I18n\format_size($record->$property);
 
 		if (isset($this->last_rendered_cell[$property]) && $this->last_rendered_cell[$property] === $label)
 		{

@@ -57,6 +57,7 @@ class adjustnode_WdEditorElement extends WdEditorElement
 			$value = json_decode($value);
 		}
 
+		/*DIRTY
 		$config = (array) $this[self::T_CONFIG] ?: array();
 
 		// TODO-20100816: rename 'scope' as 'contructor' ?
@@ -69,10 +70,12 @@ class adjustnode_WdEditorElement extends WdEditorElement
 		{
 			$scope = (isset($config['scope'])) ? $config['scope'] : 'nodes';
 		}
+		*/
 
 		$class = 'Brickrouge\Widget\PopNode';
+		$constructor = $this['data-constructor'] ?: 'nodes';
 
-		if ($scope == 'images')
+		if ($constructor == 'images')
 		{
 			$class = 'Brickrouge\Widget\PopImage';
 		}
@@ -81,7 +84,7 @@ class adjustnode_WdEditorElement extends WdEditorElement
 		(
 			array
 			(
-				Widget\PopNode::T_CONSTRUCTOR => $scope,
+				Widget\PopNode::T_CONSTRUCTOR => $constructor,
 
 				'name' => $name,
 				'value' => $value

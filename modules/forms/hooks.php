@@ -25,7 +25,7 @@ class Hooks
 
 	public static function markup_form(array $args, \WdPatron $patron, $template)
 	{
-		global $core, $page;
+		global $core;
 
 		$id = $args['select'];
 		$model = $core->models['forms'];
@@ -36,7 +36,7 @@ class Hooks
 		}
 		else
 		{
-			list($conditions, $conditions_args) = $model->parseConditions(array('slug' => $id, 'language' => $page->language));
+			list($conditions, $conditions_args) = $model->parseConditions(array('slug' => $id, 'language' => $core->request->context->page->language));
 
 			$form = $model->where(implode(' AND ', $conditions), $conditions_args)->one;
 		}
@@ -205,7 +205,7 @@ class Hooks
 						$mailer = new Mailer($mailer_tags);
 					}
 
-					wd_log('operation send mailer: \1', array($mailer));
+					\ICanBoogie\log('operation send mailer: \1', array($mailer));
 
 					$mailer();
 				}

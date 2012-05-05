@@ -11,6 +11,33 @@
 
 use ICanBoogie\ActiveRecord\Query;
 
+function wd_array_sort_and_filter($filter, array $array1)
+{
+	#
+	# `filter` is provided as an array of values, but because we need keys we have to flip it.
+	#
+
+	$filter = array_flip($filter);
+
+	#
+	# multiple arrays can be provided, they are all merged with the `filter` as first array so that
+	# values appear in the order defined in `filter`.
+	#
+
+	$arrays = func_get_args();
+
+	array_shift($arrays);
+	array_unshift($arrays, $filter);
+
+	$merged = call_user_func_array('array_merge', $arrays);
+
+	#
+	# Now we can filter the array using the keys defined in `filter`.
+	#
+
+	return array_intersect_key($merged, $filter);
+}
+
 class WdManager extends \Icybee\Manager
 {
 	public function __construct($module, array $tags=array())

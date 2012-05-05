@@ -155,6 +155,10 @@ class Thumbnail extends \ICanBoogie\Object
 		{
 			return $this->options['method'];
 		}
+		else if (!empty($this->options['m']))
+		{
+			return $this->options['m'];
+		}
 
 		$version = $this->version;
 
@@ -291,7 +295,7 @@ class Thumbnail extends \ICanBoogie\Object
 
 		if (is_string($path))
 		{
-			list($w, $h) = \ICanBoogie\Image::compute_final_size($w, $h, $this->method, $_SERVER['DOCUMENT_ROOT'] . $path);
+			list($w, $h) = \ICanBoogie\Image::compute_final_size($w, $h, $this->method, \ICanBoogie\DOCUMENT_ROOT . $path);
 		}
 
 		return new Element
@@ -300,7 +304,7 @@ class Thumbnail extends \ICanBoogie\Object
 			(
 				'src' => $src,
 				'alt' => $alt,
-				'widht' => $w,
+				'width' => $w,
 				'height' => $h
 			)
 		);

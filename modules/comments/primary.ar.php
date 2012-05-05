@@ -89,7 +89,7 @@ class Comment extends ActiveRecord
 
 	public function excerpt($limit=55)
 	{
-		return wd_excerpt((string) $this, $limit);
+		return \ICanBoogie\excerpt((string) $this, $limit);
 	}
 
 	public function __toString()

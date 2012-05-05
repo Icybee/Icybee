@@ -43,7 +43,7 @@ class CacheManager implements \ICanBoogie\Modules\System\Cache\CacheInterface
 
 		if (!is_writable($root . $path))
 		{
-			wd_log_error("%path is missing or not writable", array('%path' => $path));
+			\ICanBoogie\log_error("%path is missing or not writable", array('%path' => $path));
 
 			return false;
 		}

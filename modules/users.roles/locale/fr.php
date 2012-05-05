@@ -2,9 +2,23 @@
 
 return array
 (
-	#
-	#
-	#
+	'module_title.users_roles' => 'Rôles',
+
+	'users_roles' => array
+	(
+		'count' => array
+		(
+			'name' => 'Aucun rôle',
+			'one' => 'Un rôle',
+			'other' => ':count rôles'
+		),
+
+		'name' => array
+		(
+			'one' => 'Rôle',
+			'other' => 'Rôles'
+		)
+	),
 
 	'Visitor' => 'Visiteur',
 

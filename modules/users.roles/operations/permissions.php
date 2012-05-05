@@ -81,7 +81,7 @@ class PermissionsOperation extends \ICanBoogie\Operation
 			$role->save();
 		}
 
-		wd_log_done('Permissions has been saved.');
+		\ICanBoogie\log_success('Permissions has been saved.');
 
 		return true;
 	}

@@ -34,7 +34,7 @@ class feed_WdEditorElement extends WdEditorElement
 			$constructors[$module_id] = $descriptor[Module::T_TITLE];
 		}
 
-		uasort($constructors, 'wd_unaccent_compare_ci');
+		uasort($constructors, 'ICanBoogie\unaccent_compare_ci');
 
 		parent::__construct
 		(
@@ -144,8 +144,9 @@ class feed_WdEditorElement extends WdEditorElement
 
 	static public function render($contents)
 	{
-		global $core, $page;
+		global $core;
 
+		$page = $core->request->context->page;
 		$site = $page->site;
 		$options = json_decode($contents, true);
 
@@ -163,7 +164,7 @@ class feed_WdEditorElement extends WdEditorElement
 		$fdate = $core->locale->date_formatter;
 		$time_pattern = "y-MM-dd'T'HH:mm:ss";
 
-		$host = preg_replace('#^www\.#', '', $_SERVER['HTTP_HOST']);
+		$host = preg_replace('#^www\.#', '', $_SERVER['SERVER_NAME']);
 		$page_created = $fdate->__invoke($page->created, 'y-MM-dd');
 
 		$entries = $core->models[$constructor]->find_by_constructor($constructor)->visible->order('date DESC')->limit($limit)->all;

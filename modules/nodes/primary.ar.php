@@ -58,9 +58,21 @@ class Node extends ActiveRecord
 		parent::__construct($model);
 	}
 
+	public function __get($property)
+	{
+		$value = parent::__get($property);
+
+		if ($property === 'css_class_names')
+		{
+			new Node\AlterCSSClassNamesEvent($this, array('names' => &$value));
+		}
+
+		return $value;
+	}
+
 	protected function __get_slug()
 	{
-		return wd_normalize($this->title);
+		return \ICanBoogie\normalize($this->title);
 	}
 
 	/**
@@ -197,23 +209,100 @@ class Node extends ActiveRecord
 		return $this->nativeid ? $this->_model[$this->nativeid] : $this;
 	}
 
+	/**
+	 * Returns the CSS class of the node.
+	 *
+	 * @return string
+	 */
 	protected function __get_css_class()
 	{
-		$initial = $this->initial_css_class;
-
-		Event::fire('get_css_class', array('rc' => &$initial), $this);
-
-		return implode(' ', $initial);
+		return $this->css_class();
 	}
 
-	protected function __get_initial_css_class()
+	/**
+	 * Returns the CSS class names of the node.
+	 *
+	 * @return array[string]mixed
+	 */
+	protected function __get_css_class_names()
 	{
 		return array
 		(
 			'type' => 'node',
 			'id' => 'node-' . $this->nid,
 			'slug' => 'node-slug-' . $this->slug,
-			'constructor' => 'constructor-' . wd_normalize($this->constructor)
+			'constructor' => 'constructor-' . \ICanBoogie\normalize($this->constructor)
 		);
+	}
+
+	/**
+	 * Return the CSS class of the node.
+	 *
+	 * @param string|array $modifiers CSS class names modifiers
+	 *
+	 * @return string
+	 */
+	public function css_class($modifiers=null)
+	{
+		$names = $this->css_class_names;
+		$names = array_filter($names);
+
+		if ($modifiers)
+		{
+			if (is_string($modifiers))
+			{
+				$modifiers = explode(' ', $modifiers);
+				$modifiers = array_map('trim', $modifiers);
+				$modifiers = array_filter($modifiers);
+			}
+
+			foreach ($modifiers as $k => $modifier)
+			{
+				if ($modifier{0} == '-')
+				{
+					unset($names[substr($modifier, 1)]);
+					unset($modifiers[$k]);
+				}
+			}
+
+			if ($modifiers)
+			{
+				$names = array_intersect_key($names, array_combine($modifiers, $modifiers));
+			}
+		}
+
+		array_walk($names, function(&$v, $k) {
+
+			if ($v === true) $v = $k;
+
+		});
+
+		return implode(' ', $names);
+	}
+}
+
+namespace ICanBoogie\ActiveRecord\Node;
+
+/**
+ * Event class for the `ICanBoogie\ActiveRecord\Node::alter_css_class_names` event.
+ */
+class AlterCSSClassNamesEvent extends \ICanBoogie\Event
+{
+	/**
+	 * Reference to the class names to alter.
+	 *
+	 * @var array[string]mixed
+	 */
+	public $names;
+
+	/**
+	 * The event is constructed with the type `alter_css_class_names`.
+	 *
+	 * @param \ICanBoogie\ActiveRecord\Node $target
+	 * @param array $properties
+	 */
+	public function __construct(\ICanBoogie\ActiveRecord\Node $target, array $properties)
+	{
+		parent::__construct($target, 'alter_css_class_names', $properties);
 	}
 }

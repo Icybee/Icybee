@@ -76,17 +76,18 @@ class Document extends \Brickrouge\Document
 		$site_title = $core->site->title;
 
 		$this->title = 'Icybee (' . $site_title . ')';
+		$title = \ICanBoogie\escape($this->title);
+		$css = (string) $this->css;
+		$favicon = self::resolve_url(\Icybee\ASSETS . 'favicon.png');
 
-		$rc  = '<head>' . PHP_EOL;
-		$rc .= '<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />' . PHP_EOL;
-
-		$rc .= '<title>' . $this->title . '</title>' . PHP_EOL;
-
-		$rc .= $this->css;
-
-		$rc .= '</head>' . PHP_EOL;
-
-		return $rc;
+		return <<<EOT
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>{$title}</title>
+{$css}
+<link rel="shortcut icon" type="image/png" href="{$favicon}" />
+</head>
+EOT;
 	}
 
 	protected function getBody()
@@ -117,8 +118,14 @@ class Document extends \Brickrouge\Document
 		$js = $this->js;
 
 		$alert = '';
+		$types = array('success', 'info', 'error');
 
-		foreach (array('success', 'info', 'error', 'debug') as $type)
+		if (Debug::$mode == Debug::MODE_DEV || $user->is_admin)
+		{
+			$types[] = 'debug';
+		}
+
+		foreach ($types as $type)
 		{
 			$alert .= new Alert(Debug::fetch_messages($type), array(Alert::CONTEXT => $type));
 		}
@@ -183,7 +190,7 @@ EOT;
 
 			if (count($sites) > 1)
 			{
-				$path = Route::decontextualize($core->request->path_info);
+				$path = Route::decontextualize($core->request->path);
 
 				foreach ($sites as $asite)
 				{
@@ -323,7 +330,7 @@ EOT;
 			(
 				DropdownMenu::OPTIONS => $options,
 
-				'value' => $core->request->path_info
+				'value' => $core->request->path
 			)
 		);
 
@@ -437,7 +444,7 @@ EOT;
 
 		Event::fire('render_title:before', array('title' => &$title), $document);
 
-		$rc = '<title>' . wd_entities($title) . '</title>';
+		$rc = '<title>' . \ICanBoogie\escape($title) . '</title>';
 
 		Event::fire('render_title', array('rc' => &$rc), $document);
 
@@ -457,7 +464,9 @@ EOT;
 
 		$metas = array
 		(
-
+			'og' => array
+			(
+			)
 		);
 
 		Event::fire('render_metas:before', array('http_equiv' => &$http_equiv, 'metas' => &$metas), $document);
@@ -471,7 +480,17 @@ EOT;
 
 		foreach ($metas as $name => $content)
 		{
+			if ($name === 'og')
+			{
+				continue;
+			}
+
 			$rc .= '<meta name="' . \ICanBoogie\escape($name) . '" content="' . \ICanBoogie\escape($content) . '" />' . PHP_EOL;
+		}
+
+		foreach ($metas['og'] as $property => $content)
+		{
+			$rc .= '<meta property="og:' . \ICanBoogie\escape($property) . '" content="' . \ICanBoogie\escape($content) . '" />' . PHP_EOL;
 		}
 
 		Event::fire('render_metas', array('rc' => &$rc), $document);

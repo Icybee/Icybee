@@ -17,19 +17,28 @@
 	margin-top: -16px;
 }
 
-#dashboard-panels > div.column
-{
+#dashboard-panels > div.column {
 	float: left;
-	width: 49%;
+	width: 50%;
 	min-height: 200px;
 }
 
-#dashboard-panels > div.column + div.column
-{
-	margin-left: 1%;
+#dashboard-panels > div.column:nth-child(1) .panel {
+	margin-right: 8px;
 }
 
-div.panel
+#dashboard-panels > div.column:nth-child(2) .panel {
+	margin-left: 8px;
+}
+
+/*
+#dashboard-panels > div.column + div.column div.panel
+{
+	margin-left: 16px;
+}
+*/
+
+#dashboard .panel
 {
 	margin: 16px 0 32px 0;
 	background-color: #F6F6F6;
@@ -51,7 +60,7 @@ div.panel
 	text-align: center;
 }
 
-div.panel-title
+.panel-title
 {
 	font-weight: bolder;
 	background: -webkit-gradient(linear, left top, left bottom, from(#F6F6F6), color-stop(50%, #E8E8E8), to(#E8E8E8));
@@ -70,19 +79,25 @@ div.panel-title
 	cursor: move;
 }
 
-div.panel-contents
-{
+.panel-contents {
 	margin: 1em;
 }
 
-div.panel-contents > table
-{
+.panel-contents > table {
 	width: 100%;
 	border-collapse: collapse;
 }
 
-div.panel-holder
-{
+.panel-footer {
+	font-size: 12px;
+	padding: .4em 0;
+	border-top: 1px solid #cfcfcf;
+	background: -moz-linear-gradient(top, white, rgba(255,255,255,0));
+	background: -webkit-linear-gradient(top, white, rgba(255,255,255,0));
+	background: linear-gradient(top, white, rgba(255,255,255,0));
+}
+
+.panel-holder {
 	visibility: hidden;
 	height: 1px;
 }

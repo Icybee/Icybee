@@ -17,10 +17,7 @@ class adjustimage_WdEditorElement extends adjustnode_WdEditorElement
 		(
 			$attributes + array
 			(
-				self::T_CONFIG => array
-				(
-					'scope' => 'images'
-				)
+				'data-constructor' => 'images'
 			)
 		);
 	}

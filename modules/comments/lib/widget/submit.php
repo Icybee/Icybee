@@ -147,7 +147,7 @@ class feedback_comments_WdForm extends Form
 		{
 			return array
 			(
-				'from' => 'no-reply@' . $_SERVER['HTTP_HOST'],
+				'from' => 'no-reply@' . $_SERVER['SERVER_NAME'],
 				'subject' => 'Notification de réponse au billet : #{@node.title}',
 				'bcc' => $core->user->email,
 				'template' => <<<EOT

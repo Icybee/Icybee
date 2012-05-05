@@ -1,0 +1,437 @@
+Vue d'ensemble des connexions, modèles et enregistrements actifs (activerecords)
+################################################################################
+
+Les connexions, les modèles et les enregistrements actifs sont les briques fondatrices de tout ce
+qui concerne l'accès aux données et leur gestion en base. Ils permettent d'établir une connexion
+à une base de données, de gérer les tables et leurs possibles relations, ainsi que les
+enregistrements de ses tables. Profitant des concepts OOP, les modèles et les enregistrements
+actifs sont des instances dont les propriétés, les accesseurs et les comportements sont hérités et
+orientés dans une logique métier.
+
+Cette vue d'ensemble porte sur des fonctionnalités bas-niveau du framework [WdCore](https://github.com/Weirdog/WdCore)
+qui ne sont jamais utilisées en l'état. Par exemple, le développeur utilisant les fonctionnalités
+du framework n'a jamais à construire l'instance de connexion à la base de donnée, ni même à la
+fournir au modèle, ni même à construire le modèle ou à définir la classe des enregistrements
+actifs. Bref, le framework se charge de beaucoup de choses pour rendre tout cela très simple, mais
+comme le démontre quelque peu cet article, on peut très bien se passer de ses services et faire
+tout cela _à la main_.
+
+De nombreuses fonctionnalités sont disponibles pour l'accès, le traitement et la gestion des
+données, mais puisque cet article est une vue d'ensemble, nous ne verrons que quelques bases :
+établir une connexion à une base de donnée, définir un modèle, créer la table correspondant au
+modèle, ajouter des enregistrements, récupérer des enregistrements, détruire des enregistrements.
+Nous reviendrons en détail sur chacun des sujets abordés dans de futurs articles, en attendant, 
+commençons cette vue d'ensemble en découvrant comment établir une connexion à une base de données.
+
+
+Connexion à une base de données
+===============================
+
+C'est au travers d'une instance de la classe [WdDatabase](https://github.com/Weirdog/WdCore/blob/master/wddatabase.php),
+sous classe de [PDO](http://php.net/manual/fr/book.pdo.php), que l'on établie une connexion à une base de données. Le code suivant permet
+par exemple d'établir une connexion à une base de données en utilisant le driver SQLite :
+
+@php
+$path = dirname(__FILE__);
+$connection = new WdDatabase("sqlite:$path/models-and-records.sq3");
+php@
+
+Des options personnalisées offrant des fonctionnalités supplémentaires peuvent être définies dans
+les options du driver (`driver_options`).
+
+
+Prefixe pour les tables utilisant la connexion
+----------------------------------------------
+
+L'option `#prefix` permet de définir un préfixe à utiliser pour toutes les tables partageant la
+connexion. Ainsi, si le préfixe "wdp" est défini pour la connexion, la table "nodes" verra son nom
+transformé en "wdp_nodes".
+
+L'espace réservé `{prefix}` est remplacé dans les requêtes par la valeur du préfixe :
+
+@php
+$stmt = $connection->query('SELECT * FROM {prefix}nodes LIMIT 10');
+php@
+
+
+Jeu de caractères et collation des chaînes littérales
+-----------------------------------------------------
+
+Avec les options `#charset` et `#collate`, on peut remplacer le jeu de caractère et la
+collation par défaut, quelle qu'elle soit, pour la connexion.
+
+Les espaces réservés `{charset}` et `{collate}` sont remplacés dans les requêtes par leur
+valeur respectives :
+
+@php
+$connection->query('ALTER TABLE nodes CHARACTER SET "{charset}" COLLATE "{collate}"');
+php@
+
+
+Les modèles de données
+======================
+
+Un _modèle_ est la représentation sous forme d'objet d'une table de données ou, comme nous le
+verrons dans un prochain article, d'une hiérarchie de tables. C'est par le modèle que l'on crée,
+modifie ou détruit une table. C'est aussi par le modèle que l'on crée, modifie ou détruit des
+enregistrements.
+
+Les modèles sont des instances de la classe [WdModel](https://github.com/Weirdog/WdCore/blob/master/wdmodel.php),
+et sont en général adaptés à une logique métier :
+
+@php
+$model = new WdModel
+(
+	array
+	(
+		WdModel::T_CONNECTION => $connection,
+		WdModel::T_ACTIVERECORD_CLASS => 'my_ActiveRecord',
+		WdModel::T_NAME => 'node',
+		WdModel::T_SCHEMA => array
+		(
+			'fields' => array
+			(
+				'id' => 'serial',
+				'title' => array('varchar', 80),
+				'number' => array('integer', 'unsigned' => true)
+			)
+		)
+	)
+);
+php@
+
+
+
+Connexion à la base de donnée
+------------------------------
+
+L'attribut `T_CONNECTION` définit la connexion à la base de donnée, il s'agit d'une instance de la
+classe [WdDatabase](https://github.com/Weirdog/WdCore/blob/master/wddatabase.php), comme celle
+que nous avons vu auparavant.
+
+
+
+Classe des enregistrements actifs
+---------------------------------
+
+L'attribut `T_ACTIVERECORD_CLASS` définit la classe des instances des enregistrements actifs du
+modèle.
+
+
+Nom de la table
+---------------
+
+L'attribut `T_NAME` définit le nom de la table. Si un préfixe est défini pour la connexion
+(`#prefix`), il sera utilisé pour préfixer le nom de la table. Ainsi, pour le préfixe "wd", la
+table "nodes" sera renommée en "wd_nodes". Les attributs `name` et `unprefixed_name` permettent
+d'obtenir respectivement le nom complet et le nom original :
+
+@php
+echo "table name: {$model->name}, original: {$model->unprefixed_name}.";
+php@
+
+L'espace réservé `{self}` est remplacé dans les requêtes par le nom complet de la table :
+
+@php
+$stmt = $model->query('SELECT * FROM {self} LIMIT 10');
+php@
+
+
+Schéma
+------
+
+Les champs de la table associée au modèle ainsi que les relations du modèle à d'autres modèles sont
+décrits par le schéma. Le schéma de la table est défini par l'attribut `T_SCHEMA`.
+
+Les champs de la table sont définis par la clé `fields`. Chaque clé définit le nom du champ, et
+chaque valeur définit les caractéristiques du champ. Pour la plupart des types, la définition de
+base est la suivante :
+
+@php
+'<identifiant>' => '<type_et_ses_options_par_defaut>'
+# ou
+'<identifiant>' => array('<type>', <taille_du_champ>);
+php@
+
+Les types de champs suivants sont disponibles : `blob`, `char`, `integer`, `text`, `varchar`,
+`bit`, `boolean`, `date`, `datetime`, `time`, `timestamp`, `year`, `enum`, `double` et `float`, 
+ainsi que les types spéciaux `serial` et `foreign`, qui sont des raccourcis pour créer des clés
+primaires ou des références à des clés primaires :
+
+@php
+array
+(
+	'nid' => 'serial', // bigint(20) unsigned NOT NULL AUTO_INCREMENT, PRIMARY KEY (`nid`) 
+	'uid' => 'foreign' // bigint(20) unsigned NOT NULL, KEY `uid` (`uid`)
+);
+php@
+
+La taille du champ peut être définie de manière numérique pour les champs `blob`, `char`,
+`integer`, `varchar` et `bit` :
+
+@php
+array
+(
+	'title' => 'varchar', // varchar(255) NOT NULL
+ 	'slug' => array('varchar', 80), // varchar(255) NOT NULL
+ 	'weight' => 'integer', // int(11) NOT NULL
+ 	'small_count' => array('integer', 8) // int(8) NOT NULL,
+ 	'price' => array('float', array(10,3)) // float(10,3) NOT NULL
+);
+php@
+
+La taille du champ peut être définie en utilisant les qualifiants `tiny`, `small`, `medium` et
+`big` ou `long` pour les champs `blob`, `char`, `integer`, `text` et `varchar` :
+
+@php
+array
+(
+	'body' => array('text', 'long') // longtext NOT NULL
+);
+php@
+
+Le qualifiant `null` permet de définir un champ comme pouvant être null, par défaut les champs
+sont définis comme ne pouvant accueillir la valeur `null` :
+
+@php
+array('varchar', 'null' => true) // varchar(255)
+array('integer', 'null' => true) // int(11)
+php@
+
+Le qualifiant `unsigned` permet de définir un champ numérique comme étant non signé :
+
+@php
+array('integer') // int(11)
+array('integer', 'unsigned' => true) // int(10) unsigned
+php@
+
+Enfin, le qualifiant `indexed` permet de définir un champ comme faisant partie d'un index :
+
+@php
+array
+(
+	'slug' => array('varchar', 'indexed' => true), // varchar(255) NOT NULL, KEY `slug` (`slug`)
+	'is_online' => array('boolean', 'indexed' => true) // tinyint(1) NOT NULL, KEY `is_online` (`is_online`),
+	
+	'pageid' => array('foreign', 'indexed' => 'page-content'), // bigint(20) unsigned NOT NULL
+	'contentid' => array('foreign', 'indexed' => 'page-content'), // bigint(20) unsigned NOT NULL, KEY `page-content` (`pageid`, `contentid`)
+);
+php@
+
+
+Création de la table associée au modèle
+---------------------------------------
+
+Une fois le modèle et son schéma définis, on utilise la méthode `install()` pour installer le
+modèle et ainsi créer sa table associée.
+
+@php
+$model->install();
+php@
+
+Il est possible de savoir si une table est déjà installée en utilisant la fonction
+`is_installed()` :
+
+@php
+if ($model->is_installed())
+{
+	echo "la table est déjà installée.";
+}
+php@
+
+
+
+Les enregistrements actifs (Active Records)
+==========================================
+
+Un enregistrement actif, _Active Record_ en anglais, est un objet qui représente un enregistrement
+en base de données. En général, les propriétés que l'on retrouve en base de données sont
+publiques, mais il n'est pas rare qu'une classe implémente des accesseurs magiques ou
+des méthodes propres à sa logique métier.
+
+Par défaut, chaque enregistrement actif est une instance de la classe [WdActiveRecord](https://github.com/Weirdog/WdCore/blob/master/wdactiverecord.php),
+mais pour chaque modèle il est possible de définir une autre classe pour les instances grâce à
+l'attribut `T_ACTIVERECORD_CLASS`.
+
+Par exemple, les enregistrements actifs du module "[contenu](https://github.com/Weirdog/Publishr/tree/master/publishr/modules/contents)" du CMS Publishr sont des instances
+de la classe [contents_WdActiveRecord](https://github.com/Weirdog/Publishr/blob/master/publishr/modules/contents/primary.ar.php), dont
+les propriétés `content` ou `excerpt` sont publiques et les accesseurs magiques `next` et
+`previous` permettent d'accéder respectivement à l'enregistrement suivant et à l'enregistrement
+précédent :
+
+@php
+class contents_WdActiveRecord extends system_nodes_WdActiveRecord
+{
+	...
+	
+	protected function __get_next()
+	{
+		return $this->model()->own->visible->where('date > ?', $this->date)->order('date')->one;
+	}
+
+	protected function __get_previous()
+	{
+		return $this->model()->own->visible->where('date < ?', $this->date)->order('date DESC')->one;
+	}
+	
+	...
+}
+php@
+
+Ainsi, l'enregistrement actif porte à la fois les données et la logique métier. Une grande partie
+de des données de l'enregistrement actif est persistante et doit être enregistrée en base de données.
+L'enregistrement des données peut se faire soit par le modèle, soit par l'enregistrement actif.
+
+
+Enregistrer un enregistrement en base de données
+------------------------------------------------
+
+On utilise la méthode `save()` des modèles de données pour créer un nouvel enregistrement :
+
+@php
+$key = $model->save
+(
+	array
+	(
+		'title' => "title-$i-" . md5($number),
+		'number' => $number
+	)
+);
+php@
+
+Pour sauvegarder l'état d'un enregistrement actif, on utilisera sa méthode `save()` :
+
+@php
+$record = $model[10];
+$record->is_online = false;
+$record->save();
+php@
+
+
+Supprimer un enregistrement
+---------------------------
+
+Pour supprimer un enregistrement actif on utilisera soit le modèle, soit l'enregistrement :
+
+@php
+$model->delete(190);
+# ou
+$record = $model[190];
+$record->delete();
+php@
+
+
+Un exemple pour tout mettre en œuvre
+====================================
+
+En conclusion de cet article, voici un exemple qui met en scène tout ce que nous venons de voir :
+établir une connexion à une base de données, créer un modèle et l'installer (si ce n'est pas déjà
+fait), créer des enregistrements, récupérer les enregistrements crées et, pour chacun d'entre eux,
+afficher quelques propriétés dont une utilise un accesseur magique. 
+
+@php
+$path = dirname(__FILE__);
+
+#
+# Emplacement de la classe WdCore, qui nous permet d'instancier l'objet `core`, cœur du framework.
+# Il ne servira pas à grand chose, mais au moins le framework sera basiquement configuré, notamment
+# l'autoloader.
+#
+
+require_once 'framework/wdcore/wdcore.php';
+
+$core = new WdCore();
+
+#
+# Il s'agit de la classe utilisée pour instancier les enregistrements que nous récupérerons plus
+# tard depuis notre modèle.
+#
+
+class my_WdActiveRecord extends WdActiveRecord
+{
+	protected function __get_reversed_number()
+	{
+		return strrev((string) $this->number);
+	}
+}
+
+#
+# On établie une connexion à la base de donnée "models-and-records.sq3" en utilisant le driver
+# SQLite. On utilise SQLite parce que la base ne demandera aucun effort à mettre en place. Il faut
+# tout de même vérifier les permissions d'écriture.
+#
+
+$connection = new WdDatabase("sqlite:$path/models-and-records.sq3");
+
+#
+# Définition et instanciation de notre modèle.
+#
+
+$model = new WdModel
+(
+	array
+	(
+		WdModel::T_ACTIVERECORD_CLASS => 'my_WdActiveRecord',
+		WdModel::T_CONNECTION => $connection,
+		WdModel::T_NAME => 'node',
+		WdModel::T_SCHEMA => array
+		(
+			'fields' => array
+			(
+				'id' => 'serial',
+				'title' => array('varchar', 80),
+				'number' => array('integer', 'unsigned' => true)
+			)
+		)
+	)
+);
+
+#
+# Nous installons le modèle, s'il n'est pas déjà installé (création de la table correspondante).
+#
+
+if (!$model->is_installed())
+{
+	$model->install();
+}
+
+#
+# On le peuple de quelques enregistrements
+#
+
+$i = 10;
+
+while ($i--)
+{
+	$number = uniqid();
+
+	$model->save
+	(
+		array
+		(
+			'title' => "title-$i-" . md5($number),
+			'number' => $number
+		)
+	);
+}
+
+#
+# On récupère tous les enregistrements du modèle et pour chacun d'entre eux on affiche la valeur
+# de la clé primaire et un nombre renversé, utilisant un getter magique.
+#
+
+foreach ($model->all as $record)
+{
+	echo "record #{$record->id}, reversed number: {$record->reversed_number}<br />";
+}
+php@
+
+
+Conclusion
+==========
+
+C'est ainsi que s'achève cette vue d'ensemble des connexions, modèles et enregistrements actifs. En
+attendant de futurs articles plus spécialisés, je vous invite à découvrir comment [récupérer des
+données en utilisant l'API Active Record](/blog/wdcore/api-activerecord.html).
+
+À bientôt.

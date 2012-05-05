@@ -33,7 +33,7 @@ class Model extends \ICanBoogie\ActiveRecord\Model
 
 					$name = substr($name, $length);
 
-					//wd_log('short: "\1"', array($name));
+					//\ICanBoogie\log('short: "\1"', array($name));
 
 					$name = '[\'' . str_replace('.', "']['", $name) . '\']';
 
@@ -84,7 +84,7 @@ class Model extends \ICanBoogie\ActiveRecord\Model
 		{
 			$values = self::flatten($value, $name);
 
-//			wd_log('should delete %name[%sub] to save !values from !value', array('%name' => $name . '.', '!values' => $values, '!value' => $value, '%sub' => implode(', ', array_keys($value))));
+//			\ICanBoogie\log('should delete %name[%sub] to save !values from !value', array('%name' => $name . '.', '!values' => $values, '!value' => $value, '%sub' => implode(', ', array_keys($value))));
 
 			foreach ($values as $name => $value)
 			{
@@ -96,13 +96,13 @@ class Model extends \ICanBoogie\ActiveRecord\Model
 
 		if ($value === null)
 		{
-			//wd_log('delete %name because is has been set to null', array('%name' => $name));
+			//\ICanBoogie\log('delete %name because is has been set to null', array('%name' => $name));
 
 			$this->where('name = ? OR name LIKE ?', $name, $name . '.%')->delete();
 		}
 		else
 		{
-			//wd_log('set <code>:name := !value</code>', array(':name' => $name, '!value' => $value));
+			//\ICanBoogie\log('set <code>:name := !value</code>', array(':name' => $name, '!value' => $value));
 
 			$this->insert
 			(

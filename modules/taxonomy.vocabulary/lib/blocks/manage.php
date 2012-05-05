@@ -55,7 +55,7 @@ class ManageBlock extends \WdManager
 			$last = array_pop($terms);
 
 			$includes = $terms
-				? t('Comprenant&nbsp;: !list et !last', array('!list' => wd_shorten(implode(', ', $terms), 128, 1), '!last' => $last))
+				? t('Comprenant&nbsp;: !list et !last', array('!list' => \ICanBoogie\shorten(implode(', ', $terms), 128, 1), '!last' => $last))
 				: t('Comprenant&nbsp;: !entry', array('!entry' => $last));
 		}
 		else
@@ -90,7 +90,7 @@ EOT;
 			$last = array_pop($scope);
 
 			$includes = $scope
-				? t(':list and :last', array(':list' => wd_shorten(implode(', ', $scope), 128, 1), ':last' => $last))
+				? t(':list and :last', array(':list' => \ICanBoogie\shorten(implode(', ', $scope), 128, 1), ':last' => $last))
 				: t(':one', array(':one' => $last));
 		}
 		else

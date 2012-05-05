@@ -14,6 +14,9 @@ namespace ICanBoogie\ActiveRecord\Users;
 use ICanBoogie\ActiveRecord;
 use ICanBoogie\Module;
 
+/**
+ * A user role.
+ */
 class Role extends ActiveRecord
 {
 	const RID = 'rid';
@@ -49,7 +52,7 @@ class Role extends ActiveRecord
 
 	public function has_permission($access, $module=null)
 	{
-//		wd_log('has permission ? access: <em>\1</em>, module: <em>\2</em>', $access, (string) $module);
+//		\ICanBoogie\log('has permission ? access: <em>\1</em>, module: <em>\2</em>', $access, (string) $module);
 
 		$perms = $this->perms;
 

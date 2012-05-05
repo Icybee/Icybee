@@ -36,7 +36,7 @@ class site_pages_WdMarkups extends patron_markups_WdHooks
 
 	static public function content(array $args, WdPatron $patron, $template)
 	{
-		global $page;
+		global $core;
 
 		$render = $args['render'];
 
@@ -45,13 +45,14 @@ class site_pages_WdMarkups extends patron_markups_WdHooks
 			return;
 		}
 
+		$page = $core->request->context->page;
 		$pageid = $page->nid;
 		$contentid = $args['id'];
 		$contents = array_key_exists($contentid, $page->contents) ? $page->contents[$contentid] : null;
 
 		if (!$contents && !empty($args['inherit']))
 		{
-//			wd_log('Contents %id is not defined for page %title, but is inherited, searching for heritage...', array('%id' => $contentid, '%title' => $page->title));
+//			\ICanBoogie\log('Contents %id is not defined for page %title, but is inherited, searching for heritage...', array('%id' => $contentid, '%title' => $page->title));
 
 			$node = $page->parent;
 
@@ -80,7 +81,7 @@ class site_pages_WdMarkups extends patron_markups_WdHooks
 			{
 				$node_contents = $page->home->contents;
 
-//				wd_log('... try with home page %title', array('%title' => $page->title));
+//				\ICanBoogie\log('... try with home page %title', array('%title' => $page->title));
 
 				if (isset($node_contents[$contentid]))
 				{
@@ -88,7 +89,7 @@ class site_pages_WdMarkups extends patron_markups_WdHooks
 				}
 			}
 
-//			wd_log('... and found: \1', array($contents));
+//			\ICanBoogie\log('... and found: \1', array($contents));
 		}
 
 		$editor = null;
@@ -114,7 +115,7 @@ class site_pages_WdMarkups extends patron_markups_WdHooks
 
 		if (preg_match('#\.html$#', $page->template) && empty($args['no-wrapper']))
 		{
-			$rc = '<div id="content-' . $contentid . '" class="editor-' . wd_normalize($editor) . '">' . $rc . '</div>';
+			$rc = '<div id="content-' . $contentid . '" class="editor-' . \ICanBoogie\normalize($editor) . '">' . $rc . '</div>';
 		}
 
 		$rc = self::handle_external_anchors($rc);
@@ -228,11 +229,11 @@ class site_pages_WdMarkups extends patron_markups_WdHooks
 
 	static protected function resolveParent($parentid)
 	{
-//		wd_log('resolve parentid: \1', array($parentid));
+//		\ICanBoogie\log('resolve parentid: \1', array($parentid));
 
 		if (!is_numeric($parentid))
 		{
-			$parent = self::model()->loadByPath($parentid);
+			$parent = self::model()->find_by_path($parentid);
 
 			if (!$parent)
 			{
@@ -250,9 +251,10 @@ class site_pages_languages_WdMarkup extends patron_WdMarkup
 {
 	public function __invoke(array $args, WdPatron $patron, $template)
 	{
-		global $core, $page;
+		global $core;
 
-		$source = isset($page->node) ? $page->node : $page;
+		$page = $core->request->context->page;
+		$source = $page->node ?: $page;
 		$translations = $source->translations;
 		$translations_by_language = array();
 
@@ -371,8 +373,9 @@ class site_pages_navigation_WdMarkup extends patron_WdMarkup
 {
 	public function __invoke(array $args, WdPatron $patron, $template)
 	{
-		global $core, $page;
+		global $core;
 
+		$page = $core->request->context->page;
 		$this->model = $core->models['pages'];
 
 		$mode = $args['mode'];
@@ -440,7 +443,7 @@ class site_pages_navigation_WdMarkup extends patron_WdMarkup
 				$node = $node->parent;
 			}
 
-//			wd_log('from node: \1', array($node));
+//			\ICanBoogie\log('from node: \1', array($node));
 
 			$parentid = $node->nid;
 		}
@@ -456,38 +459,61 @@ class site_pages_navigation_WdMarkup extends patron_WdMarkup
 			{
 				if ($parentid && !is_numeric($parentid))
 				{
-					$parent = $this->model->loadByPath($parentid);
+					$parent = $this->model->find_by_path($parentid);
 
 					$parentid = $parent->nid;
 				}
 			}
 		}
 
-		$entries = $this->model->loadAllNested($page->siteid, $parentid, $depth);
+		$blueprint = $this->model->get_blueprint($page->siteid);
+
+		$subset = $blueprint->subset
+		(
+			function($branch)
+			{
+				return (!$branch->is_online || $branch->is_navigation_excluded || $branch->pattern);
+			},
+
+			$depth === null ? null : $depth - 1, $parentid
+		);
 
 		$rc = null;
+		$tree = $subset->tree;
 
-		if ($entries)
+		if ($tree)
 		{
-			/* TODO-20110701: OBSOLETE
-			#
-			# set active pages
-			#
-
-			$node = $page;
-
-			while ($node)
+			$navigation_builder = function(array $tree, $depth=1) use(&$navigation_builder)
 			{
-				$node->is_active = true;
-				$node = $node->parent;
-			}
-			*/
+				$rc = '';
 
-	//		wd_log_time('navigation start');
+				foreach ($tree as $branch)
+				{
+					$record = $branch->record;
+					$class = $record->css_class('-constructor -slug');
 
-			$entries = self::navigation_filter($entries);
+					if ($branch->children)
+					{
+						$class .= ' has-children';
+					}
 
-			$rc = $template ? $patron($template, $entries) : self::navigation_builder($entries, $depth, $args['min-child']);
+					$rc .=  $class ? '<li class="' . $class . '">' : '<li>';
+					$rc .= '<a href="' . $record->url . '">' . $record->label . '</a>';
+
+					if ($branch->children)
+					{
+						$rc .= $navigation_builder($branch->children, $depth + 1);
+					}
+
+					$rc .= '</li>';
+				}
+
+				return '<ol class="' . ($depth == 1 ? 'nav' : 'dropdown-menu') . ' lv' . $depth . '">' . $rc . '</ol>';
+			};
+
+			$subset->populate();
+
+			$rc = $template ? $patron($template, $tree) : $navigation_builder($tree);
 		}
 
 		Event::fire
@@ -496,7 +522,7 @@ class site_pages_navigation_WdMarkup extends patron_WdMarkup
 			(
 				'rc' => &$rc,
 				'page' => $page,
-				'entries' => $entries,
+				'blueprint' => $subset,
 				'args' => $args
 			)
 		);
@@ -504,229 +530,59 @@ class site_pages_navigation_WdMarkup extends patron_WdMarkup
 		return $rc;
 	}
 
-	static protected function navigation_filter($entries)
-	{
-		$filtered = array();
-
-		foreach ($entries as $entry)
-		{
-			if ($entry->pattern || !$entry->is_online || $entry->is_navigation_excluded)
-			{
-				continue;
-			}
-
-			//$entry->is_active = !empty($entry->is_active); TODO-20110701: OBSOLETE
-			$entry->navigation_children = isset($entry->children) ? self::navigation_filter($entry->children) : array();
-
-			$filtered[] = $entry;
-		}
-
-		return $filtered;
-	}
-
-	static protected function navigation_builder($entries, $depth, $min_child, $level=1)
-	{
-		$rc = '';
-
-		foreach ($entries as $entry)
-		{
-			if ($level == 1 && ($min_child !== false && (count($entry->navigation_children) < $min_child)))
-			{
-				continue;
-			}
-
-			$class = $entry->css_class;
-
-			if ($entry->navigation_children)
-			{
-				$class .= ' has-children';
-
-				/*
-				if ($level + 1 < $depth)
-				{
-					$class .= ' dropdown';
-				}
-				*/
-			}
-
-			$rc .=  $class ? '<li class="' . $class . '">' : '<li>';
-			$rc .= '<a href="' . $entry->url . '">' . $entry->label . '</a>';
-
-			if ($level < $depth && $entry->navigation_children)
-			{
-				$rc .= self::navigation_builder($entry->navigation_children, $depth, $min_child, $level + 1);
-			}
-
-			$rc .= '</li>';
-		}
-
-		if (!$rc)
-		{
-			return;
-		}
-
-		return '<ol class="' . ($level == 1 ? 'nav' : 'dropdown-menu') . ' lv' . $level . '">' . $rc . '</ol>';
-	}
-
-
 	public static function navigation_leaf(array $args, WdPatron $patron, $template)
 	{
-		global $page;
+		global $core;
 
-		$node = $page;
+		$page = $core->request->context->page;
 
-		while ($node)
-		{
-			if ($node->navigation_children)
-			{
-				break;
-			}
-
-			$node = $node->parent;
-		}
-
-		$template = <<<EOT
-<div class="nav leaf">
-	<h5 class="#{@css_class}"><a href="#{@url}">#{@label}</a></h5>
-	<ol>
-		<wdp:foreach in="@navigation_children">
-		<li class="#{@css_class}"><a href="#{@url}">#{@label}</a></li>
-		</wdp:foreach>
-	</ol>
-</div>
-EOT;
-
-		Event::fire
-		(
-			'render.markup.navigation_leaf:before', array
-			(
-				'node' => &$node,
-				'template' => &$template
-			)
-		);
-
-		$rc = null;
-
-		if ($node)
-		{
-			$rc = $patron($template, $node);
-		}
-
-		Event::fire
-		(
-			'render.markup.navigation_leaf', array
-			(
-				'node' => &$node,
-				'rc' => &$rc,
-				'template' => &$template
-			)
-		);
-
-		return $rc;
+		return (string) new \ICanBoogie\Modules\Pages\NavigationBranchElement($page);
 	}
-
-
-	/*
-	static public function navigation_leaf(array $args, WdPatron $patron, $template)
-	{
-		global $core, $page;
-
-		$level = $args['level'];
-		$depth = $args['depth'];
-
-		$start_page = $page;
-
-		while ($start_page && $start_page->depth > $level)
-		{
-			$start_page = $page->parent;
-		}
-
-		$records = $core->models['pages']->loadAllNested($page->siteid, $start_page->nid, $depth);
-
-		if (!$records)
-		{
-			return;
-		}
-
-		$records = self::navigation_filter($records);
-
-		if (!$records)
-		{
-			return;
-		}
-
-		$menu = self::navigation_builder($records, $depth, false);
-		$link = wd_entities($start_page->url);
-		$label = wd_entities($start_page->label);
-
-		return <<<EOT
-
-<h5><a href="$link">$label</h5>
-$menu
-EOT;
-	}
-	*/
 }
 
 class site_pages_sitemap_WdMarkup extends patron_WdMarkup
 {
 	public function __invoke(array $args, WdPatron $patron, $template)
 	{
-		global $core, $page;
+		global $core;
 
 		$this->model = $core->models['pages'];
 
-		$entries = $this->model->loadAllNested($page->siteid);
-
-		if (!$entries)
-		{
-			return;
-		}
-
-		$entries = self::filter($entries);
-
-		return self::build($entries);
-	}
-
-	static protected function filter($entries)
-	{
-		$filtered = array();
-
-		foreach ($entries as $entry)
-		{
-			if ($entry->pattern || !$entry->is_online)
+		$blueprint = $this->model->get_blueprint($core->site_id);
+		$subset = $blueprint->subset
+		(
+			function($branch)
 			{
-				continue;
+				return ($branch->pattern || !$branch->is_online);
 			}
+		);
 
-			$entry->is_active = !empty($entry->is_active);
-			$entry->children = isset($entry->children) ? self::filter($entry->children) : array();
+		$subset->populate();
 
-			$filtered[] = $entry;
-		}
-
-		return $filtered;
+		return self::build($subset->tree);
 	}
 
-	static protected function build($entries, $depth=false, $min_child=false, $level=1)
+	static protected function build($branches, $depth=false, $min_child=false, $level=1)
 	{
 		$rc = '';
 
-		foreach ($entries as $entry)
+		foreach ($branches as $branch)
 		{
-			if ($level == 1 && ($min_child !== false && (count($entry->children) < $min_child)))
+			if ($level == 1 && ($min_child !== false && (count($branch->children) < $min_child)))
 			{
 				continue;
 			}
 
 			$class = '';
 
-			if ($entry->children)
+			if ($branch->children)
 			{
 				$class .= 'has-children';
 			}
 
-			if (!empty($entry->is_active))
+			$record = $branch->record;
+
+			if (!empty($record->is_active))
 			{
 				if ($class)
 				{
@@ -737,11 +593,11 @@ class site_pages_sitemap_WdMarkup extends patron_WdMarkup
 			}
 
 			$rc .=  $class ? '<li class="' . $class . '">' : '<li>';
-			$rc .= '<a href="' . $entry->url . '">' . $entry->label . '</a>';
+			$rc .= '<a href="' . $record->url . '">' . \ICanBoogie\escape($record->label) . '</a>';
 
-			if (($depth === false || $level < $depth) && $entry->children)
+			if (($depth === false || $level < $depth) && $branch->children)
 			{
-				$rc .= self::build($entry->children, $depth, $min_child, $level + 1);
+				$rc .= self::build($branch->children, $depth, $min_child, $level + 1);
 			}
 
 			$rc .= '</li>';

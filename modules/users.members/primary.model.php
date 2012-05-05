@@ -24,16 +24,16 @@ class Model extends \ICanBoogie\Modules\Users\Model
 		{
 			$photo = $properties['photo'];
 
-//			wd_log('photo: \1', array($photo));
+//			\ICanBoogie\log('photo: \1', array($photo));
 
-			$filename = wd_normalize($properties['username']) . $photo->extension;
+			$filename = \ICanBoogie\normalize($properties['username']) . $photo->extension;
 			$photo_path = $core->config['repository'] . '/files/members/' . $filename;
 			$properties['photo'] = $photo_path;
 		}
 
 		$rc = parent::save($properties, $key, $options);
 
-//		wd_log('photo: \1, properties: \2', array($photo, $properties));
+//		\ICanBoogie\log('photo: \1, properties: \2', array($photo, $properties));
 
 		if ($rc && $photo)
 		{

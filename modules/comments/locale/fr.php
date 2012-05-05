@@ -2,15 +2,11 @@
 
 return array
 (
-	'comments.manager.label' => array
+	'comments.manage.title' => array
 	(
-		'created' => 'Commentaire',
+		'author' => 'Auteur',
+		'comment' => 'Commentaire',
 		'nid' => 'Attaché à'
-	),
-
-	'manager.label' => array
-	(
-		'author' => 'Auteur'
 	),
 
 	':count comments' => array
@@ -22,7 +18,7 @@ return array
 
 	'comments.list.empty_view' => 'Pas de commentaires',
 
-	'Comments' => 'Commentaires',
+	'module_title.comments' => 'Commentaires',
 
 	#
 	# form

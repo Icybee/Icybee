@@ -407,11 +407,11 @@ class Module extends \ICanBoogie\Modules\Nodes\Module
 		$definer = null;
 		$template = $request_template !== null ? $request_template : $record->template;
 
-//		wd_log_done('template: \1 (requested: \3), is_home: \2', array($template, $record->is_home, $request_template));
+//		\ICanBoogie\log_success('template: \1 (requested: \3), is_home: \2', array($template, $record->is_home, $request_template));
 
 		if ($template == 'page.html' && (!$record->parent || ($record->parent && $record->parent->is_home)))
 		{
-//			wd_log('page parent is home, hence the page.html template');
+//			\ICanBoogie\log('page parent is home, hence the page.html template');
 
 			$inherited = true;
 
@@ -444,11 +444,11 @@ class Module extends \ICanBoogie\Modules\Nodes\Module
 			$definer = $record;
 			$parent = $record->parent;
 
-//			wd_log_done('parent: \1 (\2 ?= \3)', array($definer->title, $definer->template, $template));
+//			\ICanBoogie\log_success('parent: \1 (\2 ?= \3)', array($definer->title, $definer->template, $template));
 
 			while ($parent)
 			{
-//				wd_log_done('parent: \1, template: \2', array($parent->title, $parent->template));
+//				\ICanBoogie\log_success('parent: \1, template: \2', array($parent->title, $parent->template));
 
 				if ($parent->template == $request_template)
 				{
@@ -458,19 +458,19 @@ class Module extends \ICanBoogie\Modules\Nodes\Module
 				$parent = $parent->parent;
 			}
 
-//			wd_log_done('end parent: \1', array($parent ? $parent->title : 'none'));
+//			\ICanBoogie\log_success('end parent: \1', array($parent ? $parent->title : 'none'));
 
 			if ($parent && $parent->template == $request_template)
 			{
 				$definer = $parent;
 			}
 
-//			wd_log_done('definer: \1:\3 (\2), record: \4:\5', array($definer->title,  $definer->template, $definer->nid, $record->title, $record->nid));
+//			\ICanBoogie\log_success('definer: \1:\3 (\2), record: \4:\5', array($definer->title,  $definer->template, $definer->nid, $record->title, $record->nid));
 		}
 
 		if ($definer && $definer != $record)
 		{
-//			wd_log("entry template: $template ($record->nid), from: $inherited->template ($inherited->nid: $inherited->title)");
+//			\ICanBoogie\log("entry template: $template ($record->nid), from: $inherited->template ($inherited->nid: $inherited->title)");
 
 			$description .= ' ' . t
 			(
@@ -497,13 +497,13 @@ class Module extends \ICanBoogie\Modules\Nodes\Module
 
 		if (!$path)
 		{
-			wd_log_error('Uknown template file %name', array('%name' => $name));
+			\ICanBoogie\log_error('Uknown template file %name', array('%name' => $name));
 
 			return array();
 		}
 
 		$html = file_get_contents($_SERVER['DOCUMENT_ROOT'] . $path);
-		$parser = new \WdHTMLParser();
+		$parser = new \Patron\HTMLParser();
 
 		return self::get_template_info_callback($html, $parser);
 	}
@@ -546,15 +546,15 @@ class Module extends \ICanBoogie\Modules\Nodes\Module
 
 		$tree = $parser->parse($html, 'wdp:');
 
-		//wd_log('tree: \1', array($tree));
+		//\ICanBoogie\log('tree: \1', array($tree));
 
 		#
 		# contents
 		#
 
-		$contents_collection = \WdHTMLParser::collectMarkup($tree, 'page:content');
+		$contents_collection = \Patron\HTMLParser::collectMarkup($tree, 'page:content');
 
-//		wd_log('contents collection: \1', array($contents_collection));
+//		\ICanBoogie\log('contents collection: \1', array($contents_collection));
 
 		foreach ($contents_collection as $node)
 		{
@@ -587,7 +587,7 @@ class Module extends \ICanBoogie\Modules\Nodes\Module
 				}
 			}
 
-//			wd_log('found content: \1', array($node));
+//			\ICanBoogie\log('found content: \1', array($node));
 
 			$contents[] = $node['args'] + array
 			(
@@ -606,7 +606,7 @@ class Module extends \ICanBoogie\Modules\Nodes\Module
 		$site = $core->site;
 		$root = $_SERVER['DOCUMENT_ROOT'];
 
-		$call_template_collection = \WdHTMLParser::collectMarkup($tree, 'call-template');
+		$call_template_collection = \Patron\HTMLParser::collectMarkup($tree, 'call-template');
 
 		foreach ($call_template_collection as $node)
 		{
@@ -617,7 +617,7 @@ class Module extends \ICanBoogie\Modules\Nodes\Module
 
 			if (!$path)
 			{
-				wd_log_error('Partial template %name not found', array('%name' => $file));
+				\ICanBoogie\log_error('Partial template %name not found', array('%name' => $file));
 
 				continue;
 			}

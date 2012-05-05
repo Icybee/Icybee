@@ -138,10 +138,10 @@ Aucune autre notification ne vous sera envoyée.
 
 	protected function provide_view_list(Query $query, \WdPatron $patron)
 	{
-		global $page;
+		global $core;
 
+		$page = $core->request->page;
 		$target = $page ? $page->node : $page;
-
 		$comments = $this->model->where('nid = ? AND status = "approved"', $target->nid)->order('created')->all;
 
 		$patron->context['self']['count'] = t(':count comments', array(':count' => count($comments)));

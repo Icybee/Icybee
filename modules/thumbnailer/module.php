@@ -41,11 +41,11 @@ class Module extends \ICanBoogie\Module
 
 			if (is_writable($parent))
 			{
-				mkdir($path, 0755, true);
+				mkdir($path, 0705, true);
 			}
 			else
 			{
-				$errors[$this->id] = t('Unable to create %directory directory, its parent is not writable', array('%directory' => wd_strip_root($path)));
+				$errors[$this->id] = t('Unable to create %directory directory, its parent is not writable', array('%directory' => \ICanBoogie\strip_root($path)));
 			}
 		}
 
@@ -63,7 +63,7 @@ class Module extends \ICanBoogie\Module
 
 		if (!file_exists($path))
 		{
-			$errors[$this->id] = t('The %directory directory is missing.', array('%directory' => wd_strip_root($path)));
+			$errors[$this->id] = t('The %directory directory is missing.', array('%directory' => \ICanBoogie\strip_root($path)));
 		}
 
 		return 0 == count($errors);

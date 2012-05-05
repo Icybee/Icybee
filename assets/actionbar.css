@@ -231,3 +231,12 @@ form.navbar-search input:not(.placeholder) + button {
 	margin-top: -1px;
 	padding-top: 1px;
 }
+
+.actionbar.fixed .navbar-search {
+	background: #333;
+	background: -webkit-linear-gradient(top, #212121 5%, #333);
+	background: -moz-linear-gradient(top, #212121 5%, #333);
+	background: linear-gradient(top, #212121 5%, #333);
+	border-color: #454545;
+	box-shadow: 0 0 1px black inset;
+}

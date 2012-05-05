@@ -64,7 +64,7 @@ class EditBlock extends \Icybee\EditBlock
 		$placeholder_domain = null;
 		$placeholder_subdomain = null;
 
-		$parts = explode('.', $_SERVER['HTTP_HOST']);
+		$parts = explode('.', $_SERVER['SERVER_NAME']);
 		$parts = array_reverse($parts);
 
 		if (!$properties['tld'] && isset($parts[0]))

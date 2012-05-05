@@ -37,7 +37,7 @@ class Provider extends \Icybee\Views\ActiveRecord\Provider
 		return $query->order('created');
 	}
 
-	protected function alter_context(array $context, Query $query, array $conditions)
+	protected function alter_context(\BlueTihi\Context $context, Query $query, array $conditions)
 	{
 		$count = $query->count;
 

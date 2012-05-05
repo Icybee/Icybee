@@ -11,8 +11,8 @@ return array
 		'ICanBoogie\Modules\Contents\EditBlock::alter_children' => __NAMESPACE__ . '::on_contents_editblock_alter_children',
 		'ICanBoogie\Modules\Contents\ConfigBlock::alter_children' => __NAMESPACE__ . '::on_contents_configblock_alter_children',
 
-		'Icybee::render' => __NAMESPACE__ . '::on_icybee_render',
-		'ICanBoogie\ActiveRecord\Content::get_css_class' => __NAMESPACE__ . '::on_get_css_class'
+		'Icybee\Pagemaker::render' => __NAMESPACE__ . '::on_icybee_render',
+		'ICanBoogie\ActiveRecord\Content::alter_css_class_names' => __NAMESPACE__ . '::on_alter_css_class_names'
 	),
 
 	'objects.methods' => array

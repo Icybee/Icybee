@@ -11,20 +11,20 @@
 
 namespace ICanBoogie\ActiveRecord;
 
-use ICanBoogie\ActiveRecord;
 use ICanBoogie\ActiveRecord\Users\Role;
 use ICanBoogie\Exception;
 use ICanBoogie\Security;
 use ICanBoogie\Module;
 
 /**
- * @author Olivier Laviale <olivier.laviale@gmail.com>
+ * A user.
  *
  * @property string $name The formatted name of the user.
  * @property-read boolean $is_admin true if the user is admin, false otherwise.
  * @property-read boolean $is_guest true if the user is a guest, false otherwise.
+ * @property-read \ICanBoogie\ActiveRecord\Users\Role $role
  */
-class User extends ActiveRecord
+class User extends \ICanBoogie\ActiveRecord
 {
 	const UID = 'uid';
 	const EMAIL = 'email';
@@ -43,23 +43,113 @@ class User extends ActiveRecord
 	const ROLES = 'roles';
 	const RESTRICTED_SITES = 'restricted_sites';
 
+	/**
+	 * User identifier.
+	 *
+	 * @var string
+	 */
 	public $uid;
+
+	/**
+	 * User email.
+	 *
+	 * @var string
+	 */
 	public $email;
+
+	/**
+	 * User password.
+	 *
+	 * The property is only used to modifiy the password.
+	 *
+	 * @var string
+	 */
 	public $password;
+
+	/**
+	 * User password hash.
+	 *
+	 * @var string
+	 */
 	private $password_hash;
+
+	/**
+	 * Username of the user.
+	 *
+	 * @var string
+	 */
 	public $username;
+
+	/**
+	 * Firstname of the user.
+	 *
+	 * @var string
+	 */
 	public $firstname;
+
+	/**
+	 * Lastname of the user.
+	 *
+	 * @var string
+	 */
 	public $lastname;
+
+	/**
+	 * Prefered format to create the value of the {@link $name} property.
+	 *
+	 * @var string
+	 */
 	public $display;
+
+	/**
+	 * The date the user record was created.
+	 *
+	 * @var string
+	 */
 	public $created;
+
+	/**
+	 * The date of the last connection of the user.
+	 *
+	 * @var string
+	 */
 	public $lastconnection;
+
+	/**
+	 * Constructor of the user record (module id).
+	 *
+	 * @var string
+	 */
 	public $constructor;
+
+	/**
+	 * Prefered language of the user.
+	 *
+	 * @var string
+	 */
 	public $language;
+
+	/**
+	 * Prefered timezone of the user.
+	 *
+	 * @var string
+	 */
 	public $timezone;
+
+	/**
+	 * State of the user account activation.
+	 *
+	 * @var bool
+	 */
 	public $is_activated;
 
 	/**
 	 * Returns the formatted name of the user.
+	 *
+	 * The format of the name is defined by the {@link $display} property. The {@link $username},
+	 * {@link $firstname} and {@link $lastname} properties can be used to format the name.
+	 *
+	 * This is the getter for the {@link $name} magic property.
 	 *
 	 * @return string
 	 */
@@ -84,6 +174,13 @@ class User extends ActiveRecord
 		return $rc;
 	}
 
+	/**
+	 * Returns the role of the user.
+	 *
+	 * This is the getter for the {@link $role} magic property.
+	 *
+	 * @return \ICanBoogie\ActiveRecord\Users\Role
+	 */
 	protected function __get_role()
 	{
 		global $core;
@@ -114,6 +211,8 @@ class User extends ActiveRecord
 
 	/**
 	 * Returns all the roles associated with the user.
+	 *
+	 * This is the getter for the {@link $roles} magic property.
 	 *
 	 * @return array
 	 */
@@ -148,7 +247,7 @@ class User extends ActiveRecord
 		}
 		catch (\ICanBoogie\Exception\MissingRecord $e)
 		{
-			wd_log_error($e->getMessage());
+			trigger_error($e->getMessage());
 
 			return array_filter($e->rc);
 		}
@@ -168,7 +267,7 @@ class User extends ActiveRecord
 
 	protected function __set_is_admin()
 	{
-		throw new Exception('The %property property is readonly', array('%property' => 'is_admin'));
+		throw new Exception\PropertyNotWritable(array('is_admin', $this));
 	}
 
 	/**
@@ -185,11 +284,13 @@ class User extends ActiveRecord
 
 	protected function __set_is_guest()
 	{
-		throw new Exception('The %property property is readonly', array('%property' => 'is_guest'));
+		throw new Exception\PropertyNotWritable(array('is_guest', $this));
 	}
 
 	/**
 	 * Returns the ids of the sites the user is restricted to.
+	 *
+	 * This is the getter for the {@link $restricted_sites_ids} magic property.
 	 *
 	 * @return array The array is empty if the user has no site restriction.
 	 */
@@ -200,14 +301,22 @@ class User extends ActiveRecord
 		return $this->is_admin ? array() : $core->models['users/has_many_sites']->select('siteid')->find_by_uid($this->uid)->all(\PDO::FETCH_COLUMN);
 	}
 
-	public function has_permission($access, $target=null)
+	/**
+	 * Checks if the user has a given permission.
+	 *
+	 * @param string|int $permission
+	 * @param mixed $target
+	 *
+	 * @return int|bool
+	 */
+	public function has_permission($permission, $target=null)
 	{
 		if ($this->is_admin)
 		{
 			return Module::PERMISSION_ADMINISTER;
 		}
 
-		return $this->role->has_permission($access, $target);
+		return $this->role->has_permission($permission, $target);
 	}
 
 	/**
@@ -263,7 +372,7 @@ class User extends ActiveRecord
 		{
 			throw new Exception
 			(
-				'<em>password_salt</em> is empty in the <em>user</em> config, here is one generated randomly: %salt', array
+				'<q>password_salt</q> is empty in the <q>user</q> config, here is one generated randomly: %salt', array
 				(
 					'%salt' => Security::generate_token(64, 'wide')
 				)
@@ -310,7 +419,7 @@ class User extends ActiveRecord
 
 		if (!$this->uid)
 		{
-			throw new Exception('Guest users cannot be logged in');
+			throw new Exception('Guest users cannot login.');
 		}
 
 		$core->user = $this;

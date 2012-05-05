@@ -23,6 +23,7 @@ class ClearOperation extends BaseOperation
 		return $cache->stat();
 	}
 
+	/*DIRTY
 	protected function clear_core_assets()
 	{
 		global $core;
@@ -38,4 +39,5 @@ class ClearOperation extends BaseOperation
 
 		return count($files);
 	}
+	*/
 }

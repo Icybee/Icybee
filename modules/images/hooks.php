@@ -142,7 +142,7 @@ class Hooks
 
 		foreach ($views as $view_id => $view)
 		{
-			$id = wd_normalize($view_id);
+			$id = \ICanBoogie\normalize($view_id);
 
 			$thumbnails["global[thumbnailer.versions][$id]"] = new Widget\PopThumbnailVersion
 			(
@@ -315,11 +315,11 @@ class Hooks
 	/**
 	 * Adds assets to support lightbox links.
 	 *
-	 * This function is a callback for the `Icybee::render` event.
+	 * This function is a callback for the `Icybee\Pagemaker::render` event.
 	 *
 	 * @param Event $event
 	 */
-	public static function on_icybee_render(\Icybee\RenderEvent $event)
+	public static function on_icybee_render(\Icybee\Pagemaker\RenderEvent $event)
 	{
 		global $document;
 
@@ -334,7 +334,7 @@ class Hooks
 
 	static private $attached;
 
-	public static function on_get_css_class(Event $event, ActiveRecord\Node $node)
+	public static function on_alter_css_class_names(\ICanBoogie\ActiveRecord\Node\AlterCSSClassNamesEvent $event, ActiveRecord\Node $node)
 	{
 		global $core;
 
@@ -352,6 +352,6 @@ class Hooks
 			return;
 		}
 
-		$event->rc['has-image'] = 'has-image';
+		$event->names['has-image'] = true;
 	}
 }

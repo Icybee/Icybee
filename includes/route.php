@@ -11,9 +11,11 @@
 
 use ICanBoogie\ActiveRecord;
 use ICanBoogie\Exception;
+use ICanBoogie\HTTP\Request;
 use ICanBoogie\I18n\Tanslator\Proxi;
 use ICanBoogie\Module;
 use ICanBoogie\Route;
+use ICanBoogie\Routes;
 
 $user = $core->user;
 $request = $core->request;
@@ -34,13 +36,13 @@ else
 		$core->language = $user->language;
 	}
 
-	$request_route = $request->path_info;
+	$request_route = $request->path;
 
 	if ($user instanceof ActionRecord\Users\Member)
 	{
 		$request_route = $site->path . '/admin/authenticate';
 
-		wd_log_error('Members are not allowed to access the admin.');
+		\ICanBoogie\log_error('Members are not allowed to access the admin.');
 	}
 
 	$site = $core->site;
@@ -84,14 +86,16 @@ else
 	}
 }
 
-$routes = $core->configs['admin_routes'];
+$routes = \ICanBoogie\Routes::get();
 
-Route::add($routes);
+foreach ($core->configs['admin_routes'] as $route_id => $route_definition)
+{
+	$routes[$route_id] = $route_definition;
+}
 
-#
-# create location for workspaces // TODO-20091118: that's quite bad, but enought for the time being
-#
-
+/**
+ * adds redirection routes for categories
+ */
 function _create_ws_locations($routes)
 {
 	global $core;
@@ -101,7 +105,7 @@ function _create_ws_locations($routes)
 
 	foreach ($routes as $id => $route)
 	{
-		if (empty($route['pattern']) || empty($route['workspace']) || empty($route['index']) || empty($route['module']))
+		if (empty($route['pattern']) || empty($route['index']) || empty($route['module']))
 		{
 			continue;
 		}
@@ -113,8 +117,7 @@ function _create_ws_locations($routes)
 			continue;
 		}
 
-
-		$pattern = '/admin/' . $route['workspace'];
+		$pattern = '/admin/' . $core->modules->descriptors[$module_id][Module::T_CATEGORY];
 		$route_id = 'redirect:' . $pattern;
 
 		if (isset($add[$route_id]) || isset($add[$route_id]))
@@ -122,18 +125,16 @@ function _create_ws_locations($routes)
 			continue;
 		}
 
-		$location = $route['pattern'];
-
 		$add[$route_id] = array
 		(
 			'pattern' => $pattern,
-			'location' => $location
+			'location' => $route['pattern']
 		);
 	}
 
 	foreach ($add as $route_id => $definition)
 	{
-		Route::add($route_id, $definition);
+		Routes::add($route_id, $definition);
 	}
 }
 
@@ -151,10 +152,10 @@ function _route_add_block($route, $params)
 
 	try
 	{
-		$module_id = $route['module'];
+		$module_id = $route->module;
 		$module = $core->modules[$module_id];
 
-		array_unshift($params, $route['block']);
+		array_unshift($params, $route->block);
 
 		$block = call_user_func_array(array($module, 'getBlock'), $params);
 
@@ -179,19 +180,23 @@ function _route_add_block($route, $params)
  * The route is saved under the `route` property of the request, or null if no matching route
  * was found.
  */
-$match = Route::find($request_route, 'any', 'admin');
+
+$route = $routes->find($request_route, Request::METHOD_ANY, 'admin');
 
 $core->request->route = null;
 
-if ($match)
+if ($route)
 {
-	list($route, $capture, $pattern) = $match;
-
 	$core->request->route = $route;
 
-	if (isset($route['location']))
+	if ($route->path_params)
 	{
-		$location = $route['location'];
+		$core->request->path_params = $route->path_params;
+	}
+
+	if ($route->location)
+	{
+		$location = $route->location;
 
 		header('Location: ' . $core->site->path . $location);
 
@@ -205,29 +210,11 @@ if ($request_route == '/admin/available-sites')
 
 	\Icybee\_route_add_available_sites();
 }
-else if ($match)
+else if ($route)
 {
-	_route_add_block($route, is_array($capture) ? $capture : array());
+	_route_add_block($route, $route->path_params);
 }
 else
 {
-	if ($core->user_id == 1)
-	{
-		var_dump(Route::routes());
-	}
-
 	throw new Exception('There is no matching route for %path.', array('path' => $request_route));
-
-	wd_log_error('unable to find matching pattern for route %route', array('%route' => $request_route));
-
-	if ($core->user_id == 1)
-	{
-		$rc = \ICanBoogie\dump(Route::routes());
-
-		$document->addToBlock($rc, 'contents');
-	}
-	else
-	{
-
-	}
 }

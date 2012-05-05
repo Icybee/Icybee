@@ -88,7 +88,7 @@ table.manage tbody a
 	text-decoration: none;
 }
 
-table.manage tbody tr:hover a
+table.manage tbody tr:hover a:not(.btn)
 {
 	color: #4B8BB3;
 }
@@ -148,18 +148,6 @@ table.manage tr.no-ownership a.edit
 }
 */
 
-table.manage td:first-child,
-table.manage th:first-child > div
-{
-	padding-left: 16px;
-}
-
-table.manage td:last-child,
-table.manage th:last-child > div
-{
-	padding-right: 16px;
-}
-
 table.manage tbody.empty td {
 	padding: 0;
 }
@@ -170,6 +158,11 @@ table.manage td.key
 	text-align: right;
 	width: 1em;
 }
+
+table.manage th.measure,
+table.manage td.measure {
+	text-align: right;
+} 
 
 table.manage td.key label
 {
@@ -188,6 +181,7 @@ table.manage tr.section-title + tr td
 	border-color: #cfcfcf;
 }
 
+/*
 table.manage th.operations,
 table.manage td.operations
 {
@@ -210,6 +204,7 @@ table.manage td.operations a:hover
 {
 	background-position: 0 -16px;
 }
+*/
 
 table.manage tr:hover td.operations a
 {
@@ -247,21 +242,6 @@ table.manage a.view:hover
 {
 	background-position: -30px bottom;
 }
-
-/*
-table.manage a.out
-{
-	padding-right: 14px;
-	background: url(manage/out.png) right center no-repeat;
-}
-
-table.manage a.out.left
-{
-	background-position: left center;
-	padding-left: 14px;
-	padding-right: 0;
-}
-*/
 
 table.manage tfoot td
 {
@@ -397,27 +377,6 @@ table.manage span.browse a.next:active
 	left: 2px;
 }
 
-/*
-#menu-options div.manage span.browse a.next,
-table.manage div.limiter span.browse a.next
-{
-	margin-left: -5px;
-}
-*/
-
-/*
-#menu-options div.manage span.browse a:hover,
-#menu-options div.manage a.reset:hover,
-table.manage div.limiter span.browse a:hover
-{
-	background-color: white;
-	border-color: #CFCFCF;
-	border-radius: 5px;
-	-moz-border-radius: 5px;
-	-webkit-border-radius: 5px;
-}
-*/
-
 #menu-options div.manage a.reset
 {
 	margin-left: 1ex;
@@ -425,24 +384,6 @@ table.manage div.limiter span.browse a:hover
 	text-decoration: none;
 	border: 1px solid transparent;
 }
-
-/*
-#menu-options div.manage span.browse
-{
-	display: block;
-	position: absolute;
-	top: 0;
-	right: -1px;
-	margin-top: -30px;
-	margin-right: 0;
-	line-height: 30px;
-	padding: 0 1ex;
-	border-left: 1px solid #ccc;
-	border-top: 1px solid #ccc;
-	border-right: 1px solid #ccc;
-	background: #F6F6F6;
-}
-*/
 
 /*
 **
@@ -533,7 +474,7 @@ MANAGER - OPERATIONS MENU
 
 **
 */
-
+/*
 #manager-operations-menu
 {
 	position: absolute;
@@ -546,7 +487,6 @@ MANAGER - OPERATIONS MENU
 	left: 0;
 	font-size: .8em;
 	list-style: none;
-	/*-moz-box-shadow: 0 5px 10px 0 gray;*/
 }
 
 #manager-operations-menu li
@@ -565,7 +505,7 @@ MANAGER - OPERATIONS MENU
 {
 	border-top: 1px solid #CFCFCF;
 }
-
+*/
 
 
 
@@ -591,37 +531,60 @@ table.manage th a
 	display: block;
 }
 
-table.manage th > div
-{
-	/*padding: 4px;*/
+table.manage th > div {
+	padding: 0 4px;
 	border-left: 1px solid transparent;
 	border-right: 1px solid transparent;
 	position: relative;
+	height: 28px;
 }
 
-table.manage th > :first-child
-{
-	padding-left: 4px;
+table.manage th:first-child > div {
+	border-left-width: 0;
 }
 
-table.manage th > :last-child
+table.manage th:last-child > div {
+	border-right-width: 0;
+}
+
+table.manage th.orderable:hover > div,
+table.manage th.filters:hover > div,
+table.manage th.filtering:hover > div
 {
-	padding-right: 4px;
+	border-color: #cfcfcf;
+}
+
+table.manage th.has-no-label > div {
+	padding: 0;
+}
+
+table.manage th.key > div {
+	height: auto;
+}
+
+table.manage td:first-child,
+table.manage th:first-child > div
+{
+	padding-left: 16px;
+}
+
+table.manage td:last-child,
+table.manage th:last-child > div
+{
+	padding-right: 16px;
+}
+
+table.manage th.has-no-label > div > a {
+	display: none;
+}
+
+table.manage th.has-options > div {
+	padding-right: 22px; 
 }
 
 table.manage th
 {
 	line-height: 28px;
-}
-
-table.manage th:first-child > div
-{
-	border-left-width: 0;
-}
-
-table.manage th:last-child > div
-{
-	border-right-width: 0;
 }
 
 table.manage th.orderable:hover,
@@ -633,63 +596,55 @@ table.manage th.filtering:hover
 	background: linear-gradient(top, #ddd, #E8E8E8 60%);
 }
 
-table.manage th.orderable:hover > div,
-table.manage th.filters:hover > div,
-table.manage th.filtering:hover > div
-{
-	border-color: #cfcfcf;
-}
-
 table.manage th.filtering .title
 {
 	background: url(manage/filter.png) no-repeat right center;
 	padding-right: 16px;
 }
 
-table.manage th ul
-{
+table.manage th .dropdown {
 	position: absolute;
-	background: #E8E8E8;
-	border: 1px solid #CFCFCF;
-	border-top: 0;
-	margin: 0 0 0 -5px;
-	padding: 0;
-	list-style: none;
-	line-height: 1.33em;
-	font-weight: normal;
-	text-align: left;
-	z-index: 1;
-	font-size: 12px;
-	-moz-box-shadow: 0px 10px 10px #ccc;
-	-webkit-box-shadow: 0px 10px 10px #ccc;
-	box-shadow: 0px 10px 10px #ccc;
-	display: none;
-}
-
-table.manage th.size ul
-{
-	left: auto;
 	right: 0;
-	margin-left: 0;
-	margin-right: -1px;
-	text-align: right;
+	top: 0;
+	border-left: 1px dashed transparent;
 }
 
-table.manage th:hover ul
-{
-	display: block;
+table.manage th.has-no-label .dropdown {
+	right: auto;
+	width: 100%;
 }
 
-table.manage th li:hover a
-{
-	color: #4BB38B;
+table.manage th .dropdown > a {
+	padding: 0 4px;
+	text-align: center;
 }
 
-table.manage th li a
-{
-	color: inherit;
-	display: block;
-	padding: 8px 6px;
+table.manage th:hover .dropdown,
+table.manage th .dropdown.open {
+	border-left-color: #cfcfcf;
+}
+
+table.manage th .dropdown.open {
+	border-left-style: solid;
+	background: white;
+	background: -moz-linear-gradient(top, rgba(255, 255, 255, 0), white);
+}
+
+table.manage th.filtering .dropdown {
+	/*border-left-color: #cfcfcf;*/
+	/*border-left-style: dashed;*/
+	background: #FFC;
+	background: -moz-linear-gradient(top, rgba(255, 255, 204, 0), #FFC);
+}
+
+
+
+table.manage th .dropdown-menu {
+	margin-left: -6px;
+}
+
+table.manage th.has-no-label .dropdown {
+	border-left-color: transparent;
 }
 
 table.manage th a:hover
@@ -697,13 +652,12 @@ table.manage th a:hover
 	text-decoration: none;
 }
 
-table.manage th li.reset
-{
-	color: black;
-	border-bottom: 1px dashed #cfcfcf;
-}
-
-table.manage th li.reset:hover
-{
-	border-bottom-style: solid;
+table.manage tbody .icon-download,
+table.manage tbody .icon-download-alt {
+	display: inline-block;
+	height: 0;
+	padding-top: 14px;
+	width: 14px;
+	overflow: hidden;
+	margin-right: .5ex;
 }

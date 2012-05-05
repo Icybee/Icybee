@@ -68,13 +68,15 @@ class Modules extends \ICanBoogie\Modules
 
 			foreach ($di as $file)
 			{
-				if ($file->getExtension() != 'php')
+				$pathname = $file->getPathname();
+
+				if (pathinfo($pathname, PATHINFO_EXTENSION) != 'php')
 				{
 					continue;
 				}
 
-				$class_name = $descriptor[Module::T_NAMESPACE] . '\\' . wd_camelize('-' . $file->getBasename('.php')) . 'Block';
-				$descriptor['__autoload'][$class_name] = $file->getPathname();
+				$class_name = $descriptor[Module::T_NAMESPACE] . '\\' . \ICanBoogie\camelize('-' . basename($pathname, '.php')) . 'Block';
+				$descriptor['__autoload'][$class_name] = $pathname;
 			}
 		}
 

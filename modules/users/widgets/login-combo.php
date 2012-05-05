@@ -24,7 +24,7 @@ class LoginCombo extends Element
 		$login = new Login;
 		$password = new NonceRequest;
 
-		$password->children['email'][Element::DESCRIPTION] = new A('cancel');
+		$password->children['email'][Element::DESCRIPTION] = new A(t('Cancel', array(), array('scope' => 'button')));
 
 		$this->elements['login'] = $login;
 		$this->elements['password'] = $password;

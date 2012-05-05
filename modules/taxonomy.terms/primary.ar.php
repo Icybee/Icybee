@@ -45,6 +45,13 @@ class Term extends ActiveRecord implements \IteratorAggregate
 		return new \ArrayIterator($this->nodes);
 	}
 
+	protected function __get_vocabulary()
+	{
+		global $core;
+
+		return $this->vid ? $core->models['taxonomy.vocabulary'][$this->vid] : null;
+	}
+
 	/**
 	 * Returns the nodes associated with the term.
 	 *
@@ -84,5 +91,79 @@ class Term extends ActiveRecord implements \IteratorAggregate
 		}
 
 		return array_values($rc);
+	}
+
+	/**
+	 * Returns the CSS class of the term.
+	 *
+	 * @return string
+	 */
+	protected function __get_css_class()
+	{
+		return $this->css_class();
+	}
+
+	/**
+	 * Returns the CSS class names of the term.
+	 *
+	 * @return array[string]mixed
+	 */
+	protected function __get_css_class_names()
+	{
+		return array
+		(
+			'type' => 'term',
+			'id' => 'term-' . $this->vtid,
+			'slug' => 'term-slug--' . $this->termslug,
+			'vid' => $this->vid ? 'vocabulary-' . $this->vid : null,
+			'vslug' => $this->vid ? 'vocabulary-slug--' . $this->vocabulary->vocabularyslug : null
+		);
+	}
+
+	/**
+	 * Return the CSS class of the term.
+	 *
+	 * @param string|array $modifiers CSS class names modifiers
+	 *
+	 * @return string
+	 */
+	public function css_class($modifiers=null)
+	{
+		$names = $this->css_class_names;
+		$names = array_filter($names);
+
+// 		Event::fire('alter_css_class_names', array('names' => &$names), $this);
+
+		if ($modifiers)
+		{
+			if (is_string($modifiers))
+			{
+				$modifiers = explode(' ', $modifiers);
+				$modifiers = array_map('trim', $modifiers);
+				$modifiers = array_filter($modifiers);
+			}
+
+			foreach ($modifiers as $k => $modifier)
+			{
+				if ($modifier{0} == '-')
+				{
+					unset($names[substr($modifier, 1)]);
+					unset($modifiers[$k]);
+				}
+			}
+
+			if ($modifiers)
+			{
+				$names = array_intersect_key($names, array_combine($modifiers, $modifiers));
+			}
+		}
+
+		array_walk($names, function(&$v, $k) {
+
+			if ($v === true) $v = $k;
+
+		});
+
+		return implode(' ', $names);
 	}
 }

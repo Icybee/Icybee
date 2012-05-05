@@ -32,7 +32,7 @@ abstract class Widget extends Element
 		}
 
 		$class = substr($class, 18);
-		$class = 'widget-' . wd_hyphenate($class);
+		$class = 'widget-' . \ICanBoogie\hyphenate($class);
 
 		parent::__construct($type, $tags);
 

@@ -46,7 +46,7 @@ class ConfigBlock extends \Icybee\ConfigBlock
 				(
 					'primary' => array
 					(
-						'title' => 'Général'
+
 					),
 
 					'response' => array
@@ -56,9 +56,9 @@ class ConfigBlock extends \Icybee\ConfigBlock
 
 					'spam' => array
 					(
-						'title' => 'Paramètres du filtre anti-spam',
-						'description' => "Les paramètres du filtre anti-spam s'appliquent à tous les
-						sites."
+						'title' => 'Filtres anti-spam',
+						'description' => "Les paramètres des filtres anti-spam s'appliquent à tous
+						les sites."
 					)
 				)
 			)
@@ -87,19 +87,6 @@ class ConfigBlock extends \Icybee\ConfigBlock
 					)
 				),
 
-				"local[$ns.delay]" => new Text
-				(
-					array
-					(
-						Form::LABEL => 'Intervale entre deux commentaires',
-						Text::ADDON => 'minutes',
-						Element::DEFAULT_VALUE => 3,
-
-						'size' => 3,
-						'style' => 'text-align: right'
-					)
-				),
-
 				"local[$ns.default_status]" => new Element
 				(
 					'select', array
@@ -115,23 +102,17 @@ class ConfigBlock extends \Icybee\ConfigBlock
 					)
 				),
 
-				"global[$ns.spam.urls]" => new Element
+				"local[$ns.delay]" => new Text
 				(
-					'textarea', array
+					array
 					(
-						Form::LABEL => 'URLs',
+						Form::LABEL => 'Intervale entre deux commentaires',
+						Text::ADDON => 'minutes',
+						Element::DEFAULT_VALUE => 3,
 						Element::GROUP => 'spam',
-						'rows' => 5
-					)
-				),
 
-				"global[$ns.spam.keywords]" => new Element
-				(
-					'textarea', array
-					(
-						Form::LABEL => 'Mots clés',
-						Element::GROUP => 'spam',
-						'rows' => 5
+						'size' => 3,
+						'class' => 'measure'
 					)
 				)
 			)

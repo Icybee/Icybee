@@ -57,6 +57,11 @@ class ManageBlock extends \WdManager
 			'status' => array
 			(
 				'label' => 'Status'
+			),
+
+			'timezone' => array
+			(
+				'discreet' => true
 			)
 		);
 	}
@@ -78,7 +83,7 @@ class ManageBlock extends \WdManager
 
 	protected function render_cell_url(Site $record, $property)
 	{
-		$parts = explode('.', $_SERVER['HTTP_HOST']);
+		$parts = explode('.', $_SERVER['SERVER_NAME']);
 		$parts = array_reverse($parts);
 
 		if ($record->tld)
@@ -109,7 +114,12 @@ class ManageBlock extends \WdManager
 	{
 		global $core;
 
-		return ucfirst($core->locale->conventions['localeDisplayNames']['languages'][$record->$property]);
+		return $this->render_filter_cell($record, $property, \ICanBoogie\capitalize($core->locale->conventions['localeDisplayNames']['languages'][$record->$property]));
+	}
+
+	protected function render_cell_timezone($record, $property)
+	{
+		return $this->render_filter_cell($record, $property);
 	}
 
 	protected function render_cell_status(Site $record, $property)

@@ -71,7 +71,7 @@ class WdAttachmentsElement extends Element
 		//$formats = 'Seules les pièces avec les extensions suivantes sont prises en charge&nbsp;: jpg jpeg gif png txt doc xls pdf ppt pps odt ods odp.';
 
 		$limit = ini_get('upload_max_filesize') * 1024 * 1024;
-		$limit_formated = wd_format_size($limit);
+		$limit_formated = \ICanBoogie\I18n\format_size($limit);
 
 		/*
 		$this->dataset = array
@@ -116,7 +116,7 @@ EOT;
 		$links = array();
 
 		$i = uniqid();
-		$size = wd_format_size($entry->size);
+		$size = \ICanBoogie\I18n\format_size($entry->size);
 		$preview = null;
 
 		if ($entry instanceof Uploaded)

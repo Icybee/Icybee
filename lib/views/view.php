@@ -11,13 +11,9 @@
 
 namespace Icybee\Views;
 
-use ICanBoogie\ActiveRecord\Model;
-
-use Brickrouge\Pager;
-
-use ICanBoogie\ActiveRecord\Node;
-
 use ICanBoogie;
+use ICanBoogie\ActiveRecord\Model;
+use ICanBoogie\ActiveRecord\Node;
 use ICanBoogie\Event;
 use ICanBoogie\Exception;
 use ICanBoogie\I18n;
@@ -26,15 +22,20 @@ use ICanBoogie\Object;
 
 use Brickrouge\Document;
 use Brickrouge\Element;
+use Brickrouge\Pager;
 
 /**
  * A view on provided data.
  */
 class View extends Object
 {
+	const ACCESS_CALLBACK = 'access_callback';
+	const ASSETS = 'assets';
+	const RENDERS = 'renders';
 	const RENDERS_ONE = 1;
 	const RENDERS_MANY = 2;
 	const RENDERS_OTHER = 3;
+	const TITLE = 'title';
 
 	protected $id;
 
@@ -109,8 +110,6 @@ class View extends Object
 	 */
 	public function __invoke()
 	{
-		global $core;
-
 		$this->validate_access();
 
 		$assets = array('css' => array(), 'js' => array());
@@ -391,6 +390,7 @@ class View extends Object
 			if ('php' == $extension)
 			{
 				$module = $core->modules[$this->module_id];
+				$rc = null;
 
 				ob_start();
 
@@ -402,7 +402,7 @@ class View extends Object
 					{
 						extract($__exposed__);
 
-						return require $__file__;
+						require $__file__;
 					};
 
 					$isolated_require
@@ -414,9 +414,18 @@ class View extends Object
 							'core' => $core,
 							'document' => $core->document,
 							'page' => $page,
-							'module' => $module
+							'module' => $module,
+							'view' => $this
 						)
 					);
+
+					$rc = ob_get_clean();
+				}
+				catch (\ICanBoogie\Exception\Config $e)
+				{
+					$rc = '<div class="alert">' . $e->getMessage() . '</div>';
+
+					ob_clean();
 				}
 				catch (\Exception $e)
 				{
@@ -424,12 +433,10 @@ class View extends Object
 
 					throw $e;
 				}
-
-				$rc = ob_get_clean();
 			}
 			else if ('html' == $extension)
 			{
-				$rc = Patron(file_get_contents($template_path), $bind, array('file' => $template_path));
+				$rc = $engine(file_get_contents($template_path), $bind, array('file' => $template_path));
 			}
 			else
 			{
@@ -450,6 +457,11 @@ class View extends Object
 
 	protected $element;
 
+	protected function __volatile_get_element()
+	{
+		return $this->element;
+	}
+
 	/**
 	 * Returns the HTML representation of the view element and its content.
 	 *
@@ -463,7 +475,7 @@ class View extends Object
 
 		while ($m)
 		{
-			$normalized_id = wd_normalize($m->id);
+			$normalized_id = \ICanBoogie\normalize($m->id);
 			$class = "view--$normalized_id--$type $class";
 
 			$m = $m->parent;
@@ -473,11 +485,13 @@ class View extends Object
 		(
 			'div', array
 			(
-				'id' => 'view-' . wd_normalize($this->id),
+				'id' => 'view-' . \ICanBoogie\normalize($this->id),
 				'class' => trim("view view--$type $class"),
 				'data-constructor' => $this->module->id
 			)
 		);
+
+// 		\ICanBoogie\log("class: {$this->element->class}, type: $type, assets: " . \ICanBoogie\dump($this->options['assets']));
 
 		$template_path = $this->resolve_template_location();
 
@@ -499,75 +513,81 @@ class View extends Object
 
 		$id = $this->id;
 		$type = $this->type;
+		$templates = array();
 
-		if (0)
+		if (true)
 		{
-			$templates = array
+			/*
+			$templates_base = array
 			(
 				str_replace('/', '--', str_replace($this->module->id . '/', '', str_replace(':', '-', $id))),
 				$type
 			);
+			*/
 
-			wd_log('templates: \1', array($templates));
+			$templates_base = array();
+
+			$parts = explode('/', $id);
+			$module_id = array_shift($parts);
+			$type = array_pop($parts);
+
+			while (count($parts))
+			{
+				$templates_base[] = implode('--', $parts) . '--' . $type;
+
+				array_pop($parts);
+			}
+
+			$templates_base[] = $type;
+
+			$templates_base = array_unique($templates_base);
+
+// 			\ICanBoogie\log('templates bases: \1', array($templates_base));
 
 			$descriptors = $core->modules->descriptors;
 			$descriptor = $descriptors[$this->module->id];
 
 			while ($descriptor)
 			{
-				foreach ($templates as $template)
+				foreach ($templates_base as $template)
 				{
-					$pathname = 'templates/views/' . $descriptor[Module::T_ID] . '--' . $template;
-
-					wd_log($pathname);
+					$pathname = \ICanBoogie\DOCUMENT_ROOT . 'protected/all/templates/views/' . \ICanBoogie\normalize($descriptor[Module::T_ID]) . '--' . $template;
+					$templates[] = $pathname;
 
 					$pathname = $descriptor[Module::T_PATH] . 'views/' . $template;
-
-					wd_log($pathname);
+					$templates[] = $pathname;
 				}
 
 				$descriptor = $descriptor[Module::T_EXTENDS] ? $descriptors[$descriptor[Module::T_EXTENDS]] : null;
 			}
+
+			foreach ($templates_base as $template)
+			{
+				$pathname = \ICanBoogie\DOCUMENT_ROOT . 'protected/all/templates/views/' . $template;
+				$templates[] = $pathname;
+			}
 		}
+
+// 		\ICanBoogie\log('templates: \1', array($templates));
 
 		$handled = array('php', 'html');
 
-		foreach ($handled as $extension)
+		foreach ($templates as $template)
 		{
-			$pathname = 'templates/views/' . str_replace(':', '-', $id) . '.' . $extension;
-			$try = $core->site->resolve_path($pathname);
-
-// 			wd_log("tried: $pathname");
-
-			if ($try)
-			{
-				return ICanBoogie\DOCUMENT_ROOT . $try;
-			}
-		}
-
-		if (isset($this->options['file']))
-		{
-			return $this->options['file'];
-		}
-
-		$m = $this->module;
-
-		while ($m)
-		{
-			$base = $m->descriptor[Module::T_PATH] . 'views/' . $type . '.';
-
 			foreach ($handled as $extension)
 			{
-// 				wd_log("tried: {$base}{$extension}");
+				$pathname = $template . '.' . $extension;
 
-				if (file_exists($base . $extension))
+// 				\ICanBoogie\log("tryed: $pathname");
+
+				if (file_exists($pathname))
 				{
-					return $base . $extension;
+					return $pathname;
 				}
 			}
-
-			$m = $m->parent;
 		}
+
+		throw new Exception('Unable to resolve template for view %id. Tried: :list', array('id' => $id, ':list' => implode("\n<br />", $templates)));
 	}
 
 	/**
@@ -581,7 +601,7 @@ class View extends Object
 	{
 		$access_callback = $this->options['access_callback'];
 
-		if ($access_callback && !call_user_func($access_callback))
+		if ($access_callback && !call_user_func($access_callback, $this))
 		{
 			throw new Exception\HTTP
 			(

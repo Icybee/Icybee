@@ -127,7 +127,7 @@ class LoginOperation extends Operation
 					)
 				);
 
-				$t = new Proxi(array('scope' => array(wd_normalize($user->constructor, '_'), 'connect', 'operation')));
+				$t = new Proxi(array('scope' => array(\ICanBoogie\normalize($user->constructor, '_'), 'connect', 'operation')));
 
 				$mailer = new Mailer
 				(
@@ -156,7 +156,7 @@ EOT
 
 				$mailer();
 
-				wd_log_error("Your account has been locked, a message has been sent to your e-mail address.");
+				\ICanBoogie\log_error("Your account has been locked, a message has been sent to your e-mail address.");
 			}
 
 			return false;

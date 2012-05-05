@@ -100,7 +100,7 @@ class Contact extends Form
 		return array
 		(
 			'notify_destination' => $core->user->email,
-			'notify_from' => 'Contact <no-reply@' . preg_replace('#^www#', '', $_SERVER['HTTP_HOST']) .'>',
+			'notify_from' => 'Contact <no-reply@' . preg_replace('#^www#', '', $_SERVER['SERVER_NAME']) .'>',
 			'notify_subject' => 'Formulaire de contact',
 			'notify_template' => <<<EOT
 Un message a été posté depuis le formulaire de contact :

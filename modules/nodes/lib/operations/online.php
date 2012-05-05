@@ -48,7 +48,7 @@ class OnlineOperation extends Operation
 		$record->is_online = true;
 		$record->save();
 
-		wd_log_done('!title is now online', array('!title' => $record->title));
+		\ICanBoogie\log_success('!title is now online', array('!title' => $record->title));
 
 		return true;
 	}

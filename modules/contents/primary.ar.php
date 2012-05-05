@@ -170,11 +170,11 @@ class Content extends Node
 
 	protected function __get_excerpt()
 	{
-		return wd_excerpt((string) $this);
+		return \ICanBoogie\excerpt((string) $this);
 	}
 
 	public function excerpt($limit=55)
 	{
-		return isset($this->excerpt) ? wd_excerpt($this->excerpt, $limit) : wd_excerpt((string) $this, $limit);
+		return isset($this->excerpt) ? \ICanBoogie\excerpt($this->excerpt, $limit) : \ICanBoogie\excerpt((string) $this, $limit);
 	}
 }

@@ -66,7 +66,7 @@ class DefaultsOperation extends Operation
 
 		if (empty($models[$modelid]))
 		{
-			wd_log_error("Unknown model");
+			\ICanBoogie\log_error("Unknown model");
 
 			return;
 		}
@@ -76,7 +76,7 @@ class DefaultsOperation extends Operation
 
 		if (!method_exists($model_class, 'get_defaults'))
 		{
-			wd_log_done("Model doesn't have defaults");
+			\ICanBoogie\log_success("Model doesn't have defaults");
 
 			return false;
 		}

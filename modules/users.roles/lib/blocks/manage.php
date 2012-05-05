@@ -11,11 +11,11 @@
 
 namespace ICanBoogie\Modules\Users\Roles;
 
-use Brickrouge\A;
-
 use ICanBoogie\Operation;
 use ICanBoogie\Route;
+use ICanBoogie\Routes;
 
+use Brickrouge\A;
 use Brickrouge\Button;
 use Brickrouge\Element;
 use Brickrouge\Form;
@@ -118,7 +118,7 @@ class ManageBlock extends Form
 			);
 		}
 
-		uksort($packages, 'wd_unaccent_compare_ci');
+		uksort($packages, 'ICanBoogie\unaccent_compare_ci');
 
 		$packages = array_merge
 		(
@@ -251,8 +251,8 @@ EOT;
 			$role_options[$i] = t('permission.' . $level, array(), array('default' => $level));
 		}
 
-
 		$user_has_access = $core->user->has_permission(Module::PERMISSION_ADMINISTER, $this->module);
+		$routes = \ICanBoogie\Routes::get();
 
 		foreach ($packages as $p_name => $modules)
 		{
@@ -268,7 +268,7 @@ EOT;
 			// admins
 			//
 
-			uksort($modules, 'wd_unaccent_compare_ci');
+			uksort($modules, 'ICanBoogie\unaccent_compare_ci');
 
 			foreach ($modules as $m_name => $m_desc)
 			{
@@ -279,7 +279,7 @@ EOT;
 				$rc .= '<tr class="admin">';
 
 				$rc .= '<td>';
-				$rc .= Route::find('/admin/' . $m_id) ? '<a href="' . $context . '/admin/' . $m_id . '">' . $m_name . '</a>' : $m_name;
+				$rc .= $routes->find('/admin/' . $m_id) ? '<a href="' . $context . '/admin/' . $m_id . '">' . $m_name . '</a>' : $m_name;
 				$rc .= '</td>';
 
 				foreach ($roles as $role)

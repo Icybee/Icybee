@@ -2,12 +2,6 @@
 
 return array
 (
-	'label' => array
-	(
-		'language' => 'Langue',
-		'nativeid' => 'Source de la traduction'
-	),
-
 	'element.description' => array
 	(
 		'language' => "Il s'agit de la langue de l'enregistrement. En général, seuls les
@@ -20,14 +14,22 @@ return array
 		la liste."
 	),
 
+	'group.legend' => array
+	(
+		'i18n' => 'Internationalisation'
+	),
+
+	'label' => array
+	(
+		'language' => 'Langue',
+		'nativeid' => 'Source de la traduction'
+	),
+
+	'manage.title.Translations' => 'Traductions',
+
 	'option' => array
 	(
 		'neutral' => '<neutre>',
 		'none' => '<aucune>'
-	),
-
-	'group.legend' => array
-	(
-		'i18n' => 'Internationalisation'
 	)
 );

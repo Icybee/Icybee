@@ -1,5 +1,10 @@
 @CHARSET "UTF-8";
 
+.view--contents--home > ol {
+	list-style: none;
+	margin-left: 0;
+}
+
 .view--contents--list .node + .node {
 	margin-top: 2em;
 }

@@ -89,7 +89,7 @@ EOT;
 							)
 						),
 
-						'title' => "Cliquez pour activer ou désactiver le cache",
+						'title' => "Enable/disable the cache",
 						'class' => 'checkbox-wrapper circle' . ($checked ? ' checked': '')
 					)
 				);
@@ -101,7 +101,7 @@ EOT;
 
 				if ($config_preview)
 				{
-					$config_preview = '<button title="Configurer le cache" class="spinner">' . $config_preview . '</button>';
+					$config_preview = '<a title="Configure the cache" class="spinner">' . $config_preview . '</a>';
 				}
 				else
 				{
@@ -118,7 +118,7 @@ EOT;
 	<td class="title">$title<div class="element-description">$description</div></td>
 	<td class="limit config">$config_preview</td>
 	<td class="usage {$usage_empty}">$stat</td>
-	<td class="erase"><button type="button" class="btn-warning" name="clear">Vider</button></td>
+	<td class="erase"><button type="button" class="btn-warning" name="clear">Clear</button></td>
 </tr>
 EOT;
 			}
@@ -128,9 +128,9 @@ EOT;
 	<thead>
 		<tr>
 			<th><div>&nbsp;</div></th>
-			<th><div>Type de cache</div></th>
+			<th><div>Cache type</div></th>
 			<th><div>Configuration</span></div></th>
-			<th class="right"><div>Utilisation</div></th>
+			<th class="right"><div>Usage</div></th>
 			<th><div>&nbsp;</div></th>
 		</tr>
 	</thead>

@@ -125,7 +125,7 @@ class EditBlock extends \Icybee\EditBlock
 
 		$languages = $core->locale->conventions['localeDisplayNames']['languages'];
 
-		uasort($languages, 'wd_unaccent_compare_ci');
+		uasort($languages, 'ICanBoogie\unaccent_compare_ci');
 
 		#
 		# restricted sites

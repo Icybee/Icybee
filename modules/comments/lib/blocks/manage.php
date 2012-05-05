@@ -216,7 +216,7 @@ class ManageBlock extends \WdManager
 		if ($node)
 		{
 			$title = $node->title;
-			$label = wd_entities(wd_shorten($title, 48, .75, $shortened));
+			$label = wd_entities(\ICanBoogie\shorten($title, 48, .75, $shortened));
 
 			$rc .= new Element
 			(

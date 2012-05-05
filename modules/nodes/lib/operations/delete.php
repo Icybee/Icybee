@@ -25,11 +25,11 @@ class DeleteOperation extends \Icybee\DeleteOperation
 
 		if ($rc)
 		{
-			wd_log_done
+			\ICanBoogie\log_success
 			(
 				'%title has been deleted from %module.', array
 				(
-					'%title' => wd_shorten($title), '%module' => $this->module->title
+					'%title' => \ICanBoogie\shorten($title), '%module' => $this->module->title
 				),
 
 				'delete'

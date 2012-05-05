@@ -29,6 +29,7 @@ return array
 	),
 
 	'module_category.contents' => 'Contents',
+	'module_title.contents' => 'Contents',
 
 	'group.legend' => array
 	(

@@ -411,7 +411,7 @@ EOT;
 		{
 			$expanded = in_array($record->nid, $this->options['expanded']);
 
-			$rc .= ' <a class="ajaj treetoggle" href="?' . ($expanded ? 'collapse' : 'expand') . '=' . $record->nid . '">' . ($expanded ? '-' : '+' . $record->child_count) . '</a>';
+			$rc .= ' <a class="ajaj treetoggle" href="?' . ($expanded ? 'collapse' : 'expand') . '=' . $record->nid . '">' . ($expanded ? '-' : '+' . $record->children_count) . '</a>';
 		}
 
 		#

@@ -32,9 +32,9 @@ return array
 		propriétaire de cet enregistrement."
 	),
 
-	'title' => array
+	'group.legend' => array
 	(
-		'visibility' => 'Visibilité'
+		'Visibility' => 'Visibilité'
 	),
 
 	'label' => array
@@ -57,6 +57,7 @@ return array
 	),
 
 	'module_category.other' => 'Autre',
+	'module_title.nodes' => 'Nœuds',
 
 	'option' => array
 	(

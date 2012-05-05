@@ -34,7 +34,7 @@ class Get extends Operation
 
 	protected function validate(\ICanboogie\Errors $errors)
 	{
-		$this->widget_class = $class = 'Brickrouge\Widget\\' . wd_camelize('-' . $this->request['class'], '-');
+		$this->widget_class = $class = 'Brickrouge\Widget\\' . \ICanBoogie\camelize('-' . $this->request['class'], '-');
 
 		if (!class_exists($class, true))
 		{
@@ -104,7 +104,7 @@ class Get extends Operation
 
 					Popover::INNER_HTML => $el,
 
-					'class' => 'popover popover--' . wd_normalize($this->request['class']) . ' contrast'
+					'class' => 'popover popover--' . \ICanBoogie\normalize($this->request['class']) . ' contrast'
 				)
 			);
 		}

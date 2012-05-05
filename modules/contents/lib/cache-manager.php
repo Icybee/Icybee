@@ -53,12 +53,7 @@ class CacheManager implements \ICanBoogie\Modules\System\Cache\CacheInterface
 
 		list($count, $size) = $model->select('COUNT(nid) count, SUM(LENGTH(body)) size')->one(\PDO::FETCH_NUM);
 
-		if (!$count)
-		{
-			return array($count, 'Le cache est vide');
-		}
-
-		return array($count, $count . ' enregistrements<br /><span class="small">' . wd_format_size($size) . '</span>');
+		return array((int) $count, t(':count records<br /><span class="small">:size</span>', array(':count' => (int) $count, 'size' => \ICanBoogie\I18n\format_size($size))));
 	}
 
 	function clear()

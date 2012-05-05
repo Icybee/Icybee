@@ -80,7 +80,7 @@ class NodeNativeElement extends Element
 
 			foreach ($options as &$label)
 			{
-				$label = wd_shorten($label);
+				$label = \ICanBoogie\shorten($label);
 			}
 
 			unset($label);

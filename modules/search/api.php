@@ -233,8 +233,8 @@ function make_set($constructor, $entries, $count, $search, $has_pager=false)
 		foreach ($entries as $entry)
 		{
 			$rc .= '<li>';
-			$rc .= '<h3><a href="' . $entry->url . '">' . wd_entities(wd_shorten($entry->title, 80)) . '</a></h3>';
-			$rc .= '<cite>' . wd_shorten($entry->url, 64) . '</cite>';
+			$rc .= '<h3><a href="' . $entry->url . '">' . wd_entities(\ICanBoogie\shorten($entry->title, 80)) . '</a></h3>';
+			$rc .= '<cite>' . \ICanBoogie\shorten($entry->url, 64) . '</cite>';
 
 			$excerpt = search_excerpt($search, html_entity_decode($entry->body, ENT_COMPAT, 'utf-8'));
 

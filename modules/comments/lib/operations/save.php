@@ -16,6 +16,9 @@ use ICanBoogie\Exception;
 use ICanBoogie\Mailer;
 use ICanBoogie\Operation;
 
+/**
+ * Saves a comment.
+ */
 class SaveOperation extends \Icybee\SaveOperation
 {
 	protected function __get_properties()
@@ -86,32 +89,26 @@ class SaveOperation extends \Icybee\SaveOperation
 			# validate IP
 			#
 
-			$ip = $request->ip;
-
-			if (filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_NO_RES_RANGE))
+			if ($this->module->model->where('author_ip = ? AND status = "spam"', $request->ip)->rc)
 			{
-				if ($this->module->model->where('author_ip = ? AND status = "spam"', $ip)->rc)
-				{
-					$errors[] = t('A previous message from your IP was marked as spam.');
-				}
+				$errors[] = t('A previous message from your IP was marked as spam.');
 			}
-			else
-			{
-				$errors[] = t('Invalid IP address: %ip.', array('%ip' => $ip));
+		}
 
-				return false;
-			}
+		$author_url = $request[Comment::AUTHOR_URL];
+
+		if ($author_url && !filter_var($author_url, FILTER_VALIDATE_URL))
+		{
+			$errors[] = t('Invalide URL: %url', array('url' => $author_url));
 		}
 
 		if (!$core->user_id)
 		{
-			$score = Module\Comments::score_spam($request[Comment::CONTENTS], $request[Comment::AUTHOR_URL], $request[Comment::AUTHOR]);
+			$score = Module::score_spam($request[Comment::CONTENTS], $request[Comment::AUTHOR_URL], $request[Comment::AUTHOR]);
 
 			if ($score < 1)
 			{
 				$errors[Comment::CONTENTS] = t('@form.log.spam', array('%score' => $score));
-
-				return false;
 			}
 
 			#
@@ -125,7 +122,7 @@ class SaveOperation extends \Icybee\SaveOperation
 			->where
 			(
 				'(author = ? OR author_email = ? OR author_ip = ?) AND created + INTERVAL ? MINUTE > NOW()',
-				$request['author'], $request['author_email'], $ip, $interval
+				$request['author'], $request['author_email'], $request->ip, $interval
 			)
 			->order('created DESC')
 			->rc;
@@ -133,8 +130,6 @@ class SaveOperation extends \Icybee\SaveOperation
 			if ($last)
 			{
 				$errors[] = t("Les commentaires ne peuvent être faits à moins de $interval minutes d'intervale.");
-
-				return false;
 			}
 		}
 
@@ -231,12 +226,12 @@ class SaveOperation extends \Icybee\SaveOperation
 				continue;
 			}
 
-			wd_log
+			\ICanBoogie\log
 			(
 				'Send notify to %author (email: %email, message n°%commentid, mode: %notify)', array
 				(
 					'%author' => $entry->author,
-					'%email' => $entry->email,
+					'%email' => $entry->author_email,
 					'%commentid' => $entry->commentid,
 					'%notify' => $entry->notify
 				)
@@ -257,7 +252,7 @@ class SaveOperation extends \Icybee\SaveOperation
 
 			if (!$mailer())
 			{
-				wd_log_error('Unable to send notify to %author', array('%author' => $entry->author));
+				\ICanBoogie\log_error('Unable to send notify to %author', array('%author' => $entry->author));
 
 				continue;
 			}

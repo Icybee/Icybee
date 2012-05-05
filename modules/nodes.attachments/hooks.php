@@ -440,6 +440,6 @@ class Hooks
 			$label = $file->label;
 		}
 
-		return '<a href="' . wd_entities($file->url('download')) . '">' . wd_entities($label) . '</a> <span class="metas">(' . $file->extension . ' &ndash; ' . wd_format_size($file->size) . ')</span>';
+		return '<a href="' . wd_entities($file->url('download')) . '">' . wd_entities($label) . '</a> <span class="metas">(' . $file->extension . ' &ndash; ' . \ICanBoogie\I18n\format_size($file->size) . ')</span>';
 	}
 }

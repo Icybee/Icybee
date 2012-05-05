@@ -13,6 +13,7 @@ namespace Icybee\Admin\Element;
 
 use ICanBoogie\Module;
 use ICanBoogie\Route;
+use ICanBoogie\Routes;
 
 use Brickrouge\A;
 use Brickrouge\Button;
@@ -39,12 +40,12 @@ class ActionbarTitle extends Element
 		$request = $core->request;
 		$route = $request->route;
 
-		if (empty($route['module']))
+		if (!$route || !$route->module)
 		{
 			throw new \Brickrouge\EmptyElementException;
 		}
 
-		$label = $core->modules[$route['module']]->title;
+		$label = $core->modules[$route->module]->title;
 
 		$btn_group = null;
 		$options = $this->collect_options($route);
@@ -57,7 +58,7 @@ class ActionbarTitle extends Element
 				(
 					DropdownMenu::OPTIONS => $options,
 
-					'value' => $request->path_info
+					'value' => $request->path
 				)
 			);
 
@@ -72,7 +73,7 @@ EOT;
 		}
 
 		$label = \Brickrouge\escape($label);
-		$url = \Brickrouge\escape(Route::contextualize('/admin/' . $route['module']));
+		$url = \Brickrouge\escape(Route::contextualize('/admin/' . $route->module));
 
 		return <<<EOT
 <h1><a href="$url">$label</a></h1>
@@ -80,19 +81,19 @@ $btn_group
 EOT;
 	}
 
-	protected function collect_options($route)
+	protected function collect_options(Route $route)
 	{
 		global $core;
 
 		$options = array();
 
 		$user = $core->user;
-		$module_id = $route['module'];
+		$module_id = $route->module;
 		$modules = $core->modules;
 		$descriptors = $modules->descriptors;
 		$category = $descriptors[$module_id][Module::T_CATEGORY];
 
-		$routes = Route::routes();
+		$routes = Routes::get();
 
 		foreach ($routes as $r_id => $r)
 		{
@@ -131,14 +132,13 @@ EOT;
 		{
 			$config_pattern = "/admin/$module_id/config";
 
-			if ($route['pattern'] != $config_pattern)
+			if ($route->pattern != $config_pattern)
 			{
-				$match = Route::find($config_pattern);
+				$r = $routes->find($config_pattern);
 
-				if ($match)
+				if ($r)
 				{
-					list($r) = $match;
-					$url = Route::contextualize($r['pattern']);
+					$url = Route::contextualize($r->pattern);
 
 					$options[] = false;
 					$options[$url] = new A

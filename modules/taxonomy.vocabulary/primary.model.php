@@ -22,7 +22,7 @@ class Model extends \ICanBoogie\ActiveRecord\Model
 
 		if (isset($properties['vocabularyslug']))
 		{
-			$properties['vocabularyslug'] = wd_normalize($properties['vocabularyslug']);
+			$properties['vocabularyslug'] = \ICanBoogie\normalize($properties['vocabularyslug']);
 		}
 
 		$key = parent::save($properties, $key, $options);

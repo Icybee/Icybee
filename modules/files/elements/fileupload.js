@@ -82,6 +82,26 @@ Brickrouge.Widget.File = new Class
 					el.getElement('div.infos').innerHTML = response.infos;
 					el.addClass('has-info');
 				}
+
+				connsole.log(response.properties)
+
+				if (response.properties)
+				{
+					var form = el.getParent('form')
+
+					response.properties.each(function(key, value) {
+
+						console.log(key, value)
+
+						if (!form.elements[key] || form.elements[key].get('value'))
+						{
+							return
+						}
+
+						form.elements[key].set('value', value)
+
+					})
+				}
 			}
 			else if (this.status >= 400)
 			{

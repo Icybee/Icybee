@@ -29,7 +29,7 @@ class WdFormSelectorElement extends Element
 
 			if (!$options)
 			{
-				$url = wd_entities($core->site->path . '/admin/forms/new');
+				$url = \ICanBoogie\escape($core->site->path . '/admin/forms/new');
 
 				return <<<EOT
 <a href="$url" class="btn btn-info">Créer un premier formulaire...</a>

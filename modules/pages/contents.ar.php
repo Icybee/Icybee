@@ -51,6 +51,16 @@ class Content extends ActiveRecord
 	private $rendered;
 
 	/**
+	 * Returns the rendered contents.
+	 *
+	 * @return mixed
+	 */
+	protected function __volatile_get_rendered()
+	{
+		return $this->render();
+	}
+
+	/**
 	 * Renders the content as a string or an object.
 	 *
 	 * Exceptions thrown during the rendering are caught. The message of the exception is used
@@ -73,14 +83,18 @@ class Content extends ActiveRecord
 		{
 			$rendered = call_user_func(array($class, 'render'), $this->content);
 		}
-		catch (Exception $e)
+		catch (\ICanBoogie\Exception\HTTP $e)
 		{
-			$this->rendered = $e->getMessage();
-
-			throw $e;
+			$rendered = $e->getMessage();
+		}
+		catch (\Exception $e)
+		{
+			$rendered = \ICanBoogie\Debug::format_alert($e);
 		}
 
-		return $this->rendered = $rendered;
+		$this->rendered = $rendered;
+
+		return $rendered;
 	}
 
 	public function __toString()
@@ -89,7 +103,7 @@ class Content extends ActiveRecord
 		{
 			$rc = (string) $this->render();
 		}
-		catch (Exception $e)
+		catch (\Exception $e)
 		{
 			return \ICanBoogie\Debug::format_alert($e);
 		}

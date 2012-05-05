@@ -115,7 +115,7 @@ class EditBlock extends \Icybee\EditBlock
 			$scope_options[$module_id] = t($module_id, array(), array('scpope' => 'module_title', 'default' => $descriptor[Module::T_TITLE]));
 		}
 
-		uasort($scope_options, 'wd_unaccent_compare_ci');
+		uasort($scope_options, 'ICanBoogie\unaccent_compare_ci');
 
 		$scope_value = null;
 		$vid = $properties[Vocabulary::VID];

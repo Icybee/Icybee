@@ -4,7 +4,18 @@ return array
 (
 	'contents_news' => array
 	(
-		'All records' => 'Toutes les actualités',
+		'count' => array
+		(
+			'none' => 'Aucune actualité',
+			'one' => 'Une actualité',
+			'other' => ':count actualités'
+		),
+
+		'name' => array
+		(
+			'one' => 'Actualité',
+			'other' => 'Actualités'
+		),
 
 		'search' => array
 		(
@@ -20,7 +31,9 @@ return array
 				'one' => 'Voir le résultat trouvé pour %search dans les actualités',
 				'other' => 'Voir les :count résultats trouvés pour %search dans les actualités'
 			)
-		)
+		),
+
+		'All records' => 'Toutes les actualités',
 	),
 
 	'module_title.contents_news' => 'Actualités'

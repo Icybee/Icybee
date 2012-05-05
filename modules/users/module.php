@@ -134,11 +134,11 @@ EOT;
 
 		$core->document->css->add('assets/authenticate.css');
 
-		$path = rtrim(\ICanBoogie\Route::decontextualize($core->request->path_info), '/');
+		$path = rtrim(\ICanBoogie\Route::decontextualize($core->request->path), '/');
 
 		if ($path != '/admin')
 		{
-			wd_log_error('The requested URL requires authentication.');
+			\ICanBoogie\log_error('The requested URL requires authentication.');
 		}
 
 		return new \Brickrouge\Widget\Users\LoginCombo;

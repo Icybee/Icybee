@@ -162,50 +162,133 @@ EOT
 
 			$before = $this->before;
 			$after = $this->after;
-			$form = (string) $this->form;
+			$form = $this->form;
 
-			Event::fire
+			new Form\BeforeRenderEvent
 			(
-				'render:before', array
+				$this, array
 				(
 					'before' => &$before,
 					'after' => &$after,
-					'form' => &$form,
-				),
-
-				$this
+					'form' => $form,
+				)
 			);
+
+			$normalized = \ICanBoogie\normalize($this->slug);
 
 			if ($before)
 			{
-				$before = '<div id="before-form-' . $this->slug . '" class="form-before">' . $before . '</div>';
+				$before = '<div class="form-before form-before--' . $normalized . '">' . $before . '</div>';
 			}
 
 			if ($after)
 			{
-				$after = '<div id="after-form-' . $this->slug . '" class="form-after">' . $after . '</div>';
+				$after = '<div class="form-after form-after--' . $normalized . '">' . $after . '</div>';
 			}
 
-			$rc = $before . $form . $after;
+			$html = $before . $form . $after;
 
-			Event::fire
+			new Form\RenderEvent
 			(
-				'render', array
+				$this, array
 				(
-					'rc' => &$rc,
+					'html' => &$html,
 					'before' => $before,
 					'after' => $after,
 					'form' => $form,
-				),
-
-				$this
+				)
 			);
 
-			return $rc;
+			return $html;
 		}
 		catch (\Exception $e)
 		{
 			return \ICanBoogie\Debug::format_alert($e);
 		}
+	}
+}
+
+namespace ICanBoogie\ActiveRecord\Form;
+
+/**
+ * Event class for the `ICanBoogie\ActiveRecord\Form::render:before` event.
+ */
+class BeforeRenderEvent extends \ICanBoogie\Event
+{
+	/**
+	 * The form to render.
+	 *
+	 * @var \ICanBoogie\ActiveRecord\Form
+	 */
+	public $form;
+
+	/**
+	 * The HTML content before the form.
+	 *
+	 * @var string
+	 */
+	public $before;
+
+	/**
+	 * The HTML content after the form.
+	 *
+	 * @var string
+	 */
+	public $after;
+
+	/**
+	 * The event is created with the type `render:before`.
+	 *
+	 * @param \ICanBoogie\ActiveRecord\Form $target
+	 * @param array $properties
+	 */
+	public function __construct(\ICanBoogie\ActiveRecord\Form $target, array $properties)
+	{
+		parent::__construct($target, 'render:before', $properties);
+	}
+}
+
+/**
+ * Event class for the `ICanBoogie\ActiveRecord\Form::render` event.
+ */
+class RenderEvent extends \ICanBoogie\Event
+{
+	/**
+	 * Reference to the HTML resulting of the rendering.
+	 *
+	 * @var string
+	 */
+	public $html;
+
+	/**
+	 * The form to render.
+	 *
+	 * @var \ICanBoogie\ActiveRecord\Form
+	 */
+	public $form;
+
+	/**
+	 * The HTML content before the form.
+	 *
+	 * @var string
+	 */
+	public $before;
+
+	/**
+	 * The HTML content after the form.
+	 *
+	 * @var string
+	 */
+	public $after;
+
+	/**
+	 * The event is created with the type `render`.
+	 *
+	 * @param \ICanBoogie\ActiveRecord\Form $target
+	 * @param array $properties
+	 */
+	public function __construct(\ICanBoogie\ActiveRecord\Form $target, array $properties)
+	{
+		parent::__construct($target, 'render', $properties);
 	}
 }

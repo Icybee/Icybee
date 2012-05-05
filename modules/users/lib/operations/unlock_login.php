@@ -81,7 +81,7 @@ class UnlockLoginOperation extends Operation
 		$user->metas['login_unlock_time'] = null;
 		$user->metas['failed_login_count'] = 0;
 
-		wd_log_done('Login has been unlocked');
+		\ICanBoogie\log_success('Login has been unlocked');
 
 		$this->response->location = isset($this->request['continue']) ? $this->request['continue'] : '/';
 

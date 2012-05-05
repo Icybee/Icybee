@@ -13,6 +13,8 @@ namespace ICanBoogie\Modules\System\Cache;
 
 class ModulesCache implements CacheInterface
 {
+	const REGEX = '/^cached_modules_/';
+
 	public $title = "Modules";
 	public $description = "Index des modules disponibles pour le framework.";
 	public $group = 'system';
@@ -35,7 +37,7 @@ class ModulesCache implements CacheInterface
 	{
 		global $core;
 
-		$iterator = $core->vars->matching('#^modules-#');
+		$iterator = $core->vars->matching(self::REGEX);
 		$iterator->delete();
 
 		return true;
@@ -74,6 +76,6 @@ class ModulesCache implements CacheInterface
 	 */
 	public function stat()
 	{
-		return Module::get_vars_stat('#^modules-#');
+		return Module::get_vars_stat(self::REGEX);
 	}
 }

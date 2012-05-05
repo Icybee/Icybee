@@ -196,7 +196,7 @@ class Module extends \Icybee\Module
 
 		if ($record->title)
 		{
-			$title = $record->title ? wd_shorten($record->title, 32, .75, $shortened) : '<';
+			$title = $record->title ? \ICanBoogie\shorten($record->title, 32, .75, $shortened) : '<';
 
 			$rc .= '<span class="title"' . ($shortened ? ' title="' . wd_entities($record->title) . '"' : '') . '>' . $title . '</span>';
 		}
@@ -335,7 +335,7 @@ EOT;
 				$last_date = $date;
 			}
 
-			$title = wd_shorten($record->title, 48);
+			$title = \ICanBoogie\shorten($record->title, 48);
 			$title = wd_entities($title);
 
 			$rc .= <<<EOT
@@ -371,7 +371,7 @@ EOT;
 				'visibility' => 'visible'
 			);
 
-// 			wd_log("create default routes for $module_id");
+// 			\ICanBoogie\log("create default routes for $module_id");
 
 			# manage (index)
 

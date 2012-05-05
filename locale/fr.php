@@ -2,19 +2,6 @@
 
 return array
 (
-	'section.title' => array
-	(
-		'organize' => 'Organiser',
-		'primary' => 'Général'
-	),
-
-	'option' => array
-	(
-		'save_mode_list' => 'Enregistrer et aller à la liste',
-		'save_mode_continue' => "Enregistrer et continuer l'édition",
-		'save_mode_new' => "Enregistrer et éditer un nouveau"
-	),
-
 	'block.title' => array
 	(
 		'config' => 'Config.',
@@ -24,13 +11,33 @@ return array
 		'new' => 'Nouveau'
 	),
 
-	'@operation.config.done' => 'Les options de configuration ont été sauvées.',
+	'button' => array
+	(
+		'Delete' => 'Supprimer',
+		'New' => 'Nouveau',
+		'View' => 'Voir'
+	),
 
-	':count entries' => ':count entrées',
-	'Display everything' => 'Tout afficher',
-	'Display only: :identifier' => 'Afficher uniquement : :identifier',
-	'From :start to :finish on :count' => 'De :start à :finish sur :count',
-	'Sort by: :identifier' => 'Trier par : :identifier',
+	'group.legend' => array
+	(
+		'Organization' => 'Organisation'
+	),
+
+	'option' => array
+	(
+		'save_mode_list' => 'Enregistrer et aller à la liste',
+		'save_mode_continue' => "Enregistrer et continuer l'édition",
+		'save_mode_new' => "Enregistrer et éditer un nouveau"
+	),
+
+	'manage' => array
+	(
+		'title' => array
+		(
+			'Date created' => 'Crée le',
+			'Date modified' => 'Modifié le',
+		)
+	),
 
 	'manager' => array
 	(
@@ -57,7 +64,22 @@ return array
 	':page_limit_selector by page' => ':page_limit_selector par page',
 	'For the selection…' => 'Pour la sélection…',
 
+	':count entries' => ':count entrées',
+	'Display all' => 'Tout afficher',
+	'Display everything' => 'Tout afficher',
+	'Display only: :identifier' => 'Afficher uniquement : :identifier',
+	'From :start to :finish on :count' => 'De :start à :finish sur :count',
+	'Sort by: :identifier' => 'Trier par : :identifier',
+
+	# Icybee\Pagemaker
+
+	"The requested URL requires authentication." => "L'URL demandée requiert une authentification.",
+
 	# Icybee\Admin\Element\ActionbarTitle
 
-	"List page on the website" => "Page de la liste sur le site"
+	"List page on the website" => "Page de la liste sur le site",
+
+	# Icybee\ConfigOperation
+
+	"The configuration has been saved." => "La configuration a été enregistrée.",
 );

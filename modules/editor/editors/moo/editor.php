@@ -39,7 +39,7 @@ class moo_WdEditorElement extends WdEditorElement
 
 		$css = $this[self::T_STYLESHEETS] ?: array();
 
-//		wd_log('css: \1', array($css));
+//		\ICanBoogie\log('css: \1', array($css));
 
 		if (!$css)
 		{

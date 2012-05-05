@@ -373,7 +373,7 @@ class ManageBlock extends \WdManager
 		}
 
 		$title = $record->$property;
-		$label = $title ? wd_entities(wd_shorten($title, 52, .75, $shortened)) : $this->t->__invoke('<em>no title</em>');
+		$label = $title ? wd_entities(\ICanBoogie\shorten($title, 52, .75, $shortened)) : $this->t->__invoke('<em>no title</em>');
 
 		if ($shortened)
 		{

@@ -30,23 +30,22 @@ class File extends Node
 
 	protected function __get_extension()
 	{
+		/*DIRTY
 		$path = $this->path;
 
 		return substr($path, strrpos($path, '.'));
-	}
+		*/
 
-	protected function __get_download_url()
-	{
-		return '/api/' . $this->constructor . '/' . $this->nid . '/download';
+		return '.' . pathinfo($this->path, PATHINFO_EXTENSION);
 	}
 
 	public function url($type='view')
 	{
 		if ($type == 'download')
 		{
-			return $this->download_url;
+			return ($this->siteid ? $this->site->path : '') . '/api/' . $this->constructor . '/' . $this->nid . '/download';
 		}
 
-		return site_pages_view_WdHooks::url($this, $type);
+		return parent::url($type);
 	}
 }

@@ -113,8 +113,8 @@ Brickrouge.Widget.PopThumbnailVersion = new Class
 	{
 		switch (ev.action)
 		{
-			case 'continue':
-				var value = this.element.toQueryString().parseQueryString()
+			case 'use':
+				var value = ev.popover.element.toQueryString().parseQueryString()
 
 				if (!value.w && !value.h)
 				{
@@ -124,7 +124,7 @@ Brickrouge.Widget.PopThumbnailVersion = new Class
 				this.setValue(value)
 				break
 
-			case 'none':
+			case 'remove':
 				this.setValue(null)
 				break
 

@@ -28,10 +28,11 @@ return array
 	),
 
 	'module_category.contents' => 'Contenu',
+	'module_title.contents' => 'Contenus',
 
 	'group.legend' => array
 	(
-		'contents' => 'Contenu',
+		'Content' => 'Contenu',
 		'limits' => 'Limites'
 	)
 );

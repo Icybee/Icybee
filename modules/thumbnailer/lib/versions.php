@@ -118,7 +118,7 @@ class Versions implements \ArrayAccess, \IteratorAggregate
 		{
 			if (!$options || !is_string($options) || $options{0} != '{')
 			{
-				wd_log_error('bad version: %name, :options', array('name' => $name, 'options' => $options));
+				\ICanBoogie\log_error('bad version: %name, :options', array('name' => $name, 'options' => $options));
 
 				continue;
 			}

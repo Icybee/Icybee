@@ -1,23 +1,36 @@
-<!DOCTYPE>
+<?php
+
+namespace ICanBoogie;
+
+?><!DOCTYPE>
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>Publishr &ndash; <?php echo $class ?></title>
+<title>Icybee &ndash; Exception: <?= escape(shorten(strip_tags($exception->getMessage()), 32, 1)) ?></title>
 <?php foreach($css as $url): ?>
-<link href="<?php echo $url ?>" type="text/css" rel="stylesheet" />
-<?php endforeach; ?>
+<link href="<?= $url ?>" type="text/css" rel="stylesheet" />
+<?php endforeach ?>
 </head>
 
 <body class="exception">
 
-<div id="quick">←&nbsp;<a href="<?php echo $site ? $site->url : '/' ?>"><?php echo $site ? wd_entities($site->title) : 'Home' ?></a></div>
+<div id="quick">←&nbsp;<a href="<?= $site ? $site->url : '/' ?>"><?= $site ? escape($site->title) : 'Home' ?></a></div>
+
+<div class="actionbar">
+<div class="pull-left">
+	<div class="actionbar-title"><h1>Icybee <small><?= $code . ' ' . $class ?></small></h1></div>
+</div>
+<?php if ($reported): ?>
+<div class="pull-right">
+	<span class="btn btn-success">The error has been reported</span>
+</div>
+<?php endif ?>
+</div>
 
 <div id="contents-wrapper">
-	<h1><?php echo $code . ' ' . $class ?></h1>
+	<?= $formated_exception ?>
 
-	<?php echo $formated_exception ?>
-
-	<footer><a href="http://www.icybee.org/" target="_blank">Icybee</a> v<?php echo $version ?></footer>
+	<footer><a href="http://www.icybee.org/" target="_blank">Icybee</a> v<?= $version ?></footer>
 </div>
 
 </body>

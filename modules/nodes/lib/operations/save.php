@@ -74,11 +74,11 @@ class SaveOperation extends \Icybee\SaveOperation
 		$rc = parent::process();
 		$record = $this->module->model[$rc['key']];
 
-		wd_log_done
+		\ICanBoogie\log_success
 		(
 			$rc['mode'] == 'update' ? '%title has been updated in :module.' : '%title has been created in %module.', array
 			(
-				'title' => wd_shorten($record->title), 'module' => $this->module->title
+				'title' => \ICanBoogie\shorten($record->title), 'module' => $this->module->title
 			),
 
 			'save'

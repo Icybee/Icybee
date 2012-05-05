@@ -34,7 +34,7 @@ class system_nodes_view_WdMarkup extends patron_WdMarkup
 
 	public function __invoke(array $args, WdPatron $patron, $template)
 	{
-		global $core, $page;
+		global $core;
 
 		$args += array
 		(
@@ -75,6 +75,7 @@ class system_nodes_view_WdMarkup extends patron_WdMarkup
 		# are we in a view ?
 		#
 
+		$page = $core->request->context->page;
 		$body = $page->body;
 		$is_view = ($body instanceof ICanBoogie\ActiveRecord\Pages\Content && $body->editor == 'view' && preg_match('#/view$#', $body->content));
 		$exception_class = $is_view ? 'ICanBoogie\HTTPException' : 'ICanBoogie\Exception';
@@ -195,14 +196,16 @@ class system_nodes_view_WdMarkup extends patron_WdMarkup
 
 	protected function nid_from_select($select)
 	{
-		global $page;
-
 		if (is_numeric($select))
 		{
 			return $select;
 		}
 		else if (is_string($select))
 		{
+			global $core;
+
+			$page = $core->request->context->page;
+
 			return $this->model->select('nid')
 			->where('(slug = ? OR title = ?) AND (siteid = ? OR siteid = 0) AND (language = ? OR language = "")', $select, $select, $page->siteid, $page->site->language)
 			->order('language DESC')
@@ -215,7 +218,7 @@ class system_nodes_view_WdMarkup extends patron_WdMarkup
 
 		list($conditions, $args) = $this->parse_conditions($select);
 
-//		wd_log(__FILE__ . ':: nid from: (\3) \1\2', array($conditions, $args, get_class($this)));
+//		\ICanBoogie\log(__FILE__ . ':: nid from: (\3) \1\2', array($conditions, $args, get_class($this)));
 
 		return $this->model->select('nid')->where(implode(' AND ', $conditions), $args)->order('created DESC')->rc;
 	}

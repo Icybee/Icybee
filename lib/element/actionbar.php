@@ -15,6 +15,7 @@ use ICanBoogie\ActiveRecord\Users\Member;
 use ICanBoogie\Event;
 use ICanBoogie\Module;
 use ICanBoogie\Route;
+use ICanBoogie\Routes;
 
 use Brickrouge\A;
 use Brickrouge\Button;
@@ -33,13 +34,18 @@ class Actionbar extends Element
 	{
 		global $core;
 
-		$route = $core->request->route;
-		$module_id = $route['module'];
-
 		$actionbar_new = null;
+		$route = $core->request->route;
 
-		if (!$core->user->is_guest && !($core->user instanceof Member))
+		if (!$route) // TODO-20120326: revise the route dispatcher, because a route should be there, even if the user don't have permission to access it
 		{
+			throw new \Brickrouge\EmptyElementException;
+		}
+
+		if ($route && !$core->user->is_guest && !($core->user instanceof Member))
+		{
+			$module_id = $route->module;
+
 			$actionbar_new = (string) new ActionbarNew
 			(
 				'New', array
@@ -81,11 +87,7 @@ class ActionbarNav extends Element
 	{
 		global $core;
 
-		$path = Route::decontextualize($core->request->path_info);
-		$match = Route::find($path, 'any', 'admin');
-
-		list($current_route) = $match;
-
+		$current_route = $core->request->route;
 		$collection = $this->collect_routes($current_route);
 
 		if (empty($collection))
@@ -103,8 +105,10 @@ class ActionbarNav extends Element
 		return $html . parent::render_inner_html();
 	}
 
-	protected function render_link(array $route, array $current_route)
+	protected function render_link(array $route, Route $current_route)
 	{
+		global $core;
+
 		$title = $route['title'];
 
 		if ($title{0} == '.') // TODO-20120214: COMPAT
@@ -113,11 +117,16 @@ class ActionbarNav extends Element
 		}
 
 		$title = t($title, array(), array('scope' => 'block.title'));
-		$pattern = $route['pattern'];
+		$pattern = $pathname = $route['pattern'];
 
-		$link = new A($title, Route::contextualize($pattern), array('class' => 'actionbar-link'));
+		if (Route::is_pattern($pattern))
+		{
+			$pathname = Route::format($pattern, $core->request->path_params);
+		}
 
-		if ($pattern == $current_route['pattern'])
+		$link = new A($title, Route::contextualize($pathname), array('class' => 'actionbar-link'));
+
+		if ($pattern == $current_route->pattern)
 		{
 			$link->add_class('active');
 		}
@@ -130,30 +139,30 @@ class ActionbarNav extends Element
 		global $core;
 
 		$collection = array();
-		$pattern = $current_route['pattern'];
+		$pattern = $current_route->pattern;
 
-		if (empty($current_route['module']))
+		if (!$current_route->module)
 		{
 			throw new \Brickrouge\EmptyElementException;
 		}
 
-		$module = $current_route['module'];
+		$module_id = $current_route->module;
 		$user = $core->user;
 
-		$index_pattern = "/admin/$module";
-		$new_pattern = "/admin/$module/new";
+		$index_pattern = "/admin/$module_id";
+		$new_pattern = "/admin/$module_id/new";
 
 		$skip = array
 		(
 // 			"/admin/$module/config" => true,
-			"/admin/$module/manage" => true
+			"/admin/$module_id/manage" => true
 		);
 
-		foreach (Route::routes() as $route)
+		foreach (Routes::get() as $route)
 		{
 			$route_module = isset($route['module']) ? $route['module'] : null;
 
-			if (!$route_module || $route_module != $module || empty($route['title']))
+			if (!$route_module || $route_module != $module_id || empty($route['title']))
 			{
 				continue;
 			}
@@ -178,7 +187,7 @@ class ActionbarNav extends Element
 			}
 			else
 			{
-				if ($route['visibility'] == 'auto' || Route::is_pattern($r_pattern) || isset($skip[$r_pattern]))
+				if ((isset($route['visibility']) && $route['visibility'] == 'auto') || Route::is_pattern($r_pattern) || isset($skip[$r_pattern]))
 				{
 					continue;
 				}
@@ -186,7 +195,7 @@ class ActionbarNav extends Element
 
 			$permission = isset($route['permission']) ? $route['permission'] : Module::PERMISSION_ACCESS;
 
-			if (!$user->has_permission($permission, $module))
+			if (!$user->has_permission($permission, $module_id))
 			{
 				continue;
 			}
@@ -210,11 +219,7 @@ class ActionbarContextNav extends Element
 		global $core;
 
 		$html = '';
-
-		$match = Route::find($_SERVER['REQUEST_URI'], 'any', 'admin'); // FIXME-20120214: use the primary request object
-
-		list($current_route) = $match;
-
+		$current_route = $core->request->route;
 		$collection = $this->collect_routes($current_route);
 
 		if (empty($collection))
@@ -257,8 +262,8 @@ class ActionbarContextNav extends Element
 		global $core;
 
 		$collection = array();
-		$pattern = $current_route['pattern'];
-		$module = $current_route['module'];
+		$pattern = $current_route->pattern;
+		$module = $current_route->module;
 		$user = $core->user;
 
 		foreach (Route::routes() as $route)
@@ -336,7 +341,7 @@ class ActionbarNew extends SplitButton
 
 		$route = $this[self::ROUTE];
 
-		if ($route['pattern'] == $this[self::PATTERN])
+		if ($route->pattern == $this[self::PATTERN])
 		{
 			$this->add_class('btn-info');
 		}
@@ -375,12 +380,12 @@ EOT;
 		global $core;
 
 		$route = $core->request->route;
-		$module_id = $route['module'];
-		$match = Route::find("/admin/$module_id/new");
+		$module_id = $route->module;
+		$match = Routes::get()->find("/admin/$module_id/new");
 
 		$this->render_as_button = !$match;
 
-		if ($route['pattern'] != '/admin/dashboard' && !$match)
+		if ($route->pattern != '/admin/dashboard' && !$match)
 		{
 			return '';
 		}
@@ -393,7 +398,7 @@ EOT;
 		global $core;
 
 		$collection = array();
-		$routes = Route::routes();
+		$routes = Routes::get();
 		$descriptors = $core->modules->descriptors;
 		$user = $core->user;
 
@@ -413,16 +418,26 @@ EOT;
 				continue;
 			}
 
-			$collection[$pattern] = $descriptors[$module_id][Module::T_TITLE];
+			$collection[$pattern] = $module_id;// $descriptors[$module_id][Module::T_TITLE];
 		}
 
-		uasort($collection, 'wd_unaccent_compare_ci');
+		uasort($collection, 'ICanBoogie\unaccent_compare_ci');
 
 		array_walk
 		(
-			$collection, function(&$v, $k)
+			$collection, function(&$v, $k) use ($descriptors)
 			{
-				$v = new A(\ICanBoogie\singularize($v), Route::contextualize($k));
+				$flat_id = strtr($v, '.', '_');
+
+				$label = t
+				(
+					$flat_id . '.name', array(':count' => 1), array
+					(
+						'default' => \ICanBoogie\singularize(t("module_title.$flat_id", array(), array('default' => $descriptors[$v][Module::T_TITLE])))
+					)
+				);
+
+				$v = new A($label, Route::contextualize($k));
 			}
 		);
 

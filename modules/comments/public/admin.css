@@ -107,16 +107,10 @@
 	display: inline-block;
 }
 
-#feedback-comments-last .go-to-list
-{
-	font-size: 12px;
+#feedback-comments-last .panel-footer {
 	text-align: center;
-	padding: .4em 0;
-	border-top: 1px solid #cfcfcf;
-	background: -moz-linear-gradient(top, white, rgba(255,255,255,0));
 }
 
-#feedback-comments-last .go-to-list a:not(:hover)
-{
+#feedback-comments-last .panel-footer a:not(:hover) {
 	color: inherit;
 }

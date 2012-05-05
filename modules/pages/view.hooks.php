@@ -16,10 +16,10 @@ use ICanBoogie\ActiveRecord\Node;
 
 class site_pages_view_WdHooks
 {
-	static private $pages_model;
-	static protected $url_cache_by_siteid = array();
+	private static $pages_model;
+	private static $url_cache_by_siteid = array();
 
-	static public function url(ActiveRecord $target, $type='view')
+	public static function url(ActiveRecord $target, $type='view')
 	{
 		global $core;
 
@@ -43,45 +43,33 @@ class site_pages_view_WdHooks
 			}
 		}
 
-// 		FIXME-20110709: NAMESPACE !!
-
-		# -15 is for "_WdActiveRecord"
-
-		$constructor = isset($target->constructor) ? $target->constructor : substr(get_class($target), 0, -15);
+		$constructor = isset($target->constructor) ? $target->constructor : $target->_model->id;
 		$constructor = strtr($constructor, '.', '_');
 
-		$siteid = $target->siteid ? $target->siteid : $core->site_id;
 		$key = 'views.targets.' . $constructor . '/' . $type;
+		$site_id = isset($target->siteid) ? $target->siteid : $core->site_id;
 
-		if (isset(self::$url_cache_by_siteid[$siteid][$key]))
+		if (isset(self::$url_cache_by_siteid[$site_id][$key]))
 		{
-			$pattern = self::$url_cache_by_siteid[$siteid][$key];
+			$pattern = self::$url_cache_by_siteid[$site_id][$key];
 		}
 		else
 		{
-			$site = $target->site;
-
-			// TODO-20101213: maybe the 'site' hook should return current site when siteid is 0
-
-			if (!$site)
-			{
-				$site = $core->site;
-			}
-
-			if (!$site)
-			{
-				return '#missing-associated-site';
-			}
-
 			$pattern = false;
-			$page_id = $site->metas[$key];
+			$page_id = null;
 
-			if ($page_id)
+			if ($site_id)
 			{
-				$pattern = self::$pages_model[$page_id]->url_pattern;
+				$site = $core->models['sites'][$site_id];
+				$page_id = $site->metas[$key];
+
+				if ($page_id)
+				{
+					$pattern = self::$pages_model[$page_id]->url_pattern;
+				}
 			}
 
-			self::$url_cache_by_siteid[$siteid][$key] = $pattern;
+			self::$url_cache_by_siteid[$site_id][$key] = $pattern;
 		}
 
 		if (!$pattern)
@@ -95,38 +83,38 @@ class site_pages_view_WdHooks
 	/**
 	 * Return the URL type 'view' for the node.
 	 *
-	 * @param Node $ar
+	 * @param Node $node
 	 */
-
-	static public function get_url(Node $ar)
+	static public function get_url(Node $node)
 	{
-		return self::url($ar);
+		return $node->url('view');
 	}
 
 	/**
 	 * Return the absolute URL type for the node.
 	 *
+	 * @param Node $node
 	 * @param string $type The URL type.
-	 *
 	 */
-
-	static public function absolute_url(Node $ar, $type='view')
+	static public function absolute_url(Node $node, $type='view')
 	{
 		global $core;
 
-		$site = $ar->site ? $ar->site : $core->site;
+		$site = $node->site ? $node->site : $core->site;
 
-		return $site->url . substr(self::url($ar, $type), strlen($site->path));
+		return $site->url . substr($node->url($type), strlen($site->path));
 	}
 
 	/**
 	 * Return the _primary_ absolute URL for the node.
 	 *
+	 * @param Node $node
+	 *
 	 * @return string The primary absolute URL for the node.
 	 */
-	static public function get_absolute_url(Node $ar)
+	static public function get_absolute_url(Node $node)
 	{
-		return self::absolute_url($ar);
+		return $node->absolute_url('view');
 	}
 
 	static private $view_target_cache=array();

@@ -124,7 +124,7 @@ class Hooks
 	 *
 	 * @param \Icybee\ConfigOperation\BeforePropertiesEvent $ev
 	 */
-	static public function before_config_properties(\Icybee\ConfigOperation\BeforePropertiesEvent $event)
+	static public function before_configoperation_properties(\Icybee\ConfigOperation\BeforePropertiesEvent $event)
 	{
 		global $core;
 
@@ -157,6 +157,8 @@ class Hooks
 
 			$options = (empty($options['w']) && empty($options['h'])) ? null : json_encode($options);
 		}
+
+		unset($core->vars['cached_thumbnailer_versions']);
 	}
 
 	static public function on_alter_cache_collection(Event $event, \ICanBoogie\Modules\System\Cache\Collection $collection)

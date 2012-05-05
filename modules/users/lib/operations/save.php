@@ -203,13 +203,13 @@ class SaveOperation extends \Icybee\Operation\Constructor\Save
 
 		if ($core->user_id == $uid)
 		{
-			wd_log_done("Your profile has been updated.", array(), 'save');
+			\ICanBoogie\log_success("Your profile has been updated.", array(), 'save');
 		}
 		else
 		{
 			$record = $this->module->model[$uid];
 
-			wd_log_done($rc['mode'] == 'update' ? "%name's profile has been updated." : "%name's profile has been created.", array('%name' => $record->name), 'save');
+			\ICanBoogie\log_success($rc['mode'] == 'update' ? "%name's profile has been updated." : "%name's profile has been created.", array('%name' => $record->name), 'save');
 		}
 
 		return $rc;

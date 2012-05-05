@@ -113,7 +113,8 @@ class Hooks
 		return $cache->clear();
 	}
 
-	static public function before_icybee_render(Event $event)
+	/* TODO-20120313: we need to use another event
+	static public function before_icybee_render(\Icybee\Pagemaker\BeforeRenderEvent $event)
 	{
 		global $core;
 
@@ -137,7 +138,7 @@ class Hooks
 		);
 
 		// TODO-20110601: refactor this, the rendered data should be saved on the
-		// 'Icybee::render' event.
+		// 'Icybee\Pagemaker::render' event.
 
 		$event->rc = $cache->load($key, $constructor, $data);
 
@@ -157,6 +158,7 @@ class Hooks
 			}
 		}
 	}
+	*/
 
 	/**
 	 * Returns the home page of the target site.
@@ -175,10 +177,11 @@ class Hooks
 
 	public static function on_document_render_title(Event $event)
 	{
-		global $page;
+		global $core;
+
+		$page = $core->request->context->page;
 
 		$event->separator = ' − ';
-
 		$event->title = $page->title . $event->separator . $page->site->title;
 	}
 
@@ -241,10 +244,11 @@ EOT;
 
 	public static function markup_page_region(array $args, \WdPatron $patron, $template)
 	{
-		global $page;
+		global $core;
 
 		$id = $args['id'];
 		$rc = null;
+		$page = $core->request->context->page;
 
 		Event::fire
 		(
@@ -278,13 +282,15 @@ EOT;
 	 */
 	static public function markup_breadcrumb(array $args, \WdPatron $patron, $template)
 	{
-		global $page;
+		global $core;
 
-		return (string) new Element\Breadcrumb
+		$page = $core->request->context->page;
+
+		return (string) new BreadcrumbElement
 		(
 			array
 			(
-				Element\Breadcrumb::T_PAGE => $page
+				BreadcrumbElement::PAGE => $page
 			)
 		);
 	}
@@ -316,5 +322,18 @@ EOT;
 	public static function on_alter_cache_collection(Event $event, \ICanBoogie\Modules\System\Cache\Collection $collection)
 	{
 		$event->collection['contents.pages'] = new CacheManager;
+	}
+
+	public static function markup_page_title(array $args, $engine, $template)
+	{
+		global $core;
+
+		$page = $core->request->context->page;
+		$title = $page->title;
+		$html = \ICanBoogie\escape($title);
+
+		Event::fire('render_title', array('title' => $title, 'html' => &$html), $page);
+
+		return $template ? $engine($template, $html) : $html;
 	}
 }

@@ -158,7 +158,7 @@ class EditBlock extends Form
 			if (!$locked)
 			{
 				$luser = $core->models['users'][$lock['uid']];
-				$url = $core->request->path_info;
+				$url = $core->request->path;
 
 				$time = round((strtotime($lock['until']) - time()) / 60);
 				$message = $time ? "Le verrou devrait disparaitre dans $time minutes." : "Le verrou devrait disparaitre dans moins d'une minutes.";
@@ -342,7 +342,7 @@ EOT;
 
 		$schema = $this->module->model->extended_schema;
 		$record = $this->record;
-		$params = $core->request->request_parameters;
+		$params = $core->request->request_params;
 
 		return array_merge
 		(
@@ -445,7 +445,7 @@ EOT;
 
 				if ($record instanceof \ICanBoogie\ActiveRecord\Node && $record->url[0] != '#')
 				{
-					$event->buttons[] = '<a href="' . $record->url . '" class="actionbar-link">' . t('View', array(), array('scope' => 'label')) . '</a>';
+					$event->buttons[] = '<a href="' . $record->url . '" class="actionbar-link">' . t('View', array(), array('scope' => 'button')) . '</a>';
 				}
 
 				$locked = true;
@@ -461,7 +461,7 @@ EOT;
 					{
 						$event->buttons[] = new A
 						(
-							'Delete', Route::contextualize('/admin/' . $module . '/' . $key . '/delete'), array
+							t('Delete', array(), array('scope' => 'button')), Route::contextualize('/admin/' . $module . '/' . $key . '/delete'), array
 							(
 								'class' => 'btn btn-danger'
 							)

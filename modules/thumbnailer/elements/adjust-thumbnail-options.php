@@ -189,7 +189,7 @@ class AdjustThumbnailOptions extends \Brickrouge\Group
 		$document->js->add('adjust-thumbnail-options.js');
 	}
 
-	protected function offsetSet($offset, $value)
+	public function offsetSet($offset, $value)
 	{
 		if ($offset === self::DEFAULT_VALUE)
 		{

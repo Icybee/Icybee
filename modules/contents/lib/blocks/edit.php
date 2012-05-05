@@ -29,7 +29,7 @@ class EditBlock extends \ICanBoogie\Modules\Nodes\EditBlock
 				(
 					'contents' => array
 					(
-						'title' => 'Contents'
+						'title' => 'Content'
 					),
 
 					'date' => array

@@ -42,7 +42,7 @@ class Hooks
 			catch (Exception\MissingRecord $e) {}
 		}
 
-		//wd_log('onlinr: \1', array($onlinr));
+		//\ICanBoogie\log('onlinr: \1', array($onlinr));
 
 		$event->tags = \ICanBoogie\array_merge_recursive
 		(

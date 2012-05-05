@@ -8,7 +8,7 @@ return array
 	(
 		'ICanBoogie\Modules\Pages\EditBlock::alter_children' => __NAMESPACE__ . '::on_page_editblock_alter_children',
 		'ICanBoogie\Modules\Sites\EditBlock::alter_children' => __NAMESPACE__ . '::on_site_editblock_alter_children',
-		'Icybee::render' => __NAMESPACE__ . '::on_icybee_render',
+		'Icybee\Pagemaker::render' => __NAMESPACE__ . '::on_icybee_render',
 		'ICanBoogie\Modules\Pages\ExportOperation::process' => __NAMESPACE__ . '::event_operation_export',
 		'Brickrouge\Document::render_title:before' => __NAMESPACE__ . '::on_document_render_title',
 		'Brickrouge\Document::render_metas:before' => __NAMESPACE__ . '::before_document_render_metas',

@@ -49,8 +49,16 @@ class GetOperation extends Operation
 
 		if (isset($params['version']))
 		{
-			$version = Versions::get();
-			$params += $version[$params['version']];
+			$versions = Versions::get();
+			$version = $params['version'];
+			$version_params = $versions[$version];
+
+			if (!$version_params)
+			{
+				throw new HTTPException('Unknown version %version.', array('version' => $version));
+			}
+
+			$params += $version_params;
 
 			unset($params['version']);
 		}
@@ -359,7 +367,7 @@ class GetOperation extends Operation
 		$response->headers['X-Generated-By'] = 'Icybee/Thumbnailer';
 		$response->headers['Etag'] = $etag;
 		$response->headers['Cache-Control'] = 'public';
-		$response->expires = time() + 60 * 24 * 7;
+		$response->expires = '+1 week';
 
 		if (isset($_SERVER['HTTP_IF_MODIFIED_SINCE']) && isset($_SERVER['HTTP_IF_NONE_MATCH'])
 		&& (strtotime($_SERVER['HTTP_IF_MODIFIED_SINCE']) == $stat['mtime'] || trim($_SERVER['HTTP_IF_NONE_MATCH']) == $etag))
@@ -378,6 +386,7 @@ class GetOperation extends Operation
 
 		$response->last_modified = $stat['mtime'];
 		$response->content_type = "image/$type";
+		$response->content_length = $stat['size'];
 
 		return function() use ($server_location)
 		{

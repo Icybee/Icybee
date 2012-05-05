@@ -9,7 +9,7 @@ return array
 	Module::T_DESCRIPTION => 'Images management',
 	Module::T_EXTENDS => 'files',
 	Module::T_CATEGORY => 'resources',
-	Module::T_REQUIRED => true,
+// 	Module::T_REQUIRED => true,
 	Module::T_REQUIRES => array
 	(
 		'thumbnailer' => '1.x'

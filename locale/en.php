@@ -2,14 +2,22 @@
 
 return array
 (
-	'group.title' => array
+	'block.title' => array
 	(
-		'admin' => 'Administration',
-		'organize' => 'Organize'
+		'config' => 'Config.',
+		'edit' => 'Edit',
+		'manage' => 'List',
+		'new' => 'New'
 	),
 
-	'legend' => array
+	'label' => array
 	(
+		'language' => 'Language'
+	),
+
+	'group.legend' => array
+	(
+		'advanced' => 'Advanced',
 		'primary' => 'Main'
 	),
 
@@ -18,14 +26,6 @@ return array
 		'save_mode_list' => 'Save and go to the list',
 		'save_mode_continue' => 'Save and continue editing',
 		'save_mode_new' => 'Save and edit a new record'
-	),
-
-	'block.title' => array
-	(
-		'config' => 'Config.',
-		'edit' => 'Edit',
-		'manage' => 'List',
-		'new' => 'New'
 	),
 
 	'operation' => array
@@ -62,11 +62,6 @@ return array
 		'done' => 'The configuration options have been saved.'
 	),
 
-	'label' => array
-	(
-		'language' => 'Language'
-	),
-
 	'manager' => array
 	(
 		'create_first' => '<strong><a href="!url">Create the first record…</a></strong>',
@@ -76,6 +71,7 @@ return array
 
 	'module_category' => array
 	(
+		'features' => 'Features',
 		'feedback' => 'Feedback',
 		'organize' => 'Organize',
 		'structure' => 'Structure',

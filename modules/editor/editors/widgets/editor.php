@@ -10,6 +10,7 @@
  */
 
 use ICanBoogie\Exception;
+use Brickrouge\Element;
 
 class widgets_WdEditorElement extends WdEditorElement
 {
@@ -64,7 +65,7 @@ class widgets_WdEditorElement extends WdEditorElement
 
 		foreach ($list as $id => $widget)
 		{
-			$rc .= '<div id="widget-' . wd_normalize($id) . '" class="widget">' . self::render_widget($widget) . '</div>';
+			$rc .= '<div id="widget-' . \ICanBoogie\normalize($id) . '" class="widget">' . self::render_widget($widget) . '</div>';
 		}
 
 		return $rc;
@@ -72,7 +73,7 @@ class widgets_WdEditorElement extends WdEditorElement
 
 	static protected function render_widget($widget)
 	{
-		global $core, $page;
+		global $core;
 
 		if (isset($widget['file']))
 		{
@@ -88,7 +89,9 @@ class widgets_WdEditorElement extends WdEditorElement
 			}
 			else if (substr($file, -5, 5) == '.html')
 			{
-				return Patron(file_get_contents($file), null, array('file' => $file));
+				$patron = new Patron\Engine;
+
+				return $patron(file_get_contents($file), null, array('file' => $file));
 			}
 			else
 			{
@@ -120,11 +123,7 @@ class widgets_WdEditorElement extends WdEditorElement
 
 		if ($this[Element::DESCRIPTION] === null)
 		{
-			$this->set
-			(
-				Element::DESCRIPTION, "Sélectionner les widgets à afficher. Vous pouvez
-				les ordonner par glissé-déposé."
-			);
+			$this[Element::DESCRIPTION] = "Sélectionner les widgets à afficher. Vous pouvez les ordonner par glissé-déposé.";
 		}
 
 		$core->document->css->add('editor.css');
@@ -145,7 +144,7 @@ class widgets_WdEditorElement extends WdEditorElement
 
 		$list = array_merge($value, self::$config);
 
-		//wd_log('value: \1, list: \2 \3', array($value, $list, array_merge($value, $list)));
+		//\ICanBoogie\log('value: \1, list: \2 \3', array($value, $list, array_merge($value, $list)));
 
 		foreach ($list as $id => $widget)
 		{

@@ -12,18 +12,11 @@
 namespace Icybee;
 
 /**
- * This is the time reference used by the {@link wd_log_time()} function.
- *
- * @var float
- */
-$wddebug_time_reference = microtime(true);
-
-/**
  * Version string for the Icybee package.
  *
  * @var string
  */
-define('Icybee\VERSION', '1.0-dev (2012-03-12)');
+const VERSION = '1.0-dev (2012-04-20)';
 
 /**
  * Root path for the Icybee package.
@@ -39,13 +32,16 @@ define('Icybee\ROOT', rtrim(__DIR__, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR)
  */
 define('Icybee\ASSETS', ROOT . 'assets' . DIRECTORY_SEPARATOR);
 
+$config = array();
+$locale = array();
+
 /*
  * Icybee requires the ICanBoogie framework, the Brickrouge tookit and the Patron engine.
  *
  * If Phar packages are available they are used instead. You should pay attention to this as this
  * might cause a hit on performance.
  */
-foreach (array('ICanBoogie', 'Brickrouge', 'Patron') as $name)
+foreach (array('ICanBoogie', 'Brickrouge', 'BlueTihi') as $name)
 {
 	$pathname = 'framework/' . $name;
 
@@ -57,7 +53,20 @@ foreach (array('ICanBoogie', 'Brickrouge', 'Patron') as $name)
 	{
 		require_once ROOT . $pathname . '/startup.php';
 	}
+
+	$package_root = constant($name . '\ROOT');
+
+	$config[] = $package_root;
+	$locale[] = $package_root;
 }
+
+$config[] = ROOT;
+$locale[] = ROOT;
+
+require_once ROOT . 'engines/Patron/startup.php';
+
+$config[] = \Patron\ROOT;
+$config[] = \Patron\ROOT;
 
 if (!class_exists('Icybee\Core', false))
 {
@@ -71,112 +80,122 @@ require_once ROOT . 'lib/helpers.php';
  *
  * @var Icybee\Core
  */
-$core = Core::get_singleton
+$core = new Core
 (
 	array
 	(
 		'paths' => array
 		(
-			'config' => array
-			(
-				\Brickrouge\ROOT,
-				\Patron\ROOT,
-				ROOT
-			),
-
-			'locale' => array
-			(
-				\Brickrouge\ROOT,
-				\Patron\ROOT,
-				ROOT
-			)
+			'config' => $config,
+			'locale' => $locale
 		)
 	)
 );
 
-// wd_log_time('core created');
+// \ICanBoogie\log_time('core created');
 
 $core->run();
 
-// wd_log_time('core is running');
+// \ICanBoogie\log_time('core is running');
 
 /**
  * The views are cached when the Icybee\CACHE_VIEWS is defined.
  *
  * @var bool
  */
-if (!defined('Icybee\CACHE_VIEWS'))
-{
-	define('Icybee\CACHE_VIEWS', $core->config['cache views']);
-}
+defined('Icybee\CACHE_VIEWS') or define('Icybee\CACHE_VIEWS', $core->config['cache views']);
 
 /*
  * Request hooks
  */
 
-use ICanBoogie\Events;
+namespace ICanBoogie;
+
 use ICanBoogie\HTTP\Request;
+use ICanBoogie\HTTP\Response;
 
-/**
- * Request hook for the website.
- */
 Events::attach
 (
-	'ICanBoogie\HTTP\Request::dispatch', function(Request\DispatchEvent $event, Request $request)
+	'ICanBoogie\HTTP\Dispatcher::populate', function(HTTP\Dispatcher\PopulateEvent $event, HTTP\Dispatcher $dispatcher)
 	{
-		global $core;
-
-		require_once \ICanBoogie\DOCUMENT_ROOT . 'user-startup.php';
-
-		$icybee = \Icybee::get_singleton();
-		$event->response->body = $icybee->run($request, $event->response);
-		$event->stop();
-
-		/*
-		if ($core->user->is_guest && $event->request->method == Request::METHOD_GET)
+		/**
+		 * Router for admin routes.
+		 *
+		 * This event hook handles all "/admin/" routes. It may redirect the user to the proper "admin"
+		 * location e.g. '/admin/' => '/fr/admin/'. If the "admin" route is detected, the Icybee admin
+		 * interface is presented, granted the user has an access permission, otherwise the
+		 * user is asked to authenticate.
+		 */
+		$event->controllers['admin_router'] = function(Request $request)
 		{
-			$event->response->headers['Cache-Control'] = 'max-age=600';
-		}
-		else
+			global $core;
+
+			$path = Route::decontextualize($request->path);
+			$path = rtrim($path, '/') . '/';
+
+			if (strpos($path, '/admin/') !== 0)
+			{
+				return;
+			}
+
+			#
+			# The site object is a dummy when there is no site defined (which should be an
+			# exceptable error) or all defined sites use a path when the request doesn't. In that
+			# case we need to redirect the user to the first site available.
+			#
+
+			if (!$core->site_id)
+			{
+				try
+				{
+					$site = $core->models['sites']->order('weight')->one;
+
+					if ($site)
+					{
+						$event->response->location = $site->url . $path;
+
+						return;
+					}
+				}
+				catch (\Exception $e) { }
+
+				log_error('You are on a dummy website. You should check which websites are available or create one if none are.');
+			}
+
+			$response = new Response();
+			$response->body = require \Icybee\ROOT . 'admin.php';
+
+			return $response;
+		};
+
+		/**
+ 		 * Website router
+ 		 */
+		$event->controllers['website_router'] = function(Request $request)
 		{
-			$event->response->headers['Cache-Control'] = 'no-cache';
-		}
-		*/
-	}
-);
+			# core is reqquired by includes
 
-/**
- * Request hook for the admin.
- *
- * This event hook handles all "/admin/" routes. It may redirect the user to the proper "admin"
- * location e.g. '/admin/' => '/fr/admin/'. If the "admin" route is detected, the Icybee admin
- * interface is presented, granted the user has an access permission, otherwise the
- * user is asked to authenticate.
- */
-Events::attach
-(
-	'ICanBoogie\HTTP\Request::dispatch', function(Request\DispatchEvent $event, request $request)
-	{
-		global $core;
+			global $core;
 
-		$path_info = $request->path_info;
-		$site = $core->site;
-		$suffix = $site->path;
+			require_once DOCUMENT_ROOT . 'user-startup.php';
 
-		# decontextualize path_info
+			$response = new Response();
 
-		if ($suffix && strpos($path_info, $suffix . '/') === 0)
-		{
-			$path_info = substr($path_info, strlen($suffix));
-		}
+			$pagemaker = new \Icybee\Pagemaker;
+			$response->body = $pagemaker->run($request, $response);
 
-		$path_info = rtrim($path_info, '/') . '/';
+			return $response;
 
-		if (strpos($path_info, '/admin/') === 0)
-		{
-// 			$event->response->headers['Cache-Control'] = 'private, no-cache';
-			$event->response->body = require ROOT . 'admin.php';
-			$event->stop();
-		}
+			/*
+			if ($core->user->is_guest && $event->request->method == Request::METHOD_GET)
+			{
+				$event->response->headers['Cache-Control'] = 'max-age=600';
+			}
+			else
+			{
+				$event->response->headers['Cache-Control'] = 'no-cache';
+			}
+			*/
+		};
 	}
 );

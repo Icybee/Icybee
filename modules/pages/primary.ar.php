@@ -50,7 +50,7 @@ class Page extends Node
 	 * @var bool true if the page is cachable, false otherwise.
 	 */
 	public $cachable = true;
-	
+
 	/**
 	 * The site the page belongs too.
 	 *
@@ -153,7 +153,7 @@ class Page extends Node
 	 */
 	protected function __get_url()
 	{
-		global $page;
+		global $core;
 
 		if ($this->location)
 		{
@@ -175,17 +175,22 @@ class Page extends Node
 			{
 				$url = Route::format($url_pattern, $this->url_variables);
 
-//				wd_log('URL %pattern rescued using URL variables', array('%pattern' => $pattern));
-			}
-			else if (isset($page) && $page->url_variables)
-			{
-				$url = Route::format($url_pattern, $page->url_variables);
-
-//				wd_log("URL pattern %pattern was resolved using current page's variables", array('%pattern' => $pattern));
+//				\ICanBoogie\log('URL %pattern rescued using URL variables', array('%pattern' => $pattern));
 			}
 			else
 			{
-				$url = '#url-pattern-could-not-be-resolved';
+				$page = isset($core->request->context->page) ? $core->request->context->page : null;
+
+				if ($page && $page->url_variables)
+				{
+					$url = Route::format($url_pattern, $page->url_variables);
+
+// 					\ICanBoogie\log("URL pattern %pattern was resolved using current page's variables", array('%pattern' => $pattern));
+				}
+				else
+				{
+					$url = '#url-pattern-could-not-be-resolved';
+				}
 			}
 		}
 		else
@@ -290,7 +295,7 @@ class Page extends Node
 	 */
 	protected function __get_is_home()
 	{
-		return (!$this->parentid && $this->weight == 0);
+		return (!$this->parentid && $this->is_online && $this->weight == 0);
 	}
 
 	/**
@@ -302,9 +307,9 @@ class Page extends Node
 	 */
 	protected function __get_is_active()
 	{
-		global $page;
+		global $core;
 
-		return $page->nid == $this->nid;
+		return $core->request->context->page->nid == $this->nid;
 	}
 
 	/**
@@ -316,9 +321,9 @@ class Page extends Node
 	 */
 	protected function __get_is_trail()
 	{
-		global $page;
+		global $core;
 
-		$node = $page;
+		$node = $core->request->context->page;
 
 		while ($node)
 		{
@@ -372,45 +377,83 @@ class Page extends Node
 	 * we should create a `online_children` virtual property that returns only _online_ children,
 	 * or maybe a `accessible_children` virtual property ?
 	 */
-
 	protected function __get_children()
 	{
-		return $this->_model->where('is_online = 1 AND parentid = ?', $this->nid)->order('weight, created')->all;
+		$blueprint = $this->_model->get_blueprint($this->siteid);
+		$pages = $blueprint['pages'];
+
+		if (!$pages[$this->nid]->children)
+		{
+			return array();
+		}
+
+		$ids = array();
+
+		foreach ($pages[$this->nid]->children as $nid => $child)
+		{
+			if (!$child->is_online)
+			{
+				continue;
+			}
+
+			$ids[] = $nid;
+		}
+
+		return $this->_model->find($ids);
 	}
 
 	/**
-	 * Returns the page's children that are part of the navigation.
+	 * Returns the page's children that are online and part of the navigation.
+	 *
+	 * @return array[int]Page
 	 */
-
 	protected function __get_navigation_children()
 	{
-		return $this->_model->where('is_online = 1 AND is_navigation_excluded = 0 AND pattern = "" AND parentid = ?', $this->nid)->order('weight, created')->all;
-	}
+		$index = $this->_model->get_blueprint($this->siteid)->index;
 
-	static private $childrens_ids_by_parentid;
-
-	protected function __get_has_child()
-	{
-		if (!self::$childrens_ids_by_parentid)
+		if (!$index[$this->nid]->children)
 		{
-			self::$childrens_ids_by_parentid = $this->_model->select('parentid, GROUP_CONCAT(nid)')->group('parentid')->pairs;
+			return array();
 		}
 
-		return isset(self::$childrens_ids_by_parentid[$this->nid]);
+		$ids = array();
+
+		foreach ($index[$this->nid]->children as $nid => $child)
+		{
+			if (!$child->is_online || $child->is_navigation_excluded || $child->pattern)
+			{
+				continue;
+			}
+
+			$ids[] = $nid;
+		}
+
+		if (!$ids)
+		{
+			return array();
+		}
+
+		return $this->_model->find($ids);
 	}
 
 	/**
-	 * Returns the number of child for this page.
+	 * Checks if the page as at least one child.
+	 *
+	 * @return boolean
 	 */
-
-	protected function __get_child_count()
+	protected function __get_has_child()
 	{
-		if (!$this->has_child)
-		{
-			return 0;
-		}
+		return $this->_model->get_blueprint($this->siteid)->has_children($this->nid);
+	}
 
-		return substr_count(self::$childrens_ids_by_parentid[$this->nid], ',') + 1;
+	/**
+	 * Returns the number of child of the page.
+	 *
+	 * @return int
+	 */
+	protected function __get_children_count()
+	{
+		return $this->_model->get_blueprint($this->siteid)->children_count($this->nid);
 	}
 
 	/**
@@ -419,7 +462,6 @@ class Page extends Node
 	 * This function is only called if no label is defined, in which case the title of the page is
 	 * returned instead.
 	 */
-
 	protected function __get_label()
 	{
 		return $this->title;
@@ -428,7 +470,6 @@ class Page extends Node
 	/**
 	 * Returns the depth level of this page in the navigation tree.
 	 */
-
 	protected function __get_depth()
 	{
 		return $this->parent ? $this->parent->depth + 1 : 0;
@@ -473,8 +514,9 @@ class Page extends Node
 	 * Returns the contents of the page as an array.
 	 *
 	 * Keys of the array are the contentid, values are the contents objects.
+	 *
+	 * @return array[string]\ICanBoogie\ActiveRecord\Pages\Content
 	 */
-
 	protected function __get_contents()
 	{
 		global $core;
@@ -494,8 +536,9 @@ class Page extends Node
 	 * Returns the body of this page.
 	 *
 	 * The body is the page's contents object with the 'body' identifier.
+	 *
+	 * @return \ICanBoogie\ActiveRecord\Pages\Content
 	 */
-
 	protected function __get_body()
 	{
 		$contents = $this->contents;
@@ -503,39 +546,46 @@ class Page extends Node
 		return isset($contents['body']) ? $contents['body'] : null;
 	}
 
-	protected function __get_css_class()
+	/**
+	 * Replaces `type` value by "page" and `id` value by "page-id-<nid>".
+	 *
+	 * The following class names are added:
+	 *
+	 * - `slug`: "page-slug-<slug>"
+	 * - `home`: true if the page is the home page.
+	 * - `active`: true if the page is the active page.
+	 * - `trail`: true if the page is in the breadcrumb trail.
+	 * - `node-id`: "node-id-<nid>" if the page displays a node.
+	 * - `node-constructor`: "node-constructor-<normalized_constructor>" if the page displays a node.
+	 * - `template`: "template-<name>" the name of the page's template, without its extension.
+	 *
+	 * @see ICanBoogie\ActiveRecord.Node::__get_css_class_names()
+	 */
+	protected function __get_css_class_names()
 	{
-		global $core, $page;
-
-		$class = "page-id-{$this->nid} page-slug-{$this->slug}";
-
-		if ($this->home->nid == $this->nid)
-		{
-			$class .= ' home';
-		}
-
-		//TODO-20101213: add a "breadcrumb" class to recognize the actual active page from the pages of the breadcrumb
-
-		//if (!empty($this->is_active) || (isset($page) && $page->nid == $this->nid))
-		if ($this->is_active)
-		{
-			$class .= ' active';
-		}
-		else if ($this->is_trail)
-		{
-			$class .= ' trail';
-		}
+		$names = array_merge
+		(
+			parent::__get_css_class_names(), array
+			(
+				'type' => 'page',
+				'id' => 'page-id-' . $this->nid,
+				'slug' => 'page-slug-'. $this->slug,
+				'home' => ($this->home->nid == $this->nid),
+				'active' => $this->is_active,
+				'trail' => (!$this->is_active && $this->is_trail),
+				'template' => 'template-' . preg_replace('#\.(html|php)$#', '', $this->template)
+			)
+		);
 
 		if (isset($this->node))
 		{
 			$node = $this->node;
 
-			$class .= " node-id-{$node->nid} node-constructor-" . wd_normalize($node->constructor);
+			$names['node-id'] = 'node-id-' . $node->nid;
+			$names['node-constructor'] = 'node-constructor-' . \ICanBoogie\normalize($node->constructor);
 		}
 
-		$class .= ' template-' . preg_replace('#|.(html|php)#', '', $this->template);
-
-		return $class;
+		return $names;
 	}
 
 	/**

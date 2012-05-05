@@ -48,7 +48,7 @@ class OfflineOperation extends Operation
 		$record->is_online = false;
 		$record->save();
 
-		wd_log_done('!title is now offline', array('!title' => $record->title));
+		\ICanBoogie\log_success('!title is now offline', array('!title' => $record->title));
 
 		return true;
 	}

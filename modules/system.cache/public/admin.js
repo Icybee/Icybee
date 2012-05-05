@@ -90,7 +90,7 @@ window.addEvent
 			{
 				var target = ev.target;
 
-				if (target.tagName == 'BUTTON' && target.getParent('td.config'))
+				if (target.hasClass('spinner') && target.getParent('td.config'))
 				{
 					var cacheId = target.getParent('tr').get('data-cache-id');
 

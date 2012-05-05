@@ -23,7 +23,7 @@ class Model extends \ICanBoogie\ActiveRecord\Model
 		}
 		else if (isset($properties[Term::TERMSLUG]))
 		{
-			$properties[Term::TERMSLUG] = wd_normalize($properties[Term::TERMSLUG]);
+			$properties[Term::TERMSLUG] = \ICanBoogie\normalize($properties[Term::TERMSLUG]);
 		}
 
 		return parent::save($properties, $key, $options);

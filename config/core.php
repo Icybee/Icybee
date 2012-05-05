@@ -14,7 +14,6 @@ return array
 		'Brickrouge\Widget' => $path . 'lib/widget/widget.php',
 		'Brickrouge\Widget\TimeZone' => $includes . 'widgets/time-zone.php',
 
-		'Icybee' => $path . '/lib/icybee.php',
 		'Icybee\ActiveRecord\Model\Constructor' => $path . 'lib/activerecord/model.constructor.php',
 		'Icybee\Admin\Element\Actionbar' => $path . 'lib/element/actionbar.php',
 		'Icybee\Admin\Element\ActionbarTitle' => $path . 'lib/element/actionbar-title.php',
@@ -30,8 +29,7 @@ return array
 		'Icybee\Manager' => $path . 'lib/widget/manager.php',
 		'Icybee\Module' => $path . 'lib/core/module.php',
 		'Icybee\Modules' => $path . 'lib/core/accessors/modules.php',
-
-		'Icybee\RenderEvent' => $path . 'lib/hooks.php',
+		'Icybee\Pagemaker' => $path . '/lib/icybee.php',
 
 		/*
 		 * Operations
@@ -56,6 +54,7 @@ return array
 		'Icybee\ConfigBlock' => $path . 'lib/blocks/config.php',
 		'Icybee\DeleteBlock' => $path . 'lib/blocks/delete.php',
 		'Icybee\EditBlock' => $path . 'lib/blocks/edit.php',
+		'Icybee\ManageBlock' => $path . 'lib/blocks/manage.php',
 		/*
 		'Icybee\EditBlock\BeforeAlterAttributesEvent' => $path . 'lib/blocks/edit.php',
 		'Icybee\EditBlock\BeforeAlterPropertiesEvent' => $path . 'lib/blocks/edit.php',
