@@ -15,7 +15,7 @@ return array
 		'ICanBoogie\ActiveRecord\Content::alter_css_class_names' => __NAMESPACE__ . '::on_alter_css_class_names'
 	),
 
-	'objects.methods' => array
+	'prototypes' => array
 	(
 		'ICanBoogie\ActiveRecord\Node::__get_image' => __NAMESPACE__ . '::__get_image'
 	),

@@ -11,7 +11,7 @@ return array
 		'ICanBoogie\Modules\System\Cache\Collection::alter' => __NAMESPACE__ . '::on_alter_cache_collection'
 	),
 
-	'objects.methods' => array
+	'prototypes' => array
 	(
 		'ICanBoogie\ActiveRecord\Image::thumbnail' => __NAMESPACE__ . '::method_thumbnail',
 		'ICanBoogie\ActiveRecord\Image::__get_thumbnail' => __NAMESPACE__ . '::method_get_thumbnail',

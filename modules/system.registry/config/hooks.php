@@ -19,7 +19,7 @@ return array
 		'ICanBoogie\Modules\Sites\DeleteOperation::process' => __NAMESPACE__ . '::on_operation_delete'
 	),
 
-	'objects.methods' => array
+	'prototypes' => array
 	(
 		'ICanBoogie\ActiveRecord\Node::__get_metas' => __NAMESPACE__ . '::method_get_metas',
 		'ICanBoogie\ActiveRecord\User::__get_metas' => __NAMESPACE__ . '::method_get_metas',

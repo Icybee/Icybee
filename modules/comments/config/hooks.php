@@ -10,7 +10,7 @@ return array
 		'Icybee\Views\View::render' => 'ICanBoogie\Modules\Comments\Hooks::on_view_render'
 	),
 
-	'objects.methods' => array
+	'prototypes' => array
 	(
 		'ICanBoogie\ActiveRecord\Node::__get_comments' => 'ICanBoogie\Modules\Comments\Hooks::get_comments',
 		'ICanBoogie\ActiveRecord\Node::__get_comments_count' => 'ICanBoogie\Modules\Comments\Hooks::get_comments_count',

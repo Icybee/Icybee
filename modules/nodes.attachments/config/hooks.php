@@ -14,7 +14,7 @@ return array
 		'ICanBoogie\Modules\Files\ConfigOperation::properties:before' => __NAMESPACE__ . '::before_config_operation_properties'
 	),
 
-	'objects.methods' => array
+	'prototypes' => array
 	(
 		'ICanBoogie\ActiveRecord\Node::__get_attachments' => __NAMESPACE__ . '::get_attachments'
 	),

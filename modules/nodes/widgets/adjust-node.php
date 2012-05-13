@@ -14,6 +14,7 @@ namespace Brickrouge\Widget;
 use ICanBoogie\ActiveRecord;
 use ICanBoogie\ActiveRecord\Query;
 
+use Brickrouge\A;
 use Brickrouge\Element;
 use Brickrouge\Pager;
 use Brickrouge\Text;
@@ -31,7 +32,8 @@ class AdjustNode extends \Brickrouge\Widget
 				self::T_CONSTRUCTOR => 'nodes',
 
 				'class' => 'adjust',
-				'data-adjust' => 'adjust-node'
+				'data-adjust' => 'adjust-node',
+				'data-widget-constructor' => 'AdjustNode'
 			)
 		);
 
@@ -74,7 +76,7 @@ class AdjustNode extends \Brickrouge\Widget
 
 		list($records, $range) = $this->get_records($constructor, $options);
 
-		$rc = $records ? $this->format_records($records, $range, $options) : $this->get_placeholder($options);
+		$rc = $records ? $this->render_records($records, $range, $options) : $this->get_placeholder($options);
 
 		return '<div class="results">' . $rc . '</div>';
 	}
@@ -143,7 +145,7 @@ class AdjustNode extends \Brickrouge\Widget
 		);
 	}
 
-	protected function format_records($records, array $range, array $options)
+	protected function render_records($records, array $range, array $options)
 	{
 		$selected = $options['selected'];
 
@@ -151,7 +153,8 @@ class AdjustNode extends \Brickrouge\Widget
 
 		foreach ($records as $record)
 		{
-			$rc .= $this->format_record($record, $selected, $range, $options);
+			$rc .= $record->nid == $selected ? '<li class="selected">' : '<li>';
+			$rc .= $this->render_record($record, $selected, $range, $options) . '</li>';
 		}
 
 		$n = count($records);
@@ -175,22 +178,19 @@ class AdjustNode extends \Brickrouge\Widget
 		return $rc;
 	}
 
-	protected function format_record(ActiveRecord\Node $record, $selected, array $range, array $options)
+	protected function render_record(ActiveRecord\Node $record, $selected, array $range, array $options)
 	{
 		$recordid = $record->nid;
 
-		return new Element
+		return new A
 		(
-			'li', array
+			\ICanBoogie\shorten($record->title), '#', array
 			(
-				Element::INNER_HTML => \ICanBoogie\shorten($record->title),
 				Element::DATASET => array
 				(
 					ActiveRecord\Node::NID => $recordid,
 					ActiveRecord\Node::TITLE => $record->title
-				),
-
-				'class' => $recordid == $selected ? 'selected' : null
+				)
 			)
 		);
 	}

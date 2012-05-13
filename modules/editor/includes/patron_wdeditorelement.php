@@ -28,6 +28,8 @@ class patron_WdEditorElement extends WdEditorElement
 
 	static public function render($contents)
 	{
-		return Patron($contents);
+		$patron = new Patron\Engine();
+
+		return $patron($contents);
 	}
 }

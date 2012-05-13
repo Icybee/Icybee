@@ -74,10 +74,7 @@ class TitleSlugCombo extends \Brickrouge\Widget
 					'</div>'
 				),
 
-				Element::DATASET => array
-				(
-					'auto-label' => '<em>' . t('auto', array(), array('scope' => 'titleslugcombo.element')) . '</em>'
-				)
+				'data-auto-label' => '<em>' . t('auto', array(), array('scope' => 'titleslugcombo.element')) . '</em>'
 			)
 		);
 	}

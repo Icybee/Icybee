@@ -36,6 +36,14 @@ usage: |
 ...
 */
 
+!function() {
+
+var defaultImage =
+
+	'iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAMAAABEpIrGAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJ' +
+	'bWFnZVJlYWR5ccllPAAAAAZQTFRF////IiIiHNlGNAAAAAF0Uk5TAEDm2GYAAAAeSURBVHjaYmBk' +
+	'YMCPKJVnZBi1YtSKUSuGphUAAQYAxEkBVsmDp6QAAAAASUVORK5CYII='
+
 MooEditable.UI.ImageDialog = new Class
 ({
 	Extends: MooEditable.UI.Dialog,
@@ -83,12 +91,6 @@ MooEditable.UI.ImageDialog = new Class
 
 	open: function()
 	{
-		var defaultImage =
-
-			'iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAMAAABEpIrGAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJ' +
-			'bWFnZVJlYWR5ccllPAAAAAZQTFRF////IiIiHNlGNAAAAAF0Uk5TAEDm2GYAAAAeSURBVHjaYmBk' +
-			'YMCPKJVnZBi1YtSKUSuGphUAAQYAxEkBVsmDp6QAAAAASUVORK5CYII=';
-
 		//
 		// get the node to edit, if none, a new one is created with a default image
 		//
@@ -103,17 +105,11 @@ MooEditable.UI.ImageDialog = new Class
 			this.editor.selection.getRange().insertNode(this.node);
 		}
 
-		this.node.addEvent
-		(
-			'load', function(ev)
-			{
-				if (this.popover)
-				{
-					this.popover.reposition();
-				}
-			}
-			.bind(this)
-		);
+		this.node.addEvent('load', function(ev) {
+
+			if (this.popover) this.popover.reposition()
+
+		}.bind(this))
 
 		this.previousImage = this.node.get('src');
 
@@ -248,3 +244,5 @@ MooEditable.Actions.image =
 		this.dialogs.image.prompt.open();
 	}
 };
+
+} ()

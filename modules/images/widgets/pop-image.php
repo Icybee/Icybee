@@ -13,7 +13,7 @@ namespace Brickrouge\Widget;
 
 use Brickrouge\Element;
 
-class PopImage extends PopNode
+class PopImage extends \ICanBoogie\Modules\Nodes\PopNode
 {
 	const T_PREVIEW_WIDTH = '#preview-width';
 	const T_PREVIEW_HEIGHT = '#preview-height';
@@ -27,7 +27,7 @@ class PopImage extends PopNode
 				self::T_PREVIEW_WIDTH => 64,
 				self::T_PREVIEW_HEIGHT => 64,
 				self::T_CONSTRUCTOR => 'images',
-				self::T_PLACEHOLDER => 'Sélectionner une image',
+				'placeholder' => 'Sélectionner une image',
 
 				'data-adjust' => 'adjust-image'
 			)

@@ -1,33 +1,203 @@
 @charset "utf-8";
 
-/*
-**
+#manager div.alert {
+	line-height: 4em;
+	text-align: center;
+	margin: 0;
+	border-radius: 0;
+}
 
-TABLE
+#manager div.alert .close {
+	display: none;
+}
 
-**
-*/
-
-table.manage
-{
+table.manage {
 	width: 100%;
 }
 
-#contents table.manage
-{
-	margin: 0;
-}
+/* cells */
 
 table.manage td,
-table.manage th
-{
+table.manage th {
+	text-align: left;
 	padding: 4px;
 }
 
-table.manage tbody tr + tr td
-{
-	border-top: 1px solid #EEE;
+table.manage th {
+	border-bottom: 1px solid #CCC;
+	white-space: nowrap;
 }
+
+table.manage th.measure,
+table.manage td.measure {
+	text-align: right;
+}
+
+table.manage th.pull-right,
+table.manage td.pull-right {
+	text-align: right;
+	float: none;
+}
+
+/* thead */
+
+table.manage thead tr {
+	background-color: #E8E8E8;
+}
+
+table.manage thead a,
+table.manage tbody a {
+	color: inherit;
+	text-decoration: none;
+}
+
+table.manage .asc .title {
+	background: url(manage/asc.png) no-repeat right center;
+	padding-right: 10px;
+}
+
+table.manage .desc .title {
+	background: url(manage/desc.png) no-repeat right center;
+	padding-right: 10px;
+}
+
+table.manage th a.filter {
+	background: url(manage/filter.png) no-repeat right center;
+	padding-right: 16px;
+}
+
+table.manage th {
+	padding: 0;
+}
+
+table.manage th a {
+	display: block;
+}
+
+table.manage th>div {
+	padding: 0 4px;
+	border-left: 1px solid transparent;
+	border-right: 1px solid transparent;
+	position: relative;
+	height: 28px;
+}
+
+table.manage th:first-child>div {
+	border-left-width: 0;
+}
+
+table.manage th:last-child>div {
+	border-right-width: 0;
+}
+
+table.manage th.orderable:hover>div,
+table.manage th.filters:hover>div,
+table.manage th.filtering:hover>div {
+	border-color: #cfcfcf;
+}
+
+table.manage th.has-no-label>div {
+	padding: 0;
+}
+
+table.manage th.key>div {
+	height: auto;
+}
+
+table.manage td:first-child,table.manage th:first-child>div {
+	padding-left: 16px;
+}
+
+table.manage td:last-child,table.manage th:last-child>div {
+	padding-right: 16px;
+}
+
+table.manage th.has-no-label>div>a {
+	display: none;
+}
+
+table.manage th.has-options>div {
+	padding-right: 28px;
+}
+
+table.manage th {
+	line-height: 28px;
+}
+
+table.manage th.orderable:hover,table.manage th.filters:hover,table.manage th.filtering:hover {
+	background: -moz-linear-gradient(top, #ddd, #E8E8E8 60%);
+	background: -webkit-linear-gradient(top, #ddd, #E8E8E8 60%);
+	background: linear-gradient(top, #ddd, #E8E8E8 60%);
+}
+
+table.manage th.filtering .title {
+	background: url(manage/filter.png) no-repeat right center;
+	padding-right: 16px;
+}
+
+table.manage th .dropdown {
+	position: absolute;
+	right: 0;
+	top: 0;
+	border-left: 1px dashed transparent;
+}
+
+table.manage th.has-no-label .dropdown {
+	right: auto;
+	width: 100%;
+}
+
+table.manage th .dropdown>a {
+	padding: 0 4px;
+	text-align: center;
+}
+
+table.manage th:hover .dropdown,table.manage th .dropdown.open {
+	border-left-color: #cfcfcf;
+}
+
+table.manage th .dropdown.open {
+	border-left-style: solid;
+	background: white;
+	background: -moz-linear-gradient(top, rgba(255, 255, 255, 0), white );
+}
+
+table.manage th.filtering .dropdown {
+	/*border-left-color: #cfcfcf;*/
+	/*border-left-style: dashed;*/
+	background: #FFC;
+	background: -moz-linear-gradient(top, rgba(255, 255, 204, 0), #FFC );
+}
+
+table.manage th .dropdown-menu {
+	text-align: left;
+	margin-left: -6px;
+}
+
+table.manage th.pull-right .dropdown-menu {
+	margin-left: 0;
+	margin-right: -6px;
+}
+
+table.manage th.pull-right .dropdown-menu:after {
+	left: auto;
+	right: 10px;
+}
+
+table.manage th.pull-right .dropdown-menu:before {
+	left: auto;
+	right: 9px;
+}
+
+table.manage th.has-no-label .dropdown {
+	border-left-color: transparent;
+}
+
+table.manage th a:hover {
+	text-decoration: none;
+}
+
+/* tfoot */
 
 table.manage tfoot {
 	font-size: 12px;
@@ -47,93 +217,39 @@ table.manage tfoot input {
 	padding: 2px;
 }
 
-/*
-table.manage tbody,
-table.manage tfoot
-{
-	font-size: .9em;
-}
-*/
-
-#manager div.alert
-{
-	line-height: 4em;
-	text-align: center;
-	margin: 0;
-	border-radius: 0;
+table.manage div.limiter {
+	float: right;
+	line-height: 24px;
 }
 
-#manager div.alert .close {
-	display: none;
+/* tbody */
+
+table.manage tbody tr+tr td {
+	border-top: 1px solid #EEE;
 }
 
-table.manage thead tr
-{
-	background-color: #E8E8E8;
-}
-
-table.manage th
-{
-	/*font-weight: normal;*/
-	text-align: left;
-	border-bottom: 1px solid #CCC;
-	white-space: nowrap;
-	/*font-size: .9em;*/
-}
-
-table.manage thead a,
-table.manage tbody a
-{
-	color: inherit;
-	text-decoration: none;
-}
-
-table.manage tbody tr:hover a:not(.btn)
-{
+table.manage tbody tr:hover a:not(.btn ) {
 	color: #4B8BB3;
 }
 
-table.manage tbody a:hover
-{
+table.manage tbody a:hover {
 	text-decoration: underline;
 }
 
-table.manage .asc .title
-{
-	background: url(manage/asc.png) no-repeat right center;
-	padding-right: 10px;
-}
-
-table.manage .desc .title
-{
-	background: url(manage/desc.png) no-repeat right center;
-	padding-right: 10px;
-}
-
-table.manage th a.filter
-{
-	background: url(manage/filter.png) no-repeat right center;
-	padding-right: 16px;
-}
-
-table.manage tbody tr:nth-child(even)
-{
+table.manage tbody tr:nth-child(even) {
 	background-color: #FBFBFB;
 }
 
-table.manage tbody tr:hover
-{
-	background-color: #f2f8ff; 
+table.manage tbody tr:hover {
+	background-color: #f2f8ff;
 }
 
-table.manage tbody tr:hover a.filter
-{
+table.manage tbody tr:hover a.filter {
 	color: #4BB38B;
 }
 
 table.manage tr.no-ownership div.checkbox,
-table.manage tr.no-ownership label.checkbox-wrapper
-{
+table.manage tr.no-ownership label.checkbox-wrapper {
 	visibility: hidden;
 }
 
@@ -141,93 +257,39 @@ table.manage tr.no-ownership td {
 	opacity: .6;
 }
 
-/*
-table.manage tr.no-ownership a.edit
-{
-	color: #808080;
-}
-*/
-
 table.manage tbody.empty td {
 	padding: 0;
 }
 
-table.manage th.key,
-table.manage td.key
-{
+table.manage th.key,table.manage td.key {
 	text-align: right;
 	width: 1em;
 }
 
-table.manage th.measure,
-table.manage td.measure {
-	text-align: right;
-} 
-
-table.manage td.key label
-{
+table.manage td.key label {
 	display: block;
 }
 
-table.manage tr.section-title td
-{
+table.manage tr.section-title td {
 	background: #F6F6F6;
 	font-weight: bold;
 }
 
-table.manage tr + tr.section-title td,
-table.manage tr.section-title + tr td
-{
+table.manage tr+tr.section-title td,table.manage tr.section-title+tr td {
 	border-color: #cfcfcf;
 }
 
-/*
-table.manage th.operations,
-table.manage td.operations
-{
+table.manage th.size,table.manage td.size,table.manage th.date,table.manage td.date {
 	text-align: right;
-	width: 1em;
+	white-space: nowrap;
 }
 
-table.manage td.operations a
-{
-	visibility: hidden;
-	display: block;
-	height: 0;
-	padding-top: 16px;
-	width: 16px;
-	overflow: hidden;
-	background: url(manage/operations.png) no-repeat;
-}
-
-table.manage td.operations a:hover
-{
-	background-position: 0 -16px;
-}
-*/
-
-table.manage tr:hover td.operations a
-{
-	visibility: visible;
-}
-
-table.manage th.size,
-table.manage td.size,
-table.manage th.date,
-table.manage td.date
-{
-	text-align: right;
-}
-
-table.manage th.date,
-table.manage td.date
-{
+table.manage th.date,table.manage td.date {
 	width: 16ex;
 	white-space: nowrap;
 }
 
-table.manage a.view
-{
+table.manage a.view {
 	display: inline-block;
 	height: 1em;
 	overflow: hidden;
@@ -238,21 +300,18 @@ table.manage a.view
 	vertical-align: baseline;
 }
 
-table.manage a.view:hover
-{
+table.manage a.view:hover {
 	background-position: -30px bottom;
 }
 
-table.manage tfoot td
-{
+table.manage tfoot td {
 	cursor: auto;
 	background-color: #E8E8E8;
 	border-top: 1px solid #CFCFCF;
 	padding: 6px 4px;
 }
 
-table.manage td img.icon
-{
+table.manage td img.icon {
 	width: 24px;
 	height: 24px;
 	vertical-align: middle;
@@ -261,24 +320,20 @@ table.manage td img.icon
 	padding: 1px;
 }
 
-table.manage td img.icon:hover
-{
+table.manage td img.icon:hover {
 	border-color: #A3C0E5;
 }
 
-table.manage div.jobs
-{
+table.manage div.jobs {
 	float: left;
 	visibility: hidden;
 }
 
-table.manage option[value=delete]
-{
+table.manage option[value=delete] {
 	color: #C04040;
 }
 
-table.manage div.excerpt
-{
+table.manage div.excerpt {
 	font-size: .9em;
 	max-width: 72ex;
 	margin-top: .5em;
@@ -292,21 +347,12 @@ OPTIONS
 **
 */
 
-table.manage div.limiter
-{
-	float: right;
-	line-height: 24px;
-}
-
-#menu-options div.manage form
-{
+#menu-options div.manage form {
 	display: inline-block;
 	margin: 0;
 }
 
-.actionbar span.browse,
-table.manage span.browse
-{
+.actionbar span.browse,table.manage span.browse {
 	display: block;
 	float: right;
 	margin-left: 1ex;
@@ -318,11 +364,9 @@ table.manage span.browse
 	margin-right: 8px;
 }
 
-.actionbar span.browse a,
-table.manage span.browse a
-{
+.actionbar span.browse a,table.manage span.browse a {
 	border: 1px solid transparent;
-    border-radius: 4px;
+	border-radius: 4px;
 	display: block;
 	width: 20px;
 	height: 0;
@@ -337,48 +381,37 @@ table.manage span.browse a
 	padding-top: 26px;
 }
 
-table.manage span.browse a
-{
+table.manage span.browse a {
 	padding-top: 22px;
 }
 
-.actionbar span.browse a.previous,
-table.manage span.browse a.previous
-{
+.actionbar span.browse a.previous,table.manage span.browse a.previous {
 	background-image: url(manage/arrow-right.png);
 }
 
-.actionbar span.browse a.next,
-table.manage span.browse a.next
-{
+.actionbar span.browse a.next,table.manage span.browse a.next {
 	background-image: url(manage/arrow-left.png);
 }
 
-table.manage span.browse a:hover
-{
+table.manage span.browse a:hover {
 	border-color: #CFCFCF;
 	background-color: white;
 }
 
 .actionbar span.browse a:hover {
 	border-color: #ccc;
-	background-color: #F6F6F6;	
+	background-color: #F6F6F6;
 }
 
-.actionbar span.browse a.previous:active,
-table.manage span.browse a.previous:active
-{
+.actionbar span.browse a.previous:active,table.manage span.browse a.previous:active {
 	left: -2px;
 }
 
-.actionbar span.browse a.next:active,
-table.manage span.browse a.next:active
-{
+.actionbar span.browse a.next:active,table.manage span.browse a.next:active {
 	left: 2px;
 }
 
-#menu-options div.manage a.reset
-{
+#menu-options div.manage a.reset {
 	margin-left: 1ex;
 	padding: .2em .5ex;
 	text-decoration: none;
@@ -392,25 +425,20 @@ RECORDS
 
 **
 */
-
-table.manage .key label.checkbox-wrapper
-{
+table.manage .key label.checkbox-wrapper {
 	border: 1px solid #CFCFCF;
 	background: #E8E8E8;
 }
 
-table.manage thead .key label.checkbox-wrapper
-{
+table.manage thead .key label.checkbox-wrapper {
 	background: #F6F6F6;
 }
 
-table.manage thead .key label.checkbox-wrapper.checked
-{
+table.manage thead .key label.checkbox-wrapper.checked {
 	background: #B5D5FF;
 }
 
-table.manage .key label.checkbox-wrapper.checked
-{
+table.manage .key label.checkbox-wrapper.checked {
 	background: #B5D5FF;
 	border-color: #a3c0e5;
 }
@@ -422,238 +450,43 @@ MANAGE-JOB
 
 **
 */
-
-#manage-job
-{
+#manage-job {
 	text-align: center;
 	padding: 1em;
 }
 
-#manage-job h3
-{
+#manage-job h3 {
 	margin-top: 0;
 	font-weight: normal;
 }
 
-#manage-job span.spacer
-{
+#manage-job span.spacer {
 	padding: 0 .5ex;
 }
 
-#manage-job div.gauge
-{
+#manage-job div.gauge {
 	margin: 1em auto;
 	height: 1.5em;
 	width: 50%;
 	border: 1px solid #CCC;
 }
 
-#manage-job div.gauge div.bar
-{
+#manage-job div.gauge div.bar {
 	height: 100%;
 	background-color: #FFE;
 }
 
-#manage-job div.gauge,
-#manage-job div.gauge div.bar
-{
+#manage-job div.gauge,#manage-job div.gauge div.bar {
 	border-radius: 4px;
 	-moz-border-radius: 4px;
 	-webkit-border-radius: 4px;
 }
 
-#manage-job div.progress p
-{
+#manage-job div.progress p {
 	font-size: .8em;
 }
 
-/*
-**
-
-MANAGER - OPERATIONS MENU
-
-**
-*/
-/*
-#manager-operations-menu
-{
-	position: absolute;
-	background: #F6F6F6;
-	border: 1px solid #CFCFCF;
-	background: white;
-	padding: 0;
-	margin: 0;
-	top: 0;
-	left: 0;
-	font-size: .8em;
-	list-style: none;
-}
-
-#manager-operations-menu li
-{
-	padding: .2em .6em;
-}
-
-#manager-operations-menu li:hover
-{
-	color: #4B8BB3;
-	background: #F2F8FF;
-	cursor: pointer;
-}
-
-#manager-operations-menu li + li
-{
-	border-top: 1px solid #CFCFCF;
-}
-*/
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-table.manage th
-{
-	padding: 0;
-}
-
-table.manage th a
-{
-	display: block;
-}
-
-table.manage th > div {
-	padding: 0 4px;
-	border-left: 1px solid transparent;
-	border-right: 1px solid transparent;
-	position: relative;
-	height: 28px;
-}
-
-table.manage th:first-child > div {
-	border-left-width: 0;
-}
-
-table.manage th:last-child > div {
-	border-right-width: 0;
-}
-
-table.manage th.orderable:hover > div,
-table.manage th.filters:hover > div,
-table.manage th.filtering:hover > div
-{
-	border-color: #cfcfcf;
-}
-
-table.manage th.has-no-label > div {
-	padding: 0;
-}
-
-table.manage th.key > div {
-	height: auto;
-}
-
-table.manage td:first-child,
-table.manage th:first-child > div
-{
-	padding-left: 16px;
-}
-
-table.manage td:last-child,
-table.manage th:last-child > div
-{
-	padding-right: 16px;
-}
-
-table.manage th.has-no-label > div > a {
-	display: none;
-}
-
-table.manage th.has-options > div {
-	padding-right: 22px; 
-}
-
-table.manage th
-{
-	line-height: 28px;
-}
-
-table.manage th.orderable:hover,
-table.manage th.filters:hover,
-table.manage th.filtering:hover
-{
-	background: -moz-linear-gradient(top, #ddd, #E8E8E8 60%);
-	background: -webkit-linear-gradient(top, #ddd, #E8E8E8 60%);
-	background: linear-gradient(top, #ddd, #E8E8E8 60%);
-}
-
-table.manage th.filtering .title
-{
-	background: url(manage/filter.png) no-repeat right center;
-	padding-right: 16px;
-}
-
-table.manage th .dropdown {
-	position: absolute;
-	right: 0;
-	top: 0;
-	border-left: 1px dashed transparent;
-}
-
-table.manage th.has-no-label .dropdown {
-	right: auto;
-	width: 100%;
-}
-
-table.manage th .dropdown > a {
-	padding: 0 4px;
-	text-align: center;
-}
-
-table.manage th:hover .dropdown,
-table.manage th .dropdown.open {
-	border-left-color: #cfcfcf;
-}
-
-table.manage th .dropdown.open {
-	border-left-style: solid;
-	background: white;
-	background: -moz-linear-gradient(top, rgba(255, 255, 255, 0), white);
-}
-
-table.manage th.filtering .dropdown {
-	/*border-left-color: #cfcfcf;*/
-	/*border-left-style: dashed;*/
-	background: #FFC;
-	background: -moz-linear-gradient(top, rgba(255, 255, 204, 0), #FFC);
-}
-
-
-
-table.manage th .dropdown-menu {
-	margin-left: -6px;
-}
-
-table.manage th.has-no-label .dropdown {
-	border-left-color: transparent;
-}
-
-table.manage th a:hover
-{
-	text-decoration: none;
-}
-
-table.manage tbody .icon-download,
-table.manage tbody .icon-download-alt {
+table.manage tbody .icon-download,table.manage tbody .icon-download-alt {
 	display: inline-block;
 	height: 0;
 	padding-top: 14px;

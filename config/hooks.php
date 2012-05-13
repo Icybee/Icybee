@@ -14,7 +14,7 @@ return array
 		'Icybee::nodes_load' => 'Icybee::on_nodes_load'
 	),
 
-	'objects.methods' => array
+	'prototypes' => array
 	(
 		'ICanBoogie\Core::__get_document' => 'Icybee\Document::hook_get_document'
 	),

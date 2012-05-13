@@ -2,7 +2,7 @@
 
 return array
 (
-	'objects.methods' => array
+	'prototypes' => array
 	(
 		'ICanBoogie\Core::__get_user' => 'ICanBoogie\Modules\Users\Hooks::get_user',
 		'ICanBoogie\Core::__get_user_id' => 'ICanBoogie\Modules\Users\Hooks::get_user_id'

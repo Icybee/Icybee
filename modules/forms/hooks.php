@@ -23,7 +23,7 @@ class Hooks
 		$event->rc['form'] = t('Form');
 	}
 
-	public static function markup_form(array $args, \WdPatron $patron, $template)
+	public static function markup_form(array $args, \Patron\Engine $patron, $template)
 	{
 		global $core;
 

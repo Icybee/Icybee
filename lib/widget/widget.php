@@ -12,35 +12,48 @@
 namespace Brickrouge;
 
 use Brickrouge\Element;
-use ICanBoogie\Exception;
 
 abstract class Widget extends Element
 {
+	const CONSTRUCTOR = '#widget-constructor';
+
 	/**
-	 * Interpolates a css class from the widget class and add it to the class list.
+	 * Interpolates a widget constructor name from the widget class.
 	 *
 	 * @param string $type
-	 * @param array $tags
+	 * @param array $attributes
 	 */
-	public function __construct($type, $tags)
+	public function __construct($type, array $attributes=array())
 	{
 		$class = get_class($this);
+		$constructor = basename(strtr($class, '\\', '/'));
 
-		if (strpos($class, 'Brickrouge\Widget') !== 0)
-		{
-			throw new Exception('The widget class must be in the <em>Brickrouge\Widget</em> namespace');
-		}
+		parent::__construct
+		(
+			$type, $attributes + array
+			(
+				self::CONSTRUCTOR => $constructor
+			)
+		);
+	}
 
-		$class = substr($class, 18);
-		$class = 'widget-' . \ICanBoogie\hyphenate($class);
+	protected function render_class(array $class_names)
+	{
+		$class = 'widget-' . \ICanBoogie\hyphenate($this[self::CONSTRUCTOR]);
+		$class_names[$class] = $class;
 
-		parent::__construct($type, $tags);
+		return parent::render_class($class_names);
+	}
 
-		$this->add_class($class);
+	protected function render_dataset(array $dataset)
+	{
+		$dataset['widget-constructor'] = $this[self::CONSTRUCTOR];
+
+		return parent::render_dataset($dataset);
 	}
 
 	public function get_results(array $options=array())
 	{
-		throw new Exception('The widget class %class does not implement results', array('%class' => get_class($this)));
+		throw new \Exception('The widget class %class does not implement results', array('%class' => get_class($this)));
 	}
 }

@@ -11,10 +11,10 @@
 
 namespace Brickrouge\Widget;
 
-use Brickrouge\Form;
-
 use ICanBoogie\Image;
+
 use Brickrouge\Element;
+use Brickrouge\Form;
 use Brickrouge\Text;
 
 class AdjustThumbnailOptions extends \Brickrouge\Group
@@ -176,7 +176,8 @@ class AdjustThumbnailOptions extends \Brickrouge\Group
 					)
 				),
 
-				'class' => 'widget-adjust-thumbnail-options'
+				'class' => 'widget-adjust-thumbnail-options',
+				'data-widget-constructor' => 'AdjustThumbnailOptions'
 			)
 		);
 	}

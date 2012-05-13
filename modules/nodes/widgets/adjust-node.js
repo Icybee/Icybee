@@ -13,11 +13,43 @@ Brickrouge.Widget.AdjustNode = new Class
 	{
 		this.element = $(el);
 		this.setOptions(options);
-		this.element.addEvent('click', this.uberOnClick.bind(this));
+//		this.element.addEvent('click', this.uberOnClick.bind(this));
 		this.selected = this.element.getElement('.records li.selected');
 		this.attachSearch();
+
+		this.element.addEvent('click:relay(.records a)', function(ev, el) {
+
+			var selected = this.element.getElements('.records li.selected')
+
+			ev.stop()
+
+			if (selected)
+			{
+				selected.removeClass('selected')
+			}
+
+			el.getParent('li').addClass('selected')
+
+			this.selected = el
+			this.fireEvent('select', { target: el, event: ev })
+			this.fireEvent('change', { target: el, widget: this, event: ev })
+
+		}.bind(this))
+
+		this.element.addEvent('click:relay(.pagination a)', function(ev, el) {
+
+			var page = el.get('href').split('#')[1]
+
+			this.fetchResults
+			({
+				page: page,
+				search: (this.search && !this.search.hasClass('placeholder')) ? this.search.value : null
+			})
+
+		}.bind(this))
 	},
 
+	/*
 	uberOnClick: function(ev)
 	{
 		var target = ev.target;
@@ -63,6 +95,7 @@ Brickrouge.Widget.AdjustNode = new Class
 			}
 		}
 	},
+	*/
 
 	attachSearch: function()
 	{

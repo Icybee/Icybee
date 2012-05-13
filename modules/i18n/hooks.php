@@ -11,6 +11,8 @@
 
 namespace ICanBoogie\Modules\I18n;
 
+use ICanBoogie\Modules\Nodes\PopNode;
+
 use ICanBoogie\ActiveRecord\Node;
 use ICanBoogie\Event;
 use ICanBoogie\Modules;
@@ -91,5 +93,15 @@ class Hooks
 				NodeNativeElement::CONSTRUCTOR => $module->id
 			)
 		);
+		/*
+		$children[Node::NATIVEID] = new PopNode
+		(
+			array
+			(
+				Element::GROUP => 'i18n',
+				PopNode::T_CONSTRUCTOR => $module->id
+			)
+		);
+		*/
 	}
 }

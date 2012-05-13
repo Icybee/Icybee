@@ -9,14 +9,13 @@
  * file that was distributed with this source code.
  */
 
-namespace Brickrouge\Widget;
+namespace ICanBoogie\Modules\Nodes;
 
 use Brickrouge\Element;
 
 class PopNode extends \Brickrouge\Widget
 {
 	const T_CONSTRUCTOR = '#popnode-constructor';
-	const T_PLACEHOLDER = '#popnode-placeholder';
 
 	public function __construct(array $attributes=array())
 	{
@@ -25,12 +24,11 @@ class PopNode extends \Brickrouge\Widget
 			'a', $attributes + array
 			(
 				self::T_CONSTRUCTOR => 'nodes',
-				self::T_PLACEHOLDER => 'Sélectionner un enregistrement',
 
+				'placeholder' => 'Sélectionner un enregistrement',
 				'class' => 'spinner',
 				'data-adjust' => 'adjust-node',
-				'href' => 'javascript:void()',
-				'type' => 'button'
+				'href' => '#',
 			)
 		);
 	}
@@ -39,14 +37,13 @@ class PopNode extends \Brickrouge\Widget
 	{
 		parent::add_assets($document);
 
-		$document->css->add('pop-node.css');
 		$document->js->add('pop-node.js');
 	}
 
 	protected function render_dataset(array $dataset)
 	{
 		$dataset['constructor'] = $this[self::T_CONSTRUCTOR];
-		$dataset['placeholder'] = $this[self::T_PLACEHOLDER];
+		$dataset['placeholder'] = $this['placeholder'];
 
 		return parent::render_dataset($dataset);
 	}
@@ -71,7 +68,7 @@ class PopNode extends \Brickrouge\Widget
 			}
 			catch (\Exception $e)
 			{
-				\ICanBoogie\log_error('PopNode: Missing record %nid', array('%nid' => $value));
+				\ICanBoogie\log_error('Missing record %nid', array('%nid' => $value));
 			}
 		}
 
@@ -95,11 +92,11 @@ class PopNode extends \Brickrouge\Widget
 
 	protected function getPreview($entry)
 	{
-		$title = $this[self::T_PLACEHOLDER];
+		$title = $this['placeholder'];
 
 		if (!$entry)
 		{
-			return '<span class="title"><em>' . wd_entities($title) . '</em></span>';
+			return '<span class="title"><em>' . \Brickrouge\escape($title) . '</em></span>';
 		}
 
 		$value = $entry->nid;
@@ -107,8 +104,8 @@ class PopNode extends \Brickrouge\Widget
 
 		$label = \ICanBoogie\shorten($title, 32, .75, $shortened);
 
-		$rc  = '<span class="title"' . ($shortened ? ' title="' . wd_entities($title) . '"' : '') . '>';
-		$rc .= wd_entities($label) . '</span>';
+		$rc  = '<span class="title"' . ($shortened ? ' title="' . \Brickrouge\escape($title) . '"' : '') . '>';
+		$rc .= \Brickrouge\escape($label) . '</span>';
 
 		return $rc;
 	}

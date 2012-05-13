@@ -11,10 +11,6 @@
 
 namespace Icybee;
 
-use Brickrouge\DropdownMenu;
-
-use Brickrouge\Alert;
-
 use ICanBoogie;
 use ICanBoogie\ActiveRecord;
 use ICanBoogie\ActiveRecord\Model;
@@ -25,7 +21,9 @@ use ICanBoogie\I18n\Translator\Proxi;
 use ICanBoogie\Operation;
 
 use Brickrouge;
+use Brickrouge\Alert;
 use Brickrouge\Button;
+use Brickrouge\DropdownMenu;
 use Brickrouge\Element;
 use Brickrouge\Form;
 use Brickrouge\Ranger;

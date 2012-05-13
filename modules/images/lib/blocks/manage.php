@@ -46,7 +46,7 @@ class ManageBlock extends \ICanBoogie\Modules\Files\ManageBlock
 			'surface' => array
 			(
 				'label' => 'Dimensions',
-				'class' => 'size'
+				'class' => 'size pull-right'
 			)
 		);
 
@@ -147,10 +147,12 @@ class ManageBlock extends \ICanBoogie\Modules\Files\ManageBlock
 	protected function render_cell_title($record, $property)
 	{
 		$path = $record->path;
+		$thumbnail_element = $record->thumbnail('$icon')->to_element();
+		$thumbnail_element->add_class('icon');
 
-		$rc  = '<a href="' . wd_entities($path) . '" rel="lightbox[]">';
-		$rc .= $record->thumbnail('$icon');
-		$rc .= '<input type="hidden" value="' . wd_entities($record->thumbnail('$popup')->url) . '" />';
+		$rc  = '<a href="' . \ICanBoogie\escape($path) . '" rel="lightbox[]">';
+		$rc .= $thumbnail_element;
+		$rc .= '<input type="hidden" value="' . \ICanBoogie\escape($record->thumbnail('$popup')->url) . '" />';
 		$rc .= '</a>';
 
 		$rc .= parent::render_cell_title($record, $property);

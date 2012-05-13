@@ -48,7 +48,7 @@ class ManageBlock extends \ICanBoogie\Modules\Nodes\ManageBlock
 
 			File::SIZE => array
 			(
-				'class' => 'size'
+				'class' => 'size pull-right'
 			)
 		);
 	}
@@ -116,7 +116,7 @@ class ManageBlock extends \ICanBoogie\Modules\Nodes\ManageBlock
 
 		if (isset($filters['size']))
 		{
-			list($avg, $max, $min) = $this->model->similar_site->select('AVG(size), MAX(size), MIN(size)')->one(PDO::FETCH_NUM);
+			list($avg, $max, $min) = $this->model->similar_site->select('AVG(size), MAX(size), MIN(size)')->one(\PDO::FETCH_NUM);
 
 			$bounds = array
 			(

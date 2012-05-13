@@ -45,13 +45,13 @@ class AdjustImage extends AdjustNode
 		return parent::get_records($constructor, $options, $limit);
 	}
 
-	protected function format_record(ActiveRecord\Node $record, $selected, array $range, array $options)
+	protected function render_record(ActiveRecord\Node $record, $selected, array $range, array $options)
 	{
 		$recordid = $record->nid;
 
 		return new Element
 		(
-			'li', array
+			'a', array
 			(
 				Element::CHILDREN => array
 				(
@@ -83,7 +83,7 @@ class AdjustImage extends AdjustNode
 					ActiveRecord\Image::PATH => $record->path
 				),
 
-				'class' => $recordid == $selected ? 'selected' : null
+				'href' => '#'
 			)
 		);
 	}

@@ -14,6 +14,17 @@ use ICanBoogie\Uploaded;
 
 class WdFileUploadElement extends Brickrouge\File
 {
+	public function __construct(array $attributes=array())
+	{
+		parent::__construct
+		(
+			$attributes + array
+			(
+				self::CONSTRUCTOR => 'File'
+			)
+		);
+	}
+
 	protected function infos()
 	{
 		$path = $this['value'];

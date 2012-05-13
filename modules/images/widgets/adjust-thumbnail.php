@@ -30,7 +30,8 @@ class AdjustThumbnail extends \Brickrouge\Widget
 					$this->adjust_thumbnail_options = new AdjustThumbnailOptions
 				),
 
-				'class' => 'adjust'
+				'class' => 'adjust',
+				'data-widget-constructor' => 'AdjustThumbnail'
 			)
 		);
 	}

@@ -23,7 +23,10 @@ Brickrouge.Widget.PopNode = new Class
 
 		this.setOptions(options)
 
-		this.element.addEvent('click', this.onClick.bind(this))
+		this.element.addEvent('click', function(ev) {
+			ev.stop()
+			this.onClick()
+		}.bind(this))
 	},
 
 	onClick: function()

@@ -72,7 +72,7 @@ class adjustnode_WdEditorElement extends WdEditorElement
 		}
 		*/
 
-		$class = 'Brickrouge\Widget\PopNode';
+		$class = 'ICanBoogie\Modules\Nodes\PopNode';
 		$constructor = $this['data-constructor'] ?: 'nodes';
 
 		if ($constructor == 'images')
@@ -84,7 +84,7 @@ class adjustnode_WdEditorElement extends WdEditorElement
 		(
 			array
 			(
-				Widget\PopNode::T_CONSTRUCTOR => $constructor,
+				\ICanBoogie\Modules\Nodes\PopNode::T_CONSTRUCTOR => $constructor,
 
 				'name' => $name,
 				'value' => $value
