@@ -15,14 +15,14 @@ use ICanBoogie\ActiveRecord\Users\Role;
 
 class PermissionsOperation extends \ICanBoogie\Operation
 {
-	protected function __get_controls()
+	protected function get_controls()
 	{
 		return array
 		(
 			self::CONTROL_PERMISSION => Module::PERMISSION_ADMINISTER
 		)
 
-		+ parent::__get_controls();
+		+ parent::get_controls();
 	}
 
 	protected function validate(\ICanboogie\Errors $errors)
@@ -81,7 +81,7 @@ class PermissionsOperation extends \ICanBoogie\Operation
 			$role->save();
 		}
 
-		\ICanBoogie\log_success('Permissions has been saved.');
+		$this->response->success = 'Permissions have been saved.';
 
 		return true;
 	}

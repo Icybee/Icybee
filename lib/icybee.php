@@ -24,10 +24,14 @@ use ICanBoogie\Operation;
 use ICanBoogie\Route;
 use ICanBoogie\I18n\Translator\Proxi;
 
+use Brickrouge\Alert;
+
 class Pagemaker
 {
 	public function run(Request $request, Response $response)
 	{
+		global $core;
+
 		$time_start = microtime(true);
 
 		try
@@ -41,11 +45,23 @@ class Pagemaker
 
 			if (file_exists($path))
 			{
-				header('HTTP/1.1 ' . $e->getTitle());
-
 				$template = file_get_contents($path);
+				$patron = new \WdPatron();
+				$page = \ICanBoogie\ActiveRecord\Page::from
+				(
+					array
+					(
+						'siteid' => $core->site_id,
+						'title' => t($e->getTitle(), array(), array('scope' => 'exception')),
+						'body' => t($e->getMessage(), array(), array('scope' => 'exception'))
+					)
+				);
 
-				exit($this($template, $e));
+				$request->context->page = $page;
+
+				$response->status = $code;
+
+				return $patron($template, $page);
 			}
 
 			throw $e;
@@ -103,15 +119,6 @@ class Pagemaker
 
 		$html = $engine($template, $page, array('file' => $page->template));
 
-		new Pagemaker\RenderEvent
-		(
-			$this, array
-			(
-				'request' => $request,
-				'page' => $page,
-				'html' => &$html
-			)
-		);
 
 		#
 		# editables
@@ -125,11 +132,24 @@ class Pagemaker
 		}
 
 		#
+
+		new Pagemaker\RenderEvent
+		(
+			$this, array
+			(
+				'request' => $request,
+				'page' => $page,
+				'html' => &$html
+			)
+		);
+
+		#
 		# late replace
 		#
 
 		$document = $core->document;
 
+		/*
 		$markup = '<!-- $document.css -->';
 		$pos = strpos($html, $markup);
 
@@ -141,6 +161,7 @@ class Pagemaker
 		{
 			$html = str_replace('</head>', PHP_EOL . PHP_EOL . $document->css . PHP_EOL . '</head>', $html);
 		}
+		*/
 
 		$markup = '<!-- $document.js -->';
 		$pos = strpos($html, $markup);
@@ -521,10 +542,11 @@ EOT;
 
 		return '<!-- ' . \ICanBoogie\format
 		(
-			'icybee v:version - in :elapsed ms (rendering: :rendering_elapsed ms, db: :dbtime ms), using :memory-usage (peak: :memory-peak), :queries-count queries (:queries-details)', array
+			'icybee v:version - in :elapsed ms (icanboogie: :icanboogie_elapsed ms, rendering: :rendering_elapsed ms, db: :dbtime ms), using :memory-usage (peak: :memory-peak), :queries-count queries (:queries-details)', array
 			(
 				':version' => \Icybee\VERSION,
 				':elapsed' => number_format(($time_end - $_SERVER['REQUEST_TIME_FLOAT']) * 1000, 2, '.', ''),
+				':icanboogie_elapsed' => number_format(($_SERVER['ICANBOOGIE_READY_TIME_FLOAT'] - $_SERVER['REQUEST_TIME_FLOAT']) * 1000, 2, '.', ''),
 				':rendering_elapsed' => number_format($time * 1000, 2, '.', ''),
 				':dbtime' => number_format($dbtime * 1000, 2, '.', ''),
 				':memory-usage' => number_format(memory_get_usage() / (1024 * 1024), 3) . 'Mb',

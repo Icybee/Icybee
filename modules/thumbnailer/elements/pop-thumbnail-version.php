@@ -15,14 +15,20 @@ use Brickrouge\Element;
 
 class PopThumbnailVersion extends \Brickrouge\Widget
 {
+	protected static function add_assets(\Brickrouge\Document $document)
+	{
+		parent::add_assets($document);
+
+		$document->js->add('pop-thumbnail-version.js');
+	}
+
 	public function __construct(array $attributes=array())
 	{
 		parent::__construct
 		(
 			'a', $attributes + array
 			(
-				'class' => 'spinner',
-				'type' => 'button'
+				'class' => 'spinner'
 			)
 		);
 	}
@@ -37,29 +43,34 @@ class PopThumbnailVersion extends \Brickrouge\Widget
 		parent::offsetSet($offset, $value);
 	}
 
-	protected static function add_assets(\Brickrouge\Document $document)
+	protected function render_class(array $class_names)
 	{
-		parent::add_assets($document);
+		if (!$this['value'])
+		{
+			$class_names['placeholder'] = true;
+		}
 
-		$document->js->add('pop-thumbnail-version.js');
+		return parent::render_class($class_names);
 	}
 
 	protected function render_inner_html()
 	{
-		$rc = parent::render_inner_html();
+		$html = parent::render_inner_html();
 
 		$value = $this['value'] ?: $this[self::DEFAULT_VALUE];
 		$value = json_decode($value, true);
 
-		$rc .= new Element
+		$input = new Element
 		(
 			'input', array
 			(
 				'name' => $this['name'],
 				'type' => 'hidden',
-				'value' => json_encode($value)
+				'value' => $value ? json_encode($value) : ''
 			)
 		);
+
+		$content = '';
 
 		if ($value)
 		{
@@ -81,15 +92,12 @@ class PopThumbnailVersion extends \Brickrouge\Widget
 			$method = $value['method'];
 			$format = '.' . $value['format'];
 
+			/*
 			if ($value['no-upscale'])
 			{
 				$options[] = 'ne pas agrandir';
 			}
-
-			if ($value['interlace'])
-			{
-				$options[] = 'entrelacer';
-			}
+			*/
 
 			if ($options)
 			{
@@ -100,15 +108,15 @@ class PopThumbnailVersion extends \Brickrouge\Widget
 				$options = '';
 			}
 
-			$rc .= <<<EOT
+			$content = <<<EOT
 {$w}×{$h} {$method} $format <span class="small light">$options</span>
 EOT;
 		}
-		else
-		{
-			$rc .= '<em>Version non définie</em>';
-		}
 
-		return $rc;
+		$placeholder = 'Version non définie';
+
+		return <<<EOT
+$input <span class="spinner-content">$content</span> <em class="spinner-placeholder">$placeholder</em> $html
+EOT;
 	}
 }

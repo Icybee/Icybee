@@ -3,25 +3,27 @@ window.addEvent
 (
 	'domready', function()
 	{
-		var form = $(document.body).getElement('form.edit');
+		var form = document.body.getElement('form.edit')
 
 		if (!form)
 		{
-			return;
+			return
 		}
 
-		var username = $(form.elements['username']);
+		var username = $(form.elements['username'])
 
 		if (!username)
 		{
-			return;
+			return
 		}
 
-		var firstname = $(form.elements['firstname']);
-		var lastname = $(form.elements['lastname']);
-		var email = $(form.elements['email']);
-		var auto_username = !firstname.value && !lastname.value;
-		var uid = form.elements['#key'] ? form.elements['#key'].value : null;
+		var firstname = $(form.elements['firstname'])
+		, lastname = $(form.elements['lastname'])
+		, email = $(form.elements['email'])
+		, auto_username = !firstname.value && !lastname.value
+		, uid = form.elements['#key'] ? form.elements['#key'].value : null
+		, usernameGroup = username.getParent('.control-group')
+		, emailGroup = email.getParent('.control-group')
 
 		var operation_check_unique = new Request.API
 		({
@@ -29,64 +31,43 @@ window.addEvent
 
 			onFailure: function(xhr, response)
 			{
-				if (response.errors.username)
-				{
-					username.addClass('missing');
-				}
-				else
-				{
-					username.removeClass('missin');
-				}
-
-				if (response.errors.email)
-				{
-					email.addClass('missing');
-				}
-				else
-				{
-					email.removeClass('missing');
-				}
+				usernameGroup[response.errors.username ? 'addClass' : 'removeClass']('error')
+				emailGroup[response.errors.email ? 'addClass' : 'removeClass']('error')
 			},
 
 			onSuccess: function(response)
 			{
-				username.removeClass('missing');
-				email.removeClass('missing');
+				usernameGroup.removeClass('error')
+				emailGroup.removeClass('error')
 			}
-		});
+		})
 
 		function check_unique()
 		{
-			operation_check_unique.get({ uid: uid, username: username.value, email: email.value });
+			operation_check_unique.get({ uid: uid, username: username.value, email: email.value })
 		}
 
-		username.addEvent
-		(
-			'keyup', function(ev)
+		username.addEvent('keyup', function(ev) {
+
+			if (ev.key.length > 1 && ev.key != 'backspace' && ev.key != 'delete')
 			{
-				if (ev.key.length > 1 && ev.key != 'backspace' && ev.key != 'delete')
-				{
-					return;
-				}
-
-				check_unique();
-
-				auto_username = false;
+				return
 			}
-		);
 
-		email.addEvent
-		(
-			'keyup', function(ev)
+			check_unique()
+
+			auto_username = false
+		})
+
+		email.addEvent('keyup', function(ev) {
+
+			if (ev.key.length > 1 && ev.key != 'backspace' && ev.key != 'delete')
 			{
-				if (ev.key.length > 1 && ev.key != 'backspace' && ev.key != 'delete')
-				{
-					return;
-				}
-
-				check_unique();
+				return
 			}
-		);
+
+			check_unique()
+		})
 
 		if (auto_username)
 		{
@@ -94,60 +75,61 @@ window.addEvent
 			{
 				if (!auto_username)
 				{
-					return;
+					return
 				}
 
-				value = ((firstname.value ? firstname.value[0] : '') + (lastname.value ? lastname.value : '')).toLowerCase();
+				value = ((firstname.value ? firstname.value[0] : '') + (lastname.value ? lastname.value : '')).toLowerCase()
 
-				value = value.replace(/[àáâãäåąă]/g,"a");
-				value = value.replace(/[çćčċ]/g,"c");
-				value = value.replace(/[èéêëēęė]/g,"e");
-				value = value.replace(/[ìîïīĩį]/g,"i");
-				value = value.replace(/[óôõöøőŏ]/g,"o");
-				value = value.replace(/[ùúûüų]/g,"u");
-				value = value.replace(' ', '');
+				value = value.replace(/[àáâãäåąă]/g,"a")
+				value = value.replace(/[çćčċ]/g,"c")
+				value = value.replace(/[èéêëēęė]/g,"e")
+				value = value.replace(/[ìîïīĩį]/g,"i")
+				value = value.replace(/[óôõöøőŏ]/g,"o")
+				value = value.replace(/[ùúûüų]/g,"u")
+				value = value.replace(' ', '')
 
-				username.value = value;
-				username.fireEvent('change', {});
+				username.value = value
+				username.fireEvent('change', {})
+
+				check_unique()
 			}
 
-			firstname.addEvent('keyup', update);
-			firstname.addEvent('change', update);
+			firstname.addEvent('keyup', update)
+			firstname.addEvent('change', update)
 
-			lastname.addEvent('keyup', update);
-			lastname.addEvent('change', update);
+			lastname.addEvent('keyup', update)
+			lastname.addEvent('change', update)
 		}
 
 		//
 		//
 		//
 
-		var display = $(form.elements['display']);
-		var displayOptions = display.getChildren('option');
+		var display = $(form.elements['display'])
 
 		function updateDisplayOption(index, value)
 		{
-			var el = display.getElement('option[value=' + index + ']');
+			var el = display.getElement('option[value=' + index + ']')
 
 			if (!value)
 			{
 				if (el)
 				{
-					el.destroy();
+					el.destroy()
 				}
 
-				return;
+				return
 			}
 
 			if (!el)
 			{
-				el = new Element('option', { value: index, text: value });
+				el = new Element('option', { value: index, text: value })
 
-				el.inject(display);
+				el.inject(display)
 			}
 			else
 			{
-				el.set('text', value);
+				el.set('text', value)
 			}
 		}
 
@@ -155,45 +137,39 @@ window.addEvent
 		{
 			if (!firstname.value || !lastname.value)
 			{
-				updateDisplayOption(3, null);
-				updateDisplayOption(4, null);
+				updateDisplayOption(3, null)
+				updateDisplayOption(4, null)
 
-				return;
+				return
 			}
 
-			updateDisplayOption(3, firstname.value + ' ' + lastname.value);
-			updateDisplayOption(4, lastname.value + ' ' + firstname.value);
+			updateDisplayOption(3, firstname.value + ' ' + lastname.value)
+			updateDisplayOption(4, lastname.value + ' ' + firstname.value)
 		}
 
-		firstname.addEvent
-		(
-			'keyup', function()
-			{
-				updateDisplayOption(1, this.value);
-				updateDisplayComposedOption();
-			}
-		);
+		firstname.addEvent('keyup', function() {
 
-		lastname.addEvent
-		(
-			'keyup', function()
-			{
-				updateDisplayOption(2, this.value);
-				updateDisplayComposedOption();
-			}
-		);
+			updateDisplayOption(1, this.value)
+			updateDisplayComposedOption()
+		})
 
-		username.addEvents
-		({
+		lastname.addEvent('keyup', function() {
+
+			updateDisplayOption(2, this.value)
+			updateDisplayComposedOption()
+		})
+
+		username.addEvents({
+
 			change: function()
 			{
-				updateDisplayOption(0, this.value ? this.value : '<username>');
+				updateDisplayOption(0, this.value ? this.value : '<username>')
 			},
 
 			keyup: function()
 			{
-				updateDisplayOption(0, this.value ? this.value : '<username>');
+				updateDisplayOption(0, this.value ? this.value : '<username>')
 			}
-		});
+		})
 	}
 );

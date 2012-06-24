@@ -25,4 +25,31 @@ class Group extends \Brickrouge\Group
 	{
 		return '<div class="group-legend">' . $legend . '</div>';
 	}
+
+	/**
+	 * Adds the `enabled` class name if the element has the `group-toggler` class name and a
+	 * checked checkbox child.
+	 *
+	 * @see Brickrouge.Group::render_class()
+	 */
+	protected function render_class(array $class_names)
+	{
+		if (!empty($class_names['group-toggler']))
+		{
+			foreach ($this->children as $child)
+			{
+				if ($child->tag_name == 'input' && $child['type'] == 'checkbox')
+				{
+					if ($child['checked'])
+					{
+						$class_names['enabled'] = true;
+
+						break;
+					}
+				}
+			}
+		}
+
+		return parent::render_class($class_names);
+	}
 }

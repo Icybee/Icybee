@@ -19,7 +19,7 @@ use Brickrouge\Text;
 
 class Module extends \Icybee\Module
 {
-	protected function __get_views()
+	protected function get_views()
 	{
 		$assets = array('css' => __DIR__ . '/public/page.css');
 
@@ -144,7 +144,7 @@ Aucune autre notification ne vous sera envoyée.
 		$target = $page ? $page->node : $page;
 		$comments = $this->model->where('nid = ? AND status = "approved"', $target->nid)->order('created')->all;
 
-		$patron->context['self']['count'] = t(':count comments', array(':count' => count($comments)));
+		$patron->context['self']['count'] = t('comments.count', array(':count' => count($comments)));
 
 		return $comments;
 	}

@@ -33,16 +33,16 @@ class InactivesBlock extends ManageBlock
 		$this->hiddens[Operation::NAME] = Module::OPERATION_ACTIVATE;
 	}
 
-	protected function __get_columns()
+	protected function get_columns()
 	{
-		$columns = parent::__get_columns();
+		$columns = parent::get_columns();
 
 		unset($columns['install']);
 
 		return $columns;
 	}
 
-	protected function __get_descriptors()
+	protected function get_descriptors()
 	{
 		global $core;
 

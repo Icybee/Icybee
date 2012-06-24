@@ -56,7 +56,8 @@ class NonceRequest extends Form
 				),
 
 				'class' => 'widget-nonce-request',
-				'name' => 'users/nonce-request'
+				'name' => 'users/nonce-request',
+				'data-widget-constructor' => 'NonceRequest'
 			)
 		);
 	}

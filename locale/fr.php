@@ -15,6 +15,7 @@ return array
 	(
 		'Delete' => 'Supprimer',
 		'New' => 'Nouveau',
+		'Remove' => 'Retirer',
 		'View' => 'Voir'
 	),
 
@@ -48,7 +49,7 @@ return array
 
 	'module_category' => array
 	(
-		'features' => 'Fonctionalités',
+		'features' => 'Fonctionnalités',
 		'feedback' => 'Intéractions',
 		'organize' => 'Organiser',
 		'structure' => 'Structure',
@@ -57,6 +58,9 @@ return array
 
 	'Hello :username' => 'Bonjour :username',
 	'See the website' => 'Voir le site',
+
+	'Delete a record' => 'Supprimer un enregistrement',
+	'Are you sure you want to delete :name?' => "Êtes-vous sûr de vouloir supprimer :name ?",
 
 	'Edit' => 'Éditer',
 	'Edit: !title' => "Éditer : !title",

@@ -15,7 +15,7 @@ use ICanBoogie\Operation;
 
 class CopyOperation extends Operation
 {
-	protected function __get_controls()
+	protected function get_controls()
 	{
 		return array
 		(
@@ -23,7 +23,7 @@ class CopyOperation extends Operation
 			self::CONTROL_RECORD => true
 		)
 
-		+ parent::__get_controls();
+		+ parent::get_controls();
 	}
 
 	protected function process()
@@ -50,12 +50,12 @@ class CopyOperation extends Operation
 
 		if (!$nid)
 		{
-			\ICanBoogie\log_error('Unable to copy page %title (#:nid)', array('%title' => $title, ':nid' => $key));
+			\ICanBoogie\log_error('Unable to copy page %title (#:nid)', array('title' => $title, 'nid' => $key));
 
 			return;
 		}
 
-		\ICanBoogie\log_success('Page %title was copied to %copy', array('%title' => $title, '%copy' => $record->title));
+		$this->response->success = array('Page %title was copied to %copy', array('title' => $title, 'copy' => $record->title));
 
 		foreach ($contents as $record)
 		{

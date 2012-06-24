@@ -15,14 +15,14 @@ use ICanBoogie\Operation;
 
 class TemplateEditorsOperation extends Operation
 {
-	protected function __get_controls()
+	protected function get_controls()
 	{
 		return array
 		(
 			self::CONTROL_PERMISSION => Module::PERMISSION_CREATE
 		)
 
-		+ parent::__get_controls();
+		+ parent::get_controls();
 	}
 
 	protected function validate(\ICanboogie\Errors $errors)

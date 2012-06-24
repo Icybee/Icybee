@@ -22,7 +22,7 @@ class HomeExcludeOperation extends HomeIncludeOperation
 		$record->is_home_excluded = true;
 		$record->save();
 
-		\ICanBoogie\log_success('%title is now excluded from the home page', array('%title' => $record->title));
+		$this->response->success = array('%title is now excluded from the home page', array('%title' => $record->title));
 
 		return true;
 	}

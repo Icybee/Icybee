@@ -24,9 +24,9 @@ $model = new WdModel
 (
 	array
 	(
-		WdModel::T_CONNECTION => $db,
-		WdModel::T_NAME => 'charset_test',
-		WdModel::T_SCHEMA => array
+		Model::T_CONNECTION => $db,
+		Model::T_NAME => 'charset_test',
+		Model::T_SCHEMA => array
 		(
 			'fields' => array
 			(

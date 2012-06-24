@@ -55,7 +55,7 @@ class Content extends ActiveRecord
 	 *
 	 * @return mixed
 	 */
-	protected function __volatile_get_rendered()
+	protected function volatile_get_rendered()
 	{
 		return $this->render();
 	}

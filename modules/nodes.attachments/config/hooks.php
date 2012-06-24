@@ -16,7 +16,7 @@ return array
 
 	'prototypes' => array
 	(
-		'ICanBoogie\ActiveRecord\Node::__get_attachments' => __NAMESPACE__ . '::get_attachments'
+		'ICanBoogie\ActiveRecord\Node::get_attachments' => __NAMESPACE__ . '::get_attachments'
 	),
 
 	'patron.markups' => array

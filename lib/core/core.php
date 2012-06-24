@@ -144,11 +144,11 @@ class Core extends \ICanBoogie\Core
 	/**
 	 * Override the method to provide our own accessor.
 	 *
-	 * @see \ICanBoogie.Core::__get_modules()
+	 * @see \ICanBoogie.Core::get_modules()
 	 *
 	 * @return Accessor\Modules
 	 */
-	protected function __get_modules()
+	protected function get_modules()
 	{
 		$config = $this->config;
 

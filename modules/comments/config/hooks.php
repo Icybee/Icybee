@@ -12,9 +12,9 @@ return array
 
 	'prototypes' => array
 	(
-		'ICanBoogie\ActiveRecord\Node::__get_comments' => 'ICanBoogie\Modules\Comments\Hooks::get_comments',
-		'ICanBoogie\ActiveRecord\Node::__get_comments_count' => 'ICanBoogie\Modules\Comments\Hooks::get_comments_count',
-		'ICanBoogie\ActiveRecord\Node::__get_rendered_comments_count' => 'ICanBoogie\Modules\Comments\Hooks::get_rendered_comments_count'
+		'ICanBoogie\ActiveRecord\Node::get_comments' => 'ICanBoogie\Modules\Comments\Hooks::get_comments',
+		'ICanBoogie\ActiveRecord\Node::get_comments_count' => 'ICanBoogie\Modules\Comments\Hooks::get_comments_count',
+		'ICanBoogie\ActiveRecord\Node::get_rendered_comments_count' => 'ICanBoogie\Modules\Comments\Hooks::get_rendered_comments_count'
 	),
 
 	'patron.markups' => array

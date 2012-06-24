@@ -13,7 +13,7 @@ namespace ICanBoogie\Modules\Nodes;
 
 class DeleteBlock extends \Icybee\DeleteBlock
 {
-	protected function __get_record_name()
+	protected function get_record_name()
 	{
 		return $this->record->title;
 	}

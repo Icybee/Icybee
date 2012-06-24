@@ -12,6 +12,7 @@
 namespace Patron;
 
 use ICanBoogie\Exception;
+use BlueTihi\Context;
 
 class EvaluateNode extends ExpressionNode
 {
@@ -98,13 +99,13 @@ class EvaluateNode extends ExpressionNode
 						{
 							throw new Exception
 							(
-								'%identifier of expression %expression does not exists in %var (defined: :keys) in: !value', array
+								'%identifier of expression %expression does not exists in %var (defined: :keys) in: :value', array
 								(
-									'%identifier' => $identifier,
-									'%expression' => $expression,
-									'%var' => $previous_identifier,
-									':keys' => implode(', ', array_keys((array) $value)),
-									'!value' => $value
+									'identifier' => $identifier,
+									'expression' => $expression,
+									'var' => $previous_identifier,
+									'keys' => implode(', ', $value instanceof Context ? $value->keys() : array_keys((array) $value)),
+									'value' => $value
 								)
 							);
 						}
@@ -480,6 +481,8 @@ class EvaluateNode extends ExpressionNode
 
 	public function findFunction(Engine $engine, $name)
 	{
+		return $engine->findFunction($name);
+		/*
 		$function = $engine->findFunction($name);
 
 		if ($function)
@@ -518,5 +521,6 @@ class EvaluateNode extends ExpressionNode
 		{
 			return $try;
 		}
+		*/
 	}
 }

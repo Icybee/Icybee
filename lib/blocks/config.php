@@ -42,7 +42,7 @@ class ConfigBlock extends FormBlock
 		return parent::__toString();
 	}
 
-	protected function __get_permission()
+	protected function get_permission()
 	{
 		global $core;
 

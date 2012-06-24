@@ -21,9 +21,9 @@ return array
 
 	'prototypes' => array
 	(
-		'ICanBoogie\ActiveRecord\Node::__get_metas' => __NAMESPACE__ . '::method_get_metas',
-		'ICanBoogie\ActiveRecord\User::__get_metas' => __NAMESPACE__ . '::method_get_metas',
-		'ICanBoogie\ActiveRecord\Site::__get_metas' => __NAMESPACE__ . '::method_get_metas',
-		'ICanBoogie\Core::__get_registry' => __NAMESPACE__ . '::method_get_registry'
+		'ICanBoogie\ActiveRecord\Node::get_metas' => __NAMESPACE__ . '::method_get_metas',
+		'ICanBoogie\ActiveRecord\User::get_metas' => __NAMESPACE__ . '::method_get_metas',
+		'ICanBoogie\ActiveRecord\Site::get_metas' => __NAMESPACE__ . '::method_get_metas',
+		'ICanBoogie\Core::get_registry' => __NAMESPACE__ . '::method_get_registry'
 	)
 );

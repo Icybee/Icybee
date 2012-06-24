@@ -2,6 +2,11 @@
 
 return array
 (
+	'button' => array
+	(
+		'Clear' => 'Vider'
+	),
+
 	'cache.section' => array
 	(
 		'Contents' => 'Contenus',

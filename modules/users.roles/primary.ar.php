@@ -45,7 +45,7 @@ class Role extends ActiveRecord
 		parent::__construct($model);
 	}
 
-	protected function __get_perms()
+	protected function get_perms()
 	{
 		return (array) json_decode($this->serialized_perms, true);
 	}

@@ -89,11 +89,57 @@ EOT;
 
 		$user = $core->user;
 		$module_id = $route->module;
+		$routes = Routes::get();
+
+		#
+		# Views on the website (home, list)
+		#
+
+		$list_url = $core->site->resolve_view_url("$module_id/list");
+
+		if ($list_url{0} != '#')
+		{
+			$options[$list_url] = new A(t("List page on the website"), $list_url);
+		}
+
+		#
+		# settings
+		#
+
+		if ($user->has_permission(Module::PERMISSION_ADMINISTER, $module_id))
+		{
+			$config_pattern = "/admin/$module_id/config";
+
+			if ($route->pattern != $config_pattern)
+			{
+				$r = $routes->find($config_pattern);
+
+				if ($r)
+				{
+					$url = Route::contextualize($r->pattern);
+
+					if ($options)
+					{
+						$options[] = false;
+					}
+
+					$options[$url] = new A
+					(
+						t('Configuration', array(), array('scope' => 'block_title')), $url
+					);
+				}
+			}
+		}
+
+		#
+		# other modules
+		#
+
 		$modules = $core->modules;
 		$descriptors = $modules->descriptors;
 		$category = $descriptors[$module_id][Module::T_CATEGORY];
 
-		$routes = Routes::get();
+		$options_routes = array();
 
 		foreach ($routes as $r_id => $r)
 		{
@@ -117,48 +163,23 @@ EOT;
 			}
 
 			$url = Route::contextualize($r['pattern']);
+			$module_flat_id = strtr($r_module_id, '.', '_');
 
-			$options[$url] = new A
+			$options_routes[$url] = new A
 			(
-				t($descriptors[$r_module_id][Module::T_TITLE], array(), array('scope' => 'module_title')), $url
+// 				t($descriptors[$r_module_id][Module::T_TITLE], array(), array('scope' => 'module_title')), $url
+				t($module_flat_id, array(), array('scope' => 'module_title', 'default' => $descriptors[$r_module_id][Module::T_TITLE])), $url
 			);
 		}
 
-		#
-		# settings
-		#
-
-		if ($user->has_permission(Module::PERMISSION_ADMINISTER, $module_id))
+		if ($options_routes)
 		{
-			$config_pattern = "/admin/$module_id/config";
-
-			if ($route->pattern != $config_pattern)
+			if ($options)
 			{
-				$r = $routes->find($config_pattern);
-
-				if ($r)
-				{
-					$url = Route::contextualize($r->pattern);
-
-					$options[] = false;
-					$options[$url] = new A
-					(
-						t('Configuration', array(), array('scope' => 'block_title')), $url
-					);
-				}
+				$options[] = false;
 			}
-		}
 
-		#
-		# Views on the website (home, list)
-		#
-
-		$list_url = $core->site->resolve_view_url("$module_id/list");
-
-		if ($list_url{0} != '#')
-		{
-			$options[] = false;
-			$options[$list_url] = new A(t("List page on the website"), $list_url);
+			$options = array_merge($options, $options_routes);
 		}
 
 		return $options;

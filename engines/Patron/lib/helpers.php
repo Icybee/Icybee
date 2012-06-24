@@ -66,3 +66,19 @@ function render($template, $thisArg=null, array $options=array())
 
 // 	return WdPatron::get_singleton('Icybee')->__invoke($template, $bind, $options);
 }
+
+
+function by_columns(array $array, $columns, $pad=false)
+{
+	$values_by_columns = ceil(count($array) / $columns);
+
+	$i = 0;
+	$by_columns = array();
+
+	foreach ($array as $value)
+	{
+		$by_columns[$i++ % $values_by_columns][] = $value;
+	}
+
+	return $by_columns;
+}

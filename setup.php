@@ -547,7 +547,7 @@ class WdPInstaller
 		else
 		{
 			$packages = $this->get('packages');
-			$mandatories = $core->getModuleIdsByProperty(WdModule::T_REQUIRED);
+			$mandatories = $core->getModuleIdsByProperty(Module::T_REQUIRED);
 
 			$packages += $mandatories;
 

@@ -6,7 +6,6 @@
 	vertical-align: top;
 }
 
-.group--resources-images-inject:not(.enabled) > .control-group,
-.group--resources-images-inject:not(.enabled) + .group--resources-images-inject-thumbnails {
+.group--resources-images-inject-toggler:not(.enabled) ~ .group--resources-images-inject-thumbnails {
 	display: none;
 }

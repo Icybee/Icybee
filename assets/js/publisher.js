@@ -63,33 +63,19 @@ String.implement
 	}
 });
 
-var spinner = null;
+window.addEvent('domready', function() {
 
-window.addEvent
-(
-	'domready', function()
-	{
-		//
-		// disabled Firefox's spellchecking for textarea elements with the 'code' class
-		//
+	//
+	// disabled Firefox's spellchecking for textarea elements with the 'code' class
+	//
 
-		$$('textarea.code').each
-		(
-			function(el)
-			{
-				if (el.spellcheck)
-				{
-					el.spellcheck = false;
-				}
-			}
-		);
-
-		if ($('loader'))
+	$$('textarea.code').each(function(el) {
+		if (el.spellcheck)
 		{
-			spinner = new WdSpinner('loader');
+			el.spellcheck = false
 		}
-	}
-);
+	})
+})
 
 window.addEvent
 (
@@ -211,40 +197,19 @@ document.addEvent('elementsready', init);
 
 })();
 
-window.addEvent
-(
-	'load', function()
-	{
-		(
-			function()
-			{
-				$$('ul.wddebug.done').slide('out');
-			}
-		)
-		.delay(4000);
-	}
-);
+window.addEvent('domready', function() {
 
-window.addEvent
-(
-	'domready', function()
-	{
-		var form = document.forms['change-working-site'];
+	var form = document.forms['change-working-site']
 
-		if (!form) return;
+	if (!form) return
 
-		form = $(form);
+	form = $(form)
 
-		form.addEvent
-		(
-			'submit', function()
-			{
-				form.action = form.getElement('select').get('value');
-			}
-		);
-	}
-);
+	form.addEvent('submit', function() {
 
+		form.action = form.getElement('select').get('value')
+	})
+})
 
 /**
  * Reset button for default values
@@ -288,54 +253,6 @@ window.addEvent
 				reset.inject(el, 'after')
 			}
 		})
-	})
-
-} ()
-
-
-/**
- * Provides a notice for long XHR.
- */
-!function() {
-
-	var dummy = null
-	, dummyTween = null
-	, message = null
-	, messageTween = null
-
-	ICanBoogie.XHR.NOTICE_DELAY = 500;
-
-	window.addEvent('icanboogie.xhr.shownotice', function() {
-
-		if (!dummy)
-		{
-			dummy = new Element('div.xhr-dummy')
-			message = new Element('div.xhr-message', { html: 'Loadin...' })
-			dummyTween = new Fx.Tween(dummy, { property: 'opacity', duration: 'short', link: 'cancel' })
-			messageTween = new Fx.Tween(message, { property: 'opacity', duration: 'short', link: 'cancel' })
-			dummyTween.set(0)
-			messageTween.set(0)
-		}
-
-		document.body.appendChild(dummy)
-		document.body.appendChild(message)
-
-		dummyTween.start(1)
-		messageTween.start(1)
-	})
-
-	window.addEvent('icanboogie.xhr.hidenotice', function() {
-
-		if (!dummy || !dummy.parentNode) return
-
-		messageTween.start(0)
-		dummyTween.start(0).chain(function() {
-
-			dummy.dispose()
-			message.dispose()
-
-		})
-
 	})
 
 } ()

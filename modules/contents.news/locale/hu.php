@@ -23,5 +23,5 @@ return array
 		)
 	),
 
-	'module_title.contents_news' => 'Actualités'
+	'module_title.contents_news' => 'Aktualitások'
 );

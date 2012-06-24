@@ -2,7 +2,7 @@
 
 return array
 (
-	'site_pages.search' => array
+	'pages.search' => array
 	(
 		'found' => array
 		(
@@ -50,10 +50,9 @@ return array
 		'template' => 'Gabarit'
 	),
 
-	'section.title' => array
+	'group.legend' => array
 	(
-		'advanced' => 'Options avancées',
-		'contents' => 'Contenu'
+		'Template' => 'Gabarit'
 	),
 
 	"The template defines a page model of which some elements are editable."
@@ -74,5 +73,9 @@ return array
 	'This page uses the <q>:template</q> template, inherited from the parent page <q><a href="!url">!title</a></q>.'
 	=> 'Cette page utilise le gabarit <q>:template</q>, hérité de la page parente <q><a href="!url">!title</a></q>.',
 
-	"All records" => "Tous les enregistrements"
+	"All records" => "Tous les enregistrements",
+
+	'Record detail' => "Détail d'un enregistrement",
+	'Records list' => "Liste des enregistrements",
+	'Records home' => "Accueil des enregistrements"
 );

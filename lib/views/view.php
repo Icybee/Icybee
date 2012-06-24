@@ -31,6 +31,7 @@ class View extends Object
 {
 	const ACCESS_CALLBACK = 'access_callback';
 	const ASSETS = 'assets';
+	const PROVIDER = 'provider';
 	const RENDERS = 'renders';
 	const RENDERS_ONE = 1;
 	const RENDERS_MANY = 2;
@@ -59,7 +60,7 @@ class View extends Object
 	protected $renders;
 	protected $options;
 
-	protected function __volatile_get_options()
+	protected function volatile_get_options()
 	{
 		return $this->options;
 	}
@@ -71,7 +72,7 @@ class View extends Object
 
 	protected $module;
 
-	protected function __get_module()
+	protected function get_module()
 	{
 		global $core;
 
@@ -205,7 +206,7 @@ class View extends Object
 	{
 		global $core;
 
-		$rc = null;
+		$html = null;
 		$default = t('The view %name is empty.', array('%name' => $this->id));
 		$type = $this->type;
 		$module = $this->module;
@@ -213,45 +214,47 @@ class View extends Object
 
 		if (isset($view['on_empty']))
 		{
-			$rc = call_user_func($view['on_empty'], $this);
-		}
-		else if ($module && $this->type == 'list')
-		{
-			$placeholder = $core->site->metas[$module_flat_id . '.place_holder']; // FIXME-20111222: rename 'place_holder' as 'placeholder'
-
-			if ($placeholder)
-			{
-				$rc = $placeholder;
-			}
-			else
-			{
-// 				$rc = '<p>' . t('empty_view', array(), array('scope' => array($module->flat_id, $type), 'default' => 'No record found.')) . '</p>';
-				$default = 'No record found.';
-			}
+			$html = call_user_func($view['on_empty'], $this);
 		}
 		else if ($module)
 		{
+			$placeholder = $core->site->metas[$module_flat_id . ".{$this->type}.placeholder"];
+
+			if (!$placeholder)
+			{
+				$placeholder = $core->site->metas[$module_flat_id . '.placeholder'];
+			}
+
+			if ($placeholder)
+			{
+				$html = $placeholder;
+			}
+			else
+			{
+				$default = 'No record found.';
+			}
+
 			$default .= t
 			(
 				' <ul><li>The placeholder %placeholder was tried, but it does not exists.</li><li>The %message was tried, but it does not exists.</li></ul>', array
 				(
-					'%placeholder' => $module_flat_id . ".$type.placeholder",
-					'%message' => $module_flat_id . '.' . $type . '.empty_view'
+					'placeholder' => $module_flat_id . ".$type.placeholder",
+					'message' => $module_flat_id . '.' . $type . '.empty_view'
 				)
 			);
 		}
 
-		if (!$rc)
+		if (!$html)
 		{
-			$rc = t('empty_view', array(), array('scope' => $module_flat_id . '.' . $type, 'default' => $default));
+			$html = t('empty_view', array(), array('scope' => $module_flat_id . '.' . $type, 'default' => $default));
 
-			if ($rc)
+			if ($html)
 			{
-				$rc = '<div class="alert">' . $rc . '</div>';
+				$html = '<div class="alert">' . $html . '</div>';
 			}
 		}
 
-		return $rc;
+		return $html;
 	}
 
 	/**
@@ -387,9 +390,16 @@ class View extends Object
 		{
 			$extension = pathinfo($template_path, PATHINFO_EXTENSION);
 
+			$module = $core->modules[$this->module_id];
+
+			$engine->context['core'] = $core;
+			$engine->context['document'] = $core->document;
+			$engine->context['page'] = $page;
+			$engine->context['module'] = $module;
+			$engine->context['view'] = $this;
+
 			if ('php' == $extension)
 			{
-				$module = $core->modules[$this->module_id];
 				$rc = null;
 
 				ob_start();
@@ -410,7 +420,7 @@ class View extends Object
 						$template_path, array
 						(
 							'bind' => $bind,
-							'context' => &$context,
+							'context' => &$engine->context,
 							'core' => $core,
 							'document' => $core->document,
 							'page' => $page,
@@ -457,7 +467,7 @@ class View extends Object
 
 	protected $element;
 
-	protected function __volatile_get_element()
+	protected function volatile_get_element()
 	{
 		return $this->element;
 	}

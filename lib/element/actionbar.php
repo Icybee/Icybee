@@ -398,6 +398,8 @@ EOT;
 		global $core;
 
 		$collection = array();
+		$translations = array();
+
 		$routes = Routes::get();
 		$descriptors = $core->modules->descriptors;
 		$user = $core->user;
@@ -418,28 +420,32 @@ EOT;
 				continue;
 			}
 
-			$collection[$pattern] = $module_id;// $descriptors[$module_id][Module::T_TITLE];
+			$collection[$pattern] = $module_id;
+
+			$flat_id = strtr($module_id, '.', '_');
+
+			$translations[$module_id] = t
+			(
+				$flat_id . '.name', array(':count' => 1), array
+				(
+					'default' => \ICanBoogie\singularize(t("module_title.$flat_id", array(), array('default' => $descriptors[$module_id][Module::T_TITLE])))
+				)
+			);
 		}
 
-		uasort($collection, 'ICanBoogie\unaccent_compare_ci');
+		\ICanBoogie\stable_sort($collection, function($v) use ($translations) {
 
-		array_walk
-		(
-			$collection, function(&$v, $k) use ($descriptors)
-			{
-				$flat_id = strtr($v, '.', '_');
+			return \ICanBoogie\downcase(\ICanBoogie\remove_accents($translations[$v]));
 
-				$label = t
-				(
-					$flat_id . '.name', array(':count' => 1), array
-					(
-						'default' => \ICanBoogie\singularize(t("module_title.$flat_id", array(), array('default' => $descriptors[$v][Module::T_TITLE])))
-					)
-				);
+		});
 
-				$v = new A($label, Route::contextualize($k));
-			}
-		);
+		array_walk($collection, function(&$v, $k) use ($translations) {
+
+			$label = $translations[$v];
+
+			$v = new A($label, Route::contextualize($k));
+
+		});
 
 		return $collection;
 	}

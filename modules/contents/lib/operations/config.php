@@ -19,9 +19,9 @@ use ICanBoogie\Modules;
  */
 class ConfigOperation extends Modules\Nodes\ConfigOperation
 {
-	protected function __get_properties()
+	protected function get_properties()
 	{
-		$properties = parent::__get_properties();
+		$properties = parent::get_properties();
 
 		$properties['local'] += array
 		(

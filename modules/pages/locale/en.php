@@ -53,10 +53,9 @@ return array
 		'template' => 'Template'
 	),
 
-	'group.title' => array
+	'group.legend' => array
 	(
-		'advanced' => 'Advanced options',
-		'contents' => 'Contents'
+		'advanced' => 'Advanced options'
 	),
 
 	'module_title.pages' => 'Pages'

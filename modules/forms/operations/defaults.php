@@ -21,9 +21,9 @@ class DefaultsOperation extends Operation
 {
 	/**
 	 * Controls for the operation: authentication, permission(create)
-	 * @see ICanBoogie.Operation::__get_controls()
+	 * @see ICanBoogie.Operation::get_controls()
 	 */
-	protected function __get_controls()
+	protected function get_controls()
 	{
 		return array
 		(
@@ -31,7 +31,7 @@ class DefaultsOperation extends Operation
 			self::CONTROL_PERMISSION => Module::PERMISSION_CREATE
 		)
 
-		+ parent::__get_controls();
+		+ parent::get_controls();
 	}
 
 	/**

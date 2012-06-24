@@ -31,7 +31,7 @@ class Hooks
 	 * @return \ICanBoogie\ActiveRecord\Site|null The site active record associate with the node,
 	 * or null if the node is not associated to a specific site.
 	 */
-	static public function __get_node_site(ActiveRecord\Node $node)
+	static public function get_node_site(ActiveRecord\Node $node)
 	{
 		global $core;
 
@@ -50,7 +50,7 @@ class Hooks
 	 *
 	 * @return \ICanBoogie\ActiveRecord\Site
 	 */
-	static public function __get_core_site(\ICanBoogie\Core $core)
+	static public function get_core_site(\ICanBoogie\Core $core)
 	{
 		return Model::find_by_request($core->request);
 	}
@@ -65,9 +65,9 @@ class Hooks
 	 *
 	 * @return int
 	 */
-	static public function __get_core_site_id(\ICanBoogie\Core $core)
+	static public function get_core_site_id(\ICanBoogie\Core $core)
 	{
-		$site = self::__get_core_site($core);
+		$site = self::get_core_site($core);
 
 		return $site ? $site->siteid : null;
 	}

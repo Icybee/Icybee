@@ -17,7 +17,7 @@ return array
 
 	'prototypes' => array
 	(
-		'ICanBoogie\ActiveRecord\Node::__get_image' => __NAMESPACE__ . '::__get_image'
+		'ICanBoogie\ActiveRecord\Node::get_image' => __NAMESPACE__ . '::get_image'
 	),
 
 	'textmark' => array

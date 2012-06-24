@@ -47,7 +47,7 @@ class ManageBlock extends Form
 		$this->hiddens[Operation::NAME] = Module::OPERATION_DEACTIVATE;
 	}
 
-	protected function __get_columns()
+	protected function get_columns()
 	{
 		return array
 		(
@@ -83,14 +83,14 @@ class ManageBlock extends Form
 		);
 	}
 
-	protected function __get_descriptors()
+	protected function get_descriptors()
 	{
 		global $core;
 
 		return $core->modules->enabled_modules_descriptors;
 	}
 
-	protected function __get_categories()
+	protected function get_categories()
 	{
 		$categories = array();
 		$modules = array();
@@ -241,7 +241,7 @@ EOT;
 
 		$html = \ICanBoogie\Routes::get()->find('/admin/' . $module_id) ? '<a href="' . Route::contextualize('/admin/' . $module_id) . '">' . $title . '</a>' : $title;
 
-		$description = t("module_description.$module_id", array(), array('default' => $descriptor[Module::T_DESCRIPTION] ?: '<em class="light">' . t('No description') . '</em>'));
+		$description = t('module_description.' . strtr($module_id, '.', '_'), array(), array('default' => t($descriptor[Module::T_DESCRIPTION]) ?: '<em class="light">' . t('No description') . '</em>'));
 
 		if ($description)
 		{

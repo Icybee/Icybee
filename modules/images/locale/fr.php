@@ -34,5 +34,9 @@ return array
 	'(temporary)' => '(temporaire)',
 	'Image repository <tt>\1</tt> does not exists ! You need to create it and set its access permission to 777 (public)' => 'Le dossier image <tt>\1</tt> n\'existe pas ! Vous devez le créer et mettre ses permissions d\'accés à 777 (tout)',
 	'Original: \1&times;\2px &ndash; Displayed: \3&times;\4px' => 'Original : \1&times;\2px &ndash; Affiché : \3&times;\4px',
-	'Original: \1&times;\2px &ndash; Displayed as is' => 'Original : \1&times;\2px &ndash; Affiché tel quel'
+	'Original: \1&times;\2px &ndash; Displayed as is' => 'Original : \1&times;\2px &ndash; Affiché tel quel',
+
+	# config
+
+	'Associated image' => 'Image associée'
 );

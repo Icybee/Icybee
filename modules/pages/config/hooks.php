@@ -25,9 +25,11 @@ return array
 	(
 		'ICanBoogie\ActiveRecord\Node::url' => 'site_pages_view_WdHooks::url',
 		'ICanBoogie\ActiveRecord\Node::absolute_url' => 'site_pages_view_WdHooks::absolute_url',
-		'ICanBoogie\ActiveRecord\Node::__get_url' => 'site_pages_view_WdHooks::get_url',
-		'ICanBoogie\ActiveRecord\Node::__get_absolute_url' => 'site_pages_view_WdHooks::get_absolute_url',
-		'ICanBoogie\ActiveRecord\Site::__get_home' => __NAMESPACE__ . '::get_home',
+		'ICanBoogie\ActiveRecord\Node::get_url' => 'site_pages_view_WdHooks::get_url',
+		'ICanBoogie\ActiveRecord\Node::get_absolute_url' => 'site_pages_view_WdHooks::get_absolute_url',
+		'ICanBoogie\ActiveRecord\Site::get_home' => __NAMESPACE__ . '::get_home',
+
+		'ICanBoogie\Core::volatile_get_page' => __NAMESPACE__ . '::core__volatile_get_page',
 
 		/*
 		 * views

@@ -2,7 +2,7 @@
 
 namespace BlueTihi;
 
-class Context implements \ArrayAccess
+class Context implements \ArrayAccess, \IteratorAggregate
 {
 	protected $values = array();
 	protected $values_stack = array();
@@ -24,6 +24,19 @@ class Context implements \ArrayAccess
 		return isset($this->values[$offset]);
 	}
 
+	/*
+	public function offsetGet($offset)
+	{
+		#
+		# workdaround for &offsetGet for PHP < 5.3.4
+		#
+
+		$v = &$this->values[$offset];
+
+		return $v;
+	}
+	*/
+
 	public function &offsetGet($offset)
 	{
 		return $this->values[$offset];
@@ -43,6 +56,11 @@ class Context implements \ArrayAccess
 	 * /ArrayAccss
 	 */
 
+	public function getIterator()
+	{
+		return new \ArrayIterator($this->values);
+	}
+
 	public function push()
 	{
 		$this->depth++;
@@ -53,5 +71,15 @@ class Context implements \ArrayAccess
 	{
 		$this->depth--;
 		$this->values = array_pop($this->values_stack);
+	}
+
+	public function keys()
+	{
+		return array_keys($this->values);
+	}
+
+	public function values()
+	{
+		return array_values($this->values);
 	}
 }

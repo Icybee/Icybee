@@ -23,7 +23,7 @@ class Increment extends Object
 	 *
 	 * @param int $value
 	 */
-	protected function __set_increment($value)
+	protected function set_increment($value)
 	{
 		$this->increment += $value;
 	}
@@ -31,7 +31,7 @@ class Increment extends Object
 	/**
 	 * Retourne la valeur de la propriété `increment`.
 	 */
-	protected function __get_increment()
+	protected function get_increment()
 	{
 		return $this->increment;
 	}
@@ -94,7 +94,7 @@ echo "<p>Adding the `non_existing_property` getter to the `Test` class, and gett
 
 Object::add_method
 (
-	'__get_non_existing_property', array
+	'get_non_existing_property', array
 	(
 		create_function('', 'return "I\'m the value of the property that was non existent !";'),
 

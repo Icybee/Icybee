@@ -17,6 +17,13 @@ class PopNode extends \Brickrouge\Widget
 {
 	const T_CONSTRUCTOR = '#popnode-constructor';
 
+	protected static function add_assets(\Brickrouge\Document $document)
+	{
+		parent::add_assets($document);
+
+		$document->js->add('pop-node.js');
+	}
+
 	public function __construct(array $attributes=array())
 	{
 		parent::__construct
@@ -31,13 +38,6 @@ class PopNode extends \Brickrouge\Widget
 				'href' => '#',
 			)
 		);
-	}
-
-	protected static function add_assets(\Brickrouge\Document $document)
-	{
-		parent::add_assets($document);
-
-		$document->js->add('pop-node.js');
 	}
 
 	protected function render_dataset(array $dataset)
@@ -80,7 +80,14 @@ class PopNode extends \Brickrouge\Widget
 
 		$rc .= new Element('input', array('type' => 'hidden', 'name' => $this['name'], 'value' => $value));
 
-		$rc .= $this->getPreview($record);
+		$placeholder = $this['placeholder'];
+
+		if ($placeholder)
+		{
+			$rc .= '<em class="spinner-placeholder">' . \ICanBoogie\escape($placeholder) . '</em>';
+		}
+
+		$rc .= '<span class="spinner-content">' . $this->getPreview($record) . '</span>';
 
 		return $rc;
 	}
@@ -92,11 +99,9 @@ class PopNode extends \Brickrouge\Widget
 
 	protected function getPreview($entry)
 	{
-		$title = $this['placeholder'];
-
 		if (!$entry)
 		{
-			return '<span class="title"><em>' . \Brickrouge\escape($title) . '</em></span>';
+			return '';
 		}
 
 		$value = $entry->nid;

@@ -24,7 +24,7 @@ $core = new WdCore();
 
 class Test extends ActiveRecord
 {
-	protected function __get_reversed_number()
+	protected function get_reversed_number()
 	{
 		return strrev((string) $this->number);
 	}
@@ -46,10 +46,10 @@ $model = new WdModel
 (
 	array
 	(
-		WdModel::T_ACTIVERECORD_CLASS => 'Test',
-		WdModel::T_CONNECTION => $connection,
-		WdModel::T_NAME => 'node',
-		WdModel::T_SCHEMA => array
+		Model::T_ACTIVERECORD_CLASS => 'Test',
+		Model::T_CONNECTION => $connection,
+		Model::T_NAME => 'node',
+		Model::T_SCHEMA => array
 		(
 			'fields' => array
 			(

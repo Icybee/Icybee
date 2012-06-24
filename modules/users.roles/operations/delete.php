@@ -16,9 +16,9 @@ class DeleteOperation extends \ICanBoogie\Operation\ActiveRecord\Delete
 	/**
 	 * Controls for the operation: permission(manage), record and ownership.
 	 *
-	 * @see ICanBoogie.Operation::__get_controls()
+	 * @see ICanBoogie.Operation::get_controls()
 	 */
-	protected function __get_controls()
+	protected function get_controls()
 	{
 		return array
 		(
@@ -26,7 +26,7 @@ class DeleteOperation extends \ICanBoogie\Operation\ActiveRecord\Delete
 			self::CONTROL_RECORD => true
 		)
 
-		+ parent::__get_controls();
+		+ parent::get_controls();
 	}
 
 	/**

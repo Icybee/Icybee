@@ -72,7 +72,7 @@ class ActiveRecord extends \ICanBoogie\ActiveRecord
 
 class Operation extends \ICanBoogie\Operation\ActiveRecord\Save
 {
-	protected function __get_record()
+	protected function get_record()
 	{
 		global $model;
 

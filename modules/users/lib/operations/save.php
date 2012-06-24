@@ -19,11 +19,11 @@ use ICanBoogie\Operation;
  */
 class SaveOperation extends \Icybee\Operation\Constructor\Save
 {
-	protected function __get_properties()
+	protected function get_properties()
 	{
 		global $core;
 
-		$properties = parent::__get_properties();
+		$properties = parent::get_properties();
 		$request = $this->request;
 
 		if ($request[User::PASSWORD])
@@ -203,13 +203,13 @@ class SaveOperation extends \Icybee\Operation\Constructor\Save
 
 		if ($core->user_id == $uid)
 		{
-			\ICanBoogie\log_success("Your profile has been updated.", array(), 'save');
+			$this->response->success = array("Your profile has been updated.", array());
 		}
 		else
 		{
 			$record = $this->module->model[$uid];
 
-			\ICanBoogie\log_success($rc['mode'] == 'update' ? "%name's profile has been updated." : "%name's profile has been created.", array('%name' => $record->name), 'save');
+			$this->response->success = array($rc['mode'] == 'update' ? "%name's profile has been updated." : "%name's profile has been created.", array('name' => $record->name));
 		}
 
 		return $rc;

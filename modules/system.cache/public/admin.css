@@ -1,29 +1,24 @@
 @CHARSET "UTF-8";
 
-table.manage td
-{
+table.manage td {
 	padding: 4px;
 	vertical-align: middle;
 }
 
-table.manage td.top
-{
+table.manage td.top {
 	vertical-align: top;
 }
 
-table.manage th.right
-{
+table.manage th.right {
 	text-align: right;
 }
 
-table.manage tbody td.title
-{
+table.manage tbody td.title {
 	padding-top: 1em;
-	padding-bottom: 1em;	
+	padding-bottom: 1em;
 }
 
-table.manage tbody td.state
-{
+table.manage tbody td.state {
 	width: 20px;
 }
 
@@ -33,33 +28,28 @@ table.manage tbody td.state .checkbox-wrapper {
 
 table.manage tbody td.config,
 table.manage tbody td.usage.empty,
-table.manage tbody div.element-description
-{
-	font-size: 12px;	
+table.manage tbody div.element-description {
+	font-size: 12px;
 }
 
-table.manage tbody td.usage
-{
+table.manage tbody td.usage {
 	text-align: right;
+	white-space: nowrap;
 }
 
-table.manage tbody td.usage.empty
-{
+table.manage tbody td.usage.empty {
 	color: #808080;
 	font-style: italic;
 }
 
-table.manage tbody td.usage.empty + td button
-{
+table.manage tbody td.usage.empty+td button {
 	visibility: hidden;
 }
 
-table.manage tbody td.erase
-{
+table.manage tbody td.erase {
 	text-align: center;
 }
 
-table.manage tbody div.element-description
-{
+table.manage tbody div.element-description {
 	margin: .5em 0 0 0;
 }

@@ -115,7 +115,7 @@ class AdjustThumbnailVersion extends \Brickrouge\Group
 
 											self::DEFAULT_VALUE => 'jpeg',
 
-											'style' => 'display: inline-block; width: auto'
+											'style' => 'vertical-align: middle; width: auto'
 										)
 									),
 
@@ -157,7 +157,7 @@ class AdjustThumbnailVersion extends \Brickrouge\Group
 					),
 
 					'class' => 'adjust widget-adjust-thumbnail-version',
-					'data-widget-constructor' => __CLASS__
+					'data-widget-constructor' => 'AdjustThumbnailVersion'
 				),
 
 				$attributes

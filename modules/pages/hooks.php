@@ -161,6 +161,20 @@ class Hooks
 	*/
 
 	/**
+	 * Returns the current page.
+	 *
+	 * This getter is a shortcut for the `request->context->page` property.
+	 *
+	 * @param \ICanBoogie\Core $core
+	 *
+	 * @return \ICanBoogie\ActiveRecord\Page
+	 */
+	public static function core__volatile_get_page(\ICanBoogie\Core $core)
+	{
+		return $core->request->context->page;
+	}
+
+	/**
 	 * Returns the home page of the target site.
 	 *
 	 * @param ICanBoogie\ActiveRecord\Site $site

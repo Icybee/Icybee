@@ -29,16 +29,16 @@ class UploadOperation extends Operation
 	/**
 	 * Controls for the operation: permission(create).
 	 *
-	 * @see ICanBoogie.Operation::__get_controls()
+	 * @see ICanBoogie.Operation::get_controls()
 	 */
-	protected function __get_controls()
+	protected function get_controls()
 	{
 		return array
 		(
 			self::CONTROL_PERMISSION => Module::PERMISSION_CREATE
 		)
 
-		+ parent::__get_controls();
+		+ parent::get_controls();
 	}
 
 	public function reset()

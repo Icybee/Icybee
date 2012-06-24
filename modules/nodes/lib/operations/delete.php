@@ -25,14 +25,13 @@ class DeleteOperation extends \Icybee\DeleteOperation
 
 		if ($rc)
 		{
-			\ICanBoogie\log_success
+			$this->response->success = array
 			(
 				'%title has been deleted from %module.', array
 				(
-					'%title' => \ICanBoogie\shorten($title), '%module' => $this->module->title
-				),
-
-				'delete'
+					'title' => \ICanBoogie\shorten($title),
+					'module' => $this->module->title
+				)
 			);
 		}
 

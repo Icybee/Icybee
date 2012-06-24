@@ -123,7 +123,7 @@ class Content extends Node
 	 *
 	 * @return string
 	 */
-	protected function __get_year()
+	protected function get_year()
 	{
 		return substr($this->date, 0, 4);
 	}
@@ -133,7 +133,7 @@ class Content extends Node
 	 *
 	 * @return string
 	 */
-	protected function __get_month()
+	protected function get_month()
 	{
 		return substr($this->date, 5, 2);
 	}
@@ -143,7 +143,7 @@ class Content extends Node
 	*
 	* @return string
 	*/
-	protected function __get_day()
+	protected function get_day()
 	{
 		return substr($this->date, 8, 2);
 	}
@@ -151,9 +151,9 @@ class Content extends Node
 	/**
 	 * Overrides the method to support the `date` property.
 	 *
-	 * @see ActiveRecord\Node::__get_previous()
+	 * @see ActiveRecord\Node::get_previous()
 	 */
-	protected function __get_previous()
+	protected function get_previous()
 	{
 		return $this->_model->own->visible->where('nid != ? AND date <= ?', $this->nid, $this->date)->order('date DESC, created DESC, nid DESC')->one;
 	}
@@ -161,14 +161,14 @@ class Content extends Node
 	/**
 	 * Overrides the method to support the `date` property.
 	 *
-	 * @see ActiveRecord\Node::__get_next()
+	 * @see ActiveRecord\Node::get_next()
 	 */
-	protected function __get_next()
+	protected function get_next()
 	{
 		return $this->_model->own->visible->where('nid != ? AND date > ?', $this->nid, $this->date)->order('date, created, nid')->one;
 	}
 
-	protected function __get_excerpt()
+	protected function get_excerpt()
 	{
 		return \ICanBoogie\excerpt((string) $this);
 	}

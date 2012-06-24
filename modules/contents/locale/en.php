@@ -33,7 +33,6 @@ return array
 
 	'group.legend' => array
 	(
-		'contents' => 'Contents',
 		'limits' => 'Limits'
 	)
 );

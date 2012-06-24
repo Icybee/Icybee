@@ -13,6 +13,10 @@ namespace ICanBoogie\ActiveRecord;
 
 use ICanBoogie\Route;
 
+
+/**
+ * @property $parent Page Parent page of the page.
+ */
 class Page extends Node
 {
 	const PARENTID = 'parentid';
@@ -87,7 +91,7 @@ class Page extends Node
 	 */
 	public $is_trail;
 
-	public function __construct($model='site.pages')
+	public function __construct($model='pages')
 	{
 		if (empty($this->language))
 		{
@@ -113,7 +117,29 @@ class Page extends Node
 		parent::__construct($model);
 	}
 
-	protected function __volatile_get_language()
+	public function __sleep()
+	{
+		$keys = parent::__sleep();
+
+		if (isset($this->language))
+		{
+			$keys['language'] = 'language';
+		}
+
+		if (isset($this->label))
+		{
+			$keys['label'] = 'label';
+		}
+
+		if (isset($this->template))
+		{
+			$keys['template'] = 'template';
+		}
+
+		return $keys;
+	}
+
+	protected function volatile_get_language()
 	{
 		return $this->siteid ? $this->site->language : null;
 	}
@@ -123,9 +149,9 @@ class Page extends Node
 	 *
 	 * @return Page|false The previous sibling, or false if there is none.
 	 *
-	 * @see ICanBoogie\ActiveRecord.Node::__get_previous()
+	 * @see ICanBoogie\ActiveRecord.Node::get_previous()
 	 */
-	protected function __get_previous()
+	protected function get_previous()
 	{
 		return $this->_model
 		->where('is_online = 1 AND nid != ? AND parentid = ? AND siteid = ? AND weight <= ?', $this->nid, $this->parentid, $this->siteid, $this->weight)
@@ -137,9 +163,9 @@ class Page extends Node
 	 *
 	 * @return Page|false The next sibling, or false if there is none.
 	 *
-	 * @see ICanBoogie\ActiveRecord.Node::__get_next()
+	 * @see ICanBoogie\ActiveRecord.Node::get_next()
 	 */
-	protected function __get_next()
+	protected function get_next()
 	{
 		return $this->_model
 		->where('is_online = 1 AND nid != ? AND parentid = ? AND siteid = ? AND weight >= ?', $this->nid, $this->parentid, $this->siteid, $this->weight)
@@ -151,7 +177,7 @@ class Page extends Node
 	 *
 	 * @return string
 	 */
-	protected function __get_url()
+	protected function get_url()
 	{
 		global $core;
 
@@ -206,9 +232,9 @@ class Page extends Node
 	 *
 	 * @return string The absolute URL of the page.
 	 *
-	 * @see site_pages_view_WdHooks::__get_absolute_url()
+	 * @see site_pages_view_WdHooks::get_absolute_url()
 	 */
-	protected function __get_absolute_url()
+	protected function get_absolute_url()
 	{
 		$site = $this->site;
 
@@ -227,9 +253,9 @@ class Page extends Node
 		return $translation;
 	}
 
-	protected function __get_translations()
+	protected function get_translations()
 	{
-		$translations = parent::__get_translations();
+		$translations = parent::get_translations();
 
 		if (!$translations || empty($this->url_variables))
 		{
@@ -248,7 +274,7 @@ class Page extends Node
 	// wouldn't have to check for '<' to know if the URL has a pattern, on the other hand we would
 	// have to do two pass each time we try to get the URL.
 
-	protected function __get_url_pattern()
+	protected function get_url_pattern()
 	{
 		global $core;
 
@@ -276,7 +302,7 @@ class Page extends Node
 		return $rc;
 	}
 
-	protected function __get_extension()
+	protected function get_extension()
 	{
 		$template = $this->template;
 
@@ -293,7 +319,7 @@ class Page extends Node
 	 *
 	 * @return bool true if the page record is the home page, false otherwise.
 	 */
-	protected function __get_is_home()
+	protected function get_is_home()
 	{
 		return (!$this->parentid && $this->is_online && $this->weight == 0);
 	}
@@ -305,7 +331,7 @@ class Page extends Node
 	 *
 	 * @return bool true if the page record is the active page, false otherwise.
 	 */
-	protected function __get_is_active()
+	protected function get_is_active()
 	{
 		global $core;
 
@@ -319,7 +345,7 @@ class Page extends Node
 	 *
 	 * @return bool true if the page is in the active page trail, false otherwise.
 	 */
-	protected function __get_is_trail()
+	protected function get_is_trail()
 	{
 		global $core;
 
@@ -345,7 +371,7 @@ class Page extends Node
 	 *
 	 * @return ICanBoogie\ActiveRecord\Page|null The location target, or null if there is none.
 	 */
-	protected function __get_location()
+	protected function get_location()
 	{
 		return $this->locationid ? $this->_model[$this->locationid] : null;
 	}
@@ -355,7 +381,7 @@ class Page extends Node
 	 *
 	 * @return ICanBoogie\ActiveRecord\Page
 	 */
-	protected function __get_home()
+	protected function get_home()
 	{
 		return $this->_model->find_home($this->siteid);
 	}
@@ -365,7 +391,7 @@ class Page extends Node
 	 *
 	 * @return ICanBoogie\ActiveRecord\Page|null The parent page or null is the page has no parent.
 	 */
-	protected function __get_parent()
+	protected function get_parent()
 	{
 		return $this->parentid ? $this->_model[$this->parentid] : null;
 	}
@@ -377,7 +403,7 @@ class Page extends Node
 	 * we should create a `online_children` virtual property that returns only _online_ children,
 	 * or maybe a `accessible_children` virtual property ?
 	 */
-	protected function __get_children()
+	protected function get_children()
 	{
 		$blueprint = $this->_model->get_blueprint($this->siteid);
 		$pages = $blueprint['pages'];
@@ -407,7 +433,7 @@ class Page extends Node
 	 *
 	 * @return array[int]Page
 	 */
-	protected function __get_navigation_children()
+	protected function get_navigation_children()
 	{
 		$index = $this->_model->get_blueprint($this->siteid)->index;
 
@@ -441,7 +467,7 @@ class Page extends Node
 	 *
 	 * @return boolean
 	 */
-	protected function __get_has_child()
+	protected function get_has_child()
 	{
 		return $this->_model->get_blueprint($this->siteid)->has_children($this->nid);
 	}
@@ -451,7 +477,7 @@ class Page extends Node
 	 *
 	 * @return int
 	 */
-	protected function __get_children_count()
+	protected function get_children_count()
 	{
 		return $this->_model->get_blueprint($this->siteid)->children_count($this->nid);
 	}
@@ -462,7 +488,7 @@ class Page extends Node
 	 * This function is only called if no label is defined, in which case the title of the page is
 	 * returned instead.
 	 */
-	protected function __get_label()
+	protected function get_label()
 	{
 		return $this->title;
 	}
@@ -470,7 +496,7 @@ class Page extends Node
 	/**
 	 * Returns the depth level of this page in the navigation tree.
 	 */
-	protected function __get_depth()
+	protected function get_depth()
 	{
 		return $this->parent ? $this->parent->depth + 1 : 0;
 	}
@@ -479,7 +505,7 @@ class Page extends Node
 	 * Returns if the page is accessible or not in the navigation tree.
 	 */
 
-	protected function __get_is_accessible()
+	protected function get_is_accessible()
 	{
 		global $core;
 
@@ -491,7 +517,7 @@ class Page extends Node
 		return ($this->parent && !$this->parent->is_accessible) ? false : $this->is_online;
 	}
 
-	protected function __get_template()
+	protected function get_template()
 	{
 		if (isset($this->layout))
 		{
@@ -517,7 +543,7 @@ class Page extends Node
 	 *
 	 * @return array[string]\ICanBoogie\ActiveRecord\Pages\Content
 	 */
-	protected function __get_contents()
+	protected function get_contents()
 	{
 		global $core;
 
@@ -539,7 +565,7 @@ class Page extends Node
 	 *
 	 * @return \ICanBoogie\ActiveRecord\Pages\Content
 	 */
-	protected function __get_body()
+	protected function get_body()
 	{
 		$contents = $this->contents;
 
@@ -559,13 +585,13 @@ class Page extends Node
 	 * - `node-constructor`: "node-constructor-<normalized_constructor>" if the page displays a node.
 	 * - `template`: "template-<name>" the name of the page's template, without its extension.
 	 *
-	 * @see ICanBoogie\ActiveRecord.Node::__get_css_class_names()
+	 * @see ICanBoogie\ActiveRecord.Node::get_css_class_names()
 	 */
-	protected function __get_css_class_names()
+	protected function get_css_class_names()
 	{
 		$names = array_merge
 		(
-			parent::__get_css_class_names(), array
+			parent::get_css_class_names(), array
 			(
 				'type' => 'page',
 				'id' => 'page-id-' . $this->nid,
@@ -594,12 +620,12 @@ class Page extends Node
 
 	// TODO-20101115: these should be methods added by the "firstposition' module
 
-	protected function __get_description()
+	protected function get_description()
 	{
 		return $this->metas['description'];
 	}
 
-	protected function __get_document_title()
+	protected function get_document_title()
 	{
 		return $this->metas['document_title'] ? $this->metas['document_title'] : $this->title;
 	}

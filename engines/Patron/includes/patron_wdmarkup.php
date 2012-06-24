@@ -16,12 +16,12 @@ class patron_WdMarkup
 	protected $constructor;
 	protected $model;
 
-	public function __invoke(array $args, WdPatron $patron, $template)
+	public function __invoke(array $args, Patron\Engine $patron, $template)
 	{
 		throw new Exception('The __invoke method must be overrode');
 	}
 
-	protected function publish(WdPatron $patron, $template, $entries=null, array $options=array())
+	protected function publish(Patron\Engine $patron, $template, $entries=null, array $options=array())
 	{
 		return $patron($template, $entries, $options);
 	}

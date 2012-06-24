@@ -4,7 +4,12 @@ return array
 (
 	'articles' => array
 	(
-		'All records' => 'Tous les articles',
+		'count' => array
+		(
+			'none' => 'Aucun article',
+			'one' => 'Un article',
+			'other' => ':count articles'
+		),
 
 		'search' => array
 		(
@@ -20,6 +25,8 @@ return array
 				'one' => 'Voir le résultat trouvé pour %search dans les articles',
 				'other' => 'Voir les :count résultats trouvés pour %search dans les articles'
 			)
-		)
+		),
+
+		'All records' => 'Tous les articles'
 	)
 );

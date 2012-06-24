@@ -16,7 +16,7 @@ namespace Icybee;
  *
  * @var string
  */
-const VERSION = '1.0-dev (2012-04-20)';
+const VERSION = '1.0-dev (2012-06-23)';
 
 /**
  * Root path for the Icybee package.
@@ -144,6 +144,8 @@ Events::attach
 			# case we need to redirect the user to the first site available.
 			#
 
+			$response = new Response();
+
 			if (!$core->site_id)
 			{
 				try
@@ -152,9 +154,9 @@ Events::attach
 
 					if ($site)
 					{
-						$event->response->location = $site->url . $path;
+						$response->location = $site->url . $path;
 
-						return;
+						return $response;
 					}
 				}
 				catch (\Exception $e) { }
@@ -162,7 +164,6 @@ Events::attach
 				log_error('You are on a dummy website. You should check which websites are available or create one if none are.');
 			}
 
-			$response = new Response();
 			$response->body = require \Icybee\ROOT . 'admin.php';
 
 			return $response;

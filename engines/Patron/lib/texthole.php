@@ -68,11 +68,32 @@ class TextHole
 			return $this->functions[$name];
 		}
 
+		$try = 'ICanBoogie\\' . $name;
+
+		if (function_exists($try))
+		{
+			return $try;
+		}
+
+		$try = 'ICanBoogie\I18n\\' . $name;
+
+		if (function_exists($try))
+		{
+			return $try;
+		}
+
 		#
-		# 'wd' pseudo namespace
+		# 'wd' pseudo namespace // COMPAT
 		#
 
 		$try = 'wd_' . str_replace('-', '_', $name);
+
+		if (function_exists($try))
+		{
+			return $try;
+		}
+
+		$try = 'Patron\\' . $name;
 
 		if (function_exists($try))
 		{
@@ -910,10 +931,10 @@ class TextHole
 					{
 						$this->error
 						(
-							'unknown method: %method for: %expression', array
+							'Unknown method: %method for: %expression', array
 							(
-								'%method' => $method,
-								'%expression' => $expression
+								'method' => $method,
+								'expression' => $expression
 							)
 						);
 

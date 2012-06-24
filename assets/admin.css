@@ -868,6 +868,10 @@ CONTENTS
 	margin-top: 1.33em;
 }
 
+.block-alert.block-alert--interlock form {
+	margin-top: 0;
+}
+
 .block-alert .form-actions {
 	background-color: transparent;
 	border-top: 0;

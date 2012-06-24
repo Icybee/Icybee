@@ -29,3 +29,8 @@
 .group--contents-inherit > .control-group.editing + .control-group {
 	display: block;
 }
+
+.control-group--pattern input {
+	font-family: Menlo, Monaco, Consolas, "Courier New", monospace;
+}
+

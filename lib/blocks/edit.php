@@ -164,7 +164,7 @@ class EditBlock extends Form
 				$message = $time ? "Le verrou devrait disparaitre dans $time minutes." : "Le verrou devrait disparaitre dans moins d'une minutes.";
 
 				return <<<EOT
-<div class="block-alert">
+<div class="block-alert block-alert--interlock">
 <h2>Édition impossible</h2>
 <p>Impossible d'éditer l'enregistrement parce qu'il est en cours d'édition par <em>$luser->name</em> <span class="small">($luser->username)</span>.</p>
 <form method="get" action="">
@@ -220,7 +220,7 @@ EOT;
 		$document->js->add(ASSETS . 'js/edit.js');
 	}
 
-	protected function __get_permission()
+	protected function get_permission()
 	{
 		global $core;
 
@@ -276,7 +276,7 @@ EOT;
 	 *
 	 * @return \ICanBoogie\ActiveRecord
 	 */
-	protected function __get_record()
+	protected function get_record()
 	{
 		return $this->key ? $this->module->model[$this->key] : null;
 	}
@@ -336,7 +336,7 @@ EOT;
 	 *
 	 * @return array
 	 */
-	protected function __get_properties()
+	protected function get_properties()
 	{
 		global $core;
 

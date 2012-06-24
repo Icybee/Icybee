@@ -1,6 +1,6 @@
 <div class="metas">
 	<wdp:if test="@category">
-	<a href="#{@url('category')}" class="category">#{@category}</a><span class="separator"> &ndash;</span>
+	<a href="#{@url('vocabulary/category/list')}" class="#{@category.css_class}">#{@category}</a><span class="separator"> &ndash;</span>
 	</wdp:if>
 
 	<time datetime="#{@date}" pubdate="pubdate">#{@date.format_date()}</time>

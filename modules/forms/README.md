@@ -1,19 +1,33 @@
+
+
+
+
+
+
+
+
+
+
+DEPRECATED DEPRECATED DEPRECATED DEPRECATED DEPRECATED DEPRECATED DEPRECATED DEPRECATED DEPRECATED
+
+
+
 Préambule
 ---------
 
 Formulaire modèle, objet formulaire (ou formulaire) : il s'agit du formulaire WdForm
 
-Entrée formulaire : il s'agit d'une entrée du module feedback.forms.
+Entrée formulaire : il s'agit d'une entrée du module forms.
 
 
 Le formulaire est posté
 =======================
 
-Le formulaires est posté avec l'opération 'send' et la destination 'feedback.forms'.
+Le formulaires est posté avec l'opération 'post' et la destination 'forms'.
 
 1. Il passe au contrôle avec le callback control_form() : on s'assure que l'identifiant de l'entrée
 "formulaire" est bien présent et qu'il est valide. L'entrée "formulaire" est chargée depuis le modèle
-"feedback.forms".
+"forms".
 
 L'objet opération est modifié :
 

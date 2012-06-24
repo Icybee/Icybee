@@ -1,5 +1,7 @@
 <?php
 
+use Brickrouge\Element;
+
 class form_WdEditorElement extends WdEditorElement
 {
 	protected $selector;
@@ -12,7 +14,7 @@ class form_WdEditorElement extends WdEditorElement
 			(
 				Element::CHILDREN => array
 				(
-					$this->selector = new Brickrouge\FormSelectorElement
+					$this->selector = new \WdFormSelectorElement
 					(
 						'select', array
 						(
@@ -32,21 +34,18 @@ class form_WdEditorElement extends WdEditorElement
 		);
 	}
 
-	public function set($name, $value=null)
+	public function offsetSet($offset, $value)
 	{
-		if (is_string($name))
+		if ($offset == 'name')
 		{
-			if ($name == 'name')
-			{
-				$this->selector['name'] = $value;
-			}
-			else if ($name == 'value')
-			{
-				$this->selector['value'] = $value;
-			}
+			$this->selector['name'] = $value;
+		}
+		else if ($offset == 'value')
+		{
+			$this->selector['value'] = $value;
 		}
 
-		return parent::set($name, $value);
+		parent::offsetSet($offset, $value);
 	}
 
 	static public function render($data)

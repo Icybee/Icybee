@@ -276,7 +276,7 @@ class Hooks
 	 */
 	public static function markup_alerts(array $args, $engine, $template)
 	{
-		$key = 'alert-markup-placeholder-' . md5(uniqid());
+		$key = '<!-- alert-markup-placeholder-' . md5(uniqid()) . ' -->';
 
 		Events::attach
 		(

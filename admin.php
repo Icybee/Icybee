@@ -29,14 +29,14 @@ $document->css->add(Icybee\ASSETS . 'forms.css', -200);
 $document->css->add(Icybee\ASSETS . 'actionbar.css', -200);
 $document->css->add(Icybee\ASSETS . 'alerts.css', -200);
 
-$document->js->add(Icybee\ASSETS . 'js/mootools-core.js', -200);
-$document->js->add(Icybee\ASSETS . 'js/mootools-more.js', -200);
+$document->js->add(Icybee\ASSETS . 'mootools-core.js', -200);
+$document->js->add(Icybee\ASSETS . 'mootools-more.js', -200);
 $document->js->add(ICanBoogie\ASSETS . 'icanboogie.js', -190);
 $document->js->add(Brickrouge\ASSETS . 'brickrouge.js', -190);
 $document->js->add(Icybee\ASSETS . 'js/widget.js', -185);
-$document->js->add(Icybee\ASSETS . 'js/spinner.js', -180);
 $document->js->add(Icybee\ASSETS . 'js/publisher.js', -180);
 
+$document->js->add(Icybee\ASSETS . 'admin.js');
 $document->js->add(Icybee\ASSETS . 'actionbar.js');
 
 $html = (string) $document;

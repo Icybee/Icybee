@@ -13,7 +13,7 @@ namespace ICanBoogie\Modules\Comments;
 
 class DeleteBlock extends \Icybee\DeleteBlock
 {
-	protected function __get_record_name()
+	protected function get_record_name()
 	{
 		return \ICanBoogie\shorten($this->record->contents, 32, 1);
 	}

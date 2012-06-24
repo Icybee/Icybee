@@ -28,7 +28,7 @@ class File extends Node
 		parent::__construct($model);
 	}
 
-	protected function __get_extension()
+	protected function get_extension()
 	{
 		/*DIRTY
 		$path = $this->path;

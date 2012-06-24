@@ -189,7 +189,7 @@ EOT
 
 	public static function get_rendered_comments_count(Node $ar)
 	{
-		return t(':count comments', array(':count' => $ar->comments_count));
+		return t('comments.count', array(':count' => $ar->comments_count));
 	}
 
 	public static function dashboard_last()
@@ -203,7 +203,8 @@ EOT
 
 		$document->css->add('public/admin.css');
 
-		$entries = $core->models['comments']
+		$model = $core->models['comments'];
+		$entries = $model
 		->where('(SELECT 1 FROM {prefix}nodes WHERE nid = comment.nid AND (siteid = 0 OR siteid = ?)) IS NOT NULL', $core->site_id)
 		->order('created DESC')->limit(5)->all;
 
@@ -244,7 +245,6 @@ EOT
 
 			$txt_delete = t('Delete');
 			$txt_edit = t('Edit');
-			$txt_all_comments = t('All comments');
 			$txt_display_associated_node = t('Display associated node');
 
 			$rc .= <<<EOT
@@ -268,6 +268,9 @@ EOT
 </div>
 EOT;
 		}
+
+		$count = $model->joins(':nodes')->where('siteid = 0 OR siteid = ?', $core->site_id)->count;
+		$txt_all_comments = t('comments.count', array(':count' => $count));
 
 		$rc .= <<<EOT
 <div class="panel-footer"><a href="$context/admin/comments">$txt_all_comments</a></div>

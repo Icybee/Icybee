@@ -6,11 +6,11 @@ Brickrouge.Widget.AdjustThumbnailVersion = new Class
 	{
 		this.element = el = $(el);
 
-		var w = el.getElement('input[name="w"]') || el.getElement('input[name$="[w]"]');
-		var h = el.getElement('input[name="h"]') || el.getElement('input[name$="[h]"]');
-		var method = el.getElement('select[name="method"]') || el.getElement('select[name$="[method]"]');
-		var format = el.getElement('select[name="format"]') || el.getElement('select[name$="[format]"]');
-		var quality = el.getElement('input[name="quality"]') || el.getElement('input[name$="[quality]"]');
+		var w = el.getElement('input[name="w"]') || el.getElement('input[name$="[w]"]')
+		, h = el.getElement('input[name="h"]') || el.getElement('input[name$="[h]"]')
+		, method = el.getElement('select[name="method"]') || el.getElement('select[name$="[method]"]')
+		, format = el.getElement('select[name="format"]') || el.getElement('select[name$="[format]"]')
+		, quality = el.getElement('input[name="quality"]') || el.getElement('input[name$="[quality]"]')
 
 		this.elements =
 		{
@@ -20,9 +20,17 @@ Brickrouge.Widget.AdjustThumbnailVersion = new Class
 			format: format,
 			quality: quality,
 			'no-upscale': el.getElement('input[name="no-upscale"]') || el.getElement('input[name$="[no-upscale]"]'),
-			interlace: el.getElement('input[name="interlace"]') || el.getElement('input[name$="[interlace]"]'),
+//			interlace: el.getElement('input[name="interlace"]') || el.getElement('input[name$="[interlace]"]'),
 			background: el.getElement('input[name="background"]') || el.getElement('input[name$="[background]"]')
-		};
+		}
+
+		Object.each(this.elements, function(control) {
+
+			if (!control) return
+
+			control.addEvent('change', this.fireChange.bind(this))
+
+		}, this)
 
 		function checkMethod()
 		{
@@ -63,6 +71,11 @@ Brickrouge.Widget.AdjustThumbnailVersion = new Class
 
 		method.addEvent('change', checkMethod);
 		format.addEvent('change', checkQuality);
+	},
+
+	fireChange: function()
+	{
+		console.log(this, this.element.toQueryString().parseQueryString())
 	},
 
 	setValue: function(value)

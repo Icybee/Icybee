@@ -22,9 +22,9 @@ class Module extends \ICanBoogie\Modules\Nodes\Module
 	/**
 	 * Only the "list" view is available and it is used to create the sitemap.
 	 *
-	 * @see ICanBoogie\Module.Nodes::__get_views()
+	 * @see ICanBoogie\Module.Nodes::get_views()
 	 */
-	protected function __get_views()
+	protected function get_views()
 	{
 		return array
 		(
@@ -120,8 +120,6 @@ class Module extends \ICanBoogie\Modules\Nodes\Module
 				(
 					array
 					(
-						Element::LABEL => 'template',
-						Element::LABEL_POSITION => 'before',
 						Element::GROUP => 'contents',
 						Element::DESCRIPTION => $template_description
 					)
@@ -151,7 +149,7 @@ class Module extends \ICanBoogie\Modules\Nodes\Module
 				(
 					'contents' => array
 					(
-						'title' => 'Contents',
+						'title' => 'Template',
 						'weight' => 10
 					),
 
@@ -407,7 +405,7 @@ class Module extends \ICanBoogie\Modules\Nodes\Module
 		$definer = null;
 		$template = $request_template !== null ? $request_template : $record->template;
 
-//		\ICanBoogie\log_success('template: \1 (requested: \3), is_home: \2', array($template, $record->is_home, $request_template));
+//		\ICanBoogie\log('template: \1 (requested: \3), is_home: \2', array($template, $record->is_home, $request_template));
 
 		if ($template == 'page.html' && (!$record->parent || ($record->parent && $record->parent->is_home)))
 		{
@@ -444,11 +442,11 @@ class Module extends \ICanBoogie\Modules\Nodes\Module
 			$definer = $record;
 			$parent = $record->parent;
 
-//			\ICanBoogie\log_success('parent: \1 (\2 ?= \3)', array($definer->title, $definer->template, $template));
+//			\ICanBoogie\log('parent: \1 (\2 ?= \3)', array($definer->title, $definer->template, $template));
 
 			while ($parent)
 			{
-//				\ICanBoogie\log_success('parent: \1, template: \2', array($parent->title, $parent->template));
+//				\ICanBoogie\log('parent: \1, template: \2', array($parent->title, $parent->template));
 
 				if ($parent->template == $request_template)
 				{
@@ -458,14 +456,14 @@ class Module extends \ICanBoogie\Modules\Nodes\Module
 				$parent = $parent->parent;
 			}
 
-//			\ICanBoogie\log_success('end parent: \1', array($parent ? $parent->title : 'none'));
+//			\ICanBoogie\log('end parent: \1', array($parent ? $parent->title : 'none'));
 
 			if ($parent && $parent->template == $request_template)
 			{
 				$definer = $parent;
 			}
 
-//			\ICanBoogie\log_success('definer: \1:\3 (\2), record: \4:\5', array($definer->title,  $definer->template, $definer->nid, $record->title, $record->nid));
+//			\ICanBoogie\log('definer: \1:\3 (\2), record: \4:\5', array($definer->title,  $definer->template, $definer->nid, $record->title, $record->nid));
 		}
 
 		if ($definer && $definer != $record)

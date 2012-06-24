@@ -12,14 +12,14 @@ Brickrouge.Widget.Login = new Class({
 	{
 		if (response.location)
 		{
-			window.location = response.location;
+			window.location = response.location
 		}
 		else
 		{
-			window.location.reload();
+			window.location.reload()
 		}
 	}
-});
+})
 
 Brickrouge.Widget.NonceRequest = new Class({
 
@@ -29,76 +29,57 @@ Brickrouge.Widget.NonceRequest = new Class({
 
 		useXHR: true
 	}
-});
+})
 
 Brickrouge.Widget.LoginCombo = new Class({
 
 	initialize: function(el, options)
 	{
-		this.element = el = $(el);
+		this.element = el = $(el)
 
-		var forms = el.getElements('form');
-
-		var login = forms[0];
-		var nonce = forms[1];
-
-		var loginSlide = new Fx.Slide(login, { duration: 'short', wrapper: login.getParent(), resetHeight: true });
-		var nonceSlide = new Fx.Slide(nonce, { duration: 'short', wrapper: nonce.getParent(), resetHeight: true });
+		var forms = el.getElements('form')
+		, login = forms[0]
+		, nonce = forms[1]
+		, loginSlide = new Fx.Slide(login, { duration: 'short', wrapper: login.getParent(), resetHeight: true })
+		, nonceSlide = new Fx.Slide(nonce, { duration: 'short', wrapper: nonce.getParent(), resetHeight: true })
+		, shake
 
 		function nonceIn()
 		{
 			nonce.get('widget').clearAlert();
 
-			loginSlide.slideOut().chain
-			(
-				function()
-				{
-					nonceSlide.slideIn();
-				}
-			);
+			loginSlide.slideOut().chain(nonceSlide.slideIn.bind(nonceSlide))
 
 			return nonceSlide;
 		};
 
 		function nonceOut()
 		{
-			nonceSlide.slideOut().chain
-			(
-				function()
-				{
-					loginSlide.slideIn();
-				}
-			);
+			nonceSlide.slideOut().chain(loginSlide.slideIn.bind(loginSlide))
 
-			return loginSlide;
+			return loginSlide
 		};
 
-		login.getElement('a').addEvent
-		(
-			'click', function(ev)
-			{
-				ev.stop();
+		login.getElement('a').addEvent('click', function(ev) {
 
-				nonceIn();
-			}
-		);
+			ev.stop()
 
-		nonce.getElement('a').addEvent
-		(
-			'click', function(ev)
-			{
-				ev.stop();
+			nonceIn()
+		})
 
-				nonceOut();
-			}
-		);
+		nonce.getElement('a').addEvent('click', function(ev) {
 
-		var shake = ( function (target, amplitude, duration)
+			ev.stop()
+
+			nonceOut()
+		})
+
+		shake = (function (target, amplitude, duration)
 		{
-			target = $(target);
-			target.setStyle('position', 'relative');
+			target = $(target)
+			target.setStyle('position', 'relative')
 
-			var fx = new Fx.Tween(target, { property: 'left', duration: duration/5 });
+			var fx = new Fx.Tween(target, { property: 'left', duration: duration/5 })
 
 			return function()
 			{
@@ -111,17 +92,13 @@ Brickrouge.Widget.LoginCombo = new Class({
 				)
 			}
 
-		}) (el.getParent('shakable') || el, 50, 200);
+		}) (el.getParent('shakable') || el, 50, 200)
 
-		login.get('widget').addEvent('failure', shake);
+		login.get('widget').addEvent('failure', shake)
 
-		nonce.get('widget').addEvent
-		(
-			'success', function()
-			{
-				nonceOut.delay(4000);
-			}
-		);
+		nonce.get('widget').addEvent('success', function() {
+
+			nonceOut.delay(4000)
+		})
 	}
-
-});
+})

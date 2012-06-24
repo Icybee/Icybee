@@ -14,7 +14,7 @@ return array
 	'prototypes' => array
 	(
 		'ICanBoogie\ActiveRecord\Image::thumbnail' => __NAMESPACE__ . '::method_thumbnail',
-		'ICanBoogie\ActiveRecord\Image::__get_thumbnail' => __NAMESPACE__ . '::method_get_thumbnail',
+		'ICanBoogie\ActiveRecord\Image::get_thumbnail' => __NAMESPACE__ . '::method_get_thumbnail',
 		'ICanBoogie\Modules\System\Cache\StatOperation::stat_thumbnails' => __NAMESPACE__ . '::method_stat_cache',
 		'ICanBoogie\Modules\System\Cache\ClearOperation::clear_thumbnails' => __NAMESPACE__ . '::method_clear_cache'
 	)

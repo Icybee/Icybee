@@ -43,28 +43,28 @@ class Comment extends ActiveRecord
 	public $notify;
 	public $created;
 
-	protected function __get_node()
+	protected function get_node()
 	{
 		global $core;
 
 		return $core->models['nodes'][$this->nid];
 	}
 
-	protected function __get_url()
+	protected function get_url()
 	{
 		$node = $this->node;
 
 		return ($node ? $this->node->url : '#unknown-node-' . $this->nid) . '#comment-' . $this->commentid;
 	}
 
-	protected function __get_absolute_url()
+	protected function get_absolute_url()
 	{
 		$node = $this->node;
 
 		return ($node ? $this->node->absolute_url : '#unknown-node-' . $this->nid) . '#comment-' . $this->commentid;
 	}
 
-	protected function __get_author_icon()
+	protected function get_author_icon()
 	{
 		$hash = md5(strtolower(trim($this->author_email)));
 
@@ -77,12 +77,12 @@ class Comment extends ActiveRecord
 		);
 	}
 
-	protected function __get_excerpt()
+	protected function get_excerpt()
 	{
 		return $this->excerpt();
 	}
 
-	protected function __get_is_author()
+	protected function get_is_author()
 	{
 		return $this->node->uid == $this->uid;
 	}

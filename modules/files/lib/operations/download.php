@@ -26,16 +26,16 @@ class DownloadOperation extends Operation
 	/**
 	 * Controls for the operation: record.
 	 *
-	 * @see ICanBoogie.Operation::__get_controls()
+	 * @see ICanBoogie.Operation::get_controls()
 	 */
-	protected function __get_controls()
+	protected function get_controls()
 	{
 		return array
 		(
 			self::CONTROL_RECORD => true
 		)
 
-		+ parent::__get_controls();
+		+ parent::get_controls();
 	}
 
 	/**

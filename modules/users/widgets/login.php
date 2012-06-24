@@ -85,7 +85,8 @@ class Login extends Form
 				),
 
 				'class' => 'widget-login',
-				'name' => 'users/login'
+				'name' => 'users/login',
+				'data-widget-constructor' => 'Login'
 			)
 		);
 	}

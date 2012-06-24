@@ -23,7 +23,7 @@ use Brickrouge\Widget;
  */
 class EditBlock extends \Icybee\EditBlock
 {
-	protected function __get_permission()
+	protected function get_permission()
 	{
 		global $core;
 
@@ -38,7 +38,7 @@ class EditBlock extends \Icybee\EditBlock
 			return true;
 		}
 
-		return parent::__get_permission();
+		return parent::get_permission();
 	}
 
 	protected function alter_attributes(array $attributes)

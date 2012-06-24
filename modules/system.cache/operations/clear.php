@@ -20,24 +20,8 @@ class ClearOperation extends BaseOperation
 
 		$cache->clear();
 
+		$this->response->success = array('The cache %cache has been cleared.', array('cache' => $this->key));
+
 		return $cache->stat();
 	}
-
-	/*DIRTY
-	protected function clear_core_assets()
-	{
-		global $core;
-
-		$path = $core->config['repository.files'] . '/assets';
-
-		$files = glob($_SERVER['DOCUMENT_ROOT'] . $path . '/*');
-
-		foreach ($files as $file)
-		{
-			unlink($file);
-		}
-
-		return count($files);
-	}
-	*/
 }

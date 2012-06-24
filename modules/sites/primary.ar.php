@@ -30,6 +30,11 @@ class Site extends ActiveRecord
 {
 	const BASE = '/protected/';
 
+	const STATUS_OFFLINE = 0;
+	const STATUS_ONLINE = 1;
+	const STATUS_UNDER_MAINTENANCE = 2;
+	const STATUS_DENIED_ACCESS = 3;
+
 	public $siteid;
 	public $subdomain;
 	public $domain;
@@ -76,7 +81,7 @@ class Site extends ActiveRecord
 		return parent::save();
 	}
 
-	protected function __get_url()
+	protected function get_url()
 	{
 		$parts = explode('.', $_SERVER['SERVER_NAME']);
 		$parts = array_reverse($parts);
@@ -107,10 +112,10 @@ class Site extends ActiveRecord
 	/**
 	 * Returns the available templates for the site
 	 */
-	protected function __get_templates()
+	protected function get_templates()
 	{
 		$templates = array();
-		$root = $_SERVER['DOCUMENT_ROOT'];
+		$root = \ICanBoogie\DOCUMENT_ROOT;
 
 		$models = array($this->model, 'all');
 
@@ -157,10 +162,10 @@ class Site extends ActiveRecord
 		return $templates;
 	}
 
-	protected function __get_partial_templates()
+	protected function get_partial_templates()
 	{
 		$templates = array();
-		$root = $_SERVER['DOCUMENT_ROOT'];
+		$root = \ICanBoogie\DOCUMENT_ROOT;
 
 		$models = array($this->model, 'all');
 
@@ -231,7 +236,7 @@ class Site extends ActiveRecord
 		}
 	}
 
-	protected function __get_native()
+	protected function get_native()
 	{
 		$native_id = $this->nativeid;
 
@@ -243,7 +248,7 @@ class Site extends ActiveRecord
 	 *
 	 * @return array
 	 */
-	protected function __get_translations()
+	protected function get_translations()
 	{
 		if ($this->nativeid)
 		{

@@ -28,11 +28,11 @@ class system_nodes_view_WdMarkup extends patron_WdMarkup
 	 * marked with '=!='.
 	 *
 	 * @param array $args
-	 * @param WdPatron $patron
+	 * @param Patron\Engine $patron
 	 * @param unknown_type $template
 	 */
 
-	public function __invoke(array $args, WdPatron $patron, $template)
+	public function __invoke(array $args, Patron\Engine $patron, $template)
 	{
 		global $core;
 
@@ -189,7 +189,7 @@ class system_nodes_view_WdMarkup extends patron_WdMarkup
 		}
 
 		// TODO-20100630: The whole point of the inherited markups is to get rid of the
-		// WdModel::parseConditions() method.
+		// Model::parseConditions() method.
 
 		return $this->model->parseConditions($conditions);
 	}
@@ -231,7 +231,7 @@ class system_nodes_list_WdMarkup extends patron_WdMarkup
 	protected $invoked_constructor;
 	*/
 
-	public function __invoke(array $args, WdPatron $patron, $template)
+	public function __invoke(array $args, Patron\Engine $patron, $template)
 	{
 		global $core;
 		/*
@@ -268,7 +268,7 @@ class system_nodes_list_WdMarkup extends patron_WdMarkup
 	}
 
 	/*
-	protected function __get_model()
+	protected function get_model()
 	{
 		global $core;
 

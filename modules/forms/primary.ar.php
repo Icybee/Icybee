@@ -42,7 +42,7 @@ class Form extends Node
 	public $notify_template;
 	public $pageid;
 
-	protected function __get_model()
+	protected function get_model()
 	{
 		global $core;
 
@@ -57,7 +57,7 @@ class Form extends Node
 		return $models[$modelid];
 	}
 
-	protected function __get_url()
+	protected function get_url()
 	{
 		global $core;
 
@@ -76,7 +76,7 @@ class Form extends Node
 		}
 	}
 
-	protected function __get_form()
+	protected function get_form()
 	{
 		$class = $this->model['class'];
 

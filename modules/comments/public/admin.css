@@ -106,11 +106,3 @@
 {
 	display: inline-block;
 }
-
-#feedback-comments-last .panel-footer {
-	text-align: center;
-}
-
-#feedback-comments-last .panel-footer a:not(:hover) {
-	color: inherit;
-}

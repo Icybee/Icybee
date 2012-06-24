@@ -22,9 +22,9 @@ class HomeIncludeOperation extends Operation
 	/**
 	 * Controls for the operation: permission(maintain), record and ownership.
 	 *
-	 * @see ICanBoogie.Operation::__get_controls()
+	 * @see ICanBoogie.Operation::get_controls()
 	 */
-	protected function __get_controls()
+	protected function get_controls()
 	{
 		return array
 		(
@@ -33,7 +33,7 @@ class HomeIncludeOperation extends Operation
 			self::CONTROL_OWNERSHIP => true
 		)
 
-		+ parent::__get_controls();
+		+ parent::get_controls();
 	}
 
 	protected function validate(Errors $errors)
@@ -47,7 +47,7 @@ class HomeIncludeOperation extends Operation
 		$record->is_home_excluded = false;
 		$record->save();
 
-		\ICanBoogie\log_success('%title is now included in the home page', array('%title' => $record->title));
+		$this->response->success = array('%title is now included in the home page', array('%title' => $record->title));
 
 		return true;
 	}

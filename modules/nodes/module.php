@@ -29,13 +29,13 @@ class Module extends \Icybee\Module
 	/**
 	 * Defines the "view", "list" and "home" views.
 	 *
-	 * @see Icybee.Module::__get_views()
+	 * @see Icybee.Module::get_views()
 	 */
-	protected function __get_views()
+	protected function get_views()
 	{
 		return \ICanBoogie\array_merge_recursive
 		(
-			parent::__get_views(), array
+			parent::get_views(), array
 			(
 				'view' => array
 				(
@@ -247,6 +247,7 @@ class Module extends \Icybee\Module
 			}
 
 			$title = t($descriptor[self::T_TITLE], array(), array('scope' => 'module_title'));
+			$title = t(strtr($constructor, '.', '_') . '.name.other', array(), array('default' => $title));
 
 			$categories[$category][] = array
 			(

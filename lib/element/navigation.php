@@ -142,8 +142,22 @@ class Navigation extends \Brickrouge\Element
 			$module_flat_id = strtr($module_id, '.', '_');
 			$title = t($module_flat_id, array(), array('scope' => 'module_title', 'default' => $descriptors[$module_id][Module::T_TITLE]));
 			$url = Route::contextualize($route['pattern']);
-			$options[$url] = new A($title, $url);
+			$options[$url] = array($title, $url);
 		}
+
+		usort($options, function($a, $b) {
+
+			return \ICanBoogie\unaccent_compare_ci($a[0], $b[0]);
+
+		});
+
+		array_walk($options, function(&$v) {
+
+			list($title, $url) = $v;
+
+			$v = new A($title, $url);
+
+		});
 
 		return new DropdownMenu
 		(

@@ -34,7 +34,7 @@ class site_pages_WdMarkups extends patron_markups_WdHooks
 		return parent::model($name);
 	}
 
-	static public function content(array $args, WdPatron $patron, $template)
+	static public function content(array $args, Patron\Engine $patron, $template)
 	{
 		global $core;
 
@@ -166,7 +166,7 @@ class site_pages_WdMarkups extends patron_markups_WdHooks
 		return $str;
 	}
 
-	static public function sitemap(array $args, WdPatron $patron, $template)
+	static public function sitemap(array $args, Patron\Engine $patron, $template)
 	{
 		$parentid = $args['parent'];
 
@@ -249,7 +249,7 @@ class site_pages_WdMarkups extends patron_markups_WdHooks
 
 class site_pages_languages_WdMarkup extends patron_WdMarkup
 {
-	public function __invoke(array $args, WdPatron $patron, $template)
+	public function __invoke(array $args, Patron\Engine $patron, $template)
 	{
 		global $core;
 
@@ -371,7 +371,7 @@ class site_pages_languages_WdMarkup extends patron_WdMarkup
 
 class site_pages_navigation_WdMarkup extends patron_WdMarkup
 {
-	public function __invoke(array $args, WdPatron $patron, $template)
+	public function __invoke(array $args, Patron\Engine $patron, $template)
 	{
 		global $core;
 
@@ -530,7 +530,7 @@ class site_pages_navigation_WdMarkup extends patron_WdMarkup
 		return $rc;
 	}
 
-	public static function navigation_leaf(array $args, WdPatron $patron, $template)
+	public static function navigation_leaf(array $args, Patron\Engine $patron, $template)
 	{
 		global $core;
 
@@ -542,7 +542,7 @@ class site_pages_navigation_WdMarkup extends patron_WdMarkup
 
 class site_pages_sitemap_WdMarkup extends patron_WdMarkup
 {
-	public function __invoke(array $args, WdPatron $patron, $template)
+	public function __invoke(array $args, Patron\Engine $patron, $template)
 	{
 		global $core;
 
@@ -592,7 +592,9 @@ class site_pages_sitemap_WdMarkup extends patron_WdMarkup
 				$class .= 'active';
 			}
 
-			$rc .=  $class ? '<li class="' . $class . '">' : '<li>';
+			$class .= ' nid-' . $record->nid;
+
+			$rc .=  $class ? '<li class="' . trim($class) . '">' : '<li>';
 			$rc .= '<a href="' . $record->url . '">' . \ICanBoogie\escape($record->label) . '</a>';
 
 			if (($depth === false || $level < $depth) && $branch->children)

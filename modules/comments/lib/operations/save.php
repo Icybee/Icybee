@@ -21,11 +21,11 @@ use ICanBoogie\Operation;
  */
 class SaveOperation extends \Icybee\SaveOperation
 {
-	protected function __get_properties()
+	protected function get_properties()
 	{
 		global $core;
 
-		$properties = parent::__get_properties();
+		$properties = parent::get_properties();
 		$user = $core->user;
 
 		if ($this->key)

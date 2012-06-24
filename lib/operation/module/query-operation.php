@@ -25,14 +25,14 @@ class QueryOperation extends Operation
 {
 	private $callback;
 
-	protected function __get_controls()
+	protected function get_controls()
 	{
 		return array
 		(
 			self::CONTROL_AUTHENTICATION => true
 		)
 
-		+ parent::__get_controls();
+		+ parent::get_controls();
 	}
 
 	protected function validate(\ICanboogie\Errors $errors)

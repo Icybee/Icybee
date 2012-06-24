@@ -9,6 +9,16 @@ return array
 		'nid' => 'Attaché à'
 	),
 
+	'comments' => array
+	(
+		'count' => array
+		(
+			'one' => 'Un commentaire',
+			'other' => ':count commentaires',
+			'none' => 'Pas de commentaire'
+		)
+	),
+
 	':count comments' => array
 	(
 		'one' => 'Un commentaire',
@@ -19,6 +29,8 @@ return array
 	'comments.list.empty_view' => 'Pas de commentaires',
 
 	'module_title.comments' => 'Commentaires',
+
+	'Last comments' => 'Derniers commentaires',
 
 	#
 	# form

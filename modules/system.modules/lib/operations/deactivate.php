@@ -19,14 +19,14 @@ use ICanBoogie\Route;
  */
 class DeactivateOperation extends Operation
 {
-	protected function __get_controls()
+	protected function get_controls()
 	{
 		return array
 		(
 			self::CONTROL_PERMISSION => Module::PERMISSION_ADMINISTER
 		)
 
-		+ parent::__get_controls();
+		+ parent::get_controls();
 	}
 
 	/**
@@ -73,6 +73,7 @@ class DeactivateOperation extends Operation
 			foreach (array_keys($this->key) as $key)
 			{
 				unset($enabled[$key]);
+				unset($core->modules[$key]);
 			}
 		}
 

@@ -2,6 +2,22 @@
 
 return array
 (
+	'files' => array
+	(
+		'count' => array
+		(
+			'none' => 'Aucun fichier',
+			'one' => 'Un fichier',
+			'other' => ':count fichiers'
+		),
+
+		'name' => array
+		(
+			'one' => 'Fichier',
+			'other' => 'Fichiers'
+		)
+	),
+
 	'fileupload.element' => array
 	(
 		'choose_a_file' => 'Choisir un fichier',

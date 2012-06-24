@@ -107,7 +107,7 @@ class ManageBlock extends Form
 				list($package) = explode('.', $m_id);
 			}
 
-			$package = t($package, array(), array('scope' => array('module_category', 'title'), 'default' => $package));
+			$package = t($package, array(), array('scope' => 'module_category', 'default' => $package));
 
 			$packages[$package][t($name)] = array_merge
 			(

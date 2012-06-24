@@ -18,6 +18,14 @@ class PopImage extends \ICanBoogie\Modules\Nodes\PopNode
 	const T_PREVIEW_WIDTH = '#preview-width';
 	const T_PREVIEW_HEIGHT = '#preview-height';
 
+	protected static function add_assets(\Brickrouge\Document $document)
+	{
+		parent::add_assets($document);
+
+		$document->css->add('pop-image.css');
+		$document->js->add('pop-image.js');
+	}
+
 	public function __construct($tags=array(), $dummy=null)
 	{
 		parent::__construct
@@ -27,27 +35,20 @@ class PopImage extends \ICanBoogie\Modules\Nodes\PopNode
 				self::T_PREVIEW_WIDTH => 64,
 				self::T_PREVIEW_HEIGHT => 64,
 				self::T_CONSTRUCTOR => 'images',
+
 				'placeholder' => 'Sélectionner une image',
 
 				'data-adjust' => 'adjust-image'
 			)
 		);
-
-		$this->dataset = array
-		(
-			'preview-width' => $this[self::T_PREVIEW_WIDTH],
-			'preview-height' => $this[self::T_PREVIEW_HEIGHT]
-		)
-
-		+ $this->dataset;
 	}
 
-	protected static function add_assets(\Brickrouge\Document $document)
+	protected function render_dataset(array $dataset)
 	{
-		parent::add_assets($document);
+		$dataset['preview-width'] = $this[self::T_PREVIEW_WIDTH];
+		$dataset['preview-height'] = $this[self::T_PREVIEW_HEIGHT];
 
-		$document->css->add('pop-image.css');
-		$document->js->add('pop-image.js');
+		return parent::render_dataset($dataset);
 	}
 
 	protected function getEntry($model, $value)
@@ -60,17 +61,13 @@ class PopImage extends \ICanBoogie\Modules\Nodes\PopNode
 		$w = $this[self::T_PREVIEW_WIDTH] ?: 64;
 		$h = $this[self::T_PREVIEW_HEIGHT] ?: 64;
 
-		$rc = '<div class="preview">' . new Element
+		return new Element
 		(
 			'img', array
 			(
 				'src' => $record ? $record->thumbnail("w:$w;h:$h;m:surface")->url : null,
 				'alt' => ''
 			)
-		)
-
-		. '</div>';
-
-		return $rc . parent::getPreview($record);
+		);
 	}
 }

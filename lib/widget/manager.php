@@ -98,7 +98,7 @@ class Manager extends Element
 	 * array|null order: Columns used to sort the records.
 	 * string|null search: Key words to search for, altering the query conditions.
 	 * array filters: The filters currently used to filter the records, ready for the
-	 * WdActiveRecordQuery::where() method.
+	 * ICanBoogie\ActiveRecord\Query::where() method.
 	 */
 	protected $options = array();
 
@@ -1162,9 +1162,12 @@ EOT;
 	 *
 	 * @return string
 	 */
-	protected function render_filter_cell($record, $property, $label=null)
+	protected function render_filter_cell($record, $property, $label=null, $value=null)
 	{
-		$value = $record->$property;
+		if ($value === null)
+		{
+			$value = $record->$property;
+		}
 
 		if ($label === null)
 		{

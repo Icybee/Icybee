@@ -2,9 +2,13 @@
 
 return array
 (
+	'button' => array
+	(
+		'Connect' => 'Iniciar sesión'
+	),
+
 	'label' => array
 	(
-		'connect' => 'Iniciar sesión',
 		'email_confirm' => "Confirmar e-mail",
 		'firstname' => 'Nombre',
 		'lastname' => 'Apellidos',

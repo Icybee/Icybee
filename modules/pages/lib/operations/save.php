@@ -17,11 +17,11 @@ use ICanBoogie\Route;
 
 class SaveOperation extends \ICanBoogie\Modules\Nodes\SaveOperation
 {
-	protected function __get_properties()
+	protected function get_properties()
 	{
 		global $core;
 
-		$properties = parent::__get_properties();
+		$properties = parent::get_properties();
 
 		if (!$this->key)
 		{

@@ -31,7 +31,7 @@ class Hooks
 	 *
 	 * @return ICanBoogie\ActiveRecord\Image|null
 	 */
-	static public function __get_image(Node $ar)
+	static public function get_image(Node $ar)
 	{
 		global $core;
 
@@ -79,6 +79,12 @@ class Hooks
 		);
 	}
 
+	/**
+	 * Alters the config block of contents modules with controls for the associated image.
+	 *
+	 * @param Event $event
+	 * @param \ICanBoogie\Modules\Contents\ConfigBlock $block
+	 */
 	public static function on_contents_configblock_alter_children(Event $event, \ICanBoogie\Modules\Contents\ConfigBlock $block)
 	{
 		global $core;
@@ -112,19 +118,13 @@ class Hooks
 		(
 			$event->attributes[Element::GROUPS], array
 			(
-				'resources_images__inject' => array
+				'resources_images__inject_toggler' => array
 				(
 					'title' => 'Associated image',
-					'title' => new Element(Element::TYPE_CHECKBOX, array
-					(
-						Element::LABEL => 'Associated image',
-
-						'name' => 'global[resources_images.inject][' . $sender_flat_id . ']',
-						'checked' => !empty($core->registry['resources_images.inject.' . $sender_flat_id])
-					))
+					'class' => 'group-toggler'
 				),
 
-				'resources_images__inject_options' => array
+				'resources_images__inject' => array
 				(
 
 				),
@@ -159,31 +159,29 @@ class Hooks
 		(
 			$event->children, array
 			(
-				/*
-				'global[resources_images.inject][' . $sender_flat_id . ']' => new Element
+				"global[resources_images.inject][$sender_flat_id]" => new Element
 				(
 					Element::TYPE_CHECKBOX, array
 					(
 						Element::LABEL => 'Associer une image aux enregistrements',
-						Element::GROUP => 'resources_images__inject'
-					)
-				),
-				*/
-
-				'global[resources_images.inject][' . $sender_flat_id . '.required]' => new Element
-				(
-					Element::TYPE_CHECKBOX, array
-					(
-						Element::LABEL => "L'association est obligatoire",
-						Element::GROUP => 'resources_images__inject'
+						Element::GROUP => 'resources_images__inject_toggler'
 					)
 				),
 
-				'global[resources_images.inject][' . $sender_flat_id . '.default]' => new Widget\PopImage
+				"global[resources_images.inject][$sender_flat_id.default]" => new Widget\PopImage
 				(
 					array
 					(
 						Form::LABEL => "Image par défaut",
+						Element::GROUP => 'resources_images__inject'
+					)
+				),
+
+				"global[resources_images.inject][$sender_flat_id.required]" => new Element
+				(
+					Element::TYPE_CHECKBOX, array
+					(
+						Element::LABEL => "L'association est obligatoire",
 						Element::GROUP => 'resources_images__inject'
 					)
 				)

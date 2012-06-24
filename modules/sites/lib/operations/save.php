@@ -21,14 +21,13 @@ class SaveOperation extends \Icybee\SaveOperation
 
 		$record = $this->module->model[$rc['key']];
 
-		\ICanBoogie\log_success
+		$this->response->success = array
 		(
 			$rc['mode'] == 'update' ? '%title has been updated in %module.' : '%title has been created in %module.', array
 			(
-				'%title' => \ICanBoogie\shorten($record->title), '%module' => $this->module->title
-			),
-
-			'save'
+				'title' => \ICanBoogie\shorten($record->title),
+				'module' => $this->module->title
+			)
 		);
 
 		unset($core->vars['cached_sites']);

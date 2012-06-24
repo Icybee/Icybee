@@ -29,7 +29,7 @@ class Lock extends Operation
 		$this->key = $this->request['key'];
 	}
 
-	protected function __get_controls()
+	protected function get_controls()
 	{
 		return array
 		(
@@ -37,7 +37,7 @@ class Lock extends Operation
 			self::CONTROL_OWNERSHIP => true
 		)
 
-		+ parent::__get_controls();
+		+ parent::get_controls();
 	}
 
 	protected function validate(\ICanboogie\Errors $errors)

@@ -4,7 +4,7 @@
 		<h3><a href="#{@url}">#{@title}</a></h3>
 		<div class="metas">
 			<wdp:if test="@category">
-			<a href="#{@url('category')}" class="category">#{@category}</a><span class="separator"> &ndash; </span>
+			<a href="#{@url('vocabulary/category/list')}" class="category">#{@category}</a><span class="separator"> &ndash; </span>
 			</wdp:if>
 			
 			<time datetime="#{@date}" pubdate="pubdate">#{@date.format_date()}</time>
@@ -21,4 +21,4 @@
 </wdp:foreach>
 </ol>
 
-<p class="go-to-list"><a href="#{url:contents.news/list}">#{t:All records}</a></p>
+<p class="goto-list"><a href="#{url:contents.news/list}">#{t:All records}</a></p>

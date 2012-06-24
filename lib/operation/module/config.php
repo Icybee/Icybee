@@ -41,7 +41,7 @@ namespace Icybee;
  */
 class ConfigOperation extends \ICanBoogie\Operation
 {
-	protected function __get_controls()
+	protected function get_controls()
 	{
 		return array
 		(
@@ -49,16 +49,16 @@ class ConfigOperation extends \ICanBoogie\Operation
 			self::CONTROL_FORM => true
 		)
 
-		+ parent::__get_controls();
+		+ parent::get_controls();
 	}
 
 	/**
 	 * Parse the operation parameters to create the key/value pairs to save in the "global" and
 	 * "local" config spaces.
 	 *
-	 * @see ICanBoogie.Operation::__get_properties()
+	 * @see ICanBoogie.Operation::get_properties()
 	 */
-	protected function __get_properties()
+	protected function get_properties()
 	{
 		return array_intersect_key($this->request->params, array('global' => true, 'local' => true));
 	}
@@ -108,8 +108,7 @@ class ConfigOperation extends \ICanBoogie\Operation
 			}
 		}
 
-		\ICanBoogie\log_success("The configuration has been saved.");
-
+		$this->response->success = "The configuration has been saved.";
 		$this->response->location = $this->request->path;
 
 		return true;

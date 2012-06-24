@@ -97,6 +97,14 @@
 	background: linear-gradient(top, white, rgba(255,255,255,0));
 }
 
+.panel-footer {
+	text-align: center;
+}
+
+.panel-footer a:not(:hover) {
+	color: inherit;
+}
+
 .panel-holder {
 	visibility: hidden;
 	height: 1px;

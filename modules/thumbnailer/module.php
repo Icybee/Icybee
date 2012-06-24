@@ -21,7 +21,7 @@ class Module extends \ICanBoogie\Module
 	/**
 	 * Getter for the $repository magic property.
 	 */
-	protected function __get_repository()
+	protected function get_repository()
 	{
 		return \ICanBoogie\REPOSITORY . 'thumbnailer' . DIRECTORY_SEPARATOR;
 	}

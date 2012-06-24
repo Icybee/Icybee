@@ -21,20 +21,26 @@ class WdAttachmentsElement extends Element
 	const T_NODEID = '#attachments-nodeid';
 	const T_HARD_BOND = '#attachments-hard-bond';
 
-	public function __construct($tags, $dummy=null)
-	{
-		parent::__construct('div', $tags);
-
-		$this->add_class('widget-node-attachments');
-		$this->add_class('resources-files-attached');
-	}
-
 	protected static function add_assets(\Brickrouge\Document $document)
 	{
 		parent::add_assets($document);
 
 		$document->css->add('attachments.css');
 		$document->js->add('attachments.js');
+	}
+
+	public function __construct(array $attributes=array())
+	{
+		parent::__construct
+		(
+			'div', $attributes + array
+			(
+				'data-widget-constructor' => 'NodeAttachments'
+			)
+		);
+
+		$this->add_class('widget-node-attachments');
+		$this->add_class('resources-files-attached');
 	}
 
 	protected function render_inner_html()

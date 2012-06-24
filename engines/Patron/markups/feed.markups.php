@@ -11,7 +11,7 @@
 
 class patron_feed_WdMarkups
 {
-	static public function feed(array $args, WdPatron $patron, $template)
+	static public function feed(array $args, Patron\Engine $patron, $template)
 	{
 		header('Content-Type: application/atom+xml');
 

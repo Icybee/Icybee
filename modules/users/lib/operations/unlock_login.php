@@ -25,7 +25,7 @@ use ICanBoogie\Security;
  */
 class UnlockLoginOperation extends Operation
 {
-	protected function __get_record()
+	protected function get_record()
 	{
 		$username = $this->request['username'];
 
@@ -81,7 +81,7 @@ class UnlockLoginOperation extends Operation
 		$user->metas['login_unlock_time'] = null;
 		$user->metas['failed_login_count'] = 0;
 
-		\ICanBoogie\log_success('Login has been unlocked');
+		$this->response->success = 'Login has been unlocked';
 
 		$this->response->location = isset($this->request['continue']) ? $this->request['continue'] : '/';
 

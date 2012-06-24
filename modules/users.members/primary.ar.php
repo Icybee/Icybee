@@ -56,7 +56,7 @@ class Member extends User
 	// TODO-20110108: thumbnailer should support the 'thumbnail' method for members as well,
 	// or maybe the "images" module should have a special support for users.
 
-	protected function __get_thumbnail()
+	protected function get_thumbnail()
 	{
 		return $this->thumbnail('primary');
 	}

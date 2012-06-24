@@ -155,13 +155,18 @@ class Hooks
 				{
 					$form->alter_notify
 					(
-						(object) array
+						\ICanBoogie\Object::from
 						(
-							'rc' => &$rc,
-							'bind' => &$bind,
-							'template' => &$template,
-							'mailer' => &$mailer,
-							'mailer_tags' => &$mailer_tags
+							array
+							(
+								'rc' => &$rc,
+								'bind' => &$bind,
+								'template' => &$template,
+								'mailer' => &$mailer,
+								'mailer_tags' => &$mailer_tags
+							),
+
+							array(), __NAMESPACE__ . '\NotifyParams'
 						),
 
 						$record, $event, $operation
@@ -276,4 +281,44 @@ class SentEvent extends Event
 	{
 		parent::__construct($target, 'sent', $properties);
 	}
+}
+
+class NotifyParams
+{
+	/**
+	 * Reference to the result of the operation.
+	 *
+	 * @var mixed
+	 */
+	public $rc;
+
+	/**
+	 * Reference to the `this` value used to render the template.
+	 *
+	 * @var mixed
+	 */
+	public $bind;
+
+	/**
+	 * Reference to the template used to render the message.
+	 *
+	 * @var string
+	 */
+	public $template;
+
+	/**
+	 * Reference to the mailer object.
+	 *
+	 * Use this property to provide your own mailer.
+	 *
+	 * @var \ICanBoogie\Mailer
+	 */
+	public $mailer;
+
+	/**
+	 * Reference to the tags used to create the mailer object.
+	 *
+	 * @var array
+	 */
+	public $mailer_tags;
 }

@@ -95,16 +95,6 @@ class AdjustThumbnailOptions extends \Brickrouge\Group
 						)
 					),
 
-					/*
-					'no-upscale' => $this->elements['no-upscale'] = new Element
-					(
-						Element::TYPE_CHECKBOX, array
-						(
-							Element::LABEL => 'Redimensionner mais ne pas agrandir'
-						)
-					),
-					*/
-
 					new Element
 					(
 						'div', array
@@ -126,7 +116,7 @@ class AdjustThumbnailOptions extends \Brickrouge\Group
 
 										self::DEFAULT_VALUE => 'jpeg',
 
-										'style' => 'display: inline-block; width: auto;'
+										'style' => 'width: auto; vertical-align: middle'
 									)
 								),
 

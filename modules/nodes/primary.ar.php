@@ -58,6 +58,23 @@ class Node extends ActiveRecord
 		parent::__construct($model);
 	}
 
+	/**
+	 * Adds the {@link slug} property if it is defined.
+	 *
+	 * @see ICanBoogie.ActiveRecord::__sleep()
+	 */
+	public function __sleep()
+	{
+		$keys = parent::__sleep();
+
+		if (isset($this->slug))
+		{
+			$keys['slug'] = 'slug';
+		}
+
+		return $keys;
+	}
+
 	public function __get($property)
 	{
 		$value = parent::__get($property);
@@ -70,7 +87,7 @@ class Node extends ActiveRecord
 		return $value;
 	}
 
-	protected function __get_slug()
+	protected function get_slug()
 	{
 		return \ICanBoogie\normalize($this->title);
 	}
@@ -80,7 +97,7 @@ class Node extends ActiveRecord
 	 *
 	 * @return Node|bool The previous sibling for the node or false if there is none.
 	 */
-	protected function __get_previous()
+	protected function get_previous()
 	{
 		return $this->_model->own->visible->where('nid != ? AND created <= ?', $this->nid, $this->created)->order('created DESC')->one;
 	}
@@ -90,7 +107,7 @@ class Node extends ActiveRecord
 	*
 	* @return Node|bool The next sibling for the node or false if there is none.
 	*/
-	protected function __get_next()
+	protected function get_next()
 	{
 		return $this->_model->own->visible->where('nid != ? AND created > ?', $this->nid, $this->created)->order('created')->one;
 	}
@@ -100,7 +117,7 @@ class Node extends ActiveRecord
 	 *
 	 * @return object The user object for the owner of the node.
 	 */
-	protected function __get_user()
+	protected function get_user()
 	{
 		global $core;
 
@@ -109,7 +126,7 @@ class Node extends ActiveRecord
 
 	private static $translations_keys;
 
-	protected function __get_translations_keys()
+	protected function get_translations_keys()
 	{
 		global $core;
 
@@ -183,12 +200,12 @@ class Node extends ActiveRecord
 		return $this;
 	}
 
-	protected function __get_translation()
+	protected function get_translation()
 	{
 		return $this->translation();
 	}
 
-	protected function __get_translations()
+	protected function get_translations()
 	{
 		$translations = $this->translations_keys;
 
@@ -204,7 +221,7 @@ class Node extends ActiveRecord
 	 *
 	 * Return the native node for this translated node.
 	 */
-	protected function __get_native()
+	protected function get_native()
 	{
 		return $this->nativeid ? $this->_model[$this->nativeid] : $this;
 	}
@@ -214,7 +231,7 @@ class Node extends ActiveRecord
 	 *
 	 * @return string
 	 */
-	protected function __get_css_class()
+	protected function get_css_class()
 	{
 		return $this->css_class();
 	}
@@ -224,7 +241,7 @@ class Node extends ActiveRecord
 	 *
 	 * @return array[string]mixed
 	 */
-	protected function __get_css_class_names()
+	protected function get_css_class_names()
 	{
 		return array
 		(

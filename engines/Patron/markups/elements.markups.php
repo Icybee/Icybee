@@ -9,12 +9,14 @@
  * file that was distributed with this source code.
  */
 
+use ICanBoogie\Events;
+
 use Brickrouge\Alert;
 use Brickrouge\Pager;
 
 class patron_elements_WdMarkups
 {
-	public static function pager(array $args, WdPatron $patron, $template)
+	public static function pager(array $args, Patron\Engine $patron, $template)
 	{
 		extract($args);
 
@@ -53,25 +55,41 @@ class patron_elements_WdMarkups
 		return $template ? $patron($template, $pager) : (string) $pager;
 	}
 
-	static public function document_css(array $args, WdPatron $patron, $template)
+	static public function document_css(array $args, Patron\Engine $engine, $template)
 	{
-		global $document;
+		global $core;
 
 		if (isset($args['add']))
 		{
-			$file = $patron->get_file();
+			$file = $engine->get_file();
 
 			\ICanBoogie\log(__FILE__ . '::' . __FUNCTION__ . '::file: \1', array($file));
 
-			$document->css->add($args['add'], dirname($file));
+			$core->document->css->add($args['add'], dirname($file));
 
 			return;
 		}
 
-		return $template ? $patron($template, $document->css) : (string) $document->css;
+		$key = '<!-- document-css-placeholder-' . md5(uniqid()) . ' -->';
+
+		Events::attach
+		(
+			'Icybee\Pagemaker::render', function(\Icybee\Pagemaker\RenderEvent $event) use($engine, $template, $key)
+			{
+				global $core;
+
+				$document = $core->document;
+
+				$html = $template ? $engine($template, $document->css) : (string) $document->css;
+
+				$event->html = str_replace($key, $html, $event->html);
+			}
+		);
+
+		return PHP_EOL . $key;
 	}
 
-	static public function document_js(array $args, WdPatron $patron, $template)
+	static public function document_js(array $args, Patron\Engine $patron, $template)
 	{
 		global $document;
 

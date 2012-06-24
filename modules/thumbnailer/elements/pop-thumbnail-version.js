@@ -1,102 +1,75 @@
-Brickrouge.Widget.Pop = new Class
-({
-	Implements: [ Options, Events ],
-
-	initialize: function(el, options)
-	{
-		this.element = $(el);
-		this.setOptions(options);
-
-		this.element.addEvent
-		(
-			'click', function(ev)
-			{
-				ev.stop();
-
-				this.pop();
-			}
-			.bind(this)
-		);
-	},
-
-	pop: function()
-	{
-
-	},
-
-	setValue: function(value)
-	{
-
-	},
-
-	getValue: function()
-	{
-
-	},
-
-	attachAdjust: function(adjust)
-	{
-
-	}
-});
-
 Brickrouge.Widget.PopThumbnailVersion = new Class
 ({
-	Extends: Brickrouge.Widget.Pop,
+	Extends: Brickrouge.Widget.Spinner,
 
 	initialize: function(el, options)
 	{
 		this.parent(el, options)
 
-		this.input = this.element.getElement('input')
+		this.control = this.element.getElement('input')
 	},
 
-	pop: function()
+	open: function()
 	{
-		this.resetValue = this.getValue();
+		this.resetValue = this.getValue()
 
 		if (this.popover)
 		{
-			this.popover.adjust.setValue(this.resetValue);
-			this.popover.show();
+			this.popover.adjust.setValue(this.resetValue)
+			this.popover.show()
 		}
 		else
 		{
-			new Request.Widget
-			(
-				'adjust-thumbnail-version/popup', function(widget)
-				{
-					this.attachAdjust(widget);
+			new Request.Widget('adjust-thumbnail-version/popup', function(widget) {
 
-					this.popover.show();
+				this.attachAdjust(widget);
 
-					/*
-					 * The adjust object is available after the `elementsready` event has been fired. The event
-					 * is fired when the popover is opened.
-					 */
+				this.popover.show();
 
-					//this.popover.adjust.addEvent('change', this.change.bind(this));
-					this.popover.addEvent('action', this.onAction.bind(this));
-				}
-				.bind(this)
-			)
-			.get({ value: this.getValue() });
+				/*
+				 * The adjust object is available after the `elementsready` event has been fired. The event
+				 * is fired when the popover is opened.
+				 */
+
+				//this.popover.adjust.addEvent('change', this.change.bind(this));
+				this.popover.addEvent('action', this.onAction.bind(this));
+
+			}.bind(this)).get({ value: this.getValue() })
 		}
 	},
 
-	setValue: function(value)
+	encodeValue: function(value)
 	{
-		if (typeOf(value) == 'object')
+		if (value && typeOf(value) == 'object')
 		{
 			value = JSON.encode(value)
 		}
 
-		this.input.set('value', value)
+		return value
 	},
 
-	getValue: function()
+	decodeValue: function(value)
 	{
-		return this.input.get('value')
+		try
+		{
+			return JSON.decode(value)
+		}
+		catch (e) { return null }
+	},
+
+	formatValue: function(value)
+	{
+		if (!value)
+		{
+			return ''
+		}
+
+		if (typeOf(value) == 'string')
+		{
+			value = value.parseQueryString()
+		}
+
+		return '' + (value.w || '<em>auto</em>') + '×' + (value.h || '<em>auto</em>') + ' ' + value.method + ' .' + value.format
 	},
 
 	attachAdjust: function(adjust)
@@ -106,7 +79,7 @@ Brickrouge.Widget.PopThumbnailVersion = new Class
 
 	change: function(ev)
 	{
-		console.log('change: ', ev);
+//		console.log('change: ', ev);
 	},
 
 	onAction: function(ev)
@@ -114,6 +87,7 @@ Brickrouge.Widget.PopThumbnailVersion = new Class
 		switch (ev.action)
 		{
 			case 'use':
+			{
 				var value = ev.popover.element.toQueryString().parseQueryString()
 
 				if (!value.w && !value.h)
@@ -122,15 +96,20 @@ Brickrouge.Widget.PopThumbnailVersion = new Class
 				}
 
 				this.setValue(value)
-				break
+			}
+			break
 
 			case 'remove':
+			{
 				this.setValue(null)
-				break
+			}
+			break
 
 			case 'cancel':
+			{
 				this.setValue(this.resetValue)
-				break
+			}
+			break
 		}
 
 		this.popover.hide()

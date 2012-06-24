@@ -71,10 +71,9 @@ return array
 
 	'module_category' => array
 	(
+		'dashboard' => 'Dashboard',
 		'features' => 'Features',
 		'feedback' => 'Feedback',
-		'organize' => 'Organize',
-		'structure' => 'Structure',
-		'system' => 'System'
+		'organize' => 'Organize'
 	)
 );

@@ -16,14 +16,14 @@ use ICanBoogie\Exception;
 
 abstract class BaseOperation extends \ICanBoogie\Operation
 {
-	protected function __get_controls()
+	protected function get_controls()
 	{
 		return array
 		(
 			self::CONTROL_PERMISSION => Module::PERMISSION_ADMINISTER
 		)
 
-		+ parent::__get_controls();
+		+ parent::get_controls();
 	}
 
 	protected function validate(Errors $errors)

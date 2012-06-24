@@ -163,14 +163,14 @@ EOT;
 		{
 			$this->page_title = 'Icybee';
 
-			return '<a href="' . $site->url . '" class="home">' . t($site->title) . '</a> <i class="icon-home icon-white"></i>';
+			return '<a href="' . $site->url . '" class="home">' . \ICanBoogie\escape($site->title) . '</a> <i class="icon-home icon-white"></i>';
 		}
 
-		$site_title = wd_entities($site->admin_title);
+		$site_title = \ICanBoogie\escape($site->admin_title);
 
 		if (!$site_title)
 		{
-			$site_title = wd_entities($site->title) . '<span class="language">:' . $site->language . '</span>';
+			$site_title = \ICanBoogie\escape($site->title) . '<span class="language">:' . $site->language . '</span>';
 		}
 
 		$options = array();
@@ -249,7 +249,7 @@ EOT;
 
 		$rc = <<<EOT
 <div class="btn-group">
-	<a href="$site->url">$site->title</a>
+	<a href="$site->url">$site_title</a>
 	$menu_toggler
 	$menu
 </div>
@@ -434,7 +434,7 @@ EOT;
 		return $document = new \Brickrouge\Document();
 	}
 
-	public static function markup_document_title(array $args, \WdPatron $patron, $template)
+	public static function markup_document_title(array $args, \Patron\Engine $patron, $template)
 	{
 		global $core;
 
@@ -451,7 +451,7 @@ EOT;
 		return $rc;
 	}
 
-	static public function markup_document_metas(array $args, \WdPatron $patron, $template)
+	static public function markup_document_metas(array $args, \Patron\Engine $patron, $template)
 	{
 		global $core;
 

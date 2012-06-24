@@ -18,9 +18,9 @@ class OnlineOperation extends Operation
 	/**
 	 * Controls for the operation: permission(maintain), record and ownership.
 	 *
-	 * @see ICanBoogie.Operation::__get_controls()
+	 * @see ICanBoogie.Operation::get_controls()
 	 */
-	protected function __get_controls()
+	protected function get_controls()
 	{
 		return array
 		(
@@ -29,7 +29,7 @@ class OnlineOperation extends Operation
 			self::CONTROL_OWNERSHIP => true
 		)
 
-		+ parent::__get_controls();
+		+ parent::get_controls();
 	}
 
 	protected function validate(\ICanboogie\Errors $errors)
@@ -48,7 +48,7 @@ class OnlineOperation extends Operation
 		$record->is_online = true;
 		$record->save();
 
-		\ICanBoogie\log_success('!title is now online', array('!title' => $record->title));
+		$this->response->success = array('!title is now online', array('!title' => $record->title));
 
 		return true;
 	}

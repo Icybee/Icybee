@@ -174,8 +174,10 @@ provides: [MooEditable.CleanPaste]
 			html = html.replace(/<(\w[^>]*) class=([^ |>]*)([^>]*)/gi, "<$1$3");
 			*/
 
+			html = html.replace(/class="MsoNormal"/ig, '')
+
 			// remove "display:none" attributes.
-			html = html.replace(/<(\w+)[^>]*\sstyle="[^"']*display\s?:\s?none[\s \S]*?<\/\1>/ig, '');
+			html = html.replace(/<(\w+)[^>]*\sstyle="[^"']*display\s?:\s?none[\s \S]*?<\/\1>/ig, '')
 
 			// remove empty styles.
 			html = html.replace(/\s*style='\s*'/gi, '');

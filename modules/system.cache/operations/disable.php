@@ -18,6 +18,8 @@ class DisableOperation extends BaseOperation
 		$collection = new Collection();
 		$cache = $collection[$this->key];
 
+		$this->response->success = array('The cache %cache has been disabled.', array('cache' => $this->key));
+
 		return $cache->disable();
 	}
 }

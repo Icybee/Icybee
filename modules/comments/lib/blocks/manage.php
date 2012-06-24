@@ -139,7 +139,7 @@ class ManageBlock extends \WdManager
 
 	protected function render_cell_status($record, $property)
 	{
-		return $this->render_filter_cell($record, $property, $this->t->__invoke($record->$property), array('scope' => '.status'));
+		return $this->render_filter_cell($record, $property, $this->t($record->$property, array('scope' => '.status')));
 	}
 
 	protected function render_cell_url($record)

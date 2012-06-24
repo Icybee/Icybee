@@ -119,7 +119,7 @@ abstract class FormBlock extends Form
 		parent::__construct($attributes);
 	}
 
-	abstract protected function __get_permission();
+	abstract protected function get_permission();
 	abstract protected function access_control();
 
 	/*

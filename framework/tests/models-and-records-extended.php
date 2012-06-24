@@ -11,9 +11,9 @@ $model = new WdModel
 (
 	array
 	(
-		WdModel::T_CONNECTION => $connection,
-		WdModel::T_NAME => 'node',
-		WdModel::T_SCHEMA => array
+		Model::T_CONNECTION => $connection,
+		Model::T_NAME => 'node',
+		Model::T_SCHEMA => array
 		(
 			'fields' => array
 			(
@@ -29,10 +29,10 @@ $model_extended = new WdModel
 (
 	array
 	(
-		WdModel::T_CONNECTION => $connection,
-		WdModel::T_EXTENDS => $model,
-		WdModel::T_NAME => 'contents',
-		WdModel::T_SCHEMA => array
+		Model::T_CONNECTION => $connection,
+		Model::T_EXTENDS => $model,
+		Model::T_NAME => 'contents',
+		Model::T_SCHEMA => array
 		(
 			'fields' => array
 			(

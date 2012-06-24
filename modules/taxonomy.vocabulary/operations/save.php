@@ -15,12 +15,12 @@ use ICanBoogie\Modules;
 
 class SaveOperation extends \Icybee\SaveOperation
 {
-	protected function __get_properties()
+	protected function get_properties()
 	{
 		global $core;
 
 		$request = $this->request;
-		$properties = parent::__get_properties();
+		$properties = parent::get_properties();
 
 		if ($request['scope'])
 		{

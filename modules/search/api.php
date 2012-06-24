@@ -257,7 +257,7 @@ function make_set($constructor, $entries, $count, $search, $has_pager=false)
 						Pager::T_POSITION => isset($_GET['page']) ? (int) $_GET['page'] : 0,
 						Pager::T_WITH => 'q,constructor',
 
-						'class' => 'pager'
+						'class' => 'pagination'
 					)
 				);
 			}

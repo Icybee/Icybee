@@ -4,7 +4,18 @@ return array
 (
 	'articles' => array
 	(
-		'All records' => 'All the articles',
+		'count' => array
+		(
+			'none' => 'No article',
+			'one' => 'One article',
+			'other' => ':count articles'
+		),
+
+		'name' => array
+		(
+			'one' => 'Article',
+			'other' => 'Articles'
+		),
 
 		'search' => array
 		(
@@ -20,7 +31,9 @@ return array
 				'one' => 'See the result found in the articles for %search',
 				'other' => 'See the :count results found in the articles for %search'
 			)
-		)
+		),
+
+		'All records' => 'All the articles'
 	),
 
 	'module_title.articles' => 'Articles'

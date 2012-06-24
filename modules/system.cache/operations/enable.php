@@ -25,6 +25,8 @@ class EnableOperation extends BaseOperation
 
 		$cache->clear();
 
+		$this->response->success = array('The cache %cache has been enabled.', array('cache' => $this->key));
+
 		return $cache->enable();
 	}
 }

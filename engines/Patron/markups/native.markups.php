@@ -11,17 +11,17 @@
 
 class patron_native_WdMarkups
 {
-	static public function template(array $args, WdPatron $patron, $template)
+	static public function template(array $args, Patron\Engine $patron, $template)
 	{
 		$patron->addTemplate($args['name'], $template);
 	}
 
-	static public function call_template(array $args, WdPatron $patron, $template)
+	static public function call_template(array $args, Patron\Engine $patron, $template)
 	{
 		return $patron->callTemplate($args['name'], $args);
 	}
 
-	static public function foreach_(array $args, WdPatron $patron, $template)
+	static public function foreach_(array $args, Patron\Engine $patron, $template)
 	{
 		#
 		# get entries array from context
@@ -89,7 +89,7 @@ class patron_native_WdMarkups
 		return $rc;
 	}
 
-	static public function variable(array $args, WdPatron $patron, $template)
+	static public function variable(array $args, Patron\Engine $patron, $template)
 	{
 		$select = $args['select'];
 
@@ -113,7 +113,7 @@ class patron_native_WdMarkups
 		$patron->set($name, $value);
 	}
 
-	static public function with(array $args, WdPatron $patron, $template)
+	static public function with(array $args, Patron\Engine $patron, $template)
 	{
 		if ($template === null)
 		{
@@ -125,7 +125,7 @@ class patron_native_WdMarkups
 		return $patron($template, $select);
 	}
 
-	static public function choose(array $args, WdPatron $patron, $template)
+	static public function choose(array $args, Patron\Engine $patron, $template)
 	{
 		$otherwise = null;
 
@@ -170,7 +170,7 @@ class patron_native_WdMarkups
 		return $patron($otherwise->nodes);
 	}
 
-	static public function if_(array $args, WdPatron $patron, $template)
+	static public function if_(array $args, Patron\Engine $patron, $template)
 	{
 		#
 		# if the evaluation is not empty (0 or ''), we publish the template

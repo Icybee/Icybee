@@ -34,6 +34,8 @@ return array
 
 	'group.legend' => array
 	(
+		'Admin' => 'Administration',
+		'Advanced' => 'Options avancées',
 		'Visibility' => 'Visibilité'
 	),
 

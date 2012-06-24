@@ -35,13 +35,13 @@ class SaveOperation extends \Icybee\SaveOperation
 	 * `siteid`: If the user is creating a new record or the user has no permission to choose the
 	 * record's site, the property is set to the value of the working site's id.
 	 *
-	 * @see Icybee\SaveOperation::__get_properties()
+	 * @see Icybee\SaveOperation::get_properties()
 	 */
-	protected function __get_properties()
+	protected function get_properties()
 	{
 		global $core;
 
-		$properties = parent::__get_properties();
+		$properties = parent::get_properties();
 
 		$user = $core->user;
 
@@ -74,14 +74,22 @@ class SaveOperation extends \Icybee\SaveOperation
 		$rc = parent::process();
 		$record = $this->module->model[$rc['key']];
 
-		\ICanBoogie\log_success
+		$this->response->success = array
 		(
 			$rc['mode'] == 'update' ? '%title has been updated in :module.' : '%title has been created in %module.', array
 			(
-				'title' => \ICanBoogie\shorten($record->title), 'module' => $this->module->title
-			),
+				'title' => \ICanBoogie\shorten($record->title),
+				'module' => $this->module->title
+			)
+		);
 
-			'save'
+		$this->response->success = array
+		(
+			$rc['mode'] == 'update' ? '%title has been updated in :module.' : '%title has been created in %module.', array
+			(
+				'title' => \ICanBoogie\shorten($record->title),
+				'module' => $this->module->title
+			)
 		);
 
 		if ($this->mode == self::MODE_DISPLAY)

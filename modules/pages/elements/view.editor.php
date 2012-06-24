@@ -133,6 +133,7 @@ class view_WdEditorElement extends WdEditorElement
 				}
 
 				$subcategory = $descriptor[Module::T_TITLE];
+				$subcategory = t(strtr($module_id, '.', '_'), array(), array('scope' => 'module_title', 'default' => $subcategory));
 			}
 
 			$by_category[$category][$subcategory][$id] = $view;

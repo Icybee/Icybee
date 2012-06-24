@@ -16,7 +16,7 @@ return array
 
 	'prototypes' => array
 	(
-		'ICanBoogie\Core::__get_document' => 'Icybee\Document::hook_get_document'
+		'ICanBoogie\Core::get_document' => 'Icybee\Document::hook_get_document'
 	),
 
 	'patron.markups' => array

@@ -42,7 +42,7 @@ class CacheManager extends \ICanBoogie\Object implements \ICanBoogie\Modules\Sys
 		'repository_size' => 8
 	);
 
-	protected function __get_config_preview()
+	protected function get_config_preview()
 	{
 		global $core;
 
@@ -54,7 +54,7 @@ class CacheManager extends \ICanBoogie\Object implements \ICanBoogie\Modules\Sys
 		return $rc;
 	}
 
-	protected function __get_editor()
+	protected function get_editor()
 	{
 		global $core;
 
@@ -106,7 +106,7 @@ class CacheManager extends \ICanBoogie\Object implements \ICanBoogie\Modules\Sys
 	 *
 	 * @return string
 	 */
-	protected function __get_path()
+	protected function get_path()
 	{
 		return \ICanBoogie\REPOSITORY . 'thumbnailer' . DIRECTORY_SEPARATOR;
 	}
@@ -116,7 +116,7 @@ class CacheManager extends \ICanBoogie\Object implements \ICanBoogie\Modules\Sys
 	 *
 	 * @return FileCache
 	 */
-	protected function __get_handler()
+	protected function get_handler()
 	{
 		return new FileCache
 		(

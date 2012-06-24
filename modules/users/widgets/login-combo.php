@@ -34,7 +34,8 @@ class LoginCombo extends Element
 			'div', $attributes + array
 			(
 				'id' => 'login',
-				'class' => 'widget-login-combo'
+				'class' => 'widget-login-combo',
+				'data-widget-constructor' => 'LoginCombo'
 			)
 		);
 	}

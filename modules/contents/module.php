@@ -25,18 +25,15 @@ class Module extends \ICanBoogie\Modules\Nodes\Module
 	/**
 	 * Overrites the "view", "list" and "home" views to provide different titles and providers.
 	 *
-	 * @see Icybee.Module::__get_views()
+	 * @see Icybee.Module::get_views()
 	 */
-	protected function __get_views()
+	protected function get_views()
 	{
 		$options = array
 		(
 			'assets' => array
 			(
-				'css' => array
-				(
-					__DIR__ . '/assets/page.css'
-				)
+				'css' => array(__DIR__ . '/assets/page.css')
 			),
 
 			'provider' => 'Icybee\Views\Contents\Provider'
@@ -44,7 +41,7 @@ class Module extends \ICanBoogie\Modules\Nodes\Module
 
 		return \ICanBoogie\array_merge_recursive
 		(
-			parent::__get_views(), array
+			parent::get_views(), array
 			(
 				'view' => $options,
 				'list' => $options,

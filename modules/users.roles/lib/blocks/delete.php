@@ -15,9 +15,9 @@ class DeleteBlock extends \Icybee\DeleteBlock
 {
 	/**
 	 * (non-PHPdoc)
-	 * @see Icybee.DeleteBlock::__get_record_name()
+	 * @see Icybee.DeleteBlock::get_record_name()
 	 */
-	protected function __get_record_name()
+	protected function get_record_name()
 	{
 		return $this->record->name;
 	}

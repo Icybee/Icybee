@@ -22,17 +22,17 @@ use ICanBoogie\Security;
  */
 class NonceLoginOperation extends Operation
 {
-	protected function __get_controls()
+	protected function get_controls()
 	{
 		return array
 		(
 			self::CONTROL_RECORD => true
 		)
 
-		+ parent::__get_controls();
+		+ parent::get_controls();
 	}
 
-	protected function __get_record()
+	protected function get_record()
 	{
 		global $core;
 

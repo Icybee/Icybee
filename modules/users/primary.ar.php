@@ -153,7 +153,7 @@ class User extends \ICanBoogie\ActiveRecord
 	 *
 	 * @return string
 	 */
-	protected function __get_name()
+	protected function get_name()
 	{
 		$values = array
 		(
@@ -181,7 +181,7 @@ class User extends \ICanBoogie\ActiveRecord
 	 *
 	 * @return \ICanBoogie\ActiveRecord\Users\Role
 	 */
-	protected function __get_role()
+	protected function get_role()
 	{
 		global $core;
 
@@ -216,7 +216,7 @@ class User extends \ICanBoogie\ActiveRecord
 	 *
 	 * @return array
 	 */
-	protected function __get_roles()
+	protected function get_roles()
 	{
 		global $core;
 
@@ -260,12 +260,12 @@ class User extends \ICanBoogie\ActiveRecord
 	 *
 	 * @return boolean true if the user is the admin user, false otherwise.
 	 */
-	protected function __volatile_get_is_admin()
+	protected function volatile_get_is_admin()
 	{
 		return ($this->uid == 1);
 	}
 
-	protected function __set_is_admin()
+	protected function volatile_set_is_admin()
 	{
 		throw new Exception\PropertyNotWritable(array('is_admin', $this));
 	}
@@ -277,12 +277,12 @@ class User extends \ICanBoogie\ActiveRecord
 	 *
 	 * @return boolean true if the user is a guest user, false otherwise.
 	 */
-	protected function __volatile_get_is_guest()
+	protected function volatile_get_is_guest()
 	{
 		return ($this->uid == 0);
 	}
 
-	protected function __set_is_guest()
+	protected function volatile_set_is_guest()
 	{
 		throw new Exception\PropertyNotWritable(array('is_guest', $this));
 	}
@@ -294,7 +294,7 @@ class User extends \ICanBoogie\ActiveRecord
 	 *
 	 * @return array The array is empty if the user has no site restriction.
 	 */
-	protected function __get_restricted_sites_ids()
+	protected function get_restricted_sites_ids()
 	{
 		global $core;
 

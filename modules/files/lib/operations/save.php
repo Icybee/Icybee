@@ -34,11 +34,11 @@ class SaveOperation extends Modules\Nodes\SaveOperation
 	 * `file` property is defined, which is the case when an asynchronous upload happend, it is
 	 * copied to the `path` property.
 	 *
-	 * @see ICanBoogie\Modules\Nodes.SaveOperation::__get_properties()
+	 * @see ICanBoogie\Modules\Nodes.SaveOperation::get_properties()
 	 */
-	protected function __get_properties()
+	protected function get_properties()
 	{
-		$properties = parent::__get_properties();
+		$properties = parent::get_properties();
 
 		unset($properties[File::MIME]);
 		unset($properties[File::SIZE]);

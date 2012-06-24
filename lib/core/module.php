@@ -50,7 +50,7 @@ class Module extends \ICanBoogie\Module
 	 *
 	 * @return array[string]array
 	 */
-	protected function __get_views()
+	protected function get_views()
 	{
 		return array();
 	}

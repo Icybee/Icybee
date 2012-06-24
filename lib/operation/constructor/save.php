@@ -16,11 +16,11 @@ class Save extends \Icybee\SaveOperation
 	/**
 	 * Adds the constructor id to the properties.
 	 *
-	 * @see ICanBoogie\Operation\ActiveRecord.Save::__get_properties()
+	 * @see ICanBoogie\Operation\ActiveRecord.Save::get_properties()
 	 */
-	protected function __get_properties()
+	protected function get_properties()
 	{
-		$properties = parent::__get_properties();
+		$properties = parent::get_properties();
 
 		$properties['constructor'] = (string) $this->module;
 

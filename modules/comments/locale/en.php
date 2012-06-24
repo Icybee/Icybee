@@ -4,9 +4,22 @@ return array
 (
 	'comments' => array
 	(
+		'count' => array
+		(
+			'one' => 'One comment',
+			'other' => ':count comments',
+			'none' => 'No comments'
+		),
+
 		'delete' => array
 		(
 			'Delete a record' => 'Delete a comment'
+		),
+
+		'name' => array
+		(
+			'one' => 'Comment',
+			'other' => 'Comments'
 		)
 	),
 
@@ -20,13 +33,6 @@ return array
 	(
 		'author' => 'Author',
 		'score' => 'Score'
-	),
-
-	':count comments' => array
-	(
-		'one' => 'One comment',
-		'other' => ':count comments',
-		'none' => 'No comments'
 	),
 
 	'@form.log.spam' => 'Your message has been scored as spam.',

@@ -68,6 +68,8 @@ class ManageBlock extends Element
 </tr>
 EOT;
 
+			$clear_label = t('Clear', array(), array('scope' => 'button'));
+
 			foreach ($group as $cache_id => $cache)
 			{
 				$checked = $cache->state;
@@ -118,7 +120,7 @@ EOT;
 	<td class="title">$title<div class="element-description">$description</div></td>
 	<td class="limit config">$config_preview</td>
 	<td class="usage {$usage_empty}">$stat</td>
-	<td class="erase"><button type="button" class="btn-warning" name="clear">Clear</button></td>
+	<td class="erase"><button type="button" class="btn-warning" name="clear">$clear_label</button></td>
 </tr>
 EOT;
 			}

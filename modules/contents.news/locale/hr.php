@@ -21,5 +21,7 @@ return array
 				'other' => 'Vidi :count rezultata pronađeno za %search u vijestima'
 			)
 		)
-	)
+	),
+
+	'module_title.contents_news' => 'Vijesti'
 );

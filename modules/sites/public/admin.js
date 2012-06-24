@@ -7,7 +7,8 @@ window.addEvent('click:relay([data-property="status"] .dropdown-menu a)', functi
 	, status = el.get('data-key')
 	, label = el.get('text')
 
-	toggle.addClass('disabled');
+	toggle.addClass('disabled')
+	ev.stop()
 
 	new Request.API({
 

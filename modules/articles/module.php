@@ -22,9 +22,9 @@ class Module extends \ICanBoogie\Modules\Contents\Module
 	/**
 	 * Adds the "archives" view type and adds assets to the inherited "list" view type.
 	 *
-	 * @see ICanBoogie\Module.Contents::__get_views()
+	 * @see ICanBoogie\Module.Contents::get_views()
 	 */
-	protected function __get_views()
+	protected function get_views()
 	{
 		$assets = array
 		(
@@ -36,7 +36,7 @@ class Module extends \ICanBoogie\Modules\Contents\Module
 
 		return \ICanBoogie\array_merge_recursive
 		(
-			parent::__get_views(), array
+			parent::get_views(), array
 			(
 				'list' => array
 				(

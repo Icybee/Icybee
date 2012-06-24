@@ -22,9 +22,9 @@ use Brickrouge\Form;
 /**
  * A block to delete a record.
  *
- * @property string $title The localized title of the block. {@link __get_title()}
- * @property ActiveRecord $record The record to delete. {@link __get_record()}
- * @property string $record_name The name of the record to delete. {@link __get_record_name()}
+ * @property string $title The localized title of the block. {@link get_title()}
+ * @property ActiveRecord $record The record to delete. {@link get_record()}
+ * @property string $record_name The name of the record to delete. {@link get_record_name()}
  */
 class DeleteBlock extends Form
 {
@@ -116,7 +116,7 @@ EOT;
 	 *
 	 * @return string
 	 */
-	protected function __get_title()
+	protected function get_title()
 	{
 		return t('Delete a record');
 	}
@@ -126,7 +126,7 @@ EOT;
 	 *
 	 * @return ActiveRecord
 	 */
-	protected function __get_record()
+	protected function get_record()
 	{
 		return $this->module->model[$this->key];
 	}
@@ -136,7 +136,7 @@ EOT;
 	 *
 	 * @return string
 	 */
-	protected function __get_record_name()
+	protected function get_record_name()
 	{
 
 	}

@@ -13,7 +13,7 @@ namespace ICanBoogie\Modules\Search;
 
 class Module extends \Icybee\Module
 {
-	protected function __get_views()
+	protected function get_views()
 	{
 		return array
 		(

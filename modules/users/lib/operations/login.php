@@ -24,9 +24,9 @@ class LoginOperation extends Operation
 	/**
 	 * Adds form control.
 	 *
-	 * @see ICanBoogie.Operation::__get_controls()
+	 * @see ICanBoogie.Operation::get_controls()
 	 */
-	protected function __get_controls()
+	protected function get_controls()
 	{
 		return array
 		(
@@ -34,15 +34,15 @@ class LoginOperation extends Operation
 			self::CONTROL_FORM => true
 		)
 
-		+ parent::__get_controls();
+		+ parent::get_controls();
 	}
 
 	/**
 	 * Returns the "connect" form of the target module.
 	 *
-	 * @see ICanBoogie.Operation::__get_form()
+	 * @see ICanBoogie.Operation::get_form()
 	 */
-	protected function __get_form()
+	protected function get_form()
 	{
 		return new \Brickrouge\Widget\Users\Login;
 	}

@@ -45,7 +45,7 @@ class Term extends ActiveRecord implements \IteratorAggregate
 		return new \ArrayIterator($this->nodes);
 	}
 
-	protected function __get_vocabulary()
+	protected function get_vocabulary()
 	{
 		global $core;
 
@@ -57,7 +57,7 @@ class Term extends ActiveRecord implements \IteratorAggregate
 	 *
 	 * @return array The nodes associated with the term, or an empty array if there is none.
 	 */
-	protected function __get_nodes()
+	protected function get_nodes()
 	{
 		global $core;
 
@@ -98,7 +98,7 @@ class Term extends ActiveRecord implements \IteratorAggregate
 	 *
 	 * @return string
 	 */
-	protected function __get_css_class()
+	protected function get_css_class()
 	{
 		return $this->css_class();
 	}
@@ -108,7 +108,7 @@ class Term extends ActiveRecord implements \IteratorAggregate
 	 *
 	 * @return array[string]mixed
 	 */
-	protected function __get_css_class_names()
+	protected function get_css_class_names()
 	{
 		return array
 		(
