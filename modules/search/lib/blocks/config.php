@@ -140,7 +140,7 @@ class ConfigBlock extends \Icybee\ConfigBlock
 
 		$sorted_options += $options;
 
-		$el = '<ul class="sortable combo self-handle">';
+		$el = '<ul class="sortable self-handle">';
 
 		foreach ($sorted_options as $module_id => $label)
 		{

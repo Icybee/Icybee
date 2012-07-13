@@ -21,6 +21,14 @@ class AdjustThumbnailVersion extends \Brickrouge\Group
 {
 	private $elements = array();
 
+	protected static function add_assets(\Brickrouge\Document $document)
+	{
+		parent::add_assets($document);
+
+		$document->css->add('page.css');
+		$document->js->add('adjust-thumbnail-version.js');
+	}
+
 	public function __construct(array $attributes=array())
 	{
 		global $core;
@@ -153,6 +161,14 @@ class AdjustThumbnailVersion extends \Brickrouge\Group
 							(
 								Form::LABEL => 'Remplissage'
 							)
+						),
+
+						'filter' => $this->elements['filter'] = new Text
+						(
+							array
+							(
+								Form::LABEL => 'Filtre'
+							)
 						)
 					),
 
@@ -163,14 +179,6 @@ class AdjustThumbnailVersion extends \Brickrouge\Group
 				$attributes
 			)
 		);
-	}
-
-	protected static function add_assets(\Brickrouge\Document $document)
-	{
-		parent::add_assets($document);
-
-		$document->css->add('page.css');
-		$document->js->add('adjust-thumbnail-version.js');
 	}
 
 	public function offsetSet($offset, $value)

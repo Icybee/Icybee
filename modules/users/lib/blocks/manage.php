@@ -24,7 +24,7 @@ class ManageBlock extends \WdManager
 			$module, $tags + array
 			(
 				self::T_KEY => User::UID,
-				self::T_COLUMNS_ORDER => array(User::USERNAME, User::EMAIL, 'role', User::IS_ACTIVATED, User::CREATED, User::LASTCONNECTION)
+				self::T_COLUMNS_ORDER => array(User::USERNAME, User::IS_ACTIVATED, User::EMAIL, 'role', User::CREATED, User::LASTCONNECTION)
 			)
 		);
 	}
@@ -70,7 +70,7 @@ class ManageBlock extends \WdManager
 
 			User::IS_ACTIVATED => array
 			(
-				'label' => 'Activated',
+				'label' => null,
 				'class' => 'is_activated',
 				'orderable' => false
 			)

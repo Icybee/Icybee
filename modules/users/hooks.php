@@ -13,10 +13,40 @@ namespace ICanBoogie\Modules\Users;
 
 use ICanBoogie\ActiveRecord\User;
 use ICanBoogie\Core;
+use ICanBoogie\Operation\BeforeProcessEvent;
 use ICanBoogie\Session;
 
 class Hooks
 {
+	/*
+	 * Events
+	 */
+
+	/**
+	 * Checks if the role to be deleted is used or not.
+	 *
+	 * @param BeforeProcessEvent $event
+	 * @param \ICanBoogie\Modules\Users\Roles\DeleteOperation $operation
+	 */
+	public static function before_delete_role(BeforeProcessEvent $event, \ICanBoogie\Modules\Users\Roles\DeleteOperation $operation)
+	{
+		global $core;
+
+		$rid = $operation->key;
+		$count = $core->models['users/has_many_roles']->find_by_rid($rid)->count;
+
+		if (!$count)
+		{
+			return;
+		}
+
+		$event->errors['rid'] = t('The role %name is used by :count users.', array('name' => $operation->record->name, ':count' => $count));
+	}
+
+	/*
+	 * Prototype methods
+	 */
+
 	/**
 	 * Returns the user's identifier.
 	 *

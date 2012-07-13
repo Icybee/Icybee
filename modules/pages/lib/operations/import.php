@@ -11,6 +11,8 @@
 
 namespace ICanBoogie\Modules\Pages;
 
+use ICanBoogie\HTTP\Request;
+
 class ImportOperation extends \ICanBoogie\Modules\Nodes\ImportOperation
 {
 	private $parentid = array();
@@ -40,38 +42,37 @@ class ImportOperation extends \ICanBoogie\Modules\Nodes\ImportOperation
 			}
 			else
 			{
-				$contents = array();
-				$data_contents = $obj->contents;
+				$contents = (array) $obj->contents;
+				$editors = (array) $obj->editors;
 
-				foreach ($data_contents as $contentid => $content)
+				foreach ($contents as $contentid => &$content)
 				{
-					$c = $content->content;
-
-					if (($c{0} == '{' || $c{0} == '[') && $c{1} == '"')
+					if (($content{0} == '{' || $content{0} == '[') && $content{1} == '"')
 					{
-						$c = json_decode($c, true);
+						$content = json_decode($content, true);
+					}
+				}
+
+				foreach ($editors as $contentid => $editor_name)
+				{
+					if ($editor_name != 'widgets' || empty($contents[$contentid]))
+					{
+						continue;
 					}
 
-					if ($content->editor == 'widgets')
-					{
-						$c = array_combine($c, array_fill(0, count($c), 'on'));
-					}
-
-					$contents[$contentid] = array
-					(
-						'editor' => $content->editor,
-						'contents' => $c
-					);
+					$content = &$contents[$contentid];
+					$content = array_combine($content, array_fill(0, count($content), 'on'));
 				}
 
 				$obj->contents = $contents;
+				$obj->editors = $editors;
 			}
 		}
 
 		return parent::parse_data($data);
 	}
 
-	protected function import(array $data, \ICanBoogie\Modules\Nodes\SaveOperation $save)
+	protected function import(array $data, Request $save)
 	{
 		global $core;
 
@@ -79,7 +80,7 @@ class ImportOperation extends \ICanBoogie\Modules\Nodes\ImportOperation
 
 		//var_dump($this->keys_translations, $this->locationid, $data);
 
-		$update = $core->db->prepare('UPDATE {prefix}site_pages SET parentid = ?, locationid = ? WHERE nid = ?');
+		$update = $core->db->prepare('UPDATE {prefix}pages SET parentid = ?, locationid = ? WHERE nid = ?');
 
 		$original_nodes_with_parentid = $this->parentid;
 		$original_nodes_with_locationid = $this->locationid;

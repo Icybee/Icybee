@@ -12,7 +12,8 @@ return array
 		'ICanBoogie\Modules\Contents\ConfigBlock::alter_children' => __NAMESPACE__ . '::on_contents_configblock_alter_children',
 
 		'Icybee\Pagemaker::render' => __NAMESPACE__ . '::on_icybee_render',
-		'ICanBoogie\ActiveRecord\Content::alter_css_class_names' => __NAMESPACE__ . '::on_alter_css_class_names'
+		'ICanBoogie\ActiveRecord\Content::alter_css_class_names' => __NAMESPACE__ . '::on_alter_css_class_names',
+		'ICanBoogie\Modules\Contents\Provider::alter_result' => __NAMESPACE__ . '::on_contents_provider_alter_result'
 	),
 
 	'prototypes' => array

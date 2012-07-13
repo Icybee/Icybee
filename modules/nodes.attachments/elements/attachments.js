@@ -3,24 +3,17 @@ Brickrouge.Widget.NodeAttachments = new Class({
 
 	initialize: function(el, options)
 	{
-		this.element = $(el);
+		this.element = el = document.id(el);
 
-		this.element.addEvent
-		(
-			'click:relay(a[href="#delete"])', this.onDelete.bind(this)
-		);
+		el.addEvents({
 
-		this.element.addEvent
-		(
-			'click:relay(a[href="#remove"])', this.onRemove.bind(this)
-		);
+			'click:relay(a[href="#delete"])': this.onDelete.bind(this),
+			'click:relay(a[href="#remove"])': this.onRemove.bind(this)
 
+		})
 
-		this.file = el.getElement('.widget-file').get('widget');
-
-		var list = el.getElement('ol');
-
-		var sortable = new Sortables
+		var list = el.getElement('ol')
+		, sortable = new Sortables
 		(
 			list,
 			{
@@ -36,42 +29,41 @@ Brickrouge.Widget.NodeAttachments = new Class({
 			}
 		);
 
-		this.file.addEvent
-		(
-			'success', function(response) {
+		this.file = el.getElement('.widget-file').get('widget')
 
-				var item = Elements.from(response.rc).shift();
+		this.file.addEvent('success', function(response) {
 
-				item.inject(list);
-				sortable.addItems(item);
-			}
-		);
+			var item = Elements.from(response.rc).shift()
+
+			item.inject(list)
+			sortable.addItems(item)
+		})
 	},
 
 	onRemove: function(ev, target)
 	{
 		ev.stop();
-
-		target.getParent('li').destroy();
+		target.getParent('li').destroy()
 	},
 
 	onDelete: function(ev, target)
 	{
-		ev.stop();
+		ev.stop()
 
-		var row = target.getParent('li');
-		var titleInput = row.getElement('input[type=text]');
-		var inputs = row.getElements('input');
+		var row = target.getParent('li')
+		, titleInput = row.getElement('input[type=text]')
+		, inputs = row.getElements('input')
 
-		row.destroy();
+		row.destroy()
 
-		titleInput.type = 'hidden';
-		titleInput.value = '!delete';
+		titleInput.type = 'hidden'
+		titleInput.value = '!delete'
 
-		inputs.inject(this.element);
+		inputs.inject(this.element)
 	}
 });
 
+/*
 window.addEvent
 (
 	'--load', function()
@@ -227,7 +219,7 @@ window.addEvent
 								progress.set('opacity', 1);
 								progress.setStyle('display', '');
 							},
-							*/
+							* /
 
 							onSelectFail: function(ev)
 							{
@@ -351,3 +343,4 @@ window.addEvent
 		);
 	}
 );
+*/

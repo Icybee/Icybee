@@ -7,69 +7,24 @@
  * file that was distributed with this source code.
  */
 
-var Icybee = {
-
-	Widget: {
-
-		AdjustPopover: new Class
-		({
-			Implements: [ Options, Events ],
-
-			Extends: Brickrouge.Popover,
-
-			initialize: function(el, options)
-			{
-				this.parent(el, options)
-
-				this.adjust = null
-				this.selected = null
-			},
-
-			show: function()
-			{
-				this.element.setStyle('display', 'none')
-				document.body.appendChild(this.element)
-
-				this.parent()
-
-				this.adjust = this.element.getElement('.popover-content :first-child').get('widget')
-
-				if (this.adjust)
-				{
-					this.adjust.addEvent('results', this.repositionCallback)
-					this.adjust.addEvent('adjust', this.quickRepositionCallback)
-				}
-			},
-
-			close: function()
-			{
-				this.parent()
-
-				this.element.dispose()
-			}
-		})
-	}
-}
-
 Brickrouge.Widget.Spinner = new Class
 ({
 	Implements: [ Options, Events ],
 
 	initialize: function(el, options)
 	{
-		this.element = $(el)
+		this.element = el = document.id(el)
 		this.setOptions(options)
 
-		this.control = this.element.getElement('input')
-		this.content = this.element.getElement('.spinner-content')
+		this.control = el.getElement('input')
+		this.content = el.getElement('.spinner-content')
 		this.popover = null
 		this.resetValue = null
 		this.resetContent = null
 
-		this.element.addEvent('click', function(ev) {
+		el.addEvent('click', function(ev) {
 
 			ev.stop()
-
 			this.open()
 
 		}.bind(this))
@@ -149,3 +104,5 @@ Brickrouge.Widget.Spinner = new Class
 
 	}
 })
+
+;

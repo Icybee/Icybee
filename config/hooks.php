@@ -11,7 +11,8 @@ return array
 		'ICanBoogie\Modules\System\Modules\ActivateOperation::process' => 'Icybee\Views\CacheManager::on_modules_activate',
 		'ICanBoogie\Modules\System\Modules\DeactivateOperation::process' => 'Icybee\Views\CacheManager::on_modules_deactivate',
 
-		'Icybee::nodes_load' => 'Icybee::on_nodes_load'
+		'Patron\Engine::nodes_load' => 'Icybee\Pagemaker::on_nodes_load',
+		'Icybee::nodes_load' => 'Icybee\Pagemaker::on_nodes_load'
 	),
 
 	'prototypes' => array

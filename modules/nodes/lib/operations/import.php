@@ -11,8 +11,11 @@
 
 namespace ICanBoogie\Modules\Nodes;
 
-use ICanBoogie\Module;
+use ICanBoogie\Events;
+use ICanBoogie\HTTP\Request;
 use ICanBoogie\Operation;
+
+use Brickrouge\Form;
 
 class ImportOperation extends Operation
 {
@@ -40,18 +43,33 @@ class ImportOperation extends Operation
 		$data = $this->preparse_data();
 		$data = $this->parse_data($data);
 
-		$save = Operation::decode("/api/{$this->module}/save");
+		$save = Request::from
+		(
+			array
+			(
+				'path' => "/api/{$this->module}/save"
+			)
+		);
+
+		$save_hash = spl_object_hash($save);
 
 		#
-		# disable form control.
+		# override form
 		#
 
-		$save->controls;
-		$save->controls[self::CONTROL_FORM] = false;
+		Events::attach('ICanBoogie\Operation::get_form', function(Operation\GetFormEvent $event, SaveOperation $operation) use($save_hash) {
+
+			if (spl_object_hash($event->request) != $save_hash)
+			{
+				return;
+			} 
+
+			$event->form = new Form();
+
+		});
 
 		$siteid = $core->site_id;
-
-		$keys = $core->models['nodes']->select('nid')->find_by_siteid($siteid)->all(PDO::FETCH_COLUMN);
+		$keys = $core->models['nodes']->select('nid')->find_by_siteid($siteid)->all(\PDO::FETCH_COLUMN);
 
 		if ($keys)
 		{
@@ -65,7 +83,7 @@ class ImportOperation extends Operation
 
 	protected function preparse_data()
 	{
-		$data = file_get_contents($_SERVER['DOCUMENT_ROOT'] . '/export.json');
+		$data = file_get_contents(\ICanBoogie\DOCUMENT_ROOT . 'export.json');
 		$data = json_decode($data);
 
 		return (array) $data->rc;
@@ -89,15 +107,15 @@ class ImportOperation extends Operation
 		return $data;
 	}
 
-	protected function import(array $data, Operation\ActiveRecord\Save $save)
+	protected function import(array $data, Request $request)
 	{
 		foreach ($data as $nid => $node)
 		{
-			$save->params = (array) $node;
+			$request->params = (array) $node;
 
-			$rc = $save();
+			$response = $request->post();
 
-			$this->keys_translations[$nid] = $rc['key'];
+			$this->keys_translations[$nid] = $response->rc['key'];
 		}
 	}
 }

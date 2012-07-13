@@ -24,6 +24,7 @@ class Versions implements \ArrayAccess, \IteratorAggregate
 		'background' => 'transparent',
 		'default' => null,
 		'format' => 'jpeg',
+		'filter' => null,
 		'height' => null,
 		'method' => 'fill',
 		'no-interlace' => false,
@@ -131,6 +132,13 @@ class Versions implements \ArrayAccess, \IteratorAggregate
 		return $versions;
 	}
 
+	/**
+	 * Normalizes the options of a thumbnail version.
+	 *
+	 * @param array $version
+	 *
+	 * @return array
+	 */
 	public static function nomalize_version(array $version)
 	{
 		foreach (self::$shorthands as $shorthand => $full)

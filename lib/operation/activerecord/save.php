@@ -12,9 +12,9 @@
 namespace Icybee;
 
 /**
- * Extends the ICanBoogie\Operation\ActiveRecord\Save class to add save mode (continue, list, new).
+ * Extends the ICanBoogie\SaveOperation class to add save mode (continue, list, new).
  */
-class SaveOperation extends \ICanBoogie\Operation\ActiveRecord\Save
+class SaveOperation extends \ICanBoogie\SaveOperation
 {
 	const MODE = '#operation-save-mode';
 	const MODE_CONTINUE = 'continue';
@@ -54,7 +54,7 @@ class SaveOperation extends \ICanBoogie\Operation\ActiveRecord\Save
 	 * - continue: The record edit location.
 	 * - new: The edit location for new records.
 	 *
-	 * @see ICanBoogie\Operation\ActiveRecord.Save::process()
+	 * @see ICanBoogie\SaveOperation::process()
 	 */
 	protected function process()
 	{

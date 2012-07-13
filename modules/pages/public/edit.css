@@ -17,10 +17,12 @@
 	max-width: none;
 }
 
+/*
 .group--contents-inherit > .control-group:nth-child(odd)
 {
 	display: none;
 }
+*/
 
 .group--contents-inherit > .control-group.editing {
 	display: none;

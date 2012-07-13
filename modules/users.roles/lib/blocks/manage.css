@@ -44,3 +44,6 @@ table.manage tr + tr td
 .block--roles-manage .form-actions {
 	text-align: center;
 }
+.block--roles-manage select {
+	width: auto;
+}

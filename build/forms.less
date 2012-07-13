@@ -1,5 +1,3 @@
-@CHARSET "UTF-8";
-
 form {
 	margin: 0;
 }
@@ -163,45 +161,16 @@ div::not(.input-append) + .btn.reset-default-value {
 	margin-top: .5em;
 }
 
-/*
- * spinner
- */
- 
-.spinner {
-	border: 1px solid;
-	border-color: #CCC #CCC #BBB;
+.form-primary .combo {
+	background-color: white;
+	padding: 1em;
+	border: 1px solid #ccc;
 	border-radius: 3px;
-	height: auto;
-	background: bottom right no-repeat white;
-	box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset;
-	padding: 6px;
-	display: inline-block;
-	cursor: default;
-	color: inherit !important;
-	text-decoration: none !important;
-	font-size: 13px;
-	background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAMAgMAAAArG7R0AAAAA3NCSVQICAjb4U/gAAAACVBMVEX///8zMzMzMzOVNhaoAAAAA3RSTlMARJnnsGU/AAAACXBIWXMAAAsSAAALEgHS3X78AAAAHnRFWHRTb2Z0d2FyZQBBZG9iZSBGaXJld29ya3MgQ1M1LjGrH0jrAAAAKklEQVQImS3DoREAQAgDwcOgX1MdmqqiqfIj2JkFHtAQgvTyEbEivXz8fMU/CS+a0J12AAAAAElFTkSuQmCC');
 }
 
-.spinner:hover {
-	background-color: #E6E6E6;
-}
-
-.spinner:active {
-	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15) inset, 0 1px 2px rgba(0, 0, 0, 0.05);
-}
-
-.spinner:focus {
-	border-color: #A3C0E5;
-	background-color: #B5D5FF;
-}
-
-.spinner.placeholder {
-	color: #808080 !important;
-	font-style: italic;
-}
-
-.spinner:not(.placeholder) .spinner-placeholder,
-.spinner.placeholder .spinner-content {
-	display: none;
+.form-primary .combo input,
+.form-primary .combo textarea,
+.form-primary .combo select,
+.form-primary .combo .like-input {
+	background-color: #F6F6F6;
 }

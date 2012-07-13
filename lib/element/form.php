@@ -25,10 +25,10 @@ class Form extends \Brickrouge\Form
 	 * This function is a callback for the `ICanBoogie\Operation::get_form` event. The event chain
 	 * is stoped if the form is found.
 	 *
-	 * @param Event $event
+	 * @param \ICanBoogie\Operation\GetFormEvent $event
 	 * @param Operation $operation
 	 */
-	public static function on_operation_get_form(Event $event, Operation $operation)
+	public static function on_operation_get_form(\ICanBoogie\Operation\GetFormEvent $event, Operation $operation)
 	{
 		$request = $event->request;
 
@@ -57,7 +57,7 @@ class Form extends \Brickrouge\Form
 				$request->params = \ICanBoogie\exact_array_merge_recursive($q, $request->params);
 			}
 
-			$event->rc = $form;
+			$event->form = $form;
 			$event->stop();
 		}
 	}

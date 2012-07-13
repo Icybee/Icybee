@@ -21,7 +21,8 @@ Brickrouge.Widget.AdjustThumbnailVersion = new Class
 			quality: quality,
 			'no-upscale': el.getElement('input[name="no-upscale"]') || el.getElement('input[name$="[no-upscale]"]'),
 //			interlace: el.getElement('input[name="interlace"]') || el.getElement('input[name$="[interlace]"]'),
-			background: el.getElement('input[name="background"]') || el.getElement('input[name$="[background]"]')
+			background: el.getElement('input[name="background"]') || el.getElement('input[name$="[background]"]'),
+			filter: el.getElement('input[name="filter"]') || el.getElement('input[name$="[filter]"]')
 		}
 
 		Object.each(this.elements, function(control) {

@@ -11,6 +11,8 @@
 
 namespace ICanBoogie\Modules\Seo;
 
+use ICanBoogie\Operation\ProcessEvent;
+
 use ICanBoogie\ActiveRecord\Content;
 use ICanBoogie\Event;
 use ICanBoogie\Modules;
@@ -222,20 +224,20 @@ EOT;
 		);
 	}
 
-	public function event_operation_export(Event $event)
+	public static function on_operation_export(ProcessEvent $event)
 	{
 		global $core;
 
 		$records = &$event->rc;
 		$keys = array_keys($records);
 
-		$metas = $core->models['system.registry/node']->where(array('targetid' => $keys, 'name' => array('document_title', 'description')))->all(PDO::FETCH_NUM);
+		$metas = $core->models['system.registry/node']->where(array('targetid' => $keys, 'name' => array('document_title', 'description')))->all(\PDO::FETCH_NUM);
 
 		foreach ($metas as $meta)
 		{
 			list($pageid, $property, $value) = $meta;
 
-			$records[$pageid]->site_firstposition[$property] = $value;
+			$records[$pageid]->seo[$property] = $value;
 		}
 	}
 }

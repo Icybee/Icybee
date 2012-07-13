@@ -20,7 +20,7 @@ class Module extends \Icybee\Module
 		global $core;
 
 		$siteid = $core->site_id;
-		$uid = $core->user_id;
+		$uid = (int) $core->user_id;
 		$type = 'operation';
 		$class = get_class($operation);
 		$message = $operation->response->success;

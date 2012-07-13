@@ -16,7 +16,7 @@ namespace ICanBoogie\Modules\Users;
  */
 use ICanBoogie\Errors;
 
-class DeleteOperation extends \ICanBoogie\Operation\ActiveRecord\Delete
+class DeleteOperation extends \ICanBoogie\DeleteOperation
 {
 	protected function validate(Errors $errors)
 	{

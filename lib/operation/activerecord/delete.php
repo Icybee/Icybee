@@ -11,7 +11,7 @@
 
 namespace Icybee;
 
-class DeleteOperation extends \ICanBoogie\Operation\ActiveRecord\Delete
+class DeleteOperation extends \ICanBoogie\DeleteOperation
 {
 
 }

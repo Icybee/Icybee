@@ -36,7 +36,7 @@ class Module extends \ICanBoogie\Modules\Nodes\Module
 				'css' => array(__DIR__ . '/assets/page.css')
 			),
 
-			'provider' => 'Icybee\Views\Contents\Provider'
+			'provider' => __NAMESPACE__ . '\Provider'
 		);
 
 		return \ICanBoogie\array_merge_recursive

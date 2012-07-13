@@ -12,7 +12,7 @@
 	margin-top: 2em;
 }
 
-#view-contents-news-home img.illustration
+#view-contents-news-home img.thumbnail
 {
 	float: right;
 	margin: 1em 0 1ex 1ex;
@@ -47,8 +47,8 @@
 	overflow: hidden;
 }
 
-#view-contents-news-list img.illustration,
-#view-contents-news-category img.illustration
+#view-contents-news-list img.thumbnail,
+#view-contents-news-category img.thumbnail
 {
 	float: left;
 	margin-right: 2ex;
@@ -62,7 +62,7 @@
 	margin-bottom: -1em;
 }
 
-#view-contents-news-view img.illustration
+#view-contents-news-view img.thumbnail
 {
 	float: right;
 	margin-left: 1ex;

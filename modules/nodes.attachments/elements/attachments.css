@@ -86,9 +86,6 @@ div.resources-files-attached li.progress.error
 div.resources-files-attached img
 {
 	vertical-align: middle;
-}
-
-div.resources-files-attached li:hover img
-{
 	margin-right: 1ex;
+	border-radius: 3px;
 }

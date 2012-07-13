@@ -16,7 +16,7 @@ class DeleteOperation extends \Icybee\DeleteOperation
 	/**
 	 * Overrides the method to create a nicer log entry.
 	 *
-	 * @see ICanBoogie\Operation\ActiveRecord.Delete::process()
+	 * @see ICanBoogie\DeleteOperation::process()
 	 */
 	protected function process()
 	{

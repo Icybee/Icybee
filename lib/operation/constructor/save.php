@@ -16,7 +16,7 @@ class Save extends \Icybee\SaveOperation
 	/**
 	 * Adds the constructor id to the properties.
 	 *
-	 * @see ICanBoogie\Operation\ActiveRecord.Save::get_properties()
+	 * @see ICanBoogie\SaveOperation::get_properties()
 	 */
 	protected function get_properties()
 	{

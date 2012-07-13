@@ -113,6 +113,15 @@ class EditBlock extends \ICanBoogie\Modules\Nodes\EditBlock
 		(
 			parent::alter_children($children, $properties, $attributes), array
 			(
+				Page::LABEL => new Text
+				(
+					array
+					(
+						Form::LABEL => 'label',
+						Element::DESCRIPTION => 'label'
+					)
+				),
+
 				Page::PARENTID => $parentid_el,
 				Page::SITEID => null,
 
@@ -123,16 +132,6 @@ class EditBlock extends \ICanBoogie\Modules\Nodes\EditBlock
 						Element::LABEL => 'is_navigation_excluded',
 						Element::GROUP => 'visibility',
 						Element::DESCRIPTION => 'is_navigation_excluded'
-					)
-				),
-
-				Page::LABEL => new Text
-				(
-					array
-					(
-						Form::LABEL => 'label',
-						Element::GROUP => 'advanced',
-						Element::DESCRIPTION => 'label'
 					)
 				),
 

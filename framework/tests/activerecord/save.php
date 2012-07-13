@@ -70,7 +70,7 @@ class ActiveRecord extends \ICanBoogie\ActiveRecord
 	}
 }
 
-class Operation extends \ICanBoogie\Operation\ActiveRecord\Save
+class Operation extends \ICanBoogie\SaveOperation
 {
 	protected function get_record()
 	{

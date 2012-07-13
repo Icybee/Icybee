@@ -24,6 +24,8 @@ use Brickrouge\Document;
 use Brickrouge\Element;
 use Brickrouge\Pager;
 
+use BlueTihi\Context;
+
 /**
  * A view on provided data.
  */
@@ -31,6 +33,7 @@ class View extends Object
 {
 	const ACCESS_CALLBACK = 'access_callback';
 	const ASSETS = 'assets';
+	const CLASSNAME = 'class';
 	const PROVIDER = 'provider';
 	const RENDERS = 'renders';
 	const RENDERS_ONE = 1;
@@ -125,23 +128,51 @@ class View extends Object
 
 		#
 
-		$this->fire_render_before(array('id' => $this->id));
+		try
+		{
+			$this->fire_render_before(array('id' => $this->id));
 
-		$rc = $this->render_outer_html();
+			$rc = $this->render_outer_html();
 
-		$this->fire_render(array('id' => $this->id, 'rc' => &$rc));
+			$this->fire_render(array('id' => $this->id, 'rc' => &$rc));
 
-		return $rc;
+			return $rc;
+		}
+		catch (\Brickrouge\EmptyElementException $e)
+		{
+			return '';
+		}
 	}
 
 	/**
 	 * Alters template context.
 	 *
-	 * @param Context $context
+	 * @param \BlueTihi\Context $context
+	 *
+	 * @return \BlueTihi\Context
 	 */
 	protected function alter_context(Context $context)
 	{
+		$context['pagination'] = '';
+
+		if (isset($context['range']['limit']) && isset($context['range']['count']))
+		{
+			$range = $context['range'];
+
+			$context['pagination'] = new Pager
+			(
+				'div', array
+				(
+					Pager::T_COUNT => $range['count'],
+					Pager::T_LIMIT => $range['limit'],
+					Pager::T_POSITION => $range['page']
+				)
+			);
+		}
+
 		$context['view'] = $this;
+
+		return $context;
 	}
 
 	/**
@@ -319,14 +350,15 @@ class View extends Object
 		$id = $this->id;
 		$page = $this->page;
 
-		if (!empty($view['provider']))
+		if ($view['provider'])
 		{
 			list($constructor, $name) = explode('/', $id);
 
 			$this->range = $this->init_range();
 
-			$bind = $this->provide($this->options['provider'], $engine->context, $page->url_variables + $_GET);
+			$bind = $this->provide($this->options['provider'], $engine->context, $page->url_variables + $_GET); // FIXME-20120628: we should be using Request here
 
+			$engine->context['this'] = $bind;
 			$engine->context['range'] = $this->range;
 
 			if (is_array($bind) && current($bind) instanceof Node)
@@ -356,23 +388,6 @@ class View extends Object
 			}
 		}
 
-		$engine->context['pagination'] = '';
-
-		if (isset($engine->context['range']['limit']) && isset($engine->context['range']['count']))
-		{
-			$range = $engine->context['range'];
-
-			$engine->context['pagination'] = new Pager
-			(
-				'div', array
-				(
-					Pager::T_COUNT => $range['count'],
-					Pager::T_LIMIT => $range['limit'],
-					Pager::T_POSITION => $range['page']
-				)
-			);
-		}
-
 		#
 		#
 		#
@@ -398,6 +413,8 @@ class View extends Object
 			$engine->context['module'] = $module;
 			$engine->context['view'] = $this;
 
+			$engine->context = $this->alter_context($engine->context);
+
 			if ('php' == $extension)
 			{
 				$rc = null;
@@ -406,8 +423,6 @@ class View extends Object
 
 				try
 				{
-					//TODO: use a context and the alter_context() method
-
 					$isolated_require = function ($__file__, $__exposed__)
 					{
 						extract($__exposed__);
@@ -472,6 +487,11 @@ class View extends Object
 		return $this->element;
 	}
 
+	protected function alter_element(Element $element)
+	{
+		return $element;
+	}
+
 	/**
 	 * Returns the HTML representation of the view element and its content.
 	 *
@@ -480,7 +500,7 @@ class View extends Object
 	protected function render_outer_html()
 	{
 		$class = '';
-		$type = $this->type;
+		$type = \ICanBoogie\normalize($this->type);
 		$m = $this->module;
 
 		while ($m)
@@ -500,6 +520,8 @@ class View extends Object
 				'data-constructor' => $this->module->id
 			)
 		);
+
+		$this->element = $this->alter_element($this->element);
 
 // 		\ICanBoogie\log("class: {$this->element->class}, type: $type, assets: " . \ICanBoogie\dump($this->options['assets']));
 

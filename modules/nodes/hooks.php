@@ -12,16 +12,23 @@
 namespace ICanBoogie\Modules\Nodes;
 
 use ICanBoogie\Event;
+use ICanBoogie\I18n;
+use ICanBoogie\Operation\BeforeProcessEvent;
 
+use Brickrouge\A;
 use Brickrouge\Element;
 
 class Hooks
 {
+	/*
+	 * Markups
+	 */
+
 	public static function markup_node_navigation(array $args, \WdPatron $patron, $template)
 	{
-		global $document;
+		global $core;
 
-		$document->css->add('public/page.css');
+		$core->document->css->add('public/page.css');
 
 		$record = $patron->context['this'];
 
@@ -32,7 +39,7 @@ class Hooks
 
 		if ($list_url)
 		{
-			$list = '<div class="list"><a href="' . wd_entities($list_url) . '">' . t('All records') . '</a></div>';
+			$list = '<div class="list"><a href="' . \ICanBoogie\escape($list_url) . '">' . I18n\t('All records') . '</a></div>';
 		}
 
 		$next = null;
@@ -44,15 +51,12 @@ class Hooks
 		{
 			$title = $next_record->title;
 
-			$next = new Element
+			$next = new A
 			(
-				'a', array
+				\ICanBoogie\escape(\ICanBoogie\shorten($title, 48, 1)), $next_record->url, array
 				(
-					Element::INNER_HTML => wd_entities(\ICanBoogie\shorten($title, 48, 1)),
-
 					'class' => "next",
-					'href' => $next_record->url,
-					'title' => t('Next: :title', array(':title' => $title))
+					'title' => I18n\t('Next: :title', array(':title' => $title))
 				)
 			);
 		}
@@ -61,15 +65,12 @@ class Hooks
 		{
 			$title = $previous_record->title;
 
-			$previous = new Element
+			$previous = new A
 			(
-				'a', array
+				\ICanBoogie\escape(\ICanBoogie\shorten($title, 48, 1)), $previous_record->url, array
 				(
-					Element::INNER_HTML => wd_entities(\ICanBoogie\shorten($title, 48, 1)),
-
 					'class' => "previous",
-					'href' => $previous_record->url,
-					'title' => t('Previous: :title', array(':title' => $title))
+					'title' => I18n\t('Previous: :title', array(':title' => $title))
 				)
 			);
 		}
@@ -85,6 +86,10 @@ class Hooks
 		}
 	}
 
+	/*
+	 * Events
+	 */
+
 	public static function on_modules_activate(Event $event)
 	{
 		\ICanBoogie\Modules\Nodes\Module::create_default_routes();
@@ -93,5 +98,26 @@ class Hooks
 	public static function on_modules_deactivate(Event $event)
 	{
 		\ICanBoogie\Modules\Nodes\Module::create_default_routes();
+	}
+
+	/**
+	 * Checks if the role to be deleted is used or not.
+	 *
+	 * @param BeforeProcessEvent $event
+	 * @param \ICanBoogie\Modules\Users\DeleteOperation $operation
+	 */
+	public static function before_delete_user(BeforeProcessEvent $event, \ICanBoogie\Modules\Users\DeleteOperation $operation)
+	{
+		global $core;
+
+		$uid = $operation->key;
+		$count = $core->models['nodes']->find_by_uid($uid)->count;
+
+		if (!$count)
+		{
+			return;
+		}
+
+		$event->errors['uid'] = I18n\t('The user %name is used by :count nodes.', array('name' => $operation->record->name, ':count' => $count));
 	}
 }

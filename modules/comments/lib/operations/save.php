@@ -39,11 +39,6 @@ class SaveOperation extends \Icybee\SaveOperation
 		}
 		else
 		{
-			if (empty($properties[Comment::NID]))
-			{
-				throw new Exception('Missing target node id');
-			}
-
 			$properties[Comment::AUTHOR_IP] = $_SERVER['REMOTE_ADDR'];
 
 			if (!$user->is_guest)
@@ -72,13 +67,29 @@ class SaveOperation extends \Icybee\SaveOperation
 
 		$request = $this->request;
 
+		$nid = $request[Comment::NID];
+
+		if ($nid)
+		{
+			try
+			{
+				$node = $core->models['nodes'][$nid];
+			}
+			catch (Exception\MissingRecord $e)
+			{
+				$errors[Comment::NID] = t('Invalid node identifier: %nid', array('nid' => $nid));
+
+				return false;
+			}
+		}
+
 		#
 		# the article id is required when creating a message
 		#
 
 		if (!$this->key)
 		{
-			if (!$request[Comment::NID])
+			if (!$nid)
 			{
 				$errors[Comment::NID] = t('The node id is required to create a comment.');
 

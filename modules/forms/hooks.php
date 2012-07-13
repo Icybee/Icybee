@@ -69,7 +69,7 @@ class Hooks
 	 *
 	 * This function is a callback for the `ICanBoogie\Operation::get_form` event.
 	 *
-	 * The OPERATION_POST_ID parameter provides the key of the form active record to load.
+	 * The {@link OPERATION_POST_ID} parameter provides the key of the form active record to load.
 	 *
 	 * If the form is successfully retrieved a callback is added to the
 	 * "<operation_class>::process" event, it is used to send a notify message with the parameters
@@ -112,7 +112,7 @@ class Hooks
 		$record = $core->models['forms'][(int) $request[Module::OPERATION_POST_ID]];
 		$form = $record->form;
 
-		$event->rc = $form;
+		$event->form = $form;
 		$event->stop();
 
 		\ICanBoogie\Events::attach
@@ -155,7 +155,7 @@ class Hooks
 				{
 					$form->alter_notify
 					(
-						\ICanBoogie\Object::from
+						new NotifyParams
 						(
 							array
 							(
@@ -164,9 +164,7 @@ class Hooks
 								'template' => &$template,
 								'mailer' => &$mailer,
 								'mailer_tags' => &$mailer_tags
-							),
-
-							array(), __NAMESPACE__ . '\NotifyParams'
+							)
 						),
 
 						$record, $event, $operation
@@ -189,7 +187,17 @@ class Hooks
 					$record
 				);
 
-				$core->session->modules['forms']['rc'][$record->nid] = $rc;
+				#
+				# The result of the operation is stored in the sessions and is used in the next
+				# session to present the _success_ message instead of the form.
+				#
+				# Note: The result is not stored for XHR.
+				#
+
+				if (!$event->request->is_xhr)
+				{
+					$core->session->modules['forms']['rc'][$record->nid] = $rc;
+				}
 
 				if ($record->is_notify)
 				{
@@ -321,4 +329,12 @@ class NotifyParams
 	 * @var array
 	 */
 	public $mailer_tags;
+
+	public function __construct(array $input)
+	{
+		foreach ($input as $k => &$v)
+		{
+			$this->$k = &$v;
+		}
+	}
 }

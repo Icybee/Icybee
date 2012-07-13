@@ -10,9 +10,9 @@ return array
 	'label' => array
 	(
 		'email_confirm' => "Confirmar e-mail",
-		'firstname' => 'Nombre',
-		'lastname' => 'Apellidos',
-		'name' => 'Nombré',
+		'Firstname' => 'Nombre',
+		'Lastname' => 'Apellidos',
+		'Name' => 'Nombré',
 		'password' => 'Contraseña',
 		'username' => 'Nombre de usuario'
 	),

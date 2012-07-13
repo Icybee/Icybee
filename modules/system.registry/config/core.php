@@ -4,6 +4,6 @@ return array
 (
 	'autoload' => array
 	(
-		'system_registry_WdMetasHandler' => $path . 'hooks.php'
+		'ICanBoogie\Modules\System\Registry\MetasHandler' => $path . 'lib/handler.php'
 	)
 );

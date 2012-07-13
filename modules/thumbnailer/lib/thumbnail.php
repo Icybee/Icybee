@@ -33,29 +33,45 @@ use Brickrouge\Element;
  */
 class Thumbnail extends \ICanBoogie\Object
 {
+	/**
+	 * The source of the thumbnail.
+	 *
+	 * @var ICanBoogie\ActiveRecord\Image|int|string
+	 */
 	public $src;
-	public $options;
 
+	/**
+	 * Options to created the thumbnail.
+	 *
+	 * @var array
+	 */
+	public $options = array();
+
+	/**
+	 * Version name of the thumbnail.
+	 *
+	 * @var string
+	 */
 	protected $version_name;
 
 	/**
 	 * Constructor.
 	 *
-	 * @param ICanBoogie\ActiveRecord\Image|int|string|null
+	 * @param ICanBoogie\ActiveRecord\Image|int|string The souce of the thumbnail.
 	 *
 	 * @param string|array $options The options to create the thumbnail can be provided as a
 	 * version name or an array of options. If a version name is provided, the `image` parameter
 	 * must also be provided.
+	 *
+	 * @param string|array $additionnal_options Additionnal options to created the thumbnail.
 	 */
-	public function __construct($src, $options)
+	public function __construct($src, $options, $additionnal_options=null)
 	{
 		if (is_string($options))
 		{
 			if (strpos($options, ':') !== false)
 			{
-				preg_match_all('#([^:]+):\s*([^;]+);?#', $options, $matches, PREG_PATTERN_ORDER);
-
-				$options = array_combine($matches[1], $matches[2]);
+				$options = self::decode_options($options);
 			}
 			else
 			{
@@ -68,7 +84,24 @@ class Thumbnail extends \ICanBoogie\Object
 			$this->options = $options;
 		}
 
+		if ($additionnal_options)
+		{
+			if (is_string($additionnal_options))
+			{
+				$additionnal_options = self::decode_options($additionnal_options);
+			}
+
+			$this->options = $additionnal_options + $this->options;
+		}
+
 		$this->src = $src;
+	}
+
+	protected static function decode_options($options)
+	{
+		preg_match_all('#([^:]+):\s*([^;]+);?#', $options, $matches, PREG_PATTERN_ORDER);
+
+		return array_combine($matches[1], $matches[2]);
 	}
 
 	private $_version;

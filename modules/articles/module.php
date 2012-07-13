@@ -28,10 +28,7 @@ class Module extends \ICanBoogie\Modules\Contents\Module
 	{
 		$assets = array
 		(
-			'css' => array
-			(
-				__DIR__ . '/public/page.css'
-			)
+			'css' => array(__DIR__ . '/public/page.css')
 		);
 
 		return \ICanBoogie\array_merge_recursive
@@ -47,7 +44,7 @@ class Module extends \ICanBoogie\Modules\Contents\Module
 				(
 					'title' => "Archives des articles",
 					'class' => 'Icybee\Views\Articles\Archives',
-					'provider' => 'Icybee\Views\Contents\Provider',
+					'provider' => 'ICanBoogie\Modules\Contents\Provider',
 					'assets' => $assets,
 					'renders' => \Icybee\Views\View::RENDERS_MANY
 				)

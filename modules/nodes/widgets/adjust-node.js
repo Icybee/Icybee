@@ -78,7 +78,7 @@ Brickrouge.Widget.AdjustNode = new Class
 		{
 			this.fetchResultsOperation = new Request.Element({
 
-				url: Request.API.encode('widgets/' + this.options.adjust + '/results'),
+				url: 'widgets/' + this.options.adjust + '/results',
 
 				onSuccess: function(el, response)
 				{

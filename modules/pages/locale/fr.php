@@ -25,6 +25,9 @@ return array
 
 	'description' => array
 	(
+		'is_navigation_excluded' => "Les pages exclues de la navigation principale n'apparaissent pas dans les menus.
+		Elles peuvent tout de même apparaitre sur le plan du site.",
+
 		'label' => "L'étiquette est une version plus concise du titre. Elle est utilisée de
 		préférence au titre pour créer les liens des menus et du fil d'Ariane.",
 

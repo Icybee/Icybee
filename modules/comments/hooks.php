@@ -385,8 +385,6 @@ EOT
 		# Traget Id for the comment
 		#
 
-		$select = $args['select'];
-		$nid = is_object($select) ? $select->nid : $select;
 		$page = $core->request->context->page;
 
 		$form->form->hiddens[Comment::NID] = $page->node ? $page->node->nid : $page->nid;

@@ -106,6 +106,17 @@ class site_pages_WdMarkups extends patron_markups_WdHooks
 			return;
 		}
 
+		$element = new Element
+		(
+			'div', array
+			(
+				'id' => 'content-' . $contentid,
+				'class' => 'editor-' . \ICanBoogie\normalize($editor)
+			)
+		);
+
+		$patron->context['self']['element'] = $element;
+
 		$rc = $template ? $patron($template, $rendered) : $rendered;
 
 		if (!$rc)
@@ -115,7 +126,11 @@ class site_pages_WdMarkups extends patron_markups_WdHooks
 
 		if (preg_match('#\.html$#', $page->template) && empty($args['no-wrapper']))
 		{
-			$rc = '<div id="content-' . $contentid . '" class="editor-' . \ICanBoogie\normalize($editor) . '">' . $rc . '</div>';
+			$element[Element::INNER_HTML] = $rc;
+
+			$rc = $element;
+
+// 			$rc = '<div id="content-' . $contentid . '" class="editor-' . \ICanBoogie\normalize($editor) . '">' . $rc . '</div>';
 		}
 
 		$rc = self::handle_external_anchors($rc);

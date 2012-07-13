@@ -16,6 +16,8 @@ namespace ICanBoogie\Modules\Forms;
  *
  * Note: The form it retrieved by the hook that we attached to the
  * {@link \ICanBoogie\Operation\GetFormEvent} event, just like any other operation.
+ *
+ * @property \ICanBoogie\ActiveRecord\Form $record
  */
 class PostOperation extends \ICanBoogie\Operation
 {
@@ -32,6 +34,25 @@ class PostOperation extends \ICanBoogie\Operation
 		)
 
 		+ parent::get_controls();
+	}
+
+	/**
+	 * Returns the form record associated with the operation.
+	 *
+	 * @see ICanBoogie.Operation::get_record()
+	 *
+	 * @return \ICanBoogie\ActiveRecord\Form
+	 */
+	protected function get_record()
+	{
+		$nid = $this->request[Module::OPERATION_POST_ID];
+
+		if (!$nid)
+		{
+			return;
+		}
+
+		return $this->module->model[$nid];
 	}
 
 	/**
@@ -57,6 +78,13 @@ class PostOperation extends \ICanBoogie\Operation
 	{
 		$form = $this->form;
 
-		return method_exists($form, 'finalize') ? $form->finalize($this) : true;
+		$rc = method_exists($form, 'finalize') ? $form->finalize($this) : true;
+
+		if ($rc && $this->request->is_xhr)
+		{
+			$this->response->success = $this->record->complete;
+		}
+
+		return $rc;
 	}
 }

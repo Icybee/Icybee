@@ -43,12 +43,16 @@ class PopImage extends \ICanBoogie\Modules\Nodes\PopNode
 		);
 	}
 
-	protected function render_dataset(array $dataset)
+	protected function alter_dataset(array $dataset)
 	{
-		$dataset['preview-width'] = $this[self::T_PREVIEW_WIDTH];
-		$dataset['preview-height'] = $this[self::T_PREVIEW_HEIGHT];
-
-		return parent::render_dataset($dataset);
+		return parent::alter_dataset
+		(
+			$dataset + array
+			(
+				'preview-width' => $this[self::T_PREVIEW_WIDTH],
+				'preview-height' => $this[self::T_PREVIEW_HEIGHT]
+			)
+		);
 	}
 
 	protected function getEntry($model, $value)

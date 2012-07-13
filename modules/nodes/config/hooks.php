@@ -5,7 +5,8 @@ return array
 	'events' => array
 	(
 		'ICanBoogie\Modules\System\Modules\ActivateOperation::process' => 'ICanBoogie\Modules\Nodes\Hooks::on_modules_activate',
-		'ICanBoogie\Modules\System\Modules\DeactivateOperation::process' => 'ICanBoogie\Modules\Nodes\Hooks::on_modules_deactivate'
+		'ICanBoogie\Modules\System\Modules\DeactivateOperation::process' => 'ICanBoogie\Modules\Nodes\Hooks::on_modules_deactivate',
+		'ICanBoogie\Modules\Users\DeleteOperation::process:before' => 'ICanBoogie\Modules\Nodes\Hooks::before_delete_user'
 	),
 
 	'patron.markups' => array

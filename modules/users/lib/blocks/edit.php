@@ -13,6 +13,7 @@ namespace ICanBoogie\Modules\Users;
 
 use ICanBoogie\ActiveRecord\User;
 
+use Brickrouge\Document;
 use Brickrouge\Element;
 use Brickrouge\Form;
 use Brickrouge\Text;
@@ -23,6 +24,13 @@ use Brickrouge\Widget;
  */
 class EditBlock extends \Icybee\EditBlock
 {
+	static protected function add_assets(Document $document)
+	{
+		parent::add_assets($document);
+
+		$document->js->add('../../assets/admin.js');
+	}
+
 	protected function get_permission()
 	{
 		global $core;
@@ -66,8 +74,6 @@ class EditBlock extends \Icybee\EditBlock
 	protected function alter_children(array $children, array &$properties, array &$attributes)
 	{
 		global $core;
-
-		$core->document->js->add('../../assets/admin.js');
 
 		#
 		# permissions
@@ -117,7 +123,7 @@ class EditBlock extends \Icybee\EditBlock
 		# roles
 		#
 
-		$role_el = $this->get_control_role($properties, $attributes);
+		$role_el = $this->create_control_role($properties, $attributes);
 
 		#
 		# languages
@@ -131,7 +137,7 @@ class EditBlock extends \Icybee\EditBlock
 		# restricted sites
 		#
 
-		$restricted_sites_el = $this->get_control_sites();
+		$restricted_sites_el = $this->create_control_sites();
 
 		$administer = $user->has_permission(Module::PERMISSION_MANAGE, $this->module);
 
@@ -193,49 +199,33 @@ class EditBlock extends \Icybee\EditBlock
 					)
 				),
 
-				new Element
+				User::PASSWORD => new Text
 				(
-					'div', array
+					array
 					(
+						Element::LABEL => 'password',
+						Element::LABEL_POSITION => 'above',
+						Element::DESCRIPTION => 'password_' . ($uid ? 'update' : 'new'),
 						Element::GROUP => 'connection',
-						Element::CHILDREN => array
-						(
-							'<div>',
 
-							User::PASSWORD => new Text
-							(
-								array
-								(
-									Element::LABEL => 'password',
-									Element::LABEL_POSITION => 'above',
-									Element::DESCRIPTION => 'password_' . ($uid ? 'update' : 'new'),
+						'autocomplete' => 'off',
+						'type' => 'password',
+						'value' => ''
+					)
+				),
 
-									'autocomplete' => 'off',
-									'type' => 'password',
-									'value' => ''
-								)
-							),
+				User::PASSWORD . '-verify' => new Text
+				(
+					array
+					(
+						Element::LABEL => 'password_confirm',
+						Element::LABEL_POSITION => 'above',
+						Element::DESCRIPTION => 'password_confirm',
+						Element::GROUP => 'connection',
 
-							'</div><div>',
-
-							User::PASSWORD . '-verify' => new Text
-							(
-								array
-								(
-									Element::LABEL => 'password_confirm',
-									Element::LABEL_POSITION => 'above',
-									Element::DESCRIPTION => 'password_confirm',
-
-									'autocomplete' => 'off',
-									'type' => 'password',
-									'value' => ''
-								)
-							),
-
-							'</div>'
-						),
-
-						'style' => 'column-count; -moz-column-count: 2; -webkit-column-count: 2'
+						'autocomplete' => 'off',
+						'type' => 'password',
+						'value' => ''
 					)
 				),
 
@@ -276,23 +266,6 @@ class EditBlock extends \Icybee\EditBlock
 				User::RESTRICTED_SITES => $restricted_sites_el
 			)
 		);
-
-		/* TODO: override save button
-
-		if ($permission_modify_own_profile)
-		{
-			$rc[Element::CHILDREN]['#submit'] = new Button
-			(
-				'Save', array
-				(
-					Element::GROUP => 'save',
-					'class' => 'save',
-					'type' => 'submit'
-				)
-			);
-		}
-
-		*/
 	}
 
 	protected function alter_actions(array $actions)
@@ -312,7 +285,7 @@ class EditBlock extends \Icybee\EditBlock
 		return $actions;
 	}
 
-	protected function get_control_role(array &$properties, array &$attributes)
+	protected function create_control_role(array &$properties, array &$attributes)
 	{
 		global $core;
 
@@ -356,7 +329,7 @@ class EditBlock extends \Icybee\EditBlock
 		);
 	}
 
-	protected function get_control_sites()
+	protected function create_control_sites()
 	{
 		global $core;
 

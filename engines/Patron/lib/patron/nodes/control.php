@@ -56,29 +56,6 @@ class ControlNode extends Node
 
 		$args = $this->args;
 
-		// TODO-20100425: remove the following compatibility code
-
-		foreach ($args as $param => $value)
-		{
-			if ($value instanceof self)
-			{
-				if ($value->nodes)
-				{
-					$args[$param] = $value($engine, $engine->context);
-				}
-				else
-				{
-					$args[$param] = $engine->evaluate($value->args['select']);
-				}
-			}
-			else if (strpos($value, '#{') === 0)
-			{
-				$args[$param] = $engine->resolve($value);
-			}
-		}
-
-		// /20100425
-
 		$missing = array();
 		$binding = empty($hook->tags['no-binding']);
 
@@ -177,7 +154,7 @@ class ControlNode extends Node
 
 		try
 		{
-			$rc = $hook->__invoke($args, $engine, $this->nodes);
+			$rc = $hook($args, $engine, $this->nodes);
 		}
 		catch (HTTPException $e)
 		{

@@ -44,9 +44,9 @@ class Hooks
 	 * defined as CSS properties. e.g. 'w:300;h=200'.
 	 * @return string The URL of the thumbnail.
 	 */
-	static public function method_thumbnail(ActiveRecord\Image $ar, $version)
+	static public function method_thumbnail(ActiveRecord\Image $ar, $version, $additionnal_options=null)
 	{
-		return new Thumbnail($ar, $version);
+		return new Thumbnail($ar, $version, $additionnal_options);
 	}
 
 	/**

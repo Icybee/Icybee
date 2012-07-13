@@ -27,7 +27,11 @@ class HTMLParser
 	{
 		$tags += array
 		(
-			self::T_ERROR_HANDLER => 'ICanBoogie\Debug::trigger'
+			self::T_ERROR_HANDLER => function($str, $args) {
+
+				trigger_error(\ICanBoogie\format($str, $args));
+
+			}
 		);
 
 		$this->error_handler = $tags[self::T_ERROR_HANDLER];

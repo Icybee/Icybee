@@ -13,6 +13,7 @@ namespace ICanBoogie\Modules\Users;
 
 use ICanBoogie\ActiveRecord\User;
 use ICanBoogie\Mailer;
+use ICanBoogie\I18n;
 use ICanBoogie\I18n\Tanslator\Proxi;
 use ICanBoogie\Exception;
 use ICanBoogie\Exception\HTTP as HTTPException;
@@ -78,7 +79,7 @@ class LoginOperation extends Operation
 					unless you unlock the account using the email sent.", array
 					(
 						'%count' => $user->metas['failed_login_count'],
-						'%time' => wd_format_date($login_unlock_time, 'HH:mm')
+						'%time' => I18n\format_date($login_unlock_time, 'HH:mm')
 					),
 
 					403
@@ -115,7 +116,7 @@ class LoginOperation extends Operation
 				$user->metas['login_unlock_token'] = base64_encode(Security::pbkdf2($token, $config['unlock_login_salt']));
 				$user->metas['login_unlock_time'] = $now + 3600;
 
-				$until = wd_format_date($now + 3600, 'HH:mm');
+				$until = I18n\format_date($now + 3600, 'HH:mm');
 
 				$url = $core->site->url . '/api/users/unlock_login?' . http_build_query
 				(

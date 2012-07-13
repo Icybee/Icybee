@@ -14,8 +14,8 @@ return array
 
 // 		'Icybee\Pagemaker::render:before' => __NAMESPACE__ . '::before_icybee_render', TODO-20120313: we need to use another event
 
-		'ICanBoogie\Operation\ActiveRecord\Save::process' => __NAMESPACE__ . '::invalidate_cache',
-		'ICanBoogie\Operation\ActiveRecord\Delete::process' => __NAMESPACE__ . '::invalidate_cache',
+		'ICanBoogie\SaveOperation::process' => __NAMESPACE__ . '::invalidate_cache',
+		'ICanBoogie\DeleteOperation::process' => __NAMESPACE__ . '::invalidate_cache',
 		'ICanBoogie\Modules\Nodes\OnlineOperation::process' => __NAMESPACE__ . '::invalidate_cache',
 		'ICanBoogie\Modules\Nodes\OfflineOperation::process' => __NAMESPACE__ . '::invalidate_cache',
 		'ICanBoogie\Modules\System\Cache\Collection::alter' => __NAMESPACE__ . '::on_alter_cache_collection'

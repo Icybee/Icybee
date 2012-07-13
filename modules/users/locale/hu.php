@@ -4,8 +4,8 @@ return array
 (
 	'label' => array
 	(
-		'firstname' => "Név",
-		'lastname' => "Vezetéknév",
+		'Firstname' => 'Név',
+		'Lastname' => 'Vezetéknév',
 		'email_confirm' => "E-mail cím megerősítése"
 	)
 );

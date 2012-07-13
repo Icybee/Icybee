@@ -45,11 +45,15 @@ abstract class Widget extends Element
 		return parent::render_class($class_names);
 	}
 
-	protected function render_dataset(array $dataset)
+	protected function alter_dataset(array $dataset)
 	{
-		$dataset['widget-constructor'] = $this[self::CONSTRUCTOR];
-
-		return parent::render_dataset($dataset);
+		return parent::alter_dataset
+		(
+			$dataset + array
+			(
+				'widget-constructor' => $this[self::CONSTRUCTOR]
+			)
+		);
 	}
 
 	public function get_results(array $options=array())

@@ -255,6 +255,17 @@ class GetOperation extends Operation
 		}
 
 		#
+		# apply filters
+		#
+
+		$filter = $options['filter'];
+
+		if ($filter)
+		{
+			$this->apply_filter($image, $filter);
+		}
+
+		#
 		# apply the overlay
 		#
 
@@ -325,6 +336,16 @@ class GetOperation extends Operation
         return $destination;
 	}
 
+	protected function apply_filter($image, $filter)
+	{
+		if ($filter != 'grayscale')
+		{
+			return;
+		}
+
+		imagefilter($image, IMG_FILTER_GRAYSCALE);
+	}
+
 	protected function validate(\ICanBoogie\Errors $errors)
 	{
 		return true;
@@ -349,7 +370,7 @@ class GetOperation extends Operation
 
 		if (!$path)
 		{
-			throw new Exception\HTTP('Unable to create thumbnail for: %src', array('%src' => $this->request->params['src']), 404);
+			throw new Exception\HTTP('Unable to create thumbnail for: %src', array('%src' => $this->request['src']), 404);
 		}
 
 		$server_location = \ICanBoogie\DOCUMENT_ROOT . $path;

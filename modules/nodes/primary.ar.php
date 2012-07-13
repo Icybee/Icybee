@@ -30,16 +30,87 @@ class Node extends ActiveRecord
 	const LANGUAGE = 'language';
 	const NATIVEID = 'nativeid';
 
+	/**
+	 * Node key.
+	 *
+	 * @var int
+	 */
 	public $nid;
+
+	/**
+	 * Identifier of the owner of the node.
+	 *
+	 * @var int
+	 */
 	public $uid;
+
+	/**
+	 * Identifier of the site the node belongs to.
+	 *
+	 * The property is empty of the node is not bound to a website.
+	 *
+	 * @var int
+	 */
 	public $siteid;
+
+	/**
+	 * Title of the node.
+	 *
+	 * @var string
+	 */
 	public $title;
+
+	/**
+	 * Slug of the node.
+	 *
+	 * @var string
+	 */
 	public $slug;
+
+	/**
+	 * Constructor of the node.
+	 *
+	 * @var string
+	 */
 	public $constructor;
+
+	/**
+	 * Date the node was created.
+	 *
+	 * @var string
+	 */
 	public $created;
+
+	/**
+	 * Date the node was modified.
+	 *
+	 * @var string
+	 */
 	public $modified;
+
+	/**
+	 * Whether the node is online or not.
+	 *
+	 * @var bool
+	 */
 	public $is_online;
+
+	/**
+	 * Language of the node.
+	 *
+	 * The property is empty of the node is not bound to a language.
+	 *
+	 * @var string
+	 */
 	public $language;
+
+	/**
+	 * Identifier of the node this node is translating.
+	 *
+	 * The property is empty if the node is not translating another node.
+	 *
+	 * @var int
+	 */
 	public $nativeid;
 
 	/**

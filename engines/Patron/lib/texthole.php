@@ -693,12 +693,7 @@ class TextHole
 		{
 			$this->error('Empty expression');
 
-			return null;
-		}
-
-		if (is_array($silent))
-		{
-			Debug::trigger('<em>silent</em> should be a boolean, options are deprecated: \1', array($silent));
+			return;
 		}
 
 		$value = $this->context;

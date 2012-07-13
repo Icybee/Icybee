@@ -40,12 +40,16 @@ class PopNode extends \Brickrouge\Widget
 		);
 	}
 
-	protected function render_dataset(array $dataset)
+	protected function alter_dataset(array $dataset)
 	{
-		$dataset['constructor'] = $this[self::T_CONSTRUCTOR];
-		$dataset['placeholder'] = $this['placeholder'];
-
-		return parent::render_dataset($dataset);
+		return parent::alter_dataset
+		(
+			$dataset + array
+			(
+				'constructor' => $this[self::T_CONSTRUCTOR],
+				'placeholder' => $this['placeholder']
+			)
+		);
 	}
 
 	protected function render_inner_html()

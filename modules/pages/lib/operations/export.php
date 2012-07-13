@@ -23,10 +23,8 @@ class ExportOperation extends \ICanBoogie\Modules\Nodes\ExportOperation
 
 		foreach ($contents as $content)
 		{
-			$records[$content->pageid]->contents[$content->contentid] = $content;
-
-			unset($content->pageid);
-			unset($content->contentid);
+			$records[$content->pageid]->contents[$content->contentid] = $content->content;
+			$records[$content->pageid]->editors[$content->contentid] = $content->editor;
 		}
 
 		return $records;

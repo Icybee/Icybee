@@ -11,38 +11,42 @@
 
 namespace ICanBoogie\Modules\Users\Roles;
 
-class DeleteOperation extends \ICanBoogie\Operation\ActiveRecord\Delete
+/**
+ * Deletes a role.
+ */
+class DeleteOperation extends \ICanBoogie\DeleteOperation
 {
 	/**
-	 * Controls for the operation: permission(manage), record and ownership.
+	 * Modifies the following controls:
 	 *
-	 * @see ICanBoogie.Operation::get_controls()
+	 *     PERMISSION: ADMINISTER
+	 *     OWNERSHIP: false
+	 *
+	 * @see ICanBoogie\DeleteOperation::get_controls()
 	 */
 	protected function get_controls()
 	{
 		return array
 		(
 			self::CONTROL_PERMISSION => Module::PERMISSION_ADMINISTER,
-			self::CONTROL_RECORD => true
+			self::CONTROL_OWNERSHIP => false
 		)
 
 		+ parent::get_controls();
 	}
 
 	/**
-	 * The visitor (1) and user (2) roles cannot be deleted.
+	 * The "visitor" (1) and "user" (2) roles cannot be deleted.
 	 *
-	 * @see ICanBoogie\Operation\ActiveRecord.Delete::validate()
+	 * @see ICanBoogie\DeleteOperation::validate()
 	 */
 	protected function validate(\ICanboogie\Errors $errors)
 	{
 		if ($this->key == 1 || $this->key == 2)
 		{
-			$errors[] = 'The <q>visitor</q> and <q>user</q> roles cannot be deleted';
-
-			return false;
+			$errors[] = t('The role %name cannot be deleted.', array('name' => $this->record->name));
 		}
 
-		return parent::validate();
+		return parent::validate($errors);
 	}
 }

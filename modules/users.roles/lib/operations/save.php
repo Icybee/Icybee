@@ -11,6 +11,9 @@
 
 namespace ICanBoogie\Modules\Users\Roles;
 
+/**
+ * Saves a role.
+ */
 class SaveOperation extends \Icybee\SaveOperation
 {
 

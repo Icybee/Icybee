@@ -15,6 +15,16 @@ use ICanBoogie\Operation;
 
 class ExportOperation extends Operation
 {
+	protected function get_controls()
+	{
+		return array
+		(
+			self::CONTROL_PERMISSION => Module::PERMISSION_ADMINISTER
+		)
+
+		+ parent::get_controls();
+	}
+
 	protected function validate(\ICanboogie\Errors $errors)
 	{
 		return true;
@@ -24,7 +34,7 @@ class ExportOperation extends Operation
 	{
 		global $core;
 
-		$records = $this->module->model()->find_by_siteid($core->site_id)->own->all(\PDO::FETCH_OBJ);
+		$records = $this->module->model->find_by_siteid($core->site_id)->own->all(\PDO::FETCH_OBJ);
 
 		foreach ($records as $record)
 		{

@@ -55,6 +55,15 @@ class patron_elements_WdMarkups
 		return $template ? $patron($template, $pager) : (string) $pager;
 	}
 
+	/**
+	 * Adds or return the CSS assets of the document.
+	 *
+	 * @param array $args
+	 * @param Patron\Engine $engine
+	 * @param mixed $template
+	 *
+	 * @return void|string
+	 */
 	static public function document_css(array $args, Patron\Engine $engine, $template)
 	{
 		global $core;
@@ -76,13 +85,21 @@ class patron_elements_WdMarkups
 		(
 			'Icybee\Pagemaker::render', function(\Icybee\Pagemaker\RenderEvent $event) use($engine, $template, $key)
 			{
-				global $core;
+				#
+				# The event is chained so that is gets executed once the event chain has been
+				# processed.
+				#
 
-				$document = $core->document;
+				$event->chain(function(\Icybee\Pagemaker\RenderEvent $event) use($engine, $template, $key)
+				{
+					global $core;
 
-				$html = $template ? $engine($template, $document->css) : (string) $document->css;
+					$document = $core->document;
 
-				$event->html = str_replace($key, $html, $event->html);
+					$html = $template ? $engine($template, $document->css) : (string) $document->css;
+
+					$event->html = str_replace($key, $html, $event->html);
+				});
 			}
 		);
 

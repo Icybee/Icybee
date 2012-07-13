@@ -11,7 +11,7 @@
 
 // TODO-20120117: should be in the module's namespace
 
-namespace Icybee\Views\Contents;
+namespace ICanBoogie\Modules\Contents;
 
 use ICanBoogie\ActiveRecord;
 use ICanBoogie\ActiveRecord\Query;

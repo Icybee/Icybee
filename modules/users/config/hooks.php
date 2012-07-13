@@ -2,6 +2,11 @@
 
 return array
 (
+	'events' => array
+	(
+		'ICanBoogie\Modules\Users\Roles\DeleteOperation::process:before' => 'ICanBoogie\Modules\Users\Hooks::before_delete_role'
+	),
+
 	'prototypes' => array
 	(
 		'ICanBoogie\Core::get_user' => 'ICanBoogie\Modules\Users\Hooks::get_user',

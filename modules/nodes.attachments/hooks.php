@@ -13,6 +13,7 @@ namespace ICanBoogie\Modules\Nodes\Attachments;
 
 use ICanBoogie\ActiveRecord;
 use ICanBoogie\Event;
+use ICanBoogie\HTTP\Request;
 use ICanBoogie\Modules;
 use ICanBoogie\Operation;
 
@@ -110,8 +111,8 @@ class Hooks
 				{
 					$file = $files_model[$fileid];
 
-					$delete_operation = Operation::decode("/api/{$file->constructor}/{$fileid}/delete");
-					$delete_operation->__invoke();
+					$delete_request = Request::from(array('path' => "/api/{$file->constructor}/{$fileid}/delete"));
+					$delete_request->post();
 
 					continue;
 				}

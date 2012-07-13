@@ -440,30 +440,6 @@ class Engine extends TextHole
 
 	protected function contextInit()
 	{
-		/*
-		foreach ($_SERVER as $key => &$value)
-		{
-			if (substr($key, 0, 5) == 'HTTP_')
-			{
-				$_SERVER['http'][strtolower(substr($key, 5))] = &$value;
-			}
-			else if (substr($key, 0, 7) == 'REMOTE_')
-			{
-				$_SERVER['remote'][strtolower(substr($key, 7))] = &$value;
-			}
-			else if (substr($key, 0, 8) == 'REQUEST_')
-			{
-				$_SERVER['request'][strtolower(substr($key, 8))] = &$value;
-			}
-		}
-
-		$this->context = array
-		(
-			'self' => null,
-			'this' => null
-		);
-		*/
-
 		$this->context = new \BlueTihi\Context(array('self' => null, 'this' => null));
 	}
 

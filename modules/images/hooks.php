@@ -11,6 +11,8 @@
 
 namespace ICanBoogie\Modules\Images;
 
+use Icybee\Views\ActiveRecord\Provider\AlterResultEvent;
+
 use ICanBoogie\ActiveRecord;
 use ICanBoogie\ActiveRecord\Node;
 use ICanBoogie\Debug;
@@ -38,6 +40,60 @@ class Hooks
 		$imageid = $ar->metas['resources_images.imageid'];
 
 		return $imageid ? $core->models['images'][$imageid] : null;
+	}
+
+	/**
+	 * Finds the images associated to the records provided to the view.
+	 *
+	 * In order to avoid each record of the view to load its own image during rendering, we load
+	 * them all and update the records.
+	 *
+	 * The method is canceled if there is only 3 records because bunch loading takes 3 database
+	 * requests.
+	 *
+	 * TODO-20120713: Use an event to load images when the first `image` property is accessed.
+	 *
+	 * @param AlterResultEvent $event
+	 * @param \ICanBoogie\Modules\Contents\Provider $provider
+	 */
+	public static function on_contents_provider_alter_result(AlterResultEvent $event, \ICanBoogie\Modules\Contents\Provider $provider)
+	{
+		global $core;
+
+		$result = $event->result;
+
+		if (!is_array($result) || count($result) < 4 || !(current($result) instanceof \ICanBoogie\ActiveRecord\Content)
+		|| !$core->registry['resources_images.inject.' . $event->module->flat_id])
+		{
+			return;
+		}
+
+		$record_keys = array();
+
+		foreach ($result as $record)
+		{
+			$record_keys[] = $record->nid;
+		}
+
+		$image_keys = $core->models['system.registry/node']
+		->select('targetid, value')
+		->where(array('targetid' => $record_keys, 'name' => 'resources_images.imageid'))
+		->pairs;
+
+		$images = $core->models['images']->find($image_keys);
+
+		foreach ($result as $record)
+		{
+			$nid = $record->nid;
+
+			if (empty($image_keys[$nid]))
+			{
+				continue;
+			}
+
+			$imageid = $image_keys[$nid];
+			$record->image = $images[$imageid];
+		}
 	}
 
 	public static function on_contents_editblock_alter_children(Event $event, \ICanBoogie\Modules\Nodes\EditBlock $block)

@@ -115,6 +115,7 @@ class Views implements \ArrayAccess, \IteratorAggregate
 			(
 				'access_callback' => null,
 				'class' => null,
+				'provider' => null,
 				'title args' => array()
 			);
 
