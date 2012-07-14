@@ -481,16 +481,14 @@ class site_pages_navigation_WdMarkup extends patron_WdMarkup
 			}
 		}
 
-		$blueprint = $this->model->get_blueprint($page->siteid);
+		$blueprint = $this->model->blueprint($page->siteid);
 
 		$subset = $blueprint->subset
 		(
-			function($branch)
+			$parentid, $depth === null ? null : $depth - 1, function($branch)
 			{
 				return (!$branch->is_online || $branch->is_navigation_excluded || $branch->pattern);
-			},
-
-			$depth === null ? null : $depth - 1, $parentid
+			}
 		);
 
 		$rc = null;
@@ -563,10 +561,10 @@ class site_pages_sitemap_WdMarkup extends patron_WdMarkup
 
 		$this->model = $core->models['pages'];
 
-		$blueprint = $this->model->get_blueprint($core->site_id);
+		$blueprint = $this->model->blueprint($core->site_id);
 		$subset = $blueprint->subset
 		(
-			function($branch)
+			null, null, function($branch)
 			{
 				return ($branch->pattern || !$branch->is_online);
 			}

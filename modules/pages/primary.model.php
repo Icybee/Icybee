@@ -88,99 +88,22 @@ class Model extends \ICanBoogie\Modules\Nodes\Model
 	/**
 	 * Returns the blueprint of the pages tree.
 	 *
-	 * The blueprint return an array with three kind of information:
-	 *
-	 * - `relation`: The child/parent relation. An array where each key/value is the identifier of
-	 * a page and the idenfier of its parent, or zero `0` if the parent has no parent.
-	 *
-	 * - `children`: The parent/children relation. An array where each key/value is the identifier
-	 * of a parent and an array made of the identifiers of its children. Each key/value pair of the
-	 * children value is made of the child identifier.
-	 *
-	 * - `pages`: The blueprint of the pages. An array where each key/value pair is the identifier
-	 * of the page and the blueprint of a page. The blueprint of a page is an object with the
-	 * following properties:
-	 *
-	 *     - `nid`: The identifier of the page.
-	 *     - `parentid`: The identifier of the parent of the page.
-	 *     - `parent`: Blueprint object of the parent of the page.
-	 *     - `depth`: Depth of the page is the tree.
-	 *     - `chldren`: An array of the blueprint object of the children of the page.
-	 *
-	 * - `tree`: The blueprint of the pages nested as a tree.
-	 *
 	 * @param int $site_id Identifier of the website.
 	 *
 	 * @return array[int]object
 	 */
-	public function get_blueprint($site_id)
+	public function blueprint($site_id)
 	{
 		if (isset(self::$blueprint_cache[$site_id]))
 		{
 			return self::$blueprint_cache[$site_id];
 		}
 
-		$rows = $this->select('nid, parentid, is_online, is_navigation_excluded, pattern')
+		$query = $this->select('nid, parentid, is_online, is_navigation_excluded, pattern')
 		->where('siteid = ?', $site_id)
-		->ordered
-		->mode(\PDO::FETCH_OBJ);
+		->ordered;
 
-		$relation = array();
-		$children = array();
-		$index = array();
-
-		#
-		# In order to easily access entries, they are store by their Id in an array.
-		#
-
-		foreach ($rows as $row)
-		{
-			$row->parent = null;
-			$row->depth = null;
-			$row->children = array();
-
-			$nid = $row->nid;
-			$parent_id = $row->parentid;
-
-			$index[$nid] = $row;
-
-			$relation[$nid] = $parent_id;
-			$children[$parent_id][$nid] = $nid;
-		}
-
-		$tree = array();
-
-		foreach ($index as $nid => $page)
-		{
-			if (!$page->parentid || empty($index[$page->parentid]))
-			{
-				$tree[$nid] = $page;
-
-				continue;
-			}
-
-			$page->parent = $index[$page->parentid];
-			$page->parent->children[$nid] = $page;
-		}
-
-		$set_depth = function($index, $depth) use(&$set_depth)
-		{
-			foreach ($index as $page)
-			{
-				$page->depth = $depth;
-
-				if (!$page->children)
-				{
-					continue;
-				}
-
-				$set_depth($page->children, $depth + 1);
-			}
-		};
-
-		$set_depth($tree, 0);
-
-		return self::$blueprint_cache[$site_id] = new Blueprint($this, $relation, $children, $index, $tree);
+		return self::$blueprint_cache[$site_id] = Blueprint::from($query);
 	}
 
 	/**

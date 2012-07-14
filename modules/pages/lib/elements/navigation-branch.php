@@ -46,7 +46,7 @@ class NavigationBranchElement extends Element
 			$p = $p->parent;
 		}
 
-		$blueprint = $core->models['pages']->get_blueprint($this->page->siteid);
+		$blueprint = $core->models['pages']->blueprint($this->page->siteid);
 
 		$build_blueprint = function($parent_id, $max_depth) use (&$build_blueprint, $blueprint, $trail)
 		{

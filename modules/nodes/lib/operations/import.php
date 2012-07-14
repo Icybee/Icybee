@@ -51,18 +51,16 @@ class ImportOperation extends Operation
 			)
 		);
 
-		$save_hash = spl_object_hash($save);
-
 		#
 		# override form
 		#
 
-		Events::attach('ICanBoogie\Operation::get_form', function(Operation\GetFormEvent $event, SaveOperation $operation) use($save_hash) {
+		Events::attach('ICanBoogie\Operation::get_form', function(Operation\GetFormEvent $event, SaveOperation $operation) use($save) {
 
-			if (spl_object_hash($event->request) != $save_hash)
+			if ($event->request !== $save)
 			{
 				return;
-			} 
+			}
 
 			$event->form = new Form();
 

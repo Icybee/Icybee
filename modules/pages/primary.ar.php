@@ -405,7 +405,7 @@ class Page extends Node
 	 */
 	protected function get_children()
 	{
-		$blueprint = $this->_model->get_blueprint($this->siteid);
+		$blueprint = $this->_model->blueprint($this->siteid);
 		$pages = $blueprint['pages'];
 
 		if (!$pages[$this->nid]->children)
@@ -435,7 +435,7 @@ class Page extends Node
 	 */
 	protected function get_navigation_children()
 	{
-		$index = $this->_model->get_blueprint($this->siteid)->index;
+		$index = $this->_model->blueprint($this->siteid)->index;
 
 		if (!$index[$this->nid]->children)
 		{
@@ -469,7 +469,7 @@ class Page extends Node
 	 */
 	protected function get_has_child()
 	{
-		return $this->_model->get_blueprint($this->siteid)->has_children($this->nid);
+		return $this->_model->blueprint($this->siteid)->has_children($this->nid);
 	}
 
 	/**
@@ -479,7 +479,7 @@ class Page extends Node
 	 */
 	protected function get_children_count()
 	{
-		return $this->_model->get_blueprint($this->siteid)->children_count($this->nid);
+		return $this->_model->blueprint($this->siteid)->children_count($this->nid);
 	}
 
 	/**
