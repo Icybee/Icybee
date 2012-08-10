@@ -11,12 +11,15 @@
 
 namespace Icybee;
 
+use ICanBoogie\Modules\System\Cache\Collection\AlterEvent;
+
 use ICanBoogie\Debug;
 use ICanBoogie\Event;
 use ICanBoogie\Events;
 use ICanBoogie\Exception;
 use ICanBoogie\HTTP\Request;
 use ICanBoogie\HTTP\Response;
+use ICanBoogie\Modules\System\Cache\Collection as CacheCollection;
 use ICanBoogie\Operation;
 
 use Brickrouge\Alert;
@@ -258,7 +261,13 @@ class Hooks
 		catch (\Exception $e) { };
 	}
 
-	public static function on_alter_cache_collection(Event $event, \ICanBoogie\Modules\System\Cache\Collection $collection)
+	/**
+	 * Adds views cache to the cache collection.
+	 *
+	 * @param CacheCollection\AlterEvent $event
+	 * @param CacheCollection $collection
+	 */
+	public static function on_alter_cache_collection(CacheCollection\AlterEvent $event, CacheCollection $collection)
 	{
 		$event->collection['icybee.views'] = new \Icybee\Views\CacheManager;
 	}

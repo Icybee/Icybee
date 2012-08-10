@@ -1,15 +1,17 @@
 <?php
 
+namespace ICanBoogie\Modules\System\Cache;
+
 return array
 (
 	'autoload' => array
 	(
-		'ICanBoogie\Modules\System\Cache\BaseOperation' => $path . 'lib/base.operation.php',
-		'ICanBoogie\Modules\System\Cache\CacheInterface' => $path . 'lib/cache.interface.php',
-		'ICanBoogie\Modules\System\Cache\Collection' => $path . 'lib/collection.php',
-		'ICanBoogie\Modules\System\Cache\AssetsCache' => $path . 'lib/assets-cache.php',
-		'ICanBoogie\Modules\System\Cache\CatalogsCache' => $path . 'lib/catalogs-cache.php',
-		'ICanBoogie\Modules\System\Cache\ConfigsCache' => $path . 'lib/configs-cache.php',
-		'ICanBoogie\Modules\System\Cache\ModulesCache' => $path . 'lib/modules-cache.php'
+		__NAMESPACE__ . '\BaseOperation' => $path . 'lib/base.operation.php',
+		__NAMESPACE__ . '\CacheInterface' => $path . 'lib/cache.interface.php',
+		__NAMESPACE__ . '\Collection' => $path . 'lib/collection.php',
+		__NAMESPACE__ . '\AssetsCache' => $path . 'lib/assets-cache.php',
+		__NAMESPACE__ . '\CatalogsCache' => $path . 'lib/catalogs-cache.php',
+		__NAMESPACE__ . '\ConfigsCache' => $path . 'lib/configs-cache.php',
+		__NAMESPACE__ . '\ModulesCache' => $path . 'lib/modules-cache.php'
 	)
 );

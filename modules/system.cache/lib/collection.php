@@ -38,15 +38,7 @@ class Collection implements \IteratorAggregate, \ArrayAccess
 			'core.modules' => new ModulesCache
 		);
 
-		Event::fire
-		(
-			'alter', array
-			(
-				'collection' => &$caches
-			),
-
-			$this
-		);
+		new Collection\AlterEvent($this, array('collection' => &$caches));
 
 		$this->caches = $caches;
 	}
@@ -79,5 +71,31 @@ class Collection implements \IteratorAggregate, \ArrayAccess
 	public function offsetUnset($offset)
 	{
 		throw new Exception\OffsetNotWritable(array($offset, $this));
+	}
+}
+
+namespace ICanBoogie\Modules\System\Cache\Collection;
+
+/**
+ * Event class for the `ICanBoogie\Modules\System\Cache\Collection::alter` event.
+ */
+class AlterEvent extends \ICanBoogie\Event
+{
+	/**
+	 * Reference to the cache collection.
+	 *
+	 * @var array
+	 */
+	public $collection;
+
+	/**
+	 * The event is constructed with the type `alter`.
+	 *
+	 * @param \ICanBoogie\Modules\System\Cache\Collection $target
+	 * @param array $properties
+	 */
+	public function __construct(\ICanBoogie\Modules\System\Cache\Collection $target, array $properties)
+	{
+		parent::__construct($target, 'alter', $properties);
 	}
 }

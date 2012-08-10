@@ -15,6 +15,8 @@ use ICanBoogie\ActiveRecord;
 use ICanBoogie\ActiveRecord\Site;
 use ICanBoogie\Event;
 use ICanBoogie\FileCache;
+use ICanBoogie\Modules\System\Cache\Collection as CacheCollection;
+
 use Brickrouge\Element;
 
 class Hooks
@@ -339,10 +341,10 @@ EOT;
 	/**
 	 * Alters cache collection to add pages cache manager.
 	 *
-	 * @param Event $event
-	 * @param \ICanBoogie\Modules\System\Cache\Collection $collection
+	 * @param CacheCollection\AlterEvent $event
+	 * @param CacheCollection $collection
 	 */
-	public static function on_alter_cache_collection(Event $event, \ICanBoogie\Modules\System\Cache\Collection $collection)
+	public static function on_alter_cache_collection(CacheCollection\AlterEvent $event, CacheCollection $collection)
 	{
 		$event->collection['contents.pages'] = new CacheManager;
 	}

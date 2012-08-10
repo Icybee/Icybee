@@ -13,11 +13,12 @@ namespace ICanBoogie\Modules\Contents;
 
 use ICanBoogie;
 use ICanBoogie\Event;
+use ICanBoogie\Modules\System\Cache\Collection as CacheCollection;
 use ICanBoogie\Operation;
 
 class Hooks
 {
-	public static function on_alter_cache_collection(Event $event, \ICanBoogie\Modules\System\Cache\Collection $collection)
+	public static function on_alter_cache_collection(CacheCollection\AlterEvent $event, CacheCollection $collection)
 	{
 		$event->collection['contents.body'] = new CacheManager;
 	}
