@@ -13,3 +13,6 @@
 [submodule "modules/thumbnailer"]
 	path = modules/thumbnailer
 	url = git@github.com:Icybee/module-thumbnailer.git
+[submodule "modules/comments"]
+	path = modules/comments
+	url = git@github.com:Icybee/module-comments.git
