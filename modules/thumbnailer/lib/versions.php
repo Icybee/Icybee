@@ -41,6 +41,7 @@ class Versions implements \ArrayAccess, \IteratorAggregate
 		'b' => 'background',
 		'd' => 'default',
 		'f' => 'format',
+		'ft' => 'filter',
 		'h' => 'height',
 		'm' => 'method',
 		'ni' => 'no-interlace',
@@ -124,7 +125,7 @@ class Versions implements \ArrayAccess, \IteratorAggregate
 				continue;
 			}
 
-			$versions[$name] = self::nomalize_version(json_decode($options, true));
+			$versions[$name] = self::normalize_options(json_decode($options, true));
 		}
 
 		Event::fire('alter', array('versions' => &$versions), $this);
@@ -133,19 +134,19 @@ class Versions implements \ArrayAccess, \IteratorAggregate
 	}
 
 	/**
-	 * Normalizes the options of a thumbnail version.
+	 * Normalizes thumbnail options.
 	 *
-	 * @param array $version
+	 * @param array $options
 	 *
 	 * @return array
 	 */
-	public static function nomalize_version(array $version)
+	public static function normalize_options(array $options)
 	{
 		foreach (self::$shorthands as $shorthand => $full)
 		{
-			if (isset($version[$shorthand]))
+			if (isset($options[$shorthand]))
 			{
-				$version[$full] = $version[$shorthand];
+				$options[$full] = $options[$shorthand];
 			}
 		}
 
@@ -153,18 +154,53 @@ class Versions implements \ArrayAccess, \IteratorAggregate
 		# add defaults so that all options are defined
 		#
 
-		$version += self::$defaults;
+		$options += self::$defaults;
 
 		#
 		# The parameters are filtered and sorted, making extraneous parameters and parameters order
 		# non important.
 		#
 
-		$version = array_intersect_key($version, self::$defaults);
+		$options = array_intersect_key($options, self::$defaults);
 
-		ksort($version);
+		ksort($options);
 
-		return $version;
+		return $options;
+	}
+
+	/**
+	 * Filter thumbnail options.
+	 *
+	 * Options than match default values are removed. The options are normalized using
+	 * {@link normalize_options()} before they are filtered.
+	 *
+	 * @param array $options
+	 *
+	 * @return array The filtered thumbnail options.
+	 */
+	static public function filter_options(array $options)
+	{
+		return array_diff_assoc(self::normalize_options($options), self::$defaults);
+	}
+
+	/**
+	 * Shorten option names.
+	 *
+	 * @param array $options
+	 *
+	 * @return array
+	 */
+	static public function shorten_options(array $options)
+	{
+		$shorten_options = array();
+		$shorthands = array_flip(self::$shorthands);
+
+		foreach (self::filter_options($options) as $name => $value)
+		{
+			$shorten_options[$shorthands[$name]] = $value;
+		}
+
+		return $shorten_options;
 	}
 
 	/**

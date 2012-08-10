@@ -29,7 +29,8 @@ return array
 					'nativeid' => 'foreign',
 					'timezone' => array('varchar', 32), // widest is "America/Argentina/Buenos_Aires" with 30 characters
 					'email' => 'varchar',
-					'status' => array('integer', 'tiny')
+					'status' => array('integer', 'tiny'),
+					'modified' => 'timestamp'
 				)
 			)
 		)

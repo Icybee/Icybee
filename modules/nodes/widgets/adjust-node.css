@@ -21,6 +21,32 @@
 	text-decoration: none;
 }
 
+.widget-adjust-node .pagination ul
+{
+	list-style: none;
+	display: block;
+	text-align: center;
+	margin: 1em 0 0 0;
+	padding: 0;
+}
+
+.widget-adjust-node .pagination li {
+	display: inline;
+}
+
+.widget-adjust-node .pagination a {
+	padding: .5ex;
+}
+
+.widget-adjust-node .pagination .active {
+	opacity: .6;
+}
+
+.widget-adjust-node .pagination .disabled {
+	opacity: .3;
+}
+
+
 /*
 .widget-adjust-node .records li {
 	margin: 1px 0;

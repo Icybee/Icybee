@@ -11,9 +11,8 @@
 
 namespace ICanBoogie\Modules\Sites;
 
-use ICanBoogie\ActiveRecord\User;
-
 use ICanBoogie\ActiveRecord\Site;
+use ICanBoogie\ActiveRecord\User;
 use ICanBoogie\HTTP\Request;
 
 /**
@@ -21,28 +20,7 @@ use ICanBoogie\HTTP\Request;
  */
 class Model extends \ICanBoogie\ActiveRecord\Model
 {
-	/**
-	 * Makes sure that if defined the `path` property starts with a slash '/' but doesn't end
-	 * with one.
-	 *
-	 * @see ICanBoogie\ActiveRecord.Model::save()
-	 */
-	public function save(array $properties, $key=null, array $options=array())
-	{
-		if (isset($properties['path']))
-		{
-			$path = trim($properties['path'], '/');
-
-			if ($path)
-			{
-				$path = '/' . $path;
-			}
-
-			$properties['path'] = $path;
-		}
-
-		return parent::save($properties, $key, $options);
-	}
+	static private $cached_sites;
 
 	/**
 	 * Finds a site using a request.
@@ -57,17 +35,24 @@ class Model extends \ICanBoogie\ActiveRecord\Model
 	 *
 	 * @return Site
 	 */
-	public static function find_by_request(Request $request, User $user=null)
+	static public function find_by_request(Request $request, User $user=null)
 	{
 		global $core;
 
-		$sites = $core->vars['cached_sites'];
+		$sites = self::$cached_sites;
+
+		if ($sites === null)
+		{
+			$sites = $core->vars['cached_sites'];
+		}
 
 		if (!$sites)
 		{
+			self::$cached_sites = array();
+
 			try
 			{
-				$sites = $core->models['sites']->all;
+				self::$cached_sites = $sites = $core->models['sites']->all;
 
 				$core->vars['cached_sites'] = $sites;
 			}
@@ -198,5 +183,34 @@ class Model extends \ICanBoogie\ActiveRecord\Model
 		}
 
 		return self::$default_site;
+	}
+
+
+	/**
+	 * Makes sure that if defined the `path` property starts with a slash '/' but doesn't end
+	 * with one.
+	 *
+	 * @see ICanBoogie\ActiveRecord.Model::save()
+	 */
+	public function save(array $properties, $key=null, array $options=array())
+	{
+		if (isset($properties['path']))
+		{
+			$path = trim($properties['path'], '/');
+
+			if ($path)
+			{
+				$path = '/' . $path;
+			}
+
+			$properties['path'] = $path;
+		}
+
+		if (empty($properties['modified']))
+		{
+			$properties['modified'] = date('Y-m-d H:i:s');
+		}
+
+		return parent::save($properties, $key, $options);
 	}
 }

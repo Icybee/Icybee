@@ -70,3 +70,11 @@ button+.btn.reset-default-value,input+.btn.reset-default-value,div.input-append+
 textarea+.btn.reset-default-value,div::not(.input-append)+.btn.reset-default-value{margin-top:.5em;}
 .form-primary .combo{background-color:white;padding:1em;border:1px solid #ccc;border-radius:3px;}
 .form-primary .combo input,.form-primary .combo textarea,.form-primary .combo select,.form-primary .combo .like-input{background-color:#F6F6F6;}
+
+.actionbar.fixed {
+	border-bottom-color: black;
+	background: black;
+	background: -moz-linear-gradient(top, rgba(0,0,0,.8), #000);
+	background: -webkit-linear-gradient(top, rgba(0,0,0,.8), #000);
+	background: linear-gradient(top, rgba(0,0,0,.8), #000);
+}

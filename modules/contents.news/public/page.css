@@ -27,28 +27,24 @@
 
 /* LIST */
 
-#view-contents-news-list h2 a,
-#view-contents-news-category h2 a
+.view--contents-news--list h2 a
 {
 	text-decoration: none;
 }
 
-#view-contents-news-list ol,
-#view-contents-news-category ol
+.view--contents-news--list ol
 {
 	margin: 0;
 	padding: 0;
 	list-style: none;
 }
 
-#view-contents-news-list .contents,
-#view-contents-news-category .contents
+.view--contents-news--list .contents
 {
 	overflow: hidden;
 }
 
-#view-contents-news-list img.thumbnail,
-#view-contents-news-category img.thumbnail
+.view--contents-news--list img.thumbnail
 {
 	float: left;
 	margin-right: 2ex;

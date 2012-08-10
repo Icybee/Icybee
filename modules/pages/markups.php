@@ -115,7 +115,16 @@ class site_pages_WdMarkups extends patron_markups_WdHooks
 			)
 		);
 
-		$patron->context['self']['element'] = $element;
+		if (version_compare(PHP_VERSION, '5.3.4', '>='))
+		{
+			$patron->context['self']['element'] = $element;
+		}
+		else // COMPAT
+		{
+			$self = $patron->context['self'];
+			$self['element'] = $element;
+			$patron->context['self'] = $self;
+		}
 
 		$rc = $template ? $patron($template, $rendered) : $rendered;
 
@@ -481,11 +490,13 @@ class site_pages_navigation_WdMarkup extends patron_WdMarkup
 			}
 		}
 
+		$min_child = $args['min-child'];
+
 		$blueprint = $this->model->blueprint($page->siteid);
 
 		$subset = $blueprint->subset
 		(
-			$parentid, $depth === null ? null : $depth - 1, function($branch)
+			$parentid, $depth === null ? null : $depth - 1, function($branch) use($min_child)
 			{
 				return (!$branch->is_online || $branch->is_navigation_excluded || $branch->pattern);
 			}
@@ -504,11 +515,6 @@ class site_pages_navigation_WdMarkup extends patron_WdMarkup
 				{
 					$record = $branch->record;
 					$class = $record->css_class('-constructor -slug');
-
-					if ($branch->children)
-					{
-						$class .= ' has-children';
-					}
 
 					$rc .=  $class ? '<li class="' . $class . '">' : '<li>';
 					$rc .= '<a href="' . $record->url . '">' . $record->label . '</a>';
@@ -541,15 +547,6 @@ class site_pages_navigation_WdMarkup extends patron_WdMarkup
 		);
 
 		return $rc;
-	}
-
-	public static function navigation_leaf(array $args, Patron\Engine $patron, $template)
-	{
-		global $core;
-
-		$page = $core->request->context->page;
-
-		return (string) new \ICanBoogie\Modules\Pages\NavigationBranchElement($page);
 	}
 }
 

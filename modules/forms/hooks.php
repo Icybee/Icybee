@@ -199,6 +199,8 @@ class Hooks
 					$core->session->modules['forms']['rc'][$record->nid] = $rc;
 				}
 
+				$message = null;
+
 				if ($record->is_notify)
 				{
 					$patron = new \WdPatron();
@@ -212,6 +214,8 @@ class Hooks
 					{
 						$value = $patron($value, $bind);
 					}
+
+					$message = $mailer_tags[Mailer::T_MESSAGE];
 
 					if (!$mailer)
 					{
@@ -227,15 +231,81 @@ class Hooks
 				(
 					$record, array
 					(
-						'rc' => $rc,
-						'bind' => $bind,
+						'rc' => &$rc,
+						'bind' => &$bind,
 						'event' => $event,
 						'request' => $event->request,
-						'operation' => $operation
+						'operation' => $operation,
+						'message' => &$message,
+						'mailer' => &$mailer,
+						'mailer_tags' => &$mailer_tags
 					)
 				);
 			}
 		);
+	}
+}
+
+class BeforeAlterNotify extends Event
+{
+	/**
+	 * Reference to the operation result.
+	 *
+	 * @var mixed
+	 */
+	public $rc;
+
+	/**
+	 * Reference to the thisArg of the template.
+	 *
+	 * @var mixed
+	 */
+	public $bind;
+
+	/**
+	 * Reference to the message template.
+	 *
+	 * @var string
+	 */
+	public $template;
+
+	/**
+	 * Reference to the mailer variable.
+	 *
+	 * One can provide a mailer to use instead of creating one using `mailer_tags`.
+	 *
+	 * @var Mailer
+	 */
+	public $mailer;
+
+	/**
+	 * Reference to the tags used to create the mailer.
+	 *
+	 * @var array
+	 */
+	public $mailer_tags;
+
+	/**
+	 * The {@link ProcessEvent} event.
+	 */
+	public $event;
+
+	/**
+	 * The operation.
+	 *
+	 * @var Operation
+	 */
+	public $operation;
+
+	/**
+	 * The event is constructed with the type `alter_notify:before`.
+	 *
+	 * @param \ICanBoogie\ActiveRecord\Form $target
+	 * @param array $properties
+	 */
+	public function __construct($target, array $properties)
+	{
+		parent::__construct($target, 'alter_notify:before', $properties);
 	}
 }
 
@@ -278,6 +348,27 @@ class SentEvent extends Event
 	 * @var \ICanBoogie\Operation
 	 */
 	public $operation;
+
+	/**
+	 * Reference to the message sent.
+	 *
+	 * @var string
+	 */
+	public $message;
+
+	/**
+	 * The mailer object.
+	 *
+	 * @var Mailer
+	 */
+	public $mailer;
+
+	/**
+	 * Reference to the mailer tags.
+	 *
+	 * @var array
+	 */
+	public $mailer_tags;
 
 	/**
 	 * The event is constructed with the type `sent`.

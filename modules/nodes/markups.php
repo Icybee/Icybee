@@ -262,7 +262,18 @@ class system_nodes_list_WdMarkup extends patron_WdMarkup
 			return;
 		}
 
-		$patron->context['self']['range'] = $range;
+		if (version_compare(PHP_VERSION, '5.3.4', '>='))
+		{
+			$patron->context['self']['range'] = $range;
+		}
+		else // COMPAT
+		{
+			$self = $patron->context['self'];
+			$self['range'] = $range;
+			$patron->context['self'] = $self;
+		}
+
+// 		$patron->context['self']['range'] = $range;
 
 		return $this->publish($patron, $template, $entries);
 	}

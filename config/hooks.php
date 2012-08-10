@@ -35,6 +35,15 @@ return array
 		'alerts' => array
 		(
 			'Icybee\Hooks::markup_alerts', array()
+		),
+
+		'render' => array
+		(
+			'Icybee\Hooks::markup_render', array
+			(
+				'select' => array('default' => 'this', 'expression' => true),
+				'property' => array()
+			)
 		)
 	)
 );

@@ -63,7 +63,7 @@ class GetOperation extends Operation
 			unset($params['version']);
 		}
 
-		$params = Versions::nomalize_version($params);
+		$params = Versions::normalize_options($params);
 
 		if (empty($params['background']))
 		{

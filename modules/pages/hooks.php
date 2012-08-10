@@ -294,7 +294,7 @@ EOT;
 	 *
 	 * @return string
 	 */
-	static public function markup_breadcrumb(array $args, \WdPatron $patron, $template)
+	public static function markup_breadcrumb(array $args, \WdPatron $patron, $template)
 	{
 		global $core;
 
@@ -307,6 +307,15 @@ EOT;
 				BreadcrumbElement::PAGE => $page
 			)
 		);
+	}
+
+	public static function markup_navigation_leaf(array $args, $patron, $template)
+	{
+		global $core;
+
+		$page = $core->request->context->page;
+
+		return (string) new NavigationBranchElement($page);
 	}
 
 	/**

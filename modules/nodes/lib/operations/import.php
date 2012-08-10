@@ -47,8 +47,10 @@ class ImportOperation extends Operation
 		(
 			array
 			(
-				'path' => "/api/{$this->module}/save"
-			)
+				'path' => Operation::encode("{$this->module}/save")
+			),
+
+			array($_SERVER)
 		);
 
 		#
@@ -66,6 +68,7 @@ class ImportOperation extends Operation
 
 		});
 
+		/*
 		$siteid = $core->site_id;
 		$keys = $core->models['nodes']->select('nid')->find_by_siteid($siteid)->all(\PDO::FETCH_COLUMN);
 
@@ -75,14 +78,24 @@ class ImportOperation extends Operation
 			$core->models['pages']->where(array('nid' => $keys))->delete();
 			$core->models['pages/contents']->where(array('pageid' => $keys))->delete();
 		}
+		*/
 
 		$this->import($data, $save);
+
+		$this->response->success = "Records were successfuly imported.";
+
+		return true;
 	}
 
 	protected function preparse_data()
 	{
-		$data = file_get_contents(\ICanBoogie\DOCUMENT_ROOT . 'export.json');
-		$data = json_decode($data);
+		$json = file_get_contents(\ICanBoogie\DOCUMENT_ROOT . 'export.json');
+		$data = json_decode($json);
+
+		if (!$data)
+		{
+			throw new \ICanBoogie\Exception("Failed to decode JSON: !json", array('json' => $json));
+		}
 
 		return (array) $data->rc;
 	}
@@ -95,10 +108,17 @@ class ImportOperation extends Operation
 		$siteid = $site->siteid;
 		$language = $site->language;
 
-		foreach ($data as $node)
+		$is_translating = true;
+
+		foreach ($data as $nid => $node)
 		{
 			$node->siteid = $siteid;
-			$node->nativeid = 0;
+
+			if ($is_translating)
+			{
+				$node->nativeid = $nid;
+			}
+
 			$node->language = $language;
 		}
 

@@ -94,6 +94,8 @@ class Thumbnail extends \ICanBoogie\Object
 			$this->options = $additionnal_options + $this->options;
 		}
 
+		$this->options = Versions::filter_options($this->options);
+
 		$this->src = $src;
 	}
 
@@ -126,7 +128,7 @@ class Thumbnail extends \ICanBoogie\Object
 			return;
 		}
 
-		return json_decode($version, true);
+		return Versions::filter_options(json_decode($version, true));
 	}
 
 	/**
@@ -138,16 +140,16 @@ class Thumbnail extends \ICanBoogie\Object
 	 */
 	protected function volatile_get_w()
 	{
-		if (!empty($this->options['w']))
+		if (!empty($this->options['width']))
 		{
-			return $this->options['w'];
+			return $this->options['width'];
 		}
 
 		$version = $this->version;
 
-		if (!empty($version['w']))
+		if (!empty($version['width']))
 		{
-			return $version['w'];
+			return $version['width'];
 		}
 	}
 
@@ -160,16 +162,16 @@ class Thumbnail extends \ICanBoogie\Object
 	 */
 	protected function volatile_get_h()
 	{
-		if (!empty($this->options['h']))
+		if (!empty($this->options['height']))
 		{
-			return $this->options['h'];
+			return $this->options['height'];
 		}
 
 		$version = $this->version;
 
-		if (!empty($version['h']))
+		if (!empty($version['height']))
 		{
-			return $version['h'];
+			return $version['height'];
 		}
 	}
 
@@ -188,10 +190,6 @@ class Thumbnail extends \ICanBoogie\Object
 		{
 			return $this->options['method'];
 		}
-		else if (!empty($this->options['m']))
-		{
-			return $this->options['m'];
-		}
 
 		$version = $this->version;
 
@@ -201,12 +199,17 @@ class Thumbnail extends \ICanBoogie\Object
 		}
 	}
 
+	protected function volatile_set_method($method)
+	{
+		$this->options['method'] = $method;
+	}
+
 	/**
 	 * Returns the thumbnail URL.
 	 *
 	 * @return string The thumbnail URL.
 	 */
-	public function get_url()
+	public function volatile_get_url()
 	{
 		global $core;
 
@@ -215,6 +218,10 @@ class Thumbnail extends \ICanBoogie\Object
 		$version_name = $this->version_name;
 		$url = '/api/';
 
+		$w = $this->w;
+		$h = $this->h;
+		$method = $this->method;
+
 		if (is_string($src))
 		{
 			$url .= 'thumbnail';
@@ -222,39 +229,34 @@ class Thumbnail extends \ICanBoogie\Object
 			$options['src'] = $src;
 			$options['version'] = $version_name;
 
-			if (isset($options['w']) || isset($options['h']))
+			if ($w || $h)
 			{
 				$url .= '/';
 
-				if (isset($options['w']) && isset($options['h']))
+				if ($w && $h)
 				{
-					$url .= $options['w'] . 'x' . $options['h'];
-
-					unset($options['w']);
-					unset($options['h']);
+					$url .= $w . 'x' . $h;
 				}
-				else if (isset($options['w']))
+				else if ($w)
 				{
-					$url .= $options['w'];
-
-					unset($options['w']);
+					$url .= $w;
+					$method = 'fixed-width';
 				}
-				else if (isset($options['h']))
+				else if ($h)
 				{
-					$url .= $options['h'];
-
-					unset($options['h']);
+					$url .= 'x' . $h;
+					$method = 'fixed-height';
 				}
 
-				if (isset($options['m']))
+				unset($options['width']);
+				unset($options['height']);
+
+				if ($method)
 				{
-					$url .= '/' . $options['m'];
+					$url .= '/' . $method;
 
-					unset($options['m']);
+					unset($options['method']);
 				}
-
-				unset($options['w']);
-				unset($options['h']);
 			}
 		}
 		else
@@ -267,33 +269,33 @@ class Thumbnail extends \ICanBoogie\Object
 			}
 			else
 			{
-				if (isset($options['w']) || isset($options['h']))
+				if ($w || $h)
 				{
-					if (isset($options['w']) && isset($options['h']))
-					{
-						$url .= '/' . $options['w'] . 'x' . $options['h'];
+					$url .= '/';
 
-						unset($options['w']);
-						unset($options['h']);
+					if ($w && $h)
+					{
+						$url .= $w . 'x' . $h;
 					}
-					else if (isset($options['w']))
+					else if ($w)
 					{
-						$url .= '/' . $options['w'];
-
-						unset($options['w']);
+						$url .= $w;
+						$method = 'fixed-width';
 					}
-					else if (isset($options['h']))
+					else if ($h)
 					{
-						$url .= '/x' . $options['h'];
-
-						unset($options['h']);
+						$url .= 'x' . $h;
+						$method = 'fixed-height';
 					}
 
-					if (isset($options['m']))
-					{
-						$url .= '/' . $options['m'];
+					unset($options['width']);
+					unset($options['height']);
 
-						unset($options['m']);
+					if ($method)
+					{
+						$url .= '/' . $method;
+
+						unset($options['method']);
 					}
 				}
 				else
@@ -305,13 +307,20 @@ class Thumbnail extends \ICanBoogie\Object
 
 		if ($options)
 		{
-			$url .= '?'. http_build_query($options);
+			$url .= '?'. http_build_query(Versions::shorten_options($options));
 		}
 
 		return $url;
 	}
 
-	public function to_element(array $tags=array())
+	/**
+	 * Convert the thumbnail into a IMG element.
+	 *
+	 * @param array $attributes
+	 *
+	 * @return \Brickrouge\Element
+	 */
+	public function to_element(array $attributes=array())
 	{
 		$path = $this->src;
 		$src = $this->url;
@@ -333,7 +342,7 @@ class Thumbnail extends \ICanBoogie\Object
 
 		return new Element
 		(
-			'img', $tags + array
+			'img', $attributes + array
 			(
 				'src' => $src,
 				'alt' => $alt,
@@ -345,9 +354,9 @@ class Thumbnail extends \ICanBoogie\Object
 	}
 
 	/**
-	 * Return a IMG marker that can be inserted as is in the document.
+	 * Return a IMG element that can be inserted as is in the document.
 	 *
-	 * The `width` and `height` attribute of the marker are defined whenever possible. The `alt`
+	 * The `width` and `height` attribute of the element are defined whenever possible. The `alt`
 	 * attribute is also defined if the image src is an Image active record.
 	 */
 	public function __toString()

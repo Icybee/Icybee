@@ -13,9 +13,15 @@ namespace ICanBoogie\ActiveRecord;
 
 use ICanBoogie\Route;
 
-
 /**
- * @property $parent Page Parent page of the page.
+ * A page.
+ *
+ * @property Page $parent Parent page of the page.
+ * @property-read bool $is_accessible Whether the page is accessible or not.
+ * @property-read bool $is_active Wheter the page is active or not.
+ * @property-read bool $is_home Whether the page is the home page of the site or not.
+ * @property-read bool $is_trail Whether the page is in the navigation trail or not.
+ * @property-read array[]Page $navigation_children Navigation children of the page.
  */
 class Page extends Node
 {
@@ -27,12 +33,53 @@ class Page extends Node
 	const LABEL = 'label';
 	const IS_NAVIGATION_EXCLUDED = 'is_navigation_excluded';
 
+	/**
+	 * The identifier of the parent page.
+	 *
+	 * @var int
+	 */
 	public $parentid;
+
+	/**
+	 * The identifier of the page the page is redirected to.
+	 *
+	 * @var int
+	 */
 	public $locationid;
+
+	/**
+	 * The pattern used to create the URL of the nodes displayed by the page.
+	 *
+	 * @var string
+	 */
 	public $pattern;
+
+	/**
+	 * Weight of the page in the hierarchy.
+	 *
+	 * @var int
+	 */
 	public $weight;
+
+	/**
+	 * Template used to render the page.
+	 *
+	 * @var string
+	 */
 	public $template;
+
+	/**
+	 * The text to use instead of the title when it is used in the navigation of the breadcrumb.
+	 *
+	 * @var string
+	 */
 	public $label;
+
+	/**
+	 * Whether the page is excluded from the navigation.
+	 *
+	 * @var bool
+	 */
 	public $is_navigation_excluded;
 
 	/**
@@ -55,42 +102,6 @@ class Page extends Node
 	 */
 	public $cachable = true;
 
-	/**
-	 * The site the page belongs too.
-	 *
-	 * @var \ICanBoogie\ActiveRecord\Site
-	 */
-	public $site;
-
-	/**
-	 * Whether the page is accessible or not.
-	 *
-	 * @var bool
-	 */
-	public $is_accessible;
-
-	/**
-	 * Wheter the page is active or not.
-	 *
-	 * @var bool
-	 */
-
-	public $is_active;
-
-	/**
-	 * Whether the page is the home page of the site or not.
-	 *
-	 * @var bool
-	 */
-	public $is_home;
-
-	/**
-	 * Whether the page is in the navigation trail or not.
-	 *
-	 * @var bool
-	 */
-	public $is_trail;
-
 	public function __construct($model='pages')
 	{
 		if (empty($this->language))
@@ -107,12 +118,6 @@ class Page extends Node
 		{
 			unset($this->template);
 		}
-
-		unset($this->site);
-		unset($this->is_accessible);
-		unset($this->is_active);
-		unset($this->is_home);
-		unset($this->is_trail);
 
 		parent::__construct($model);
 	}
@@ -139,6 +144,12 @@ class Page extends Node
 		return $keys;
 	}
 
+	/**
+	 * If the language of the page is inaccessible the language of the site it belongs to is
+	 * used instead.
+	 *
+	 * @return string
+	 */
 	protected function volatile_get_language()
 	{
 		return $this->siteid ? $this->site->language : null;
@@ -319,7 +330,7 @@ class Page extends Node
 	 *
 	 * @return bool true if the page record is the home page, false otherwise.
 	 */
-	protected function get_is_home()
+	protected function volatile_get_is_home()
 	{
 		return (!$this->parentid && $this->is_online && $this->weight == 0);
 	}
@@ -331,7 +342,7 @@ class Page extends Node
 	 *
 	 * @return bool true if the page record is the active page, false otherwise.
 	 */
-	protected function get_is_active()
+	protected function volatile_get_is_active()
 	{
 		global $core;
 
@@ -437,7 +448,7 @@ class Page extends Node
 	{
 		$index = $this->_model->blueprint($this->siteid)->index;
 
-		if (!$index[$this->nid]->children)
+		if (empty($index[$this->nid]) || !$index[$this->nid]->children)
 		{
 			return array();
 		}
@@ -488,7 +499,7 @@ class Page extends Node
 	 * This function is only called if no label is defined, in which case the title of the page is
 	 * returned instead.
 	 */
-	protected function get_label()
+	protected function volatile_get_label()
 	{
 		return $this->title;
 	}
@@ -496,7 +507,7 @@ class Page extends Node
 	/**
 	 * Returns the depth level of this page in the navigation tree.
 	 */
-	protected function get_depth()
+	protected function volatile_get_depth()
 	{
 		return $this->parent ? $this->parent->depth + 1 : 0;
 	}
@@ -599,7 +610,8 @@ class Page extends Node
 				'home' => ($this->home->nid == $this->nid),
 				'active' => $this->is_active,
 				'trail' => (!$this->is_active && $this->is_trail),
-				'template' => 'template-' . preg_replace('#\.(html|php)$#', '', $this->template)
+				'template' => 'template-' . preg_replace('#\.(html|php)$#', '', $this->template),
+				'has-children' => count($this->navigation_children) != 0
 			)
 		);
 

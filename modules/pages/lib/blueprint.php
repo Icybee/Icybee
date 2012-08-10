@@ -193,11 +193,6 @@ class Blueprint
 
 			foreach ($branch as $nid => $node)
 			{
-				if ($filter && $filter($node))
-				{
-					continue;
-				}
-
 				$node_children = $node->children;
 				$node = clone $node;
 				$node->children = array();
@@ -205,6 +200,11 @@ class Blueprint
 				if ($node_children && ($depth === null || $node->depth < $depth))
 				{
 					$node->children = $iterator($node_children);
+				}
+
+				if ($filter && $filter($node))
+				{
+					continue;
 				}
 
 				$parentid = $node->parentid;

@@ -26,8 +26,8 @@ class ManageBlock extends \WdManager
 			$module, $tags + array
 			(
 				self::T_KEY => 'siteid',
-				self::T_ORDER_BY => 'title',
-				self::T_COLUMNS_ORDER => array('title', 'url', 'language', 'timezone', 'status')
+				self::T_ORDER_BY => array('modified', 'desc'),
+				self::T_COLUMNS_ORDER => array('title', 'url', 'language', 'timezone', 'modified', 'status')
 			)
 		);
 	}
@@ -62,6 +62,13 @@ class ManageBlock extends \WdManager
 			'timezone' => array
 			(
 				'discreet' => true
+			),
+
+			'modified' => array
+			(
+				'class' => 'date',
+				self::COLUMN_HOOK => array($this, 'render_cell_datetime'),
+				'default_order' => -1
 			)
 		);
 	}

@@ -1,24 +1,24 @@
 <?php
 
-namespace ICanBoogie\Modules\Pages\Hooks;
+$hooks = __NAMESPACE__ . 'ICanBoogie\Modules\Pages\Hooks';
 
 return array
 (
 	'events' => array
 	(
-		'resources.files.path.change' => __NAMESPACE__ . '::resources_files_path_change',
+		'resources.files.path.change' => $hooks . '::resources_files_path_change',
 
-		'Brickrouge\Document::render_title:before' => __NAMESPACE__ . '::on_document_render_title',
+		'Brickrouge\Document::render_title:before' => $hooks . '::on_document_render_title',
 
-		'ICanBoogie\ActiveRecord\Page::urlchange' => __NAMESPACE__ . '::on_urlchange',
+		'ICanBoogie\ActiveRecord\Page::urlchange' => $hooks . '::on_urlchange',
 
-// 		'Icybee\Pagemaker::render:before' => __NAMESPACE__ . '::before_icybee_render', TODO-20120313: we need to use another event
+// 		'Icybee\Pagemaker::render:before' => $hooks . '::before_icybee_render', TODO-20120313: we need to use another event
 
-		'ICanBoogie\SaveOperation::process' => __NAMESPACE__ . '::invalidate_cache',
-		'ICanBoogie\DeleteOperation::process' => __NAMESPACE__ . '::invalidate_cache',
-		'ICanBoogie\Modules\Nodes\OnlineOperation::process' => __NAMESPACE__ . '::invalidate_cache',
-		'ICanBoogie\Modules\Nodes\OfflineOperation::process' => __NAMESPACE__ . '::invalidate_cache',
-		'ICanBoogie\Modules\System\Cache\Collection::alter' => __NAMESPACE__ . '::on_alter_cache_collection'
+		'ICanBoogie\SaveOperation::process' => $hooks . '::invalidate_cache',
+		'ICanBoogie\DeleteOperation::process' => $hooks . '::invalidate_cache',
+		'ICanBoogie\Modules\Nodes\OnlineOperation::process' => $hooks . '::invalidate_cache',
+		'ICanBoogie\Modules\Nodes\OfflineOperation::process' => $hooks . '::invalidate_cache',
+		'ICanBoogie\Modules\System\Cache\Collection::alter' => $hooks . '::on_alter_cache_collection'
 	),
 
 	'prototypes' => array
@@ -27,9 +27,9 @@ return array
 		'ICanBoogie\ActiveRecord\Node::absolute_url' => 'site_pages_view_WdHooks::absolute_url',
 		'ICanBoogie\ActiveRecord\Node::get_url' => 'site_pages_view_WdHooks::get_url',
 		'ICanBoogie\ActiveRecord\Node::get_absolute_url' => 'site_pages_view_WdHooks::get_absolute_url',
-		'ICanBoogie\ActiveRecord\Site::get_home' => __NAMESPACE__ . '::get_home',
+		'ICanBoogie\ActiveRecord\Site::get_home' => $hooks . '::get_home',
 
-		'ICanBoogie\Core::volatile_get_page' => __NAMESPACE__ . '::core__volatile_get_page',
+		'ICanBoogie\Core::volatile_get_page' => $hooks . '::core__volatile_get_page',
 
 		/*
 		 * views
@@ -55,7 +55,7 @@ return array
 
 		'page:translations' => array
 		(
-			__NAMESPACE__ . '::markup_page_translations', array
+			$hooks . '::markup_page_translations', array
 			(
 				'select' => array('expression' => true, 'required' => true, 'default' => '$page')
 			)
@@ -92,17 +92,19 @@ return array
 
 		'navigation:leaf' => array
 		(
-			'site_pages_navigation_WdMarkup::navigation_leaf', array
+			$hooks . '::markup_navigation_leaf', array
 			(
+				/* FIXME-20120715: not implemented
 				'level' => 1,
-				'depth' => true,
-				'title-link' => true
+				'depth' => null,
+				'title-link' => null
+				*/
 			)
 		),
 
 		'breadcrumb' => array
 		(
-			__NAMESPACE__ . '::markup_breadcrumb', array
+			$hooks . '::markup_breadcrumb', array
 			(
 				'page' => array('expression' => true, 'required' => true, 'default' => 'this')
 			)
@@ -124,7 +126,7 @@ return array
 
 		'call-view' => array
 		(
-			__NAMESPACE__ . '::markup_call_view', array
+			$hooks . '::markup_call_view', array
 			(
 				'name' => array('required' => true)
 			)
@@ -144,7 +146,7 @@ return array
 
 		'page:region' => array
 		(
-			__NAMESPACE__ . '::markup_page_region', array
+			$hooks . '::markup_page_region', array
 			(
 				'id' => array('required' => true)
 			)
@@ -152,7 +154,7 @@ return array
 
 		'page:title' => array
 		(
-			__NAMESPACE__ . '::markup_page_title', array()
+			$hooks . '::markup_page_title', array()
 		)
 	)
 );

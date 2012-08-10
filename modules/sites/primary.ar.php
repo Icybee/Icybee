@@ -28,6 +28,20 @@ use ICanBoogie\Debug;
  */
 class Site extends ActiveRecord
 {
+	const SITEID = 'siteid';
+	const SUBDOMAIN = 'subdomain';
+	const DOMAIN = 'domain';
+	const PATH = 'path';
+	const TLD = 'tld';
+	const TITLE = 'title';
+	const ADMIN_TITLE = 'admin_title';
+	const MODEL = 'model';
+	const LANGUAGE = 'language';
+	const TIMEZONE = 'tmezone';
+	const NATIVEID = 'nativeid';
+	const STATUS = 'status';
+	const MODIFIED = 'modified';
+
 	const BASE = '/protected/';
 
 	const STATUS_OFFLINE = 0;
@@ -47,6 +61,7 @@ class Site extends ActiveRecord
 	public $timezone;
 	public $nativeid;
 	public $status;
+	public $modified;
 
 	public function __construct($model='sites')
 	{

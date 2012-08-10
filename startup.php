@@ -16,7 +16,7 @@ namespace Icybee;
  *
  * @var string
  */
-const VERSION = '1.0-dev (2012-06-23)';
+const VERSION = '1.0-dev (2012-08-10)';
 
 /**
  * Root path for the Icybee package.
@@ -154,9 +154,19 @@ Events::attach
 
 					if ($site)
 					{
-						$response->location = $site->url . $path;
+						$request_url = rtrim($core->site->url . $request->path, '/') . '/';
+						$location = $site->url . $path;
 
-						return $response;
+						#
+						# we don't redirect if the redirect location is the same as the request URL.
+						#
+
+						if ($request_url != $location)
+						{
+							$response->location = $site->url . $path;
+
+							return $response;
+						}
 					}
 				}
 				catch (\Exception $e) { }

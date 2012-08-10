@@ -11,6 +11,7 @@
 
 namespace ICanBoogie\ActiveRecord;
 
+use ICanBoogie\Debug;
 use ICanBoogie\Event;
 use ICanBoogie\Exception;
 use ICanBoogie\Operation;
@@ -30,10 +31,36 @@ class Form extends Node
 	const COMPLETE = 'complete';
 	const PAGEID = 'pageid';
 
+	const FORM_RECORD_TAG = '#form-record';
+
 	public $modelid;
+
+	/**
+	 * The optional message that appears before the form.
+	 *
+	 * @var string
+	 */
 	public $before;
+
+	/**
+	 * The optional message that appears after the formm.
+	 *
+	 * @var string
+	 */
 	public $after;
+
+	/**
+	 * The message that appears instead of the form, when the form was successfuly submitted.
+	 *
+	 * @var string
+	 */
 	public $complete;
+
+	/**
+	 * `true` if the notify options are enabled.
+	 *
+	 * @var bool
+	 */
 	public $is_notify;
 	public $notify_destination;
 	public $notify_from;
@@ -76,6 +103,11 @@ class Form extends Node
 		}
 	}
 
+	/**
+	 * Returns the {@link Brickrouge\Form} associated with the active record.
+	 *
+	 * @return Brickrouge\Form
+	 */
 	protected function get_form()
 	{
 		$class = $this->model['class'];
@@ -101,6 +133,8 @@ class Form extends Node
 				),
 
 				Brickrouge\Form::VALUES => $_POST + $_GET,
+
+				self::FORM_RECORD_TAG => $this,
 
 				'id' => $this->slug
 			)
@@ -203,7 +237,9 @@ EOT
 		}
 		catch (\Exception $e)
 		{
-			return \ICanBoogie\Debug::format_alert($e);
+			Debug::report($e);
+
+			return Debug::format_alert($e);
 		}
 	}
 }

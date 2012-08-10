@@ -131,8 +131,7 @@ class Core extends \ICanBoogie\Core
 			(
 				Document::resolve_url(\Brickrouge\ASSETS . 'brickrouge.css'),
 				Document::resolve_url(ASSETS . 'admin.css'),
-				Document::resolve_url(ASSETS . 'actionbar.css'),
-				Document::resolve_url(ASSETS . 'alerts.css')
+				Document::resolve_url(ASSETS . 'admin-more.css')
 			);
 
 			$formated_exception = require(__DIR__ . '/exception.tpl.php');

@@ -201,7 +201,8 @@ class Node extends ActiveRecord
 	{
 		global $core;
 
-		$native_language = $this->siteid ? $this->site->native->language : I18n::$native;
+		//$native_language = $this->siteid ? $this->site->native->language : I18n::$native;
+		$native_language = $this->siteid ? $this->site->native->language : $core->language; // FIXME-20120720
 
 		if (!self::$translations_keys)
 		{

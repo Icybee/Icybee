@@ -82,9 +82,9 @@ Brickrouge.Widget.PopNode = new Class
 		this.popover.hide()
 	},
 
-	change: function()
+	change: function(ev)
 	{
-		console.log('change!')
+		this.setValue(ev.target.get('data-nid'))
 	},
 
 	cancel: function()

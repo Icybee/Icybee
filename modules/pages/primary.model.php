@@ -49,20 +49,6 @@ class Model extends \ICanBoogie\Modules\Nodes\Model
 	 */
 	public function delete($key)
 	{
-		$children_count = $this->find_by_parentid($key)->count;
-
-		if ($children_count)
-		{
-			throw new Exception('Page record cannot be delete because it has :count children', array(':count' => $children_count));
-		}
-
-		$locations_count = $this->find_by_locationid($key)->count;
-
-		if ($locations_count)
-		{
-			throw new Exception('Page record cannot be delete because it is used in :count redirections', array(':count' => $locations_count));
-		}
-
 		$site_id = $this->select('siteid')->find_by_nid($key)->rc;
 
 		if ($site_id)

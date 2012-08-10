@@ -10,6 +10,7 @@
  */
 
 use ICanBoogie\Modules;
+use ICanBoogie\Modules\Thumbnailer\Thumbnail;
 use ICanBoogie\Operation;
 
 use Brickrouge\Element;
@@ -118,22 +119,42 @@ class moo_WdEditorElement extends WdEditorElement
 				preg_match_all('#([\w\-]+)\s*=\s*\"([^"]+)#', $match[0], $attributes);
 
 				$attributes = array_combine($attributes[1], $attributes[2]);
-				$attributes = array_map(function($v) { return html_entity_decode($v, ENT_COMPAT, ICanBoogie\CHARSET); }, $attributes);
+				$attributes = array_map(function($v) { return html_entity_decode($v, ENT_COMPAT, ICanBoogie\CHARSET); }, $attributes) + array
+				(
+					'width' => null,
+					'height' => null,
+					'data-nid' => null
+				);
 
-				if (isset($attributes['width']) && isset($attributes['height']) && isset($attributes['data-nid']))
+				$w = $attributes['width'];
+				$h = $attributes['height'];
+				$nid = $attributes['data-nid'];
+
+				if ($w && $h && $nid)
 				{
-					$attributes['src'] = Operation::encode
-					(
-						'images/' . $attributes['data-nid'] . '/' . $attributes['width'] . 'x' . $attributes['height']
-					);
+					$attributes['src'] = Operation::encode('images/' . $nid . '/' . $w . 'x' . $h);
+				}
+				else if (($w || $h) && preg_match('#^/repository/files/image/(\d+)#', $attributes['src'], $matches))
+				{
+					$nid = $matches[1];
+
+					$options = $attributes;
+
+					unset($options['src']);
+
+					$thumbnail = new Thumbnail($core->models['images'][$nid], $options);
+
+// 					var_dump($thumbnail->url, $thumbnail);
+
+					$attributes['src'] = $thumbnail->url;
 				}
 
 				$path = null;
 
-				if (isset($attributes['data-lightbox']) && isset($attributes['data-nid']))
+				if (isset($attributes['data-lightbox']) && $nid)
 				{
 					$attributes['src'] = preg_replace('#\&amp;lightbox=true#', '', $attributes['src']);
-					$path = $core->models['images']->select('path')->find_by_nid($attributes['data-nid'])->rc;
+					$path = $core->models['images']->select('path')->find_by_nid($nid)->rc;
 				}
 
 				unset($attributes['data-nid']);
@@ -143,7 +164,7 @@ class moo_WdEditorElement extends WdEditorElement
 
 				if ($path)
 				{
-					$rc = '<a href="' . wd_entities($path) . '" rel="lightbox[]">' . $rc . '</a>';
+					$rc = '<a href="' . \ICanBoogie\escape($path) . '" rel="lightbox[]">' . $rc . '</a>';
 				}
 
 				return $rc;

@@ -34,7 +34,7 @@ class Contact extends Form
 							Element::TYPE_RADIO_GROUP, array
 							(
 								Form::LABEL => 'Salutation',
-								Element::OPTIONS => array('salutation.misses', 'salutation.mister'),
+								Element::OPTIONS => array('salutation.Misses', 'salutation.Mister'),
 								Element::REQUIRED => true,
 
 								'class' => 'inline-inputs'

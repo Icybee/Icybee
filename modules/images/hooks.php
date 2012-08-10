@@ -78,7 +78,13 @@ class Hooks
 		$image_keys = $core->models['system.registry/node']
 		->select('targetid, value')
 		->where(array('targetid' => $record_keys, 'name' => 'resources_images.imageid'))
+		->where('value + 0 != 0')
 		->pairs;
+
+		if (!$image_keys)
+		{
+			return;
+		}
 
 		$images = $core->models['images']->find($image_keys);
 

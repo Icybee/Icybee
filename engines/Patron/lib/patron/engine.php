@@ -413,9 +413,16 @@ class Engine extends TextHole
 
 		array_unshift($this->trace, array('template', $name));
 
-		$this->context['self']['arguments'] = $args;
-
-//		echo l('\1', $this->context['self']['arguments']);
+		if (version_compare(PHP_VERSION, '5.3.4', '>='))
+		{
+			$this->context['self']['arguments'] = $args;
+		}
+		else // COMPAT
+		{
+			$self = $this->context['self'];
+			$self['arguments'] = $args;
+			$this->context['self'] = $self;
+		}
 
 		$rc = $this($template);
 

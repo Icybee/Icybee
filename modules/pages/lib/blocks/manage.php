@@ -20,6 +20,14 @@ use Brickrouge\Text;
 
 class ManageBlock extends \ICanBoogie\Modules\Nodes\ManageBlock
 {
+	static protected function add_assets(\Brickrouge\Document $document)
+	{
+		parent::add_assets($document);
+
+		$document->css->add('manage.css');
+		$document->js->add('manage.js');
+	}
+
 	public function __construct(Module $module, array $attributes=array())
 	{
 		global $core;
@@ -36,14 +44,6 @@ class ManageBlock extends \ICanBoogie\Modules\Nodes\ManageBlock
 				self::T_ORDER_BY => null
 			)
 		);
-	}
-
-	protected static function add_assets(\Brickrouge\Document $document)
-	{
-		parent::add_assets($document);
-
-		$document->css->add('manage.css');
-		$document->js->add('manage.js');
 	}
 
 	protected function columns()
@@ -407,7 +407,7 @@ EOT;
 			$rc .= ' <small style="color: green">:' . $record->nid . '</small>';
 		}
 
-		if ($this->mode == 'tree' && isset($record->depth) && $record->depth > 0 && $record->has_child)
+		if ($this->mode == 'tree' && $record->depth > 0 && $record->has_child)
 		{
 			$expanded = in_array($record->nid, $this->options['expanded']);
 

@@ -66,7 +66,7 @@ return array
 		(
 			'test' => array('expression' => array('silent' => true)),
 			'select' => array('expression' => array('silent' => true)),
-			'equals' => array('expression' => true)
+			'equals' => null
 		),
 
 		'no-binding' => true

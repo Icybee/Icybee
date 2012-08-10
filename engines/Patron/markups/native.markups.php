@@ -172,11 +172,30 @@ class patron_native_WdMarkups
 
 	static public function if_(array $args, Patron\Engine $patron, $template)
 	{
+		if (isset($args['test']) && isset($args['select']))
+		{
+			throw new Exception("Ambiguous test. Both <q>test</q> and <q>select</q> are defined.");
+		}
+
+		$true = false;
+
+		if ($args['equals'] !== null)
+		{
+			$true = $args['select'] == $args['equals'];
+		}
+		else
+		{
+			$true = !empty($args['test']);
+		}
+
+
+// 		var_dump($true, $args);
+
 		#
 		# if the evaluation is not empty (0 or ''), we publish the template
 		#
 
-		if ($args['test'])
+		if ($true)
 		{
 			return $patron($template);
 		}

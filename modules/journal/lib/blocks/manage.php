@@ -176,7 +176,14 @@ class ManageBlock extends \Icybee\ManageBlock
 
 		$this->last_rendered_uid = $uid;
 
-		$label = $this->render_cell_user($record, $property);
+		if ($uid)
+		{
+			$label = $this->render_cell_user($record, $property);
+		}
+		else
+		{
+			$label = t('Guest');
+		}
 
 		return parent::render_filter_cell($record, $property, $label);
 	}

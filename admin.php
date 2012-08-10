@@ -31,9 +31,8 @@ $document->js->add(Icybee\ASSETS . 'mootools-core.js', -200);
 $document->js->add(Icybee\ASSETS . 'mootools-more.js', -200);
 $document->js->add(ICanBoogie\ASSETS . 'icanboogie.js', -190);
 $document->js->add(Brickrouge\ASSETS . 'brickrouge.js', -190);
+$document->js->add(Icybee\ASSETS . 'admin.js', -180);
 $document->js->add(Icybee\ASSETS . 'js/publisher.js', -180);
-
-$document->js->add(Icybee\ASSETS . 'admin.js');
 
 $html = (string) $document;
 
