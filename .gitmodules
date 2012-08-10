@@ -10,3 +10,6 @@
 [submodule "framework/BlueTihi"]
 	path = framework/BlueTihi
 	url = git@github.com:olvlvl/BlueTihi.git
+[submodule "modules/thumbnailer"]
+	path = modules/thumbnailer
+	url = git@github.com:Icybee/module-thumbnailer.git
