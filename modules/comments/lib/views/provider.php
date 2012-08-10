@@ -41,7 +41,7 @@ class Provider extends \Icybee\Views\ActiveRecord\Provider
 	{
 		$count = $query->count;
 
-		$context['self']['count'] = t('comments.count', array(':count' => $count));
+		$context['count'] = t('comments.count', array(':count' => $count));
 
 		return $context;
 	}

@@ -333,40 +333,7 @@ class Node extends ActiveRecord
 	 */
 	public function css_class($modifiers=null)
 	{
-		$names = $this->css_class_names;
-		$names = array_filter($names);
-
-		if ($modifiers)
-		{
-			if (is_string($modifiers))
-			{
-				$modifiers = explode(' ', $modifiers);
-				$modifiers = array_map('trim', $modifiers);
-				$modifiers = array_filter($modifiers);
-			}
-
-			foreach ($modifiers as $k => $modifier)
-			{
-				if ($modifier{0} == '-')
-				{
-					unset($names[substr($modifier, 1)]);
-					unset($modifiers[$k]);
-				}
-			}
-
-			if ($modifiers)
-			{
-				$names = array_intersect_key($names, array_combine($modifiers, $modifiers));
-			}
-		}
-
-		array_walk($names, function(&$v, $k) {
-
-			if ($v === true) $v = $k;
-
-		});
-
-		return implode(' ', $names);
+		return \Icybee\render_css_class($this->css_class_names, $modifiers);
 	}
 }
 

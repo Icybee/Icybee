@@ -74,6 +74,7 @@ if (!class_exists('Icybee\Core', false))
 }
 
 require_once ROOT . 'lib/helpers.php';
+require_once ROOT . 'lib/helpers-compat.php';
 
 /**
  * The core instance is the heart of the ICanBoogie framework.

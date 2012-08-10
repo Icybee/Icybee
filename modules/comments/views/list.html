@@ -1,10 +1,8 @@
-<wdp:variable name="count" select="@count()" />
+<h4 class="view-title">#{count=}</h4>
 
-<h4>#{self.count=}</h4>
-
-<div id="comments">
+<div class="view-inner">
 	<wdp:foreach>
-		<div id="comment-#{@commentid}" class="comment #{self.even} #{@is_author.if('author-reply')}">
+		<div id="comment-#{@commentid}" class="#{@css_class} #{self.even}">
 			<div class="avatar">
 			<img src="#{@author_icon}&amp;s=60" alt="#{@author}" />
 			</div>
@@ -20,10 +18,8 @@
 				<h5><cite>#{author.trim()=}</cite>
 				<time datetime="#{@created.format_date("y-MM-DD'T'HH:mm")}">le #{@created.format_date('d MMM y')}</time></h5>
 			</div>
-			
-			<div class="contents">#{@=}</div>
-			
-			<div class="clear"></div>
+
+			<div class="comment-content">#{@=}</div>
 		</div>
 	</wdp:foreach>
 </div>

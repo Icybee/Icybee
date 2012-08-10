@@ -92,6 +92,43 @@ class Comment extends ActiveRecord
 		return \ICanBoogie\excerpt((string) $this, $limit);
 	}
 
+	/**
+	 * Returns the CSS class names of the comment.
+	 *
+	 * @return array[string]mixed
+	 */
+	protected function get_css_class_names()
+	{
+		return array
+		(
+			'type' => 'comment',
+			'id' => 'comment-' . $this->commentid,
+			'author-reply' => $this->is_author
+		);
+	}
+
+	/**
+	 * Return the CSS class of the comment.
+	 *
+	 * @param string|array $modifiers CSS class names modifiers
+	 *
+	 * @return string
+	 */
+	public function css_class($modifiers=null)
+	{
+		return \Icybee\render_css_class($this->css_class_names, $modifiers);
+	}
+
+	/**
+	 * Returns the CSS class of the comment.
+	 *
+	 * @return string
+	 */
+	protected function get_css_class()
+	{
+		return $this->css_class();
+	}
+
 	public function __toString()
 	{
 		$str = Textmark_Parser::parse($this->contents);

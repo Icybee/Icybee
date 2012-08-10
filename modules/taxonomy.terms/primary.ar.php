@@ -94,16 +94,6 @@ class Term extends ActiveRecord implements \IteratorAggregate
 	}
 
 	/**
-	 * Returns the CSS class of the term.
-	 *
-	 * @return string
-	 */
-	protected function get_css_class()
-	{
-		return $this->css_class();
-	}
-
-	/**
 	 * Returns the CSS class names of the term.
 	 *
 	 * @return array[string]mixed
@@ -129,41 +119,16 @@ class Term extends ActiveRecord implements \IteratorAggregate
 	 */
 	public function css_class($modifiers=null)
 	{
-		$names = $this->css_class_names;
-		$names = array_filter($names);
+		return \Icybee\render_css_class($this->css_class_names, $modifiers);
+	}
 
-// 		Event::fire('alter_css_class_names', array('names' => &$names), $this);
-
-		if ($modifiers)
-		{
-			if (is_string($modifiers))
-			{
-				$modifiers = explode(' ', $modifiers);
-				$modifiers = array_map('trim', $modifiers);
-				$modifiers = array_filter($modifiers);
-			}
-
-			foreach ($modifiers as $k => $modifier)
-			{
-				if ($modifier{0} == '-')
-				{
-					unset($names[substr($modifier, 1)]);
-					unset($modifiers[$k]);
-				}
-			}
-
-			if ($modifiers)
-			{
-				$names = array_intersect_key($names, array_combine($modifiers, $modifiers));
-			}
-		}
-
-		array_walk($names, function(&$v, $k) {
-
-			if ($v === true) $v = $k;
-
-		});
-
-		return implode(' ', $names);
+	/**
+	 * Returns the CSS class of the term.
+	 *
+	 * @return string
+	 */
+	protected function get_css_class()
+	{
+		return $this->css_class();
 	}
 }
