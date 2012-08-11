@@ -89,19 +89,20 @@ class SaveOperation extends \ICanBoogie\Modules\Nodes\SaveOperation
 		$contents_model = $this->module->model('contents');
 
 		$contents = $this->request['contents'];
-		$editors = $this->request['editors'];
+		$editor_ids = $this->request['editors'];
 
-		if ($contents && $editors)
+		if ($contents && $editor_ids)
 		{
-			foreach ($contents as $content_id => $value)
+			foreach ($contents as $content_id => $unserialized_content)
 			{
-				$editor = $editors[$content_id];
-				$editor_class = $editor . '_WdEditorElement';
-				$content = call_user_func(array($editor_class, 'to_content'), $value, $content_id, $nid);
+				if (!$unserialized_content)
+				{
+					continue;
+				}
 
-				#
-				# if there is no content, the content object is deleted
-				#
+				$editor_id = $editor_ids[$content_id];
+				$editor = $core->editors[$editor_id];
+				$content = $editor->serialize($unserialized_content);
 
 				if (!$content)
 				{
@@ -110,19 +111,10 @@ class SaveOperation extends \ICanBoogie\Modules\Nodes\SaveOperation
 
 				$preserve[$content_id] = $content_id;
 
-				#
-				# if the content is made of an array of values, the values are serialized in JSON.
-				#
-
-				if (is_array($content))
-				{
-					$content = json_encode($content);
-				}
-
 				$values = array
 				(
 					'content' => $content,
-					'editor' => $editor
+					'editor' => $editor_id
 				);
 
 				$contents_model->insert

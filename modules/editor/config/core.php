@@ -1,15 +1,24 @@
 <?php
 
+namespace ICanBoogie\Modules\Editor;
+
 $_includes_root = $path . DIRECTORY_SEPARATOR . 'includes' . DIRECTORY_SEPARATOR;
 
 return array
 (
 	'autoload' => array
 	(
+		__NAMESPACE__ . '\Collection' => $path . 'lib/collection.php',
+		__NAMESPACE__ . '\Editor' => $path . 'lib/editor.php',
+		__NAMESPACE__ . '\EditorElement' => $path . 'lib/editor.php',
+		__NAMESPACE__ . '\RawEditor' => $path . 'lib/editors/raw/editor.php',
+		__NAMESPACE__ . '\RawEditorElement' => $path . 'lib/editors/raw/element.php',
+		__NAMESPACE__ . '\RTEEditor' => $path . 'lib/editors/rte/editor.php',
+		__NAMESPACE__ . '\RTEEditorElement' => $path . 'lib/editors/rte/element.php',
+
 		'WdEditorElement' => $_includes_root . 'wdeditorelement.php',
 		'WdMultiEditorElement' => $_includes_root . 'wdmultieditorelement.php',
 
-		'moo_WdEditorElement' => $path . 'editors/moo/editor.php',
 		'feed_WdEditorElement' => $path . 'editors/feed/editor.php',
 		'patron_WdEditorElement' => $_includes_root . 'patron_wdeditorelement.php',
 		'raw_WdEditorElement' => $_includes_root . 'raw_wdeditorelement.php',

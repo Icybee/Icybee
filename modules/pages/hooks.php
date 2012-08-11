@@ -16,11 +16,55 @@ use ICanBoogie\ActiveRecord\Site;
 use ICanBoogie\Event;
 use ICanBoogie\FileCache;
 use ICanBoogie\Modules\System\Cache\Collection as CacheCollection;
+use ICanBoogie\Operation\ProcessEvent;
 
 use Brickrouge\Element;
 
 class Hooks
 {
+	/**
+	 * Updates view targets.
+	 *
+	 * @param ProcessEvent $event
+	 * @param SaveOperation $operation
+	 */
+	static public function on_save(ProcessEvent $event, SaveOperation $operation)
+	{
+		global $core;
+
+		$request = $event->request;
+		$contents = $request['contents'];
+		$editor_ids = $request['editors'];
+		$nid = $event->response->rc['key'];
+
+		if ($editor_ids)
+		{
+			foreach ($editor_ids as $content_id => $editor_id)
+			{
+				if ($editor_id != 'view')
+				{
+					continue;
+				}
+
+				if (empty($contents[$content_id]))
+				{
+					// TODO-20120811: should remove view reference
+
+					continue;
+				}
+
+				$content = $contents[$content_id];
+
+				if (strpos($content, '/') !== false)
+				{
+					$view_target_key = 'views.targets.' . strtr($content, '.', '_');
+
+					$core->site->metas[$view_target_key] = $nid;
+				}
+			}
+		}
+	}
+
 	/**
 	 * The callback is called when the `resources.files.path.change` is triggered, allowing us to
 	 * update content to the changed path of resource.

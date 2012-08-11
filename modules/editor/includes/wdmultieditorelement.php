@@ -9,8 +9,10 @@
  * file that was distributed with this source code.
  */
 
-use Brickrouge\Element;
 use ICanBoogie\Event;
+
+use Brickrouge\Document;
+use Brickrouge\Element;
 
 class WdMultiEditorElement extends Element
 {
@@ -18,69 +20,77 @@ class WdMultiEditorElement extends Element
 	const T_SELECTOR_NAME = '#meditor-selector-name';
 	const T_NOT_SWAPPABLE = '#meditor-not-wappable';
 
+	static protected function add_assets(Document $document)
+	{
+		parent::add_assets($document);
+
+		$document->css->add('../public/multi.css');
+		$document->js->add('../public/multi.js');
+	}
+
 	protected $editor;
 	protected $editor_name;
 
-	public function __construct($editor, $tags)
+	public function __construct($editor, array $attributes)
 	{
-		global $core;
-
 		$this->editor_name = $editor ? $editor : 'moo';
 
 		parent::__construct
 		(
-			'div', $tags + array
+			'div', $attributes + array
 			(
 				self::T_SELECTOR_NAME => 'editor',
 
 				'class' => 'editor-wrapper'
 			)
 		);
-
-		$document = $core->document;
-
-		$document->css->add('../public/multi.css');
-		$document->js->add('../public/multi.js');
 	}
 
 	public function editor()
 	{
-		if (!$this->editor)
+		global $core;
+
+		if ($this->editor)
 		{
-			$editor_class = $this->editor_name . '_WdEditorElement';
+			return $this->editor;
+		}
 
-			$this->editor = new $editor_class
+		$editor_name = $this->editor_name;
+		$editor = $core->editors[$editor_name];
+		$element = $editor->create_element
+		(
+			($this[self::T_EDITOR_TAGS] ?: array()) + array
 			(
-				($this[self::T_EDITOR_TAGS] ?: array()) + array
-				(
-					Element::REQUIRED => $this[self::REQUIRED],
-					Element::DEFAULT_VALUE => $this[self::DEFAULT_VALUE],
+				Element::REQUIRED => $this[self::REQUIRED],
+				Element::DEFAULT_VALUE => $this[self::DEFAULT_VALUE],
 
-					'name' => $this['name'],
-					'value' => $this['value']
-				)
-			);
+				'name' => $this['name'],
+				'value' => $editor->unserialize($this['value'])
+			)
+		);
 
-			if ($this->editor->type == 'textarea')
+		if ($element->type == 'textarea')
+		{
+			$rows = $this['rows'];
+
+			if ($rows !== null)
 			{
-				$rows = $this['rows'];
-
-				if ($rows !== null)
-				{
-					$this->editor['rows'] = $rows;
-				}
+				$element['rows'] = $rows;
 			}
 		}
 
-		return $this->editor;
+		return $this->editor = (string) $element;
 	}
 
 	protected function options()
 	{
+		// TODO-20120811: use collection!
+
 		$options = array
 		(
 			'raw' => 'Texte brut',
 			'moo' => 'HTML WYSIWYG',
+			'rte' => 'HTML WYSIWYG',
 			'textmark' => 'Textmark',
 			'patron' => 'Patron',
 // 			'php' => 'PHP',
@@ -100,7 +110,7 @@ class WdMultiEditorElement extends Element
 		(
 			'select', array
 			(
-				Element::LABEL => '.editor',
+				Element::LABEL => 'Editor',
 				Element::LABEL_POSITION => 'before',
 				Element::OPTIONS => $options,
 
@@ -110,16 +120,33 @@ class WdMultiEditorElement extends Element
 			)
 		);
 
-		return '<div style="float: right">' . $el . '</div>';
+		return $el;
+	}
+
+	protected function alter_dataset(array $dataset)
+	{
+		$dataset = parent::alter_dataset($dataset);
+
+		$dataset['contents-name'] = $this['name'];
+		$dataset['selector-name'] = $this[self::T_SELECTOR_NAME];
+
+		return $dataset;
 	}
 
 	protected function render_inner_html()
 	{
-		$rc = $this->editor();
+		$html = $this->editor();
 
 		if ($this[self::T_NOT_SWAPPABLE])
 		{
-			$rc .= '<input type="hidden" name="' . $this[self::T_SELECTOR_NAME] .'" value="' . $this->editor_name . '" />';
+			$html .= new Element
+			(
+				'hidden', array
+				(
+					'name' => $this[self::T_SELECTOR_NAME],
+					'value' => $this->editor_name
+				)
+			);
 		}
 		else
 		{
@@ -127,13 +154,10 @@ class WdMultiEditorElement extends Element
 
 			if ($options)
 			{
-				$rc .= '<div class="editor-options clearfix">' . $options . '</div>';
+				$html .= '<div class="editor-options clearfix"><div style="float: right">' . $options . '</div></div>';
 			}
 		}
 
-		$this->dataset['contents-name'] = $this['name'];
-		$this->dataset['selector-name'] = $this[self::T_SELECTOR_NAME];
-
-		return $rc;
+		return $html;
 	}
 }

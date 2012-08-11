@@ -9,13 +9,20 @@
  * file that was distributed with this source code.
  */
 
-class raw_WdEditorElement extends WdEditorElement
+namespace ICanBoogie\Modules\Editor;
+
+use Brickrouge\Element;
+
+/**
+ * "Raw" editor element.
+ */
+class RawEditorElement extends Element implements EditorElement
 {
-	public function __construct($tags, $dummy=null)
+	public function __construct(array $attributes)
 	{
 		parent::__construct
 		(
-			'textarea', $tags + array
+			'textarea', $attributes + array
 			(
 				'class' => 'editor raw'
 			)

@@ -1,6 +1,8 @@
 <?php
 
-$hooks = __NAMESPACE__ . 'ICanBoogie\Modules\Pages\Hooks';
+namespace ICanBoogie\Modules\Pages;
+
+$hooks = __NAMESPACE__ . '\Hooks';
 
 return array
 (
@@ -11,6 +13,7 @@ return array
 		'Brickrouge\Document::render_title:before' => $hooks . '::on_document_render_title',
 
 		'ICanBoogie\ActiveRecord\Page::urlchange' => $hooks . '::on_urlchange',
+		__NAMESPACE__ . '\SaveOperation::process' => $hooks . '::on_save',
 
 // 		'Icybee\Pagemaker::render:before' => $hooks . '::before_icybee_render', TODO-20120313: we need to use another event
 
