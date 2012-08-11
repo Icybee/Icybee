@@ -13,6 +13,7 @@ return array
 		'php' => 'PHP code',
 		'raw' => 'Raw HTML',
 		'rte' => 'Rich Text Editor',
+		'text' => 'Text',
 		'textmark' => 'Textmark'
 	)
 );

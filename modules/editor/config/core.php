@@ -19,6 +19,8 @@ return array
 		__NAMESPACE__ . '\RawEditorElement' => $path . 'lib/editors/raw/element.php',
 		__NAMESPACE__ . '\RTEEditor' => $path . 'lib/editors/rte/editor.php',
 		__NAMESPACE__ . '\RTEEditorElement' => $path . 'lib/editors/rte/element.php',
+		__NAMESPACE__ . '\TextEditor' => $path . 'lib/editors/text/editor.php',
+		__NAMESPACE__ . '\TextEditorElement' => $path . 'lib/editors/text/element.php',
 		__NAMESPACE__ . '\TextmarkEditor' => $path . 'lib/editors/textmark/editor.php',
 		__NAMESPACE__ . '\TextmarkEditorElement' => $path . 'lib/editors/textmark/element.php',
 
@@ -26,7 +28,6 @@ return array
 		'WdMultiEditorElement' => $_includes_root . 'wdmultieditorelement.php',
 
 		'feed_WdEditorElement' => $path . 'editors/feed/editor.php',
-		'text_WdEditorElement' => $_includes_root . 'text_wdeditorelement.php',
 		'widgets_WdEditorElement' => $path . 'editors/widgets/editor.php',
 
 		'adjustimage_WdEditorElement' => $path . 'editors/adjustimage/editor.php',
