@@ -84,19 +84,14 @@ class WdMultiEditorElement extends Element
 
 	protected function options()
 	{
-		// TODO-20120811: use collection!
+		global $core;
 
-		$options = array
-		(
-			'raw' => 'Texte brut',
-			'moo' => 'HTML WYSIWYG',
-			'rte' => 'HTML WYSIWYG',
-			'textmark' => 'Textmark',
-			'patron' => 'Patron',
-// 			'php' => 'PHP',
-			'view' => 'Vue',
-			'widgets' => 'Gadgets'
-		);
+		$options = array();
+
+		foreach ($core->editors as $id => $editor)
+		{
+			$options[$id] = t($id, array(), array('scope' => 'editor_title'));
+		}
 
 		Event::fire
 		(

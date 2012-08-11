@@ -12,9 +12,9 @@
 namespace ICanBoogie\Modules\Editor;
 
 /**
- * "Raw" editor.
+ * "Patron" editor.
  */
-class RawEditor implements Editor
+class PatronEditor implements Editor
 {
 	/**
 	 * Returns content as is.
@@ -35,6 +35,7 @@ class RawEditor implements Editor
 	{
 		return $serialized_content;
 	}
+
 	/**
 	 * @return RawEditorElement
 	 *
@@ -42,7 +43,7 @@ class RawEditor implements Editor
 	 */
 	public function create_element(array $attributes)
 	{
-		return new RawEditorElement($attributes);
+		return new PatronEditorElement($attributes);
 	}
 
 	/**
@@ -52,6 +53,8 @@ class RawEditor implements Editor
 	 */
 	public function render($content)
 	{
-		return $content;
+		$patron = new \Patron\Engine();
+
+		return $patron($content);
 	}
 }

@@ -32,14 +32,6 @@ interface Editor
 	public function unserialize($serialized_content);
 
 	/**
-	 * Renders the content into a HTML string or an object that can be stringified into a HTML
-	 * string.
-	 *
-	 * @param string $content
-	 */
-	public function render($content);
-
-	/**
 	 * Returns the editor element.
 	 *
 	 * @param array $attributes Attributes that should be used to create the element. The content
@@ -48,6 +40,14 @@ interface Editor
 	 * @return \Brickrouge\Element
 	 */
 	public function create_element(array $attributes);
+
+	/**
+	 * Renders the content into a HTML string or an object that can be stringified into a HTML
+	 * string.
+	 *
+	 * @param string $content
+	 */
+	public function render($content);
 }
 
 interface EditorElement
