@@ -290,7 +290,7 @@ class Module extends \ICanBoogie\Modules\Nodes\Module
 			 *
 			 */
 
-			if ($editor_id)
+			if (isset($editable['editor']))
 			{
 				if (!isset($core->editors[$editor_id]))
 				{
