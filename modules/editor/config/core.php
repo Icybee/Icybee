@@ -17,13 +17,14 @@ return array
 		__NAMESPACE__ . '\RawEditorElement' => $path . 'lib/editors/raw/element.php',
 		__NAMESPACE__ . '\RTEEditor' => $path . 'lib/editors/rte/editor.php',
 		__NAMESPACE__ . '\RTEEditorElement' => $path . 'lib/editors/rte/element.php',
+		__NAMESPACE__ . '\TextmarkEditor' => $path . 'lib/editors/textmark/editor.php',
+		__NAMESPACE__ . '\TextmarkEditorElement' => $path . 'lib/editors/textmark/element.php',
 
 		'WdEditorElement' => $_includes_root . 'wdeditorelement.php',
 		'WdMultiEditorElement' => $_includes_root . 'wdmultieditorelement.php',
 
 		'feed_WdEditorElement' => $path . 'editors/feed/editor.php',
 		'text_WdEditorElement' => $_includes_root . 'text_wdeditorelement.php',
-		'textmark_WdEditorElement' => $_includes_root . 'textmark_wdeditorelement.php',
 		'php_WdEditorElement' => $_includes_root . 'php_wdeditorelement.php',
 		'widgets_WdEditorElement' => $path . 'editors/widgets/editor.php',
 

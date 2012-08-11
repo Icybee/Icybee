@@ -4,8 +4,9 @@ namespace ICanBoogie\Modules\Editor;
 
 return array
 (
-	'moo' => __NAMESPACE__ . '\RTEEditor',
-	'patron' => __NAMESPACE__ . '\PatronEditor',
+	'rte' => __NAMESPACE__ . '\RTEEditor',
+	'textmark' => __NAMESPACE__ . '\TextmarkEditor',
 	'raw' => __NAMESPACE__ . '\RawEditor',
-	'rte' => __NAMESPACE__ . '\RTEEditor'
+	'patron' => __NAMESPACE__ . '\PatronEditor',
+	'moo' => __NAMESPACE__ . '\RTEEditor'
 );

@@ -12,6 +12,6 @@ return array
 		'patron' => 'Patron template',
 		'raw' => 'Raw HTML',
 		'rte' => 'Rich Text Editor',
-		'view' => 'View'
+		'textmark' => 'Textmark'
 	)
 );

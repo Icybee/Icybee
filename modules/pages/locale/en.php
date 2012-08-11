@@ -23,6 +23,11 @@ return array
 		'body' => 'Body of the page'
 	),
 
+	'editor_title' => array
+	(
+		'view' => 'View'
+	),
+
 	'description' => array
 	(
 		'is_navigation_excluded' => "Pages excluded from the main navigation don't appear in menus.
