@@ -12,6 +12,7 @@
 namespace ICanBoogie\ActiveRecord\Pages;
 
 use ICanBoogie\ActiveRecord;
+use ICanBoogie\Core;
 
 class Content extends ActiveRecord
 {
@@ -77,11 +78,10 @@ class Content extends ActiveRecord
 			return $this->rendered;
 		}
 
-		$class = $this->editor . '_WdEditorElement';
-
 		try
 		{
-			$rendered = call_user_func(array($class, 'render'), $this->content);
+			$editor = Core::get()->editors[$this->editor];
+			$rendered = $editor->render($editor->unserialize($this->content));
 		}
 		catch (\ICanBoogie\Exception\HTTP $e)
 		{
