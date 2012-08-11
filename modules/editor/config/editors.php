@@ -11,5 +11,6 @@ return array
 	'patron' => __NAMESPACE__ . '\PatronEditor',
 	'moo' => __NAMESPACE__ . '\RTEEditor',
 	'php' => __NAMESPACE__ . '\PHPEditor',
-	'feed' => __NAMESPACE__ . '\FeedEditor'
+	'feed' => __NAMESPACE__ . '\FeedEditor',
+	'image' => __NAMESPACE__ . '\ImageEditor'
 );

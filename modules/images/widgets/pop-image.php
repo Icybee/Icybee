@@ -50,7 +50,8 @@ class PopImage extends \ICanBoogie\Modules\Nodes\PopNode
 			$dataset + array
 			(
 				'preview-width' => $this[self::T_PREVIEW_WIDTH],
-				'preview-height' => $this[self::T_PREVIEW_HEIGHT]
+				'preview-height' => $this[self::T_PREVIEW_HEIGHT],
+				'widget-constructor' => 'PopImage'
 			)
 		);
 	}

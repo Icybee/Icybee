@@ -9,6 +9,7 @@ return array
 
 	'editor_title' => array
 	(
+		'image' => 'Image',
 		'patron' => 'Patron template',
 		'php' => 'PHP code',
 		'raw' => 'Raw HTML',

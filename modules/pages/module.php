@@ -216,7 +216,11 @@ class Module extends \ICanBoogie\Modules\Nodes\Module
 			if ($contents)
 			{
 				$value = $contents->content;
-				$editor_id = $contents->editor;
+
+				if (!$editor_id)
+				{
+					$editor_id = $contents->editor;
+				}
 			}
 
 			if ($does_inherit)

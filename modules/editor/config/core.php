@@ -13,6 +13,8 @@ return array
 		__NAMESPACE__ . '\EditorElement' => $path . 'lib/editor.php',
 		__NAMESPACE__ . '\FeedEditor' => $path . 'lib/editors/feed/editor.php',
 		__NAMESPACE__ . '\FeedEditorElement' => $path . 'lib/editors/feed/element.php',
+		__NAMESPACE__ . '\ImageEditor' => $path . 'lib/editors/image/editor.php',
+		__NAMESPACE__ . '\ImageEditorElement' => $path . 'lib/editors/image/element.php',
 		__NAMESPACE__ . '\PatronEditor' => $path . 'lib/editors/patron/editor.php',
 		__NAMESPACE__ . '\PatronEditorElement' => $path . 'lib/editors/patron/element.php',
 		__NAMESPACE__ . '\PHPEditor' => $path . 'lib/editors/php/editor.php',
@@ -29,8 +31,6 @@ return array
 		'WdEditorElement' => $_includes_root . 'wdeditorelement.php',
 		'WdMultiEditorElement' => $_includes_root . 'wdmultieditorelement.php',
 
-		'widgets_WdEditorElement' => $path . 'editors/widgets/editor.php',
-
-		'adjustimage_WdEditorElement' => $path . 'editors/adjustimage/editor.php',
+		'widgets_WdEditorElement' => $path . 'editors/widgets/editor.php'
 	)
 );

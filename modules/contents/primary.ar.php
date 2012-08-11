@@ -113,8 +113,6 @@ class Content extends Node
 		catch (\Exception $e)
 		{
 			$rendered_body = $e->getMessage();
-
-			echo $rendered_body;
 		}
 
 		return $rendered_body;
@@ -136,7 +134,7 @@ class Content extends Node
 
 		$editor = Core::get()->editors[$this->editor];
 
-		return $editor->render($editor->unserialize($body));
+		return (string) $editor->render($editor->unserialize($body));
 	}
 
 	/**
