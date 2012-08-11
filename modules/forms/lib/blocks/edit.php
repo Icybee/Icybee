@@ -11,6 +11,8 @@
 
 namespace ICanBoogie\Modules\Forms;
 
+use ICanBoogie\Modules\Editor\RTEEditorElement;
+
 use Brickrouge\Element;
 use Brickrouge\Form;
 use Brickrouge\Text;
@@ -101,7 +103,7 @@ class EditBlock extends \ICanBoogie\Modules\Nodes\EditBlock
 				),
 				*/
 
-				'before' => new \moo_WdEditorElement
+				'before' => new RTEEditorElement
 				(
 					array
 					(
@@ -112,7 +114,7 @@ class EditBlock extends \ICanBoogie\Modules\Nodes\EditBlock
 					)
 				),
 
-				'after' => new \moo_WdEditorElement
+				'after' => new RTEEditorElement
 				(
 					array
 					(
@@ -123,7 +125,7 @@ class EditBlock extends \ICanBoogie\Modules\Nodes\EditBlock
 					)
 				),
 
-				'complete' => new \moo_WdEditorElement
+				'complete' => new RTEEditorElement
 				(
 					array
 					(

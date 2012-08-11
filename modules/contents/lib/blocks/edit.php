@@ -12,6 +12,7 @@
 namespace ICanBoogie\Modules\Contents;
 
 use ICanBoogie\ActiveRecord\Content;
+use ICanBoogie\Modules\Editor\RTEEditorElement;
 
 use Brickrouge\Element;
 use Brickrouge\Form;
@@ -83,7 +84,7 @@ class EditBlock extends \ICanBoogie\Modules\Nodes\EditBlock
 					)
 				),
 
-				Content::EXCERPT => new \moo_WdEditorElement
+				Content::EXCERPT => new RTEEditorElement
 				(
 					array
 					(

@@ -11,6 +11,8 @@
 
 namespace ICanBoogie\Modules\Users\Members;
 
+use ICanBoogie\Modules\Editor\RTEEditorElement;
+
 use Brickrouge\Date;
 use Brickrouge\Element;
 use Brickrouge\Form;
@@ -373,7 +375,7 @@ EOT
 						)
 					),
 
-					'notes' => new \moo_WdEditorElement
+					'notes' => new RTEEditorElement
 					(
 						array
 						(

@@ -11,6 +11,8 @@
 
 namespace ICanBoogie\ActiveRecord;
 
+use ICanBoogie\Core;
+
 use ICanBoogie\Exception;
 
 class Content extends Node
@@ -85,7 +87,7 @@ class Content extends Node
 
 				if ($this->editor)
 				{
-					$rendered_body = call_user_func($this->editor . '_WdEditorElement::render', $body);
+					$rendered_body = $this->render_body();
 				}
 
 				if ($rendered_body && $rendered_body != $body)
@@ -105,7 +107,7 @@ class Content extends Node
 			}
 			else if ($this->editor)
 			{
-				$rendered_body = call_user_func($this->editor . '_WdEditorElement::render', $body);
+				$rendered_body = $this->render_body();
 			}
 		}
 		catch (\Exception $e)
@@ -116,6 +118,25 @@ class Content extends Node
 		}
 
 		return $rendered_body;
+	}
+
+	/**
+	 * Renders the body using the associated editor.
+	 *
+	 * @return string
+	 */
+	private function render_body()
+	{
+		$body = $this->body;
+
+		if (!$this->editor)
+		{
+			return $body;
+		}
+
+		$editor = Core::get()->editors[$this->editor];
+
+		return $editor->render($editor->unserialize($body));
 	}
 
 	/**

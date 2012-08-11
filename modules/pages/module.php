@@ -13,6 +13,8 @@ namespace ICanBoogie\Modules\Pages;
 
 use ICanBoogie\ActiveRecord\Node;
 use ICanBoogie\ActiveRecord\Page;
+
+use Brickrouge\Alert;
 use Brickrouge\Element;
 use Brickrouge\Form;
 use Brickrouge\Text;
@@ -201,7 +203,7 @@ class Module extends \ICanBoogie\Modules\Nodes\Module
 
 			$value = null;
 
-			$editor = $editable['editor'];
+			$editor_id = $editable['editor'];
 			$editor_config = json_decode($editable['config'], true);
 			$editor_description = $editable['description'];
 
@@ -214,7 +216,7 @@ class Module extends \ICanBoogie\Modules\Nodes\Module
 			if ($contents)
 			{
 				$value = $contents->content;
-				$editor = $contents->editor;
+				$editor_id = $contents->editor;
 			}
 
 			if ($does_inherit)
@@ -288,28 +290,26 @@ class Module extends \ICanBoogie\Modules\Nodes\Module
 			 *
 			 */
 
-			if ($editable['editor'])
+			if ($editor_id)
 			{
-				$class = $editable['editor'] . '_WdEditorElement';
-
-				if (!class_exists($class, true))
+				if (!isset($core->editors[$editor_id]))
 				{
-					$elements["contents[$id]"] = new Element
+					$elements["contents[$id]"] = new Alert
 					(
-						'div', array
+						t('Éditeur inconnu : %editor', array('%editor' => $editable['editor'])), array
 						(
 							Form::LABEL => $title,
-							Element::INNER_HTML => t('Éditeur inconnu : %editor', array('%editor' => $editable['editor'])),
 							Element::GROUP => $does_inherit ? 'contents.inherit' : 'contents',
-
-							'class' => 'danger'
+							Alert::CONTEXT => Alert::CONTEXT_ERROR
 						)
 					);
 
 					continue;
 				}
 
-				$elements["contents[$id]"] = new $class
+				$editor = $core->editors[$editor_id];
+
+				$elements["contents[$id]"] = $editor->create_element
 				(
 					array
 					(
@@ -336,7 +336,7 @@ class Module extends \ICanBoogie\Modules\Nodes\Module
 			{
 				$elements["contents[$id]"] = new \WdMultiEditorElement
 				(
-					$editor, array
+					$editor_id, array
 					(
 						Form::LABEL => $title,
 

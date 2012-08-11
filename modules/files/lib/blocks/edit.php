@@ -12,6 +12,7 @@
 namespace ICanBoogie\Modules\Files;
 
 use ICanBoogie\ActiveRecord\File;
+use ICanBoogie\Modules\Editor\RTEEditorElement;
 use ICanBoogie\Operation;
 use ICanBoogie\Uploaded;
 
@@ -140,7 +141,7 @@ class EditBlock extends \ICanBoogie\Modules\Nodes\EditBlock
 					)
 				),
 
-				File::DESCRIPTION => new \moo_WdEditorElement
+				File::DESCRIPTION => new RTEEditorElement
 				(
 					array
 					(

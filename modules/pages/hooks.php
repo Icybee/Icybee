@@ -375,9 +375,13 @@ EOT;
 	 */
 	public static function markup_call_view(array $args, \WdPatron $patron, $template)
 	{
+		global $core;
+
+		$editor = $core->editors['view'];
+
 		// TODO-20101216: The view should handle parsing template or not
 
-		return $render = \view_WdEditorElement::render($args['name'], $patron, $template);
+		return $render = $editor->render($args['name'], $patron, $template);
 
 		return $template ? $patron($template, $render) : $render;
 	}
