@@ -10,6 +10,7 @@ return array
 	'editor_title' => array
 	(
 		'patron' => 'Patron template',
+		'php' => 'PHP code',
 		'raw' => 'Raw HTML',
 		'rte' => 'Rich Text Editor',
 		'textmark' => 'Textmark'

@@ -8,5 +8,6 @@ return array
 	'textmark' => __NAMESPACE__ . '\TextmarkEditor',
 	'raw' => __NAMESPACE__ . '\RawEditor',
 	'patron' => __NAMESPACE__ . '\PatronEditor',
-	'moo' => __NAMESPACE__ . '\RTEEditor'
+	'moo' => __NAMESPACE__ . '\RTEEditor',
+	'php' => __NAMESPACE__ . '\PHPEditor'
 );
