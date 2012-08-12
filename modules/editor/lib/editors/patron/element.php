@@ -26,7 +26,7 @@ class PatronEditorElement extends Element implements EditorElement
 		$document->css->add('assets/editor.css');
 	}
 
-	public function __construct(array $attributes)
+	public function __construct(array $attributes=array())
 	{
 		parent::__construct
 		(

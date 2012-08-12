@@ -18,7 +18,7 @@ use Brickrouge\Element;
  */
 class TextmarkEditorElement extends Element implements EditorElement
 {
-	public function __construct(array $attributes)
+	public function __construct(array $attributes=array())
 	{
 		parent::__construct
 		(

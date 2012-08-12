@@ -27,24 +27,24 @@ class RTEEditorElement extends Element implements EditorElement
 	{
 		parent::add_assets($document);
 
-		$document->css->add('MooEditable/Assets/MooEditable.css');
-		$document->css->add('MooEditable/Assets/MooEditable.Image.css');
-		$document->css->add('MooEditable/Assets/MooEditable.Extras.css');
-		$document->css->add('MooEditable/Assets/MooEditable.SilkTheme.css');
-		$document->css->add('MooEditable/Assets/MooEditable.Paste.css');
+		$document->css->add('mooeditable/Assets/MooEditable/MooEditable.css');
+		$document->css->add('mooeditable/Assets/MooEditable/MooEditable.Image.css');
+		$document->css->add('mooeditable/Assets/MooEditable/MooEditable.Extras.css');
+		$document->css->add('mooeditable/Assets/MooEditable/MooEditable.SilkTheme.css');
+		$document->css->add('mooeditable/Assets/MooEditable/MooEditable.Paste.css');
 
-		$document->js->add('MooEditable/Source/MooEditable.js');
-		$document->js->add('MooEditable/Source/MooEditable.Image.js');
-		$document->js->add('MooEditable/Source/MooEditable.UI.MenuList.js');
-		$document->js->add('MooEditable/Source/MooEditable.Extras.js');
-		$document->js->add('MooEditable/Source/MooEditable.Paste.js');
-		$document->js->add('MooEditable/Source/MooEditable.CleanPaste.js');
-		$document->js->add('MooEditable/Source/MooEditable.Outline.js');
+		$document->js->add('mooeditable/Source/MooEditable/MooEditable.js');
+		$document->js->add('mooeditable/Source/MooEditable/MooEditable.Image.js');
+		$document->js->add('mooeditable/Source/MooEditable/MooEditable.UI.MenuList.js');
+		$document->js->add('mooeditable/Source/MooEditable/MooEditable.Extras.js');
+		$document->js->add('mooeditable/Source/MooEditable/MooEditable.Paste.js');
+		$document->js->add('mooeditable/Source/MooEditable/MooEditable.CleanPaste.js');
+		$document->js->add('mooeditable/Source/MooEditable/MooEditable.Outline.js');
 
 		$document->js->add('assets/editor.js');
 	}
 
-	public function __construct(array $attributes)
+	public function __construct(array $attributes=array())
 	{
 		parent::__construct
 		(
@@ -101,8 +101,8 @@ class RTEEditorElement extends Element implements EditorElement
 			{
 				$actions .= ' / tableadd | tableedit | tablerowspan tablerowsplit tablerowdelete | tablecolspan tablecolsplit tablecoldelete';
 
-				$document->css->add('public/assets/MooEditable.Table.css');
-				$document->js->add('public/source/MooEditable.Table.js');
+				$document->css->add('mooeditable/Assets/MooEditable/MooEditable.Table.css');
+				$document->js->add('mooeditable/Source/MooEditable/MooEditable.Table.js');
 			}
 		}
 		else if ($actions == 'minimal')

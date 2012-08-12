@@ -11,7 +11,10 @@
 
 namespace ICanBoogie\Modules\Editor;
 
+/**
+ * Provides an API for editors.
+ */
 class Module extends \Icybee\Module
 {
-	const OPERATION_GET = 'get';
+	const OPERATION_CHANGE = 'change';
 }

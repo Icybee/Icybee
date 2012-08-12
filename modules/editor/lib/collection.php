@@ -14,6 +14,12 @@ namespace ICanBoogie\Modules\Editor;
 use ICanBoogie\Core;
 use ICanBoogie\Exception;
 
+/**
+ * Editors collection.
+ *
+ * Editors are collected by synthesizing the `editors` config. The
+ * `ICanBoogie\Modules\Editor\Collection::alter` is fired to allow alteration of the collection.
+ */
 class Collection implements \ArrayAccess, \IteratorAggregate
 {
 	static private $instance;
@@ -36,11 +42,12 @@ class Collection implements \ArrayAccess, \IteratorAggregate
 	protected $collection;
 	protected $editors;
 
+	/**
+	 * Creates the collection.
+	 */
 	protected function __construct()
 	{
-		$collection = $this->collect();
-
-		$this->collection = $collection;
+		$this->collection = $this->collect();
 	}
 
 	/**
@@ -74,7 +81,7 @@ class Collection implements \ArrayAccess, \IteratorAggregate
 	}
 
 	/**
-	 * Returns the definition of an editor. TODO-20120811: we should return an EditorInterface instance.
+	 * Returns the definition of an editor.
 	 *
 	 * @see ArrayAccess::offsetGet()
 	 */
@@ -122,7 +129,7 @@ class AlterEvent extends \ICanBoogie\Event
 	/**
 	 * Reference to the collection to alter.
 	 *
-	 * @var array[string]array
+	 * @var array[string]string
 	 */
 	public $collection;
 

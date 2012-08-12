@@ -41,6 +41,12 @@ class RTEEditor implements Editor
 		return $serialized_content;
 	}
 
+	/**
+	 * Replaces managed images with width or height attributes by thumbnails, and transform markup
+	 * when the original image can be displayed in a lightbox.
+	 *
+	 * @see ICanBoogie\Modules\Editor.Editor::render()
+	 */
 	public function render($content)
 	{
 		return preg_replace_callback

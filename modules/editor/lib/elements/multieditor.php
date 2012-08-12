@@ -11,11 +11,14 @@
 
 namespace ICanBoogie\Modules\Editor;
 
-use ICanBoogie\Event;
-
 use Brickrouge\Document;
 use Brickrouge\Element;
 
+/**
+ * An element that can change its editor.
+ *
+ * @property Element $editor The editor element.
+ */
 class MultiEditorElement extends Element
 {
 	const EDITOR_TAGS = '#meditor-tags';
@@ -26,16 +29,15 @@ class MultiEditorElement extends Element
 	{
 		parent::add_assets($document);
 
-		$document->css->add('../public/multi.css');
-		$document->js->add('../public/multi.js');
+		$document->css->add('assets/elements.css');
+		$document->js->add('assets/elements.js');
 	}
 
-	protected $editor;
-	protected $editor_name;
+	protected $editor_id;
 
 	public function __construct($editor, array $attributes)
 	{
-		$this->editor_name = $editor ? $editor : 'rte';
+		$this->editor_id = $editor ? $editor : 'rte';
 
 		parent::__construct
 		(
@@ -48,17 +50,12 @@ class MultiEditorElement extends Element
 		);
 	}
 
-	public function editor()
+	protected function get_editor()
 	{
 		global $core;
 
-		if ($this->editor)
-		{
-			return $this->editor;
-		}
-
-		$editor_name = $this->editor_name;
-		$editor = $core->editors[$editor_name];
+		$editor_id = $this->editor_id;
+		$editor = $core->editors[$editor_id];
 		$element = $editor->create_element
 		(
 			($this[self::EDITOR_TAGS] ?: array()) + array
@@ -81,45 +78,14 @@ class MultiEditorElement extends Element
 			}
 		}
 
-		return $this->editor = (string) $element;
+		return $element;
 	}
 
-	protected function options()
-	{
-		global $core;
-
-		$options = array();
-
-		foreach ($core->editors as $id => $editor)
-		{
-			$options[$id] = t($id, array(), array('scope' => 'editor_title'));
-		}
-
-		Event::fire
-		(
-			'alter.editors.options', array
-			(
-				'rc' => &$options
-			)
-		);
-
-		$el = new Element
-		(
-			'select', array
-			(
-				Element::LABEL => 'Editor',
-				Element::LABEL_POSITION => 'before',
-				Element::OPTIONS => $options,
-
-				'name' => $this[self::SELECTOR_NAME],
-				'class' => 'editor-selector',
-				'value' => $this->editor_name
-			)
-		);
-
-		return $el;
-	}
-
+	/**
+	 * Adds the `contents-name` and `selector-name` properties.
+	 *
+	 * @see Brickrouge.Element::alter_dataset()
+	 */
 	protected function alter_dataset(array $dataset)
 	{
 		$dataset = parent::alter_dataset($dataset);
@@ -130,9 +96,17 @@ class MultiEditorElement extends Element
 		return $dataset;
 	}
 
+	/**
+	 * The inner HTML of the element includes the editor element and the selector element.
+	 *
+	 * If the editor is not swappable an hidden element is used instead of the selector element.
+	 *
+	 * @see Brickrouge.Element::render_inner_html()
+	 */
 	protected function render_inner_html()
 	{
-		$html = $this->editor();
+		$html = (string) $this->editor;
+		$editor_id = $this->editor_id;
 
 		if ($this[self::NOT_SWAPPABLE])
 		{
@@ -141,13 +115,24 @@ class MultiEditorElement extends Element
 				'hidden', array
 				(
 					'name' => $this[self::SELECTOR_NAME],
-					'value' => $this->editor_name
+					'value' => $editor_id
 				)
 			);
 		}
 		else
 		{
-			$options = $this->options();
+			$options = (string) new SelectorElement
+			(
+				array
+				(
+					Element::LABEL => 'Editor',
+					Element::LABEL_POSITION => 'before',
+
+					'name' => $this[self::SELECTOR_NAME],
+					'class' => 'editor-selector',
+					'value' => $editor_id
+				)
+			);
 
 			if ($options)
 			{

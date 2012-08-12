@@ -40,5 +40,10 @@ return array
 	Module::T_PERMISSIONS => array
 	(
 		'post form'
+	),
+
+	Module::T_REQUIRES => array
+	(
+		'editor' => '1.0'
 	)
 );

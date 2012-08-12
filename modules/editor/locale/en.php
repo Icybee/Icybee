@@ -2,13 +2,9 @@
 
 return array
 (
-	'label' => array
-	(
-		'editor' => 'Editor'
-	),
-
 	'editor_title' => array
 	(
+		'feed' => 'Feed',
 		'image' => 'Image',
 		'node' => 'Node',
 		'patron' => 'Patron template',
@@ -18,5 +14,10 @@ return array
 		'text' => 'Text',
 		'textmark' => 'Textmark',
 		'widgets' => 'Widgets'
+	),
+
+	'label' => array
+	(
+		'editor' => 'Editor'
 	)
 );

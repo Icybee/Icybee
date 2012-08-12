@@ -8,7 +8,6 @@ return array
 	Module::T_TITLE => 'Pages',
 	Module::T_CATEGORY => 'site',
 	Module::T_EXTENDS => 'nodes',
-	Module::T_REQUIRED => true,
 	Module::T_MODELS => array
 	(
 		'primary' => array
@@ -42,5 +41,11 @@ return array
 				)
 			)
 		)
+	),
+
+	Module::T_REQUIRED => true,
+	Module::T_REQUIRES => array
+	(
+		'editor' => '1.0'
 	)
 );

@@ -23,7 +23,7 @@ class FeedEditorElement extends Element implements EditorElement
 {
 	private $elements = array();
 
-	public function __construct(array $attributes)
+	public function __construct(array $attributes=array())
 	{
 		global $core;
 

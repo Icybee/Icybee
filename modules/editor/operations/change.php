@@ -15,6 +15,9 @@ use ICanBoogie\Errors;
 use ICanBoogie\Exception;
 use ICanBoogie\Operation;
 
+/**
+ * Changes multieditor editor.
+ */
 class ChangeOperation extends Operation
 {
 	protected function get_controls()
@@ -33,25 +36,20 @@ class ChangeOperation extends Operation
 
 		if (!$this->key)
 		{
-			throw new Exception('Empty operation key (editor id)');
+			$errors['editor_id'] = t('The %property is required.', array('property' => 'editor_id'));
 		}
 
 		if (empty($request['selector_name']))
 		{
-			throw new Exception('Empty selector name');
+			$errors['selector_name'] = t('The %property is required.', array('property' => 'selector_name'));
 		}
 
 		if (empty($request['contents_name']))
 		{
-			throw new Exception('Empty contents_name');
+			$errors['contents_name'] = t('The %property is required.', array('property' => 'contents_name'));
 		}
 
-		if (!isset($request['contents']))
-		{
-			throw new Exception('Missing conents');
-		}
-
-		return true;
+		return !$errors->count();
 	}
 
 	protected function process()

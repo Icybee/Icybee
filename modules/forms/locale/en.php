@@ -2,6 +2,8 @@
 
 return array
 (
+	'editor_title.form' => 'Form',
+
 	'forms' => array
 	(
 		'edit' => array

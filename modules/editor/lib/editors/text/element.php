@@ -18,7 +18,7 @@ use Brickrouge\Text;
  */
 class TextEditorElement extends Text implements EditorElement
 {
-	public function __construct(array $attributes)
+	public function __construct(array $attributes=array())
 	{
 		parent::__construct
 		(

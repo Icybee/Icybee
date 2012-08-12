@@ -22,6 +22,9 @@ use Brickrouge\Document;
 /**
  * The following properties are injected by the "system.registry" module.
  *
+ * @property ICanBoogie\Modules\Editor\Collection $editors Editors collection. The getter is
+ * injected by the "Editors" module.
+ *
  * @property ICanBoogie\ActiveRecord\Model\System\Registry $registry Global registry object.
  *
  * The following properties are injected by the "sites" module.
