@@ -15,6 +15,8 @@ return array
 		__NAMESPACE__ . '\FeedEditorElement' => $path . 'lib/editors/feed/element.php',
 		__NAMESPACE__ . '\ImageEditor' => $path . 'lib/editors/image/editor.php',
 		__NAMESPACE__ . '\ImageEditorElement' => $path . 'lib/editors/image/element.php',
+		__NAMESPACE__ . '\NodeEditor' => $path . 'lib/editors/node/editor.php',
+		__NAMESPACE__ . '\NodeEditorElement' => $path . 'lib/editors/node/element.php',
 		__NAMESPACE__ . '\PatronEditor' => $path . 'lib/editors/patron/editor.php',
 		__NAMESPACE__ . '\PatronEditorElement' => $path . 'lib/editors/patron/element.php',
 		__NAMESPACE__ . '\PHPEditor' => $path . 'lib/editors/php/editor.php',

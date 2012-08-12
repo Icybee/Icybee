@@ -13,5 +13,6 @@ return array
 	'php' => __NAMESPACE__ . '\PHPEditor',
 	'feed' => __NAMESPACE__ . '\FeedEditor',
 	'image' => __NAMESPACE__ . '\ImageEditor',
+	'node' => __NAMESPACE__ . '\NodeEditor',
 	'widgets' => __NAMESPACE__ . '\WidgetsEditor'
 );
