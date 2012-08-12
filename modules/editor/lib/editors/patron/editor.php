@@ -39,9 +39,9 @@ class PatronEditor implements Editor
 	/**
 	 * @return RawEditorElement
 	 *
-	 * @see ICanBoogie\Modules\Editor.Editor::create_element()
+	 * @see ICanBoogie\Modules\Editor.Editor::from()
 	 */
-	public function create_element(array $attributes)
+	public function from(array $attributes)
 	{
 		return new PatronEditorElement($attributes);
 	}

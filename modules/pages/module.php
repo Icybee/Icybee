@@ -315,7 +315,7 @@ class Module extends \ICanBoogie\Modules\Nodes\Module
 
 				$editor = $core->editors[$editor_id];
 
-				$elements["contents[$id]"] = $editor->create_element
+				$elements["contents[$id]"] = $editor->from
 				(
 					array
 					(

@@ -32,14 +32,16 @@ interface Editor
 	public function unserialize($serialized_content);
 
 	/**
-	 * Returns the editor element.
+	 * Creates the editor element from the provided attributes.
+	 *
+	 * The content of the editor is provided using the `value` attribute.
 	 *
 	 * @param array $attributes Attributes that should be used to create the element. The content
 	 * of the element must be provided using the `value` attribute, and must be unserialized.
 	 *
 	 * @return \Brickrouge\Element
 	 */
-	public function create_element(array $attributes);
+	public function from(array $attributes);
 
 	/**
 	 * Renders the content into a HTML string or an object that can be stringified into a HTML

@@ -56,7 +56,7 @@ class MultiEditorElement extends Element
 
 		$editor_id = $this->editor_id;
 		$editor = $core->editors[$editor_id];
-		$element = $editor->create_element
+		$element = $editor->from
 		(
 			($this[self::EDITOR_TAGS] ?: array()) + array
 			(

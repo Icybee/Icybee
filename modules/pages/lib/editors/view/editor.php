@@ -43,9 +43,9 @@ class ViewEditor implements \ICanBoogie\Modules\Editor\Editor
 	/**
 	 * @return ViewEditorElement
 	 *
-	 * @see ICanBoogie\Modules\Editor.Editor::create_element()
+	 * @see ICanBoogie\Modules\Editor.Editor::from()
 	 */
-	public function create_element(array $attributes)
+	public function from(array $attributes)
 	{
 		return new ViewEditorElement($attributes);
 	}
