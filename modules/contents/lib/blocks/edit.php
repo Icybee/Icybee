@@ -49,7 +49,7 @@ class EditBlock extends \ICanBoogie\Modules\Nodes\EditBlock
 
 		$module_flat_id = $this->module->flat_id;
 
-		$default_editor = $core->site->metas->get($module_flat_id . '.default_editor', 'moo');
+		$default_editor = $core->site->metas->get($module_flat_id . '.default_editor', 'rte');
 		$use_multi_editor = $core->site->metas->get($module_flat_id . '.use_multi_editor');
 
 		if ($use_multi_editor)

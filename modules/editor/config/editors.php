@@ -9,7 +9,6 @@ return array
 	'raw' => __NAMESPACE__ . '\RawEditor',
 	'text' => __NAMESPACE__ . '\TextEditor',
 	'patron' => __NAMESPACE__ . '\PatronEditor',
-	'moo' => __NAMESPACE__ . '\RTEEditor',
 	'php' => __NAMESPACE__ . '\PHPEditor',
 	'feed' => __NAMESPACE__ . '\FeedEditor',
 	'image' => __NAMESPACE__ . '\ImageEditor',
