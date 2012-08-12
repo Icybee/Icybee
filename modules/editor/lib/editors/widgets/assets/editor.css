@@ -1,0 +1,50 @@
+.widgets-selector
+{
+	padding: 0;
+	margin: 1em 0;
+	list-style: none;
+	border: 1px solid #ccc;
+	border-radius: 3px;
+}
+
+.widgets-selector li
+{
+	background: white;
+	padding: .2em .4em;
+	cursor: move;
+}
+
+.widgets-selector li + li
+{
+	border-top: 1px solid #eee;
+}
+
+.widgets-selector li:first-child
+{
+	border-radius: 3px 3px 0 0;
+}
+
+.widgets-selector li:last-child
+{
+	border-radius: 0 0 3px 3px;
+}
+
+.widgets-selector li:nth-child(even)
+{
+	background: #FBFBFB;
+}
+
+.widgets-selector li:hover
+{
+	background: #f2f8ff;
+}
+
+.widgets-selector li + li
+{
+	border-top: 1px solid #eee;
+}
+
+.widgets-selector li label
+{
+	cursor: move;
+}
