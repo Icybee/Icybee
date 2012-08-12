@@ -15,6 +15,7 @@ return array
 		'raw' => 'Raw HTML',
 		'rte' => 'Rich Text Editor',
 		'text' => 'Text',
-		'textmark' => 'Textmark'
+		'textmark' => 'Textmark',
+		'widgets' => 'Widgets'
 	)
 );

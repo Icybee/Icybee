@@ -12,5 +12,6 @@ return array
 	'moo' => __NAMESPACE__ . '\RTEEditor',
 	'php' => __NAMESPACE__ . '\PHPEditor',
 	'feed' => __NAMESPACE__ . '\FeedEditor',
-	'image' => __NAMESPACE__ . '\ImageEditor'
+	'image' => __NAMESPACE__ . '\ImageEditor',
+	'widgets' => __NAMESPACE__ . '\WidgetsEditor'
 );

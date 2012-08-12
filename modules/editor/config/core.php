@@ -27,10 +27,10 @@ return array
 		__NAMESPACE__ . '\TextEditorElement' => $path . 'lib/editors/text/element.php',
 		__NAMESPACE__ . '\TextmarkEditor' => $path . 'lib/editors/textmark/editor.php',
 		__NAMESPACE__ . '\TextmarkEditorElement' => $path . 'lib/editors/textmark/element.php',
+		__NAMESPACE__ . '\WidgetsEditor' => $path . 'lib/editors/widgets/editor.php',
+		__NAMESPACE__ . '\WidgetsEditorElement' => $path . 'lib/editors/widgets/element.php',
 
 		'WdEditorElement' => $_includes_root . 'wdeditorelement.php',
-		'WdMultiEditorElement' => $_includes_root . 'wdmultieditorelement.php',
-
-		'widgets_WdEditorElement' => $path . 'editors/widgets/editor.php'
+		'WdMultiEditorElement' => $_includes_root . 'wdmultieditorelement.php'
 	)
 );
