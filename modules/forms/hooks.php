@@ -18,11 +18,6 @@ use ICanBoogie\Mailer;
 
 class Hooks
 {
-	public static function on_alter_editor_options(Event $event)
-	{
-		$event->rc['form'] = t('Form');
-	}
-
 	public static function markup_form(array $args, \Patron\Engine $patron, $template)
 	{
 		global $core;
