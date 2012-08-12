@@ -60,11 +60,11 @@ class ChangeOperation extends Operation
 
 		$request = $this->request;
 
-		$editor = (string) new \WdMultiEditorElement
+		$editor = (string) new MultiEditorElement
 		(
 			$this->key, array
 			(
-				\WdMultiEditorElement::T_SELECTOR_NAME => $request['selector_name'],
+				MultiEditorElement::SELECTOR_NAME => $request['selector_name'],
 
 				'name' => $request['contents_name'],
 				'value' => $request['contents']

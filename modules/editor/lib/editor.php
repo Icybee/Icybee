@@ -50,7 +50,11 @@ interface Editor
 	public function render($content);
 }
 
+/**
+ * Interface for editor elements.
+ */
 interface EditorElement
 {
-	const STYLESHEETS = '#editot-stylesheet';
+	const STYLESHEETS = '#editor-stylesheet';
+	const CONFIG = '#editor-config';
 }

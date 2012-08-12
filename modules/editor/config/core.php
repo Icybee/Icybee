@@ -2,13 +2,13 @@
 
 namespace ICanBoogie\Modules\Editor;
 
-$_includes_root = $path . DIRECTORY_SEPARATOR . 'includes' . DIRECTORY_SEPARATOR;
-
 return array
 (
 	'autoload' => array
 	(
 		__NAMESPACE__ . '\Collection' => $path . 'lib/collection.php',
+		__NAMESPACE__ . '\MultiEditorElement' => $path . 'lib/multieditor.php',
+
 		__NAMESPACE__ . '\Editor' => $path . 'lib/editor.php',
 		__NAMESPACE__ . '\EditorElement' => $path . 'lib/editor.php',
 		__NAMESPACE__ . '\FeedEditor' => $path . 'lib/editors/feed/editor.php',
@@ -31,8 +31,5 @@ return array
 		__NAMESPACE__ . '\TextmarkEditorElement' => $path . 'lib/editors/textmark/element.php',
 		__NAMESPACE__ . '\WidgetsEditor' => $path . 'lib/editors/widgets/editor.php',
 		__NAMESPACE__ . '\WidgetsEditorElement' => $path . 'lib/editors/widgets/element.php',
-
-		'WdEditorElement' => $_includes_root . 'wdeditorelement.php',
-		'WdMultiEditorElement' => $_includes_root . 'wdmultieditorelement.php'
 	)
 );

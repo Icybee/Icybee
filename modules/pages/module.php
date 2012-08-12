@@ -13,6 +13,8 @@ namespace ICanBoogie\Modules\Pages;
 
 use ICanBoogie\ActiveRecord\Node;
 use ICanBoogie\ActiveRecord\Page;
+use ICanBoogie\Modules\Editor\EditorElement;
+use ICanBoogie\Modules\Editor\MultiEditorElement;
 
 use Brickrouge\Alert;
 use Brickrouge\Element;
@@ -319,8 +321,8 @@ class Module extends \ICanBoogie\Modules\Nodes\Module
 					(
 						Form::LABEL => $title,
 
-						\WdEditorElement::T_STYLESHEETS => $styles,
-						\WdEditorElement::T_CONFIG => $editor_config,
+						EditorElement::STYLESHEETS => $styles,
+						EditorElement::CONFIG => $editor_config,
 
 						Element::GROUP => $does_inherit ? 'contents.inherit' : 'contents',
 						Element::DESCRIPTION => $editor_description,
@@ -338,18 +340,18 @@ class Module extends \ICanBoogie\Modules\Nodes\Module
 			}
 			else
 			{
-				$elements["contents[$id]"] = new \WdMultiEditorElement
+				$elements["contents[$id]"] = new MultiEditorElement
 				(
 					$editor_id, array
 					(
 						Form::LABEL => $title,
 
-						\WdMultiEditorElement::T_NOT_SWAPPABLE => isset($editable['editor']),
-						\WdMultiEditorElement::T_SELECTOR_NAME => "editors[$id]",
-						\WdMultiEditorElement::T_EDITOR_TAGS => array
+						MultiEditorElement::NOT_SWAPPABLE => isset($editable['editor']),
+						MultiEditorElement::SELECTOR_NAME => "editors[$id]",
+						MultiEditorElement::EDITOR_TAGS => array
 						(
-							\WdEditorElement::T_STYLESHEETS => $styles,
-							\WdEditorElement::T_CONFIG => $editor_config
+							EditorElement::STYLESHEETS => $styles,
+							EditorElement::CONFIG => $editor_config
 						),
 
 						Element::GROUP => $does_inherit ? 'contents.inherit' : 'contents',
