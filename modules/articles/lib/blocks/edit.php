@@ -18,11 +18,11 @@ use Brickrouge\Element;
 
 class EditBlock extends \ICanBoogie\Modules\Contents\EditBlock
 {
-	protected function alter_children(array $children, array &$properties, array &$attributes)
+	protected function get_children()
 	{
 		return array_merge
 		(
-			parent::alter_children($children, $properties, $attributes), array
+			parent::get_children(), array
 			(
 				Content::DATE => new \Brickrouge\DateTime
 				(

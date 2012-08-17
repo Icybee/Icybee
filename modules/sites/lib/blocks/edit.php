@@ -18,11 +18,11 @@ use Brickrouge\Widget;
 
 class EditBlock extends \Icybee\EditBlock
 {
-	protected function alter_attributes(array $attributes)
+	protected function get_attributes()
 	{
 		return \ICanBoogie\array_merge_recursive
 		(
-			parent::alter_attributes($attributes), array
+			parent::get_attributes(), array
 			(
 				Element::GROUPS => array
 				(
@@ -46,7 +46,7 @@ class EditBlock extends \Icybee\EditBlock
 		);
 	}
 
-	protected function alter_children(array $children, array &$properties, array &$attributes)
+	protected function get_children()
 	{
 		global $core;
 
@@ -67,24 +67,26 @@ class EditBlock extends \Icybee\EditBlock
 		$parts = explode('.', $_SERVER['SERVER_NAME']);
 		$parts = array_reverse($parts);
 
-		if (!$properties['tld'] && isset($parts[0]))
+		$values = $this->values;
+
+		if (!$values['tld'] && isset($parts[0]))
 		{
 			$placeholder_tld = $parts[0];
 		}
 
-		if (!$properties['domain'] && isset($parts[1]))
+		if (!$values['domain'] && isset($parts[1]))
 		{
 			$placeholder_domain = $parts[1];
 		}
 
-		if (!$properties['subdomain'] && isset($parts[2]))
+		if (!$values['subdomain'] && isset($parts[2]))
 		{
 			$placeholder_subdomain = $parts[2];
 		}
 
 		return array_merge
 		(
-			parent::alter_children($children, $properties, $attributes), array
+			parent::get_children(), array
 			(
 				'title' => new Text
 				(
@@ -164,7 +166,7 @@ class EditBlock extends \Icybee\EditBlock
 						Text::ADDON_POSITION => 'before',
 						Element::GROUP => 'location',
 
-						'value' => trim($properties['path'], '/')
+						'value' => trim($values['path'], '/')
 					)
 				),
 
@@ -179,7 +181,7 @@ class EditBlock extends \Icybee\EditBlock
 					)
 				),
 
-				'nativeid' =>  $this->get_control_translation_sources($properties, $attributes),
+				'nativeid' =>  $this->get_control_translation_sources($values),
 
 				'timezone' => new Widget\TimeZone
 				(
@@ -247,11 +249,11 @@ class EditBlock extends \Icybee\EditBlock
 		return array_combine($models, $models);
 	}
 
-	protected function get_control_translation_sources(array &$properties, array &$attributes)
+	protected function get_control_translation_sources(array $values)
 	{
 		$options = $this->module->model
 		->select('siteid, concat(title, ":", language) title')
-		->where('siteid != ?', (int) $properties['siteid'])
+		->where('siteid != ?', (int) $values['siteid'])
 		->pairs;
 
 		if (!$options)

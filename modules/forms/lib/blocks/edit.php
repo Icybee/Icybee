@@ -30,11 +30,11 @@ class EditBlock extends \ICanBoogie\Modules\Nodes\EditBlock
 		$document->js->add('../../public/admin.js');
 	}
 
-	protected function alter_attributes(array $attributes)
+	protected function get_attributes()
 	{
 		return \ICanBoogie\array_merge_recursive
 		(
-			parent::alter_attributes($attributes), array
+			parent::get_attributes(), array
 			(
 				Element::GROUPS => array
 				(
@@ -57,7 +57,7 @@ class EditBlock extends \ICanBoogie\Modules\Nodes\EditBlock
 		);
 	}
 
-	protected function alter_children(array $children, array &$properties, array &$attributes)
+	protected function get_children()
 	{
 		global $core;
 
@@ -79,7 +79,7 @@ class EditBlock extends \ICanBoogie\Modules\Nodes\EditBlock
 
 		return array_merge
 		(
-			parent::alter_children($children, $properties, $attributes), array
+			parent::get_children(), array
 			(
 				'modelid' => new Element
 				(

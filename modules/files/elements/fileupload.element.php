@@ -62,10 +62,8 @@ class WdFileUploadElement extends Brickrouge\File
 		return $rc;
 	}
 
-	protected function options()
+	protected function alter_dataset(array $dataset)
 	{
-		global $document;
-
 		$limit = $this[self::FILE_WITH_LIMIT] ?: 2 * 1024;
 
 		if ($limit === true)
@@ -77,7 +75,9 @@ class WdFileUploadElement extends Brickrouge\File
 		(
 			'name' => $this['name'],
 			'max-file-size' => $limit * 1024
-		);
+		)
+
+		+ parent::alter_dataset($dataset);
 	}
 
 }

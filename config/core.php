@@ -54,17 +54,8 @@ return array
 		'Icybee\ConfigBlock' => $path . 'lib/blocks/config.php',
 		'Icybee\DeleteBlock' => $path . 'lib/blocks/delete.php',
 		'Icybee\EditBlock' => $path . 'lib/blocks/edit.php',
+		'Icybee\InterlockBlock' => $path . 'lib/blocks/interlock.php',
 		'Icybee\ManageBlock' => $path . 'lib/blocks/manage.php',
-		/*
-		'Icybee\EditBlock\BeforeAlterAttributesEvent' => $path . 'lib/blocks/edit.php',
-		'Icybee\EditBlock\BeforeAlterPropertiesEvent' => $path . 'lib/blocks/edit.php',
-		'Icybee\EditBlock\BeforeAlterChildrenEvent' => $path . 'lib/blocks/edit.php',
-		'Icybee\EditBlock\BeforeAlterActionsEvent' => $path . 'lib/blocks/edit.php',
-		'Icybee\EditBlock\AlterAttributesEvent' => $path . 'lib/blocks/edit.php',
-		'Icybee\EditBlock\AlterPropertiesEvent' => $path . 'lib/blocks/edit.php',
-		'Icybee\EditBlock\AlterChildrenEvent' => $path . 'lib/blocks/edit.php',
-		'Icybee\EditBlock\AlterActionsEvent' => $path . 'lib/blocks/edit.php',
-		*/
 		'Icybee\FormBlock' => $path . 'lib/blocks/form.php',
 
 		'WdSectionedForm' => $includes . 'wdsectionedform.php',

@@ -24,11 +24,11 @@ class EditBlock extends \ICanBoogie\Modules\Files\EditBlock
 
 	protected $uploader_class = 'Brickrouge\Widget\ImageUpload';
 
-	protected function alter_children(array $children, array &$properties, array &$attributes)
+	protected function get_children()
 	{
 		return array_merge
 		(
-			parent::alter_children($children, $properties, $attributes), array
+			parent::get_children(), array
 			(
 				'alt' => new Text
 				(

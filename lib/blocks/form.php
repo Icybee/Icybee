@@ -21,19 +21,42 @@ use Brickrouge\A;
 use Brickrouge\Button;
 use Brickrouge\Element;
 use Brickrouge\Form;
-use Brickrouge\SplitButton;
 
 /**
  * Base class for form type blocks.
+ *
+ * @property array $actions The actions for the {@link Form} element.
+ * @property array $attributes The attributes for the {@link Form} element.
+ * @property Form $element The {@link Form} element.
+ * @property array $values The values for the {@link Form} element.
  */
-abstract class FormBlock extends Form
+abstract class FormBlock extends \ICanBoogie\Object
 {
+	/**
+	 * Adds assets to the document.
+	 *
+	 * The method doesn't add any asset.
+	 *
+	 * @param \Brickrouge\Document $document
+	 */
+	static protected function add_assets(\Brickrouge\Document $document)
+	{
+
+	}
+
 	/**
 	 * Module requesting the block.
 	 *
 	 * @var Module
 	 */
 	protected $module;
+
+	/**
+	 * Attributes provided during construct.
+	 *
+	 * @var array
+	 */
+	protected $initial_attributes;
 
 	/**
 	 * Constructor.
@@ -44,97 +67,170 @@ abstract class FormBlock extends Form
 	public function __construct(Module $module, array $attributes=array())
 	{
 		$this->module = $module;
+		$this->initial_attributes = $attributes;
 
 		$this->access_control();
+	}
 
-		$values = isset($attributes[self::VALUES]) ? $attributes[self::VALUES] : array();
-		$children = $this->children;
-		$actions = array
+	/**
+	 * Returns whether the user has permission to display this block.
+	 *
+	 * @return bool
+	 */
+	abstract protected function get_permission();
+
+	/**
+	 * Controls the access to the block.
+	 *
+	 * @throws \Exception if the used has no permission to access the block.
+	 */
+	abstract protected function access_control();
+
+	/**
+	 * Alters the various parameters of the block.
+	 *
+	 * For each parameter the method checks if a `alter_<param>` method exists. If the method
+	 * exists the following methods are invoked to alter the value of the parameter:
+	 *
+	 * 1. `fire_before_<param>`: Fires the `alter_<param>:before` event.
+	 * 2. `alter_<param>`: Alters the values of the parameter.
+	 * 3. `fire_<param>`: Fires the `alter_<param>` event.
+	 *
+	 * @param array $params The parameters to alter.
+	 *
+	 * @return array
+	 */
+	protected function alter(array $params)
+	{
+		foreach ($params as $param => &$value)
+		{
+			$method_name = 'alter_' . $param;
+
+			if (!method_exists($this, $method_name))
+			{
+				continue;
+			}
+
+			call_user_func(array($this, 'fire_before_' . $method_name), $params);
+			$value = $this->$method_name($value, $params);
+			call_user_func(array($this, 'fire_' . $method_name), $params);
+		}
+
+		return $params;
+	}
+
+	/**
+	 * Renders the block into a {@link Form} element.
+	 *
+	 * The method invokes the {@link alter()} method to alter the attribute for the {@link Form}
+	 * element, and invokes the {@link alter_element()} method to alter the {@link Form} element
+	 * with the following properties:
+	 *
+	 * - `module`: The module creating the block.
+	 * - `attributes`: The attributes of the {@link Form} element.
+	 * - `actions`: The actions of the {@link Form} element.
+	 * - `children`: The children of the {@link Form} element.
+	 * - `values`: The values of the {@link Form} element.
+	 *
+	 * @return Form
+	 */
+	public function render()
+	{
+		global $core;
+
+		static::add_assets($core->document);
+
+		$this->attributes;
+		$attributes = &$this->attributes;
+		$this->values;
+		$values = &$this->values;
+		$this->children;
+		$children = &$this->children;
+		$this->actions;
+		$actions = &$this->actions;
+
+		$params = $this->alter
 		(
-			new Button
+			array
 			(
-				'Send', array
-				(
-					'class' => 'btn-primary',
-					'type' => 'submit'
-				)
+				'module' => $this->module,
+				'attributes' => &$attributes,
+				'actions' => &$actions,
+				'children' => &$children,
+				'values' => &$values
 			)
 		);
 
-		$attributes += array
+		$attributes = array
 		(
-			self::ACTIONS => &$actions,
+			Form::ACTIONS => &$actions,
+			Form::CHILDREN => &$children,
+			Form::VALUES => &$values
+		)
 
-			self::RENDERER => new \Brickrouge\Renderer\Simple
-			(
-				array
-				(
-					\Brickrouge\Renderer\Simple::GROUP_CLASS => 'Icybee\Element\Group'
-				)
-			),
+		+ $params['attributes'];
 
-			self::VALUES => &$values,
-			self::CHILDREN => &$children,
-
-			'id' => 'editor',
-			'action' => '',
-			'class' => 'form-primary edit',
-			'name' => (string) $module
-		);
-
-		$alter_params = array
-		(
-			'module' => $module,
-			'attributes' => &$attributes
-		);
-
-		$this->fire_before_alter_attributes($alter_params);
-		$attributes = $this->alter_attributes($attributes);
-		$this->fire_alter_attributes($alter_params);
-
-		$alter_params['values'] = &$values;
-
-		$this->fire_before_alter_values($alter_params);
-		$values = $alter_params['values'] = $this->alter_values($values, $attributes);
-		$this->fire_alter_values($alter_params);
-
-		$alter_params['children'] = &$children;
-
-		$this->fire_before_alter_children($alter_params);
-		$children = $alter_params['children'] = $this->alter_children($children, $values, $attributes);
-		$this->fire_alter_children($alter_params);
-
-		$alter_params['actions'] = &$actions;
-
-		$this->fire_before_alter_actions($alter_params);
-		$actions = $alter_params['actions'] = $this->alter_actions($actions);
-		$this->fire_alter_actions($alter_params);
-
-		if (!$this->permission)
-		{
-			$attributes[self::ACTIONS] = null;
-			$attributes[self::DISABLED] = true;
-		}
-
-		parent::__construct($attributes);
+		return $this->alter_element($this->element, $params);
 	}
 
-	abstract protected function get_permission();
-	abstract protected function access_control();
+	/**
+	 * Renders the block into a HTML string.
+	 *
+	 * The method invokes the {@link render()} method.
+	 *
+	 * @return string
+	 */
+	public function __toString()
+	{
+		try
+		{
+			return (string) $this->render();
+		}
+		catch (\Exception $e)
+		{
+			return \Brickrouge\render_exception($e);
+		}
+	}
 
 	/*
 	 * ATTRIBUTES
 	 */
 
-	protected function alter_attributes(array $attributes)
+	/**
+	 * Returns the attributes for the {@link Form} element.
+	 *
+	 * The following attributes are defined:
+	 *
+	 * - The destination of the operation: The module id.
+	 * - The form renderer: An instance of {@link Brickrouge\Renderer\Simple} with the
+	 * {@link Icybee\Element\Group} group class.
+	 * - Groups: The `primary` group.
+	 * - id: `editor.
+	 * - action: An empty string.
+	 * - class: `form-primary edit`.
+	 * - name: The identifier of the module.
+	 *
+	 * @return array
+	 */
+	protected function get_attributes()
 	{
+		$module = $this->module;
+
 		return \ICanBoogie\array_merge_recursive
 		(
-			array
+			$this->initial_attributes, array
 			(
 				Form::HIDDENS => array
 				(
-					Operation::DESTINATION => $this->module->id
+					Operation::DESTINATION => $module->id
+				),
+
+				Form::RENDERER => new \Brickrouge\Renderer\Simple
+				(
+					array
+					(
+						\Brickrouge\Renderer\Simple::GROUP_CLASS => 'Icybee\Element\Group'
+					)
 				),
 
 				Element::GROUPS => array
@@ -143,21 +239,49 @@ abstract class FormBlock extends Form
 					(
 
 					)
-				)
-			)
+				),
 
-			+ $attributes
+				'id' => 'editor',
+				'action' => '',
+				'class' => 'form-primary edit',
+				'name' => (string) $module
+			)
 		);
 	}
 
-	protected function fire_before_alter_attributes(array $params)
+	/**
+	 * Alters the attributes of the {@link Form} element.
+	 *
+	 * The method returns the attributes as is.
+	 *
+	 * @param array $attributes The attributes to alter.
+	 * @param array $params The alter parameters.
+	 *
+	 * @return array
+	 */
+	protected function alter_attributes(array $attributes, array $params)
 	{
-		Event::fire('alter_attributes:before', $params, $this);
+		return $attributes;
 	}
 
-	protected function fire_alter_attributes(array $params)
+	/**
+	 * Fires the `alter_attributes:before` event of class {@link FormBlock\BeforeAlterAttributesEvent}.
+	 *
+	 * @param array $properties The properties of the event.
+	 */
+	protected function fire_before_alter_attributes(array $properties)
 	{
-		Event::fire('alter_attributes', $params, $this);
+		new FormBlock\BeforeAlterAttributesEvent($this, $properties);
+	}
+
+	/**
+	 * Fires the `alter_attributes` event of class {@link FormBlock\AlterAttributesEvent}.
+	 *
+	 * @param array $properties The properties of the event.
+	 */
+	protected function fire_alter_attributes(array $properties)
+	{
+		new FormBlock\AlterAttributesEvent($this, $properties);
 	}
 
 	/*
@@ -165,23 +289,51 @@ abstract class FormBlock extends Form
 	 */
 
 	/**
-	 * Alerts the editable properties of the record.
+	 * Returns the values for the {@link Form} element.
 	 *
-	 * @param array $properties
+	 * The method returns the values defined in the initial attributes or an empty array
+	 * if they were not defined.
+	 *
+	 * @return array
 	 */
-	protected function alter_values(array $properties, array &$attributes)
+	protected function get_values()
 	{
-		return $properties;
+		return isset($this->initial_attributes[Form::VALUES]) ? $this->initial_attributes[Form::VALUES] : array();
 	}
 
-	protected function fire_before_alter_values(array $params)
+	/**
+	 * Alerts the values for the {@link Form} element.
+	 *
+	 * The method returns the values as is.
+	 *
+	 * @param array $values The values to alter.
+	 * @param array $params The alter parameters.
+	 *
+	 * @return array
+	 */
+	protected function alter_values(array $values, array $params)
 	{
-		Event::fire('alter_values:before', $params, $this);
+		return $values;
 	}
 
-	protected function fire_alter_values(array $params)
+	/**
+	 * Fires the `alter_values:before` event of class {@link FormBlock\BeforeAlterValuesEvent}.
+	 *
+	 * @param array $properties The properties of the event.
+	 */
+	protected function fire_before_alter_values(array $properties)
 	{
-		Event::fire('alter_values', $params, $this);
+		new FormBlock\BeforeAlterValuesEvent($this, $properties);
+	}
+
+	/**
+	 * Fires the `alter_values` event of class {@link FormBlock\AlterValuesEvent}.
+	 *
+	 * @param array $properties The properties of the event.
+	 */
+	protected function fire_alter_values(array $properties)
+	{
+		new FormBlock\AlterValuesEvent($this, $properties);
 	}
 
 	/*
@@ -189,23 +341,51 @@ abstract class FormBlock extends Form
 	 */
 
 	/**
-	 * Alerts the children of the block.
+	 * Returns the children of the {@link Form} element.
 	 *
-	 * @param array $children
+	 * The method returns the children defined in the initial attributes or an empty array
+	 * if they were not defined.
+	 *
+	 * @return array
 	 */
-	protected function alter_children(array $children, array &$properties, array &$attributes)
+	protected function get_children()
+	{
+		return isset($this->initial_attributes[Element::CHILDREN]) ? $this->initial_attributes[Element::CHILDREN] : array();
+	}
+
+	/**
+	 * Alters the children for the {@link Form} element.
+	 *
+	 * The method returns the children as is.
+	 *
+	 * @param array $children The children to alter.
+	 * @param array $params The alter parameters.
+	 *
+	 * @return array
+	 */
+	protected function alter_children(array $children, array $params)
 	{
 		return $children;
 	}
 
-	protected function fire_before_alter_children(array $params)
+	/**
+	 * Fires the `alter_children:before` event of class {@link FormBlock\BeforeAlterChildrenEvent}.
+	 *
+	 * @param array $properties The properties of the event.
+	 */
+	protected function fire_before_alter_children(array $properties)
 	{
-		Event::fire('alter_children:before', $params, $this);
+		new FormBlock\BeforeAlterChildrenEvent($this, $properties);
 	}
 
-	protected function fire_alter_children(array $params)
+	/**
+	 * Fires the `alter_children` event of class {@link FormBlock\AlterChildrenEvent}.
+	 *
+	 * @param array $properties The properties of the event.
+	 */
+	protected function fire_alter_children(array $properties)
 	{
-		Event::fire('alter_children', $params, $this);
+		new FormBlock\AlterChildrenEvent($this, $properties);
 	}
 
 	/*
@@ -213,20 +393,269 @@ abstract class FormBlock extends Form
 	 */
 
 	/**
-	 * Alerts form actions
+	 * Returns the actions for the {@link Form} element.
+	 *
+	 * The method returns an array with a `Send` button. The button can be overrode using the
+	 * `primary` key.
+	 *
+	 * @return array
 	 */
-	protected function alter_actions(array $actions)
+	protected function get_actions()
+	{
+		return array
+		(
+			'primary' => new Button
+			(
+				'Send', array
+				(
+					'class' => 'btn-primary',
+					'type' => 'submit',
+					'name' => false
+				)
+			)
+		);
+	}
+
+	/**
+	 * Alters the actions for the {@link Form} element.
+	 *
+	 * The method returns the actions as is.
+	 *
+	 * @param array $actions The actions to alter.
+	 * @param array $params The alter parameters.
+	 *
+	 * @return array
+	 */
+	protected function alter_actions(array $actions, array $params)
 	{
 		return $actions;
 	}
 
-	protected function fire_before_alter_actions(array $params)
+	/**
+	 * Fires the `alter_actions:before` event of class {@link FormBlock\BeforeAlterActionsEvent}.
+	 *
+	 * @param array $properties The properties of the event.
+	 */
+	protected function fire_before_alter_actions(array $properties)
 	{
-		Event::fire('alter_actions:before', $params, $this);
+		new FormBlock\BeforeAlterActionsEvent($this, $properties);
 	}
 
-	protected function fire_alter_actions(array $params)
+	/**
+	 * Fires the `alter_actions` event of class {@link FormBlock\AlterActionsEvent}.
+	 *
+	 * @param array $properties The properties of the event.
+	 */
+	protected function fire_alter_actions(array $properties)
 	{
-		Event::fire('alter_actions', $params, $this);
+		new FormBlock\AlterActionsEvent($this, $properties);
+	}
+
+	/*
+	 * ELEMENT
+	 */
+
+	/**
+	 * Returns the {@link Form} element.
+	 *
+	 * @return \Brickrouge\Form
+	 */
+	protected function get_element()
+	{
+		return new Form($this->attributes);
+	}
+
+	/**
+	 * Alters the {@link Form} element.
+	 *
+	 * The method return the element as is.
+	 *
+	 * @param Form $element The element to alter.
+	 * @param array $params The alter parameters.
+	 *
+	 * @return Form
+	 */
+	protected function alter_element(Form $element, array $params)
+	{
+		return $element;
+	}
+}
+
+namespace Icybee\FormBlock;
+
+/**
+ * Base class for the alter events of the {@link FormBlock} class.
+ */
+abstract class AlterEvent extends \ICanBoogie\Event
+{
+	/**
+	 * The module creating the block.
+	 *
+	 * @var \ICanBoogie\Module
+	 */
+	public $module;
+
+	/**
+	 * Reference to the attributes for the {@link Form} element.
+	 *
+	 * @var array
+	 */
+	public $attributes;
+
+	/**
+	 * Reference to the actions for the {@link Form} element.
+	 *
+	 * @var array
+	 */
+	public $actions;
+
+	/**
+	 * Reference to the children for the {@link Form} element.
+	 *
+	 * @var array
+	 */
+	public $children;
+
+	/**
+	 * Reference to the values for the {@link Form} element.
+	 *
+	 * @var array
+	 */
+	public $values;
+}
+
+/**
+ * Event class for the `Icybee\FormBlock::alter_attributes:before` event.
+ */
+class BeforeAlterAttributesEvent extends AlterEvent
+{
+	/**
+	 * The event is constructed with the type `alter_attributes:before`.
+	 *
+	 * @param \Icybee\FormBlock $target
+	 * @param array $properties
+	 */
+	public function __construct(\Icybee\FormBlock $target, array $properties)
+	{
+		parent::__construct($target, 'alter_attributes:before', $properties);
+	}
+}
+
+/**
+ * Event class for the `Icybee\FormBlock::alter_attributes` event.
+ */
+class AlterAttributesEvent extends AlterEvent
+{
+	/**
+	 * The event is constructed with the type `alter_attributes`.
+	 *
+	 * @param \Icybee\FormBlock $target
+	 * @param array $properties
+	 */
+	public function __construct(\Icybee\FormBlock $target, array $properties)
+	{
+		parent::__construct($target, 'alter_attributes', $properties);
+	}
+}
+
+/**
+ * Event class for the `Icybee\FormBlock::alter_properties:before` event.
+ */
+class BeforeAlterValuesEvent extends AlterEvent
+{
+	/**
+	 * The event is constructed with the type `alter_properties:before`.
+	 *
+	 * @param \Icybee\FormBlock $target
+	 * @param array $properties
+	 */
+	public function __construct(\Icybee\FormBlock $target, array $properties)
+	{
+		parent::__construct($target, 'alter_values:before', $properties);
+	}
+}
+
+/**
+ * Event class for the `Icybee\FormBlock::alter_values` event.
+ */
+class AlterValuesEvent extends AlterEvent
+{
+	/**
+	 * The event is constructed with the type `alter_properties`.
+	 *
+	 * @param \Icybee\FormBlock $target
+	 * @param array $properties
+	 */
+	public function __construct(\Icybee\FormBlock $target, array $properties)
+	{
+		parent::__construct($target, 'alter_values', $properties);
+	}
+}
+
+/**
+ * Event class for the `Icybee\FormBlock::alter_children:before` event.
+ */
+class BeforeAlterChildrenEvent extends AlterEvent
+{
+	/**
+	 * The event is constructed with the type `alter_children:before`.
+	 *
+	 * @param \Icybee\FormBlock $target
+	 * @param array $properties
+	 */
+	public function __construct(\Icybee\FormBlock $target, array $properties)
+	{
+		parent::__construct($target, 'alter_children:before', $properties);
+	}
+}
+
+/**
+ * Event class for the `Icybee\FormBlock::alter_children` event.
+ */
+class AlterChildrenEvent extends AlterEvent
+{
+	/**
+	 * The event is constructed with the type `alter_children`.
+	 *
+	 * @param \Icybee\FormBlock $target
+	 * @param array $properties
+	 */
+	public function __construct(\Icybee\FormBlock $target, array $properties)
+	{
+		parent::__construct($target, 'alter_children', $properties);
+	}
+}
+
+/**
+ * Event class for the `Icybee\FormBlock::alter_actions:before` event.
+ */
+class BeforeAlterActionsEvent extends AlterEvent
+{
+	/**
+	 * The event is constructed with the type `alter_actions:before`.
+	 *
+	 * @param \Icybee\FormBlock $target
+	 * @param array $properties
+	 */
+	public function __construct(\Icybee\FormBlock $target, array $properties)
+	{
+		parent::__construct($target, 'alter_actions:before', $properties);
+	}
+}
+
+/**
+ * Event class for the `Icybee\FormBlock::alter_actions` event.
+ */
+class AlterActionsEvent extends AlterEvent
+{
+	/**
+	 * The event is constructed with the type `alter_actions`.
+	 *
+	 * @param \Icybee\FormBlock $target
+	 * @param array $properties
+	 */
+	public function __construct(\Icybee\FormBlock $target, array $properties)
+	{
+		parent::__construct($target, 'alter_actions', $properties);
 	}
 }

@@ -1391,16 +1391,13 @@ EOT;
 					(
 						array
 						(
-							Element::DATASET => array
-							(
-								'placeholder' => t('Search')
-							),
-
 							'title' => t('Search in the records'),
 							'value' => $search,
 							'size' => '16',
 							'class' => 'search' . ($search ? '' : ' empty'),
-							'tabindex' => 0
+							'tabindex' => 0,
+
+							'data-placeholder' => t('Search')
 						)
 					),
 

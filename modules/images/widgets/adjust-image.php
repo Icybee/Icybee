@@ -59,31 +59,25 @@ class AdjustImage extends AdjustNode
 					(
 						'img', array
 						(
-							Element::DATASET => array
-							(
-								'nid' => $recordid,
-								'pop-preview-delay' => 1000,
-								'pop-preview-target' => '.widget-adjust-image'
-							),
-
 							'src' => $record->thumbnail('w:64;h:64')->url,
 							'alt' => $record->alt,
 							'width' => 64,
 							'height' => 64,
 							'class' => 'pop-preview',
-							'title' => $record->title
+							'title' => $record->title,
+
+							'data-nid' => $recordid,
+							'data-pop-preview-delay' => 1000,
+							'data-pop-preview-target' => '.widget-adjust-image'
 						)
 					)
 				),
 
-				Element::DATASET => array
-				(
-					ActiveRecord\Image::NID => $recordid,
-					ActiveRecord\Image::TITLE => $record->title,
-					ActiveRecord\Image::PATH => $record->path
-				),
+				'href' => '#',
 
-				'href' => '#'
+				'data-nid' => $recordid,
+				'data-title' => $record->title,
+				'data-path' => $record->path
 			)
 		);
 	}

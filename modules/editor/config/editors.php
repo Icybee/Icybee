@@ -10,8 +10,8 @@ return array
 	'text' => __NAMESPACE__ . '\TextEditor',
 	'patron' => __NAMESPACE__ . '\PatronEditor',
 	'php' => __NAMESPACE__ . '\PHPEditor',
-	'feed' => __NAMESPACE__ . '\FeedEditor',
 	'image' => __NAMESPACE__ . '\ImageEditor',
 	'node' => __NAMESPACE__ . '\NodeEditor',
-	'widgets' => __NAMESPACE__ . '\WidgetsEditor'
+	'widgets' => __NAMESPACE__ . '\WidgetsEditor',
+	'feed' => __NAMESPACE__ . '\FeedEditor'
 );

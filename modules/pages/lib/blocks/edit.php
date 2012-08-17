@@ -14,19 +14,28 @@ namespace ICanBoogie\Modules\Pages;
 use ICanBoogie\ActiveRecord\Node;
 use ICanBoogie\ActiveRecord\Page;
 
+use Brickrouge\Document;
 use Brickrouge\Element;
 use Brickrouge\Form;
 use Brickrouge\Text;
 
 class EditBlock extends \ICanBoogie\Modules\Nodes\EditBlock
 {
-	protected function alter_attributes(array $attributes)
+	static protected function add_assets(Document $document)
+	{
+		parent::add_assets($document);
+
+		$document->css->add('../../public/edit.css');
+		$document->js->add('../../public/edit.js');
+	}
+
+	protected function get_attributes()
 	{
 		global $core;
 
 		return \ICanBoogie\array_merge_recursive
 		(
-			parent::alter_attributes($attributes), array
+			parent::get_attributes(), array
 			(
 				Form::HIDDENS => array
 				(
@@ -46,17 +55,15 @@ class EditBlock extends \ICanBoogie\Modules\Nodes\EditBlock
 		);
 	}
 
-	protected function alter_children(array $children, array &$properties, array &$attributes)
+	protected function get_children()
 	{
 		global $core;
 
-		$core->document->css->add('../../public/edit.css');
-		$core->document->js->add('../../public/edit.js');
-
-		$nid = $properties[Node::NID];
+		$values = $this->values;
+		$nid = $values[Node::NID];
 		$is_alone = !$this->module->model->select('nid')->where(array('siteid' => $core->site_id))->rc;
 
-		list($contents_tags, $template_info) = $this->module->get_contents_section($properties[Node::NID], $properties[Page::TEMPLATE]);
+		list($contents_tags, $template_info) = $this->module->get_contents_section($values[Node::NID], $values[Page::TEMPLATE]);
 
 		#
 		# parentid
@@ -106,12 +113,12 @@ class EditBlock extends \ICanBoogie\Modules\Nodes\EditBlock
 
 			unset($contents_tags[Element::CHILDREN]);
 
-			$attributes = \ICanBoogie\array_merge_recursive($attributes, $contents_tags);
+			$this->attributes = \ICanBoogie\array_merge_recursive($this->attributes, $contents_tags);
 		}
 
 		return array_merge
 		(
-			parent::alter_children($children, $properties, $attributes), array
+			parent::get_children(), array
 			(
 				Page::LABEL => new Text
 				(

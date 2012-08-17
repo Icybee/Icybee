@@ -19,7 +19,7 @@ use Brickrouge\Widget;
 
 class EditBlock extends \Icybee\EditBlock
 {
-	protected function alter_children(array $children, array &$properties, array &$attributes)
+	protected function get_children()
 	{
 		global $core;
 
@@ -32,7 +32,7 @@ class EditBlock extends \Icybee\EditBlock
 
 		return array_merge
 		(
-			parent::alter_children($children, $properties, $attributes), array
+			parent::get_children(), array
 			(
 				Term::TERM => new Widget\TitleSlugCombo
 				(

@@ -186,11 +186,8 @@ class AdjustNode extends \Brickrouge\Widget
 		(
 			\ICanBoogie\shorten($record->title), '#', array
 			(
-				Element::DATASET => array
-				(
-					ActiveRecord\Node::NID => $recordid,
-					ActiveRecord\Node::TITLE => $record->title
-				)
+				'data-nid' => $recordid,
+				'data-title' => $record->title
 			)
 		);
 	}

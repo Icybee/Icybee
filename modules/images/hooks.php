@@ -11,18 +11,20 @@
 
 namespace ICanBoogie\Modules\Images;
 
-use Icybee\Views\ActiveRecord\Provider\AlterResultEvent;
-
 use ICanBoogie\ActiveRecord;
 use ICanBoogie\ActiveRecord\Node;
 use ICanBoogie\Debug;
 use ICanBoogie\Event;
+use ICanBoogie\Events;
 use ICanBoogie\Modules;
+use ICanBoogie\Modules\Contents\ConfigBlock as ContentsConfigBlock;
 use ICanBoogie\Operation;
 
 use Brickrouge\Element;
 use Brickrouge\Form;
 use Brickrouge\Widget;
+
+use Icybee\Views\ActiveRecord\Provider\AlterResultEvent;
 
 class Hooks
 {
@@ -147,7 +149,7 @@ class Hooks
 	 * @param Event $event
 	 * @param \ICanBoogie\Modules\Contents\ConfigBlock $block
 	 */
-	public static function on_contents_configblock_alter_children(Event $event, \ICanBoogie\Modules\Contents\ConfigBlock $block)
+	public static function on_contents_configblock_alter_children(Event $event, ContentsConfigBlock $block)
 	{
 		global $core;
 
@@ -174,7 +176,63 @@ class Hooks
 			)
 		);
 
-		$sender_flat_id = $event->module->flat_id;
+		$thumbnails = array();
+
+		foreach ($views as $view_id => $view)
+		{
+			$id = \ICanBoogie\normalize($view_id);
+
+			$thumbnails["global[thumbnailer.versions][$id]"] = new Widget\PopThumbnailVersion
+			(
+				array
+				(
+					Element::GROUP => 'resources_images__inject_thumbnails',
+					Form::LABEL => $view['title'],// . ' <span class="small">(' . $id . ')</span>',
+					Element::DESCRIPTION => 'Identifiant de la version&nbsp;: <q>' . $id . '</q>.'
+				)
+			);
+		}
+
+		$target_flat_id = $event->module->flat_id;
+
+		$event->children = array_merge
+		(
+			$event->children, array
+			(
+				"global[resources_images.inject][$target_flat_id]" => new Element
+				(
+					Element::TYPE_CHECKBOX, array
+					(
+						Element::LABEL => 'Associer une image aux enregistrements',
+						Element::GROUP => 'resources_images__inject_toggler'
+					)
+				),
+
+				"global[resources_images.inject][$target_flat_id.default]" => new Widget\PopImage
+				(
+					array
+					(
+						Form::LABEL => "Image par défaut",
+						Element::GROUP => 'resources_images__inject'
+					)
+				),
+
+				"global[resources_images.inject][$target_flat_id.required]" => new Element
+				(
+					Element::TYPE_CHECKBOX, array
+					(
+						Element::LABEL => "L'association est obligatoire",
+						Element::GROUP => 'resources_images__inject'
+					)
+				)
+			),
+
+			$thumbnails
+		);
+
+		#
+		# Listen to the block `alert_attributes` event to add our groups.
+		#
 
 		$event->attributes[Element::GROUPS] = array_merge
 		(
@@ -199,59 +257,6 @@ class Hooks
 				)
 			)
 		);
-
-		$thumbnails = array();
-
-		foreach ($views as $view_id => $view)
-		{
-			$id = \ICanBoogie\normalize($view_id);
-
-			$thumbnails["global[thumbnailer.versions][$id]"] = new Widget\PopThumbnailVersion
-			(
-				array
-				(
-					Element::GROUP => 'resources_images__inject_thumbnails',
-					Form::LABEL => $view['title'],// . ' <span class="small">(' . $id . ')</span>',
-					Element::DESCRIPTION => 'Identifiant de la version&nbsp;: <q>' . $id . '</q>.'
-				)
-			);
-		}
-
-		$event->children = array_merge
-		(
-			$event->children, array
-			(
-				"global[resources_images.inject][$sender_flat_id]" => new Element
-				(
-					Element::TYPE_CHECKBOX, array
-					(
-						Element::LABEL => 'Associer une image aux enregistrements',
-						Element::GROUP => 'resources_images__inject_toggler'
-					)
-				),
-
-				"global[resources_images.inject][$sender_flat_id.default]" => new Widget\PopImage
-				(
-					array
-					(
-						Form::LABEL => "Image par défaut",
-						Element::GROUP => 'resources_images__inject'
-					)
-				),
-
-				"global[resources_images.inject][$sender_flat_id.required]" => new Element
-				(
-					Element::TYPE_CHECKBOX, array
-					(
-						Element::LABEL => "L'association est obligatoire",
-						Element::GROUP => 'resources_images__inject'
-					)
-				)
-			),
-
-			$thumbnails
-		);
-
 	}
 
 	public static function on_nodes_save(Event $event, \ICanBoogie\Modules\Nodes\SaveOperation $operation)

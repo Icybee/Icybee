@@ -154,7 +154,10 @@ class Hooks
 				->find_by_vid($vid)
 				->group('term')->order('term')->pairs;
 
-				$value = $nodes_model->select('term')->find_by_vid_and_nid($vid, $nid)->order('term')->all(\PDO::FETCH_COLUMN);
+				$value = $nodes_model->select('term')
+				->find_by_vid_and_nid($vid, $nid)
+				->order('term')
+				->all(\PDO::FETCH_COLUMN);
 				$value = implode(', ', $value);
 
 				$label = $vocabulary->vocabulary;

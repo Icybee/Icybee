@@ -23,14 +23,17 @@ use Brickrouge\Element;
 use Brickrouge\Form;
 use Brickrouge\SplitButton;
 
-class EditBlock extends Form
+/**
+ * A record editor.
+ */
+class EditBlock extends FormBlock
 {
-	/**
-	 * Module requesting the block.
-	 *
-	 * @var Module
-	 */
-	protected $module;
+	static protected function add_assets(\Brickrouge\Document $document)
+	{
+		parent::add_assets($document);
+
+		$document->js->add(ASSETS . 'js/edit.js');
+	}
 
 	/**
 	 * The key of the record to edit.
@@ -43,93 +46,68 @@ class EditBlock extends Form
 	 * Constructor.
 	 *
 	 * @param Module $module
-	 * @param array $params
 	 * @param array $attributes
+	 * @param array $params
 	 */
 	public function __construct(Module $module, array $attributes=array(), array $params=array())
 	{
 		$key = isset($params[0]) ? $params[0] : null;
 
-		$this->module = $module;
 		$this->key = $key;
 
-		$this->access_control();
+		parent::__construct($module, $attributes);
+	}
+
+	/**
+	 * Adds the `key` and `record` properties to the alter parameters.
+	 *
+	 * @see FormBlock::alter()
+	 */
+	protected function alter(array $params)
+	{
+		return parent::alter
+		(
+			$params + array
+			(
+				'key' => $this->key,
+				'record' => $this->record
+			)
+		);
+	}
+
+	/**
+	 * If the record to edit is locked by another user a {@link InterlockBlock} is returned
+	 * instead of the {@link Form} element.
+	 *
+	 * @see Icybee.FormBlock::render()
+	 */
+	public function render()
+	{
+		$module = $this->module;
+		$key = $this->key;
+
+		if ($key)
+		{
+			$locked = $module->lock_entry($key, $lock);
+
+			$this->locked = $locked;
+
+			if (!$locked)
+			{
+				return new InterlockBlock($module, array(), array('lock' => $lock));
+			}
+		}
 
 		I18n::push_scope($module->flat_id . '.edit');
 
 		try
 		{
-			$properties = $this->properties;
-			$children = $this->children;
-			$actions = array
-			(
-				new Button
-				(
-					'Save', array
-					(
-						Element::GROUP => 'save',
+			$element = parent::render();
+			$element->save();
 
-						'class' => 'btn-primary',
-						'type' => 'submit'
-					)
-				)
-			);
+			I18n::pop_scope();
 
-			$attributes += array
-			(
-				self::ACTIONS => &$actions,
-
-				self::RENDERER => new \Brickrouge\Renderer\Simple
-				(
-					array
-					(
-						\Brickrouge\Renderer\Simple::GROUP_CLASS => 'Icybee\Element\Group'
-					)
-				),
-
-				self::VALUES => &$properties,
-				self::CHILDREN => &$children,
-
-				'id' => 'editor',
-				'action' => '',
-				'class' => 'form-primary edit',
-				'name' => (string) $module
-			);
-
-			$alter_params = array
-			(
-				'module' => $module,
-				'key' => $key,
-				'attributes' => &$attributes
-			);
-
-			$this->fire_before_alter_attributes($alter_params);
-			$attributes = $this->alter_attributes($attributes);
-			$this->fire_alter_attributes($alter_params);
-
-			$alter_params['properties'] = &$properties;
-
-			$this->fire_before_alter_properties($alter_params);
-			$properties = $this->alter_properties($properties, $attributes);
-			$this->fire_alter_properties($alter_params);
-
-			$alter_params['children'] = &$children;
-
-			$this->fire_before_alter_children($alter_params);
-			$children = $this->alter_children($children, $properties, $attributes);
-			$this->fire_alter_children($alter_params);
-
-			$alter_params['actions'] = &$actions;
-
-			$this->fire_before_alter_actions($alter_params);
-			$actions = $this->alter_actions($actions);
-			$this->fire_alter_actions($alter_params);
-
-			if (!$this->permission)
-			{
-				$attributes[self::ACTIONS] = null;
-				$attributes[self::DISABLED] = true;
-			}
+			return $element;
 		}
 		catch (\Exception $e)
 		{
@@ -137,87 +115,22 @@ class EditBlock extends Form
 
 			throw $e;
 		}
-
-		I18n::pop_scope();
-
-		parent::__construct($attributes);
 	}
 
+	/**
+	 * The block is rendered within the `<module_flat_id>.edit` i18n scope.
+	 *
+	 * @see FormBlock::__toString()
+	 */
 	public function __toString()
 	{
-		global $core;
-
-		$key = $this->key;
-
-		if ($key)
-		{
-			$locked = $this->module->lock_entry($key, $lock);
-
-			$this->locked = $locked;
-
-			if (!$locked)
-			{
-				$luser = $core->models['users'][$lock['uid']];
-				$url = $core->request->path;
-
-				$time = round((strtotime($lock['until']) - time()) / 60);
-				$message = $time ? "Le verrou devrait disparaitre dans $time minutes." : "Le verrou devrait disparaitre dans moins d'une minutes.";
-
-				return <<<EOT
-<div class="block-alert block-alert--interlock">
-<h2>Édition impossible</h2>
-<p>Impossible d'éditer l'enregistrement parce qu'il est en cours d'édition par <em>$luser->name</em> <span class="small">($luser->username)</span>.</p>
-<form method="get" action="">
-<input type="hidden" name="retry" value="1" />
-<div class="form-actions">
-<button class="btn-success">Réessayer</button> <span class="small light">$message</span>
-</div>
-</form>
-</div>
-EOT;
-			}
-		}
-
-		#
-		#
-		#
-
-		try
-		{
-			$this->alter_elements_lang();
-		}
-		catch (\Exception $e)
-		{
-			return \Brickrouge\render_exception($e);
-		}
-
-		#
-		#
-		#
-
-		$this->save();
-
 		I18n::push_scope($this->module->flat_id . '.edit');
 
-		try
-		{
-			$rc = parent::__toString();
-		}
-		catch (\Exception $e)
-		{
-			$rc = \Brickrouge\render_exception($e);
-		}
+		$html = parent::__toString();
 
 		I18n::pop_scope();
 
-		return $rc;
-	}
-
-	protected static function add_assets(\Brickrouge\Document $document)
-	{
-		parent::add_assets($document);
-
-		$document->js->add(ASSETS . 'js/edit.js');
+		return $html;
 	}
 
 	protected function get_permission()
@@ -285,26 +198,29 @@ EOT;
 	 * ATTRIBUTES
 	 */
 
-	protected function alter_attributes(array $attributes)
+	/**
+	 * Adds the following:
+	 *
+	 * - The name of the operation: `save`.
+	 * - The key of the operation: The key provided during construct.
+	 * - The `admin` element group.
+	 *
+	 * @see Icybee\FormBlock::get_attributes()
+	 */
+	protected function get_attributes()
 	{
 		return \ICanBoogie\array_merge_recursive
 		(
-			array
+			parent::get_attributes(), array
 			(
 				Form::HIDDENS => array
 				(
-					Operation::DESTINATION => $this->module->id,
 					Operation::NAME => 'save',
 					Operation::KEY => $this->key
 				),
 
 				Element::GROUPS => array
 				(
-					'primary' => array
-					(
-
-					),
-
 					'admin' => array
 					(
 						'title' => 'Admin',
@@ -312,31 +228,43 @@ EOT;
 					)
 				)
 			)
-
-			+ $attributes
 		);
 	}
 
+	/**
+	 * Fires the `alter_attributes:before` event of class {@link EditBlock\BeforeAlterAttributesEvent}.
+	 *
+	 * @see FormBlock::fire_before_alter_attributes()
+	 */
 	protected function fire_before_alter_attributes(array $properties)
 	{
 		new EditBlock\BeforeAlterAttributesEvent($this, $properties);
 	}
 
+	/**
+	 * Fires the `alter_attributes` event of class {@link EditBlock\AlterAttributesEvent}.
+	 *
+	 * @see FormBlock::fire_alter_attributes()
+	 */
 	protected function fire_alter_attributes(array $properties)
 	{
 		new EditBlock\AlterAttributesEvent($this, $properties);
 	}
 
 	/*
-	 * PROPERTIES
+	 * VALUES
 	 */
 
 	/**
-	 * Returns the editable properties of the record.
+	 * Merges the values returned by the parent with the following arrays:
 	 *
-	 * @return array
+	 * - An array with all the properties of the extended schema set to `null`.
+	 * - An array with the properties of the record.
+	 * - An array with the request params of the request.
+	 *
+	 * @see FormBlock::get_values()
 	 */
-	protected function get_properties()
+	protected function get_values()
 	{
 		global $core;
 
@@ -346,6 +274,7 @@ EOT;
 
 		return array_merge
 		(
+			parent::get_values(),
 			$schema ? array_fill_keys(array_keys($schema['fields']), null) : array(),
 			$record ? get_object_vars($record) : array(),
 			$params ? $params : array()
@@ -353,23 +282,23 @@ EOT;
 	}
 
 	/**
-	 * Alerts the editable properties of the record.
+	 * Fires the `alter_values:before` event of class {@link EditBlock\BeforeAlterValuesEvent}.
 	 *
-	 * @param array $properties
+	 * @see FormBlock::fire_before_alter_values()
 	 */
-	protected function alter_properties(array $properties, array &$attributes)
+	protected function fire_before_alter_values(array $properties)
 	{
-		return $properties;
+		new EditBlock\BeforeAlterValuesEvent($this, $properties);
 	}
 
-	protected function fire_before_alter_properties(array $properties)
+	/**
+	 * Fires the `alter_values` event of class {@link EditBlock\AlterValuesEvent}.
+	 *
+	 * @see FormBlock::fire_alter_values()
+	 */
+	protected function fire_alter_values(array $properties)
 	{
-		new EditBlock\BeforeAlterPropertiesEvent($this, $properties);
-	}
-
-	protected function fire_alter_properties(array $properties)
-	{
-		new EditBlock\AlterPropertiesEvent($this, $properties);
+		new EditBlock\AlterValuesEvent($this, $properties);
 	}
 
 	/*
@@ -377,20 +306,20 @@ EOT;
 	 */
 
 	/**
-	 * Alerts the children of the block.
+	 * Fires the `alter_children:before` event of class {@link EditBlock\BeforeAlterChildrenEvent}.
 	 *
-	 * @param array $children
+	 * @see Icybee\FormBlock::fire_before_alter_children()
 	 */
-	protected function alter_children(array $children, array &$properties, array &$attributes)
-	{
-		return $children;
-	}
-
 	protected function fire_before_alter_children(array $properties)
 	{
 		new EditBlock\BeforeAlterChildrenEvent($this, $properties);
 	}
 
+	/**
+	 * Fires the `alter_children` event of class {@link EditBlock\AlterChildrenEvent}.
+	 *
+	 * @see Icybee\FormBlock::fire_alter_children()
+	 */
 	protected function fire_alter_children(array $properties)
 	{
 		new EditBlock\AlterChildrenEvent($this, $properties);
@@ -401,9 +330,32 @@ EOT;
 	 */
 
 	/**
-	 * Alerts form actions
+	 * Replaces the primary button with a button with the label "Save".
+	 *
+	 * @see FormBlock::get_actions()
 	 */
-	protected function alter_actions(array $actions)
+	protected function get_actions()
+	{
+		return array
+		(
+			'primary' => new Button
+			(
+				'Save', array
+				(
+					'class' => 'btn-primary',
+					'type' => 'submit',
+					'name' => false
+				)
+			)
+		);
+	}
+
+	/**
+	 * Adds the save mode checkbox group of the actions as well as the action bar.
+	 *
+	 * @see FormBlock::alter_actions()
+	 */
+	protected function alter_actions(array $actions, array $params)
 	{
 		global $core;
 
@@ -468,7 +420,7 @@ EOT;
 						);
 					}
 
-					if (isset($block[Form::ACTIONS][SaveOperation::MODE]))
+					if (isset($block->actions[SaveOperation::MODE]))
 					{
 						$event->buttons[] = new SplitButton
 						(
@@ -506,49 +458,69 @@ EOT;
 		);
 	}
 
+	/**
+	 * Fires the `alter_actions:before` event of class {@link EditBlock\BeforeAlterActionsEvent}.
+	 *
+	 * @see Icybee\FormBlock::fire_before_alter_actions()
+	 */
 	protected function fire_before_alter_actions(array $properties)
 	{
 		new EditBlock\BeforeAlterActionsEvent($this, $properties);
 	}
 
+	/**
+	 * Fires the `alter_actions` event of class {@link EditBlock\AlterActionsEvent}.
+	 *
+	 * @see Icybee\FormBlock::fire_alter_actions()
+	 */
 	protected function fire_alter_actions(array $properties)
 	{
 		new EditBlock\AlterActionsEvent($this, $properties);
 	}
 
-	protected function alter_elements_lang()
+	/**
+	 * If the user doesn't have the permission to edit the record, the actions of the
+	 * {@link Form} element are set to `null` and the form is disabled.
+	 *
+	 * @see FormBlock::alter_element()
+	 */
+	protected function alter_element(Form $element, array $params)
 	{
 		global $core;
 
-		$iterator = new \RecursiveIteratorIterator($this, \RecursiveIteratorIterator::SELF_FIRST);
+		$element = parent::alter_element($element, $params);
+
+		if (!$this->permission)
+		{
+			$element[self::ACTIONS] = null;
+			$element[self::DISABLED] = true;
+		}
+
 		$language = $core->site->language;
 
-		foreach ($iterator as $element)
+		foreach ($element as $control)
 		{
-			if ($element->tag_name != 'textarea')
+			if ($control->tag_name != 'textarea')
 			{
 				continue;
 			}
 
-			$element['lang'] = $language;
+			$control['lang'] = $language;
 		}
+
+		return $element;
 	}
 }
 
 namespace Icybee\EditBlock;
 
 /**
- * Event class for the `Icybee\EditBlock::alter_attributes:before` event.
+ * Base class for the alter events of the {@link EditBlock} class.
+ *
+ * The class extends {@link FormBlock\AlterEvent} with the `key` and `record` properties.
  */
-class BeforeAlterAttributesEvent extends \ICanBoogie\Event
+abstract class AlterEvent extends \Icybee\FormBlock\AlterEvent
 {
-	/**
-	 * The module creating the block.
-	 *
-	 * @var \ICanBoogie\Module
-	 */
-	public $module;
-
 	/**
 	 * Key of the record being edited.
 	 *
@@ -557,12 +529,18 @@ class BeforeAlterAttributesEvent extends \ICanBoogie\Event
 	public $key;
 
 	/**
-	 * Reference to the attributes of the block.
+	 * The record being edited.
 	 *
-	 * @var array
+	 * @var \ICanBoogie\ActiveRecord
 	 */
-	public $attributes;
+	public $record;
+}
 
+/**
+ * Event class for the `Icybee\EditBlock::alter_attributes:before` event.
+ */
+class BeforeAlterAttributesEvent extends AlterEvent
+{
 	/**
 	 * The event is constructed with the type `alter_attributes:before`.
 	 *
@@ -578,29 +556,8 @@ class BeforeAlterAttributesEvent extends \ICanBoogie\Event
 /**
  * Event class for the `Icybee\EditBlock::alter_attributes` event.
  */
-class AlterAttributesEvent extends \ICanBoogie\Event
+class AlterAttributesEvent extends AlterEvent
 {
-	/**
-	 * The module creating the block.
-	 *
-	 * @var \ICanBoogie\Module
-	 */
-	public $module;
-
-	/**
-	 * Key of the record being edited.
-	 *
-	 * @var int
-	 */
-	public $key;
-
-	/**
-	 * Reference to the attributes of the block.
-	 *
-	 * @var array
-	 */
-	public $attributes;
-
 	/**
 	 * The event is constructed with the type `alter_attributes`.
 	 *
@@ -614,135 +571,44 @@ class AlterAttributesEvent extends \ICanBoogie\Event
 }
 
 /**
- * Event class for the `Icybee\EditBlock::alter_properties:before` event.
+ * Event class for the `Icybee\EditBlock::alter_values:before` event.
  */
-class BeforeAlterPropertiesEvent extends \ICanBoogie\Event
+class BeforeAlterValuesEvent extends AlterEvent
 {
 	/**
-	 * The module creating the block.
-	 *
-	 * @var \ICanBoogie\Module
-	 */
-	public $module;
-
-	/**
-	 * Key of the record being edited.
-	 *
-	 * @var int
-	 */
-	public $key;
-
-	/**
-	 * Reference to the attributes of the block.
-	 *
-	 * @var array
-	 */
-	public $attributes;
-
-	/**
-	 * Reference to the properties of the record being edited.
-	 *
-	 * @var array
-	 */
-	public $properties;
-
-	/**
-	 * The event is constructed with the type `alter_properties:before`.
+	 * The event is constructed with the type `alter_values:before`.
 	 *
 	 * @param \Icybee\EditBlock $target
 	 * @param array $properties
 	 */
 	public function __construct(\Icybee\EditBlock $target, array $properties)
 	{
-		parent::__construct($target, 'alter_properties:before', $properties);
+		parent::__construct($target, 'alter_values:before', $properties);
 	}
 }
 
 /**
- * Event class for the `Icybee\EditBlock::alter_properties` event.
+ * Event class for the `Icybee\EditBlock::alter_values` event.
  */
-class AlterPropertiesEvent extends \ICanBoogie\Event
+class AlterValuesEvent extends AlterEvent
 {
 	/**
-	 * The module creating the block.
-	 *
-	 * @var \ICanBoogie\Module
-	 */
-	public $module;
-
-	/**
-	 * Key of the record being edited.
-	 *
-	 * @var int
-	 */
-	public $key;
-
-	/**
-	 * Reference to the attributes of the block.
-	 *
-	 * @var array
-	 */
-	public $attributes;
-
-	/**
-	 * Reference to the properties of the record being edited.
-	 *
-	 * @var array
-	 */
-	public $properties;
-
-	/**
-	 * The event is constructed with the type `alter_properties`.
+	 * The event is constructed with the type `alter_values`.
 	 *
 	 * @param \Icybee\EditBlock $target
 	 * @param array $properties
 	 */
 	public function __construct(\Icybee\EditBlock $target, array $properties)
 	{
-		parent::__construct($target, 'alter_properties', $properties);
+		parent::__construct($target, 'alter_values', $properties);
 	}
 }
 
 /**
  * Event class for the `Icybee\EditBlock::alter_children:before` event.
  */
-class BeforeAlterChildrenEvent extends \ICanBoogie\Event
+class BeforeAlterChildrenEvent extends AlterEvent
 {
-	/**
-	 * The module creating the block.
-	 *
-	 * @var \ICanBoogie\Module
-	 */
-	public $module;
-
-	/**
-	 * Key of the record being edited.
-	 *
-	 * @var int
-	 */
-	public $key;
-
-	/**
-	 * Reference to the attributes of the block.
-	 *
-	 * @var array
-	 */
-	public $attributes;
-
-	/**
-	 * Reference to the properties of the record being edited.
-	 *
-	 * @var array
-	 */
-	public $properties;
-
-	/**
-	 * Reference to the children of the block.
-	 *
-	 * @var array
-	 */
-	public $children;
-
 	/**
 	 * The event is constructed with the type `alter_children:before`.
 	 *
@@ -758,43 +624,8 @@ class BeforeAlterChildrenEvent extends \ICanBoogie\Event
 /**
  * Event class for the `Icybee\EditBlock::alter_children` event.
  */
-class AlterChildrenEvent extends \ICanBoogie\Event
+class AlterChildrenEvent extends AlterEvent
 {
-	/**
-	 * The module creating the block.
-	 *
-	 * @var \ICanBoogie\Module
-	 */
-	public $module;
-
-	/**
-	 * Key of the record being edited.
-	 *
-	 * @var int
-	 */
-	public $key;
-
-	/**
-	 * Reference to the attributes of the block.
-	 *
-	 * @var array
-	 */
-	public $attributes;
-
-	/**
-	 * Reference to the properties of the record being edited.
-	 *
-	 * @var array
-	 */
-	public $properties;
-
-	/**
-	 * Reference to the children of the block.
-	 *
-	 * @var array
-	 */
-	public $children;
-
 	/**
 	 * The event is constructed with the type `alter_children`.
 	 *
@@ -810,50 +641,8 @@ class AlterChildrenEvent extends \ICanBoogie\Event
 /**
  * Event class for the `Icybee\EditBlock::alter_actions:before` event.
  */
-class BeforeAlterActionsEvent extends \ICanBoogie\Event
+class BeforeAlterActionsEvent extends AlterEvent
 {
-	/**
-	 * The module creating the block.
-	 *
-	 * @var \ICanBoogie\Module
-	 */
-	public $module;
-
-	/**
-	 * Key of the record being edited.
-	 *
-	 * @var int
-	 */
-	public $key;
-
-	/**
-	 * Reference to the attributes of the block.
-	 *
-	 * @var array
-	 */
-	public $attributes;
-
-	/**
-	 * Reference to the properties of the record being edited.
-	 *
-	 * @var array
-	 */
-	public $properties;
-
-	/**
-	 * Reference to the children of the block.
-	 *
-	 * @var array
-	 */
-	public $children;
-
-	/**
-	 * Reference to the actions of the block.
-	 *
-	 * @var array
-	 */
-	public $actions;
-
 	/**
 	 * The event is constructed with the type `alter_actions:before`.
 	 *
@@ -869,50 +658,8 @@ class BeforeAlterActionsEvent extends \ICanBoogie\Event
 /**
  * Event class for the `Icybee\EditBlock::alter_actions` event.
  */
-class AlterActionsEvent extends \ICanBoogie\Event
+class AlterActionsEvent extends AlterEvent
 {
-	/**
-	 * The module creating the block.
-	 *
-	 * @var \ICanBoogie\Module
-	 */
-	public $module;
-
-	/**
-	 * Key of the record being edited.
-	 *
-	 * @var int
-	 */
-	public $key;
-
-	/**
-	 * Reference to the attributes of the block.
-	 *
-	 * @var array
-	 */
-	public $attributes;
-
-	/**
-	 * Reference to the properties of the record being edited.
-	 *
-	 * @var array
-	 */
-	public $properties;
-
-	/**
-	 * Reference to the children of the block.
-	 *
-	 * @var array
-	 */
-	public $children;
-
-	/**
-	 * Reference to the actions of the block.
-	 *
-	 * @var array
-	 */
-	public $actions;
-
 	/**
 	 * The event is constructed with the type `alter_actions`.
 	 *

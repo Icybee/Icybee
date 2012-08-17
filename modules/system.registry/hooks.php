@@ -19,6 +19,8 @@ use ICanBoogie\Modules;
 use ICanBoogie\Operation;
 use ICanBoogie\Operation\ProcessEvent;
 
+use Icybee\EditBlock\AlterValuesEvent;
+
 class Hooks
 {
 	/**
@@ -57,7 +59,7 @@ class Hooks
 	 *
 	 * @throws Exception
 	 */
-	static public function on_editblock_alter_properties(Event $event, \Icybee\EditBlock $block)
+	static public function on_editblock_alter_values(AlterValuesEvent $event, \Icybee\EditBlock $block)
 	{
 		global $core;
 
@@ -88,18 +90,20 @@ class Hooks
 		$model = $core->models['system.registry/' . $type];
 		$metas = $model->select('name, value')->find_by_targetid($event->key)->pairs;
 
-		if (isset($event->properties['metas']))
+		$values = &$event->values;
+
+		if (isset($values['metas']))
 		{
-			if ($event->properties['metas'] instanceof MetasHandler)
+			if ($values['metas'] instanceof MetasHandler)
 			{
-				$event->properties['metas'] = $event->properties['metas']->to_a();
+				$values['metas'] = $values['metas']->to_a();
 			}
 
-			$event->properties['metas'] += $metas;
+			$values['metas'] += $metas;
 		}
 		else
 		{
-			$event->properties['metas'] = $metas;
+			$values['metas'] = $metas;
 		}
 	}
 

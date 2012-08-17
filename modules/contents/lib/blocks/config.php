@@ -22,30 +22,25 @@ use Brickrouge\Text;
  */
 class ConfigBlock extends \Icybee\ConfigBlock
 {
-	protected function alter_attributes(array $attributes)
+	protected function get_attributes()
 	{
-		return \ICanBoogie\array_merge_recursive
+		$attributes = parent::get_attributes();
+
+		$attributes[Element::GROUPS]['limits'] = array
 		(
-			parent::alter_attributes($attributes), array
-			(
-				Element::GROUPS => array
-				(
-					'limits' => array
-					(
-						'title' => 'limits'
-					)
-				)
-			)
+			'title' => 'limits'
 		);
+
+		return $attributes;
 	}
 
-	protected function alter_children(array $children, array &$properties, array &$attributes)
+	protected function get_children()
 	{
 		$ns = $this->module->flat_id;
 
 		return array_merge
 		(
-			parent::alter_children($children, $properties, $attributes), array
+			parent::get_children(), array
 			(
 				"local[$ns.default_editor]" => new Text
 				(

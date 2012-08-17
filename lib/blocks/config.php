@@ -15,33 +15,14 @@ use ICanBoogie\Exception;
 use ICanBoogie\Operation;
 
 use Brickrouge\Button;
+use Brickrouge\Element;
+use Brickrouge\Form;
 
 /**
  * Base class for configuration blocks.
  */
-class ConfigBlock extends FormBlock
+abstract class ConfigBlock extends FormBlock
 {
-	public function __construct(Module $module, array $attributes=array())
-	{
-		parent::__construct($module, $attributes);
-
-		$this->read_config();
-	}
-
-	public function __toString()
-	{
-		try
-		{
-			$this->save();
-		}
-		catch (\Exception $e)
-		{
-			return \BrickRouge\render_exception($e);
-		}
-
-		return parent::__toString();
-	}
-
 	protected function get_permission()
 	{
 		global $core;
@@ -57,13 +38,18 @@ class ConfigBlock extends FormBlock
 		}
 	}
 
-	protected function alter_attributes(array $attributes)
+	/**
+	 * Add the operation name {@link Module::OPERATION_CONFIG}.
+	 *
+	 * @see Icybee.FormBlock::get_attributes()
+	 */
+	protected function get_attributes()
 	{
 		return \ICanBoogie\array_merge_recursive
 		(
-			parent::alter_attributes($attributes), array
+			parent::get_attributes(), array
 			(
-				self::HIDDENS => array
+				Form::HIDDENS => array
 				(
 					Operation::NAME => Module::OPERATION_CONFIG
 				)
@@ -71,27 +57,31 @@ class ConfigBlock extends FormBlock
 		);
 	}
 
-	protected function alter_actions(array $actions)
+	protected function alter_actions(array $actions, array $params)
 	{
-		$actions = parent::alter_actions($actions);
-
-		$actions[0] = new Button('Save', array('class' => 'btn-primary', 'type' => 'submit'));
-
-		return $actions;
+		return array_merge
+		(
+			parent::alter_actions($actions, $params), array
+			(
+				'primary' => new Button('Save', array('class' => 'btn-primary', 'type' => 'submit', 'name' => false))
+			)
+		);
 	}
 
-	protected function read_config()
+	protected function alter_values(array $values, array $params)
 	{
 		global $core;
 
+		$values = parent::alter_values($values, $params);
+
+		$iterator = new Form(array(Element::CHILDREN => $this->children));
+
 		$registry = $core->registry;
 		$local = $core->site->metas;
-		$iterator = new \RecursiveIteratorIterator($this, \RecursiveIteratorIterator::SELF_FIRST);
-		$values = array();
 
-		foreach ($iterator as $element)
+		foreach ($iterator as $child)
 		{
-			$name = $element['name'];
+			$name = $child['name'];
 
 			if (!$name)
 			{
@@ -125,6 +115,6 @@ class ConfigBlock extends FormBlock
 			$values[$name] = $value;
 		}
 
-		$this[self::VALUES] = $this[self::VALUES] + $values;
+		return $values;
 	}
 }

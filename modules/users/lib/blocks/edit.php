@@ -49,11 +49,11 @@ class EditBlock extends \Icybee\EditBlock
 		return parent::get_permission();
 	}
 
-	protected function alter_attributes(array $attributes)
+	protected function get_attributes()
 	{
 		return \ICanBoogie\array_merge_recursive
 		(
-			parent::alter_attributes($attributes), array
+			parent::get_attributes(), array
 			(
 				Element::GROUPS => array
 				(
@@ -71,9 +71,11 @@ class EditBlock extends \Icybee\EditBlock
 		);
 	}
 
-	protected function alter_children(array $children, array &$properties, array &$attributes)
+	protected function get_children()
 	{
 		global $core;
+
+		$values = $this->values;
 
 		#
 		# permissions
@@ -83,7 +85,7 @@ class EditBlock extends \Icybee\EditBlock
 
 		$permission = $this->permission;
 
-		$uid = $properties[User::UID];
+		$uid = $values[User::UID];
 
 		#
 		# display options
@@ -94,19 +96,19 @@ class EditBlock extends \Icybee\EditBlock
 			'<username>'
 		);
 
-		if ($properties[User::USERNAME])
+		if ($values[User::USERNAME])
 		{
-			$display_options[0] = $properties[User::USERNAME];
+			$display_options[0] = $values[User::USERNAME];
 		}
 
-		$firstname = $properties[User::FIRSTNAME];
+		$firstname = $values[User::FIRSTNAME];
 
 		if ($firstname)
 		{
 			$display_options[1] = $firstname;
 		}
 
-		$lastname = $properties[User::LASTNAME];
+		$lastname = $values[User::LASTNAME];
 
 		if ($lastname)
 		{
@@ -123,7 +125,7 @@ class EditBlock extends \Icybee\EditBlock
 		# roles
 		#
 
-		$role_el = $this->create_control_role($properties, $attributes);
+		$role_el = $this->create_control_role();
 
 		#
 		# languages
@@ -143,7 +145,7 @@ class EditBlock extends \Icybee\EditBlock
 
 		return array_merge
 		(
-			parent::alter_children($children, $properties, $attributes), array
+			parent::get_children(), array
 			(
 				#
 				# name group
@@ -285,19 +287,19 @@ class EditBlock extends \Icybee\EditBlock
 		return $actions;
 	}
 
-	protected function create_control_role(array &$properties, array &$attributes)
+	protected function create_control_role()
 	{
 		global $core;
 
 		$user = $core->user;
-		$uid = $properties[User::UID];
+		$uid = $this->values[User::UID];
 
 		if ($uid == 1 || !$user->has_permission(Module::PERMISSION_ADMINISTER, $this->module))
 		{
 			return;
 		}
 
-		$properties_rid = array
+		$rid = array
 		(
 			2 => true
 		);
@@ -308,7 +310,7 @@ class EditBlock extends \Icybee\EditBlock
 
 			foreach ($record->roles as $role)
 			{
-				$properties_rid[$role->rid] = true;
+				$rid[$role->rid] = true;
 			}
 		}
 
@@ -324,7 +326,7 @@ class EditBlock extends \Icybee\EditBlock
 				Element::DESCRIPTION => 'roles',
 
 				'class' => 'framed inputs-list sortable',
-				'value' => $properties_rid
+				'value' => $rid
 			)
 		);
 	}

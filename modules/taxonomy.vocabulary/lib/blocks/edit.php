@@ -18,11 +18,11 @@ class EditBlock extends \Icybee\EditBlock
 		$document->css->add('../../public/admin.css');
 	}
 
-	protected function alter_attributes(array $attributes)
+	protected function get_attributes()
 	{
 		return \ICanBoogie\array_merge_recursive
 		(
-			parent::alter_attributes($attributes), array
+			parent::get_attributes(), array
 			(
 				Element::GROUPS => array
 				(
@@ -36,11 +36,11 @@ class EditBlock extends \Icybee\EditBlock
 		);
 	}
 
-	protected function alter_children(array $children, array &$properties, array &$attributes)
+	protected function get_children()
 	{
 		return array_merge
 		(
-			parent::alter_children($children, $properties, $attributes), array
+			parent::get_children(), array
 			(
 				Vocabulary::VOCABULARY => new Widget\TitleSlugCombo
 				(
@@ -51,7 +51,7 @@ class EditBlock extends \Icybee\EditBlock
 					)
 				),
 
-				Vocabulary::SCOPE => $this->get_control__scope($properties, $attributes),
+				Vocabulary::SCOPE => $this->get_control__scope(),
 
 				Vocabulary::IS_TAGS => new Element
 				(
@@ -87,12 +87,12 @@ class EditBlock extends \Icybee\EditBlock
 					)
 				),
 
-				Vocabulary::SITEID => $this->get_control__site($properties, $attributes)
+				Vocabulary::SITEID => $this->get_control__site()
 			)
 		);
 	}
 
-	protected function get_control__scope(array &$properties, array &$attributes)
+	protected function get_control__scope()
 	{
 		global $core;
 
@@ -118,13 +118,13 @@ class EditBlock extends \Icybee\EditBlock
 		uasort($scope_options, 'ICanBoogie\unaccent_compare_ci');
 
 		$scope_value = null;
-		$vid = $properties[Vocabulary::VID];
+		$vid = $this->values[Vocabulary::VID];
 
 		if ($vid)
 		{
 			$scope_value = $this->module->model('scopes')->select('constructor, 1')->find_by_vid($vid)->pairs;
 
-			$properties[Vocabulary::SCOPE] = $scope_value;
+			$this->values[Vocabulary::SCOPE] = $scope_value;
 		}
 
 		return new Element
@@ -141,7 +141,7 @@ class EditBlock extends \Icybee\EditBlock
 		);
 	}
 
-	protected function get_control__site(array &$properties, array &$attributes)
+	protected function get_control__site()
 	{
 		global $core;
 

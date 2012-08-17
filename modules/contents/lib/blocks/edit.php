@@ -21,29 +21,30 @@ use Brickrouge\Text;
 
 class EditBlock extends \ICanBoogie\Modules\Nodes\EditBlock
 {
-	protected function alter_attributes(array $attributes)
+	protected function get_attributes()
 	{
-		return \ICanBoogie\array_merge_recursive
+		$attributes = parent::get_attributes();
+
+		$attributes[Element::GROUPS] = array_merge
 		(
-			parent::alter_attributes($attributes), array
+			$attributes[Element::GROUPS], array
 			(
-				Element::GROUPS => array
+				'contents' => array
 				(
-					'contents' => array
-					(
-						'title' => 'Content'
-					),
+					'title' => 'Content'
+				),
 
-					'date' => array
-					(
+				'date' => array
+				(
 
-					)
 				)
 			)
 		);
+
+		return $attributes;
 	}
 
-	protected function alter_children(array $children, array &$properties, array &$attributes)
+	protected function get_children()
 	{
 		global $core;
 
@@ -61,9 +62,11 @@ class EditBlock extends \ICanBoogie\Modules\Nodes\EditBlock
 
 		}
 
+		$values = $this->values;
+
 		return array_merge
 		(
-			parent::alter_children($children, $properties, $attributes), array
+			parent::get_children(), array
 			(
 				Content::SUBTITLE => new Text
 				(
@@ -75,7 +78,7 @@ class EditBlock extends \ICanBoogie\Modules\Nodes\EditBlock
 
 				Content::BODY => new MultiEditorElement
 				(
-					$properties['editor'] ? $properties['editor'] : $default_editor, array
+					$values['editor'] ? $values['editor'] : $default_editor, array
 					(
 						Element::LABEL_MISSING => 'Contents',
 						Element::GROUP => 'contents',
@@ -85,7 +88,7 @@ class EditBlock extends \ICanBoogie\Modules\Nodes\EditBlock
 					)
 				),
 
-				Content::EXCERPT => new RTEEditorElement
+				Content::EXCERPT => $core->editors['rte']->from
 				(
 					array
 					(
@@ -118,5 +121,21 @@ class EditBlock extends \ICanBoogie\Modules\Nodes\EditBlock
 				)
 			)
 		);
+	}
+
+	protected function get_values()
+	{
+		global $core;
+
+		$values = parent::get_values();
+
+		if (isset($values['editor']) && isset($values['body']))
+		{
+			$editor = $core->editors[$values['editor']];
+
+			$values['body'] = $editor->unserialize($values['body']);
+		}
+
+		return $values;
 	}
 }

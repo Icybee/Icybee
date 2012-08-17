@@ -20,13 +20,13 @@ use Brickrouge\Text;
  */
 class ConfigBlock extends \Icybee\ConfigBlock
 {
-	protected function alter_children(array $children, array &$properties, array &$attributes)
+	protected function get_children()
 	{
 		$ns = $this->module->flat_id;
 
 		return array_merge
 		(
-			parent::alter_children($children, $properties, $attributes), array
+			parent::get_children(), array
 			(
 				"local[$ns.max_file_size]" => new Text
 				(

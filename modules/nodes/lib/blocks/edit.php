@@ -28,38 +28,35 @@ class EditBlock extends \Icybee\EditBlock
 	 *
 	 * The visibility group is created with an initial weight of 400.
 	 *
-	 * @see Icybee.EditBlock::alter_attributes()
+	 * @see Icybee.EditBlock::get_attributes()
 	 */
-	protected function alter_attributes(array $attributes)
+	protected function get_attributes()
 	{
-		return \ICanBoogie\array_merge_recursive
+		$attributes = parent::get_attributes();
+
+		$attributes[Element::GROUPS]['visibility'] = array
 		(
-			parent::alter_attributes($attributes), array
-			(
-				Element::GROUPS => array
-				(
-					'visibility' => array
-					(
-						'title' => 'Visibility',
-						'weight' => 400
-					)
-				)
-			)
+			'title' => 'Visibility',
+			'weight' => 400
 		);
+
+		return $attributes;
 	}
 
 	/**
-	 * Adds the "Title", "Online", "User" and "Site" elements.
+	 * Adds the `title`, `is_online`, `uid` and `siteid` elements.
 	 *
-	 * The "User" and "Site" elements are added according to the context.
+	 * The `uid` and `siteid` elements are added according to the context.
 	 *
-	 * @see Icybee.EditBlock::alter_children()
+	 * @see Icybee.EditBlock::get_children()
 	 */
-	protected function alter_children(array $children, array &$properties, array &$attributes)
+	protected function get_children()
 	{
+		$values = $this->values;
+
 		return array_merge
 		(
-			parent::alter_children($children, $properties, $attributes), array
+			parent::get_children(), array
 			(
 				Node::TITLE => new TitleSlugCombo
 				(
@@ -67,13 +64,13 @@ class EditBlock extends \Icybee\EditBlock
 					(
 						Form::LABEL => 'title',
 						Element::REQUIRED => true,
-						TitleSlugCombo::T_NODEID => $properties[Node::NID],
+						TitleSlugCombo::T_NODEID => $values[Node::NID],
 						TitleSlugCombo::T_SLUG_NAME => 'slug'
 					)
 				),
 
-				Node::UID => $this->get_control__user($properties, $attributes),
-				Node::SITEID => $this->get_control__site($properties, $attributes),	// TODO-20100906: this should be added by the "sites" modules using the alter event.
+				Node::UID => $this->get_control__user(),
+				Node::SITEID => $this->get_control__site(),	// TODO-20100906: this should be added by the "sites" modules using the alter event.
 				Node::IS_ONLINE => new Element
 				(
 					Element::TYPE_CHECKBOX, array
@@ -95,7 +92,7 @@ class EditBlock extends \Icybee\EditBlock
 	 *
 	 * @return void|\Brickrouge\Element
 	 */
-	protected function get_control__user(array &$properties, array &$attributes)
+	protected function get_control__user()
 	{
 		global $core;
 
@@ -133,7 +130,7 @@ class EditBlock extends \Icybee\EditBlock
 	 *
 	 * @return void|\Brickrouge\Element
 	 */
-	protected function get_control__site(array &$properties, array &$attributes)
+	protected function get_control__site()
 	{
 		global $core;
 
@@ -146,7 +143,7 @@ class EditBlock extends \Icybee\EditBlock
 
 		if (count($sites) < 2)
 		{
-			$attributes[self::HIDDENS][Node::SITEID] = $core->site_id;
+			$this->attributes[Form::HIDDENS][Node::SITEID] = $core->site_id;
 
 			return;
 		}

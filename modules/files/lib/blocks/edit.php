@@ -11,6 +11,8 @@
 
 namespace ICanBoogie\Modules\Files;
 
+use Brickrouge\Document;
+
 use ICanBoogie\ActiveRecord\File;
 use ICanBoogie\Modules\Editor\RTEEditorElement;
 use ICanBoogie\Operation;
@@ -28,7 +30,25 @@ class EditBlock extends \ICanBoogie\Modules\Nodes\EditBlock
 	protected $accept = null;
 	protected $uploader_class = 'WdFileUploadElement';
 
-	protected function alter_children(array $children, array &$properties, array &$attributes)
+	static protected function add_assets(Document $document)
+	{
+		parent::add_assets($document);
+
+		$document->css->add('../../public/edit.css');
+		$document->js->add('../../public/edit.js');
+	}
+
+	protected function get_values()
+	{
+		return parent::get_values() + array
+		(
+			File::NID => null,
+			File::PATH => null,
+			self::UPLOADED => null
+		);
+	}
+
+	protected function get_children()
 	{
 		global $core;
 
@@ -44,9 +64,6 @@ class EditBlock extends \ICanBoogie\Modules\Nodes\EditBlock
 				)
 			);
 		}
-
-		$core->document->css->add('../../public/edit.css');
-		$core->document->js->add('../../public/edit.js');
 
 		#
 		# options
@@ -67,12 +84,7 @@ class EditBlock extends \ICanBoogie\Modules\Nodes\EditBlock
 		#
 
 		$values = array();
-		$properties += array
-		(
-			File::NID => null,
-			File::PATH => null,
-			self::UPLOADED => null
-		);
+		$properties = $this->values;
 
 		$entry_nid = $properties[File::NID];
 		$entry_path = $properties[File::PATH];
@@ -109,9 +121,9 @@ class EditBlock extends \ICanBoogie\Modules\Nodes\EditBlock
 		# elements
 		#
 
-		$attributes = \ICanBoogie\array_merge_recursive
+		$this->attributes = \ICanBoogie\array_merge_recursive
 		(
-			$attributes, array
+			$this->attributes, array
 			(
 				Form::HIDDENS => array
 				(
@@ -127,7 +139,7 @@ class EditBlock extends \ICanBoogie\Modules\Nodes\EditBlock
 
 		return array_merge
 		(
-			parent::alter_children($children, $properties, $attributes), array
+			parent::get_children(), array
 			(
 				File::PATH => new $uploader_class
 				(
