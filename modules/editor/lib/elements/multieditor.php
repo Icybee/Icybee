@@ -64,7 +64,8 @@ class MultiEditorElement extends Element
 				Element::DEFAULT_VALUE => $this[self::DEFAULT_VALUE],
 
 				'name' => $this['name'],
-				'value' => $editor->unserialize($this['value'])
+// 				'value' => $editor->unserialize($this['value'])
+				'value' => $this['value']
 			)
 		);
 

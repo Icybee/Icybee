@@ -358,7 +358,7 @@ class Module extends \ICanBoogie\Modules\Nodes\Module
 						Element::DESCRIPTION => $editor_description,
 
 						'id' => 'editor-' . $id,
-						'value' => $value
+						'value' => $core->editors[$editor_id]->unserialize($value)
 					)
 				);
 			}

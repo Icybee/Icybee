@@ -28,11 +28,18 @@ return array
 		__NAMESPACE__ . '\RawEditorElement' => $path . 'lib/editors/raw/element.php',
 		__NAMESPACE__ . '\RTEEditor' => $path . 'lib/editors/rte/editor.php',
 		__NAMESPACE__ . '\RTEEditorElement' => $path . 'lib/editors/rte/element.php',
+		__NAMESPACE__ . '\TabbableEditor' => $path . 'lib/editors/tabbable/editor.php',
+		__NAMESPACE__ . '\TabbableEditorElement' => $path . 'lib/editors/tabbable/element.php',
+		__NAMESPACE__ . '\TabbableEditorRenderer' => $path . 'lib/editors/tabbable/renderer.php',
 		__NAMESPACE__ . '\TextEditor' => $path . 'lib/editors/text/editor.php',
 		__NAMESPACE__ . '\TextEditorElement' => $path . 'lib/editors/text/element.php',
 		__NAMESPACE__ . '\TextmarkEditor' => $path . 'lib/editors/textmark/editor.php',
 		__NAMESPACE__ . '\TextmarkEditorElement' => $path . 'lib/editors/textmark/element.php',
 		__NAMESPACE__ . '\WidgetsEditor' => $path . 'lib/editors/widgets/editor.php',
-		__NAMESPACE__ . '\WidgetsEditorElement' => $path . 'lib/editors/widgets/element.php'
+		__NAMESPACE__ . '\WidgetsEditorElement' => $path . 'lib/editors/widgets/element.php',
+
+		# operations
+
+		__NAMESPACE__ . '\TabbableNewPaneOperation' => $path . 'lib/editors/tabbable/operations/new-pane.php'
 	)
 );

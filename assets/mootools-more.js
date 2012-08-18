@@ -1,5 +1,5 @@
 // MooTools: the javascript framework.
-// Load this file's selection again by visiting: http://mootools.net/more/6ef9398f8e4bc6bb9944370876e1211c 
+// Load this file's selection again by visiting: http://mootools.net/more/6ef9398f8e4bc6bb9944370876e1211c
 // Or build this file again with packager using: packager build More/More More/Class.Refactor More/Date More/Object.Extras More/URI More/Hash More/Elements.From More/Fx.Scroll More/Fx.Slide More/Sortables More/Assets More/Color More/Tips More/Locale More/Locale.en-US.Date
 /*
 ---
@@ -159,28 +159,7 @@ if(c.getStyle("position")=="fixed"){var a=window.getScroll();b.left+=a.x;b.right
 var b=this.mouse.now;return(b.x>d.left&&b.x<d.right&&b.y<d.bottom&&b.y>d.top);},this).getLast();if(this.overed!=a){if(this.overed){this.fireEvent("leave",[this.element,this.overed]);
 }if(a){this.fireEvent("enter",[this.element,a]);}this.overed=a;}},drag:function(a){this.parent(a);if(this.options.checkDroppables&&this.droppables.length){this.checkDroppables();
 }},stop:function(a){this.checkDroppables();this.fireEvent("drop",[this.element,this.overed,a]);this.overed=null;return this.parent(a);}});Element.implement({makeDraggable:function(a){var b=new Drag.Move(this,a);
-this.store("dragger",b);return b;}});var Sortables=new Class({Implements:[Events,Options],options:{opacity:1,clone:false,revert:false,handle:false,dragOptions:{}},initialize:function(a,b){this.setOptions(b);
-this.elements=[];this.lists=[];this.idle=true;this.addLists($$(document.id(a)||a));if(!this.options.clone){this.options.revert=false;}if(this.options.revert){this.effect=new Fx.Morph(null,Object.merge({duration:250,link:"cancel"},this.options.revert));
-}},attach:function(){this.addLists(this.lists);return this;},detach:function(){this.lists=this.removeLists(this.lists);return this;},addItems:function(){Array.flatten(arguments).each(function(a){this.elements.push(a);
-var b=a.retrieve("sortables:start",function(c){this.start.call(this,c,a);}.bind(this));(this.options.handle?a.getElement(this.options.handle)||a:a).addEvent("mousedown",b);
-},this);return this;},addLists:function(){Array.flatten(arguments).each(function(a){this.lists.include(a);this.addItems(a.getChildren());},this);return this;
-},removeItems:function(){return $$(Array.flatten(arguments).map(function(a){this.elements.erase(a);var b=a.retrieve("sortables:start");(this.options.handle?a.getElement(this.options.handle)||a:a).removeEvent("mousedown",b);
-return a;},this));},removeLists:function(){return $$(Array.flatten(arguments).map(function(a){this.lists.erase(a);this.removeItems(a.getChildren());return a;
-},this));},getClone:function(b,a){if(!this.options.clone){return new Element(a.tagName).inject(document.body);}if(typeOf(this.options.clone)=="function"){return this.options.clone.call(this,b,a,this.list);
-}var c=a.clone(true).setStyles({margin:0,position:"absolute",visibility:"hidden",width:a.getStyle("width")}).addEvent("mousedown",function(d){a.fireEvent("mousedown",d);
-});if(c.get("html").test("radio")){c.getElements("input[type=radio]").each(function(d,e){d.set("name","clone_"+e);if(d.get("checked")){a.getElements("input[type=radio]")[e].set("checked",true);
-}});}return c.inject(this.list).setPosition(a.getPosition(a.getOffsetParent()));},getDroppables:function(){var a=this.list.getChildren().erase(this.clone).erase(this.element);
-if(!this.options.constrain){a.append(this.lists).erase(this.list);}return a;},insert:function(c,b){var a="inside";if(this.lists.contains(b)){this.list=b;
-this.drag.droppables=this.getDroppables();}else{a=this.element.getAllPrevious().contains(b)?"before":"after";}this.element.inject(b,a);this.fireEvent("sort",[this.element,this.clone]);
-},start:function(b,a){if(!this.idle||b.rightClick||["button","input","a","textarea"].contains(b.target.get("tag"))){return;}this.idle=false;this.element=a;
-this.opacity=a.getStyle("opacity");this.list=a.getParent();this.clone=this.getClone(b,a);this.drag=new Drag.Move(this.clone,Object.merge({droppables:this.getDroppables()},this.options.dragOptions)).addEvents({onSnap:function(){b.stop();
-this.clone.setStyle("visibility","visible");this.element.setStyle("opacity",this.options.opacity||0);this.fireEvent("start",[this.element,this.clone]);
-}.bind(this),onEnter:this.insert.bind(this),onCancel:this.end.bind(this),onComplete:this.end.bind(this)});this.clone.inject(this.element,"before");this.drag.start(b);
-},end:function(){this.drag.detach();this.element.setStyle("opacity",this.opacity);if(this.effect){var b=this.element.getStyles("width","height"),d=this.clone,c=d.computePosition(this.element.getPosition(this.clone.getOffsetParent()));
-var a=function(){this.removeEvent("cancel",a);d.destroy();};this.effect.element=d;this.effect.start({top:c.top,left:c.left,width:b.width,height:b.height,opacity:0.25}).addEvent("cancel",a).chain(a);
-}else{this.clone.destroy();}this.reset();},reset:function(){this.idle=true;this.fireEvent("complete",this.element);},serialize:function(){var c=Array.link(arguments,{modifier:Type.isFunction,index:function(d){return d!=null;
-}});var b=this.lists.map(function(d){return d.getChildren().map(c.modifier||function(e){return e.get("id");},this);},this);var a=c.index;if(this.lists.length==1){a=0;
-}return(a||a===0)&&a>=0&&a<this.lists.length?b[a]:b;}});var Asset={javascript:function(d,b){if(!b){b={};}var a=new Element("script",{src:d,type:"text/javascript"}),e=b.document||document,c=b.onload||b.onLoad;
+this.store("dragger",b);return b;}});var Asset={javascript:function(d,b){if(!b){b={};}var a=new Element("script",{src:d,type:"text/javascript"}),e=b.document||document,c=b.onload||b.onLoad;
 delete b.onload;delete b.onLoad;delete b.document;if(c){if(typeof a.onreadystatechange!="undefined"){a.addEvent("readystatechange",function(){if(["loaded","complete"].contains(this.readyState)){c.call(this);
 }});}else{a.addEvent("load",c);}}return a.set(b).inject(e.head);},css:function(d,a){if(!a){a={};}var b=new Element("link",{rel:"stylesheet",media:"screen",type:"text/css",href:d});
 var c=a.onload||a.onLoad,e=a.document||document;delete a.onload;delete a.onLoad;delete a.document;if(c){b.addEvent("load",c);}return b.set(a).inject(e.head);
@@ -223,3 +202,207 @@ for(var i in d){h[d[i]]=f.page[i]+this.options.offset[i];if(h[d[i]]<0){e[i]=true
 e[i+"2"]=true;}}this.fireEvent("bound",e);this.tip.setStyles(h);},fill:function(b,c){if(typeof c=="string"){b.set("html",c);}else{b.adopt(c);}},show:function(b){if(!this.tip){document.id(this);
 }if(!this.tip.getParent()){this.tip.inject(document.body);}this.fireEvent("show",[this.tip,b]);},hide:function(b){if(!this.tip){document.id(this);}this.fireEvent("hide",[this.tip,b]);
 }});})();
+
+// unDraggableTags patch
+var Sortables = new Class({
+
+	Implements: [Events, Options],
+
+	options: {/*
+		onSort: function(element, clone){},
+		onStart: function(element, clone){},
+		onComplete: function(element){},*/
+		opacity: 1,
+		clone: false,
+		revert: false,
+		handle: false,
+		dragOptions: {},
+		unDraggableTags: ['button', 'input', 'a', 'textarea', 'select', 'option']
+	},
+
+	initialize: function(lists, options){
+		this.setOptions(options);
+
+		this.elements = [];
+		this.lists = [];
+		this.idle = true;
+
+		this.addLists($$(document.id(lists) || lists));
+
+		if (!this.options.clone) this.options.revert = false;
+		if (this.options.revert) this.effect = new Fx.Morph(null, Object.merge({
+			duration: 250,
+			link: 'cancel'
+		}, this.options.revert));
+	},
+
+	attach: function(){
+		this.addLists(this.lists);
+		return this;
+	},
+
+	detach: function(){
+		this.lists = this.removeLists(this.lists);
+		return this;
+	},
+
+	addItems: function(){
+		Array.flatten(arguments).each(function(element){
+			this.elements.push(element);
+			var start = element.retrieve('sortables:start', function(event){
+				this.start.call(this, event, element);
+			}.bind(this));
+			(this.options.handle ? element.getElement(this.options.handle) || element : element).addEvent('mousedown', start);
+		}, this);
+		return this;
+	},
+
+	addLists: function(){
+		Array.flatten(arguments).each(function(list){
+			this.lists.include(list);
+			this.addItems(list.getChildren());
+		}, this);
+		return this;
+	},
+
+	removeItems: function(){
+		return $$(Array.flatten(arguments).map(function(element){
+			this.elements.erase(element);
+			var start = element.retrieve('sortables:start');
+			(this.options.handle ? element.getElement(this.options.handle) || element : element).removeEvent('mousedown', start);
+
+			return element;
+		}, this));
+	},
+
+	removeLists: function(){
+		return $$(Array.flatten(arguments).map(function(list){
+			this.lists.erase(list);
+			this.removeItems(list.getChildren());
+
+			return list;
+		}, this));
+	},
+
+	getClone: function(event, element){
+		if (!this.options.clone) return new Element(element.tagName).inject(document.body);
+		if (typeOf(this.options.clone) == 'function') return this.options.clone.call(this, event, element, this.list);
+		var clone = element.clone(true).setStyles({
+			margin: 0,
+			position: 'absolute',
+			visibility: 'hidden',
+			width: element.getStyle('width')
+		}).addEvent('mousedown', function(event){
+			element.fireEvent('mousedown', event);
+		});
+		//prevent the duplicated radio inputs from unchecking the real one
+		if (clone.get('html').test('radio')){
+			clone.getElements('input[type=radio]').each(function(input, i){
+				input.set('name', 'clone_' + i);
+				if (input.get('checked')) element.getElements('input[type=radio]')[i].set('checked', true);
+			});
+		}
+
+		return clone.inject(this.list).setPosition(element.getPosition(element.getOffsetParent()));
+	},
+
+	getDroppables: function(){
+		var droppables = this.list.getChildren().erase(this.clone).erase(this.element);
+		if (!this.options.constrain) droppables.append(this.lists).erase(this.list);
+		return droppables;
+	},
+
+	insert: function(dragging, element){
+		var where = 'inside';
+		if (this.lists.contains(element)){
+			this.list = element;
+			this.drag.droppables = this.getDroppables();
+		} else {
+			where = this.element.getAllPrevious().contains(element) ? 'before' : 'after';
+		}
+		this.element.inject(element, where);
+		this.fireEvent('sort', [this.element, this.clone]);
+	},
+
+	start: function(event, element){
+		if (
+			!this.idle ||
+			event.rightClick ||
+			this.options.unDraggableTags.contains(event.target.get('tag'))
+		) return;
+
+		this.idle = false;
+		this.element = element;
+		this.opacity = element.getStyle('opacity');
+		this.list = element.getParent();
+		this.clone = this.getClone(event, element);
+
+		this.drag = new Drag.Move(this.clone, Object.merge({
+			droppables: this.getDroppables()
+		}, this.options.dragOptions)).addEvents({
+			onSnap: function(){
+				event.stop();
+				this.clone.setStyle('visibility', 'visible');
+				this.element.setStyle('opacity', this.options.opacity || 0);
+				this.fireEvent('start', [this.element, this.clone]);
+			}.bind(this),
+			onEnter: this.insert.bind(this),
+			onCancel: this.end.bind(this),
+			onComplete: this.end.bind(this)
+		});
+
+		this.clone.inject(this.element, 'before');
+		this.drag.start(event);
+	},
+
+	end: function(){
+		this.drag.detach();
+		this.element.setStyle('opacity', this.opacity);
+		if (this.effect){
+			var dim = this.element.getStyles('width', 'height'),
+				clone = this.clone,
+				pos = clone.computePosition(this.element.getPosition(this.clone.getOffsetParent()));
+
+			var destroy = function(){
+				this.removeEvent('cancel', destroy);
+				clone.destroy();
+			};
+
+			this.effect.element = clone;
+			this.effect.start({
+				top: pos.top,
+				left: pos.left,
+				width: dim.width,
+				height: dim.height,
+				opacity: 0.25
+			}).addEvent('cancel', destroy).chain(destroy);
+		} else {
+			this.clone.destroy();
+		}
+		this.reset();
+	},
+
+	reset: function(){
+		this.idle = true;
+		this.fireEvent('complete', this.element);
+	},
+
+	serialize: function(){
+		var params = Array.link(arguments, {
+			modifier: Type.isFunction,
+			index: function(obj){
+				return obj != null;
+			}
+		});
+		var serial = this.lists.map(function(list){
+			return list.getChildren().map(params.modifier || function(element){
+				return element.get('id');
+			}, this);
+		}, this);
+
+		var index = params.index;
+		if (this.lists.length == 1) index = 0;
+		return (index || index === 0) && index >= 0 && index < this.lists.length ? serial[index] : serial;
+	}
+
+});

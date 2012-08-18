@@ -13,5 +13,6 @@ return array
 	'image' => __NAMESPACE__ . '\ImageEditor',
 	'node' => __NAMESPACE__ . '\NodeEditor',
 	'widgets' => __NAMESPACE__ . '\WidgetsEditor',
-	'feed' => __NAMESPACE__ . '\FeedEditor'
+	'feed' => __NAMESPACE__ . '\FeedEditor',
+	'tabbable' => __NAMESPACE__ . '\TabbableEditor'
 );
