@@ -1179,7 +1179,8 @@ MooEditable.UI.Toolbar= new Class({
 			name: action,
 			'class': action + '-item toolbar-item',
 			title: act.title,
-			onAction: self.itemAction.bind(self)
+			onAction: self.itemAction.bind(self),
+			tabindex: -1
 		}));
 		this.items[action] = item;
 		document.id(item).inject(this.el);
@@ -1263,6 +1264,7 @@ MooEditable.UI.Button = new Class({
 		this.el = new Element('button', {
 			'class': 'mooeditable-ui-button ' + self.options['class'],
 			title: title,
+			tabindex: -1,
 			html: '<span class="button-icon"></span><span class="button-text">' + text + '</span>',
 			events: {
 				click: self.click.bind(self),

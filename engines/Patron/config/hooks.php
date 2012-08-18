@@ -4,7 +4,7 @@ return array
 (
 	'patron.markups' => 
 	
-	(require $root . 'markups/feed.hooks.php') +
-	(require $root . 'markups/native.hooks.php') +
-	(require $root . 'markups/elements.hooks.php')
+	(require $path . 'markups/feed.hooks.php') +
+	(require $path . 'markups/native.hooks.php') +
+	(require $path . 'markups/elements.hooks.php')
 );

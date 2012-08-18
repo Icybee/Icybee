@@ -77,6 +77,15 @@ class Collection implements \ArrayAccess, \IteratorAggregate
 	 */
 	public function offsetExists($offset)
 	{
+		if ($offset == 'moo') // COMPAT
+		{
+			$offset = 'rte';
+		}
+		else if ($offset == 'adjustimage')
+		{
+			$offset = 'image';
+		}
+
 		return isset($this->collection[$offset]);
 	}
 
@@ -87,6 +96,15 @@ class Collection implements \ArrayAccess, \IteratorAggregate
 	 */
 	public function offsetGet($offset)
 	{
+		if ($offset == 'moo') // COMPAT
+		{
+			$offset = 'rte';
+		}
+		else if ($offset == 'adjustimage')
+		{
+			$offset = 'image';
+		}
+
 		if (isset($this->editors[$offset]))
 		{
 			return $this->editors[$offset];

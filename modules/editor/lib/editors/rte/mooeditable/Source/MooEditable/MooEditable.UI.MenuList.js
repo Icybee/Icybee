@@ -38,11 +38,11 @@ MooEditable.UI.MenuList = new Class({
 		this.name = this.options.name;
 		this.render();
 	},
-	
+
 	toElement: function(){
 		return this.el;
 	},
-	
+
 	render: function(){
 		var self = this;
 		var html = '';
@@ -52,13 +52,14 @@ MooEditable.UI.MenuList = new Class({
 		this.el = new Element('select', {
 			'class': self.options['class'],
 			title: self.options.title,
+			tabindex: -1,
 			html: html,
 			styles: { 'height' : '21px' },
 			events: {
 				change: self.change.bind(self)
 			}
 		});
-		
+
 		this.disabled = false;
 
 		// add hover effect for IE
@@ -66,21 +67,21 @@ MooEditable.UI.MenuList = new Class({
 			mouseenter: function(e){ this.addClass('hover'); },
 			mouseleave: function(e){ this.removeClass('hover'); }
 		});
-		
+
 		return this;
 	},
-	
+
 	change: function(e){
 		e.preventDefault();
 		if (this.disabled) return;
 		var name = e.target.value;
 		this.action(name);
 	},
-	
+
 	action: function(){
 		this.fireEvent('action', [this].concat(Array.from(arguments)));
 	},
-	
+
 	enable: function(){
 		if (!this.disabled) return;
 		this.disabled = false;
@@ -90,7 +91,7 @@ MooEditable.UI.MenuList = new Class({
 		});
 		return this;
 	},
-	
+
 	disable: function(){
 		if (this.disabled) return;
 		this.disabled = true;
@@ -100,7 +101,7 @@ MooEditable.UI.MenuList = new Class({
 		});
 		return this;
 	},
-	
+
 	activate: function(value){
 		if (this.disabled) return;
 		var index = 0;
@@ -110,11 +111,11 @@ MooEditable.UI.MenuList = new Class({
 		this.el.selectedIndex = index;
 		return this;
 	},
-	
+
 	deactivate: function(){
 		this.el.selectedIndex = 0;
 		this.el.removeClass('onActive');
 		return this;
 	}
-	
+
 });

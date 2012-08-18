@@ -226,17 +226,24 @@ window.addEvent('domready', function() {
 
 			controls.push(el)
 
-			var reset = new Element('span.btn.btn-warning.reset-default-value', { html: '<i class="icon-edit icon-white"></i> Reset' })
+			var reset = new Element('span.btn.btn-warning.reset-default-value[tabindex="0"]', { html: '<i class="icon-edit icon-white"></i> Reset' })
 			, defaultValue = el.get('data-default-value')
 			, container = el.getParent('.controls')
 
 			if (el.get('value') == defaultValue) reset.addClass('hidden')
 
-			reset.addEvent('click', function() {
+			function go() {
 
 				el.set('value', defaultValue)
 				reset.addClass('hidden')
+			}
 
+			reset.addEvent('click', go)
+			reset.addEvent('keypress', function(ev) {
+
+				if (ev.key != 'enter' && ev.key != 'space') return
+
+				go()
 			})
 
 			el.addEvent('change', function () {
