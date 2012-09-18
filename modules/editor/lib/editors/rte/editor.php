@@ -92,7 +92,7 @@ class RTEEditor implements Editor
 				if (isset($attributes['data-lightbox']) && $nid)
 				{
 					$attributes['src'] = preg_replace('#\&amp;lightbox=true#', '', $attributes['src']);
-					$path = $core->models['images']->select('path')->find_by_nid($nid)->rc;
+					$path = $core->models['images']->select('path')->filter_by_nid($nid)->rc;
 				}
 
 				unset($attributes['data-nid']);

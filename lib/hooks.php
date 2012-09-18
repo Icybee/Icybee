@@ -11,8 +11,6 @@
 
 namespace Icybee;
 
-use ICanBoogie\Modules\System\Cache\Collection\AlterEvent;
-
 use ICanBoogie\Debug;
 use ICanBoogie\Event;
 use ICanBoogie\Events;
@@ -21,186 +19,131 @@ use ICanBoogie\HTTP\Request;
 use ICanBoogie\HTTP\Response;
 use ICanBoogie\Modules\System\Cache\Collection as CacheCollection;
 use ICanBoogie\Operation;
+use ICanBoogie\Routes;
 
 use Brickrouge\Alert;
 
 class Hooks
 {
-	public static function synthesize_admin_routes(array $fragments)
+	static public function before_routes_collect(Routes\BeforeCollectEvent $event, Routes $target)
 	{
-		global $core;
+		static $magic = array
+		(
+			'!admin:manage' => true,
+			'!admin:new' => true,
+			'!admin:config' => true,
+			'!admin:edit' => true
+		);
 
-		static $specials = array(':admin/manage', ':admin/new', ':admin/config', ':admin/edit');
+		$fragments = array();
 
-		$rc = array();
-
-		foreach ($fragments as $path => $routes)
+		foreach ($event->fragments as $root => $fragment)
 		{
-			$local_module_id = null;
+			$add_delete_route = false;
 
-			if (basename(dirname($path)) == 'modules')
+			foreach ($fragment as $id => $route)
 			{
-				$local_module_id = basename($path);
+				if (empty($magic[$id]))
+				{
+					if (isset($route['block']) && empty($route['controller']))
+					{
+						$route['controller'] = 'Icybee\BlockController';
+					}
+
+					$fragments[$root][$id] = $route;
+
+					continue;
+				}
+
+				$module_id = $route['module'];
+
+				switch ($id)
+				{
+					case '!admin:manage':
+					{
+						$id = "admin:$module_id/manage"; // TODO-20120828: renamed this as "admin:{module_id}"
+
+						$route += array
+						(
+							'pattern' => "/admin/$module_id",
+							'controller' => 'Icybee\BlockController',
+							'title' => '.manage',
+							'block' => 'manage',
+							'index' => true
+						);
+					}
+					break;
+
+					case '!admin:new':
+					{
+						$id = "admin:$module_id/new";
+
+						$route += array
+						(
+							'pattern' => "/admin/$module_id/new",
+							'controller' => 'Icybee\BlockController',
+							'title' => '.new',
+							'block' => 'edit',
+							'visibility' => 'visible'
+						);
+					}
+					break;
+
+					case '!admin:edit':
+					{
+						$id = "admin:$module_id/edit";
+
+						$route += array
+						(
+							'pattern' => "/admin/$module_id/<\d+>/edit",
+							'controller' => 'Icybee\EditController',
+							'title' => '.edit',
+							'block' => 'edit',
+							'visibility' => 'auto'
+						);
+
+						$add_delete_route = true;
+					}
+					break;
+
+					case '!admin:config':
+					{
+						$id = "admin:$module_id/config";
+
+						$route += array
+						(
+							'pattern' => "/admin/$module_id/config",
+							'controller' => 'Icybee\BlockController',
+							'title' => '.config',
+							'block' => 'config',
+							'permission' => Module::PERMISSION_ADMINISTER,
+							'visibility' => 'visible'
+						);
+					}
+					break;
+				}
+
+				$fragments[$root][$id] = $route;
 			}
 
-			foreach ($routes as $route_id => $route)
+			if ($add_delete_route)
 			{
-				$add_delete_route = false;
-
-				if (isset($route['module']))
-				{
-					$local_module_id = $route['module'];
-				}
-
-				$pattern = isset($route['pattern']) ? $route['pattern'] : null;
-
-				if (in_array($route_id, $specials))
-				{
-					switch ($route_id)
-					{
-						case ':admin/manage':
-						{
-							$pattern = "/admin/$local_module_id";
-
-							$route += array
-							(
-								'title' => '.manage',
-								'block' => 'manage',
-								'index' => true,
-								'module' => $local_module_id,
-								'visibility' => 'visible'
-							);
-						}
-						break;
-
-						case ':admin/new':
-						{
-							$pattern = "/admin/$local_module_id/new";
-
-							$route += array
-							(
-								'title' => '.new',
-								'block' => 'edit',
-								'module' => $local_module_id,
-								'visibility' => 'visible'
-							);
-						}
-						break;
-
-						case ':admin/edit':
-						{
-							$pattern = "/admin/$local_module_id/<\d+>/edit";
-
-							$route += array
-							(
-								'title' => '.edit',
-								'block' => 'edit',
-								'module' => $local_module_id,
-								'visibility' => 'auto'
-							);
-
-							$add_delete_route = true;
-						}
-						break;
-
-						case ':admin/config':
-						{
-							$pattern = "/admin/$local_module_id/config";
-
-							$route += array
-							(
-								'title' => '.config',
-								'block' => 'config',
-								'module' => $local_module_id,
-								'permission' => Module::PERMISSION_ADMINISTER,
-								'visibility' => 'visible'
-							);
-						}
-						break;
-					}
-
-					$route_id = $local_module_id . $route_id;
-				}
-
-				/*
-				if (empty($route['pattern']))
-				{
-					throw new \LogicException(t
-					(
-						"Route %route_id has no pattern in %path. !route", array
-						(
-							'%route_id' => $route_id,
-							'%path' => $path,
-							'!route' => $route
-						)
-					));
-				}
-
-				$pattern = $route['pattern'];
-				*/
-
-				if (substr($pattern, 0, 7) != '/admin/')
-				{
-					continue;
-				}
-
-				if (isset($route['block']) && empty($route['module']))
-				{
-					$route['module'] = $local_module_id;
-				}
-
-				$module_id = isset($route['module']) ? $route['module'] : $local_module_id;
-
-				if ($module_id && !isset($core->modules[$module_id]))
-				{
-					continue;
-				}
-
-				#
-				# workspace
-				#
-
-				$workspace = null;
-
-				if ($module_id && isset($core->modules->descriptors[$module_id]) )
-				{
-					$descriptor = $core->modules->descriptors[$module_id];
-
-					if (empty($route['workspace']) && isset($descriptor[Module::T_CATEGORY]))
-					{
-						$workspace = $descriptor[Module::T_CATEGORY];
-					}
-					else
-					{
-						list($workspace) = explode('.', $module_id);
-					}
-				}
-
-				$route += array
+				$fragments[$root]["admin:$module_id/delete"] = array
 				(
-					'pattern' => $pattern,
-					'module' => $module_id,
-					'workspace' => $workspace,
-					'visibility' => 'visible'
+					'pattern' => "/admin/$module_id/<\d+>/delete",
+					'controller' => 'Icybee\BlockController',
+					'title' => '.delete',
+					'block' => 'delete',
+					'visibility' => 'auto'
 				);
-
-				$rc[$route_id] = $route;
-
-				if ($add_delete_route)
-				{
-					$rc["/admin/$local_module_id/delete"] = $a = array
-					(
-						'pattern' => "/admin/$local_module_id/<\d+>/delete",
-						'title' => '.delete',
-						'block' => 'delete'
-					)
-
-					+ $route;
-				}
 			}
 		}
 
-		return $rc;
+		#
+		# default redirection from categories to a module.
+		#
+
+		$event->fragments = $fragments;
 	}
 
 	/**

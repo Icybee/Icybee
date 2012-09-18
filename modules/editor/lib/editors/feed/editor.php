@@ -95,7 +95,7 @@ class FeedEditor implements Editor
 		$host = preg_replace('#^www\.#', '', $_SERVER['SERVER_NAME']);
 		$page_created = $fdate($page->created, 'y-MM-dd');
 
-		$entries = $core->models[$constructor]->find_by_constructor($constructor)->visible->order('date DESC')->limit($limit)->all;
+		$entries = $core->models[$constructor]->filter_by_constructor($constructor)->visible->order('date DESC')->limit($limit)->all;
 
 		ob_start();
 

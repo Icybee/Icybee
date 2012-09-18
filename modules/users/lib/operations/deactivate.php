@@ -22,7 +22,7 @@ class DeactivateOperation extends ActivateOperation
 		$record->is_activated = false;
 		$record->save();
 
-		$this->response->success = t('!name account is deactivated.', array('!name' => $record->name));
+		$this->response->message = t('!name account is deactivated.', array('!name' => $record->name));
 
 		return true;
 	}

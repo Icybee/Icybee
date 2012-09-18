@@ -11,6 +11,8 @@
 
 use ICanBoogie\ActiveRecord;
 use ICanBoogie\Event;
+use ICanBoogie\Modules\Pages\LanguagesElement;
+
 use Brickrouge\Element;
 
 class site_pages_WdMarkups extends patron_markups_WdHooks
@@ -275,121 +277,12 @@ class site_pages_languages_WdMarkup extends patron_WdMarkup
 {
 	public function __invoke(array $args, Patron\Engine $patron, $template)
 	{
-		global $core;
-
-		$page = $core->request->context->page;
-		$source = $page->node ?: $page;
-		$translations = $source->translations;
-		$translations_by_language = array();
-
-		if ($translations)
-		{
-			$translations[$source->nid] = $source;
-			$translations_by_language = array_flip($core->models['sites']->select('language')->where('status = 1')->order('weight, siteid')->all(PDO::FETCH_COLUMN));
-
-			if ($source instanceof ActiveRecord\Page)
-			{
-				foreach ($translations as $translation)
-				{
-					if (!$translation->is_accessible)
-					{
-						continue;
-					}
-
-					$translations_by_language[$translation->language] = $translation;
-				}
-			}
-			else // nodes
-			{
-				foreach ($translations as $translation)
-				{
-					if (!$translation->is_online)
-					{
-						continue;
-					}
-
-					$translations_by_language[$translation->language] = $translation;
-				}
-			}
-
-			foreach ($translations_by_language as $language => $translation)
-			{
-				if (is_object($translation))
-				{
-					continue;
-				}
-
-				unset($translations_by_language[$language]);
-			}
-		}
-
-		if (!$translations_by_language)
-		{
-			$translations_by_language = array
-			(
-				($source->language ? $source->language : $page->language) => $source
-			);
-		}
-
-		Event::fire
-		(
-			'alter.page.languages:before', array
-			(
-				'translations_by_languages' => &$translations_by_language
-			),
-
-			$page
-		);
-
 		if ($template)
 		{
-			return $patron($template, $translations_by_language);
+			throw new \Exception('Templates are currently not supported :(');
 		}
 
-		$page_language = $page->language;
-		$languages = array();
-
-		foreach ($translations_by_language as $language => $translation)
-		{
-			$languages[$language] = array
-			(
-				'class' => "btn language--$language" . ($language == $page_language ? ' active' : ''),
-				'render' => $language == $page_language ? '<strong>' . $language . '</strong>' : '<a href="' . $translation->url . '">' . $language . '</a>',
-				'node' => $translation
-			);
-		}
-
-		Event::fire
-		(
-			'alter.page.languages', array
-			(
-				'languages' => &$languages
-			),
-
-			$page
-		);
-
-		/*
-		$rc = '<ul>';
-
-		foreach ($languages as $language)
-		{
-			$rc .= '<li class="' . $language['class'] . '">' . $language['render'] . '</li>';
-		}
-
-		$rc .= '</ul>';
-		*/
-
-		$rc = '<div class="btn-group i18n-languages">';
-
-		foreach ($languages as $language => $options)
-		{
-			$rc .= '<a class="' . $options['class'] . '" href="' . $options['node']->url . '">' . $language . '</a>';
-		}
-
-		$rc .= '</div>';
-
-		return $rc;
+		return new LanguagesElement();
 	}
 }
 

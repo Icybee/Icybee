@@ -188,9 +188,6 @@ class patron_native_WdMarkups
 			$true = !empty($args['test']);
 		}
 
-
-// 		var_dump($true, $args);
-
 		#
 		# if the evaluation is not empty (0 or ''), we publish the template
 		#

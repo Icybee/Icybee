@@ -14,7 +14,7 @@ namespace ICanBoogie\ActiveRecord\Pages;
 use ICanBoogie\ActiveRecord;
 use ICanBoogie\Core;
 
-class Content extends ActiveRecord
+class Content extends \ICanBoogie\ActiveRecord
 {
 	/**
 	 * The identifier of the page the content belongs to.
@@ -78,6 +78,10 @@ class Content extends ActiveRecord
 			return $this->rendered;
 		}
 
+		/*
+		 * TODO-20120905: Ok we handle ICanBoogie\Exception\HTTP, but what about RecordNotFound and
+		 * others ?
+		 */
 		try
 		{
 			$editor = Core::get()->editors[$this->editor];
@@ -92,6 +96,9 @@ class Content extends ActiveRecord
 			$rendered = \ICanBoogie\Debug::format_alert($e);
 		}
 
+		$editor = Core::get()->editors[$this->editor];
+		$rendered = $editor->render($editor->unserialize($this->content));
+
 		$this->rendered = $rendered;
 
 		return $rendered;
@@ -101,13 +108,11 @@ class Content extends ActiveRecord
 	{
 		try
 		{
-			$rc = (string) $this->render();
+			return (string) $this->render();
 		}
 		catch (\Exception $e)
 		{
 			return \ICanBoogie\Debug::format_alert($e);
 		}
-
-		return $rc;
 	}
 }

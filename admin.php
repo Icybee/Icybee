@@ -9,6 +9,8 @@
  * file that was distributed with this source code.
  */
 
+\ICanBoogie\log_info('Using admin.php');
+
 global $document;
 
 $time = microtime(true);

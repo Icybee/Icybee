@@ -9,11 +9,11 @@
  * file that was distributed with this source code.
  */
 
-use ICanBoogie\ActiveRecord;
 use ICanBoogie\Exception;
 use ICanBoogie\HTTP\Request;
 use ICanBoogie\I18n\Tanslator\Proxi;
 use ICanBoogie\Module;
+use ICanBoogie\PropertyNotFound;
 use ICanBoogie\Route;
 use ICanBoogie\Routes;
 
@@ -60,7 +60,7 @@ else
 	{
 		$restricted_sites = $user->restricted_sites_ids;
 	}
-	catch (Exception\PropertyNotFound $e)
+	catch (PropertyNotFound $e)
 	{
 		throw $e;
 	}
@@ -87,11 +87,6 @@ else
 }
 
 $routes = \ICanBoogie\Routes::get();
-
-foreach ($core->configs['admin_routes'] as $route_id => $route_definition)
-{
-	$routes[$route_id] = $route_definition;
-}
 
 /**
  * adds redirection routes for categories
@@ -188,6 +183,8 @@ $core->request->route = null;
 if ($route)
 {
 	$core->request->route = $route;
+
+	\ICanBoogie\log('\1', array($route));
 
 	if ($route->path_params)
 	{

@@ -270,11 +270,11 @@ class EditBlock extends \Icybee\EditBlock
 		);
 	}
 
-	protected function alter_actions(array $actions)
+	protected function alter_actions(array $actions, array $params)
 	{
 		global $core;
 
-		$actions = parent::alter_actions($actions);
+		$actions = parent::alter_actions($actions, $params);
 
 		$user = $core->user;
 		$record = $this->record;

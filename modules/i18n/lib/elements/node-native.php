@@ -53,7 +53,7 @@ class NodeNativeElement extends Element
 		{
 			$nodes = $core->models['pages']
 			->select('nid, parentid, title')
-			->find_by_language($native)
+			->filter_by_language($native)
 			->order('weight, created')
 			->all(\PDO::FETCH_OBJ);
 
@@ -74,7 +74,7 @@ class NodeNativeElement extends Element
 		{
 			$options = $core->models['nodes']
 			->select('nid, title')
-			->find_by_constructor_and_language($constructor, $native)
+			->filter_by_constructor_and_language($constructor, $native)
 			->order('title')
 			->pairs;
 

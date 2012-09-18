@@ -15,13 +15,44 @@ use ICanBoogie\ActiveRecord;
 use ICanBoogie\ActiveRecord\Site;
 use ICanBoogie\Event;
 use ICanBoogie\FileCache;
-use ICanBoogie\Modules\System\Cache\Collection as CacheCollection;
+use ICanBoogie\HTTP\Dispatcher;
+use ICanBoogie\HTTP\Request;
+use ICanBoogie\HTTP\Response;
 use ICanBoogie\Operation\ProcessEvent;
 
 use Brickrouge\Element;
 
 class Hooks
 {
+	static public function on_http_dispatcher_populate(Dispatcher\PopulateEvent $event, Dispatcher $target)
+	{
+		$event->controllers['pages'] = function(Request $request)
+		{
+			global $core;
+
+			require_once \ICanBoogie\DOCUMENT_ROOT . 'user-startup.php';
+
+			$response = new Response();
+			$pagemaker = new \Icybee\Pagemaker; // TODO-20120830: rename as PageController and put it in the "page" module.
+
+			$rc = $pagemaker->run($request, $response);
+
+			if ($rc instanceof Response)
+			{
+				return $rc;
+			}
+
+			$response->body = $rc;
+
+			/*
+			$response->cache_control->cacheable = 'public';
+			$response->expires = '+7 days';
+			*/
+
+			return $response;
+		};
+	}
+
 	/**
 	 * Updates view targets.
 	 *
@@ -384,17 +415,6 @@ EOT;
 		return $render = $editor->render($args['name'], $patron, $template);
 
 		return $template ? $patron($template, $render) : $render;
-	}
-
-	/**
-	 * Alters cache collection to add pages cache manager.
-	 *
-	 * @param CacheCollection\AlterEvent $event
-	 * @param CacheCollection $collection
-	 */
-	public static function on_alter_cache_collection(CacheCollection\AlterEvent $event, CacheCollection $collection)
-	{
-		$event->collection['contents.pages'] = new CacheManager;
 	}
 
 	public static function markup_page_title(array $args, $engine, $template)

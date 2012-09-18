@@ -59,7 +59,7 @@ class StatusOperation extends \ICanBoogie\Operation
 			$record->status = $status;
 			$record->save();
 
-			$this->response->success = array('The site %title is now ' . $status_names[$status] . '.', array('title' => $record->title));
+			$this->response->message = array('The site %title is now ' . $status_names[$status] . '.', array('title' => $record->title));
 		}
 
 		return $this->record->status;

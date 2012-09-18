@@ -130,12 +130,20 @@ class Core extends \ICanBoogie\Core
 		{
 			$site = isset($core->site) ? $core->site : null;
 			$version = preg_replace('#\s\([^\)]+\)#', '', VERSION);
-			$css = array
-			(
-				Document::resolve_url(\Brickrouge\ASSETS . 'brickrouge.css'),
-				Document::resolve_url(ASSETS . 'admin.css'),
-				Document::resolve_url(ASSETS . 'admin-more.css')
-			);
+
+			if (class_exists('Brickrouge\Document'))
+			{
+				$css = array
+				(
+					Document::resolve_url(\Brickrouge\ASSETS . 'brickrouge.css'),
+					Document::resolve_url(ASSETS . 'admin.css'),
+					Document::resolve_url(ASSETS . 'admin-more.css')
+				);
+			}
+			else
+			{
+				$css = array();
+			}
 
 			$formated_exception = require(__DIR__ . '/exception.tpl.php');
 		}

@@ -93,7 +93,7 @@ class AdjustNode extends \Brickrouge\Widget
 		}
 		else
 		{
-			$query = $model->find_by_constructor($constructor);
+			$query = $model->filter_by_constructor($constructor);
 		}
 
 		$search = $options['search'];

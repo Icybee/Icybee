@@ -88,7 +88,7 @@ class Hooks
 		}
 
 		$model = $core->models['system.registry/' . $type];
-		$metas = $model->select('name, value')->find_by_targetid($event->key)->pairs;
+		$metas = $model->select('name, value')->filter_by_targetid($event->key)->pairs;
 
 		$values = &$event->values;
 

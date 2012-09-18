@@ -160,7 +160,7 @@ class Hooks
 
 		//TODO-20120115: if the attachment is hard we should also delete assocated files.
 
-		$core->models['nodes.attachments']->find_by_nodeid($operation->key)->delete();
+		$core->models['nodes.attachments']->filter_by_nodeid($operation->key)->delete();
 	}
 
 	/**
@@ -173,7 +173,7 @@ class Hooks
 	{
 		global $core;
 
-		$core->models['nodes.attachments']->find_by_fileid($operation->key)->delete();
+		$core->models['nodes.attachments']->filter_by_fileid($operation->key)->delete();
 	}
 
 	/**
@@ -188,7 +188,7 @@ class Hooks
 		global $core;
 
 		$nodes = $core->models['nodes.attachments']
-		->find_by_nodeid($ar->nid)
+		->filter_by_nodeid($ar->nid)
 		->joins('INNER JOIN {prefix}nodes ON(nid = fileid)')
 		->select('fileid, attachment.title, constructor')
 		->where('is_online = 1')

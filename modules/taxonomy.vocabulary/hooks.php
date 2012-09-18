@@ -151,11 +151,11 @@ class Hooks
 			{
 				$options = $terms_model->select('term, count(nid)')
 				->joins('inner join {self}__nodes using(vtid)')
-				->find_by_vid($vid)
+				->filter_by_vid($vid)
 				->group('term')->order('term')->pairs;
 
 				$value = $nodes_model->select('term')
-				->find_by_vid_and_nid($vid, $nid)
+				->filter_by_vid_and_nid($vid, $nid)
 				->order('term')
 				->all(\PDO::FETCH_COLUMN);
 				$value = implode(', ', $value);
@@ -198,14 +198,14 @@ class Hooks
 			}
 			else
 			{
-				$options = $terms_model->select('term.vtid, term')->find_by_vid($vid)->order('term')->pairs;
+				$options = $terms_model->select('term.vtid, term')->filter_by_vid($vid)->order('term')->pairs;
 
 				if (!$options)
 				{
 					//continue;
 				}
 
-				$value = $nodes_model->select('term_node.vtid')->find_by_vid_and_nid($vid, $nid)->order('term')->rc;
+				$value = $nodes_model->select('term_node.vtid')->filter_by_vid_and_nid($vid, $nid)->order('term')->rc;
 
 				$edit_url = $core->site->path . '/admin/taxonomy.vocabulary/' . $vocabulary->vid . '/edit';
 
@@ -471,7 +471,17 @@ class Hooks
 		{
 			if (!($record instanceof \ICanBoogie\ActiveRecord\Node))
 			{
-				\ICanBoogie\log('Expected instance of <q>ICanBoogie\ActiveRecord\Node</q> given: \1', array($record));
+				/*
+				 * we return them as [ term: [], nodes: []]
+				 *
+				 * check double event ?
+				 *
+				 * http://demo.icybee.localhost/articles/category/
+				 *
+				trigger_error(\ICanBoogie\format('Expected instance of <q>ICanBoogie\ActiveRecord\Node</q> given: \1', array($record)));
+
+				var_dump($event); exit;
+				*/
 
 				continue;
 			}

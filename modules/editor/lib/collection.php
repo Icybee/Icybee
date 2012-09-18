@@ -13,6 +13,8 @@ namespace ICanBoogie\Modules\Editor;
 
 use ICanBoogie\Core;
 use ICanBoogie\Exception;
+use ICanBoogie\OffsetNotReadable;
+use ICanBoogie\OffsetNotWritable;
 
 /**
  * Editors collection.
@@ -92,6 +94,8 @@ class Collection implements \ArrayAccess, \IteratorAggregate
 	/**
 	 * Returns the definition of an editor.
 	 *
+	 * @throws OffsetNotReadable in attempt to use an undefined editor.
+	 *
 	 * @see ArrayAccess::offsetGet()
 	 */
 	public function offsetGet($offset)
@@ -112,7 +116,7 @@ class Collection implements \ArrayAccess, \IteratorAggregate
 
 		if (!$this->offsetExists($offset))
 		{
-			throw new Exception\OffsetNotReadable(array($offset, $this));
+			throw new OffsetNotReadable(array($offset, $this));
 		}
 
 		$class = $this->collection[$offset];
@@ -121,14 +125,20 @@ class Collection implements \ArrayAccess, \IteratorAggregate
 		return $this->editors[$offset] = $editor;
 	}
 
+	/**
+	 * @throws OffsetNotWritable in attempt to set an offset.
+	 */
 	public function offsetSet($offset, $value)
 	{
-		throw new Exception\OffsetNotWritable(array($offset, $this));
+		throw new OffsetNotWritable(array($offset, $this));
 	}
 
+	/**
+	 * @throws OffsetNotWritable in attempt to unset an offset.
+	 */
 	public function offsetUnset($offset)
 	{
-		throw new Exception\OffsetNotWritable(array($offset, $this));
+		throw new OffsetNotWritable(array($offset, $this));
 	}
 
 	public function getIterator()

@@ -380,7 +380,7 @@ class Module extends \ICanBoogie\Modules\Nodes\Module
 		global $core;
 
 		$inherited = false;
-		$is_alone = !$this->model->select('nid')->find_by_siteid($core->site_id)->rc;
+		$is_alone = !$this->model->select('nid')->filter_by_siteid($core->site_id)->rc;
 
 		if ($is_alone)
 		{

@@ -108,7 +108,7 @@ class ConfigOperation extends \ICanBoogie\Operation
 			}
 		}
 
-		$this->response->success = "The configuration has been saved.";
+		$this->response->message = "The configuration has been saved.";
 		$this->response->location = $this->request->path;
 
 		return true;

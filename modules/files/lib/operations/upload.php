@@ -66,7 +66,7 @@ class UploadOperation extends Operation
 		# that as soon as possible.
 		#
 
-		$file = new Uploaded('Filedata', $this->accept, true);
+		$file = new Uploaded('path', $this->accept, true);
 
 		$this->file = $file;
 		$this->response['file'] = $file;

@@ -30,7 +30,7 @@ class NonceLoginRequestOperation extends Operation
 	{
 		global $core;
 
-		return $core->models['users']->find_by_email($this->request['email'])->one;
+		return $core->models['users']->filter_by_email($this->request['email'])->one;
 	}
 
 	protected function validate(\ICanboogie\Errors $errors)
@@ -124,7 +124,7 @@ class NonceLoginRequestOperation extends Operation
 
 		$mailer();
 
-		$this->response->success = $t('success', array('%email' => $user->email));
+		$this->response->message = $t('success', array('%email' => $user->email));
 
 		return true;
 	}

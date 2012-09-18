@@ -101,13 +101,18 @@ class Module extends \Icybee\Module
 	{
 		$root = \ICanBoogie\DOCUMENT_ROOT;
 
-		if (!is_dir($root . $path))
+		if (strpos($path, $root) !== 0)
+		{
+			$path = $root . $path;
+		}
+
+		if (!is_dir($path))
 		{
 			return false;
 		}
 
 		$n = 0;
-		$dh = opendir($root . $path);
+		$dh = opendir($path);
 
 		while (($file = readdir($dh)) !== false)
 		{
@@ -117,7 +122,7 @@ class Module extends \Icybee\Module
 			}
 
 			$n++;
-			unlink($root . $path . '/' . $file);
+			unlink($path . '/' . $file);
 		}
 
 		return $n;

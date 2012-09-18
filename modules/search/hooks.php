@@ -50,8 +50,7 @@ class Hooks
 				)
 			),
 
-			'id' => 'search-quick',
-			'class' => 'search-query',
+			'class' => 'navbar-search',
 			'method' => \ICanBoogie\HTTP\Request::METHOD_GET,
 			'action' => $page->url
 		);

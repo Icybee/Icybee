@@ -74,7 +74,7 @@ class SaveOperation extends \Icybee\SaveOperation
 		$rc = parent::process();
 		$record = $this->module->model[$rc['key']];
 
-		$this->response->success = array
+		$this->response->message = array
 		(
 			$rc['mode'] == 'update' ? '%title has been updated in :module.' : '%title has been created in %module.', array
 			(
@@ -83,7 +83,7 @@ class SaveOperation extends \Icybee\SaveOperation
 			)
 		);
 
-		$this->response->success = array
+		$this->response->message = array
 		(
 			$rc['mode'] == 'update' ? '%title has been updated in :module.' : '%title has been created in %module.', array
 			(

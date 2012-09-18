@@ -112,7 +112,7 @@ class Vocabulary extends ActiveRecord
 		global $core;
 
 		return $core->models['taxonomy.vocabulary/scopes']->select('constructor')
-		->find_by_vid($this->vid)->all(\PDO::FETCH_COLUMN);
+		->filter_by_vid($this->vid)->all(\PDO::FETCH_COLUMN);
 	}
 
 	/**
@@ -126,7 +126,7 @@ class Vocabulary extends ActiveRecord
 
 		$model = $core->models['taxonomy.terms'];
 
-		return $model->select('term.*')->find_by_vid($this->vid)
+		return $model->select('term.*')->filter_by_vid($this->vid)
 		->order('weight')->all(\PDO::FETCH_CLASS, __NAMESPACE__ . '\Term', array($model));
 	}
 }

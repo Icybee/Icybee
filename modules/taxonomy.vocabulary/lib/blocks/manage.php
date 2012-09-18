@@ -48,7 +48,7 @@ class ManageBlock extends \WdManager
 		global $core;
 
 		$vid = $record->vid;
-		$terms = $core->models['taxonomy.terms']->select('term')->find_by_vid($vid)->order('term.weight, term')->all(\PDO::FETCH_COLUMN);
+		$terms = $core->models['taxonomy.terms']->select('term')->filter_by_vid($vid)->order('term.weight, term')->all(\PDO::FETCH_COLUMN);
 
 		if ($terms)
 		{

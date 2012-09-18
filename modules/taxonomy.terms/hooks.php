@@ -21,7 +21,7 @@ class Hooks
 	{
 		global $core;
 
-		$core->models['taxonomy.terms/nodes']->find_by_nid($event->rc)->delete();
+		$core->models['taxonomy.terms/nodes']->filter_by_nid($event->rc)->delete();
 	}
 
 	public static function markup_terms(array $args, \WdPatron $patron, $template)

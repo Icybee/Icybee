@@ -41,7 +41,7 @@ class ActivateOperation extends Operation
 		$record->is_activated = true;
 		$record->save();
 
-		$this->response->success = t('!name account is active.', array('!name' => $record->name));
+		$this->response->message = t('!name account is active.', array('!name' => $record->name));
 
 		return true;
 	}

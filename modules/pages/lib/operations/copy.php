@@ -55,7 +55,7 @@ class CopyOperation extends Operation
 			return;
 		}
 
-		$this->response->success = array('Page %title was copied to %copy', array('title' => $title, 'copy' => $record->title));
+		$this->response->message = array('Page %title was copied to %copy', array('title' => $title, 'copy' => $record->title));
 
 		foreach ($contents as $record)
 		{

@@ -209,6 +209,13 @@ class URLNode extends ExpressionNode
 	{
 		global $core;
 
+		if (isset($core->routes[$expression]))
+		{
+			$route = $core->routes[$expression];
+
+			return $route->url;
+		}
+
 		return $core->site->resolve_view_url($expression);
 	}
 }

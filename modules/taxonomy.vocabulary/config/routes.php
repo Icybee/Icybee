@@ -2,27 +2,26 @@
 
 return array
 (
-	':admin/manage' => array
+	'!admin:manage' => array
 	(
 
 	),
 
-	':admin/new' => array
+	'!admin:new' => array
 	(
 
 	),
 
-	':admin/edit' => array
+	'!admin:edit' => array
 	(
 
 	),
 
-	'taxonomy.vocabulary:admin/order' => array
+	'admin:taxonomy.vocabulary/order' => array
 	(
-		'pattern' => '/admin/taxonomy.vocabulary/<vid:\d+>/order',
+		'pattern' => '/admin/taxonomy.vocabulary/<\d+>/order',
 		'title' => 'Ordonner',
 		'block' => 'order',
-		'visibility' => 'auto',
-		'workspace' => 'organize'
+		'visibility' => 'auto'
 	)
 );

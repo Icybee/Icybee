@@ -11,7 +11,6 @@
 
 namespace Icybee\ActiveRecord\Model;
 
-use ICanBoogie\ActiveRecord;
 use ICanBoogie\ActiveRecord\Model;
 use ICanBoogie\ActiveRecord\Query;
 use ICanBoogie\Exception;
@@ -67,7 +66,7 @@ class Constructor extends Model
 		$args = func_get_args();
 		$record = call_user_func_array('parent::' . __FUNCTION__, $args);
 
-		if ($record instanceof ActiveRecord)
+		if ($record instanceof \ICanBoogie\ActiveRecord)
 		{
 			$entry_model = $core->models[$record->constructor];
 

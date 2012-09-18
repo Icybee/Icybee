@@ -1,17 +1,13 @@
 <?php
 
+namespace ICanBoogie\Modules\Dashboard;
+
 return array
 (
-	'redirect:admin' => array
-	(
-		'pattern' => '/admin/',
-		'location' => '/admin/dashboard'
-	),
-
-	'dashboard' => array
+	'admin:dashboard' => array
 	(
 		'pattern' => '/admin/dashboard',
 		'block' => 'dashboard',
-		'workspace' => 'dashboard'
+		'controller' => 'Icybee\BlockController'
 	)
 );

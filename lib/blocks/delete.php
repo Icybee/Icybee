@@ -180,11 +180,11 @@ EOT;
 	/**
 	 * Renders a preview of the record.
 	 *
-	 * @param ActiveRecord $record
+	 * @param \ICanBoogie\ActiveRecord $record
 	 *
 	 * @return string
 	 */
-	protected function render_preview(ActiveRecord $record)
+	protected function render_preview(\ICanBoogie\ActiveRecord $record)
 	{
 
 	}

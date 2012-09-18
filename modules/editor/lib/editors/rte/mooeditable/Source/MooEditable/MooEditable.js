@@ -794,11 +794,11 @@ this.MooEditable = new Class({
 
 	cleanup: function(source){
 
-		source = this.cleanHtml(source)
+//		source = this.cleanHtml(source)
 
 //		console.log('shoudl cleanup:', source)
 
-		return source
+//		return source
 
 
 
@@ -927,7 +927,9 @@ this.MooEditable = new Class({
 
 		/* weirdog: remove empty elements */
 
-		source = source.replace(/<([^\s]+)>\s+<\/\1>/g, '');
+//		source = source.replace(/<([^\s]+)>\s+<\/\1>/g, '');
+
+		source = this.cleanHtml(source)
 
 		/* /weirdog */
 

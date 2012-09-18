@@ -13,7 +13,10 @@ namespace ICanBoogie\Modules\Users;
 
 use ICanBoogie\ActiveRecord\User;
 use ICanBoogie\Core;
+use ICanBoogie\HTTP\Response;
+use ICanBoogie\Route;
 use ICanBoogie\Operation\BeforeProcessEvent;
+use ICanBoogie\SecurityException;
 use ICanBoogie\Session;
 
 class Hooks
@@ -28,12 +31,12 @@ class Hooks
 	 * @param BeforeProcessEvent $event
 	 * @param \ICanBoogie\Modules\Users\Roles\DeleteOperation $operation
 	 */
-	public static function before_delete_role(BeforeProcessEvent $event, \ICanBoogie\Modules\Users\Roles\DeleteOperation $operation)
+	static public function before_delete_role(BeforeProcessEvent $event, \ICanBoogie\Modules\Users\Roles\DeleteOperation $operation)
 	{
 		global $core;
 
 		$rid = $operation->key;
-		$count = $core->models['users/has_many_roles']->find_by_rid($rid)->count;
+		$count = $core->models['users/has_many_roles']->filter_by_rid($rid)->count;
 
 		if (!$count)
 		{
@@ -41,6 +44,35 @@ class Hooks
 		}
 
 		$event->errors['rid'] = t('The role %name is used by :count users.', array('name' => $operation->record->name, ':count' => $count));
+	}
+
+	static public function on_security_exception_get_response(\ICanBoogie\Exception\GetResponseEvent $event, SecurityException $target)
+	{
+		global $core;
+
+		$request = $event->request;
+
+		if (Route::decontextualize($request->normalized_path) != '/admin/')
+		{
+			\ICanBoogie\log_error($target->getMessage());
+		}
+
+		$block = $core->modules['users']->getBlock('connect');
+
+		$document = new \Icybee\DocumentDecorator(new \Icybee\AdminDecorator($block));
+		$document->body->add_class('page-slug-authenticate');
+
+		$event->response = new Response
+		(
+			$target->getCode(), array
+			(
+				'Content-Type' => 'text/html; charset=utf-8'
+			),
+
+			(string) $document
+		);
+
+		$event->stop();
 	}
 
 	/*

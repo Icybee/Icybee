@@ -558,7 +558,7 @@ class Page extends Node
 	{
 		global $core;
 
-		$entries = $core->models['pages/contents']->find_by_pageid($this->nid);
+		$entries = $core->models['pages/contents']->filter_by_pageid($this->nid);
 		$contents = array();
 
 		foreach ($entries as $entry)

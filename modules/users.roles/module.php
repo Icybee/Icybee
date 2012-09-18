@@ -13,6 +13,7 @@ namespace ICanBoogie\Modules\Users\Roles;
 
 use ICanBoogie\Operation;
 use ICanBoogie\Route;
+use ICanBoogie\ActiveRecord\RecordNotFound;
 use ICanBoogie\ActiveRecord\Users\Role;
 use Brickrouge\Button;
 use Brickrouge\Element;
@@ -53,7 +54,7 @@ class Module extends \Icybee\Module
 		{
 			$this->model[1];
 		}
-		catch (\ICanBoogie\Exception\MissingRecord $e)
+		catch (RecordNotFound $e)
 		{
 			$role = Role::from
 			(
@@ -74,7 +75,7 @@ class Module extends \Icybee\Module
 		{
 			$this->model[2];
 		}
-		catch (\ICanBoogie\Exception\MissingRecord $e)
+		catch (RecordNotFound $e)
 		{
 			$role = Role::from
 			(
@@ -98,16 +99,14 @@ class Module extends \Icybee\Module
 		{
 			$this->model->find(array(1, 2));
 		}
-		catch (\ICanBoogie\Exception\MissingRecord $e)
+		catch (RecordNotFound $e)
 		{
-			var_dump($e);
-
-			if (!$e->rc[1])
+			if (!$e->records[1])
 			{
 				$errors[$this->id] = t('Visitor role is missing');
 			}
 
-			if (!$e->rc[2])
+			if (!$e->records[2])
 			{
 				$errors[$this->id] = t('User role is missing');
 			}

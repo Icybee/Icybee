@@ -29,17 +29,17 @@ Filtres dynamiques
 
 Pour chaque colonne définie par le modèle, l'API ActiveRecord fournie une méthode de recherche.
 Parce le modèle _Noeuds_ définit le champ `slug`, on peut utiliser la méthode de recherche
-`find_by_slug` :
+`filter_by_slug` :
 
 @php
-$model->find_by_slug('creer-nuage-mots-cle');
+$model->filter_by_slug('creer-nuage-mots-cle');
 php@
 
 Si l'on a besoin de connaitre les articles en ligne de l'utilisateur ayant pour idenfitiant `3` on
 peut tout simplement enchainer les filtres avec le séparateur `_and_` :
 
 @php
-$model->find_by_is_online_and_uid(true, 3);
+$model->filter_by_is_online_and_uid(true, 3);
 php@
 
 Ce qui est un équivalent la méthode de recherche `where` :
@@ -52,7 +52,7 @@ php@
 
 if (0)
 {
-	$a = $model->find_by_is_online_and_uid(false, 1)->all;
+	$a = $model->filter_by_is_online_and_uid(false, 1)->all;
 
 	var_dump($a);
 }
@@ -93,7 +93,7 @@ php@
 On peut bien sûr combiner les portées ainsi que les autre méthodes de recherche :
 
 @php
-$model->find_by_uid(1)->visible->where('YEAR(created) = 2011');
+$model->filter_by_uid(1)->visible->where('YEAR(created) = 2011');
 php@
 
 
@@ -105,7 +105,7 @@ if (0)
 
 	var_dump($a);
 
-	$a = $model->find_by_uid(1)->visible->limit(2)->all;
+	$a = $model->filter_by_uid(1)->visible->limit(2)->all;
 
 	var_dump($a);
 }
@@ -444,7 +444,7 @@ php@
 Bien sûr, toutes les méthodes de recherche peuvent être utilisées :
 
 @php
-$model->find_by_firstname('Ryan')->joins(':content')->where('YEAR(date) = 2011')->count;
+$model->filter_by_firstname('Ryan')->joins(':content')->where('YEAR(date) = 2011')->count;
 php@
 
 
@@ -620,8 +620,8 @@ $model->where(array('!order_count' => array(1, 2, 3)); # contraire
 
 # Filtres dynamiques
 
-$model->find_by_nid(1);
-$model->find_by_siteid_and_language(1, 'fr');
+$model->filter_by_nid(1);
+$model->filter_by_siteid_and_language(1, 'fr');
 
 # Portées
 

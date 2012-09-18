@@ -13,6 +13,8 @@ namespace ICanBoogie\Modules\System\Cache;
 
 use ICanBoogie\Event;
 use ICanBoogie\Exception;
+use ICanBoogie\OffsetNotWritable;
+use ICanBoogie\OffsetNotReadable;
 
 class Collection implements \IteratorAggregate, \ArrayAccess
 {
@@ -53,24 +55,33 @@ class Collection implements \IteratorAggregate, \ArrayAccess
 		return isset($this->caches[$offset]);
 	}
 
+	/**
+	 * @throws OffsetNotReadable in attempt to use a cache that is not defined.
+	 */
 	public function offsetGet($offset)
 	{
 		if (!$this->offsetExists($offset))
 		{
-			throw new Exception\OffsetNotReadable(array($offset, $this));
+			throw new OffsetNotReadable(array($offset, $this));
 		}
 
 		return $this->caches[$offset];
 	}
 
+	/**
+	 * @throws OffsetNotWritable in attempt to set an offset.
+	 */
 	public function offsetSet($offset, $value)
 	{
-		throw new Exception\OffsetNotWritable(array($offset, $this));
+		throw new OffsetNotWritable(array($offset, $this));
 	}
 
+	/**
+	 * @throws OffsetNotWritable in attempt to unset an offset.
+	 */
 	public function offsetUnset($offset)
 	{
-		throw new Exception\OffsetNotWritable(array($offset, $this));
+		throw new OffsetNotWritable(array($offset, $this));
 	}
 }
 

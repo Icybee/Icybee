@@ -224,16 +224,29 @@ table.manage div.limiter {
 
 /* tbody */
 
-table.manage tbody tr+tr td {
+table.manage tbody tr + tr td {
 	border-top: 1px solid #EEE;
 }
 
-table.manage tbody tr:hover a:not(.btn ) {
+table.manage tbody tr:hover a:not(.btn) {
 	color: #4B8BB3;
+}
+
+table.manage tbody tr:hover .dropdown-menu li a {
+	color: #404040;
+}
+
+table.manage tbody tr:hover .dropdown-menu li:hover a,
+table.manage tbody tr:hover .dropdown-menu li.active a {
+	color: white;
 }
 
 table.manage tbody a:hover {
 	text-decoration: underline;
+}
+
+table.manage tbody .dropdown-menu a:hover {
+	text-decoration: none;
 }
 
 table.manage tbody tr:nth-child(even) {

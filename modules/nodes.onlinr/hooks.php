@@ -11,6 +11,7 @@
 
 namespace ICanBoogie\Modules\Nodes\Onlinr;
 
+use ICanBoogie\ActiveRecord\RecordNotFound;
 use ICanBoogie\Event;
 use ICanBoogie\Exception;
 
@@ -39,7 +40,7 @@ class Hooks
 
 				$event->tags[Form::VALUES]['nodes_onlinr'] = (array) $onlinr;
 			}
-			catch (Exception\MissingRecord $e) {}
+			catch (RecordNotFound $e) {}
 		}
 
 		//\ICanBoogie\log('onlinr: \1', array($onlinr));

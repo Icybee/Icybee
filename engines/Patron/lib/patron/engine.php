@@ -14,7 +14,6 @@ namespace Patron;
 use ICanBoogie\Debug;
 use ICanBoogie\Exception;
 use ICanBoogie\Hook;
-use ICanBoogie\Exception\HTTP as HTTPException;
 
 use Brickrouge\Alert;
 
@@ -216,6 +215,7 @@ class Engine extends TextHole
 		return $rc;
 	}
 
+	/*DIRTY
 	protected function resolve_callback($matches)
 	{
 		global $core;
@@ -246,7 +246,7 @@ class Engine extends TextHole
 		}
 		else if ($l > 4 && $expression{3} == ':' && substr($expression, 0, 3) == 'url')
 		{
-			$rc = $core->site->resolve_view_url(substr($expression, 4));
+			$rc = $this->resolve_url(substr($expression, 4));
 		}
 		else
 		{
@@ -274,6 +274,7 @@ class Engine extends TextHole
 
 		return $rc;
 	}
+	*/
 
 	public function get_file()
 	{
@@ -806,13 +807,9 @@ class Engine extends TextHole
 		{
 			$rc = $hook->__invoke($args, $this, $template);
 		}
-		catch (HTTPException $e)
-		{
-			throw $e;
-		}
 		catch (\Exception $e)
 		{
-			$this->error($e);
+			$this->handle_exception($e);
 		}
 
 		if ($binding)
@@ -827,4 +824,38 @@ class Engine extends TextHole
 
 		return $rc;
 	}
+
+	public function handle_exception(\Exception $e)
+	{
+		if ($e instanceof \ICanBoogie\Exception\HTTP)
+		{
+			throw $e;
+		}
+		else if ($e instanceof \ICanBoogie\ActiveRecord\ActiveRecordException)
+		{
+			throw $e;
+		}
+
+		$this->error($e);
+	}
+
+	/*DIRTY
+	protected function resolve_url($id)
+	{
+		global $core;
+
+		var_dump($core->routes[$id]);
+
+		if (isset($core->routes[$id]))
+		{
+			$route = $core->routes[$id];
+
+			var_dump($route);
+
+			return $route->url;
+		}
+
+		$rc = $core->site->resolve_view_url();
+	}
+	*/
 }

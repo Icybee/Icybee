@@ -184,7 +184,7 @@ class Hooks
 
 				#
 				# The result of the operation is stored in the sessions and is used in the next
-				# session to present the _success_ message instead of the form.
+				# session to present the `success` message instead of the form.
 				#
 				# Note: The result is not stored for XHR.
 				#

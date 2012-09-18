@@ -13,6 +13,8 @@
 
 namespace ICanBoogie\Modules\Contents;
 
+use ICanBoogie\ActiveRecord\RecordNotFound;
+
 use ICanBoogie\ActiveRecord;
 use ICanBoogie\ActiveRecord\Query;
 
@@ -105,7 +107,11 @@ class Provider extends \Icybee\Views\Nodes\Provider
 			}
 		}
 
-		if ($key)
+		if ($p < 60)
+		{
+			throw new RecordNotFound('Record not found.', array());
+		}
+		else if ($key)
 		{
 			$record = $model[$key];
 

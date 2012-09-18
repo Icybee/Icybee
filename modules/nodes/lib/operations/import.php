@@ -70,7 +70,7 @@ class ImportOperation extends Operation
 
 		/*
 		$siteid = $core->site_id;
-		$keys = $core->models['nodes']->select('nid')->find_by_siteid($siteid)->all(\PDO::FETCH_COLUMN);
+		$keys = $core->models['nodes']->select('nid')->filter_by_siteid($siteid)->all(\PDO::FETCH_COLUMN);
 
 		if ($keys)
 		{
@@ -82,7 +82,7 @@ class ImportOperation extends Operation
 
 		$this->import($data, $save);
 
-		$this->response->success = "Records were successfuly imported.";
+		$this->response->message = "Records were successfuly imported.";
 
 		return true;
 	}

@@ -13,6 +13,7 @@ namespace Icybee;
 
 use ICanBoogie\Event;
 use ICanBoogie\Exception;
+use ICanBoogie\OffsetNotWritable;
 
 /**
  * The views defined by the enabled modules.
@@ -158,14 +159,20 @@ class Views implements \ArrayAccess, \IteratorAggregate
 		return $this->offsetExists($offset) ? $this->views[$offset] : null;
 	}
 
+	/**
+	 * @throws OffsetNotWritable in attempt to set an offset.
+	 */
 	public function offsetSet($offset, $value)
 	{
-		throw new Exception\OffsetNotWritable(array($offset, $this));
+		throw new OffsetNotWritable(array($offset, $this));
 	}
 
+	/**
+	 * @throws OffsetNotWritable in attempt to unset an offset.
+	 */
 	public function offsetUnset($offset)
 	{
-		throw new Exception\OffsetNotWritable(array($offset, $this));
+		throw new OffsetNotWritable(array($offset, $this));
 	}
 
 	public function getIterator()

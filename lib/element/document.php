@@ -32,9 +32,13 @@ class Document extends \Brickrouge\Document
 	public $title;
 	public $page_title;
 
-	public function __construct()
+	public $content;
+
+	public function __construct(/*$content*/)
 	{
 		global $core;
+
+		/*$this->content = $content;*/
 
 		parent::__construct();
 
@@ -96,12 +100,10 @@ EOT;
 
 		$user = $core->user;
 
-		$contents = $this->getBlock('contents');
+		$contents = $this->getBlock('contents') . $this->content;
 		$actionbar = new \Icybee\Admin\Element\Actionbar;
 		$navigation = $this->getNavigation();
 		$shortcuts = $this->get_block_shortcuts();
-
-		$alert_changed_site = null;
 
 		if ($this->changed_site)
 		{
@@ -144,7 +146,6 @@ EOT;
 		</div>
 	</div>
 
-	$alert_changed_site
 	$js
 </body>
 EOT;

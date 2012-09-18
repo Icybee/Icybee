@@ -122,7 +122,7 @@ class EditBlock extends \Icybee\EditBlock
 
 		if ($vid)
 		{
-			$scope_value = $this->module->model('scopes')->select('constructor, 1')->find_by_vid($vid)->pairs;
+			$scope_value = $this->module->model('scopes')->select('constructor, 1')->filter_by_vid($vid)->pairs;
 
 			$this->values[Vocabulary::SCOPE] = $scope_value;
 		}

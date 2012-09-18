@@ -61,7 +61,7 @@ class Model extends \ICanBoogie\Modules\Nodes\Model
 			# load previous entry to check for changes
 			#
 
-			$previous = $this->select('title, path, mime')->find_by_nid($key)->one;
+			$previous = $this->select('title, path, mime')->filter_by_nid($key)->one;
 
 			#
 			# extract previous to obtain previous_title, previous_path and previous_mime
@@ -186,7 +186,7 @@ class Model extends \ICanBoogie\Modules\Nodes\Model
 
 	public function delete($key)
 	{
-		$path = $this->select('path')->find_by_nid($key)->rc;
+		$path = $this->select('path')->filter_by_nid($key)->rc;
 
 		$rc = parent::delete($key);
 

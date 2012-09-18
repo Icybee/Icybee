@@ -16,7 +16,7 @@ namespace Icybee;
  *
  * @var string
  */
-const VERSION = '1.0-dev (2012-08-10)';
+const VERSION = '1.2 (2012-09-16)';
 
 /**
  * Root path for the Icybee package.
@@ -39,7 +39,7 @@ $locale = array();
  * Icybee requires the ICanBoogie framework, the Brickrouge tookit and the Patron engine.
  *
  * If Phar packages are available they are used instead. You should pay attention to this as this
- * might cause a hit on performance.
+ * may cause a hit on performance.
  */
 foreach (array('ICanBoogie', 'Brickrouge', 'BlueTihi') as $name)
 {
@@ -107,17 +107,19 @@ $core->run();
 defined('Icybee\CACHE_VIEWS') or define('Icybee\CACHE_VIEWS', $core->config['cache views']);
 
 /*
- * Request hooks
+ * HTTP dispatcher hook.
+ *
+ * Remember that our event callback is called *before* those defined by the modules.
  */
-
 namespace ICanBoogie;
 
+use ICanBoogie\HTTP\Dispatcher;
 use ICanBoogie\HTTP\Request;
 use ICanBoogie\HTTP\Response;
 
 Events::attach
 (
-	'ICanBoogie\HTTP\Dispatcher::populate', function(HTTP\Dispatcher\PopulateEvent $event, HTTP\Dispatcher $dispatcher)
+	'ICanBoogie\HTTP\Dispatcher::populate', function(Dispatcher\PopulateEvent $event, Dispatcher $dispatcher)
 	{
 		/**
 		 * Router for admin routes.
@@ -127,87 +129,79 @@ Events::attach
 		 * interface is presented, granted the user has an access permission, otherwise the
 		 * user is asked to authenticate.
 		 */
-		$event->controllers['admin_router'] = function(Request $request)
+		$event->controllers['admin:categories'] = function(Request $request)
 		{
 			global $core;
 
-			$path = Route::decontextualize($request->path);
-			$path = rtrim($path, '/') . '/';
+			$path = normalize_url_path(Route::decontextualize($request->path));
 
 			if (strpos($path, '/admin/') !== 0)
 			{
 				return;
 			}
 
-			#
-			# The site object is a dummy when there is no site defined (which should be an
-			# exceptable error) or all defined sites use a path when the request doesn't. In that
-			# case we need to redirect the user to the first site available.
-			#
+			$category = substr($path, 7, -1);
 
-			$response = new Response();
-
-			if (!$core->site_id)
+			if ($category)
 			{
-				try
+				$user = $core->user;
+				$routes = $core->routes;
+
+				foreach ($core->modules->descriptors as $module_id => $descriptor)
 				{
-					$site = $core->models['sites']->order('weight')->one;
-
-					if ($site)
+					if (!isset($core->modules[$module_id]) || !$user->has_permission(Module::PERMISSION_ACCESS, $module_id)
+					|| $descriptor[Module::T_CATEGORY] != $category)
 					{
-						$request_url = rtrim($core->site->url . $request->path, '/') . '/';
-						$location = $site->url . $path;
+						continue;
+					}
 
-						#
-						# we don't redirect if the redirect location is the same as the request URL.
-						#
+					$route_id = "admin:$module_id";
 
-						if ($request_url != $location)
+					if (empty($routes[$route_id]))
+					{
+						$route_id = "admin:$module_id/manage"; //TODO-20120829: COMPAT, 'manage' should disappear.
+
+						if (empty($routes[$route_id]))
 						{
-							$response->location = $site->url . $path;
-
-							return $response;
+							continue;
 						}
 					}
+
+					$route = $routes[$route_id]; //TODO-20120829: $route should be an object.
+
+					return new Response
+					(
+						302, array
+						(
+							'Location' => Route::contextualize($route->pattern),
+							'Icybee-Redirected-By' => __FILE__ . '::' . __LINE__
+						)
+					);
 				}
-				catch (\Exception $e) { }
-
-				log_error('You are on a dummy website. You should check which websites are available or create one if none are.');
 			}
-
-			$response->body = require \Icybee\ROOT . 'admin.php';
-
-			return $response;
 		};
+	}
+);
 
-		/**
- 		 * Website router
- 		 */
-		$event->controllers['website_router'] = function(Request $request)
-		{
-			# core is reqquired by includes
+Events::attach
+(
+	'ICanBoogie\HTTP\Dispatcher::dispatch', function(Dispatcher\DispatchEvent $event, Dispatcher $target)
+	{
+		#
+		# We chain the event so that it is called after the event callbacks have been processed,
+		# for instance a _cache_ callback that may cache the response.
+		#
 
-			global $core;
+		$event->chain(function(Dispatcher\DispatchEvent $event, Dispatcher $target) {
 
-			require_once DOCUMENT_ROOT . 'user-startup.php';
+			$response = $event->response;
 
-			$response = new Response();
-
-			$pagemaker = new \Icybee\Pagemaker;
-			$response->body = $pagemaker->run($request, $response);
-
-			return $response;
-
-			/*
-			if ($core->user->is_guest && $event->request->method == Request::METHOD_GET)
+			if ($response->content_type->type != 'text/html')
 			{
-				$event->response->headers['Cache-Control'] = 'max-age=600';
+				return;
 			}
-			else
-			{
-				$event->response->headers['Cache-Control'] = 'no-cache';
-			}
-			*/
-		};
+
+			$response->body = (string) new \Icybee\StatsDecorator($response->body);
+		});
 	}
 );

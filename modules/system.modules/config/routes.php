@@ -2,23 +2,32 @@
 
 return array
 (
-	':admin/manage' => array
+	'!admin:manage' => array
 	(
-		'title' => 'Actifs'
+		'title' => 'Actifs',
+		'block' => 'manage'
 	),
 
-	'system.modules:install' => array
+	'admin:system.modules/inactives' => array
+	(
+		'pattern' => '/admin/system.modules/inactives',
+		'controller' => 'Icybee\BlockController',
+		'title' => 'Inactifs',
+		'block' => 'inactives'
+	),
+
+	'admin:system.modules/install' => array
 	(
 		'pattern' => '/admin/system.modules/<[^/]+>/install',
+		'controller' => 'Icybee\BlockController',
 		'title' => 'Install',
 		'block' => 'install',
 		'visibility' => 'auto'
 	),
 
-	'system.modules:inactives' => array
+	'redirect:admin/features' => array
 	(
-		'pattern' => '/admin/system.modules/inactives',
-		'title' => 'Inactifs',
-		'block' => 'inactives'
+		'pattern' => '/admin/features',
+		'location' => '/admin/system.modules'
 	)
 );

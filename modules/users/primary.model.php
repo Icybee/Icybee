@@ -47,7 +47,7 @@ class Model extends \Icybee\ActiveRecord\Model\Constructor
 
 			if ($key)
 			{
-				$has_many_roles->find_by_uid($key)->delete();
+				$has_many_roles->filter_by_uid($key)->delete();
 			}
 
 			foreach ($properties[User::ROLES] as $rid)
@@ -71,7 +71,7 @@ class Model extends \Icybee\ActiveRecord\Model\Constructor
 
 			if ($key)
 			{
-				$has_many_sites->find_by_uid($key)->delete();
+				$has_many_sites->filter_by_uid($key)->delete();
 			}
 
 			foreach ($properties[User::RESTRICTED_SITES] as $siteid)

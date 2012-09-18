@@ -36,7 +36,7 @@ class NonceLoginOperation extends Operation
 	{
 		global $core;
 
-		return $this->request['email'] ? $core->models['users']->find_by_email($this->request['email'])->one : null;
+		return $this->request['email'] ? $core->models['users']->filter_by_email($this->request['email'])->one : null;
 	}
 
 	protected function validate(\ICanboogie\Errors $errors)

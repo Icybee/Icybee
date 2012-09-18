@@ -11,6 +11,8 @@
 
 namespace ICanBoogie\ActiveRecord;
 
+use ICanBoogie\Modules\Sites\ServerName;
+
 use ICanBoogie\ActiveRecord;
 use ICanBoogie\Debug;
 
@@ -26,7 +28,7 @@ use ICanBoogie\Debug;
  *
  * This method is injected by the "pages" module.
  */
-class Site extends ActiveRecord
+class Site extends \ICanBoogie\ActiveRecord
 {
 	const SITEID = 'siteid';
 	const SUBDOMAIN = 'subdomain';
@@ -273,5 +275,103 @@ class Site extends ActiveRecord
 		{
 			return $this->_model->where('nativeid = ?', $this->siteid)->order('language')->all;
 		}
+	}
+
+	private $_server_name;
+
+	protected function volatile_get_server_name()
+	{
+		if ($this->_server_name)
+		{
+			return $this->_server_name;
+		}
+
+		$parts = explode('.', $_SERVER['SERVER_NAME']);
+		$parts = array_reverse($parts);
+
+		if (count($parts) > 3)
+		{
+			$parts[2] = implode('.', array_reverse(array_slice($parts, 2)));
+		}
+
+		if ($this->tld)
+		{
+			$parts[0] = $this->tld;
+		}
+
+		if ($this->domain)
+		{
+			$parts[1] = $this->domain;
+		}
+
+		if ($this->subdomain)
+		{
+			$parts[2] = $this->subdomain;
+		}
+
+		return $this->_server_name = new ServerName(array($parts[2], $parts[1], $parts[0]));
+	}
+
+	protected function volatile_set_server_name($server_name)
+	{
+		if (!($server_name instanceof ServerName))
+		{
+			$server_name = new ServerName($server_name);
+		}
+
+		$this->subdomain = $server_name->subdomain;
+		$this->domain = $server_name->domain;
+		$this->tld = $server_name->tld;
+
+		$this->_server_name = $server_name;
+	}
+}
+
+namespace ICanBoogie\Modules\Sites;
+
+class ServerName
+{
+	public $subdomain;
+	public $domain;
+	public $tld;
+
+	public function __construct($server_name)
+	{
+		$subdomain = null;
+		$domain = null;
+		$tld = null;
+
+		if (is_array($server_name))
+		{
+			list($subdomain, $domain, $tld) = $server_name;
+		}
+		else
+		{
+			$parts = explode('.', $server_name);
+
+			if (count($parts) > 1)
+			{
+				$tld = array_pop($parts);
+			}
+
+			if (count($parts) > 1)
+			{
+				$domain = array_pop($parts);
+			}
+
+			$subdomain = implode('.', $parts);
+		}
+
+		$this->subdomain = $subdomain;
+		$this->domain = $domain;
+		$this->tld = $tld;
+	}
+
+	public function __toString()
+	{
+		$parts = array($this->subdomain, $this->domain, $this->tld);
+		$parts = array_filter($parts);
+
+		return implode('.', $parts);
 	}
 }

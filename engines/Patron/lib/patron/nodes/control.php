@@ -156,13 +156,9 @@ class ControlNode extends Node
 		{
 			$rc = $hook($args, $engine, $this->nodes);
 		}
-		catch (HTTPException $e)
-		{
-			throw $e;
-		}
 		catch (\Exception $e)
 		{
-			$engine->error($e);
+			$engine->handle_exception($e);
 		}
 
 		if ($binding)

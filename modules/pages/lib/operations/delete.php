@@ -19,14 +19,14 @@ class DeleteOperation extends \ICanBoogie\Modules\Nodes\DeleteOperation
 	{
 		$nid = $this->key;
 
-		$count = $this->module->model->find_by_parentid($nid)->count;
+		$count = $this->module->model->filter_by_parentid($nid)->count;
 
 		if ($count)
 		{
 			$errors[] = t('This page has :count direct children.', array(':count' => $count));
 		}
 
-		$count = $this->module->model->find_by_locationid($nid)->count;
+		$count = $this->module->model->filter_by_locationid($nid)->count;
 
 		if ($count)
 		{

@@ -23,7 +23,7 @@ class Module extends \Icybee\Module
 		$uid = (int) $core->user_id;
 		$type = 'operation';
 		$class = get_class($operation);
-		$message = $operation->response->success;
+		$message = $operation->response->message;
 		$variables = null;
 
 		if (is_array($message))

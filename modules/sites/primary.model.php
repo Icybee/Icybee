@@ -11,6 +11,7 @@
 
 namespace ICanBoogie\Modules\Sites;
 
+use ICanBoogie\ActiveRecord\ActiveRecordException;
 use ICanBoogie\ActiveRecord\Site;
 use ICanBoogie\ActiveRecord\User;
 use ICanBoogie\HTTP\Request;
@@ -56,7 +57,7 @@ class Model extends \ICanBoogie\ActiveRecord\Model
 
 				$core->vars['cached_sites'] = $sites;
 			}
-			catch (Exception\DatabaseConnection $e)
+			catch (ActiveRecordException $e)
 			{
 				throw $e;
 			}
@@ -139,6 +140,7 @@ class Model extends \ICanBoogie\ActiveRecord\Model
 			}
 		}
 
+		/*DIRTY
 		#
 		# if we couldn't find a match and the path is the index we return the first online site.
 		#
@@ -153,6 +155,7 @@ class Model extends \ICanBoogie\ActiveRecord\Model
 				}
 			}
 		}
+		*/
 
 		return $match ? $match : self::get_default_site();
 	}

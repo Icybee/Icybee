@@ -81,7 +81,7 @@ class PermissionsOperation extends \ICanBoogie\Operation
 			$role->save();
 		}
 
-		$this->response->success = 'Permissions have been saved.';
+		$this->response->message = 'Permissions have been saved.';
 
 		return true;
 	}

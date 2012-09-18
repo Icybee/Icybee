@@ -42,12 +42,13 @@ table.manage tbody td.usage.empty {
 	font-style: italic;
 }
 
-table.manage tbody td.usage.empty+td button {
+table.manage tbody td.usage.empty + td button {
 	visibility: hidden;
 }
 
-table.manage tbody td.erase {
+table.manage td.cell--erase {
 	text-align: center;
+	width: 1%;
 }
 
 table.manage tbody div.element-description {

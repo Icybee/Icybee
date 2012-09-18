@@ -19,18 +19,19 @@ use ICanBoogie\Module;
 class Modules extends \ICanBoogie\Modules
 {
 	/**
-	 * Overrides the method to disable selected modules before they are run.
+	 * Disables selected modules.
 	 *
 	 * Modules are disabled againts a list of enabled modules. The enabled modules list is made
-	 * from the "enabled_modules" persistant var and the value of the T_REQUIRED tag,
-	 * which forces some modules to always be enabled.
+	 * from the `enabled_modules` persistant variable and the value of the {@link T_REQUIRED}
+	 * tag, which forces some modules to always be enabled.
 	 *
-	 * @see ICanBoogie\Accessor.Modules::run()
+	 * @see ICanBoogie.Modules::get_index()
 	 */
-	public function run()
+	protected function get_index()
 	{
 		global $core;
 
+		$index = parent::get_index();
 		$enableds = $core->vars['enabled_modules'];
 
 		if ($enableds && is_array($enableds))
@@ -46,13 +47,13 @@ class Modules extends \ICanBoogie\Modules
 			}
 		}
 
-		parent::run();
+		return $index;
 	}
 
 	/**
 	 * Adds autoloading of the manager's class for the specified module.
 	 *
-	 * @see ICanBoogie\Accessor.Modules::alter_descriptor()
+	 * @see ICanBoogie.Modules::alter_descriptor()
 	 */
 	protected function alter_descriptor(array $descriptor)
 	{

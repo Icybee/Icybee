@@ -19,7 +19,7 @@ use ICanBoogie\Operation\ProcessEvent;
 class Hooks
 {
 	/**
-	 * Adds an entry to the journal for successfully processed operations with a success message.
+	 * Adds an entry to the journal for successfully processed operations with a message.
 	 *
 	 * @param ProcessEvent $event
 	 * @param Operation $operation
@@ -28,7 +28,7 @@ class Hooks
 	{
 		global $core;
 
-		if (empty($operation->response->success))
+		if (empty($operation->response->message))
 		{
 			return;
 		}

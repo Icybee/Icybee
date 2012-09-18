@@ -48,7 +48,7 @@ class OfflineOperation extends Operation
 		$record->is_online = false;
 		$record->save();
 
-		$this->response->success = array('!title is now offline', array('!title' => $record->title));
+		$this->response->message = array('!title is now offline', array('!title' => $record->title));
 
 		return true;
 	}

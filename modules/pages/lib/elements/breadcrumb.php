@@ -73,7 +73,7 @@ class BreadcrumbElement extends Element
 	const PAGE = '#breadcrumb-page';
 	const DIVIDER = '#breadcrumb-divider';
 
-	const DEFAULT_DIVIDER = ' › ';
+	const DEFAULT_DIVIDER = '›';
 
 	public function __construct($tags)
 	{

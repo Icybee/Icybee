@@ -2,7 +2,7 @@
 
 return array
 (
-	':admin/manage' => array
+	'!admin:manage' => array
 	(
 
 	)

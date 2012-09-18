@@ -147,7 +147,7 @@ class EditBlock extends \ICanBoogie\Modules\Nodes\EditBlock
 					(
 						Form::LABEL => 'file',
 						Element::REQUIRED => empty($entry_nid),
-						Element::FILE_WITH_LIMIT => $core->site->metas[$this->module->flat_id . '.max_file_size'],
+						\Brickrouge\File::FILE_WITH_LIMIT => $core->site->metas[$this->module->flat_id . '.max_file_size'],
 						Element::WEIGHT => -100,
 						\Brickrouge\File::T_UPLOAD_URL => Operation::encode($this->module->id . '/upload')
 					)

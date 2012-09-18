@@ -111,7 +111,7 @@ class Hooks
 		global $core;
 
 		$uid = $operation->key;
-		$count = $core->models['nodes']->find_by_uid($uid)->count;
+		$count = $core->models['nodes']->filter_by_uid($uid)->count;
 
 		if (!$count)
 		{

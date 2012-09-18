@@ -2,17 +2,17 @@
 
 return array
 (
-	':admin/manage' => array
+	'!admin:manage' => array
 	(
 
 	)/*,
 
-	':admin/config' => array
+	'!admin:config' => array
 	(
 
 	),
 
-	':admin/edit' => array
+	'!admin:edit' => array
 	(
 
 	)*/

@@ -145,7 +145,7 @@ class Navigation extends \Brickrouge\Element
 			$options[$url] = array($title, $url);
 		}
 
-		usort($options, function($a, $b) {
+		uasort($options, function($a, $b) {
 
 			return \ICanBoogie\unaccent_compare_ci($a[0], $b[0]);
 

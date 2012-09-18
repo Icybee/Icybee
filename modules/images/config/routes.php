@@ -2,20 +2,20 @@
 
 return array
 (
-	':admin/manage' => array
-	(
-
-	),
-
-	':admin/gallery' => array
+	'admin:images/gallery' => array
 	(
 		'pattern' => '/admin/images/gallery',
+		'controller' => 'Icybee\BlockController',
 		'title' => '.gallery',
-		'block' => 'gallery',
-		'workspace' => 'resources'
+		'block' => 'gallery'
 	),
 
-	'redirect:/admin/resources' => array
+	'!admin:config' => array
+	(
+
+	),
+
+	'redirect:admin/resources' => array
 	(
 		'pattern' => '/admin/resources',
 		'location' => '/admin/images'

@@ -2,6 +2,8 @@
 
 namespace Icybee\Rendering;
 
+use ICanBoogie\OffsetNotWritable;
+
 use BlueTihi\render;
 
 use ICanBoogie\Exception;
@@ -118,14 +120,20 @@ class PropertyRenderers implements \IteratorIterator, \ArrayAccess
 		list($class, $property) = explode('::', $offset);
 	}
 
+	/**
+	 * @throws OffsetNotWritable in attempt to set an offset.
+	 */
 	public function offsetSet($offset, $value)
 	{
-		throw new Exception\OffsetNotWritable(array($offset, $this));
+		throw new OffsetNotWritable(array($offset, $this));
 	}
 
+	/**
+	 * @throws OffsetNotWritable in attempt to unset an offset.
+	 */
 	public function offsetUnset($offset)
 	{
-		throw new Exception\OffsetNotWritable(array($offset, $this));
+		throw new OffsetNotWritable(array($offset, $this));
 	}
 }
 

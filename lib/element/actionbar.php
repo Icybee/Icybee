@@ -13,7 +13,9 @@ namespace Icybee\Admin\Element;
 
 use ICanBoogie\ActiveRecord\Users\Member;
 use ICanBoogie\Event;
+use ICanBoogie\Exception;
 use ICanBoogie\Module;
+use ICanBoogie\PropertyNotFound;
 use ICanBoogie\Route;
 use ICanBoogie\Routes;
 
@@ -35,31 +37,51 @@ class Actionbar extends Element
 		global $core;
 
 		$actionbar_new = null;
-		$route = $core->request->route;
+		$actionbar_navigation = null;
+		$actionbar_search = null;
+		$actionbar_toolbar = null;
 
-		if (!$route) // TODO-20120326: revise the route dispatcher, because a route should be there, even if the user don't have permission to access it
+		try
 		{
-			throw new \Brickrouge\EmptyElementException;
-		}
+			#
+			# This happens when a AuthenticationRequired or PermissionRequired was thrown.
+			#
 
-		if ($route && !$core->user->is_guest && !($core->user instanceof Member))
-		{
-			$module_id = $route->module;
+			if (!$core->request)
+			{
+				throw new PropertyNotFound();
+			}
 
-			$actionbar_new = (string) new ActionbarNew
-			(
-				'New', array
+			$route = $core->request->route;
+
+			if (!$core->user->is_guest && !($core->user instanceof Member))
+			{
+				$module_id = $route->module;
+
+				$actionbar_new = (string) new ActionbarNew
 				(
-					ActionbarNew::PATTERN => "/admin/$module_id/new",
-					ActionbarNew::ROUTE => $route
-				)
-			);
+					'New', array
+					(
+						ActionbarNew::PATTERN => "/admin/$module_id/new",
+						ActionbarNew::ROUTE => $route
+					)
+				);
+			}
+
+			$actionbar_navigation = (string) new ActionbarNav;
+			$actionbar_search = (string) new ActionbarSearch;
+			$actionbar_toolbar = (string) new ActionbarToolbar;
+		}
+		catch (PropertyNotFound $e)
+		{
+			#
+			# if route is not defined.
+			#
+
+// 			throw new \Brickrouge\EmptyElementException;
 		}
 
 		$actionbar_title = (string) new ActionbarTitle;
-		$actionbar_navigation = (string) new ActionbarNav;
-		$actionbar_search = (string) new ActionbarSearch;
-		$actionbar_toolbar = (string) new ActionbarToolbar;
 
 		if (!$actionbar_title && !$actionbar_new && !$actionbar_navigation && !$actionbar_toolbar && !$actionbar_search)
 		{

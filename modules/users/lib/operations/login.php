@@ -14,7 +14,7 @@ namespace ICanBoogie\Modules\Users;
 use ICanBoogie\ActiveRecord\User;
 use ICanBoogie\Mailer;
 use ICanBoogie\I18n;
-use ICanBoogie\I18n\Tanslator\Proxi;
+use ICanBoogie\I18n\Translator\Proxi;
 use ICanBoogie\Exception;
 use ICanBoogie\Exception\HTTP as HTTPException;
 use ICanBoogie\Security;
@@ -89,7 +89,7 @@ class LoginOperation extends Operation
 			$user->metas['login_unlock_time'] = null;
 		}
 
-		if (!$user->is_password($password))
+		if (!$user->same_password($password))
 		{
 			$errors[User::PASSWORD] = t('Unknown username/password combination.');
 

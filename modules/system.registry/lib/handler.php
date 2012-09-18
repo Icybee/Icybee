@@ -59,7 +59,7 @@ class MetasHandler implements \ArrayAccess
 	{
 		if ($this->values === null)
 		{
-			$this->values = $this->model->select('name, value')->find_by_targetid($this->targetid)->order('name')->pairs;
+			$this->values = $this->model->select('name, value')->filter_by_targetid($this->targetid)->order('name')->pairs;
 		}
 
 		if ($name == 'all')
@@ -83,7 +83,7 @@ class MetasHandler implements \ArrayAccess
 		{
 			//\ICanBoogie\log('delete %name because is has been set to null', array('%name' => $name));
 
-			$this->model->find_by_targetid_and_name($this->targetid, $name)->delete();
+			$this->model->filter_by_targetid_and_name($this->targetid, $name)->delete();
 		}
 		else
 		{

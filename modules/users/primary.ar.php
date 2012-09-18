@@ -11,15 +11,17 @@
 
 namespace ICanBoogie\ActiveRecord;
 
+use ICanBoogie\ActiveRecord\RecordNotFound;
 use ICanBoogie\ActiveRecord\Users\Role;
 use ICanBoogie\Exception;
 use ICanBoogie\Security;
 use ICanBoogie\Module;
+use ICanBoogie\PropertyNotWritable;
 
 /**
  * A user.
  *
- * @property string $name The formatted name of the user.
+ * @property-read string $name The formatted name of the user.
  * @property-read boolean $is_admin true if the user is admin, false otherwise.
  * @property-read boolean $is_guest true if the user is a guest, false otherwise.
  * @property-read \ICanBoogie\ActiveRecord\Users\Role $role
@@ -153,7 +155,7 @@ class User extends \ICanBoogie\ActiveRecord
 	 *
 	 * @return string
 	 */
-	protected function get_name()
+	protected function volatile_get_name()
 	{
 		$values = array
 		(
@@ -172,6 +174,14 @@ class User extends \ICanBoogie\ActiveRecord
 		}
 
 		return $rc;
+	}
+
+	/**
+	 * @throws PropertyNotWritable in attempt to write {@link $name}.
+	 */
+	protected function volatile_set_name()
+	{
+		throw new PropertyNotWritable(array('name', $this));
 	}
 
 	/**
@@ -234,7 +244,7 @@ class User extends \ICanBoogie\ActiveRecord
 			return array();
 		}
 
-		$rids = $core->models['users/has_many_roles']->select('rid')->find_by_uid($this->uid)->all(\PDO::FETCH_COLUMN);
+		$rids = $core->models['users/has_many_roles']->select('rid')->filter_by_uid($this->uid)->all(\PDO::FETCH_COLUMN);
 
 		if (!in_array(2, $rids))
 		{
@@ -245,11 +255,11 @@ class User extends \ICanBoogie\ActiveRecord
 		{
 			return $core->models['users.roles']->find($rids);
 		}
-		catch (\ICanBoogie\Exception\MissingRecord $e)
+		catch (RecordNotFound $e)
 		{
 			trigger_error($e->getMessage());
 
-			return array_filter($e->rc);
+			return array_filter($e->records);
 		}
 	}
 
@@ -265,9 +275,12 @@ class User extends \ICanBoogie\ActiveRecord
 		return ($this->uid == 1);
 	}
 
+	/**
+	 * @throws PropertyNotWritable in attempt to write {@link $is_admin}.
+	 */
 	protected function volatile_set_is_admin()
 	{
-		throw new Exception\PropertyNotWritable(array('is_admin', $this));
+		throw new PropertyNotWritable(array('is_admin', $this));
 	}
 
 	/**
@@ -282,9 +295,12 @@ class User extends \ICanBoogie\ActiveRecord
 		return ($this->uid == 0);
 	}
 
+	/**
+	 * @throws PropertyNotWritable in attempt to write {@link $is_guest}.
+	 */
 	protected function volatile_set_is_guest()
 	{
-		throw new Exception\PropertyNotWritable(array('is_guest', $this));
+		throw new PropertyNotWritable(array('is_guest', $this));
 	}
 
 	/**
@@ -298,7 +314,7 @@ class User extends \ICanBoogie\ActiveRecord
 	{
 		global $core;
 
-		return $this->is_admin ? array() : $core->models['users/has_many_sites']->select('siteid')->find_by_uid($this->uid)->all(\PDO::FETCH_COLUMN);
+		return $this->is_admin ? array() : $core->models['users/has_many_sites']->select('siteid')->filter_by_uid($this->uid)->all(\PDO::FETCH_COLUMN);
 	}
 
 	/**
@@ -346,7 +362,7 @@ class User extends \ICanBoogie\ActiveRecord
 
 		if (!is_object($record))
 		{
-			throw new Exception('%var must be an object', array('%var' => 'entry'));
+			throw new \InvalidArgumentException("<q>record</q> must be an object.");
 		}
 
 		if (empty($record->uid))
@@ -383,19 +399,19 @@ class User extends \ICanBoogie\ActiveRecord
 	}
 
 	/**
-	 * Compare a password to the user password.
+	 * Compares a password to the user password.
 	 *
 	 * @param string $password
 	 *
-	 * @return bool true if the password match the password hash, false otherwise.
+	 * @return bool `true` if the password match the password hash, `false` otherwise.
 	 */
-	public function is_password($password)
+	public function same_password($password)
 	{
 		return $this->password_hash === self::hash_password($password);
 	}
 
 	/**
-	 * Log the user in.
+	 * Logs the user in.
 	 *
 	 * A user is logged in by setting its id in the `application[user_agent]` session key.
 	 *
@@ -419,7 +435,7 @@ class User extends \ICanBoogie\ActiveRecord
 
 		if (!$this->uid)
 		{
-			throw new Exception('Guest users cannot login.');
+			throw new \Exception('Guest users cannot login.');
 		}
 
 		$core->user = $this;

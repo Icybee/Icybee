@@ -25,7 +25,7 @@ class DeleteOperation extends \Icybee\DeleteOperation
 
 		if ($rc)
 		{
-			$this->response->success = array
+			$this->response->message = array
 			(
 				'%title has been deleted from %module.', array
 				(

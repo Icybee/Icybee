@@ -14,14 +14,14 @@ return array
 
 		'ICanBoogie\ActiveRecord\Page::urlchange' => $hooks . '::on_urlchange',
 		__NAMESPACE__ . '\SaveOperation::process' => $hooks . '::on_save',
+		'ICanBoogie\HTTP\Dispatcher::populate' => $hooks . '::on_http_dispatcher_populate',
 
 // 		'Icybee\Pagemaker::render:before' => $hooks . '::before_icybee_render', TODO-20120313: we need to use another event
 
 		'ICanBoogie\SaveOperation::process' => $hooks . '::invalidate_cache',
 		'ICanBoogie\DeleteOperation::process' => $hooks . '::invalidate_cache',
 		'ICanBoogie\Modules\Nodes\OnlineOperation::process' => $hooks . '::invalidate_cache',
-		'ICanBoogie\Modules\Nodes\OfflineOperation::process' => $hooks . '::invalidate_cache',
-		'ICanBoogie\Modules\System\Cache\Collection::alter' => $hooks . '::on_alter_cache_collection'
+		'ICanBoogie\Modules\Nodes\OfflineOperation::process' => $hooks . '::invalidate_cache'
 	),
 
 	'prototypes' => array

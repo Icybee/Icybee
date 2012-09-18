@@ -16,6 +16,10 @@
 	width: 8ex;
 }
 
+td.cell--status {
+	font-size: 12px;
+}
+
 .cell--status .btn-group {
 	white-space: nowrap;
 }

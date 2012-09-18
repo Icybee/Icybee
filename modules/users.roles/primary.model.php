@@ -38,7 +38,7 @@ class Model extends \ICanBoogie\ActiveRecord\Model
 	/**
 	 * @throws Exception when on tries to delete the role with identifier "1".
 	 *
-	 * @see ICanBoogie.DatabaseTable::delete()
+	 * @see ICanBoogie\ActiveRecord.DatabaseTable::delete()
 	 */
 	public function delete($rid)
 	{

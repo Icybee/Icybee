@@ -20,7 +20,7 @@ class ConfigOperation extends BaseOperation
 
 		$cache->config($this->request);
 
-		$this->response->success = array('The cache %cache has been configured.', array('cache' => $this->key));
+		$this->response->message = array('The cache %cache has been configured.', array('cache' => $this->key));
 
 		return $cache->config_preview;
 	}

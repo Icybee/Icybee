@@ -47,7 +47,7 @@ class HomeIncludeOperation extends Operation
 		$record->is_home_excluded = false;
 		$record->save();
 
-		$this->response->success = array('%title is now included in the home page', array('%title' => $record->title));
+		$this->response->message = array('%title is now included in the home page', array('%title' => $record->title));
 
 		return true;
 	}

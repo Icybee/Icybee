@@ -22,7 +22,7 @@ class HomeExcludeOperation extends HomeIncludeOperation
 		$record->is_home_excluded = true;
 		$record->save();
 
-		$this->response->success = array('%title is now excluded from the home page', array('%title' => $record->title));
+		$this->response->message = array('%title is now excluded from the home page', array('%title' => $record->title));
 
 		return true;
 	}

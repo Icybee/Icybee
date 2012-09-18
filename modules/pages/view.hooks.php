@@ -19,7 +19,7 @@ class site_pages_view_WdHooks
 	private static $pages_model;
 	private static $url_cache_by_siteid = array();
 
-	public static function url(ActiveRecord $target, $type='view')
+	public static function url(\ICanBoogie\ActiveRecord $target, $type='view')
 	{
 		global $core;
 

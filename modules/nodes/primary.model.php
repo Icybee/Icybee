@@ -47,12 +47,13 @@ class Model extends \Icybee\ActiveRecord\Model\Constructor
 	/**
 	 * Makes sure the node to delete is not used as a native target by other nodes.
 	 *
-	 * @see WdDatabaseTable::delete()
 	 * @throws Exception if the node to delete is the native target of another node.
+	 *
+	 * @see ICanBoogie\ActiveRecord.Table::delete()
 	 */
 	public function delete($key)
 	{
-		$native_refs = $this->select('nid')->find_by_nativeid($key)->all(\PDO::FETCH_COLUMN);
+		$native_refs = $this->select('nid')->filter_by_nativeid($key)->all(\PDO::FETCH_COLUMN);
 
 		if ($native_refs)
 		{

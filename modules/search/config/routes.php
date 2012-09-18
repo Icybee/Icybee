@@ -2,15 +2,16 @@
 
 return array
 (
-	'search:admin' => array
+	'admin:search' => array
 	(
 		'pattern' => '/admin/search',
+		'controller' => 'Icybee\BlockController',
 		'block' => 'config',
 		'index' => true,
 		'title' => 'Config.'
 	),
 
-	'search:admin/config' => array
+	'admin:search/config' => array
 	(
 		'pattern' => '/admin/search/config',
 		'location' => '/admin/search'

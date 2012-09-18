@@ -156,7 +156,7 @@ class SaveOperation extends Modules\Nodes\SaveOperation
 
 		if ($oldpath)
 		{
-			$newpath = $this->module->model->select('path')->find_by_nid($rc['key'])->rc;
+			$newpath = $this->module->model->select('path')->filter_by_nid($rc['key'])->rc;
 
 			if ($oldpath != $newpath)
 			{

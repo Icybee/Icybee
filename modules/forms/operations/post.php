@@ -82,7 +82,7 @@ class PostOperation extends \ICanBoogie\Operation
 
 		if ($rc && $this->request->is_xhr)
 		{
-			$this->response->success = $this->record->complete;
+			$this->response->message = $this->record->complete;
 		}
 
 		return $rc;

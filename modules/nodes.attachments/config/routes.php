@@ -8,6 +8,6 @@ return array
 		'module' => 'files',
 		'title' => 'Config.',
 		'block' => 'config',
-		'workspace' => 'resources'
+// 		'workspace' => 'resources'
 	)
 );

@@ -231,7 +231,8 @@ EOT;
 			$common = array
 			(
 				'module' => $module_id,
-				'workspace' => $descriptor[self::T_CATEGORY],
+// 				'workspace' => $descriptor[self::T_CATEGORY],
+				'controller' => 'Icybee\BlockController',
 				'visibility' => 'visible'
 			);
 
@@ -239,7 +240,7 @@ EOT;
 
 			# manage (index)
 
-			$routes["/admin/$module_id"] = array
+			$routes["admin:$module_id"] = array
 			(
 				'pattern' => "/admin/$module_id",
 				'title' => '.manage',
@@ -253,7 +254,7 @@ EOT;
 			{
 				# config'
 
-				$routes["/admin/$module_id/config"] = array
+				$routes["admin:$module_id/config"] = array
 				(
 					'pattern' => "/admin/$module_id/config",
 					'title' => '.config',
@@ -266,7 +267,7 @@ EOT;
 
 			# create
 
-			$routes["/admin/$module_id/new"] = array
+			$routes["admin:$module_id/new"] = array
 			(
 				'pattern' => "/admin/$module_id/new",
 				'title' => '.new',
@@ -277,9 +278,10 @@ EOT;
 
 			# edit
 
-			$routes["/admin/$module_id/edit"] = array
+			$routes["admin:$module_id/edit"] = array
 			(
 				'pattern' => "/admin/$module_id/<\d+>/edit",
+				'controller' => 'Icybee\EditController',
 				'title' => '.edit',
 				'block' => 'edit',
 				'visibility' => 'auto'
@@ -289,9 +291,10 @@ EOT;
 
 			# delete
 
-			$routes["/admin/$module_id/delete"] = array
+			$routes["admin:$module_id/delete"] = array
 			(
 				'pattern' => "/admin/$module_id/<\d+>/delete",
+				'controller' => 'Icybee\DeleteController',
 				'title' => '.delete',
 				'block' => 'delete',
 				'visibility' => 'auto'

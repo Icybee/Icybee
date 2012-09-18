@@ -203,13 +203,13 @@ class SaveOperation extends \Icybee\Operation\Constructor\Save
 
 		if ($core->user_id == $uid)
 		{
-			$this->response->success = array("Your profile has been updated.", array());
+			$this->response->message = array("Your profile has been updated.", array());
 		}
 		else
 		{
 			$record = $this->module->model[$uid];
 
-			$this->response->success = array($rc['mode'] == 'update' ? "%name's profile has been updated." : "%name's profile has been created.", array('name' => $record->name));
+			$this->response->message = array($rc['mode'] == 'update' ? "%name's profile has been updated." : "%name's profile has been created.", array('name' => $record->name));
 		}
 
 		return $rc;

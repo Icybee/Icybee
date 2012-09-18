@@ -49,7 +49,7 @@ class Model extends \ICanBoogie\Modules\Nodes\Model
 	 */
 	public function delete($key)
 	{
-		$site_id = $this->select('siteid')->find_by_nid($key)->rc;
+		$site_id = $this->select('siteid')->filter_by_nid($key)->rc;
 
 		if ($site_id)
 		{
@@ -140,7 +140,7 @@ class Model extends \ICanBoogie\Modules\Nodes\Model
 	private static $home_by_siteid = array();
 
 	/**
-	 * Finds a page by its path.
+	 * Finds a page using its path.
 	 *
 	 * @param string $path
 	 *
@@ -218,7 +218,7 @@ class Model extends \ICanBoogie\Modules\Nodes\Model
 		# with it.
 		#
 
-		$tries = $this->select('nid, parentid, slug, pattern')->find_by_siteid($siteid)->ordered->all(\PDO::FETCH_OBJ);
+		$tries = $this->select('nid, parentid, slug, pattern')->filter_by_siteid($siteid)->ordered->all(\PDO::FETCH_OBJ);
 		$tries = self::nestNodes($tries);
 
 		$try = null;
@@ -248,9 +248,8 @@ class Model extends \ICanBoogie\Modules\Nodes\Model
 
 					$nparts = substr_count($stripped, '/') + 1;
 					$path_part = implode('/', array_slice($parts, $i, $nparts));
-					$match = Route::match($path_part, $pattern);
 
-					if ($match === false)
+					if (!Route::match($path_part, $pattern, $match))
 					{
 						$try = null;
 

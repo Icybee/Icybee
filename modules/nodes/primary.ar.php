@@ -11,12 +11,11 @@
 
 namespace ICanBoogie\ActiveRecord;
 
-use ICanBoogie\ActiveRecord;
 use ICanBoogie\ActiveRecord\Model;
 use ICanBoogie\I18n;
 use ICanBoogie\Event;
 
-class Node extends ActiveRecord
+class Node extends \ICanBoogie\ActiveRecord
 {
 	const NID = 'nid';
 	const UID = 'uid';

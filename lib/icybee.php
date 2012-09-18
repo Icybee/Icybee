@@ -11,6 +11,10 @@
 
 namespace Icybee;
 
+use ICanBoogie\ActiveRecord\Page;
+
+use ICanBoogie\AuthenticationRequired;
+
 define('Icybee\Pagemaker\CSS_DOCUMENT_PLACEHOLDER', uniqid());
 define('Icybee\Pagemaker\JS_DOCUMENT_PLACEHOLDER', uniqid());
 
@@ -32,11 +36,16 @@ class Pagemaker
 	{
 		global $core;
 
-		$time_start = microtime(true);
-
 		try
 		{
-			return $this->run_callback($request) . $this->render_stats($time_start);
+			$page = $this->resolve_request($request);
+
+			if ($page instanceof Response)
+			{
+				return $page;
+			}
+
+			return $this->run_callback($page, $request);
 		}
 		catch (\Exception $e)
 		{
@@ -68,11 +77,11 @@ class Pagemaker
 		}
 	}
 
-	public function run_callback(Request $request)
+	public function run_callback(Page $page, Request $request)
 	{
 		global $core;
 
-		$page = $this->resolve_request($request);
+		$time_start = microtime(true);
 
 		// FIXME: because set() doesn't handle global vars ('$') correctly,
 		// we have to set '$page' otherwise, a new variable '$page' is created
@@ -96,10 +105,13 @@ class Pagemaker
 		# The page body is rendered before the template is parsed.
 		#
 
+		/*
 		try
+		*/
 		{
 			$body = $page->body ? $page->body->render() : '';
 		}
+		/*
 		catch (Exception\HTTP $e)
 		{
 			$e->alter_header();
@@ -113,6 +125,7 @@ class Pagemaker
 
 			Debug::report($body);
 		}
+		*/
 
 		$template = $this->resolve_template($page->template);
 		$engine = $this->resolve_engine($template);
@@ -175,7 +188,33 @@ class Pagemaker
 			$html = str_replace('</body>', PHP_EOL . PHP_EOL . $document->js . PHP_EOL . '</body>', $html);
 		}
 
-		return $html;
+		/*DIRTY
+		$html .= $this->render_stats($time_start);
+		*/
+
+		$response = new Response
+		(
+			200, array
+			(
+				'Content-Type' => 'text/html; charset=utf-8'
+			),
+
+			$html
+		);
+
+		$response->cache_control = 'public';
+
+		foreach ($core->modules as $module_id => $module)
+		{
+			if ($module_id == 'forms')
+			{
+				$cacheable = 'no-cache';
+
+				$response->cache_control = 'no-store, no-cache, must-revalidate, post-check=0, pre-check=0';
+			}
+		}
+
+		return $response;
 	}
 
 	/**
@@ -222,6 +261,7 @@ class Pagemaker
 		$user = $core->user;
 		$path = $request->path;
 
+		/*DIRTY
 		if ($status != 1 && $path == '/' && $user->is_guest)
 		{
 			// TODO-20111101: we could use $core->site to get the current site, still we need to
@@ -238,10 +278,52 @@ class Pagemaker
 				exit;
 			}
 
-			throw new Exception\HTTP('The requested URL requires authentication.', array(), 401);
+			throw new AuthenticationRequired
+			(
+				'The requested URL %url requires authentication.', array
+				(
+					'url' => $path
+				)
+			);
 		}
+		*/
 
-		$page = $this->find_page_by_request($request);
+		$page = $core->models['pages']->find_by_path($request->path);
+		$query_string = $request->query_string;
+
+		if ($page)
+		{
+			if ($page->location)
+			{
+				return new Response
+				(
+					301, array
+					(
+						'Location' => $page->location->url,
+						'Icybee-Redirected-By' => __FILE__ . '::' . __LINE__
+					)
+				);
+			}
+
+			#
+			# We make sure that a normalized URL is used. For instance, "/fr" is redirected to
+			# "/fr/".
+			#
+
+			$parsed_url_pattern = Route::parse($page->url_pattern);
+
+			if (!$parsed_url_pattern[1] && $page->url != $path)
+			{
+				return new Response
+				(
+					301, array
+					(
+						'Location' => $page->url . ($query_string ? '?' . $query_string : ''),
+						'Icybee-Redirected-By' => __FILE__ . '::' . __LINE__
+					)
+				);
+			}
+		}
 
 		if (!$page)
 		{
@@ -257,14 +339,12 @@ class Pagemaker
 
 			if (!$user->has_ownership('pages', $page))
 			{
-				throw new Exception\HTTP
+				throw new AuthenticationRequired
 				(
 					'The requested URL %url requires authentication.', array
 					(
 						'url' => $path
-					),
-
-					401
+					)
 				);
 			}
 
@@ -307,49 +387,6 @@ class Pagemaker
 		$engine = new \WdPatron;
 
 		return $engine;
-	}
-
-	protected function find_page_by_request(Request $request)
-	{
-		global $core;
-
-		$path = $request->path;
-		$query_string = $request->query_string;
-		$page = $core->models['pages']->find_by_path($path);
-		$site = $request->context->site;
-
-		if ($page)
-		{
-			if ($page->location)
-			{
-				header('Location: ' . $page->location->url);
-
-				exit;
-			}
-
-			$parsed_url_pattern = Route::parse($page->url_pattern);
-
-			if (empty($parsed_url_pattern[1]) && $page->url != $path)
-			{
-				header('Location: ' . $page->url . ($query_string ? '?' . $query_string : ''), true, 301);
-
-				exit;
-			}
-		}
-
-		#
-		# if the index is requested but all sites have a path, we redirect the request to the site
-		# path.
-		#
-
-		else if ($path == '/' && $site->path)
-		{
-			header('Location: ' . $site->url . ($query_string ? '?' . $query_string : ''));
-
-			exit;
-		}
-
-		return $page;
 	}
 
 	protected function get_admin_menu()
@@ -402,24 +439,21 @@ class Pagemaker
 		# configurable
 		#
 
-		$routes = \ICanboogie\Routes::get();
-
-		foreach ($core->configs['admin_routes'] as $route_id => $route_definition)
-		{
-			$routes[$route_id] = $route_definition;
-		}
+		$routes = $core->routes;
 
 		$links = array();
 		$site = $core->site;
 
 		foreach ($core->modules as $module_id => $module)
 		{
-			$pathname = '/admin/' . $module_id . '/config';
+			$id = "admin:$module_id/config";
 
-			if (!$routes->find($pathname))
+			if (empty($routes[$id]))
 			{
 				continue;
 			}
+
+			$pathname = $routes[$id]->pattern;
 
 			$links[] = '<a href="' . \ICanBoogie\escape(Route::contextualize($pathname)) . '">' . $module->title . '</a>';
 		}
@@ -509,6 +543,7 @@ EOT;
 		self::$nodes = array_merge(self::$nodes, $event->nodes);
 	}
 
+	/*DIRTY
 	protected function render_stats($time_start)
 	{
 		global $core;
@@ -560,6 +595,7 @@ EOT;
 
 		. ' -->' . PHP_EOL;
 	}
+	*/
 }
 
 namespace Icybee\Pagemaker;

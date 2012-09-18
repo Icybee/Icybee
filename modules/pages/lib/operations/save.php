@@ -139,7 +139,7 @@ class SaveOperation extends \ICanBoogie\Modules\Nodes\SaveOperation
 		# we delete possible remaining content for the page
 		#
 
-		$arr = $contents_model->find_by_pageid($nid);
+		$arr = $contents_model->filter_by_pageid($nid);
 
 		if ($preserve)
 		{

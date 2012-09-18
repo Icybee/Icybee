@@ -14,6 +14,7 @@ namespace Icybee\Views;
 use ICanBoogie;
 use ICanBoogie\ActiveRecord\Model;
 use ICanBoogie\ActiveRecord\Node;
+use ICanBoogie\Debug;
 use ICanBoogie\Event;
 use ICanBoogie\Exception;
 use ICanBoogie\I18n;
@@ -461,7 +462,19 @@ class View extends Object
 			}
 			else if ('html' == $extension)
 			{
-				$rc = $engine(file_get_contents($template_path), $bind, array('file' => $template_path));
+				$template = file_get_contents($template_path);
+
+				if ($template === false)
+				{
+					throw new \Exception("Unable to read template from <q>$template_path</q>");
+				}
+
+				$rc = $engine($template, $bind, array('file' => $template_path));
+
+				if ($rc === null)
+				{
+					var_dump($template_path, file_get_contents($template_path), $rc);
+				}
 			}
 			else
 			{

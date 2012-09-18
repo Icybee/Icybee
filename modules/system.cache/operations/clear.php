@@ -20,7 +20,7 @@ class ClearOperation extends BaseOperation
 
 		$cache->clear();
 
-		$this->response->success = array('The cache %cache has been cleared.', array('cache' => $this->key));
+		$this->response->message = array('The cache %cache has been cleared.', array('cache' => $this->key));
 
 		return $cache->stat();
 	}

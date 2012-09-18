@@ -287,13 +287,7 @@ class Manager extends Element
 
 			$rc .= '</form>' . PHP_EOL;
 
-			$this->inject_search();
-
-
-
-
-
-			$search = $this->rendered_search;
+			$search = $this->render_search();
 			$browse = $this->browse;
 
 			\ICanBoogie\Events::attach
@@ -1419,21 +1413,6 @@ EOT;
 		$this->rendered_search = $html;
 
 		return $html;
-	}
-
-	protected function inject_search()
-	{
-		global $core;
-
-		$this->rendered_search = null;
-
-		$document = $core->document;
-
-		if ($document instanceof Document)
-		{
-			$options = '<div class="manage">' . $this->render_search() . $this->browse . '</div>';
-			$document->addToBlock($options, 'menu-options');
-		}
 	}
 
 	protected function render_limiter()

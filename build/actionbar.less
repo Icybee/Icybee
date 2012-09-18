@@ -27,7 +27,6 @@
 		}
 	}
 
-
 	.pull-left > *,
 	.pull-right > * {
 		float: left;
@@ -54,7 +53,11 @@
 
 	button {
 		padding: 3px 10px;
-	}	
+	}
+	
+	.btn {
+		line-height: 18px;
+	}
 }
 
 /*
@@ -165,8 +168,8 @@
  
 form.navbar-search {
 	border: 1px solid #CFCFCF;
-	font-size: 12px; /* we use a fixed value so that the height of the form is the same of the browse element*/
-	padding: 2px 0.5ex;
+	font-size: 14px; /* we use a fixed value so that the height of the form is the same as the browse element*/
+	padding: 0 0.5ex 0 0;
 	background-color: #F6F6F6;
 	border-radius: 4px;
 	float: left;
@@ -177,8 +180,8 @@ form.navbar-search {
 		position: relative;
 		border-radius: 0;
 		box-shadow: none;
-		padding: 2px 0;
-		width: 32ex !important;
+		padding: 3px .5ex;
+		width: 24ex !important;
 		
 		&.placeholder {
 			font-style: italic;
@@ -200,7 +203,7 @@ form.navbar-search {
 		font-weight: normal;
 		font-size: 12px;
 		text-shadow: none;
-		line-height: 16px;
+		line-height: 16px !important;
 		padding: 0;
 		margin-left: 1ex;
 		box-shadow: none;
@@ -208,6 +211,7 @@ form.navbar-search {
 		text-indent: 14px;
 		opacity: .6;
 		overflow: hidden;
+		vertical-align: middle;
 		
 		&:hover,
 		&:active {

@@ -13,7 +13,7 @@ namespace ICanBoogie\ActiveRecord\Taxonomy;
 
 use ICanBoogie\ActiveRecord;
 
-class Term extends ActiveRecord implements \IteratorAggregate
+class Term extends \ICanBoogie\ActiveRecord implements \IteratorAggregate
 {
 	const VTID = 'vtid';
 	const VID = 'vid';
@@ -65,7 +65,7 @@ class Term extends ActiveRecord implements \IteratorAggregate
 		->select('nid')
 		->joins('INNER JOIN {prefix}taxonomy_terms__nodes ttnode USING(vtid)') // FIXME-20110614 Query should be cleverer then that
 		->joins(':nodes')
-		->find_by_vtid($this->vtid)
+		->filter_by_vtid($this->vtid)
 		->where('is_online = 1')
 		->order('ttnode.weight')
 		->all(PDO::FETCH_COLUMN);
