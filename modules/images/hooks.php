@@ -268,7 +268,7 @@ class Hooks
 			return;
 		}
 
-		$entry = $operation->destination->model[$event->rc['key']];
+		$entry = $operation->module->model[$event->rc['key']];
 		$imageid = $params['resources_images']['imageid'];
 
 		$entry->metas['resources_images.imageid'] = $imageid ? $imageid : null;
@@ -281,7 +281,7 @@ class Hooks
 			return;
 		}
 
-		$module_flat_id = $operation->destination->flat_id;
+		$module_flat_id = $operation->module->flat_id;
 		$options = &$event->request->params['global']['resources_images.inject'];
 
 		$options += array

@@ -23,7 +23,7 @@ return array
 		)
 	),
 
-	'modules' => array
+	'modules paths' => array
 	(
 		$path . 'modules'
 	)

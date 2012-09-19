@@ -69,11 +69,8 @@ class Core extends \ICanBoogie\Core
 			(
 				$options, array
 				(
-					'paths' => array
-					(
-						'config' => $config,
-						'locale' => $locale
-					)
+					'config paths' => $config,
+					'locale paths' => $locale
 				)
 			)
 		);
@@ -162,7 +159,7 @@ class Core extends \ICanBoogie\Core
 	{
 		$config = $this->config;
 
-		return new Modules($config['modules'], $config['cache modules'] ? $this->vars : null);
+		return new Modules($config['modules paths'], $config['cache modules'] ? $this->vars : null);
 	}
 
 	/**

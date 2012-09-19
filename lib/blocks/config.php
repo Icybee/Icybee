@@ -23,6 +23,14 @@ use Brickrouge\Form;
  */
 abstract class ConfigBlock extends FormBlock
 {
+	public function render()
+	{
+		$element = parent::render();
+		$element->save();
+
+		return $element;
+	}
+
 	protected function get_permission()
 	{
 		global $core;

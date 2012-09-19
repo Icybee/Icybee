@@ -85,11 +85,8 @@ $core = new Core
 (
 	array
 	(
-		'paths' => array
-		(
-			'config' => $config,
-			'locale' => $locale
-		)
+		'config paths' => $config,
+		'locale paths' => $locale
 	)
 );
 
