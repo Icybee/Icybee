@@ -341,10 +341,10 @@ class Pagemaker
 			{
 				throw new AuthenticationRequired
 				(
-					'The requested URL %url requires authentication.', array
+					\ICanBoogie\format('The requested URL %url requires authentication.', array
 					(
 						'url' => $path
-					)
+					))
 				);
 			}
 
