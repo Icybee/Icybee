@@ -17,6 +17,7 @@ use ICanBoogie\Events;
 use ICanBoogie\Exception;
 use ICanBoogie\HTTP\Request;
 use ICanBoogie\HTTP\Response;
+use ICanBoogie\Modules\Pages\PageController;
 use ICanBoogie\Modules\System\Cache\Collection as CacheCollection;
 use ICanBoogie\Operation;
 use ICanBoogie\Routes;
@@ -232,7 +233,7 @@ class Hooks
 
 		Events::attach
 		(
-			'Icybee\Pagemaker::render', function(\Icybee\Pagemaker\RenderEvent $event) use($engine, $template, $key)
+			'ICanBoogie\Modules\Pages\PageController::render', function(PageController\RenderEvent $event, PageController $target) use($engine, $template, $key)
 			{
 				$types = array('success', 'info', 'error');
 

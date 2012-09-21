@@ -19,6 +19,7 @@ return array
 	'Icybee\Core' => $path . 'lib/core/core.php',
 	'Icybee\Connection' => $path . 'lib/core/accessors/connections.php',
 	'Icybee\Document' => $path . 'lib/element/document.php',
+	'Icybee\Element\AdminMenu' => $path . 'lib/element/admin-menu.php',
 	'Icybee\Element\Form' => $path . 'lib/element/form.php',
 	'Icybee\Element\Group' => $path . 'lib/element/group.php',
 	'Icybee\Element\SiteMenu' => $path . 'lib/element/site-menu.php',
@@ -28,7 +29,6 @@ return array
 	'Icybee\Manager' => $path . 'lib/widget/manager.php',
 	'Icybee\Module' => $path . 'lib/core/module.php',
 	'Icybee\Modules' => $path . 'lib/core/accessors/modules.php',
-	'Icybee\Pagemaker' => $path . 'lib/icybee.php',
 
 	# controllers
 

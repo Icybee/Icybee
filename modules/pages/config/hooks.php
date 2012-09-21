@@ -13,10 +13,11 @@ return array
 		'Brickrouge\Document::render_title:before' => $hooks . '::on_document_render_title',
 
 		'ICanBoogie\ActiveRecord\Page::urlchange' => $hooks . '::on_urlchange',
-		__NAMESPACE__ . '\SaveOperation::process' => $hooks . '::on_save',
+		'ICanBoogie\Modules\Pages\SaveOperation::process' => $hooks . '::on_save',
 		'ICanBoogie\HTTP\Dispatcher::populate' => $hooks . '::on_http_dispatcher_populate',
 
-// 		'Icybee\Pagemaker::render:before' => $hooks . '::before_icybee_render', TODO-20120313: we need to use another event
+		'Icybee::nodes_load' => 'ICanBoogie\Modules\Pages\PageController::on_nodes_load',
+		'Patron\Engine::nodes_load' => 'ICanBoogie\Modules\Pages\PageController::on_nodes_load',
 
 		'ICanBoogie\SaveOperation::process' => $hooks . '::invalidate_cache',
 		'ICanBoogie\DeleteOperation::process' => $hooks . '::invalidate_cache',

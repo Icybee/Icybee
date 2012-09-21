@@ -33,9 +33,9 @@ class Hooks
 			require_once \ICanBoogie\DOCUMENT_ROOT . 'user-startup.php';
 
 			$response = new Response();
-			$pagemaker = new \Icybee\Pagemaker; // TODO-20120830: rename as PageController and put it in the "page" module.
+			$controller = new PageController;
 
-			$rc = $pagemaker->run($request, $response);
+			$rc = $controller($request, $response);
 
 			if ($rc instanceof Response)
 			{
@@ -189,53 +189,6 @@ class Hooks
 
 		return $cache->clear();
 	}
-
-	/* TODO-20120313: we need to use another event
-	static public function before_icybee_render(\Icybee\Pagemaker\BeforeRenderEvent $event)
-	{
-		global $core;
-
-		if ($_POST || !$core->vars['enable_pages_cache'])
-		{
-			return;
-		}
-
-		$constructor = $event->constructor;
-		$data = $event->constructor_data;
-
-		$key = sprintf('%08x-%08x-%s', $core->site_id, (int) $core->user_id, sha1($event->uri));
-
-		$cache = new FileCache
-		(
-			array
-			(
-				FileCache::T_COMPRESS => false,
-				FileCache::T_REPOSITORY => $core->config['repository.cache'] . '/pages'
-			)
-		);
-
-		// TODO-20110601: refactor this, the rendered data should be saved on the
-		// 'Icybee\Pagemaker::render' event.
-
-		$event->rc = $cache->load($key, $constructor, $data);
-
-		#
-		# pages with form on them are not cached
-		#
-
-		foreach ($core->modules as $module_id => $module)
-		{
-			if ($module_id == 'forms')
-			{
-				$cache->delete($key);
-
-				echo t('cache was disabled because the "forms" module has been loaded');
-
-				return;
-			}
-		}
-	}
-	*/
 
 	/**
 	 * Returns the current page.

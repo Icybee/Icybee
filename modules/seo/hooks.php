@@ -11,11 +11,10 @@
 
 namespace ICanBoogie\Modules\Seo;
 
-use ICanBoogie\Operation\ProcessEvent;
-
 use ICanBoogie\ActiveRecord\Content;
 use ICanBoogie\Event;
-use ICanBoogie\Modules;
+use ICanBoogie\Modules\Pages\PageController;
+use ICanBoogie\Operation;
 
 use Brickrouge\Element;
 use Brickrouge\Form;
@@ -27,7 +26,7 @@ use WdPatron as Patron;
 
 class Hooks
 {
-	public static function on_icybee_render(\Icybee\Pagemaker\RenderEvent $event)
+	public static function on_page_controller_render(PageController\RenderEvent $event, PageController $target)
 	{
 		global $core;
 
@@ -104,10 +103,6 @@ EOT;
 
 			$event->metas['Description'] = $description;
 		}
-
-		#
-		#
-		#
 
 		if ($page->is_home)
 		{
@@ -224,7 +219,7 @@ EOT;
 		);
 	}
 
-	public static function on_operation_export(ProcessEvent $event)
+	public static function on_operation_export(Operation\ProcessEvent $event, Operation $operation)
 	{
 		global $core;
 

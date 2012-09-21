@@ -18,6 +18,7 @@ use ICanBoogie\Event;
 use ICanBoogie\Events;
 use ICanBoogie\Modules;
 use ICanBoogie\Modules\Contents\ConfigBlock as ContentsConfigBlock;
+use ICanBoogie\Modules\Pages\PageController;
 use ICanBoogie\Operation;
 
 use Brickrouge\Element;
@@ -380,19 +381,20 @@ class Hooks
 	/**
 	 * Adds assets to support lightbox links.
 	 *
-	 * This function is a callback for the `Icybee\Pagemaker::render` event.
+	 * This function is a callback for the `ICanBoogie\Modules\Pages\PageController::render` event.
 	 *
 	 * @param Event $event
 	 */
-	public static function on_icybee_render(\Icybee\Pagemaker\RenderEvent $event)
+	public static function on_page_controller_render(PageController\RenderEvent $event, PageController $target)
 	{
-		global $document;
+		global $core;
 
 		if (strpos($event->html, 'rel="lightbox') === false)
 		{
 			return;
 		}
 
+		$document = $core->document;
 		$document->css->add('public/slimbox.css');
 		$document->js->add('public/slimbox.js');
 	}

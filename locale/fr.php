@@ -75,7 +75,7 @@ return array
 	'From :start to :finish on :count' => 'De :start à :finish sur :count',
 	'Sort by: :identifier' => 'Trier par : :identifier',
 
-	# Icybee\Pagemaker
+	# ICanBoogie\Modules\Pages\PageController
 
 	"The requested URL requires authentication." => "L'URL demandée requiert une authentification.",
 
