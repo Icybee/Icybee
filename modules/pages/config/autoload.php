@@ -11,12 +11,9 @@ return array
 	__NAMESPACE__ . '\LanguagesElement' => $path . 'lib/elements/languages.php',
 	__NAMESPACE__ . '\ListView' => $path . 'lib/views/list.php',
 	__NAMESPACE__ . '\NavigationBranchElement' => $path . 'lib/elements/navigation-branch.php',
-	__NAMESPACE__ . '\ViewEditor' => $path . 'lib/editors/view/editor.php',
-	__NAMESPACE__ . '\ViewEditorElement' => $path . 'lib/editors/view/element.php',
 
 	'WdPageSelectorElement' => $path . 'elements/pageselector.php',
 	'WdAdjustTemplateElement' => $path . 'elements/adjusttemplate.php',
-	'site_pages_view_WdHooks' => $path . 'view.hooks.php',
 	'site_pages_WdMarkups' => $path . 'markups.php',
 	'site_pages_languages_WdMarkup' => $path . 'markups.php',
 	'site_pages_navigation_WdMarkup' => $path . 'markups.php',

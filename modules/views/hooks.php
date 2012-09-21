@@ -9,17 +9,83 @@
  * file that was distributed with this source code.
  */
 
+namespace Icybee\Modules\Views;
+
 use ICanBoogie\ActiveRecord;
-use ICanBoogie\ActiveRecord\Site;
-use ICanBoogie\Route;
 use ICanBoogie\ActiveRecord\Node;
+use ICanBoogie\ActiveRecord\Site;
+use ICanBoogie\Modules\System\Cache\Collection as CacheCollection;
+use ICanBoogie\Operation;
+use ICanBoogie\Route;
 
-class site_pages_view_WdHooks
+class Hooks
 {
-	private static $pages_model;
-	private static $url_cache_by_siteid = array();
+	/*
+	 * EVENTS
+	 */
 
-	public static function url(\ICanBoogie\ActiveRecord $target, $type='view')
+	/**
+	 * Updates view targets.
+	 *
+	 * @param Operation\ProcessEvent $event
+	 * @param \ICanBoogie\Modules\Pages\SaveOperation $operation
+	 */
+	static public function on_page_save(Operation\ProcessEvent $event, \ICanBoogie\Modules\Pages\SaveOperation $operation)
+	{
+		global $core;
+
+		$request = $event->request;
+		$contents = $request['contents'];
+		$editor_ids = $request['editors'];
+		$nid = $event->response->rc['key'];
+
+		if ($editor_ids)
+		{
+			foreach ($editor_ids as $content_id => $editor_id)
+			{
+				if ($editor_id != 'view')
+				{
+					continue;
+				}
+
+				if (empty($contents[$content_id]))
+				{
+					// TODO-20120811: should remove view reference
+
+					continue;
+				}
+
+				$content = $contents[$content_id];
+
+				if (strpos($content, '/') !== false)
+				{
+					$view_target_key = 'views.targets.' . strtr($content, '.', '_');
+
+					$core->site->metas[$view_target_key] = $nid;
+				}
+			}
+		}
+	}
+
+	/**
+	 * Adds views cache manager to the cache collection.
+	 *
+	 * @param CacheCollection\AlterEvent $event
+	 * @param CacheCollection $collection
+	 */
+	static public function on_cache_collection_collect(CacheCollection\AlterEvent $event, CacheCollection $collection)
+	{
+		$event->collection['icybee.views'] = new CacheManager;
+	}
+
+	/*
+	 * PROTOTYPE
+	 */
+
+	static private $pages_model;
+	static private $url_cache_by_siteid = array();
+
+	static public function url(ActiveRecord $target, $type='view')
 	{
 		global $core;
 
@@ -117,12 +183,15 @@ class site_pages_view_WdHooks
 		return $node->absolute_url('view');
 	}
 
-	static private $view_target_cache=array();
+	static private $view_target_cache = array();
 
 	/**
-	 * Returns the page target of a view.
+	 * Returns the target page of a view.
 	 *
-	 * @return ICanBoogie\ActiveRecord\Site The page target for the specified view identifier.
+	 * @param Site $site
+	 * @param string $viewid Identifier of the view.
+	 *
+	 * @return ActiveRecord\Page
 	 */
 	static public function resolve_view_target(Site $site, $viewid)
 	{
@@ -138,13 +207,15 @@ class site_pages_view_WdHooks
 		return self::$view_target_cache[$viewid] = $targetid ? $core->models['pages'][$targetid] : false;
 	}
 
-	static private $view_url_cache=array();
+	static private $view_url_cache = array();
 
 	/**
 	 * Returns the URL of a view.
 	 *
-	 * @param ICanBoogie\ActiveRecord\Site $site
+	 * @param ActiveRecord\Site $site
 	 * @param string $viewid
+	 *
+	 * @return string
 	 */
 	static public function resolve_view_url(Site $site, $viewid)
 	{
@@ -156,5 +227,25 @@ class site_pages_view_WdHooks
 		$target = $site->resolve_view_target($viewid);
 
 		return self::$view_url_cache[$viewid] = $target ? $target->url : '#unknown-target-for-view-' . $viewid;
+	}
+
+	/*
+	 * MARKUPS
+	 */
+
+	/**
+	 * Renders the specified view.
+	 *
+	 * @param array $args
+	 * @param mixed $engine
+	 * @param mixed $template
+	 *
+	 * @return mixed
+	 */
+	static public function markup_call_view(array $args, $engine, $template)
+	{
+		global $core;
+
+		return $core->editors['view']->render($args['name'], $engine, $template);
 	}
 }

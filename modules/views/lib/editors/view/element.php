@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace ICanBoogie\Modules\Pages;
+namespace Icybee\Modules\Views;
 
 use Brickrouge\Document;
 use Brickrouge\Element;
@@ -48,7 +48,7 @@ class ViewEditorElement extends Element implements \ICanBoogie\Modules\Editor\Ed
 
 		$categories = array();
 		$descriptors = $core->modules->descriptors;
-		$views = \Icybee\Views::get();
+		$views = $core->views;
 
 		foreach ($views as $id => $view)
 		{

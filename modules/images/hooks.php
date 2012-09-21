@@ -25,7 +25,7 @@ use Brickrouge\Element;
 use Brickrouge\Form;
 use Brickrouge\Widget;
 
-use Icybee\Views\ActiveRecord\Provider\AlterResultEvent;
+use Icybee\Modules\Views\ActiveRecordProvider\AlterResultEvent;
 
 class Hooks
 {

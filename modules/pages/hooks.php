@@ -18,7 +18,6 @@ use ICanBoogie\FileCache;
 use ICanBoogie\HTTP\Dispatcher;
 use ICanBoogie\HTTP\Request;
 use ICanBoogie\HTTP\Response;
-use ICanBoogie\Operation\ProcessEvent;
 
 use Brickrouge\Element;
 
@@ -51,49 +50,6 @@ class Hooks
 
 			return $response;
 		};
-	}
-
-	/**
-	 * Updates view targets.
-	 *
-	 * @param ProcessEvent $event
-	 * @param SaveOperation $operation
-	 */
-	static public function on_save(ProcessEvent $event, SaveOperation $operation)
-	{
-		global $core;
-
-		$request = $event->request;
-		$contents = $request['contents'];
-		$editor_ids = $request['editors'];
-		$nid = $event->response->rc['key'];
-
-		if ($editor_ids)
-		{
-			foreach ($editor_ids as $content_id => $editor_id)
-			{
-				if ($editor_id != 'view')
-				{
-					continue;
-				}
-
-				if (empty($contents[$content_id]))
-				{
-					// TODO-20120811: should remove view reference
-
-					continue;
-				}
-
-				$content = $contents[$content_id];
-
-				if (strpos($content, '/') !== false)
-				{
-					$view_target_key = 'views.targets.' . strtr($content, '.', '_');
-
-					$core->site->metas[$view_target_key] = $nid;
-				}
-			}
-		}
 	}
 
 	/**
@@ -346,28 +302,6 @@ EOT;
 		$page = $core->request->context->page;
 
 		return (string) new NavigationBranchElement($page);
-	}
-
-	/**
-	 * Calls an renders the specified view.
-	 *
-	 * @param array $args
-	 * @param WdPatron $patron
-	 * @param mixed $template
-	 *
-	 * @return mixed
-	 */
-	public static function markup_call_view(array $args, \WdPatron $patron, $template)
-	{
-		global $core;
-
-		$editor = $core->editors['view'];
-
-		// TODO-20101216: The view should handle parsing template or not
-
-		return $render = $editor->render($args['name'], $patron, $template);
-
-		return $template ? $patron($template, $render) : $render;
 	}
 
 	public static function markup_page_title(array $args, $engine, $template)

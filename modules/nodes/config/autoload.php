@@ -7,8 +7,7 @@ $widgets_path = $path . 'widgets' . DIRECTORY_SEPARATOR;
 return array
 (
 	__NAMESPACE__ . '\PopNode' => $widgets_path . 'pop-node.php',
-
-	'Icybee\Views\Nodes\Provider' => $path . 'lib/views/provider.php',
+	__NAMESPACE__ . '\ViewProvider' => $path . 'lib/views/provider.php',
 
 	'system_nodes_view_WdMarkup' => $path . 'markups.php',
 	'system_nodes_list_WdMarkup' => $path . 'markups.php',

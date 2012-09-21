@@ -40,25 +40,25 @@ class Module extends \Icybee\Module
 				'view' => array
 				(
 					'title' => "Record detail",
-					'provider' => 'Icybee\Views\Nodes\Provider',
+					'provider' => __NAMESPACE__ . '\ViewProvider',
 					'assets' => array(),
-					'renders' => \Icybee\Views\View::RENDERS_ONE
+					'renders' => \Icybee\Modules\Views\View::RENDERS_ONE
 				),
 
 				'list' => array
 				(
 					'title' => 'Records list',
-					'provider' => 'Icybee\Views\Nodes\Provider',
+					'provider' => __NAMESPACE__ . '\ViewProvider',
 					'assets' => array(),
-					'renders' => \Icybee\Views\View::RENDERS_MANY
+					'renders' => \Icybee\Modules\Views\View::RENDERS_MANY
 				),
 
 				'home' => array
 				(
 					'title' => 'Records home',
-					'provider' => 'Icybee\Views\Nodes\Provider',
+					'provider' => __NAMESPACE__ . '\ViewProvider',
 					'assets' => array(),
-					'renders' => \Icybee\Views\View::RENDERS_MANY
+					'renders' => \Icybee\Modules\Views\View::RENDERS_MANY
 				)
 			)
 		);

@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace ICanBoogie\Modules\Pages;
+namespace Icybee\Modules\Views;
 
 use ICanBoogie\Exception;
 
@@ -67,15 +67,8 @@ class ViewEditor implements \ICanBoogie\Modules\Editor\Editor
 			}
 		}
 
-		$views = \Icybee\Views::get();
-
-		if (empty($views[$id]))
-		{
-			throw new Exception('Unknown view: %id.', array('%id' => $id));
-		}
-
-		$definition = $views[$id];
-		$class = $definition['class'] ?: 'Icybee\Views\View';
+		$definition = $core->views[$id];
+		$class = $definition['class'] ?: 'Icybee\Modules\Views\View';
 		$view = new $class($id, $definition, $patron, $core->document, $page);
 		$rc = $view();
 

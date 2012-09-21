@@ -9,14 +9,14 @@
  * file that was distributed with this source code.
  */
 
-namespace Icybee\Views\Nodes;
+namespace ICanBoogie\Modules\Nodes;
 
 use ICanBoogie\ActiveRecord\Node;
 use ICanBoogie\ActiveRecord\Query;
 use ICanBoogie\Event;
 use ICanBoogie\Exception;
 
-class Provider extends \Icybee\Views\ActiveRecord\Provider
+class ViewProvider extends \Icybee\Modules\Views\ActiveRecordProvider
 {
 	/**
 	 * @throws a HTTPException with code 404 if no record matching the conditions could be found

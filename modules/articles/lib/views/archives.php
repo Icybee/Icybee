@@ -11,7 +11,7 @@
 
 namespace Icybee\Views\Articles;
 
-class Archives extends \Icybee\Views\View
+class Archives extends \Icybee\Modules\Views\View
 {
 	/**
 	 * Returns records grouped by month.

@@ -1,6 +1,6 @@
 <?php
 
-namespace ICanBoogie\Modules\Pages;
+namespace Icybee\Modules\Views;
 
 return array
 (

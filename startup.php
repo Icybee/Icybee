@@ -96,13 +96,6 @@ $core->run();
 
 // \ICanBoogie\log_time('core is running');
 
-/**
- * The views are cached when the Icybee\CACHE_VIEWS is defined.
- *
- * @var bool
- */
-defined('Icybee\CACHE_VIEWS') or define('Icybee\CACHE_VIEWS', $core->config['cache views']);
-
 /*
  * HTTP dispatcher hook.
  *

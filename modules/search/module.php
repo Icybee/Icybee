@@ -20,7 +20,7 @@ class Module extends \Icybee\Module
 			'home' => array
 			(
 				'title' => 'Rechercher sur le site',
-				'renders' => \Icybee\Views\View::RENDERS_MANY
+				'renders' => \Icybee\Modules\Views\View::RENDERS_MANY
 			)
 		);
 	}

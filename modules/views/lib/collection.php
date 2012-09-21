@@ -9,23 +9,23 @@
  * file that was distributed with this source code.
  */
 
-namespace Icybee;
+namespace Icybee\Modules\Views;
 
 use ICanBoogie\Event;
 use ICanBoogie\Exception;
 use ICanBoogie\OffsetNotWritable;
 
 /**
- * The views defined by the enabled modules.
+ * A collection of view definitions.
  */
-class Views implements \ArrayAccess, \IteratorAggregate
+class Collection implements \ArrayAccess, \IteratorAggregate
 {
 	private static $instance;
 
 	/**
 	 * Returns a unique instance.
 	 *
-	 * @return Views
+	 * @return Collection
 	 */
 	public static function get()
 	{
@@ -34,43 +34,39 @@ class Views implements \ArrayAccess, \IteratorAggregate
 			return self::$instance;
 		}
 
-		$class = get_called_class();
-
-		return self::$instance = new $class;
+		return self::$instance = new static;
 	}
 
-	protected $views;
+	protected $collection;
 
 	protected function __construct()
 	{
 		global $core;
 
-		if (CACHE_VIEWS)
+		if ($core->config['cache views'])
 		{
-			$views = $core->vars['cached_views'];
+			$collection = $core->vars['cached_views'];
 
-			if (!$views)
+			if (!$collection)
 			{
-				$views = $this->collect();
+				$collection = $this->collect();
 
-				$core->vars['cached_views'] = $views;
+				$core->vars['cached_views'] = $collection;
 			}
 		}
 		else
 		{
-			$views = $this->collect();
+			$collection = $this->collect();
 		}
 
-		$this->views = $views;
+		$this->collection = $collection;
 	}
 
 	/**
 	 * Collects views defined by modules.
 	 *
-	 * After the views defined by modules have been collected the object fires the "alter" event,
-	 * with the following parameter:
-	 *
-	 * - (array) &views: The views to alter.
+	 * After the views defined by modules have been collected {@link Collection\CollectEvent} is
+	 * fired.
 	 *
 	 * @throws \UnexpectedValueException when the `title`, `type`, `module` or `renders`
 	 * properties are empty.
@@ -81,6 +77,7 @@ class Views implements \ArrayAccess, \IteratorAggregate
 	{
 		global $core;
 
+		$collection = array();
 		$modules = $core->modules;
 
 		foreach ($modules->enabled_modules_descriptors as $id => $descriptor)
@@ -102,17 +99,17 @@ class Views implements \ArrayAccess, \IteratorAggregate
 					'type' => $type
 				);
 
-				$views[$id . '/' . $type] = $definition;
+				$collection[$id . '/' . $type] = $definition;
 			}
 		}
 
-		new Views\AlterEvent($this, array('views' => &$views));
+		new Collection\CollectEvent($this, array('collection' => &$collection));
 
 		$required = array('title', 'type', 'module', 'renders');
 
-		foreach ($views as $id => &$view)
+		foreach ($collection as $id => &$definition)
 		{
-			$view += array
+			$definition += array
 			(
 				'access_callback' => null,
 				'class' => null,
@@ -122,7 +119,7 @@ class Views implements \ArrayAccess, \IteratorAggregate
 
 			foreach ($required as $property)
 			{
-				if (empty($view[$property]))
+				if (empty($definition[$property]))
 				{
 					throw new \UnexpectedValueException(\ICanBoogie\format
 					(
@@ -136,7 +133,7 @@ class Views implements \ArrayAccess, \IteratorAggregate
 			}
 		}
 
-		return $views;
+		return $collection;
 	}
 
 	/**
@@ -146,7 +143,7 @@ class Views implements \ArrayAccess, \IteratorAggregate
 	 */
 	public function offsetExists($offset)
 	{
-		return isset($this->views[$offset]);
+		return isset($this->collection[$offset]);
 	}
 
 	/**
@@ -156,7 +153,7 @@ class Views implements \ArrayAccess, \IteratorAggregate
 	 */
 	public function offsetGet($offset)
 	{
-		return $this->offsetExists($offset) ? $this->views[$offset] : null;
+		return $this->offsetExists($offset) ? $this->collection[$offset] : null;
 	}
 
 	/**
@@ -177,32 +174,32 @@ class Views implements \ArrayAccess, \IteratorAggregate
 
 	public function getIterator()
 	{
-		return new \ArrayIterator($this->views);
+		return new \ArrayIterator($this->collection);
 	}
 }
 
-namespace Icybee\Views;
+namespace Icybee\Modules\Views\Collection;
 
 /**
- * Event class for the event `Icybee\Views::alter`.
+ * Event class for the event `Icybee\Modules\Views\Collection::collect`.
  */
-class AlterEvent extends \ICanBoogie\Event
+class CollectEvent extends \ICanBoogie\Event
 {
 	/**
-	 * Reference to the views to alter.
+	 * Reference to the collection to alter.
 	 *
 	 * @var array[string]array
 	 */
-	public $views;
+	public $collection;
 
 	/**
-	 * The event is constructed with the type 'alter'.
+	 * The event is constructed with the type 'collect'.
 	 *
-	 * @param \Icybee\Views $target
+	 * @param \Icybee\Modules\Views\Collection $target
 	 * @param array $properties
 	 */
-	public function __construct(\Icybee\Views $target, array $properties)
+	public function __construct(\Icybee\Modules\Views\Collection $target, array $properties)
 	{
-		parent::__construct($target, 'alter', $properties);
+		parent::__construct($target, 'collect', $properties);
 	}
 }

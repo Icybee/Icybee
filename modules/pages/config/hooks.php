@@ -13,7 +13,6 @@ return array
 		'Brickrouge\Document::render_title:before' => $hooks . '::on_document_render_title',
 
 		'ICanBoogie\ActiveRecord\Page::urlchange' => $hooks . '::on_urlchange',
-		'ICanBoogie\Modules\Pages\SaveOperation::process' => $hooks . '::on_save',
 		'ICanBoogie\HTTP\Dispatcher::populate' => $hooks . '::on_http_dispatcher_populate',
 
 		'Icybee::nodes_load' => 'ICanBoogie\Modules\Pages\PageController::on_nodes_load',
@@ -27,20 +26,9 @@ return array
 
 	'prototypes' => array
 	(
-		'ICanBoogie\ActiveRecord\Node::url' => 'site_pages_view_WdHooks::url',
-		'ICanBoogie\ActiveRecord\Node::absolute_url' => 'site_pages_view_WdHooks::absolute_url',
-		'ICanBoogie\ActiveRecord\Node::get_url' => 'site_pages_view_WdHooks::get_url',
-		'ICanBoogie\ActiveRecord\Node::get_absolute_url' => 'site_pages_view_WdHooks::get_absolute_url',
 		'ICanBoogie\ActiveRecord\Site::get_home' => $hooks . '::get_home',
 
-		'ICanBoogie\Core::volatile_get_page' => $hooks . '::core__volatile_get_page',
-
-		/*
-		 * views
-		 */
-
-		'ICanBoogie\ActiveRecord\Site::resolve_view_target' => 'site_pages_view_WdHooks::resolve_view_target',
-		'ICanBoogie\ActiveRecord\Site::resolve_view_url' => 'site_pages_view_WdHooks::resolve_view_url'
+		'ICanBoogie\Core::volatile_get_page' => $hooks . '::core__volatile_get_page'
 	),
 
 	'patron.markups' => array
@@ -121,18 +109,6 @@ return array
 			(
 				'parent' => null,
 				'nest' => false
-			)
-		),
-
-		#
-		# views
-		#
-
-		'call-view' => array
-		(
-			$hooks . '::markup_call_view', array
-			(
-				'name' => array('required' => true)
 			)
 		),
 

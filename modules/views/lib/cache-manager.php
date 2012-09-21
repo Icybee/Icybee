@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Icybee\Views;
+namespace Icybee\Modules\Views;
 
 use ICanBoogie\HTTP\Request;
 use ICanBoogie\Operation;
@@ -78,17 +78,9 @@ class CacheManager implements \ICanBoogie\Modules\System\Cache\CacheInterface
 	}
 
 	/**
-	 * The cache is destroyed when modules are activated.
+	 * Revokes the cache.
 	 */
-	public static function on_modules_activate()
-	{
-		Request::from(Operation::encode('system.cache/icybee.views/clear'))->post();
-	}
-
-	/**
-	 * The cache is destroyed when modules are deactivated.
-	 */
-	public static function on_modules_deactivate()
+	public static function revoke()
 	{
 		Request::from(Operation::encode('system.cache/icybee.views/clear'))->post();
 	}

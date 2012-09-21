@@ -9,9 +9,9 @@
  * file that was distributed with this source code.
  */
 
-namespace ICanBoogie\Modules\Pages;
+namespace Icybee\Modules\Views;
 
-class ListView extends \Icybee\Modules\Views\View
+class Module extends \Icybee\Module
 {
 
 }

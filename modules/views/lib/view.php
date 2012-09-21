@@ -9,9 +9,8 @@
  * file that was distributed with this source code.
  */
 
-namespace Icybee\Views;
+namespace Icybee\Modules\Views;
 
-use ICanBoogie;
 use ICanBoogie\ActiveRecord\Model;
 use ICanBoogie\ActiveRecord\Node;
 use ICanBoogie\Debug;

@@ -57,20 +57,12 @@ return array
 	'Icybee\Operation\Module\QueryOperation' => $path . 'lib/operation/module/query-operation.php',
 	'Icybee\Operation\Widget\Get' => $path . 'lib/operation/widget/get.php',
 
-	'Icybee\Views' => $path . 'lib/views.php',
-	'Icybee\Views\ActiveRecord\Provider' => $path . 'lib/views/provider.php',
-	'Icybee\Views\CacheManager' => $path . 'lib/views/cache-manager.php',
-	'Icybee\Views\Provider' => $path . 'lib/views/provider.php',
-	'Icybee\Views\View' => $path . 'lib/views/view.php',
-
 	'Icybee\ConfigBlock' => $path . 'lib/blocks/config.php',
 	'Icybee\DeleteBlock' => $path . 'lib/blocks/delete.php',
 	'Icybee\EditBlock' => $path . 'lib/blocks/edit.php',
 	'Icybee\InterlockBlock' => $path . 'lib/blocks/interlock.php',
 	'Icybee\ManageBlock' => $path . 'lib/blocks/manage.php',
 	'Icybee\FormBlock' => $path . 'lib/blocks/form.php',
-
-	'WdSectionedForm' => $includes . 'wdsectionedform.php',
 
 	'WdEMailNotifyElement' => $includes . 'wdemailnotifyelement.php',
 	'WdManager' => $includes . 'wdmanager.php',

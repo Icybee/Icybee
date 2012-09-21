@@ -46,7 +46,7 @@ class Module extends \ICanBoogie\Modules\Contents\Module
 					'class' => 'Icybee\Views\Articles\Archives',
 					'provider' => 'ICanBoogie\Modules\Contents\Provider',
 					'assets' => $assets,
-					'renders' => \Icybee\Views\View::RENDERS_MANY
+					'renders' => \Icybee\Modules\Views\View::RENDERS_MANY
 				)
 			)
 		);

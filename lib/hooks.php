@@ -18,7 +18,6 @@ use ICanBoogie\Exception;
 use ICanBoogie\HTTP\Request;
 use ICanBoogie\HTTP\Response;
 use ICanBoogie\Modules\Pages\PageController;
-use ICanBoogie\Modules\System\Cache\Collection as CacheCollection;
 use ICanBoogie\Operation;
 use ICanBoogie\Routes;
 
@@ -203,17 +202,6 @@ class Hooks
 			->delete();
 		}
 		catch (\Exception $e) { };
-	}
-
-	/**
-	 * Adds views cache to the cache collection.
-	 *
-	 * @param CacheCollection\AlterEvent $event
-	 * @param CacheCollection $collection
-	 */
-	public static function on_alter_cache_collection(CacheCollection\AlterEvent $event, CacheCollection $collection)
-	{
-		$event->collection['icybee.views'] = new \Icybee\Views\CacheManager;
 	}
 
 	/**

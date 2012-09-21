@@ -18,7 +18,7 @@ use ICanBoogie\ActiveRecord\RecordNotFound;
 use ICanBoogie\ActiveRecord;
 use ICanBoogie\ActiveRecord\Query;
 
-class Provider extends \Icybee\Views\Nodes\Provider
+class Provider extends \ICanBoogie\Modules\Nodes\ViewProvider
 {
 	public function __invoke()
 	{
@@ -39,7 +39,7 @@ class Provider extends \Icybee\Views\Nodes\Provider
 	 * If the view is of type "home" the query is altered to search for nodes which are not
 	 * excluded from _home_.
 	 *
-	 * @see Icybee\Views\Nodes\Provider::alter_query()
+	 * @see ICanBoogie\Modules\Nodes\ViewProvider::alter_query()
 	 */
 	protected function alter_query(Query $query, array $conditions)
 	{

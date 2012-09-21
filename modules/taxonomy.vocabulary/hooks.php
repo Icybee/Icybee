@@ -12,7 +12,8 @@ use Brickrouge\Element;
 use Brickrouge\Form;
 use Brickrouge\Text;
 
-use Icybee\Views\Provider;
+use Icybee\Modules\Views\Collection as ViewsCollection;
+use Icybee\Modules\Views\Provider;
 
 class Hooks
 {
@@ -327,12 +328,12 @@ class Hooks
 		}
 	}
 
-	public static function on_alter_views(\Icybee\Views\AlterEvent $event)
+	public static function on_collect_views(ViewsCollection\CollectEvent $event, ViewsCollection $target)
 	{
 		global $core;
 
 		$vocabulary = $core->models['taxonomy.vocabulary']->all;
-		$views = &$event->views;
+		$collection = &$event->collection;
 
 		foreach ($vocabulary as $v)
 		{
@@ -343,14 +344,14 @@ class Hooks
 			foreach ($scope as $constructor)
 			{
 				$view_home = $constructor . '/home';
-				$view_home = isset($views[$view_home]) ? $views[$view_home] : null;
+				$view_home = isset($collection[$view_home]) ? $collection[$view_home] : null;
 
 				$view_list = $constructor . '/list';
-				$view_list = isset($views[$view_list]) ? $views[$view_list] : null;
+				$view_list = isset($collection[$view_list]) ? $collection[$view_list] : null;
 
 				if ($view_home)
 				{
-					$views["$constructor/vocabulary/$vocabulary_slug/vocabulary-home"] = array
+					$collection["$constructor/vocabulary/$vocabulary_slug/vocabulary-home"] = array
 					(
 						'title' => 'Home for vocabulary %name',
 						'title args' => array('name' => $v->vocabulary),
@@ -362,7 +363,7 @@ class Hooks
 
 				if ($view_list)
 				{
-					$views["$constructor/vocabulary/$vocabulary_slug/list"] = array
+					$collection["$constructor/vocabulary/$vocabulary_slug/list"] = array
 					(
 						'title' => 'Records list, in vocabulary %vocabulary and a term',
 						'title args' => array('vocabulary' => $vocabulary_name),
@@ -379,7 +380,7 @@ class Hooks
 
 					if ($view_home)
 					{
-						$views["$constructor/vocabulary/$vocabulary_slug/$term_slug/home"] = array
+						$collection["$constructor/vocabulary/$vocabulary_slug/$term_slug/home"] = array
 						(
 							'title' => 'Records home, in vocabulary %vocabulary and term %term',
 							'title args' => array('vocabulary' => $vocabulary_name, 'term' => $term_name),
@@ -392,7 +393,7 @@ class Hooks
 
 					if ($view_list)
 					{
-						$views["$constructor/vocabulary/$vocabulary_slug/$term_slug/list"] = array
+						$collection["$constructor/vocabulary/$vocabulary_slug/$term_slug/list"] = array
 						(
 							'title' => 'Records list, in vocabulary %vocabulary and term %term',
 							'title args' => array('vocabulary' => $vocabulary_name, 'term' => $term_name),
@@ -434,7 +435,7 @@ class Hooks
 
 			$event->view->range['limit'] = null; // cancel limit TODO-20120403: this should be improved.
 
-			\ICanBoogie\Events::attach('Icybee\Views\ActiveRecord\Provider::alter_result', array(__CLASS__, 'on_alter_provider_result'));
+			\ICanBoogie\Events::attach('Icybee\Modules\Views\ActiveRecordProvider::alter_result', array(__CLASS__, 'on_alter_provider_result'));
 
 			return;
 		}
@@ -458,7 +459,7 @@ class Hooks
 		}
 	}
 
-	public static function on_alter_provider_result(\Icybee\Views\ActiveRecord\Provider\AlterResultEvent $event, \Icybee\Views\ActiveRecord\Provider $provider)
+	public static function on_alter_provider_result(\Icybee\Modules\Views\ActiveRecordProvider\AlterResultEvent $event, \Icybee\Modules\Views\ActiveRecordProvider $provider)
 	{
 		global $core;
 
