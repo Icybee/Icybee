@@ -7,7 +7,7 @@ return array
 		'Clear' => 'Vider'
 	),
 
-	'cache.section' => array
+	'cache.group' => array
 	(
 		'Contents' => 'Contenus',
 		'System' => 'Système'

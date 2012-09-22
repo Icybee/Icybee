@@ -13,7 +13,7 @@ window.addEvent('domready', function() {
 	{
 		new Request.API({
 
-			url: 'system.cache/' + getCacheName(el) + '/stat',
+			url: 'cache/' + getCacheName(el) + '/stat',
 
 			onSuccess: function(response)
 			{
@@ -30,7 +30,7 @@ window.addEvent('domready', function() {
 
 			new Request.API({
 
-				url: 'system.cache/' + el.name + '/' + (el.checked ? 'enable' : 'disable')
+				url: 'cache/' + el.name + '/' + (el.checked ? 'enable' : 'disable')
 
 			}).send()
 		},
@@ -39,7 +39,7 @@ window.addEvent('domready', function() {
 
 			var req = new Request.API({
 
-				url: 'system.cache/' + getCacheName(el) + '/clear',
+				url: 'cache/' + getCacheName(el) + '/clear',
 
 				onSuccess: function(response)
 				{
@@ -72,7 +72,7 @@ window.addEvent('domready', function() {
 
 			new Request.API
 			({
-				url: 'system.cache/' + cacheId + '/editor',
+				url: 'cache/' + cacheId + '/editor',
 				onSuccess: function(response)
 				{
 					popover = new Brickrouge.Popover(Elements.from(response.rc).shift(), {
@@ -95,7 +95,7 @@ window.addEvent('domready', function() {
 
 								new Request.API({
 
-									url: 'system.cache/' + cacheId + '/config',
+									url: 'cache/' + cacheId + '/config',
 
 									onSuccess: function(response)
 									{

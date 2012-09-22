@@ -9,10 +9,9 @@
  * file that was distributed with this source code.
  */
 
-namespace ICanBoogie\Modules\System\Cache;
+namespace Icybee\Modules\Cache;
 
 use Brickrouge\Button;
-
 use Brickrouge\Element;
 
 class ManageBlock extends Element
@@ -47,14 +46,11 @@ class ManageBlock extends Element
 
 	protected function render_inner_html()
 	{
-		global $core;
-
 		$groups = array();
-		$caches = new Collection();
 
-		foreach ($caches as $cache_id => $cache)
+		foreach (Collection::get() as $cache_id => $cache)
 		{
-			$section_title = t(ucfirst($cache->group), array(), array('scope' => 'cache.section'));
+			$section_title = t(ucfirst($cache->group), array(), array('scope' => 'cache.group'));
 			$groups[$section_title][$cache_id] = $cache;
 		}
 
@@ -96,8 +92,8 @@ EOT;
 					)
 				);
 
-				$title = wd_entities($cache->title);
-				$description = $cache->description;
+				$title = t($cache->title, array(), array('scope' => 'cache.title'));
+				$description = t($cache->description, array(), array('scope' => 'cache.description'));
 
 				$config_preview = $cache->config_preview;
 

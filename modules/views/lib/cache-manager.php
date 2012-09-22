@@ -14,7 +14,7 @@ namespace Icybee\Modules\Views;
 use ICanBoogie\HTTP\Request;
 use ICanBoogie\Operation;
 
-class CacheManager implements \ICanBoogie\Modules\System\Cache\CacheInterface
+class CacheManager implements \Icybee\Modules\Cache\CacheManagerInterface
 {
 	public $title = "Vues";
 	public $description = "Index des vues des modules.";
@@ -74,14 +74,14 @@ class CacheManager implements \ICanBoogie\Modules\System\Cache\CacheInterface
 	 */
 	public function stat()
 	{
-		return \ICanBoogie\Modules\System\Cache\Module::get_vars_stat('#^cached_views$#');
+		return \Icybee\Modules\Cache\Module::get_vars_stat('#^cached_views$#');
 	}
 
 	/**
 	 * Revokes the cache.
 	 */
-	public static function revoke()
+	static public function revoke()
 	{
-		Request::from(Operation::encode('system.cache/icybee.views/clear'))->post();
+		Request::from(Operation::encode('cache/icybee.views/clear'))->post();
 	}
 }

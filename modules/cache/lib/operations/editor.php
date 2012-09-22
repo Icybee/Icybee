@@ -9,16 +9,20 @@
  * file that was distributed with this source code.
  */
 
-namespace ICanBoogie\Modules\System\Cache;
+namespace Icybee\Modules\Cache;
 
 use Brickrouge\Popover;
 
+/**
+ * Returns the configuration editor.
+ *
+ * The editor is obtained through the `editor` property of the cache.
+ */
 class EditorOperation extends BaseOperation
 {
 	protected function process()
 	{
-		$collection = new Collection();
-		$cache = $collection[$this->key];
+		$cache = $this->collection[$this->key];
 
 		return (string) new Popover(array
 		(

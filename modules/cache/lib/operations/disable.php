@@ -9,14 +9,16 @@
  * file that was distributed with this source code.
  */
 
-namespace ICanBoogie\Modules\System\Cache;
+namespace Icybee\Modules\Cache;
 
+/**
+ * Disables the specified cache.
+ */
 class DisableOperation extends BaseOperation
 {
 	protected function process()
 	{
-		$collection = new Collection();
-		$cache = $collection[$this->key];
+		$cache = $this->collection[$this->key];
 
 		$this->response->message = array('The cache %cache has been disabled.', array('cache' => $this->key));
 

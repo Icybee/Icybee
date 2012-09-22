@@ -16,7 +16,7 @@ namespace Icybee\Modules\Contents;
  *
  * The state of the cache is saved in the registry under `contents.cache_rendered_body`.
  */
-class CacheManager implements \ICanBoogie\Modules\System\Cache\CacheInterface
+class CacheManager implements \Icybee\Modules\Cache\CacheManagerInterface
 {
 	public $title = "Contents body";
 	public $description = "The rendered body of contents is cached.";

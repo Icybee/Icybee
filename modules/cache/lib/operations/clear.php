@@ -9,14 +9,16 @@
  * file that was distributed with this source code.
  */
 
-namespace ICanBoogie\Modules\System\Cache;
+namespace Icybee\Modules\Cache;
 
+/**
+ * Clears the specified cache.
+ */
 class ClearOperation extends BaseOperation
 {
 	protected function process()
 	{
-		$collection = new Collection();
-		$cache = $collection[$this->key];
+		$cache = $this->collection[$this->key];
 
 		$cache->clear();
 

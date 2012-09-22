@@ -9,19 +9,18 @@
  * file that was distributed with this source code.
  */
 
-namespace ICanBoogie\Modules\System\Cache;
+namespace Icybee\Modules\Cache;
 
-class ModulesCache implements CacheInterface
+/**
+ * Modules cache manager.
+ */
+class ModulesCacheManager extends CacheManager
 {
 	const REGEX = '/^cached_modules_/';
 
 	public $title = "Modules";
 	public $description = "Index des modules disponibles pour le framework.";
 	public $group = 'system';
-	public $state = false;
-	public $size_limit = false;
-	public $time_limit = false;
-	public $config_preview;
 
 	public function __construct()
 	{

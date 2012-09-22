@@ -9,11 +9,11 @@
  * file that was distributed with this source code.
  */
 
-namespace ICanBoogie\Modules\System\Cache;
+namespace Icybee\Modules\Cache;
 
 class Module extends \Icybee\Module
 {
-	public static function get_files_stat($path, $pattern=null)
+	static public function get_files_stat($path, $pattern=null)
 	{
 		$root = \ICanBoogie\DOCUMENT_ROOT;
 
@@ -71,7 +71,7 @@ class Module extends \Icybee\Module
 		);
 	}
 
-	public static function get_vars_stat($regex)
+	static public function get_vars_stat($regex)
 	{
 		global $core;
 
@@ -97,7 +97,7 @@ class Module extends \Icybee\Module
 	 * @param string|null $pattern RegEx pattern to delete matching files, or null to delete all
 	 * files.
 	 */
-	public static function clear_files($path, $pattern=null)
+	static public function clear_files($path, $pattern=null)
 	{
 		$root = \ICanBoogie\DOCUMENT_ROOT;
 

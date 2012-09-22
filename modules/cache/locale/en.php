@@ -2,7 +2,7 @@
 
 return array
 (
-	'module_title.system_cache' => 'Cache',
+	'module_title.cache' => 'Cache',
 
 	':count files<br /><span class="small">:size</span>' => array
 	(

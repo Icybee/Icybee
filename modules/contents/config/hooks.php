@@ -8,6 +8,6 @@ return array
 (
 	'events' => array
 	(
-		'ICanBoogie\Modules\System\Cache\Collection::alter' => $hooks . 'on_alter_cache_collection'
+		'Icybee\Modules\Cache\Collection::collect' => $hooks . 'on_cache_collection_collect'
 	)
 );

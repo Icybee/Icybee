@@ -13,7 +13,7 @@ namespace Icybee\Modules\Views;
 
 use ICanBoogie\ActiveRecord;
 use ICanBoogie\ActiveRecord\Node;
-use ICanBoogie\Modules\System\Cache\Collection as CacheCollection;
+use Icybee\Modules\Cache\Collection as CacheCollection;
 use ICanBoogie\Operation;
 use ICanBoogie\Route;
 
@@ -71,10 +71,10 @@ class Hooks
 	/**
 	 * Adds views cache manager to the cache collection.
 	 *
-	 * @param CacheCollection\AlterEvent $event
+	 * @param CacheCollection\CollectEvent $event
 	 * @param CacheCollection $collection
 	 */
-	static public function on_cache_collection_collect(CacheCollection\AlterEvent $event, CacheCollection $collection)
+	static public function on_cache_collection_collect(CacheCollection\CollectEvent $event, CacheCollection $collection)
 	{
 		$event->collection['icybee.views'] = new CacheManager;
 	}

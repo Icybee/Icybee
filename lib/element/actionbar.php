@@ -14,7 +14,7 @@ namespace Icybee\Admin\Element;
 use ICanBoogie\Event;
 use ICanBoogie\Exception;
 use ICanBoogie\Module;
-use ICanBoogie\PropertyNotFound;
+use ICanBoogie\PropertyNotDefined;
 use ICanBoogie\Route;
 use ICanBoogie\Routes;
 
@@ -48,7 +48,7 @@ class Actionbar extends Element
 
 			if (!$core->request)
 			{
-				throw new PropertyNotFound();
+				throw new PropertyNotDefined();
 			}
 
 			$route = $core->request->route;
@@ -71,7 +71,7 @@ class Actionbar extends Element
 			$actionbar_search = (string) new ActionbarSearch;
 			$actionbar_toolbar = (string) new ActionbarToolbar;
 		}
-		catch (PropertyNotFound $e)
+		catch (PropertyNotDefined $e)
 		{
 			#
 			# if route is not defined.

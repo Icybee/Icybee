@@ -13,7 +13,7 @@ use ICanBoogie\Exception;
 use ICanBoogie\HTTP\Request;
 use ICanBoogie\I18n\Tanslator\Proxi;
 use ICanBoogie\Module;
-use ICanBoogie\PropertyNotFound;
+use ICanBoogie\PropertyNotDefined;
 use ICanBoogie\Route;
 use ICanBoogie\Routes;
 
@@ -60,7 +60,7 @@ else
 	{
 		$restricted_sites = $user->restricted_sites_ids;
 	}
-	catch (PropertyNotFound $e)
+	catch (PropertyNotDefined $e)
 	{
 		throw $e;
 	}

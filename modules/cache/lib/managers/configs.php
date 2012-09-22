@@ -9,23 +9,22 @@
  * file that was distributed with this source code.
  */
 
-namespace ICanBoogie\Modules\System\Cache;
+namespace Icybee\Modules\Cache;
 
-class CatalogsCache implements CacheInterface
+/**
+ * Configurations cache manager.
+ */
+class ConfigsCacheManager extends CacheManager
 {
-	public $title = "Traductions";
-	public $description = "Traductions par langue pour l'ensemble du framework.";
+	public $title = "Configurations";
+	public $description = "Configurations des différents composants du framework.";
 	public $group = 'system';
-	public $state = false;
-	public $size_limit = false;
-	public $time_limit = false;
-	public $config_preview;
 
 	public function __construct()
 	{
 		global $core;
 
-		$this->state = $core->config['cache catalogs'];
+		$this->state = $core->config['cache configs'];
 	}
 
 	/**
@@ -35,7 +34,8 @@ class CatalogsCache implements CacheInterface
 	{
 		global $core;
 
-		$files = glob(\ICanBoogie\REPOSITORY . 'cache/core/i18n_*');
+		$path = $core->config['repository.cache'] . '/core';
+		$files = glob(\ICanBoogie\DOCUMENT_ROOT . $path . '/config_*');
 
 		foreach ($files as $file)
 		{
@@ -48,13 +48,13 @@ class CatalogsCache implements CacheInterface
 	/**
 	 * Disables the cache.
 	 *
-	 * Unsets the `enable_catalogs_cache` var.
+	 * Unsets the `enable_modules_cache` var.
 	 */
 	public function disable()
 	{
 		global $core;
 
-		unset($core->vars['enable_catalogs_cache']);
+		unset($core->vars['enable_configs_cache']);
 
 		return true;
 	}
@@ -62,13 +62,13 @@ class CatalogsCache implements CacheInterface
 	/**
 	 * Enables the cache.
 	 *
-	 * Sets the `enable_catalogs_cache` var.
+	 * Sets the `enable_modules_cache` var.
 	 */
 	public function enable()
 	{
 		global $core;
 
-		$core->vars['enable_catalogs_cache'] = true;
+		$core->vars['enable_configs_cache'] = true;
 
 		return true;
 	}
@@ -78,6 +78,10 @@ class CatalogsCache implements CacheInterface
 	 */
 	public function stat()
 	{
-		return Module::get_files_stat(\ICanBoogie\REPOSITORY . 'cache/core', '#^i18n_#');
+		global $core;
+
+		$path = $core->config['repository.cache'] . '/core';
+
+		return Module::get_files_stat($path, '#^config_#');
 	}
 }

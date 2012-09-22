@@ -9,9 +9,9 @@ return array
 	'events' => array
 	(
 		'Icybee\Modules\Pages\SaveOperation::process' => $hooks . 'on_page_save',
-		'ICanBoogie\Modules\System\Cache\Collection::alter' => $hooks . 'on_cache_collection_collect',
-		'Icybee\Modules\Modules\ActivateOperation::process' => __NAMESPACE__ . '\CacheManager::revoke',
-		'Icybee\Modules\Modules\DeactivateOperation::process' => __NAMESPACE__ . '\CacheManager::revoke'
+		'Icybee\Modules\Cache\Collection::collect' => $hooks . 'on_cache_collection_collect',
+		'Icybee\Modules\Modules\ActivateOperation::process' => __NAMESPACE__ . '\Cache::revoke',
+		'Icybee\Modules\Modules\DeactivateOperation::process' => __NAMESPACE__ . '\Cache::revoke'
 	),
 
 	'prototypes' => array

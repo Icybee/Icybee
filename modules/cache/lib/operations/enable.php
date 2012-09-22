@@ -9,20 +9,18 @@
  * file that was distributed with this source code.
  */
 
-namespace ICanBoogie\Modules\System\Cache;
+namespace Icybee\Modules\Cache;
 
 /**
- * Enables a cache.
+ * Enables the specified cache.
  *
- * Before the cache is enabled it is first cleared.
+ * The cache is cleared before it is enabled.
  */
 class EnableOperation extends BaseOperation
 {
 	protected function process()
 	{
-		$collection = new Collection();
-		$cache = $collection[$this->key];
-
+		$cache = $this->collection[$this->key];
 		$cache->clear();
 
 		$this->response->message = array('The cache %cache has been enabled.', array('cache' => $this->key));

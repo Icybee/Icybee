@@ -9,14 +9,16 @@
  * file that was distributed with this source code.
  */
 
-namespace ICanBoogie\Modules\System\Cache;
+namespace Icybee\Modules\Cache;
 
+/**
+ * Configures the specified cache.
+ */
 class ConfigOperation extends BaseOperation
 {
 	protected function process()
 	{
-		$collection = new Collection();
-		$cache = $collection[$this->key];
+		$cache = $this->collection[$this->key];
 
 		$cache->config($this->request);
 
