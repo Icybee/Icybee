@@ -85,6 +85,14 @@ class Hooks
 	static private $pages_model;
 	static private $url_cache_by_siteid = array();
 
+	/**
+	 * Returns the relative URL of a record for a view type.
+	 *
+	 * @param ActiveRecord $target
+	 * @param string $type View type.
+	 *
+	 * @return string
+	 */
 	static public function url(ActiveRecord $target, $type='view')
 	{
 		global $core;
