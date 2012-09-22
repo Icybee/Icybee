@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace ICanBoogie\Modules\Comments;
+namespace Icybee\Modules\Comments;
 
 class DeleteOperation extends \ICanBoogie\DeleteOperation
 {

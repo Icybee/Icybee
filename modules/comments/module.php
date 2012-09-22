@@ -9,13 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace ICanBoogie\Modules\Comments;
-
-use ICanBoogie\ActiveRecord\Comment;
-use ICanBoogie\ActiveRecord\Query;
-use Brickrouge\Element;
-use Brickrouge\Form;
-use Brickrouge\Text;
+namespace Icybee\Modules\Comments;
 
 class Module extends \Icybee\Module
 {
@@ -53,7 +47,7 @@ class Module extends \Icybee\Module
 			(
 				'title' => "Comments associated to a node",
 				'assets' => $assets,
-				'provider' => 'ICanBoogie\Modules\Comments\Provider',
+				'provider' => __NAMESPACE__ . '\ViewProvider',
 				'renders' => \Icybee\Modules\Views\View::RENDERS_MANY
 			),
 

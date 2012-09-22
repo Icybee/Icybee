@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace ICanBoogie\ActiveRecord;
+namespace Icybee\Modules\Comments;
 
 use Textmark_Parser;
 

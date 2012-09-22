@@ -9,11 +9,9 @@
  * file that was distributed with this source code.
  */
 
-namespace ICanBoogie\Modules\Comments;
+namespace Icybee\Modules\Comments;
 
-use ICanBoogie;
 use ICanBoogie\ActiveRecord\Node;
-use ICanBoogie\ActiveRecord\Comment;
 use ICanBoogie\Event;
 use ICanBoogie\Exception;
 use ICanBoogie\Operation;
@@ -24,7 +22,7 @@ use Brickrouge\Text;
 
 class Hooks
 {
-	public static function before_node_save(Event $event, \ICanBoogie\Modules\Nodes\SaveOperation $sender)
+	public static function before_node_save(Operation\ProcessEvent $event, \ICanBoogie\Modules\Nodes\SaveOperation $sender)
 	{
 		$request = $event->request;
 
@@ -44,10 +42,10 @@ class Hooks
 	/**
 	 * Deletes all the comments attached to a node.
 	 *
-	 * @param Event $event
+	 * @param Operation\ProcessEvent $event
 	 * @param ICanBoogie\Modules\Nodes\DeleteOperation $sender
 	 */
-	public static function on_node_delete(Event $event, \ICanBoogie\Modules\Nodes\DeleteOperation $sender)
+	public static function on_node_delete(Operation\ProcessEvent $event, \ICanBoogie\Modules\Nodes\DeleteOperation $operation)
 	{
 		global $core;
 
@@ -60,7 +58,7 @@ class Hooks
 			return;
 		}
 
-		$ids = $model->select('{primary}')->where('nid = ?', $sender->key)->all(\PDO::FETCH_COLUMN);
+		$ids = $model->select('{primary}')->filter_by_nid($operation->key)->all(\PDO::FETCH_COLUMN);
 
 		foreach ($ids as $commentid)
 		{
@@ -230,7 +228,7 @@ EOT
 				$author = '<strong class="author">' . $author . '</strong>';
 			}
 
-			$excerpt = \ICanBoogie\shorten(strip_tags((string) html_entity_decode($entry, ENT_COMPAT, ICanBoogie\CHARSET)), 140);
+			$excerpt = \ICanBoogie\shorten(strip_tags((string) html_entity_decode($entry, ENT_COMPAT, \ICanBoogie\CHARSET)), 140);
 
 			$target_url = $entry->node->url;
 			$target_title = wd_entities(\ICanBoogie\shorten($entry->node->title));
@@ -346,7 +344,7 @@ EOT;
 			throw new Exception\Config($module);
 		}
 
-		if (!$core->user->has_permission(ICanBoogie\Module::PERMISSION_CREATE, 'comments'))
+		if (!$core->user->has_permission(\ICanBoogie\Module::PERMISSION_CREATE, 'comments'))
 		{
 			return new \Brickrouge\AlertMessage
 			(

@@ -9,9 +9,9 @@
  * file that was distributed with this source code.
  */
 
-namespace ICanBoogie\Modules\Comments;
+namespace Icybee\Modules\Comments;
 
-use ICanBoogie\ActiveRecord\Comment;
+use Icybee\Modules\Comments\Comment;
 use Brickrouge\Element;
 use Brickrouge\Form;
 use Brickrouge\Text;
@@ -75,7 +75,7 @@ class ConfigBlock extends \Icybee\ConfigBlock
 		(
 			parent::get_children(), array
 			(
-				"local[$ns.form_id]" => new \WdFormSelectorElement
+				"local[$ns.form_id]" => new \Icybee\Modules\Forms\PopForm
 				(
 					'select', array
 					(

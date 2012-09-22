@@ -1,7 +1,9 @@
 <?php
 
+namespace Icybee\Modules\Comments;
+
 return array
 (
-	'ICanBoogie\Modules\Comments\Provider' => $path . 'lib/views/provider.php',
-	'feedback_comments_WdForm' => $path . 'lib/widget/submit.php'
+	__NAMESPACE__ . '\ViewProvider' => $path . 'lib/views/provider.php',
+	__NAMESPACE__ . '\SubmitForm' => $path . 'lib/elements/submit.php'
 );

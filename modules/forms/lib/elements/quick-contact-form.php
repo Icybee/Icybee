@@ -9,9 +9,12 @@
  * file that was distributed with this source code.
  */
 
-namespace Brickrouge;
+namespace Icybee\Modules\Forms;
 
-class quick_contact_WdForm extends Form
+use Brickrouge\Element;
+use Brickrouge\Text;
+
+class QuickContactForm extends \Brickrouge\Form
 {
 	public function __construct($tags, $dummy=null)
 	{
@@ -21,7 +24,7 @@ class quick_contact_WdForm extends Form
 			(
 				$tags, array
 				(
-					Form::RENDERER => 'Simple',
+					self::RENDERER => 'Simple',
 
 					Element::CHILDREN => array
 					(
@@ -39,7 +42,7 @@ class quick_contact_WdForm extends Form
 						(
 							'textarea', array
 							(
-								Form::LABEL_MISSING => 'Message',
+								self::LABEL_MISSING => 'Message',
 								Element::REQUIRED => true
 							)
 						)
@@ -63,7 +66,7 @@ class quick_contact_WdForm extends Form
 				(
 					array
 					(
-						Form::LABEL => 'Addresse de destination',
+						self::LABEL => 'Addresse de destination',
 						Element::GROUP => 'config',
 						Element::DEFAULT_VALUE => $email
 					)
@@ -73,7 +76,7 @@ class quick_contact_WdForm extends Form
 				(
 					array
 					(
-						Form::LABEL => 'Paramètres du message électronique',
+						self::LABEL => 'Paramètres du message électronique',
 						Element::GROUP => 'config',
 						Element::DEFAULT_VALUE => array
 						(

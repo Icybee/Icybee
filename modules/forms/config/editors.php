@@ -1,6 +1,6 @@
 <?php
 
-namespace ICanBoogie\Modules\Forms;
+namespace Icybee\Modules\Forms;
 
 return array
 (

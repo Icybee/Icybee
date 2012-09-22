@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace ICanBoogie\Modules\Forms;
+namespace Icybee\Modules\Forms;
 
 use ICanBoogie\Errors;
 use ICanBoogie\Operation;

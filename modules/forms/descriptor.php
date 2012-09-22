@@ -1,18 +1,20 @@
 <?php
 
+namespace Icybee\Modules\Forms;
+
 use ICanBoogie\Module;
 use ICanBoogie\ActiveRecord\Model;
 
 return array
 (
-	Module::T_TITLE => 'Forms',
-	Module::T_DESCRIPTION => 'Create forms based on models',
 	Module::T_CATEGORY => 'feedback',
+	Module::T_DESCRIPTION => 'Create forms based on models',
 	Module::T_EXTENDS => 'nodes',
 	Module::T_MODELS => array
 	(
 		'primary' => array
 		(
+			Model::T_ACTIVERECORD_CLASS => __NAMESPACE__ . '\Form',
 			Model::T_EXTENDS => 'nodes',
 			Model::T_SCHEMA => array
 			(
@@ -37,6 +39,7 @@ return array
 		)
 	),
 
+	Module::T_NAMESPACE => __NAMESPACE__,
 	Module::T_PERMISSIONS => array
 	(
 		'post form'
@@ -45,5 +48,8 @@ return array
 	Module::T_REQUIRES => array
 	(
 		'editor' => '1.0'
-	)
+	),
+
+	Module::T_TITLE => 'Forms',
+	Module::T_VERSION => '1.0'
 );

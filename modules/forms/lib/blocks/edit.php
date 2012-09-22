@@ -9,9 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace ICanBoogie\Modules\Forms;
-
-use ICanBoogie\Modules\Editor\RTEEditorElement;
+namespace Icybee\Modules\Forms;
 
 use Brickrouge\Element;
 use Brickrouge\Form;
@@ -92,18 +90,7 @@ class EditBlock extends \ICanBoogie\Modules\Nodes\EditBlock
 					)
 				),
 
-				/*
-				'pageid' => new \WdPageSelectorElement
-				(
-					'select', array
-					(
-						Form::LABEL => 'pageid',
-						Element::LABEL_POSITION => 'before'
-					)
-				),
-				*/
-
-				'before' => new RTEEditorElement
+				'before' => $core->editors['rte']->from
 				(
 					array
 					(
@@ -114,7 +101,7 @@ class EditBlock extends \ICanBoogie\Modules\Nodes\EditBlock
 					)
 				),
 
-				'after' => new RTEEditorElement
+				'after' => $core->editors['rte']->from
 				(
 					array
 					(
@@ -125,7 +112,7 @@ class EditBlock extends \ICanBoogie\Modules\Nodes\EditBlock
 					)
 				),
 
-				'complete' => new RTEEditorElement
+				'complete' => $core->editors['rte']->from
 				(
 					array
 					(
@@ -149,7 +136,7 @@ class EditBlock extends \ICanBoogie\Modules\Nodes\EditBlock
 					)
 				),
 
-				'notify_' => new \BrickRouge\EmailComposer
+				'notify_' => new EmailComposer
 				(
 					array
 					(

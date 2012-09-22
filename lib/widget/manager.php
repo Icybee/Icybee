@@ -86,7 +86,9 @@ class Manager extends Element
 	protected $browse;
 
 	/**
-	 * @var WdTranslatorProxi Proxis translator with the following scope: "manager.<module_flat_id>".
+	 * Proxis translator with the following scope: "manager.<module_flat_id>"
+	 *
+	 * @var \ICanBoogie\I18n\Translator\Proxy
 	 */
 	protected $t;
 

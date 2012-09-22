@@ -9,15 +9,27 @@
  * file that was distributed with this source code.
  */
 
-use ICanBoogie\ActiveRecord\Comment;
+namespace Icybee\Modules\Comments;
+
 use ICanBoogie\Operation;
+
 use Brickrouge\Element;
 use Brickrouge\Form;
 use Brickrouge\Text;
 
-class feedback_comments_WdForm extends Form
+/**
+ * The form used to submit comments.
+ */
+class SubmitForm extends Form
 {
-	public function __construct(array $tags=array(), $dummy=null)
+	static protected function add_assets(\Brickrouge\Document $document)
+	{
+		parent::add_assets($document);
+
+		$document->js->add('submit.js');
+	}
+
+	public function __construct(array $attributes=array())
 	{
 		global $core;
 
@@ -35,7 +47,7 @@ class feedback_comments_WdForm extends Form
 		(
 			\ICanBoogie\array_merge_recursive
 			(
-				$tags, array
+				$attributes, array
 				(
 					Form::RENDERER => 'Simple',
 					Form::VALUES => $values,
@@ -115,15 +127,6 @@ class feedback_comments_WdForm extends Form
 
 			'div'
 		);
-	}
-
-	public function __toString()
-	{
-		global $core;
-
-		$core->document->js->add('submit.js');
-
-		return parent::__toString();
 	}
 
 	public function alter_notify($properties)

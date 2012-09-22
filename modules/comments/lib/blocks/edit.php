@@ -9,9 +9,9 @@
  * file that was distributed with this source code.
  */
 
-namespace ICanBoogie\Modules\Comments;
+namespace Icybee\Modules\Comments;
 
-use ICanBoogie\ActiveRecord\Comment;
+use Icybee\Modules\Comments\Comment;
 
 use Brickrouge\Element;
 use Brickrouge\Form;

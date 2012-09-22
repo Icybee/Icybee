@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace ICanBoogie\Modules\Forms;
+namespace Icybee\Modules\Forms;
 
 /**
  * Post a form.
@@ -17,7 +17,7 @@ namespace ICanBoogie\Modules\Forms;
  * Note: The form it retrieved by the hook that we attached to the
  * {@link \ICanBoogie\Operation\GetFormEvent} event, just like any other operation.
  *
- * @property \ICanBoogie\ActiveRecord\Form $record
+ * @property \Icybee\Modules\Forms\Form $record
  */
 class PostOperation extends \ICanBoogie\Operation
 {
@@ -41,7 +41,7 @@ class PostOperation extends \ICanBoogie\Operation
 	 *
 	 * @see ICanBoogie.Operation::get_record()
 	 *
-	 * @return \ICanBoogie\ActiveRecord\Form
+	 * @return \Icybee\Modules\Forms\Form
 	 */
 	protected function get_record()
 	{

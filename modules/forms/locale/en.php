@@ -54,7 +54,7 @@ return array
 	'module_title.forms' => 'Forms',
 
 	#
-	# BrickRouge\EmailComposer
+	# EmailComposer
 	#
 
 	'label' => array

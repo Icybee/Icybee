@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace ICanBoogie\Modules\Forms;
+namespace Icybee\Modules\Forms;
 
 use ICanBoogie\Event;
 use ICanBoogie\Exception;
@@ -70,14 +70,14 @@ class Hooks
 	 * "<operation_class>::process" event, it is used to send a notify message with the parameters
 	 * provided by the form active record. The callback also provides further processing.
 	 *
-	 * At the very end of the process, the `ICanBoogie\ActiveRecord\Form::sent` event is fired.
+	 * At the very end of the process, the `Icybee\Modules\Forms\Form::sent` event is fired.
 	 *
 	 * Notifying
 	 * =========
 	 *
 	 * If defined, the `alter_notify` method of the form is invoked to alter the notify options.
-	 * The method is wrapped with the `ICanBoogie\ActiveRecord\Form::alter_notify:before` and
-	 * `ICanBoogie\ActiveRecord\Form::alter_notify` events.
+	 * The method is wrapped with the `Icybee\Modules\Forms\Form::alter_notify:before` and
+	 * `Icybee\Modules\Forms\Form::alter_notify` events.
 	 *
 	 * If the `is_notify` property of the record is true a notify message is sent with the notify
 	 * options.
@@ -295,7 +295,7 @@ class BeforeAlterNotify extends Event
 	/**
 	 * The event is constructed with the type `alter_notify:before`.
 	 *
-	 * @param \ICanBoogie\ActiveRecord\Form $target
+	 * @param \Icybee\Modules\Forms\Form $target
 	 * @param array $properties
 	 */
 	public function __construct($target, array $properties)
@@ -305,7 +305,7 @@ class BeforeAlterNotify extends Event
 }
 
 /**
- * Event class for the `ICanBoogie\ActiveRecord\Form::sent` event.
+ * Event class for the `Icybee\Modules\Forms\Form::sent` event.
  */
 class SentEvent extends Event
 {
@@ -368,10 +368,10 @@ class SentEvent extends Event
 	/**
 	 * The event is constructed with the type `sent`.
 	 *
-	 * @param \ICanBoogie\ActiveRecord\Form $target
+	 * @param \Icybee\Modules\Forms\Form $target
 	 * @param array $properties
 	 */
-	public function __construct(\ICanBoogie\ActiveRecord\Form $target, array $properties)
+	public function __construct(\Icybee\Modules\Forms\Form $target, array $properties)
 	{
 		parent::__construct($target, 'sent', $properties);
 	}

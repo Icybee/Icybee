@@ -9,10 +9,9 @@
  * file that was distributed with this source code.
  */
 
-namespace ICanBoogie\Modules\Comments;
+namespace Icybee\Modules\Comments;
 
 use ICanBoogie\Exception;
-use ICanBoogie\ActiveRecord\Comment;
 
 class Model extends \ICanBoogie\ActiveRecord\Model
 {

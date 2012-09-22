@@ -9,13 +9,12 @@
  * file that was distributed with this source code.
  */
 
-namespace Brickrouge\Form;
+namespace Icybee\Modules\Forms;
 
 use Brickrouge\Element;
-use Brickrouge\Form;
 use Brickrouge\Text;
 
-class Contact extends Form
+class PressContactForm extends \Brickrouge\Form
 {
 	public function __construct($tags, $dummy=null)
 	{
@@ -25,27 +24,14 @@ class Contact extends Form
 			(
 				$tags, array
 				(
-					Form::RENDERER => 'Simple',
-
 					Element::CHILDREN => array
 					(
 						'gender' => new Element
 						(
 							Element::TYPE_RADIO_GROUP, array
 							(
-								Form::LABEL => 'Salutation',
-								Element::OPTIONS => array('salutation.Misses', 'salutation.Mister'),
-								Element::REQUIRED => true,
-
-								'class' => 'inline-inputs'
-							)
-						),
-
-						'firstname' => new Text
-						(
-							array
-							(
-								Form::LABEL => 'Firstname',
+								self::LABEL => 'Gender',
+								Element::OPTIONS => array('salutation.misses', 'salutation.miss', 'salutation.mister'),
 								Element::REQUIRED => true
 							)
 						),
@@ -54,16 +40,25 @@ class Contact extends Form
 						(
 							array
 							(
-								Form::LABEL => 'Lastname',
+								self::LABEL => 'Lastname',
 								Element::REQUIRED => true
 							)
 						),
 
-						'company' => new Text
+						'firstname' => new Text
 						(
 							array
 							(
-								Form::LABEL => 'Company'
+								self::LABEL => 'Firstname',
+								Element::REQUIRED => true
+							)
+						),
+
+						'media' => new Text
+						(
+							array
+							(
+								self::LABEL => 'Média'
 							)
 						),
 
@@ -71,9 +66,18 @@ class Contact extends Form
 						(
 							array
 							(
-								Form::LABEL => 'E-mail',
+								self::LABEL => 'E-Mail',
 								Element::REQUIRED => true,
 								Element::VALIDATOR => array('Brickrouge\Form::validate_email')
+							)
+						),
+
+						'subject' => new Text
+						(
+							array
+							(
+								self::LABEL => 'Subject',
+								Element::REQUIRED => true
 							)
 						),
 
@@ -81,15 +85,12 @@ class Contact extends Form
 						(
 							'textarea', array
 							(
-								Form::LABEL => 'Your message',
-								Element::REQUIRED => true
+								self::LABEL => 'Your message'
 							)
 						)
 					)
 				)
-			),
-
-			'div'
+			)
 		);
 	}
 
@@ -100,16 +101,19 @@ class Contact extends Form
 		return array
 		(
 			'notify_destination' => $core->user->email,
-			'notify_from' => 'Contact <no-reply@' . preg_replace('#^www#', '', $_SERVER['SERVER_NAME']) .'>',
-			'notify_subject' => 'Formulaire de contact',
+			'notify_bcc' => $core->user->email,
+			'notify_from' => $core->site->email,
+			'notify_subject' => 'Formulaire de contact presse',
 			'notify_template' => <<<EOT
-Un message a été posté depuis le formulaire de contact :
+Un message a été posté depuis le formulaire de contact presse :
 
 Nom : #{@gender.index('Mme', 'Mlle', 'M')} #{@lastname} #{@firstname}
-<wdp:if test="@company">Société : #{@company}</wdp:if>
+Média : #{@media.or('N/C')}
 E-Mail : #{@email}
 
-Message : #{@message}
+Message :
+
+#{@message}
 EOT
 		);
 	}

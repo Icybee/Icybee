@@ -9,9 +9,11 @@
  * file that was distributed with this source code.
  */
 
+namespace Icybee\Modules\Forms;
+
 use Brickrouge\Element;
 
-class WdFormSelectorElement extends Element
+class PopForm extends Element
 {
 	public function __toString()
 	{
@@ -29,7 +31,7 @@ class WdFormSelectorElement extends Element
 
 			if (!$options)
 			{
-				$url = \ICanBoogie\escape($core->site->path . '/admin/forms/new');
+				$url = \Brickrouge\escape($core->site->path . '/admin/forms/new');
 
 				return <<<EOT
 <a href="$url" class="btn btn-info">Créer un premier formulaire...</a>

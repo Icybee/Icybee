@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace ICanBoogie\Modules\Forms;
+namespace Icybee\Modules\Forms;
 
 class ManageBlock extends \ICanBoogie\Modules\Nodes\ManageBlock
 {

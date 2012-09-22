@@ -9,9 +9,8 @@
  * file that was distributed with this source code.
  */
 
-namespace ICanBoogie\Modules\Comments;
+namespace Icybee\Modules\Comments;
 
-use ICanBoogie\ActiveRecord\Comment;
 use ICanBoogie\ActiveRecord\RecordNotFound;
 use ICanBoogie\Exception;
 use ICanBoogie\Mailer;

@@ -1,6 +1,11 @@
 <?php
 
-namespace Brickrouge;
+namespace Icybee\Modules\Forms;
+
+use Brickrouge\Element;
+use Brickrouge\Form;
+use Brickrouge\Group;
+use Brickrouge\Text;
 
 class EmailComposer extends Group
 {
@@ -8,7 +13,7 @@ class EmailComposer extends Group
 	{
 		parent::__construct
 		(
-			array_merge_recursive
+			\ICanBoogie\array_merge_recursive
 			(
 				array
 				(

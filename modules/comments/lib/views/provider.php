@@ -9,11 +9,11 @@
  * file that was distributed with this source code.
  */
 
-namespace ICanBoogie\Modules\Comments;
+namespace Icybee\Modules\Comments;
 
 use ICanBoogie\ActiveRecord\Query;
 
-class Provider extends \Icybee\Modules\Views\ActiveRecordProvider
+class ViewProvider extends \Icybee\Modules\Views\ActiveRecordProvider
 {
 	protected function alter_conditions(array $conditions)
 	{

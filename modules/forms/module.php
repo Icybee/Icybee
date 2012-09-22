@@ -9,15 +9,11 @@
  * file that was distributed with this source code.
  */
 
-namespace ICanBoogie\Modules\Forms;
-
-use Brickrouge\Element;
-use Brickrouge\Form;
-use Brickrouge\Text;
+namespace Icybee\Modules\Forms;
 
 class Module extends \ICanBoogie\Modules\Nodes\Module
 {
-	const OPERATION_POST = 'post';
-	const OPERATION_POST_ID = '#post-id';
+	const OPERATION_POST = 'post'; // TODO-20120922: rename as OPERATION_SEND
+	const OPERATION_POST_ID = '#post-id'; // TODO-20120922: rename as OPERATION_SEND_FORM_KEY
 	const OPERATION_DEFAULTS = 'defaults';
 }

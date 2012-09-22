@@ -9,20 +9,16 @@
  * file that was distributed with this source code.
  */
 
-namespace ICanBoogie\ActiveRecord;
+namespace Icybee\Modules\Forms;
 
 use ICanBoogie\Debug;
-use ICanBoogie\Event;
 use ICanBoogie\Exception;
 use ICanBoogie\Operation;
-use ICanBoogie\Module;
-use ICanBoogie\Modules;
 
-use Brickrouge;
 use Brickrouge\Button;
 use Brickrouge\Element;
 
-class Form extends Node
+class Form extends \ICanBoogie\ActiveRecord\Node
 {
 	const MODELID = 'modelid';
 	const CONFIG = 'config';
@@ -104,9 +100,9 @@ class Form extends Node
 	}
 
 	/**
-	 * Returns the {@link Brickrouge\Form} associated with the active record.
+	 * Returns the {@link \Brickrouge\Form} associated with the active record.
 	 *
-	 * @return Brickrouge\Form
+	 * @return \Brickrouge\Form
 	 */
 	protected function get_form()
 	{
@@ -116,7 +112,7 @@ class Form extends Node
 		(
 			array
 			(
-				Brickrouge\Form::ACTIONS => new Button
+				\Brickrouge\Form::ACTIONS => new Button
 				(
 					'Send', array
 					(
@@ -125,14 +121,14 @@ class Form extends Node
 					)
 				),
 
-				Brickrouge\Form::HIDDENS => array
+				\Brickrouge\Form::HIDDENS => array
 				(
 					Operation::DESTINATION => 'forms',
-					Operation::NAME => Modules\Forms\Module::OPERATION_POST,
-					Modules\Forms\Module::OPERATION_POST_ID => $this->nid
+					Operation::NAME => Module::OPERATION_POST,
+					Module::OPERATION_POST_ID => $this->nid
 				),
 
-				Brickrouge\Form::VALUES => $_POST + $_GET,
+				\Brickrouge\Form::VALUES => $_POST + $_GET,
 
 				self::FORM_RECORD_TAG => $this,
 
@@ -244,17 +240,17 @@ EOT
 	}
 }
 
-namespace ICanBoogie\ActiveRecord\Form;
+namespace Icybee\Modules\Forms\Form;
 
 /**
- * Event class for the `ICanBoogie\ActiveRecord\Form::render:before` event.
+ * Event class for the `Icybee\Modules\Forms\Form::render:before` event.
  */
 class BeforeRenderEvent extends \ICanBoogie\Event
 {
 	/**
 	 * The form to render.
 	 *
-	 * @var \ICanBoogie\ActiveRecord\Form
+	 * @var \Icybee\Modules\Forms\Form
 	 */
 	public $form;
 
@@ -275,17 +271,17 @@ class BeforeRenderEvent extends \ICanBoogie\Event
 	/**
 	 * The event is created with the type `render:before`.
 	 *
-	 * @param \ICanBoogie\ActiveRecord\Form $target
+	 * @param \Icybee\Modules\Forms\Form $target
 	 * @param array $properties
 	 */
-	public function __construct(\ICanBoogie\ActiveRecord\Form $target, array $properties)
+	public function __construct(\Icybee\Modules\Forms\Form $target, array $properties)
 	{
 		parent::__construct($target, 'render:before', $properties);
 	}
 }
 
 /**
- * Event class for the `ICanBoogie\ActiveRecord\Form::render` event.
+ * Event class for the `Icybee\Modules\Forms\Form::render` event.
  */
 class RenderEvent extends \ICanBoogie\Event
 {
@@ -299,7 +295,7 @@ class RenderEvent extends \ICanBoogie\Event
 	/**
 	 * The form to render.
 	 *
-	 * @var \ICanBoogie\ActiveRecord\Form
+	 * @var \Icybee\Modules\Forms\Form
 	 */
 	public $form;
 
@@ -320,10 +316,10 @@ class RenderEvent extends \ICanBoogie\Event
 	/**
 	 * The event is created with the type `render`.
 	 *
-	 * @param \ICanBoogie\ActiveRecord\Form $target
+	 * @param \Icybee\Modules\Forms\Form $target
 	 * @param array $properties
 	 */
-	public function __construct(\ICanBoogie\ActiveRecord\Form $target, array $properties)
+	public function __construct(\Icybee\Modules\Forms\Form $target, array $properties)
 	{
 		parent::__construct($target, 'render', $properties);
 	}

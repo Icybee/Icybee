@@ -1,24 +1,26 @@
 <?php
 
+namespace Icybee\Modules\Comments;
+
 use ICanBoogie\Module;
 use ICanBoogie\ActiveRecord\Model;
 
 return array
 (
-	Module::T_TITLE => 'Comments',
-	Module::T_DESCRIPTION => 'Implements comments for nodes',
 	Module::T_CATEGORY => 'feedback',
+	Module::T_DESCRIPTION => 'Implements comments for nodes',
 	Module::T_MODELS => array
 	(
 		'primary' => array
 		(
+			Model::T_ACTIVERECORD_CLASS => __NAMESPACE__ . '\Comment',
 			Model::T_SCHEMA => array
 			(
 				'fields' => array
 				(
 					'commentid' => 'serial',
 					'nid' => 'foreign',
-					'parentid' => 'foreign', // for nested comments
+					'parentid' => 'foreign',
 					'uid' => 'foreign',
 					'author' => array('varchar', 32),
 					'author_email' => array('varchar', 64),
@@ -33,10 +35,14 @@ return array
 		)
 	),
 
+	Module::T_NAMESPACE => __NAMESPACE__,
 	Module::T_REQUIRES => array
 	(
-		'nodes' => 'x.x'
-	)
+		'nodes' => '1.0'
+	),
+
+	Module::T_TITLE => 'Comments',
+	Module::T_VERSION => '1.0'
 );
 
 /*

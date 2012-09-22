@@ -1,22 +1,24 @@
 <?php
 
+namespace Icybee\Modules\Forms;
+
 return array
 (
 	'press.contact' => array
 	(
 		'title' => 'Contact presse',
-		'class' => 'press_WdForm'
+		'class' => __NAMESPACE__ . '\PressContactForm'
 	),
 
 	'contact' => array
 	(
 		'title' => 'Contact',
-		'class' => 'Brickrouge\Form\Contact'
+		'class' => __NAMESPACE__ . '\ContactForm'
 	),
 
 	'quickContact' => array
 	(
 		'title' => 'Contact rapide',
-		'class' => 'Brickrouge\quick_contact_WdForm'
+		'class' => __NAMESPACE__ . '\QuickContactForm'
 	)
 );

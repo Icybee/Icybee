@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace ICanBoogie\Modules\Forms;
+namespace Icybee\Modules\Forms;
 
 use ICanBoogie\Core;
 
@@ -50,7 +50,7 @@ class FormEditor implements \ICanBoogie\Modules\Editor\Editor
 	/**
 	 * Returns a _Form_ active record.
 	 *
-	 * @return ICanBoogie\ActiveRecord\Form
+	 * @return Icybee\Modules\Forms\Form
 	 *
 	 * @see ICanBoogie\Modules\Editor.Editor::render()
 	 */

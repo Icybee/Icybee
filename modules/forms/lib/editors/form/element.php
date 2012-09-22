@@ -9,18 +9,18 @@
  * file that was distributed with this source code.
  */
 
-namespace ICanBoogie\Modules\Forms;
+namespace Icybee\Modules\Forms;
 
 use Brickrouge\Element;
 
 /**
  * "Form" editor element.
  */
-class FormEditorElement extends \WdFormSelectorElement implements \ICanBoogie\Modules\Editor\EditorElement
+class FormEditorElement extends PopForm implements \ICanBoogie\Modules\Editor\EditorElement
 {
 	protected $selector;
 
-	public function __construct(array $attributes)
+	public function __construct(array $attributes=array())
 	{
 		parent::__construct
 		(
