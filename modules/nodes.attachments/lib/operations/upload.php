@@ -9,12 +9,11 @@
  * file that was distributed with this source code.
  */
 
-namespace ICanBoogie\Modules\Nodes\Attachments;
+namespace Icybee\Modules\Nodes\Attachments;
 
-use ICanBoogie\Operation;
 use ICanBoogie\Uploaded;
 
-class UploadOperation extends Operation
+class UploadOperation extends \ICanBoogie\Operation
 {
 	/**
 	 * @var Uploaded
@@ -87,9 +86,9 @@ class UploadOperation extends Operation
 
 			$destination = $core->config['repository.temp'] . '/' . $uniqid . $file->extension;
 
-			$file->move($_SERVER['DOCUMENT_ROOT'] . $destination, true);
+			$file->move(\ICanBoogie\DOCUMENT_ROOT . $destination, true);
 		}
 
-		return \WdAttachmentsElement::create_attachment($file);
+		return AttachmentsElement::create_attachment($file);
 	}
 }

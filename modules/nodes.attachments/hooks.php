@@ -9,12 +9,11 @@
  * file that was distributed with this source code.
  */
 
-namespace ICanBoogie\Modules\Nodes\Attachments;
+namespace Icybee\Modules\Nodes\Attachments;
 
-use ICanBoogie\ActiveRecord;
+use ICanBoogie\ActiveRecord\Node;
 use ICanBoogie\Event;
 use ICanBoogie\HTTP\Request;
-use ICanBoogie\Modules;
 use ICanBoogie\Operation;
 
 use Brickrouge\Element;
@@ -64,8 +63,8 @@ class Hooks
 					(
 						$attached_params + array
 						(
-							ActiveRecord\Node::SITEID => $core->site_id,
-							ActiveRecord\Node::CONSTRUCTOR => 'images'
+							Node::SITEID => $core->site_id,
+							Node::CONSTRUCTOR => 'images'
 						)
 					)
 					->save();
@@ -76,8 +75,8 @@ class Hooks
 					(
 						$attached_params + array
 						(
-							ActiveRecord\Node::SITEID => $core->site_id,
-							ActiveRecord\Node::CONSTRUCTOR => 'files'
+							Node::SITEID => $core->site_id,
+							Node::CONSTRUCTOR => 'files'
 						)
 					)
 					->save();
@@ -152,9 +151,9 @@ class Hooks
 	 * Deletes attachment when the associated node is delete.
 	 *
 	 * @param Event $event
-	 * @param Modules\Nodes\DeleteOperation $operation
+	 * @param \ICanBoogie\Modules\Nodes\DeleteOperation $operation
 	 */
-	public static function on_node_delete(Event $event, Modules\Nodes\DeleteOperation $operation)
+	public static function on_node_delete(Event $event, \ICanBoogie\Modules\Nodes\DeleteOperation $operation)
 	{
 		global $core;
 
@@ -183,7 +182,7 @@ class Hooks
 	 *
 	 * @return array|null An array of attachments or null if there is none.
 	 */
-	public static function get_attachments(ActiveRecord\Node $ar)
+	public static function get_attachments(Node $ar)
 	{
 		global $core;
 
@@ -227,12 +226,12 @@ class Hooks
 	}
 
 	/**
-	 * Alters the "edit" block to adds the "attachments" group with a WdAttachmentsElement used to
+	 * Alters the "edit" block to adds the "attachments" group with a Icybee\Modules\Nodes\Attachments\AttachmentsElement used to
 	 * manage node attachments.
 	 *
 	 * @param Event $event
 	 */
-	public static function editblock__on_alter_children(Event $event, \ICanBoogie\Modules\Nodes\EditBlock $block)
+	public static function on_editblock_alter_children(Event $event, \ICanBoogie\Modules\Nodes\EditBlock $block)
 	{
 		global $core;
 
@@ -264,14 +263,14 @@ class Hooks
 		(
 			$event->children, array
 			(
-				new \WdAttachmentsElement
+				new AttachmentsElement
 				(
 					array
 					(
 						Element::GROUP => 'attachments',
 
-						\WdAttachmentsElement::T_NODEID => $event->key,
-						\WdAttachmentsElement::T_HARD_BOND => true
+						AttachmentsElement::T_NODEID => $event->key,
+						AttachmentsElement::T_HARD_BOND => true
 					)
 				)
 			)
@@ -400,7 +399,7 @@ class Hooks
 	 * @param string|null $template
 	 * @return string|null The rendered attached file(s), or null if no files were attached.
 	 */
-	static public function markup_node_attachments(array $args=array(), \WdPatron $patron, $template)
+	static public function markup_node_attachments(array $args=array(), \Patron\Engine $patron, $template)
 	{
 		$target = $patron->context['this'];
 		$files = $target->attachments;

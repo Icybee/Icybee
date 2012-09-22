@@ -9,19 +9,20 @@
  * file that was distributed with this source code.
  */
 
-use ICanBoogie\ActiveRecord;
+namespace Icybee\Modules\Nodes\Attachments;
+
 use ICanBoogie\Uploaded;
 use ICanBoogie\Operation;
 
 use Brickrouge\Element;
 use Brickrouge\Document;
 
-class WdAttachmentsElement extends Element
+class AttachmentsElement extends Element
 {
 	const T_NODEID = '#attachments-nodeid';
 	const T_HARD_BOND = '#attachments-hard-bond';
 
-	protected static function add_assets(\Brickrouge\Document $document)
+	static protected function add_assets(\Brickrouge\Document $document)
 	{
 		parent::add_assets($document);
 
@@ -35,7 +36,7 @@ class WdAttachmentsElement extends Element
 		(
 			'div', $attributes + array
 			(
-				'data-widget-constructor' => 'NodeAttachments'
+				Element::WIDGET_CONSTRUCTOR => 'NodeAttachments'
 			)
 		);
 
@@ -64,7 +65,7 @@ class WdAttachmentsElement extends Element
 					$nid
 				)
 			)
-			->all(PDO::FETCH_OBJ);
+			->all(\PDO::FETCH_OBJ);
 
 			foreach ($entries as $entry)
 			{
@@ -78,17 +79,6 @@ class WdAttachmentsElement extends Element
 
 		$limit = ini_get('upload_max_filesize') * 1024 * 1024;
 		$limit_formated = \ICanBoogie\I18n\format_size($limit);
-
-		/*
-		$this->dataset = array
-		(
-			'path' => Document::resolve_url('../../files/elements/Swiff.Uploader.swf'),
-// 			'verbose' => false,
-			'file-size-max' => $limit
-		)
-
-		+ $this->dataset;
-		*/
 
 		$label_join = t('Add a new attachment');
 		$label_limit = t('The maximum size for each attachment is :size', array(':size' => $limit_formated));
@@ -114,7 +104,7 @@ $label_join
 EOT;
 	}
 
-	public static function create_attachment($entry, $hard_bond=false)
+	static public function create_attachment($entry, $hard_bond=false) // TODO-20120922: create an Element class instead
 	{
 		global $core;
 
@@ -130,8 +120,8 @@ EOT;
 			$title = $entry->name;
 			$extension = $entry->extension;
 
-			$hiddens .= '<input type="hidden" class="file" name="nodes_attachments[' . $i .'][file]" value="' . wd_entities(basename($entry->location)) . '" />' . PHP_EOL;
-			$hiddens .= '<input type="hidden" name="nodes_attachments[' . $i .'][mime]" value="' . wd_entities($entry->mime) . '" />' . PHP_EOL;
+			$hiddens .= '<input type="hidden" class="file" name="nodes_attachments[' . $i .'][file]" value="' . \ICanBoogie\escape(basename($entry->location)) . '" />' . PHP_EOL;
+			$hiddens .= '<input type="hidden" name="nodes_attachments[' . $i .'][mime]" value="' . \ICanBoogie\escape($entry->mime) . '" />' . PHP_EOL;
 
 			$links = array
 			(
@@ -161,7 +151,7 @@ EOT;
 			}
 		}
 
-		$title = wd_entities($title);
+		$title = \ICanBoogie\escape($title);
 		$links = empty($links) ? '' : (' &ndash; ' . implode(' ', $links));
 
 		if ($extension)

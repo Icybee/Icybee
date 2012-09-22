@@ -1,6 +1,8 @@
 <?php
 
+namespace Icybee\Modules\Nodes\Attachments;
+
 return array
 (
-	'WdAttachmentsElement' => $path . 'elements/attachments.php'
+	__NAMESPACE__ . '\AttachmentsElement' => $path . 'lib/elements/attachments.php'
 );
