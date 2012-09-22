@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace ICanBoogie\Modules\Search;
+namespace Icybee\Modules\Search;
 
 class ConfigOperation extends \Icybee\ConfigOperation
 {

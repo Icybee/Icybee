@@ -9,17 +9,19 @@
  * file that was distributed with this source code.
  */
 
-use Icybee\Modules\Contents\Model as ContentsModel;
-use Icybee\Modules\Pages\Model as PagesModel;
 use ICanBoogie\Event;
 use ICanBoogie\Exception;
 use ICanBoogie\Module;
+
 use Brickrouge\Button;
 use Brickrouge\Element;
 use Brickrouge\Form;
 use Brickrouge\Text;
 
-require_once dirname(__DIR__) . '/api.php';
+use Icybee\Modules\Contents\Model as ContentsModel;
+use Icybee\Modules\Pages\Model as PagesModel;
+
+require_once dirname(__DIR__) . '/lib/api.php';
 
 $_home_limit = $core->site->metas->get('search.limits.home', 5);
 $_list_limit = $core->site->metas->get('search.limits.list', 10);

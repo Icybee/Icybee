@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace ICanBoogie\Modules\Search;
+namespace Icybee\Modules\Search;
 
 use ICanBoogie\Exception;
 
@@ -19,7 +19,7 @@ use Brickrouge\Searchbox;
 
 class Hooks
 {
-	static public function form(array $args, \Patron\Engine $patron, $template)
+	static public function markup_form(array $args, \Patron\Engine $patron, $template)
 	{
 		global $core, $document;
 

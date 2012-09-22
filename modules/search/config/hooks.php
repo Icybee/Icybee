@@ -1,22 +1,19 @@
 <?php
 
+namespace Icybee\Modules\Search;
+
+$hooks = __NAMESPACE__ . '\Hooks::';
+
 return array
 (
 	'patron.markups' => array
 	(
 		'search:form:quick' => array
 		(
-			'ICanBoogie\Modules\Search\Hooks::form', array
+			$hooks . 'markup_form', array
 			(
-			)
-		)/*,
 
-		'site:search:matches' => array
-		(
-			array('site_search_WdMarkups', 'matches'), array
-			(
 			)
 		)
-		*/
 	)
 );
