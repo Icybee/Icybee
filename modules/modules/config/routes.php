@@ -8,17 +8,17 @@ return array
 		'block' => 'manage'
 	),
 
-	'admin:system.modules/inactives' => array
+	'admin:modules/inactives' => array
 	(
-		'pattern' => '/admin/system.modules/inactives',
+		'pattern' => '/admin/modules/inactives',
 		'controller' => 'Icybee\BlockController',
 		'title' => 'Inactifs',
 		'block' => 'inactives'
 	),
 
-	'admin:system.modules/install' => array
+	'admin:modules/install' => array
 	(
-		'pattern' => '/admin/system.modules/<[^/]+>/install',
+		'pattern' => '/admin/modules/<[^/]+>/install',
 		'controller' => 'Icybee\BlockController',
 		'title' => 'Install',
 		'block' => 'install',
@@ -28,6 +28,6 @@ return array
 	'redirect:admin/features' => array
 	(
 		'pattern' => '/admin/features',
-		'location' => '/admin/system.modules'
+		'location' => '/admin/modules'
 	)
 );

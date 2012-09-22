@@ -10,8 +10,8 @@ return array
 	(
 		'Icybee\Modules\Pages\SaveOperation::process' => $hooks . 'on_page_save',
 		'ICanBoogie\Modules\System\Cache\Collection::alter' => $hooks . 'on_cache_collection_collect',
-		'ICanBoogie\Modules\System\Modules\ActivateOperation::process' => __NAMESPACE__ . '\CacheManager::revoke',
-		'ICanBoogie\Modules\System\Modules\DeactivateOperation::process' => __NAMESPACE__ . '\CacheManager::revoke'
+		'Icybee\Modules\Modules\ActivateOperation::process' => __NAMESPACE__ . '\CacheManager::revoke',
+		'Icybee\Modules\Modules\DeactivateOperation::process' => __NAMESPACE__ . '\CacheManager::revoke'
 	),
 
 	'prototypes' => array

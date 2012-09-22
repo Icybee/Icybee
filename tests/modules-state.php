@@ -14,7 +14,7 @@ $request = HTTP\Request::from
 		'is_xhr' => true,
 		'request_params' => array
 		(
-			Operation::DESTINATION => 'system.modules',
+			Operation::DESTINATION => 'modules',
 			Operation::NAME => isset($core->modules['articles']) ? 'deactivate' : 'activate',
 			Operation::KEY => array
 			(

@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace ICanBoogie\Modules\System\Modules;
+namespace Icybee\Modules\Modules;
 
 use ICanBoogie\Operation;
 use ICanBoogie\Route;

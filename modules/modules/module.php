@@ -9,18 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace ICanBoogie\Modules\System\Modules;
-
-use Brickrouge\Button;
-
-use ICanBoogie\Exception\HTTP as HTTPException;
-use ICanBoogie\Operation;
-use ICanBoogie\Route;
-
-use Brickrouge\Element;
-use Brickrouge\Form;
-
-use Icybee;
+namespace Icybee\Modules\Modules;
 
 class Module extends \Icybee\Module
 {

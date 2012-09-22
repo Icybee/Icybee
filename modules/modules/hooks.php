@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace ICanBoogie\Modules\System\Modules;
+namespace Icybee\Modules\Modules;
 
 use ICanBoogie\HTTP\Request;
 use ICanBoogie\Operation;
@@ -17,19 +17,9 @@ use ICanBoogie\Operation;
 class Hooks
 {
 	/**
-	 * The cache is destroyed when modules are activated.
+	 * Destory system caches when modules are modified.
 	 */
-	public static function on_modules_activate()
-	{
-		Request::from(Operation::encode('system.cache/core.modules/clear'))->post();
-		Request::from(Operation::encode('system.cache/core.configs/clear'))->post();
-		Request::from(Operation::encode('system.cache/core.catalogs/clear'))->post();
-	}
-
-	/**
-	 * The cache is destroyed when modules are deactivated.
-	 */
-	public static function on_modules_deactivate()
+	public static function revoke_caches()
 	{
 		Request::from(Operation::encode('system.cache/core.modules/clear'))->post();
 		Request::from(Operation::encode('system.cache/core.configs/clear'))->post();
