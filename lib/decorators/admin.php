@@ -116,7 +116,7 @@ EOT;
 
 		$user = $core->user;
 
-		if ($user->is_guest || $user instanceof Users\Member)
+		if ($user->is_guest || $user instanceof \Icybee\Modules\Members\Member)
 		{
 			$this->title = 'Icybee';
 

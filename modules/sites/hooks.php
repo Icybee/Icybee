@@ -53,7 +53,7 @@ class Hooks
 		{
 			$query = $core->models['sites']->order('weight');
 
-			if ($core->user->is_guest || $core->user instanceof \ICanBoogie\ActiveRecord\Users\Member)
+			if ($core->user->is_guest || $core->user instanceof \Icybee\Modules\Members\Member)
 			{
 				$query->where('status = 1');
 			}

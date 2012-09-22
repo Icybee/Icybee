@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace ICanBoogie\Modules\Users\Members;
+namespace Icybee\Modules\Members;
 
 use ICanBoogie\Modules\Editor\RTEEditorElement;
 
@@ -100,7 +100,7 @@ EOT
 
 				Element::CHILDREN => array
 				(
-					'salutation' => new Element
+					'salutation_code' => new Element
 					(
 						'select', array
 						(

@@ -38,7 +38,7 @@ else
 
 	$request_route = $request->path;
 
-	if ($user instanceof ActionRecord\Users\Member)
+	if ($user instanceof \Icybee\Modules\Members\Member)
 	{
 		$request_route = $site->path . '/admin/authenticate';
 

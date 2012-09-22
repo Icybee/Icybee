@@ -11,7 +11,6 @@
 
 namespace ICanBoogie\Modules\Dashboard;
 
-use ICanBoogie\ActiveRecord\Users\Member;
 use ICanBoogie\HTTP\Dispatcher;
 use ICanBoogie\HTTP\Response;
 use ICanBoogie\Route;
@@ -31,7 +30,7 @@ class Hooks
 
 		$path = \ICanBoogie\normalize_url_path(Route::decontextualize($event->request->path));
 
-		if ($path != '/admin/' || !$core->user_id || $core->user instanceof Member)
+		if ($path != '/admin/' || !$core->user_id || $core->user instanceof \Icybee\Modules\Members\Member)
 		{
 			return;
 		}

@@ -11,7 +11,6 @@
 
 namespace Icybee\Element;
 
-use ICanBoogie\ActiveRecord;
 use ICanBoogie\I18n\Translator\Proxi;
 use ICanBoogie\Module;
 use ICanBoogie\Operation;
@@ -39,7 +38,7 @@ class AdminMenu extends Element
 	{
 		global $core;
 
-		if (!$core->user_id || $core->user instanceof ActiveRecord\Users\Members)
+		if (!$core->user_id || $core->user instanceof \Icybee\Modules\Members\Member)
 		{
 			return;
 		}

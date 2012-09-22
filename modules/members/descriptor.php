@@ -1,24 +1,25 @@
 <?php
 
-use ICanBoogie\Module;
+namespace Icybee\Modules\Members;
+
 use ICanBoogie\ActiveRecord\Model;
+use ICanBoogie\Module;
 
 return array
 (
-	Module::T_TITLE => 'Membres',
 	Module::T_CATEGORY => 'users',
 	Module::T_EXTENDS => 'users',
-
 	Module::T_MODELS => array
 	(
 		'primary' => array
 		(
+			Model::T_ACTIVERECORD_CLASS => __NAMESPACE__ . '\Member',
 			Model::T_EXTENDS => 'users',
 			Model::T_SCHEMA => array
 			(
 				'fields' => array
 				(
-					'salutation' => array('integer', 'tiny'),
+					'salutation_code' => array('integer', 'tiny'),
 
 					#
 					# numbers
@@ -77,5 +78,9 @@ return array
 				)
 			)
 		)
-	)
+	),
+
+	Module::T_NAMESPACE => __NAMESPACE__,
+	Module::T_TITLE => 'Membres',
+	Module::T_VERSION => '1.0'
 );

@@ -9,12 +9,11 @@
  * file that was distributed with this source code.
  */
 
-namespace ICanBoogie\ActiveRecord\Users;
+namespace Icybee\Modules\Members;
 
-use ICanBoogie\ActiveRecord\User;
 use ICanBoogie\Operation;
 
-class Member extends User
+class Member extends \ICanBoogie\ActiveRecord\User
 {
 	public $gender;
 
@@ -61,7 +60,7 @@ class Member extends User
 		return $this->thumbnail('primary');
 	}
 
-	public function thumbnail($version)
+	public function thumbnail($version) // TODO-20120922: use Thumbnail object
 	{
 		if (!$this->photo)
 		{

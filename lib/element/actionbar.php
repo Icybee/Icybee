@@ -11,7 +11,6 @@
 
 namespace Icybee\Admin\Element;
 
-use ICanBoogie\ActiveRecord\Users\Member;
 use ICanBoogie\Event;
 use ICanBoogie\Exception;
 use ICanBoogie\Module;
@@ -54,7 +53,7 @@ class Actionbar extends Element
 
 			$route = $core->request->route;
 
-			if (!$core->user->is_guest && !($core->user instanceof Member))
+			if (!$core->user->is_guest && !($core->user instanceof \Icybee\Modules\Members\Member))
 			{
 				$module_id = $route->module;
 

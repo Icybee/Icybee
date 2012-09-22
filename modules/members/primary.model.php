@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace ICanBoogie\Modules\Users\Members;
+namespace Icybee\Modules\Members;
 
 class Model extends \ICanBoogie\Modules\Users\Model
 {
