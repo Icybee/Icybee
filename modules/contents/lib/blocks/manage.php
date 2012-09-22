@@ -9,10 +9,11 @@
  * file that was distributed with this source code.
  */
 
-namespace ICanBoogie\Modules\Contents;
+namespace Icybee\Modules\Contents;
 
 use ICanBoogie\ActiveRecord;
 use ICanBoogie\ActiveRecord\Query;
+
 use Brickrouge\Element;
 
 class ManageBlock extends \ICanBoogie\Modules\Nodes\ManageBlock

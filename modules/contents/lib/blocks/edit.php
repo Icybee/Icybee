@@ -9,15 +9,13 @@
  * file that was distributed with this source code.
  */
 
-namespace ICanBoogie\Modules\Contents;
-
-use ICanBoogie\ActiveRecord\Content;
-use Icybee\Modules\Editor\MultiEditorElement;
-use Icybee\Modules\Editor\RTEEditorElement;
+namespace Icybee\Modules\Contents;
 
 use Brickrouge\Element;
 use Brickrouge\Form;
 use Brickrouge\Text;
+
+use Icybee\Modules\Editor\MultiEditorElement;
 
 class EditBlock extends \ICanBoogie\Modules\Nodes\EditBlock
 {

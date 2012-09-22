@@ -9,22 +9,24 @@
  * file that was distributed with this source code.
  */
 
-// TODO-20120117: should be in the module's namespace
-
-namespace ICanBoogie\Modules\Contents;
-
-use ICanBoogie\ActiveRecord\RecordNotFound;
+namespace Icybee\Modules\Contents;
 
 use ICanBoogie\ActiveRecord;
 use ICanBoogie\ActiveRecord\Query;
+use ICanBoogie\ActiveRecord\RecordNotFound;
 
-class Provider extends \ICanBoogie\Modules\Nodes\ViewProvider
+class ViewProvider extends \ICanBoogie\Modules\Nodes\ViewProvider
 {
+	/**
+	 * Tries to rescue the record if finding the record failed.
+	 *
+	 * @see ICanBoogie\Modules\Nodes.ViewProvider::__invoke()
+	 */
 	public function __invoke()
 	{
 		$rc = parent::__invoke();
 
-		if ($this->returns == self::RETURNS_ONE && !$rc)
+		if (!$rc && $this->returns == self::RETURNS_ONE)
 		{
 			$rc = $this->rescue();
 		}
@@ -72,7 +74,7 @@ class Provider extends \ICanBoogie\Modules\Nodes\ViewProvider
 	 * Match is computed from the slug of the module's own visible records, thus rescue if only
 	 * triggered if 'slug' is defined in the conditions.
 	 *
-	 * @return ActiveRecord\Content|null The record best matching the condition slug, or null if
+	 * @return Content|null The record best matching the condition slug, or null if
 	 * none was similar enough.
 	 */
 	protected function rescue()

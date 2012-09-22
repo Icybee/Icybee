@@ -1,7 +1,9 @@
 <?php
 
+namespace Icybee\Modules\Contents;
+
 return array
 (
-	'ICanBoogie\Modules\Contents\Provider' => $path . 'lib/views/provider.php',
-	'ICanBoogie\Modules\Contents\CacheManager' => $path . 'lib/cache-manager.php'
+	__NAMESPACE__ . '\ViewProvider' => $path . 'lib/views/provider.php',
+	__NAMESPACE__ . '\CacheManager' => $path . 'lib/cache-manager.php'
 );

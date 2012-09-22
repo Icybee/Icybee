@@ -9,12 +9,10 @@
  * file that was distributed with this source code.
  */
 
-namespace ICanBoogie\Modules\Contents;
-
-use ICanBoogie\ActiveRecord\Content;
+namespace Icybee\Modules\Contents;
 
 /**
- * The "contents" module extends the "system.nodes" module by offrering a subtitle, a body
+ * The "contents" module extends the "nodes" module by offrering a subtitle, a body
  * (with a customizable editor), an optional excerpt, a date and a new visibility option (home).
  */
 class Module extends \ICanBoogie\Modules\Nodes\Module
@@ -25,7 +23,7 @@ class Module extends \ICanBoogie\Modules\Nodes\Module
 	/**
 	 * Overrites the "view", "list" and "home" views to provide different titles and providers.
 	 *
-	 * @see Icybee.Module::get_views()
+	 * @see ICanBoogie\Modules\Nodes.Module::get_views()
 	 */
 	protected function get_views()
 	{
@@ -36,7 +34,7 @@ class Module extends \ICanBoogie\Modules\Nodes\Module
 				'css' => array(__DIR__ . '/assets/page.css')
 			),
 
-			'provider' => __NAMESPACE__ . '\Provider'
+			'provider' => __NAMESPACE__ . '\ViewProvider'
 		);
 
 		return \ICanBoogie\array_merge_recursive

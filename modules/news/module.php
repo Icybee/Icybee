@@ -11,7 +11,7 @@
 
 namespace Icybee\Modules\News;
 
-class Module extends \ICanBoogie\Modules\Contents\Module
+class Module extends \Icybee\Modules\Contents\Module
 {
 	protected function get_views()
 	{

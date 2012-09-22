@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-use ICanBoogie\Modules\Contents\Model as ContentsModel;
+use Icybee\Modules\Contents\Model as ContentsModel;
 use Icybee\Modules\Pages\Model as PagesModel;
 use ICanBoogie\Event;
 use ICanBoogie\Exception;

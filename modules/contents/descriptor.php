@@ -1,20 +1,21 @@
 <?php
 
-use ICanBoogie\Module;
+namespace Icybee\Modules\Contents;
+
 use ICanBoogie\ActiveRecord\Model;
+use ICanBoogie\Module;
 
 return array
 (
-	Module::T_TITLE => 'Contents',
-	Module::T_DESCRIPTION => 'Code de base pour gérer les contenus éditoriaux',
 	Module::T_CATEGORY => 'contents',
+	Module::T_DESCRIPTION => 'Code de base pour gérer les contenus éditoriaux',
 	Module::T_EXTENDS => 'nodes',
-// 	Module::T_REQUIRED => true, FIXME: true
 
 	Module::T_MODELS => array
 	(
 		'primary' => array
 		(
+			Model::T_ACTIVERECORD_CLASS => __NAMESPACE__ . '\Content',
 			Model::T_EXTENDS => 'nodes',
 			Model::T_SCHEMA => array
 			(
@@ -45,5 +46,8 @@ return array
 		)
 	),
 
+	Module::T_NAMESPACE => __NAMESPACE__,
+	Module::T_REQUIRED => true,
+	Module::T_TITLE => 'Contents',
 	Module::T_VERSION => '1.0'
 );

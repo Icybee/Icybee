@@ -11,7 +11,7 @@
 
 namespace Icybee\Modules\News;
 
-use ICanBoogie\ActiveRecord\Content;
+use Icybee\Modules\Contents\Content;
 
 use Brickrouge\Form;
 use Brickrouge\Element;
@@ -19,7 +19,7 @@ use Brickrouge\Element;
 /**
  * Edit block for news.
  */
-class EditBlock extends \ICanBoogie\Modules\Contents\EditBlock
+class EditBlock extends \Icybee\Modules\Contents\EditBlock
 {
 	protected function get_children()
 	{

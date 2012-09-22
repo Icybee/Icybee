@@ -9,13 +9,9 @@
  * file that was distributed with this source code.
  */
 
-namespace ICanBoogie\ActiveRecord;
+namespace Icybee\Modules\Contents;
 
-use ICanBoogie\Core;
-
-use ICanBoogie\Exception;
-
-class Content extends Node
+class Content extends \ICanBoogie\ActiveRecord\Node
 {
 	const SUBTITLE = 'subtitle';
 	const BODY = 'body';
@@ -132,7 +128,7 @@ class Content extends Node
 			return $body;
 		}
 
-		$editor = Core::get()->editors[$this->editor];
+		$editor = \ICanBoogie\Core::get()->editors[$this->editor];
 
 		return (string) $editor->render($editor->unserialize($body));
 	}

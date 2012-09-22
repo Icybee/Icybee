@@ -11,12 +11,12 @@
 
 namespace Icybee\Modules\Articles;
 
-class Module extends \ICanBoogie\Modules\Contents\Module
+class Module extends \Icybee\Modules\Contents\Module
 {
 	/**
 	 * Adds the "archives" view type and adds assets to the inherited "list" view type.
 	 *
-	 * @see ICanBoogie\Modules\Contents.Module::get_views()
+	 * @see Icybee\Modules\Contents.Module::get_views()
 	 */
 	protected function get_views()
 	{
@@ -38,7 +38,7 @@ class Module extends \ICanBoogie\Modules\Contents\Module
 				(
 					'title' => "Archives des articles",
 					'class' => __NAMESPACE__ . '\ArchivesView',
-					'provider' => 'ICanBoogie\Modules\Contents\Provider',
+					'provider' => 'Icybee\Modules\Contents\ViewProvider',
 					'assets' => $assets,
 					'renders' => \Icybee\Modules\Views\View::RENDERS_MANY
 				)

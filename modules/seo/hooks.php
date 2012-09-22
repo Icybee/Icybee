@@ -11,7 +11,7 @@
 
 namespace ICanBoogie\Modules\Seo;
 
-use ICanBoogie\ActiveRecord\Content;
+use Icybee\Modules\Contents\Content;
 use ICanBoogie\Event;
 use Icybee\Modules\Pages\PageController;
 use ICanBoogie\Operation;

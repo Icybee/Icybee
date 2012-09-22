@@ -1,11 +1,13 @@
 <?php
 
-namespace ICanBoogie\Modules\Contents\Hooks;
+namespace Icybee\Modules\Contents;
+
+$hooks = __NAMESPACE__ . '\Hooks::';
 
 return array
 (
 	'events' => array
 	(
-		'ICanBoogie\Modules\System\Cache\Collection::alter' => __NAMESPACE__ . '::on_alter_cache_collection'
+		'ICanBoogie\Modules\System\Cache\Collection::alter' => $hooks . 'on_alter_cache_collection'
 	)
 );

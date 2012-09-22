@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace ICanBoogie\Modules\Contents;
+namespace Icybee\Modules\Contents;
 
 /**
  * Manages cache for contents body.
@@ -18,8 +18,8 @@ namespace ICanBoogie\Modules\Contents;
  */
 class CacheManager implements \ICanBoogie\Modules\System\Cache\CacheInterface
 {
-	public $title = "Corps des contenus";
-	public $description = "Le rendu HTML du corps des contenus est mis en cache lorsqu'il diffère de la source.";
+	public $title = "Contents body";
+	public $description = "The rendered body of contents is cached.";
 	public $group = 'contents';
 	public $state = false;
 	public $config_preview;

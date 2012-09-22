@@ -11,7 +11,7 @@
 
 namespace Icybee\Modules\Articles;
 
-class Article extends \ICanBoogie\ActiveRecord\Content
+class Article extends \Icybee\Modules\Contents\Content
 {
 
 }

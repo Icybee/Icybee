@@ -9,16 +9,19 @@
  * file that was distributed with this source code.
  */
 
-namespace ICanBoogie\Modules\Contents;
+namespace Icybee\Modules\Contents;
 
-use ICanBoogie;
-use ICanBoogie\Event;
 use ICanBoogie\Modules\System\Cache\Collection as CacheCollection;
-use ICanBoogie\Operation;
 
 class Hooks
 {
-	public static function on_alter_cache_collection(CacheCollection\AlterEvent $event, CacheCollection $collection)
+	/**
+	 * Adds the `contents.body` cache manager to the cache collection.
+	 *
+	 * @param CacheCollection\AlterEvent $event
+	 * @param CacheCollection $collection
+	 */
+	static public function on_alter_cache_collection(CacheCollection\AlterEvent $event, CacheCollection $collection)
 	{
 		$event->collection['contents.body'] = new CacheManager;
 	}

@@ -14,7 +14,7 @@ namespace Icybee\Modules\Articles;
 use Brickrouge\Form;
 use Brickrouge\Element;
 
-class EditBlock extends \ICanBoogie\Modules\Contents\EditBlock
+class EditBlock extends \Icybee\Modules\Contents\EditBlock
 {
 	protected function get_children()
 	{

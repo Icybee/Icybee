@@ -17,7 +17,7 @@ use ICanBoogie\Debug;
 use ICanBoogie\Event;
 use ICanBoogie\Events;
 use ICanBoogie\Modules;
-use ICanBoogie\Modules\Contents\ConfigBlock as ContentsConfigBlock;
+use Icybee\Modules\Contents\ConfigBlock as ContentsConfigBlock;
 use Icybee\Modules\Pages\PageController;
 use ICanBoogie\Operation;
 
@@ -56,15 +56,15 @@ class Hooks
 	 * TODO-20120713: Use an event to load images when the first `image` property is accessed.
 	 *
 	 * @param AlterResultEvent $event
-	 * @param \ICanBoogie\Modules\Contents\Provider $provider
+	 * @param \Icybee\Modules\Contents\ViewProvider $provider
 	 */
-	public static function on_contents_provider_alter_result(AlterResultEvent $event, \ICanBoogie\Modules\Contents\Provider $provider)
+	public static function on_contents_provider_alter_result(AlterResultEvent $event, \Icybee\Modules\Contents\ViewProvider $provider)
 	{
 		global $core;
 
 		$result = $event->result;
 
-		if (!is_array($result) || count($result) < 4 || !(current($result) instanceof \ICanBoogie\ActiveRecord\Content)
+		if (!is_array($result) || count($result) < 4 || !(current($result) instanceof \Icybee\Modules\Contents\Content)
 		|| !$core->registry['resources_images.inject.' . $event->module->flat_id])
 		{
 			return;
@@ -147,7 +147,7 @@ class Hooks
 	 * Alters the config block of contents modules with controls for the associated image.
 	 *
 	 * @param Event $event
-	 * @param \ICanBoogie\Modules\Contents\ConfigBlock $block
+	 * @param \Icybee\Modules\Contents\ConfigBlock $block
 	 */
 	public static function on_contents_configblock_alter_children(Event $event, ContentsConfigBlock $block)
 	{
@@ -274,7 +274,7 @@ class Hooks
 		$entry->metas['resources_images.imageid'] = $imageid ? $imageid : null;
 	}
 
-	public static function before_contents_config(Event $event, \ICanBoogie\Modules\Contents\ConfigOperation $operation)
+	public static function before_contents_config(Event $event, \Icybee\Modules\Contents\ConfigOperation $operation)
 	{
 		if (!isset($event->request->params['global']['resources_images.inject']))
 		{

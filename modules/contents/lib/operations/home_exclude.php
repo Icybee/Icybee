@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace ICanBoogie\Modules\Contents;
+namespace Icybee\Modules\Contents;
 
 /**
  * Excludes a record from the home page.
