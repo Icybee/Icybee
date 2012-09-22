@@ -2,10 +2,12 @@
 
 namespace Icybee\Modules\Journal;
 
+$hooks = __NAMESPACE__ . '\Hooks::';
+
 return array
 (
 	'events' => array
 	(
-		'ICanBoogie\Operation::process' => __NAMESPACE__ . '\Hooks::on_operation_process'
+		'ICanBoogie\Operation::process' => $hooks . 'on_operation_process'
 	)
 );

@@ -1,7 +1,9 @@
 <?php
 
-use ICanBoogie\Module;
+namespace Icybee\Modules\Journal;
+
 use ICanBoogie\ActiveRecord\Model;
+use ICanBoogie\Module;
 
 return array
 (
@@ -11,7 +13,7 @@ return array
 	(
 		'primary' => array
 		(
-			Model::T_ACTIVERECORD_CLASS => 'Icybee\Modules\Journal\Entry',
+			Model::T_ACTIVERECORD_CLASS => __NAMESPACE__ . '\Entry',
 			Model::T_SCHEMA => array
 			(
 				'fields' => array
@@ -33,6 +35,6 @@ return array
 		)
 	),
 
-	Module::T_NAMESPACE => 'Icybee\Modules\Journal',
+	Module::T_NAMESPACE => __NAMESPACE__,
 	Module::T_TITLE => 'Journal'
 );
