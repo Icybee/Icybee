@@ -1,0 +1,107 @@
+/*
+ * index table
+ */
+ 
+.cell--author img
+{
+	width: 32px;
+	height: 32px;
+	border-radius: 4px;
+	vertical-align: middle;
+}
+
+.cell--author img + .details
+{
+	padding-left: 1ex;
+	vertical-align: middle;
+	display: inline-block;
+}
+
+/*
+.cell--comment span {
+	font-size: .8571em;
+}
+*/
+
+/* DASHBOARD */
+
+#feedback-comments-last div.panel-contents
+{
+	margin: 0;
+}
+
+#feedback-comments-last .record
+{
+	padding: 14px;
+	overflow: hidden;
+}
+
+#feedback-comments-last .options
+{
+	float: left;
+}
+
+#feedback-comments-last .record.spam
+{
+	background-color: #FFC;
+}
+
+#feedback-comments-last .header
+{
+	font-family: Droid Serif, Georgia,"Times New Roman","Bitstream Charter",Times,serif;
+	font-style: italic;
+	margin-bottom: .4em;
+}
+
+#feedback-comments-last img
+{
+	float: left;
+	border-radius: 4px;
+}
+
+#feedback-comments-last div.contents
+{
+	margin-left: 62px;
+}
+
+#feedback-comments-last .date
+{
+	float: right;
+	font-family: Droid Serif, Georgia,"Times New Roman","Bitstream Charter",Times,serif;
+	font-style: italic;
+	font-size: 12px;
+}
+
+#feedback-comments-last .body a
+{
+	text-decoration: none;
+	color: inherit;
+}
+
+#feedback-comments-last .actions
+{
+	font-size: 12px;
+}
+
+#feedback-comments-last .head:not(:hover) a,
+#feedback-comments-last .actions:not(:hover) a
+{
+	color: inherit;
+}
+
+#feedback-comments-last .actions a.target
+{
+	font-style: italic;
+	font-family: Droid Serif, Georgia,"Times New Roman","Bitstream Charter",Times,serif;
+}
+
+#feedback-comments-last .more-auto
+{
+	display: none;
+	float: right;
+}
+
+#feedback-comments-last .record:hover .more-auto
+{
+	display: inline-block;
+}

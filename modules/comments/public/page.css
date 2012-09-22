@@ -1,0 +1,93 @@
+@CHARSET "UTF-8";
+
+#view-comments-list.empty
+{
+	display: none;	
+}
+
+#view-comments-list .comment
+{
+	position: relative;
+	min-height: 60px;
+}
+
+#view-comments-list .avatar
+{
+	position: absolute;
+	left: 0;
+}
+
+#view-comments-list .avatar img
+{
+	border-radius: 4px;
+}
+
+#view-comments-list .author
+{
+	margin-left: 80px;
+	margin-bottom: -.5em;
+	font-family: Droid Serif, Georgia, serif;
+	font-style: italic;
+}
+
+#view-comments-list .author:not(:hover) a
+{
+	color: inherit;
+}
+
+#view-comments-list cite:after
+{
+	content: ', ';
+}
+
+#view-comments-list .comment-content
+{
+	margin-left: 80px;
+}
+
+#view-comments-list .comment + .comment
+{
+	margin-top: 2em;
+	border-top: 1px dashed #ccc;
+	padding-top: 2em;
+}
+
+/* SUBMIT */
+
+/*
+#view-comments-submit .form-element
+{
+	margin: .5em 0;
+}
+
+#view-comments-submit label.required sup
+{
+	vertical-align: top;
+	color: maroon;
+	display: none;
+}
+
+#view-comments-submit label.required
+{
+	font-weight: bold;
+}
+
+#view-comments-submit label.required:after
+{
+	content: ' (required)';
+	font-weight: normal;
+	font-size: .8em;
+	font-style: italic;
+}
+*/
+#view-comments-submit .radio-group.list label
+{
+	display: block;
+}
+
+#view-comments-submit .preview
+{
+	padding: 0 1em;
+	border: 1px dashed #ccc;
+	margin-bottom: 1em;
+}
