@@ -9,10 +9,8 @@
  * file that was distributed with this source code.
  */
 
-namespace ICanBoogie\Modules\Files;
+namespace Icybee\Modules\Files;
 
-use ICanBoogie\Modules;
-
-class ConfigOperation extends Modules\Nodes\ConfigOperation
+class ConfigOperation extends \ICanBoogie\Modules\Nodes\ConfigOperation
 {
 }

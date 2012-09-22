@@ -6,12 +6,12 @@ return array
 (
 	'events' => array
 	(
-		'ICanBoogie\Modules\Files\ConfigBlock::alter_children' => __NAMESPACE__ . '::on_files_configblock_alter_children',
+		'Icybee\Modules\Files\ConfigBlock::alter_children' => __NAMESPACE__ . '::on_files_configblock_alter_children',
 		'ICanBoogie\Modules\Nodes\EditBlock::alter_children' => __NAMESPACE__ . '::editblock__on_alter_children',
 		'ICanBoogie\Modules\Nodes\SaveOperation::process' => __NAMESPACE__ . '::on_node_save',
 		'ICanBoogie\Modules\Nodes\DeleteOperation::process' => __NAMESPACE__ . '::on_node_delete',
-		'ICanBoogie\Modules\Files\DeleteOperation::process' => __NAMESPACE__ . '::on_file_delete',
-		'ICanBoogie\Modules\Files\ConfigOperation::properties:before' => __NAMESPACE__ . '::before_config_operation_properties'
+		'Icybee\Modules\Files\DeleteOperation::process' => __NAMESPACE__ . '::on_file_delete',
+		'Icybee\Modules\Files\ConfigOperation::properties:before' => __NAMESPACE__ . '::before_config_operation_properties'
 	),
 
 	'prototypes' => array

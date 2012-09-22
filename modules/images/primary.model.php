@@ -11,7 +11,7 @@
 
 namespace Icybee\Modules\Images;
 
-class Model extends \ICanBoogie\Modules\Files\Model
+class Model extends \Icybee\Modules\Files\Model
 {
 	protected static $accept = array
 	(

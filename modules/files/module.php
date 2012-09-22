@@ -9,22 +9,14 @@
  * file that was distributed with this source code.
  */
 
-namespace ICanBoogie\Modules\Files;
+namespace Icybee\Modules\Files;
 
-use ICanBoogie;
-use ICanBoogie\ActiveRecord\File;
 use ICanBoogie\Uploaded;
 
 class Module extends \ICanBoogie\Modules\Nodes\Module
 {
 	const OPERATION_UPLOAD = 'upload';
 	const OPERATION_UPLOAD_RESPONSE = 'uploadResponse';
-
-	/*DIRTY
-	const ACCEPT = '#files-accept';
-	const UPLOADED = '#files-uploaded';
-	const UPLOADER_CLASS = 'uploader class';
-	*/
 
 	const SESSION_UPLOAD_RESPONSE = 'resources.files.upload.responses';
 
@@ -42,11 +34,6 @@ class Module extends \ICanBoogie\Modules\Nodes\Module
 		return self::$repository[$name];
 	}
 
-	/*DIRTY
-	protected $accept = null;
-	protected $uploader_class = 'WdFileUploadElement';
-	*/
-
 	/**
 	 * Overrides the method to create the "/repository/tmp/" and "/repository/files/" directories,
 	 * and add a ".htaccess" file in the "/repository/tmp/" direcotry which denies all access and
@@ -58,7 +45,7 @@ class Module extends \ICanBoogie\Modules\Nodes\Module
 	{
 		global $core;
 
-		$root = ICanBoogie\DOCUMENT_ROOT;
+		$root = \ICanBoogie\DOCUMENT_ROOT;
 		$path = $core->config['repository.temp'];
 
 		if ($path)
@@ -125,7 +112,7 @@ class Module extends \ICanBoogie\Modules\Nodes\Module
 	{
 		global $core;
 
-		$root = ICanBoogie\DOCUMENT_ROOT;
+		$root = \ICanBoogie\DOCUMENT_ROOT;
 		$path = $core->config['repository.temp'];
 
 		if (!is_dir($root . $path))

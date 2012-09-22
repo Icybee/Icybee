@@ -11,7 +11,7 @@
 
 namespace Icybee\Modules\Images;
 
-class Image extends \ICanBoogie\ActiveRecord\File
+class Image extends \Icybee\Modules\Files\File
 {
 	const WIDTH = 'width';
 	const HEIGHT = 'height';

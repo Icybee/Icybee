@@ -9,11 +9,11 @@
  * file that was distributed with this source code.
  */
 
-namespace ICanBoogie\Modules\Files;
+namespace Icybee\Modules\Files;
 
 use Brickrouge\Document;
 
-use ICanBoogie\ActiveRecord\File;
+use Icybee\Modules\Files\File;
 use Icybee\Modules\Editor\RTEEditorElement;
 use ICanBoogie\Operation;
 use ICanBoogie\Uploaded;
@@ -28,7 +28,7 @@ class EditBlock extends \ICanBoogie\Modules\Nodes\EditBlock
 	const UPLOADER_CLASS = 'uploader class';
 
 	protected $accept = null;
-	protected $uploader_class = 'WdFileUploadElement';
+	protected $uploader_class = 'Icybee\Modules\Files\FileUpload';
 
 	static protected function add_assets(Document $document)
 	{

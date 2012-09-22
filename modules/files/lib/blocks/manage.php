@@ -9,9 +9,9 @@
  * file that was distributed with this source code.
  */
 
-namespace ICanBoogie\Modules\Files;
+namespace Icybee\Modules\Files;
 
-use ICanBoogie\ActiveRecord\File;
+use Icybee\Modules\Files\File;
 use ICanBoogie\ActiveRecord\Query;
 
 /**

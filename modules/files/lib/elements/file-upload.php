@@ -9,10 +9,12 @@
  * file that was distributed with this source code.
  */
 
+namespace Icybee\Modules\Files;
+
 use Brickrouge\Element;
 use ICanBoogie\Uploaded;
 
-class WdFileUploadElement extends Brickrouge\File
+class FileUpload extends \Brickrouge\File
 {
 	public function __construct(array $attributes=array())
 	{

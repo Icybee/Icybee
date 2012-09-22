@@ -11,7 +11,7 @@
 
 namespace Icybee\Modules\Images;
 
-class SaveOperation extends \ICanBoogie\Modules\Files\SaveOperation
+class SaveOperation extends \Icybee\Modules\Files\SaveOperation
 {
 	protected $accept = array
 	(

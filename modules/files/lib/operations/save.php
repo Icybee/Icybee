@@ -9,15 +9,14 @@
  * file that was distributed with this source code.
  */
 
-namespace ICanBoogie\Modules\Files;
+namespace Icybee\Modules\Files;
 
-use ICanBoogie\ActiveRecord\File;
+use Icybee\Modules\Files\File;
 use ICanBoogie\Event;
-use ICanBoogie\Modules;
 use ICanBoogie\Operation;
 use ICanBoogie\Uploaded;
 
-class SaveOperation extends Modules\Nodes\SaveOperation
+class SaveOperation extends \ICanBoogie\Modules\Nodes\SaveOperation
 {
 	/**
 	 * @var Uploaded|bool The optional file to save with the record.

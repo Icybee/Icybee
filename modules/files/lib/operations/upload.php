@@ -9,12 +9,11 @@
  * file that was distributed with this source code.
  */
 
-namespace ICanBoogie\Modules\Files;
+namespace Icybee\Modules\Files;
 
-use ICanBoogie\Operation;
 use ICanBoogie\Uploaded;
 
-class UploadOperation extends Operation
+class UploadOperation extends \ICanBoogie\Operation
 {
 	/**
 	 * @var Uploaded The target file of the operation.

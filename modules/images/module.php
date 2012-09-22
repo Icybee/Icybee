@@ -15,7 +15,7 @@ use Brickrouge\Element;
 use Brickrouge\Form;
 use Brickrouge\Text;
 
-class Module extends \ICanBoogie\Modules\Files\Module
+class Module extends \Icybee\Modules\Files\Module
 {
 	const ICON_WIDTH = 24;
 	const ICON_HEIGHT = 24;

@@ -22,7 +22,7 @@ use Brickrouge\Form;
 
 class Hooks
 {
-	public static function on_node_save(Event $event, Modules\Nodes\SaveOperation $operation)
+	public static function on_node_save(Event $event, \ICanBoogie\Modules\Nodes\SaveOperation $operation)
 	{
 		global $core;
 
@@ -72,7 +72,7 @@ class Hooks
 				}
 				else
 				{
-					$fileid = ActiveRecord\File::from
+					$fileid = \Icybee\Modules\Files\File::from
 					(
 						$attached_params + array
 						(
@@ -167,9 +167,9 @@ class Hooks
 	 * Deletes attachment when the associated file is deleted.
 	 *
 	 * @param Event $event
-	 * @param Modules\Files\DeleteOperation $operation
+	 * @param \Icybee\Modules\Files\DeleteOperation $operation
 	 */
-	public static function on_file_delete(Event $event, Modules\Files\DeleteOperation $operation)
+	public static function on_file_delete(Event $event, \Icybee\Modules\Files\DeleteOperation $operation)
 	{
 		global $core;
 
@@ -236,7 +236,7 @@ class Hooks
 	{
 		global $core;
 
-		if ($block instanceof \ICanBoogie\Modules\Files\EditBlock)
+		if ($block instanceof \Icybee\Modules\Files\EditBlock)
 		{
 			return;
 		}
@@ -278,11 +278,11 @@ class Hooks
 		);
 	}
 
-	public static function on_files_configblock_alter_children(Event $event, \ICanBoogie\Modules\Files\ConfigBlock $block)
+	public static function on_files_configblock_alter_children(Event $event, \Icybee\Modules\Files\ConfigBlock $block)
 	{
 		global $core;
 
-		if (get_class($event->module) != 'ICanBoogie\Modules\Files\Module')
+		if (get_class($event->module) != 'Icybee\Modules\Files\Module')
 		{
 			return;
 		}
@@ -340,7 +340,7 @@ class Hooks
 	 *
 	 * @param Event $event
 	 */
-	public static function before_config_operation_properties(Event $event, \ICanBoogie\Modules\Files\ConfigOperation $sender)
+	public static function before_config_operation_properties(Event $event, \Icybee\Modules\Files\ConfigOperation $sender)
 	{
 		global $core;
 
@@ -434,13 +434,13 @@ class Hooks
 		return $rc . '</div>';
 	}
 
-	static private function make_link(ActiveRecord\File $file, $label=null)
+	static private function make_link(\Icybee\Modules\Files\File $file, $label=null)
 	{
 		if (!$label)
 		{
 			$label = $file->label;
 		}
 
-		return '<a href="' . wd_entities($file->url('download')) . '">' . wd_entities($label) . '</a> <span class="metas">(' . $file->extension . ' &ndash; ' . \ICanBoogie\I18n\format_size($file->size) . ')</span>';
+		return '<a href="' . \ICanBoogie\escape($file->url('download')) . '">' . \ICanBoogie\escape($label) . '</a> <span class="metas">(' . $file->extension . ' &ndash; ' . \ICanBoogie\I18n\format_size($file->size) . ')</span>';
 	}
 }

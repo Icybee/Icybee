@@ -15,7 +15,7 @@ use Brickrouge\Element;
 use Brickrouge\Form;
 use Brickrouge\Text;
 
-class EditBlock extends \ICanBoogie\Modules\Files\EditBlock
+class EditBlock extends \Icybee\Modules\Files\EditBlock
 {
 	protected $accept = array
 	(

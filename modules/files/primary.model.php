@@ -9,9 +9,8 @@
  * file that was distributed with this source code.
  */
 
-namespace ICanBoogie\Modules\Files;
+namespace Icybee\Modules\Files;
 
-use ICanBoogie\ActiveRecord\File;
 use ICanBoogie\Exception;
 use ICanBoogie\Uploaded;
 

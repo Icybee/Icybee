@@ -16,9 +16,9 @@ use ICanBoogie\Modules\Thumbnailer\Thumbnail;
 /**
  * Appends a preview to the response of the operation.
  *
- * @see ICanBoogie\Modules\Files\UploadOperation
+ * @see Icybee\Modules\Files\UploadOperation
  */
-class UploadOperation extends \ICanBoogie\Modules\Files\UploadOperation
+class UploadOperation extends \Icybee\Modules\Files\UploadOperation
 {
 	protected $accept = array
 	(

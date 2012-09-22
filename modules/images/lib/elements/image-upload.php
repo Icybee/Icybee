@@ -15,7 +15,7 @@ use ICanBoogie\Operation;
 
 use Brickrouge\Element;
 
-class ImageUpload extends \WdFileUploadElement
+class ImageUpload extends \Icybee\Modules\Files\FileUpload
 {
 	const THUMBNAIL_WIDTH = 64;
 	const THUMBNAIL_HEIGHT = 64;

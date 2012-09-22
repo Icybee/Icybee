@@ -13,7 +13,7 @@ namespace Icybee\Modules\Images;
 
 use ICanBoogie\ActiveRecord\Query;
 
-class ManageBlock extends \ICanBoogie\Modules\Files\ManageBlock
+class ManageBlock extends \Icybee\Modules\Files\ManageBlock
 {
 	public function __construct(Module $module, array $attributes)
 	{

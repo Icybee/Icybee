@@ -9,9 +9,9 @@
 * file that was distributed with this source code.
 */
 
-namespace ICanBoogie\ActiveRecord;
+namespace Icybee\Modules\Files;
 
-class File extends Node
+class File extends \ICanBoogie\ActiveRecord\Node
 {
 	const PATH = 'path';
 	const MIME = 'mime';
@@ -30,12 +30,6 @@ class File extends Node
 
 	protected function get_extension()
 	{
-		/*DIRTY
-		$path = $this->path;
-
-		return substr($path, strrpos($path, '.'));
-		*/
-
 		return '.' . pathinfo($this->path, PATHINFO_EXTENSION);
 	}
 
