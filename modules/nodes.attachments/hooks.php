@@ -60,7 +60,7 @@ class Hooks
 
 				if (getimagesize($root . $path))
 				{
-					$fileid = ActiveRecord\Image::from
+					$fileid = \Icybee\Modules\Images\Image::from
 					(
 						$attached_params + array
 						(

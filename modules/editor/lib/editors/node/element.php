@@ -40,7 +40,7 @@ class NodeEditorElement extends Element implements EditorElement
 
 		if ($constructor == 'images')
 		{
-			$class = 'Brickrouge\Widget\PopImage';
+			$class = 'Icybee\Modules\Images\PopImage';
 		}
 
 		$rc .= (string) new $class

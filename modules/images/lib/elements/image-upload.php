@@ -9,9 +9,10 @@
  * file that was distributed with this source code.
  */
 
-namespace Brickrouge\Widget;
+namespace Icybee\Modules\Images;
 
 use ICanBoogie\Operation;
+
 use Brickrouge\Element;
 
 class ImageUpload extends \WdFileUploadElement
@@ -23,8 +24,8 @@ class ImageUpload extends \WdFileUploadElement
 	{
 		parent::add_assets($document);
 
-		$document->js->add('../public/slimbox.js');
-		$document->css->add('../public/slimbox.css');
+		$document->js->add('../../public/slimbox.js');
+		$document->css->add('../../public/slimbox.css');
 		$document->css->add('image-upload.css');
 	}
 

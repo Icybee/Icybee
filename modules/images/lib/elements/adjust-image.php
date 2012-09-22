@@ -9,12 +9,12 @@
  * file that was distributed with this source code.
  */
 
-namespace Brickrouge\Widget;
+namespace Icybee\Modules\Images;
 
 use ICanBoogie\ActiveRecord;
 use Brickrouge\Element;
 
-class AdjustImage extends AdjustNode
+class AdjustImage extends \Brickrouge\Widget\AdjustNode
 {
 	public function __construct(array $attributes=array())
 	{
@@ -36,8 +36,8 @@ class AdjustImage extends AdjustNode
 		$document->css->add('adjust-image.css');
 		$document->js->add('adjust-image.js');
 
-		$document->css->add('../public/manage.css');
-		$document->js->add('../public/manage.js');
+		$document->css->add('../../public/manage.css');
+		$document->js->add('../../public/manage.js');
 	}
 
 	protected function get_records($constructor, array $options, $limit=16)
@@ -86,4 +86,11 @@ class AdjustImage extends AdjustNode
 	{
 		return parent::get_results($options, $constructor);
 	}
+}
+
+namespace Brickrouge\Widget;
+
+class AdjustImage extends \Icybee\Modules\Images\AdjustImage
+{
+
 }

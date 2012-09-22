@@ -14,7 +14,7 @@ namespace Icybee\Modules\Editor;
 /**
  * "Image" editor element.
  */
-class ImageEditorElement extends \Brickrouge\Widget\PopImage implements EditorElement
+class ImageEditorElement extends \Icybee\Modules\Images\PopImage implements EditorElement
 {
 
 }

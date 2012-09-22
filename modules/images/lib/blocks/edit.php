@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace ICanBoogie\Modules\Images;
+namespace Icybee\Modules\Images;
 
 use Brickrouge\Element;
 use Brickrouge\Form;
@@ -22,7 +22,7 @@ class EditBlock extends \ICanBoogie\Modules\Files\EditBlock
 		'image/gif', 'image/png', 'image/jpeg'
 	);
 
-	protected $uploader_class = 'Brickrouge\Widget\ImageUpload';
+	protected $uploader_class = 'Icybee\Modules\Images\ImageUpload';
 
 	protected function get_children()
 	{

@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Brickrouge\Widget;
+namespace Icybee\Modules\Images;
 
 use Brickrouge\Element;
 

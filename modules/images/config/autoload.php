@@ -1,13 +1,18 @@
 <?php
 
+namespace Icybee\Modules\Images;
+
 $widgets_path = $path . 'widgets' . DIRECTORY_SEPARATOR;
 
 return array
 (
-	'Brickrouge\Widget\AdjustImage' => $widgets_path . 'adjust-image.php',
-	'Brickrouge\Widget\PopImage' => $widgets_path . 'pop-image.php',
-	'Brickrouge\Widget\ImageUpload' => $widgets_path . 'image-upload.php',
-	'Brickrouge\Widget\AdjustThumbnail' => $widgets_path . 'adjust-thumbnail.php',
+	__NAMESPACE__ . '\AdjustImage' => $path . 'lib/elements/adjust-image.php',
+	__NAMESPACE__ . '\AdjustThumbnail' => $path . 'lib/elements/adjust-thumbnail.php',
+	__NAMESPACE__ . '\ImageUpload' => $path . 'lib/elements/image-upload.php',
+	__NAMESPACE__ . '\PopImage' => $path . 'lib/elements/pop-image.php',
 
-	'ICanBoogie\Modules\Images\GalleryManager' => $path . 'gallery.manager.php'
+	'Brickrouge\Widget\AdjustImage' => $path . 'lib/elements/adjust-image.php', // TODO-20120922: COMPAT with /api/widgets/{class}/popup
+	'Brickrouge\Widget\AdjustThumbnail' => $path . 'lib/elements/adjust-thumbnail.php', // TODO-20120922: COMPAT with /api/widgets/{class}/popup
+
+	'Icybee\Modules\Images\GalleryManager' => $path . 'gallery.manager.php'
 );

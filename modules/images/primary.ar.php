@@ -9,9 +9,9 @@
  * file that was distributed with this source code.
  */
 
-namespace ICanBoogie\ActiveRecord;
+namespace Icybee\Modules\Images;
 
-class Image extends File
+class Image extends \ICanBoogie\ActiveRecord\File
 {
 	const WIDTH = 'width';
 	const HEIGHT = 'height';
@@ -28,6 +28,6 @@ class Image extends File
 
 	public function __toString()
 	{
-		return '<img src="' . wd_entities($this->path) . '" alt="' . wd_entities($this->alt) . '" />';
+		return '<img src="' . \ICanBoogie\escape($this->path) . '" alt="' . \ICanBoogie\escape($this->alt) . '" />';
 	}
 }

@@ -9,9 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace ICanBoogie\Modules\Images;
-
-use ICanBoogie\Image;
+namespace Icybee\Modules\Images;
 
 use Brickrouge\Element;
 use Brickrouge\Form;
@@ -30,7 +28,7 @@ class Module extends \ICanBoogie\Modules\Files\Module
 		'image/gif', 'image/png', 'image/jpeg'
 	);
 
-	protected $uploader_class = 'Brickrouge\Widget\ImageUpload';
+	protected $uploader_class = 'Icybee\Modules\Images\ImageUpload';
 	*/
 
 	/*

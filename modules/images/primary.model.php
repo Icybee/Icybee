@@ -9,9 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace ICanBoogie\Modules\Images;
-
-use ICanBoogie\ActiveRecord\Image;
+namespace Icybee\Modules\Images;
 
 class Model extends \ICanBoogie\Modules\Files\Model
 {

@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace ICanBoogie\Modules\Images;
+namespace Icybee\Modules\Images;
 
 use ICanBoogie\ActiveRecord;
 use ICanBoogie\ActiveRecord\Node;
@@ -23,7 +23,6 @@ use ICanBoogie\Operation;
 
 use Brickrouge\Element;
 use Brickrouge\Form;
-use Brickrouge\Widget;
 
 use Icybee\Modules\Views\ActiveRecordProvider\AlterResultEvent;
 
@@ -34,7 +33,7 @@ class Hooks
 	 *
 	 * @param Node $ar
 	 *
-	 * @return ICanBoogie\ActiveRecord\Image|null
+	 * @return Icybee\Modules\Images\Image|null
 	 */
 	static public function get_image(Node $ar)
 	{
@@ -131,7 +130,7 @@ class Hooks
 			$imageid = $block->record->metas['resources_images.imageid'];
 		}
 
-		$event->children['resources_images[imageid]'] = new Widget\PopImage
+		$event->children['resources_images[imageid]'] = new PopImage
 		(
 			array
 			(
@@ -183,7 +182,7 @@ class Hooks
 		{
 			$id = \ICanBoogie\normalize($view_id);
 
-			$thumbnails["global[thumbnailer.versions][$id]"] = new Widget\PopThumbnailVersion
+			$thumbnails["global[thumbnailer.versions][$id]"] = new \Brickrouge\Widget\PopThumbnailVersion
 			(
 				array
 				(
@@ -209,7 +208,7 @@ class Hooks
 					)
 				),
 
-				"global[resources_images.inject][$target_flat_id.default]" => new Widget\PopImage
+				"global[resources_images.inject][$target_flat_id.default]" => new PopImage
 				(
 					array
 					(

@@ -9,11 +9,9 @@
  * file that was distributed with this source code.
  */
 
-namespace ICanBoogie\Modules\Images;
+namespace Icybee\Modules\Images;
 
-use ICanBoogie\Modules;
-
-class SaveOperation extends Modules\Files\SaveOperation
+class SaveOperation extends \ICanBoogie\Modules\Files\SaveOperation
 {
 	protected $accept = array
 	(

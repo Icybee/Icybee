@@ -48,7 +48,7 @@ class ImageEditor implements Editor
 	/**
 	 * Returns image active record.
 	 *
-	 * @return ICanBoogie\ActiveRecord\Image
+	 * @return Icybee\Modules\Images\Image
 	 *
 	 * @see Icybee\Modules\Editor.Editor::render()
 	 */

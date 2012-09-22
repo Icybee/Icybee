@@ -155,7 +155,7 @@ EOT;
 
 			$node = $core->models['nodes'][$entry->nid];
 
-			if ($node instanceof ActiveRecord\Image)
+			if ($node instanceof \Icybee\Modules\Images\Image)
 			{
 				$preview = $node->thumbnail('$icon');
 			}

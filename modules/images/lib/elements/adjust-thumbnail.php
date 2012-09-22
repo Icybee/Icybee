@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Brickrouge\Widget;
+namespace Icybee\Modules\Images;
 
 use Brickrouge\Element;
 
@@ -27,7 +27,7 @@ class AdjustThumbnail extends \Brickrouge\Widget
 				Element::CHILDREN => array
 				(
 					$this->adjust_image = new AdjustImage,
-					$this->adjust_thumbnail_options = new AdjustThumbnailOptions
+					$this->adjust_thumbnail_options = new \Brickrouge\Widget\AdjustThumbnailOptions
 				),
 
 				'class' => 'adjust',
@@ -48,4 +48,11 @@ class AdjustThumbnail extends \Brickrouge\Widget
 	{
 		return parent::render_inner_html() . '<div class="more">✔</div>';
 	}
+}
+
+namespace Brickrouge\Widget;
+
+class AdjustThumbnail extends \Icybee\Modules\Images\AdjustThumbnail
+{
+
 }

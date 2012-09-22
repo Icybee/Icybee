@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace ICanBoogie\Modules\Images;
+namespace Icybee\Modules\Images;
 
 use ICanBoogie\Operation;
 use Brickrouge\Element;
