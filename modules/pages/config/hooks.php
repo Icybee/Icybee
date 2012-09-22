@@ -26,7 +26,7 @@ return array
 
 	'prototypes' => array
 	(
-		'ICanBoogie\ActiveRecord\Site::get_home' => $hooks . 'get_home',
+		'Icybee\Modules\Sites\Site::get_home' => $hooks . 'get_home',
 		'ICanBoogie\Core::volatile_get_page' => $hooks . 'get_page'
 	),
 

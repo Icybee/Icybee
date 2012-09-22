@@ -9,11 +9,8 @@
  * file that was distributed with this source code.
  */
 
-namespace ICanBoogie\ActiveRecord;
+namespace Icybee\Modules\Sites;
 
-use ICanBoogie\Modules\Sites\ServerName;
-
-use ICanBoogie\ActiveRecord;
 use ICanBoogie\Debug;
 
 /**
@@ -85,19 +82,25 @@ class Site extends \ICanBoogie\ActiveRecord
 		unset($this->_model);
 	}
 
+	/**
+	 * Clears the sites cache.
+	 *
+	 * @see ICanBoogie.ActiveRecord::save()
+	 */
 	public function save()
 	{
 		global $core;
-
-		#
-		# before saving the site we clear the stes cache.
-		#
 
 		unset($core->vars['cached_sites']);
 
 		return parent::save();
 	}
 
+	/**
+	 * Returns the URL of the website.
+	 *
+	 * @return string
+	 */
 	protected function get_url()
 	{
 		$parts = explode('.', $_SERVER['SERVER_NAME']);
@@ -326,8 +329,6 @@ class Site extends \ICanBoogie\ActiveRecord
 		$this->_server_name = $server_name;
 	}
 }
-
-namespace ICanBoogie\Modules\Sites;
 
 class ServerName
 {

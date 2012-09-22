@@ -9,11 +9,11 @@
  * file that was distributed with this source code.
  */
 
-namespace ICanBoogie\Modules\Sites;
+namespace Icybee\Modules\Sites;
+
+use Icybee\Modules\Sites\Site;
 
 use Brickrouge\DropdownMenu;
-
-use ICanBoogie\ActiveRecord\Site;
 
 class ManageBlock extends \WdManager
 {

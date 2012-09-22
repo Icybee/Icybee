@@ -35,7 +35,7 @@ class MetasHandler implements \ArrayAccess
 			$this->targetid = $target->uid;
 			$type = 'user';
 		}
-		else if ($target instanceof ActiveRecord\Site)
+		else if ($target instanceof \Icybee\Modules\Sites\Site)
 		{
 			$this->targetid = $target->siteid;
 			$type = 'site';

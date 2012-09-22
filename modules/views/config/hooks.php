@@ -20,8 +20,8 @@ return array
 		'ICanBoogie\ActiveRecord\Node::absolute_url' => $hooks . 'absolute_url',
 		'ICanBoogie\ActiveRecord\Node::get_url' => $hooks . 'get_url',
 		'ICanBoogie\ActiveRecord\Node::get_absolute_url' => $hooks . 'get_absolute_url',
-		'ICanBoogie\ActiveRecord\Site::resolve_view_target' => $hooks . 'resolve_view_target',
-		'ICanBoogie\ActiveRecord\Site::resolve_view_url' => $hooks . 'resolve_view_url',
+		'Icybee\Modules\Sites\Site::resolve_view_target' => $hooks . 'resolve_view_target',
+		'Icybee\Modules\Sites\Site::resolve_view_url' => $hooks . 'resolve_view_url',
 		'ICanBoogie\Core::get_views' => __NAMESPACE__ . '\Collection::get'
 	),
 

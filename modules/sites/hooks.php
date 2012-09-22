@@ -9,15 +9,11 @@
  * file that was distributed with this source code.
  */
 
-namespace ICanBoogie\Modules\Sites;
+namespace Icybee\Modules\Sites;
 
-use ICanBoogie\ActiveRecord;
-use ICanBoogie\ActiveRecord\Site;
-use ICanBoogie\Exception;
 use ICanBoogie\HTTP\Dispatcher;
 use ICanBoogie\HTTP\Response;
 use ICanBoogie\HTTP\Request;
-use ICanBoogie\HTTP\Request\Context;
 use ICanBoogie\Route;
 
 class Hooks
@@ -105,12 +101,12 @@ class Hooks
 	 *
 	 * This is the getter for the nodes' `site` magic property.
 	 *
-	 * @param ActiveRecord\Node $node
+	 * @param \ICanBoogie\ActiveRecord\Node $node
 	 *
-	 * @return \ICanBoogie\ActiveRecord\Site|null The site active record associate with the node,
+	 * @return \Icybee\Modules\Sites\Site|null The site active record associate with the node,
 	 * or null if the node is not associated to a specific site.
 	 */
-	static public function get_node_site(ActiveRecord\Node $node)
+	static public function get_node_site(\ICanBoogie\ActiveRecord\Node $node)
 	{
 		global $core;
 
@@ -125,9 +121,9 @@ class Hooks
 	/**
 	 * Returns the active record for the current site.
 	 *
-	 * This is the getter for the core's {@link \ICanBoogie\ActiveRecord\Site::site} magic property.
+	 * This is the getter for the core's {@link \Icybee\Modules\Sites\Site::site} magic property.
 	 *
-	 * @return \ICanBoogie\ActiveRecord\Site
+	 * @return \Icybee\Modules\Sites\Site
 	 */
 	static public function get_core_site(\ICanBoogie\Core $core)
 	{
@@ -137,7 +133,7 @@ class Hooks
 	/**
 	 * Returns the key of the current site.
 	 *
-	 * This is the getter for the core's {@link \ICanBoogie\ActiveRecord\Site::site_id} magic
+	 * This is the getter for the core's {@link \Icybee\Modules\Sites\Site::site_id} magic
 	 * property.
 	 *
 	 * @param \ICanBoogie\Core $core
@@ -156,9 +152,9 @@ class Hooks
 	 *
 	 * This is the getter for the {@link \ICanBoogie\HTTP\Request\Context::site} magic property.
 	 *
-	 * @return \ICanBoogie\ActiveRecord\Site
+	 * @return \Icybee\Modules\Sites\Site
 	 */
-	public static function get_site_for_request_context(Context $context)
+	static public function get_site_for_request_context(Request\Context $context)
 	{
 		return Model::find_by_request($context->request);
 	}
@@ -170,7 +166,7 @@ class Hooks
 	 *
 	 * @return int
 	 */
-	public static function get_site_id_for_request_context(Context $context)
+	static public function get_site_id_for_request_context(Request\Context $context)
 	{
 		return $context->site ? $context->site->siteid : null;
 	}

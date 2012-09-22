@@ -11,15 +11,9 @@
 
 namespace ICanBoogie\Modules\System\Registry;
 
-use ICanBoogie\ActiveRecord;
-use ICanBoogie\Core;
 use ICanBoogie\Event;
 use ICanBoogie\Exception;
-use ICanBoogie\Modules;
 use ICanBoogie\Operation;
-use ICanBoogie\Operation\ProcessEvent;
-
-use Icybee\EditBlock\AlterValuesEvent;
 
 class Hooks
 {
@@ -28,12 +22,12 @@ class Hooks
 	 * "sites" active records.
 	 *
 	 * @param object An instance of ICanBoogie\ActiveRecord\Node, ICanBoogie\ActiveRecord\User or
-	 * ICanBoogie\ActiveRecord\Site.
+	 * Icybee\Modules\Sites\Site.
 	 *
 	 * @return object A MetasHandler object that can be used to access or modify the metadatas
 	 * associated with that object.
 	 */
-	public static function method_get_metas(ActiveRecord $target)
+	public static function method_get_metas(\ICanBoogie\ActiveRecord $target)
 	{
 		return new MetasHandler($target);
 	}
@@ -41,11 +35,11 @@ class Hooks
 	/**
 	 * This si the callback for the `registry` virtual property added to the core object.
 	 *
-	 * @param Core $target The core object.
+	 * @param \ICanBoogie\Core $target The core object.
 	 * @return Module The "system.registry" module.
 	 */
 
-	public static function method_get_registry(Core $target)
+	public static function method_get_registry(\ICanBoogie\Core $target)
 	{
 		return $target->models['system.registry'];
 	}
@@ -59,7 +53,7 @@ class Hooks
 	 *
 	 * @throws Exception
 	 */
-	static public function on_editblock_alter_values(AlterValuesEvent $event, \Icybee\EditBlock $block)
+	static public function on_editblock_alter_values(\Icybee\EditBlock\AlterValuesEvent $event, \Icybee\EditBlock $target)
 	{
 		global $core;
 
@@ -70,21 +64,21 @@ class Hooks
 
 		$module = $event->module;
 
-		if ($module instanceof Modules\Nodes\Module)
+		if ($module instanceof \ICanBoogie\Modules\Nodes\Module)
 		{
 			$type = 'node';
 		}
-		else if ($module instanceof Modules\Users\Module)
+		else if ($module instanceof \ICanBoogie\Modules\Users\Module)
 		{
 			$type = 'user';
 		}
-		else if ($module instanceof Modules\Sites\Module)
+		else if ($module instanceof \Icybee\Modules\Sites\Module)
 		{
 			$type = 'site';
 		}
 		else
 		{
-			throw new Exception('Metadatas are not supported for instances of the given class: %class', array('%class' => get_class($sender)));
+			throw new Exception('Metadatas are not supported for instances of the given class: %class', array('%class' => get_class($target)));
 		}
 
 		$model = $core->models['system.registry/' . $type];
@@ -94,7 +88,7 @@ class Hooks
 
 		if (isset($values['metas']))
 		{
-			if ($values['metas'] instanceof MetasHandler)
+			if ($values['metas'] instanceof \ICanBoogie\Modules\System\Registry\MetasHandler)
 			{
 				$values['metas'] = $values['metas']->to_a();
 			}
@@ -114,7 +108,7 @@ class Hooks
 	 *
 	 * @throws Exception
 	 */
-	public static function on_operation_save(ProcessEvent $event, \ICanBoogie\SaveOperation $sender)
+	public static function on_operation_save(Operation\ProcessEvent $event, \ICanBoogie\SaveOperation $sender)
 	{
 		global $core;
 
@@ -127,15 +121,15 @@ class Hooks
 
 		$targetid = $event->rc['key'];
 
-		if ($sender instanceof Modules\Nodes\SaveOperation)
+		if ($sender instanceof \ICanBoogie\Modules\Nodes\SaveOperation)
 		{
 			$type = 'node';
 		}
-		else if ($sender instanceof Modules\Users\SaveOperation)
+		else if ($sender instanceof \ICanBoogie\Modules\Users\SaveOperation)
 		{
 			$type = 'user';
 		}
-		else if ($sender instanceof Modules\Sites\SaveOperation)
+		else if ($sender instanceof \Icybee\Modules\Sites\SaveOperation)
 		{
 			$type = 'site';
 		}
@@ -207,21 +201,21 @@ class Hooks
 		$model->connection->commit();
 	}
 
-	static public function on_operation_delete(ProcessEvent $event, \ICanBoogie\DeleteOperation $operation)
+	static public function on_operation_delete(Operation\ProcessEvent $event, \ICanBoogie\DeleteOperation $operation)
 	{
 		global $core;
 
 		$module = $operation->module;
 
-		if ($module instanceof Modules\Nodes\Module)
+		if ($module instanceof \ICanBoogie\Modules\Nodes\Module)
 		{
 			$type = 'node';
 		}
-		else if ($module instanceof Modules\Users\Module)
+		else if ($module instanceof \ICanBoogie\Modules\Users\Module)
 		{
 			$type = 'user';
 		}
-		else if ($module instanceof Modules\Sites\Module)
+		else if ($module instanceof \Icybee\Modules\Sites\Module)
 		{
 			$type = 'site';
 		}

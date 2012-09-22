@@ -9,10 +9,9 @@
  * file that was distributed with this source code.
  */
 
-namespace ICanBoogie\Modules\Sites;
+namespace Icybee\Modules\Sites;
 
 use ICanBoogie\ActiveRecord\ActiveRecordException;
-use ICanBoogie\ActiveRecord\Site;
 use ICanBoogie\ActiveRecord\User;
 use ICanBoogie\HTTP\Request;
 
@@ -131,31 +130,12 @@ class Model extends \ICanBoogie\ActiveRecord\Model
 				$score += 1;
 			}
 
-// 			\ICanBoogie\log("$site->title ($site->admin_title) scored: $score");
-
 			if ($score > $match_score)
 			{
 				$match = $site;
 				$match_score = $score;
 			}
 		}
-
-		/*DIRTY
-		#
-		# if we couldn't find a match and the path is the index we return the first online site.
-		#
-
-		if (!$match && $path == '/')
-		{
-			foreach ($sites as $site)
-			{
-				if ($site->status == 1)
-				{
-					return $site;
-				}
-			}
-		}
-		*/
 
 		return $match ? $match : self::get_default_site();
 	}
@@ -165,7 +145,7 @@ class Model extends \ICanBoogie\ActiveRecord\Model
 	/**
 	 * Returns a default site active record.
 	 *
-	 * @return ActiveRecord\Site
+	 * @return Site
 	 */
 	private static function get_default_site()
 	{

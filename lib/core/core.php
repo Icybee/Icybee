@@ -30,7 +30,7 @@ use Brickrouge\Document;
  * The following properties are injected by the "sites" module.
  *
  * @property int $site_id Identifier of the current site.
- * @property ICanBoogie\ActiveRecord\Site $site Current site object.
+ * @property Icybee\Modules\Sites\Site $site Current site object.
  *
  * The following properties are injected by the "users" module.
  *
@@ -170,7 +170,7 @@ class Core extends \ICanBoogie\Core
 	 */
 	protected function run_context()
 	{
-		$this->site = $site = \ICanBoogie\Modules\Sites\Model::find_by_request($this->initial_request);
+		$this->site = $site = \Icybee\Modules\Sites\Model::find_by_request($this->initial_request);
 		$this->language = $site->language;
 
 		if ($site->timezone)

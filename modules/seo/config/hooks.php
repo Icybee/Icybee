@@ -7,7 +7,7 @@ return array
 	'events' => array
 	(
 		'Icybee\Modules\Pages\EditBlock::alter_children' => __NAMESPACE__ . '::on_page_editblock_alter_children',
-		'ICanBoogie\Modules\Sites\EditBlock::alter_children' => __NAMESPACE__ . '::on_site_editblock_alter_children',
+		'Icybee\Modules\Sites\EditBlock::alter_children' => __NAMESPACE__ . '::on_site_editblock_alter_children',
 		'Icybee\Modules\Pages\PageController::render' => __NAMESPACE__ . '::on_page_controller_render',
 		'Icybee\Modules\Pages\ExportOperation::process' => __NAMESPACE__ . '::on_operation_export',
 		'Brickrouge\Document::render_title:before' => __NAMESPACE__ . '::on_document_render_title',

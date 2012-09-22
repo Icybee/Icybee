@@ -13,7 +13,7 @@ namespace Icybee;
 
 use ICanBoogie;
 use ICanBoogie\ActiveRecord\Query;
-use ICanBoogie\ActiveRecord\Site;
+use Icybee\Modules\Sites\Site;
 use ICanBoogie\Exception;
 use ICanBoogie\Event;
 use ICanBoogie\I18n;

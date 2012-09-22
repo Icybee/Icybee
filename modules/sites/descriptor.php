@@ -1,17 +1,18 @@
 <?php
 
-use ICanBoogie\Module;
+namespace Icybee\Modules\Sites;
+
 use ICanBoogie\ActiveRecord\Model;
+use ICanBoogie\Module;
 
 return array
 (
-	Module::T_TITLE => 'Sites',
 	Module::T_CATEGORY => 'site',
-	Module::T_REQUIRED => true,
 	Module::T_MODELS => array
 	(
 		'primary' => array
 		(
+			Model::T_ACTIVERECORD_CLASS => __NAMESPACE__ . '\Site',
 			Model::T_SCHEMA => array
 			(
 				'fields' => array
@@ -34,5 +35,10 @@ return array
 				)
 			)
 		)
-	)
+	),
+
+	Module::T_NAMESPACE => __NAMESPACE__,
+	Module::T_REQUIRED => true,
+	Module::T_TITLE => 'Sites',
+	Module::T_VERSION => '1.0'
 );

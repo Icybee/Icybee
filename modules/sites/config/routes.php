@@ -12,11 +12,6 @@ return array
 
 	),
 
-	/*'!admin:config' => array
-	(
-
-	),*/
-
 	'!admin:edit' => array
 	(
 

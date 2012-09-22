@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace ICanBoogie\Modules\Sites;
+namespace Icybee\Modules\Sites;
 
 class SaveOperation extends \Icybee\SaveOperation
 {

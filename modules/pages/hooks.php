@@ -12,7 +12,7 @@
 namespace Icybee\Modules\Pages;
 
 use ICanBoogie\ActiveRecord;
-use ICanBoogie\ActiveRecord\Site;
+use Icybee\Modules\Sites\Site;
 use ICanBoogie\Event;
 use ICanBoogie\FileCache;
 use ICanBoogie\HTTP\Dispatcher;
@@ -163,7 +163,7 @@ class Hooks
 	/**
 	 * Returns the home page of the target site.
 	 *
-	 * @param ICanBoogie\ActiveRecord\Site $site
+	 * @param Icybee\Modules\Sites\Site $site
 	 *
 	 * @return Icybee\Modules\Pages\Page|null The home page of the target site or null if there is
 	 * none.

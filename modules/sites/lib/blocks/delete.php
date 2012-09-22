@@ -9,12 +9,13 @@
  * file that was distributed with this source code.
  */
 
-namespace ICanBoogie\Modules\Sites;
+namespace Icybee\Modules\Sites;
 
 class DeleteBlock extends \Icybee\DeleteBlock
 {
 	/**
-	 * (non-PHPdoc)
+	 * Returns the title of the record.
+	 *
 	 * @see Icybee.DeleteBlock::get_record_name()
 	 */
 	protected function get_record_name()

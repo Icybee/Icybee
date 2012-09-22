@@ -173,7 +173,7 @@ class EditBlock extends FormBlock
 
 		$record = $this->record;
 
-		if ($record && !($record instanceof \ICanBoogie\ActiveRecord\Site)
+		if ($record && !($record instanceof \Icybee\Modules\Sites\Site)
 		&& !empty($record->siteid) && $record->siteid != $core->site_id)
 		{
 			$url = $core->models['sites'][$record->siteid]->url;

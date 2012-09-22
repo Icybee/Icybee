@@ -139,9 +139,9 @@ EOT;
 	 * and Google Site Verification keys.
 	 *
 	 * @param Event $event
-	 * @param \ICanBoogie\Modules\Sites\Module $sender
+	 * @param \Icybee\Modules\Sites\Module $sender
 	 */
-	public static function on_site_editblock_alter_children(Event $event, \ICanBoogie\Modules\Sites\EditBlock $block)
+	public static function on_site_editblock_alter_children(Event $event, \Icybee\Modules\Sites\EditBlock $block)
 	{
 		$event->attributes[Element::GROUPS]['seo'] = array
 		(

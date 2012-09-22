@@ -9,9 +9,9 @@
  * file that was distributed with this source code.
  */
 
-namespace ICanBoogie\Modules\Sites;
+namespace Icybee\Modules\Sites;
 
-use ICanBoogie\ActiveRecord\Site;
+use Icybee\Modules\Sites\Site;
 use ICanBoogie\Errors;
 
 class StatusOperation extends \ICanBoogie\Operation

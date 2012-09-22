@@ -13,10 +13,11 @@ namespace Icybee\Modules\Views;
 
 use ICanBoogie\ActiveRecord;
 use ICanBoogie\ActiveRecord\Node;
-use ICanBoogie\ActiveRecord\Site;
 use ICanBoogie\Modules\System\Cache\Collection as CacheCollection;
 use ICanBoogie\Operation;
 use ICanBoogie\Route;
+
+use Icybee\Modules\Sites\Site;
 
 class Hooks
 {
@@ -220,7 +221,7 @@ class Hooks
 	/**
 	 * Returns the URL of a view.
 	 *
-	 * @param ActiveRecord\Site $site
+	 * @param Site $site
 	 * @param string $viewid
 	 *
 	 * @return string
