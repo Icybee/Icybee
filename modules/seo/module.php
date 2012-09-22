@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace ICanBoogie\Modules\Seo;
+namespace Icybee\Modules\Seo;
 
 class Module extends \Icybee\Module
 {
