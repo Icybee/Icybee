@@ -12,7 +12,7 @@
 
 		<div class="contents">
 			<wdp:if test="@image">
-			<img src="#{@image.thumbnail('contents-news-home').url}" alt="#{@image.alt}" class="illustration" />
+			<img src="#{@image.thumbnail('news-home').url}" alt="#{@image.alt}" class="illustration" />
 			</wdp:if>
 
 			#{@excerpt=}
@@ -21,4 +21,4 @@
 </wdp:foreach>
 </ol>
 
-<p class="goto-list"><a href="#{url:contents.news/list}">#{t:All records}</a></p>
+<p class="goto-list"><a href="#{url:news/list}">#{t:All records}</a></p>

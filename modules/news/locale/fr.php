@@ -2,7 +2,7 @@
 
 return array
 (
-	'contents_news' => array
+	'news' => array
 	(
 		'count' => array
 		(
@@ -36,5 +36,5 @@ return array
 		'All records' => 'Toutes les actualités',
 	),
 
-	'module_title.contents_news' => 'Actualités'
+	'module_title.news' => 'Actualités'
 );

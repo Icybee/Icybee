@@ -436,7 +436,7 @@ EOT;
 
 			$module_id = $route['module'];
 
-			if (!$user->has_permission(Module::PERMISSION_CREATE, $module_id))
+			if (!isset($core->modules[$module_id]) || !$user->has_permission(Module::PERMISSION_CREATE, $module_id))
 			{
 				continue;
 			}

@@ -90,7 +90,7 @@ class View extends Object
 	public $module_id;
 	public $type;
 
-	public function __construct($id, $options, $engine, $document, $page, $template=null)
+	public function __construct($id, array $options, $engine, $document, $page, $template=null)
 	{
 		unset($this->module);
 

@@ -151,9 +151,14 @@ class Collection implements \ArrayAccess, \IteratorAggregate
 	 *
 	 * @see ArrayAccess::offsetGet()
 	 */
-	public function offsetGet($offset)
+	public function offsetGet($id)
 	{
-		return $this->offsetExists($offset) ? $this->collection[$offset] : null;
+		if (!$this->offsetExists($id))
+		{
+			throw new Collection\ViewNotDefined($id);
+		}
+
+		return $this->collection[$id];
 	}
 
 	/**
@@ -201,5 +206,16 @@ class CollectEvent extends \ICanBoogie\Event
 	public function __construct(\Icybee\Modules\Views\Collection $target, array $properties)
 	{
 		parent::__construct($target, 'collect', $properties);
+	}
+}
+
+/**
+ * Exception thrown when a view is not defined.
+ */
+class ViewNotDefined extends \RuntimeException
+{
+	public function __construct($id, $code=500, \Exception $previous=null)
+	{
+		parent::__construct("View not defined: $id.", $code, $previous);
 	}
 }

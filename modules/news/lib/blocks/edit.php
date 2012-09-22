@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace ICanBoogie\Modules\Contents\News;
+namespace Icybee\Modules\News;
 
 use ICanBoogie\ActiveRecord\Content;
 
