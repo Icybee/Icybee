@@ -9,14 +9,14 @@
  * file that was distributed with this source code.
  */
 
-namespace Icybee\Views\Articles;
+namespace Icybee\Modules\Articles;
 
-class Archives extends \Icybee\Modules\Views\View
+class ArchivesView extends \Icybee\Modules\Views\View
 {
 	/**
 	 * Returns records grouped by month.
 	 *
-	 * @see Icybee\Views.View::provide()
+	 * @see Icybee\Modules\Views.View::provide()
 	 */
 	protected function provide($provider, &$context, array $conditions)
 	{

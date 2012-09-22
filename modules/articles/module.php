@@ -9,20 +9,14 @@
  * file that was distributed with this source code.
  */
 
-namespace ICanBoogie\Modules\Articles;
-
-use ICanBoogie\ActiveRecord\Content;
-use ICanBoogie\ActiveRecord\Query;
-use Brickrouge;
-use Brickrouge\Form;
-use Brickrouge\Element;
+namespace Icybee\Modules\Articles;
 
 class Module extends \ICanBoogie\Modules\Contents\Module
 {
 	/**
 	 * Adds the "archives" view type and adds assets to the inherited "list" view type.
 	 *
-	 * @see ICanBoogie\Module.Contents::get_views()
+	 * @see ICanBoogie\Modules\Contents.Module::get_views()
 	 */
 	protected function get_views()
 	{
@@ -43,7 +37,7 @@ class Module extends \ICanBoogie\Modules\Contents\Module
 				'archives' => array
 				(
 					'title' => "Archives des articles",
-					'class' => 'Icybee\Views\Articles\Archives',
+					'class' => __NAMESPACE__ . '\ArchivesView',
 					'provider' => 'ICanBoogie\Modules\Contents\Provider',
 					'assets' => $assets,
 					'renders' => \Icybee\Modules\Views\View::RENDERS_MANY

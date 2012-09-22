@@ -1,6 +1,8 @@
 <?php
 
+namespace Icybee\Modules\Articles;
+
 return array
 (
-	'Icybee\Views\Articles\Archives' => $path . 'lib/views/archives.php'
+	__NAMESPACE__ . '\ArchivesView' => $path . 'lib/views/archives.php'
 );

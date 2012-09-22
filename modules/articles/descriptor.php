@@ -1,6 +1,9 @@
 <?php
 
+namespace Icybee\Modules\Articles;
+
 use ICanBoogie\Module;
+use ICanBoogie\ActiveRecord\Model;
 
 return array
 (
@@ -9,9 +12,14 @@ return array
 	Module::T_EXTENDS => 'contents',
 	Module::T_MODELS => array
 	(
-		'primary' => 'inherit'
+		'primary' => array
+		(
+			Model::T_ACTIVERECORD_CLASS => __NAMESPACE__ . '\Article',
+			Model::T_EXTENDS => 'contents'
+		)
 	),
 
+	Module::T_NAMESPACE => __NAMESPACE__,
 	Module::T_TITLE => 'Articles',
-	Module::T_VERSION => '1.x'
+	Module::T_VERSION => '1.0'
 );

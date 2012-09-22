@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace ICanBoogie\Modules\Articles;
+namespace Icybee\Modules\Articles;
 
 use ICanBoogie\Event;
 
@@ -23,8 +23,7 @@ class Hooks
 	 *
 	 * @param Event $event
 	 */
-
-	public static function resources_files_path_change(Event $event)
+	public static function resources_files_path_change(Event $event) // TODO-20120922: move this to contents module
 	{
 		global $core;
 
@@ -226,7 +225,7 @@ class Hooks
 		$model = $core->models['articles'];
 
 		$entries = $model->query('SELECT ' . $query, $params)
-		->fetchAll($p_group ? \PDO::FETCH_GROUP | \PDO::FETCH_CLASS : \PDO::FETCH_CLASS, 'ICanBoogie\ActiveRecord\Content', array($model));
+		->fetchAll($p_group ? \PDO::FETCH_GROUP | \PDO::FETCH_CLASS : \PDO::FETCH_CLASS, __NAMESPACE__ . '\Article', array($model));
 
 		return $patron($template, $entries);
 	}
@@ -247,7 +246,7 @@ class Hooks
 			INNER JOIN {prefix}users USING(uid)
 			WHERE is_online = 1 ORDER BY `username`, `date` DESC'
 		)
-		->fetchAll(\PDO::FETCH_GROUP | \PDO::FETCH_CLASS, 'ICanBoogie\ActiveRecord\Content', array($model));
+		->fetchAll(\PDO::FETCH_GROUP | \PDO::FETCH_CLASS, __NAMESPACE__ . '\Article', array($model));
 
 		return $patron($template, $entries);
 	}

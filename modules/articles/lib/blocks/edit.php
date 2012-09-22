@@ -9,9 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace ICanBoogie\Modules\Articles;
-
-use ICanBoogie\ActiveRecord\Content;
+namespace Icybee\Modules\Articles;
 
 use Brickrouge\Form;
 use Brickrouge\Element;
@@ -24,7 +22,7 @@ class EditBlock extends \ICanBoogie\Modules\Contents\EditBlock
 		(
 			parent::get_children(), array
 			(
-				Content::DATE => new \Brickrouge\DateTime
+				Article::DATE => new \Brickrouge\DateTime
 				(
 					array
 					(
