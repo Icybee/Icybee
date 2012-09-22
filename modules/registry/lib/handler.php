@@ -9,9 +9,8 @@
  * file that was distributed with this source code.
  */
 
-namespace ICanBoogie\Modules\System\Registry;
+namespace Icybee\Modules\Registry;
 
-use ICanBoogie\ActiveRecord;
 use ICanBoogie\Exception;
 
 /**
@@ -20,17 +19,17 @@ use ICanBoogie\Exception;
  */
 class MetasHandler implements \ArrayAccess
 {
-	private static $models;
+	static private $models;
 	private $values;
 
-	public function __construct($target)
+	public function __construct(\ICanBoogie\ActiveRecord $target)
 	{
-		if ($target instanceof ActiveRecord\Node)
+		if ($target instanceof \ICanBoogie\ActiveRecord\Node)
 		{
 			$this->targetid = $target->nid;
 			$type = 'node';
 		}
-		else if ($target instanceof ActiveRecord\User)
+		else if ($target instanceof \ICanBoogie\ActiveRecord\User)
 		{
 			$this->targetid = $target->uid;
 			$type = 'user';
@@ -42,14 +41,14 @@ class MetasHandler implements \ArrayAccess
 		}
 		else
 		{
-			throw new Exception('Metadatas are not supported for instances of the given class: %class', array('%class' => get_class($target)));
+			throw new Exception('Metadatas are not supported for instances of %class', array('%class' => get_class($target)));
 		}
 
 		if (empty(self::$models[$type]))
 		{
 			global $core;
 
-			self::$models[$type] = $core->models['system.registry/' . $type];
+			self::$models[$type] = $core->models['registry/' . $type];
 		}
 
 		$this->model = self::$models[$type];
@@ -81,8 +80,6 @@ class MetasHandler implements \ArrayAccess
 
 		if ($value === null)
 		{
-			//\ICanBoogie\log('delete %name because is has been set to null', array('%name' => $name));
-
 			$this->model->filter_by_targetid_and_name($this->targetid, $name)->delete();
 		}
 		else

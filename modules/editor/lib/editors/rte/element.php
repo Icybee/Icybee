@@ -11,8 +11,6 @@
 
 namespace ICanBoogie\Modules\Editor;
 
-use ICanBoogie\Modules;
-
 use Brickrouge\Document;
 use Brickrouge\Element;
 
@@ -74,7 +72,7 @@ class RTEEditorElement extends Element implements EditorElement
 
 		if (!$css)
 		{
-			$info = Modules\Pages\Module::get_template_info('page.html');
+			$info = \Icybee\Modules\Pages\Module::get_template_info('page.html');
 
 			if (isset($info[1]))
 			{

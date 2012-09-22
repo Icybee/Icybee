@@ -20,7 +20,7 @@ use ICanBoogie\Route;
 use Brickrouge\Document;
 
 /**
- * The following properties are injected by the "system.registry" module.
+ * The following properties are injected by the "registry" module.
  *
  * @property ICanBoogie\Modules\Editor\Collection $editors Editors collection. The getter is
  * injected by the "Editors" module.

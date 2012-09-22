@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace ICanBoogie\Modules\System\Registry;
+namespace Icybee\Modules\Registry;
 
 use ICanBoogie\Event;
 use ICanBoogie\Exception;
@@ -21,13 +21,13 @@ class Hooks
 	 * This is the callback for the `metas` virtual property added to the "nodes", "users" and
 	 * "sites" active records.
 	 *
-	 * @param object An instance of ICanBoogie\ActiveRecord\Node, ICanBoogie\ActiveRecord\User or
-	 * Icybee\Modules\Sites\Site.
+	 * @param object An instance of {@link ICanBoogie\ActiveRecord\Node},
+	 * {@link ICanBoogie\ActiveRecord\User} or {@link Icybee\Modules\Sites\Site}.
 	 *
 	 * @return object A MetasHandler object that can be used to access or modify the metadatas
 	 * associated with that object.
 	 */
-	public static function method_get_metas(\ICanBoogie\ActiveRecord $target)
+	static public function get_metas(\ICanBoogie\ActiveRecord $target)
 	{
 		return new MetasHandler($target);
 	}
@@ -36,12 +36,13 @@ class Hooks
 	 * This si the callback for the `registry` virtual property added to the core object.
 	 *
 	 * @param \ICanBoogie\Core $target The core object.
-	 * @return Module The "system.registry" module.
+	 *
+	 * @return Module The "registry" model.
 	 */
 
-	public static function method_get_registry(\ICanBoogie\Core $target)
+	static public function get_registry(\ICanBoogie\Core $target)
 	{
-		return $target->models['system.registry'];
+		return $target->models['registry'];
 	}
 
 	/**
@@ -81,14 +82,14 @@ class Hooks
 			throw new Exception('Metadatas are not supported for instances of the given class: %class', array('%class' => get_class($target)));
 		}
 
-		$model = $core->models['system.registry/' . $type];
+		$model = $core->models['registry/' . $type];
 		$metas = $model->select('name, value')->filter_by_targetid($event->key)->pairs;
 
 		$values = &$event->values;
 
 		if (isset($values['metas']))
 		{
-			if ($values['metas'] instanceof \ICanBoogie\Modules\System\Registry\MetasHandler)
+			if ($values['metas'] instanceof \Icybee\Modules\Registry\MetasHandler)
 			{
 				$values['metas'] = $values['metas']->to_a();
 			}
@@ -108,7 +109,7 @@ class Hooks
 	 *
 	 * @throws Exception
 	 */
-	public static function on_operation_save(Operation\ProcessEvent $event, \ICanBoogie\SaveOperation $sender)
+	static public function on_operation_save(Operation\ProcessEvent $event, \ICanBoogie\SaveOperation $sender)
 	{
 		global $core;
 
@@ -138,7 +139,7 @@ class Hooks
 			throw new Exception('Metadatas are not supported for instances of the given class: %class', array('%class' => get_class($sender)));
 		}
 
-		$model = $core->models['system.registry/' . $type];
+		$model = $core->models['registry/' . $type];
 		$driver_name = $model->connection->driver_name;
 		$delete_statement = '';
 		$update_groups = array();
@@ -224,7 +225,7 @@ class Hooks
 			throw new Exception('Metadatas are not supported for instances of the given class: %class', array('%class' => get_class($module)));
 		}
 
-		$model = $core->models['system.registry/' . $type];
+		$model = $core->models['registry/' . $type];
 
 		$model->execute('DELETE FROM {self} WHERE targetid = ?', array($operation->key));
 	}

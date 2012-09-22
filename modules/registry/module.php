@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace ICanBoogie\Modules\System\Registry;
+namespace Icybee\Modules\Registry;
 
 class Module extends \ICanBoogie\Module
 {

@@ -1,15 +1,14 @@
 <?php
 
-use ICanBoogie\Module;
+namespace Icybee\Modules\Registry;
+
 use ICanBoogie\ActiveRecord\Model;
+use ICanBoogie\Module;
 
 return array
 (
 	Module::T_CATEGORY => 'features',
-	Module::T_TITLE => 'Registry',
-	Module::T_DESCRIPTION => 'Holds configuration settings for the system as well as nodes, users and sites.',
-	Module::T_PERMISSION => false,
-	Module::T_REQUIRED => true,
+	Module::T_DESCRIPTION => 'Holds configuration settings as well as metadatas for nodes, users and sites.',
 
 	Module::T_MODELS => array
 	(
@@ -63,5 +62,11 @@ return array
 				)
 			)
 		)
-	)
+	),
+
+	Module::T_NAMESPACE => __NAMESPACE__,
+	Module::T_PERMISSION => false,
+	Module::T_REQUIRED => true,
+	Module::T_TITLE => 'Registry',
+	Module::T_VERSION => '1.0'
 );

@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace ICanBoogie\Modules\System\Registry;
+namespace Icybee\Modules\Registry;
 
 class Model extends \ICanBoogie\ActiveRecord\Model
 {
@@ -70,8 +70,8 @@ class Model extends \ICanBoogie\ActiveRecord\Model
 	 *
 	 * One can delete key (and all its sub keys), by setting it to null.
 	 *
-	 * @param unknown_type $name
-	 * @param unknown_type $value
+	 * @param string $name
+	 * @param mixed $value
 	 */
 
 	public function set($name, $value)

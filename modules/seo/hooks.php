@@ -115,7 +115,7 @@ EOT;
 		}
 	}
 
-	public static function on_document_render_metas(Event $event)
+	static public function on_document_render_metas(Event $event)
 	{
 		global $core;
 
@@ -141,7 +141,7 @@ EOT;
 	 * @param Event $event
 	 * @param \Icybee\Modules\Sites\Module $sender
 	 */
-	public static function on_site_editblock_alter_children(Event $event, \Icybee\Modules\Sites\EditBlock $block)
+	static public function on_site_editblock_alter_children(Event $event, \Icybee\Modules\Sites\EditBlock $block)
 	{
 		$event->attributes[Element::GROUPS]['seo'] = array
 		(
@@ -219,14 +219,14 @@ EOT;
 		);
 	}
 
-	public static function on_operation_export(Operation\ProcessEvent $event, Operation $operation)
+	static public function on_operation_export(Operation\ProcessEvent $event, Operation $operation)
 	{
 		global $core;
 
 		$records = &$event->rc;
 		$keys = array_keys($records);
 
-		$metas = $core->models['system.registry/node']->where(array('targetid' => $keys, 'name' => array('document_title', 'description')))->all(\PDO::FETCH_NUM);
+		$metas = $core->models['registry/node']->where(array('targetid' => $keys, 'name' => array('document_title', 'description')))->all(\PDO::FETCH_NUM);
 
 		foreach ($metas as $meta)
 		{

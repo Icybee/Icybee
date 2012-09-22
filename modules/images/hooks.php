@@ -78,7 +78,7 @@ class Hooks
 			$record_keys[] = $record->nid;
 		}
 
-		$image_keys = $core->models['system.registry/node']
+		$image_keys = $core->models['registry/node']
 		->select('targetid, value')
 		->where(array('targetid' => $record_keys, 'name' => 'resources_images.imageid'))
 		->where('value + 0 != 0')
@@ -407,7 +407,7 @@ class Hooks
 
 		if (self::$attached === null)
 		{
-			self::$attached = $core->models['system.registry/node']
+			self::$attached = $core->models['registry/node']
 			->select('targetid, value')
 			->joins('INNER JOIN {prefix}nodes ON(targetid = nid)')
 			->where('(siteid = 0 OR siteid = ?) AND name = "resources_images.imageid"', $core->site_id)
