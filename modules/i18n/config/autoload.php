@@ -1,6 +1,6 @@
 <?php
 
-namespace ICanBoogie\Modules\I18n;
+namespace Icybee\Modules\I18n;
 
 return array
 (

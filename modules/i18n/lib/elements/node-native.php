@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace ICanBoogie\Modules\I18n;
+namespace Icybee\Modules\I18n;
 
 use Icybee\Modules\Pages\Model as PagesModel;
 

@@ -9,13 +9,12 @@
  * file that was distributed with this source code.
  */
 
-namespace ICanBoogie\Modules\I18n;
-
-use ICanBoogie\Modules\Nodes\PopNode;
+namespace Icybee\Modules\I18n;
 
 use ICanBoogie\ActiveRecord\Node;
 use ICanBoogie\Event;
 use ICanBoogie\Modules;
+use ICanBoogie\Modules\Nodes\PopNode;
 
 use Brickrouge\Element;
 use Brickrouge\Form;
