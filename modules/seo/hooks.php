@@ -13,7 +13,7 @@ namespace ICanBoogie\Modules\Seo;
 
 use ICanBoogie\ActiveRecord\Content;
 use ICanBoogie\Event;
-use ICanBoogie\Modules\Pages\PageController;
+use Icybee\Modules\Pages\PageController;
 use ICanBoogie\Operation;
 
 use Brickrouge\Element;
@@ -174,7 +174,7 @@ EOT;
 		);
 	}
 
-	static public function on_page_editblock_alter_children(Event $event, \ICanBoogie\Modules\Pages\EditBlock $block)
+	static public function on_page_editblock_alter_children(Event $event, \Icybee\Modules\Pages\EditBlock $block)
 	{
 		global $core;
 

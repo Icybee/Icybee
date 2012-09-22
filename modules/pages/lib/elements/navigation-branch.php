@@ -9,15 +9,24 @@
  * file that was distributed with this source code.
  */
 
-namespace ICanBoogie\Modules\Pages;
+namespace Icybee\Modules\Pages;
 
-use ICanBoogie\ActiveRecord\Page;
+use Icybee\Modules\Pages\Page;
 
 use Brickrouge\Element;
 
 class NavigationBranchElement extends Element
 {
 	protected $page;
+
+	static public function markup_navigation_leaf(array $args, $patron, $template)
+	{
+		global $core;
+
+		$page = $core->request->context->page;
+
+		return new static($page);
+	}
 
 	public function __construct(Page $page, array $attributes=array())
 	{

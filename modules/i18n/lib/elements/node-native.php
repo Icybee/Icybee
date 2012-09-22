@@ -11,7 +11,7 @@
 
 namespace ICanBoogie\Modules\I18n;
 
-use ICanBoogie\Modules\Pages\Model as PagesModel;
+use Icybee\Modules\Pages\Model as PagesModel;
 
 use Brickrouge\Element;
 use Brickrouge\Form;
@@ -41,7 +41,7 @@ class NodeNativeElement extends Element
 		);
 	}
 
-	protected function render_inner_html_for_select()
+	protected function render_inner_html_for_select() // TODO-20120922: use a BluePrint object or a PopPage element
 	{
 		global $core;
 

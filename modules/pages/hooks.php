@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace ICanBoogie\Modules\Pages;
+namespace Icybee\Modules\Pages;
 
 use ICanBoogie\ActiveRecord;
 use ICanBoogie\ActiveRecord\Site;
@@ -87,7 +87,7 @@ class Hooks
 	 *
 	 * @param Event $event
 	 */
-	static public function on_urlchange(Event $event, ActiveRecord\Page $sender)
+	static public function on_urlchange(Event $event, Page $target)
 	{
 		global $core;
 
@@ -128,7 +128,7 @@ class Hooks
 	}
 
 	/**
-	 * An operation (save, delete, online, offline) has invalidated the cache, this we have to
+	 * An operation (save, delete, online, offline) has invalidated the cache, thus we have to
 	 * reset it.
 	 */
 	static public function invalidate_cache()
@@ -153,9 +153,9 @@ class Hooks
 	 *
 	 * @param \ICanBoogie\Core $core
 	 *
-	 * @return \ICanBoogie\ActiveRecord\Page
+	 * @return \Icybee\Modules\Pages\Page
 	 */
-	public static function core__volatile_get_page(\ICanBoogie\Core $core)
+	public static function get_page(\ICanBoogie\Core $core)
 	{
 		return $core->request->context->page;
 	}
@@ -165,7 +165,7 @@ class Hooks
 	 *
 	 * @param ICanBoogie\ActiveRecord\Site $site
 	 *
-	 * @return ICanBoogie\ActiveRecord\Page|null The home page of the target site or null if there is
+	 * @return Icybee\Modules\Pages\Page|null The home page of the target site or null if there is
 	 * none.
 	 */
 	public static function get_home(Site $site)
@@ -183,63 +183,6 @@ class Hooks
 
 		$event->separator = ' − ';
 		$event->title = $page->title . $event->separator . $page->site->title;
-	}
-
-	/**
-	* Returns the translations available for a page.
-	*
-	* @param WdHook $hook
-	* @param WdPatron $patron
-	* @param unknown_type $template
-	*
-	* @return string
-	*/
-	public static function markup_page_translations(array $args, \WdPatron $patron, $template)
-	{
-		$page = $args['select'];
-		$page_language = $page->language;
-
-		if (!$page_language)
-		{
-			return;
-		}
-
-		$translations = $page->translations;
-
-		if (!$translations)
-		{
-			return;
-		}
-
-		foreach ($translations as $i => $translation)
-		{
-			if ($translation->is_accessible)
-			{
-				continue;
-			}
-
-			unset($translations[$i]);
-		}
-
-		if (!$translations)
-		{
-			return;
-		}
-
-		if (!$template)
-		{
-			$template = <<<EOT
-<div id="page-translations">
-<ul>
-	<wdp:foreach>
-	<li><a href="#{@url}">#{@language}</a></li>
-	</wdp:foreach>
-</ul>
-</div>
-EOT;
-		}
-
-		return $patron($template, $translations);
 	}
 
 	public static function markup_page_region(array $args, \WdPatron $patron, $template)
@@ -268,42 +211,6 @@ EOT;
 		return '<div id="region-' . $id . '" class="region region-' . $id . '">' . $rc . '</div>';
 	}
 
-	/**
-	 * Returns the breadcrumb for the current page.
-	 *
-	 * The breadcrumb is build and rendered using the #{@link \Brickrouge\Element\Breadcrumb}
-	 * element.
-	 *
-	 * @param array $args
-	 * @param \WdPatron $patron
-	 * @param array|string $template
-	 *
-	 * @return string
-	 */
-	public static function markup_breadcrumb(array $args, \WdPatron $patron, $template)
-	{
-		global $core;
-
-		$page = $core->request->context->page;
-
-		return (string) new BreadcrumbElement
-		(
-			array
-			(
-				BreadcrumbElement::PAGE => $page
-			)
-		);
-	}
-
-	public static function markup_navigation_leaf(array $args, $patron, $template)
-	{
-		global $core;
-
-		$page = $core->request->context->page;
-
-		return (string) new NavigationBranchElement($page);
-	}
-
 	public static function markup_page_title(array $args, $engine, $template)
 	{
 		global $core;
@@ -315,5 +222,164 @@ EOT;
 		Event::fire('render_title', array('title' => $title, 'html' => &$html), $page);
 
 		return $template ? $engine($template, $html) : $html;
+	}
+
+	/**
+	 * The `wdp:content` markup defines editable content zones in a page template.
+	 *
+	 * @param array $args
+	 * @param \Patron\Engine $patron
+	 * @param mixed $template
+	 *
+	 * @return mixed
+	 */
+	static public function markup_page_content(array $args, \Patron\Engine $patron, $template)
+	{
+		global $core;
+
+		$render = $args['render'];
+
+		if ($render == 'none')
+		{
+			return;
+		}
+
+		$page = $core->request->context->page;
+		$pageid = $page->nid;
+		$contentid = $args['id'];
+		$contents = array_key_exists($contentid, $page->contents) ? $page->contents[$contentid] : null;
+
+		if (!$contents && !empty($args['inherit']))
+		{
+			$node = $page->parent;
+
+			while ($node)
+			{
+				$node_contents = $node->contents;
+
+				if (empty($node_contents[$contentid]))
+				{
+					$node = $node->parent;
+
+					continue;
+				}
+
+				$contents = $node_contents[$contentid];
+
+				break;
+			}
+
+			#
+			# maybe the home page define the contents, but because the home page is not the parent
+			# of pages on single language sites, we have to check it now.
+			#
+
+			if (!$contents)
+			{
+				$node_contents = $page->home->contents;
+
+				if (isset($node_contents[$contentid]))
+				{
+					$contents = $node_contents[$contentid];
+				}
+			}
+		}
+
+		$editor = null;
+		$rendered = null;
+
+		if ($contents)
+		{
+			$editor = $contents->editor;
+			$rendered = $contents->render();
+		}
+
+		if (!$rendered)
+		{
+			return;
+		}
+
+		$element = new Element
+		(
+			'div', array
+			(
+				'id' => 'content-' . $contentid,
+				'class' => 'editor-' . \ICanBoogie\normalize($editor)
+			)
+		);
+
+		if (version_compare(PHP_VERSION, '5.3.4', '>='))
+		{
+			$patron->context['self']['element'] = $element;
+		}
+		else // COMPAT
+		{
+			$self = $patron->context['self'];
+			$self['element'] = $element;
+			$patron->context['self'] = $self;
+		}
+
+		$rc = $template ? $patron($template, $rendered) : $rendered;
+
+		if (!$rc)
+		{
+			return;
+		}
+
+		if (preg_match('#\.html$#', $page->template) && empty($args['no-wrapper']))
+		{
+			$element[Element::INNER_HTML] = $rc;
+			$rc = $element;
+		}
+
+		$rc = self::handle_external_anchors($rc);
+
+		return $rc;
+	}
+
+	/**
+	 * Adds a blank target to external href.
+	 *
+	 * @param string $html
+	 */
+	static protected function handle_external_anchors($html)
+	{
+		return preg_replace_callback
+		(
+			'#<a\s+[^>]+>#', function($matches)
+			{
+				$str = array_shift($matches);
+
+				preg_match_all('#([a-zA-Z0-9\-]+)\="([^"]+)#', $str, $matches, 0, PREG_SET_ORDER);
+
+				if (empty($matches[1]))
+				{
+					return $str;
+				}
+
+				$attributes = array_combine($matches[1], $matches[2]);
+
+				if (isset($attributes['href']))
+				{
+					if (preg_match('#^http(s)?://#', $attributes['href'], $m))
+					{
+						$attributes['target'] = '_blank';
+					}
+				}
+
+				$str = '<a';
+
+				foreach ($attributes as $attribute => $value)
+				{
+					$str .= ' ' . $attribute . '="' . $value . '"';
+				}
+
+				$str .= '>';
+
+				return $str;
+			},
+
+			$html
+		);
 	}
 }

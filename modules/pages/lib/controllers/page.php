@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace ICanBoogie\Modules\Pages;
+namespace Icybee\Modules\Pages;
 
 use ICanBoogie\ActiveRecord;
 use ICanBoogie\AuthenticationRequired;
@@ -21,8 +21,8 @@ use ICanBoogie\Route;
 
 use Brickrouge\Alert;
 
-define('ICanBoogie\Modules\Pages\PageController\CSS_DOCUMENT_PLACEHOLDER', uniqid());
-define('ICanBoogie\Modules\Pages\PageController\JS_DOCUMENT_PLACEHOLDER', uniqid());
+define(__NAMESPACE__ . '\PageController\CSS_DOCUMENT_PLACEHOLDER', uniqid());
+define(__NAMESPACE__ . '\PageController\JS_DOCUMENT_PLACEHOLDER', uniqid());
 
 class PageController
 {
@@ -49,8 +49,8 @@ class PageController
 			if (file_exists($path))
 			{
 				$template = file_get_contents($path);
-				$patron = new \WdPatron();
-				$page = ActiveRecord\Page::from
+				$patron = new \Patron\Engine();
+				$page = Page::from
 				(
 					array
 					(
@@ -70,7 +70,7 @@ class PageController
 		}
 	}
 
-	public function run_callback(ActiveRecord\Page $page, Request $request)
+	public function run_callback(Page $page, Request $request)
 	{
 		global $core;
 
@@ -190,7 +190,7 @@ class PageController
 	 * @param Request $request
 	 * @throws Exception\HTTP
 	 *
-	 * @return ICanBoogie\ActiveRecord\Page
+	 * @return Icybee\Modules\Pages\Page
 	 */
 	protected function resolve_request(Request $request)
 	{
@@ -320,7 +320,7 @@ class PageController
 
 	protected function resolve_engine($template)
 	{
-		return new \WdPatron;
+		return new \Patron\Engine;
 	}
 
 	protected function get_admin_menu()
@@ -346,10 +346,10 @@ class PageController
 	}
 }
 
-namespace ICanBoogie\Modules\Pages\PageController;
+namespace Icybee\Modules\Pages\PageController;
 
 /**
- * Event class for the 'ICanBoogie\Modules\Pages\PageController::render:before'.
+ * Event class for the 'Icybee\Modules\Pages\PageController::render:before'.
  */
 class BeforeRenderEvent extends \ICanBoogie\Event
 {
@@ -384,17 +384,17 @@ class BeforeRenderEvent extends \ICanBoogie\Event
 	/**
 	 * The event is constructed with the type `render:before`.
 	 *
-	 * @param \ICanBoogie\Modules\Pages\PageController $target
+	 * @param \Icybee\Modules\Pages\PageController $target
 	 * @param array $properties
 	 */
-	public function __construct(\ICanBoogie\Modules\Pages\PageController $target, array $properties)
+	public function __construct(\Icybee\Modules\Pages\PageController $target, array $properties)
 	{
 		parent::__construct($target, 'render:before', $properties);
 	}
 }
 
 /**
- * Event class for the `ICanBoogie\Modules\Pages\PageController::render` event.
+ * Event class for the `Icybee\Modules\Pages\PageController::render` event.
  */
 class RenderEvent extends \ICanBoogie\Event
 {
@@ -408,7 +408,7 @@ class RenderEvent extends \ICanBoogie\Event
 	/**
 	 * The page being rendered.
 	 *
-	 * @var \ICanBoogie\ActiveRecord\Page
+	 * @var \Icybee\Modules\Pages\Page
 	 */
 	public $page;
 
@@ -422,10 +422,10 @@ class RenderEvent extends \ICanBoogie\Event
 	/**
 	 * The event is constructed with the type `render`.
 	 *
-	 * @param \ICanBoogie\Modules\Pages\PageController $target
+	 * @param \Icybee\Modules\Pages\PageController $target
 	 * @param array $properties
 	 */
-	public function __construct(\ICanBoogie\Modules\Pages\PageController $target, array $properties)
+	public function __construct(\Icybee\Modules\Pages\PageController $target, array $properties)
 	{
 		parent::__construct($target, 'render', $properties);
 	}

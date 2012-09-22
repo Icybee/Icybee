@@ -117,7 +117,7 @@ class AdminMenu extends Element
 
 		$nodes = array();
 
-		foreach (\ICanBoogie\Modules\Pages\PageController::$nodes as $node)
+		foreach (\Icybee\Modules\Pages\PageController::$nodes as $node)
 		{
 			$nodes[$node->nid] = $node;
 		}

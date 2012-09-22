@@ -77,7 +77,7 @@ class system_nodes_view_WdMarkup extends patron_WdMarkup
 
 		$page = $core->request->context->page;
 		$body = $page->body;
-		$is_view = ($body instanceof ICanBoogie\ActiveRecord\Pages\Content && $body->editor == 'view' && preg_match('#/view$#', $body->content));
+		$is_view = ($body instanceof Icybee\Modules\Pages\Pages\Content && $body->editor == 'view' && preg_match('#/view$#', $body->content));
 		$exception_class = $is_view ? 'ICanBoogie\HTTPException' : 'ICanBoogie\Exception';
 
 		if (empty($args['select']))

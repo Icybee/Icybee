@@ -557,7 +557,7 @@ class Hooks
 		/*
 		\ICanBoogie\Events::attach
 		(
-			'ICanBoogie\ActiveRecord\Page::render_title', function()
+			'Icybee\Modules\Pages\Page::render_title', function()
 			{
 				var_dump(func_get_args());
 			}
@@ -565,7 +565,7 @@ class Hooks
 		*/
 	}
 
-	public static function before_breadcrumb_render_inner_html(\ICanBoogie\Modules\Pages\BreadcrumbElement\BeforeRenderInnerHTMLEvent $event, \ICanBoogie\Modules\Pages\BreadcrumbElement $target)
+	public static function before_breadcrumb_render_inner_html(\Icybee\Modules\Pages\BreadcrumbElement\BeforeRenderInnerHTMLEvent $event, \Icybee\Modules\Pages\BreadcrumbElement $target)
 	{
 		foreach ($event->slices as &$slice)
 		{

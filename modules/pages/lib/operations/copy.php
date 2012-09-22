@@ -9,11 +9,9 @@
  * file that was distributed with this source code.
  */
 
-namespace ICanBoogie\Modules\Pages;
+namespace Icybee\Modules\Pages;
 
-use ICanBoogie\Operation;
-
-class CopyOperation extends Operation
+class CopyOperation extends \ICanBoogie\Operation
 {
 	protected function get_controls()
 	{

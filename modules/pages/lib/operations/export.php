@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace ICanBoogie\Modules\Pages;
+namespace Icybee\Modules\Pages;
 
 class ExportOperation extends \ICanBoogie\Modules\Nodes\ExportOperation
 {

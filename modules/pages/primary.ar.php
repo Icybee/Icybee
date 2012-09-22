@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace ICanBoogie\ActiveRecord;
+namespace Icybee\Modules\Pages;
 
 use ICanBoogie\Route;
 
@@ -23,7 +23,7 @@ use ICanBoogie\Route;
  * @property-read bool $is_trail Whether the page is in the navigation trail or not.
  * @property-read array[]Page $navigation_children Navigation children of the page.
  */
-class Page extends Node
+class Page extends \ICanBoogie\ActiveRecord\Node
 {
 	const PARENTID = 'parentid';
 	const LOCATIONID = 'locationid';
@@ -380,7 +380,7 @@ class Page extends Node
 	/**
 	 * Returns the location target for the page record.
 	 *
-	 * @return ICanBoogie\ActiveRecord\Page|null The location target, or null if there is none.
+	 * @return Icybee\Modules\Pages\Page|null The location target, or null if there is none.
 	 */
 	protected function get_location()
 	{
@@ -390,7 +390,7 @@ class Page extends Node
 	/**
 	 * Returns the home page for the page record.
 	 *
-	 * @return ICanBoogie\ActiveRecord\Page
+	 * @return Icybee\Modules\Pages\Page
 	 */
 	protected function get_home()
 	{
@@ -400,7 +400,7 @@ class Page extends Node
 	/**
 	 * Returns the parent of the page.
 	 *
-	 * @return ICanBoogie\ActiveRecord\Page|null The parent page or null is the page has no parent.
+	 * @return Icybee\Modules\Pages\Page|null The parent page or null is the page has no parent.
 	 */
 	protected function get_parent()
 	{
@@ -552,7 +552,7 @@ class Page extends Node
 	 *
 	 * Keys of the array are the contentid, values are the contents objects.
 	 *
-	 * @return array[string]\ICanBoogie\ActiveRecord\Pages\Content
+	 * @return array[string]\Icybee\Modules\Pages\Pages\Content
 	 */
 	protected function get_contents()
 	{
@@ -574,7 +574,7 @@ class Page extends Node
 	 *
 	 * The body is the page's contents object with the 'body' identifier.
 	 *
-	 * @return \ICanBoogie\ActiveRecord\Pages\Content
+	 * @return \Icybee\Modules\Pages\Pages\Content
 	 */
 	protected function get_body()
 	{

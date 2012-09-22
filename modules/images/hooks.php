@@ -18,7 +18,7 @@ use ICanBoogie\Event;
 use ICanBoogie\Events;
 use ICanBoogie\Modules;
 use ICanBoogie\Modules\Contents\ConfigBlock as ContentsConfigBlock;
-use ICanBoogie\Modules\Pages\PageController;
+use Icybee\Modules\Pages\PageController;
 use ICanBoogie\Operation;
 
 use Brickrouge\Element;
@@ -381,7 +381,7 @@ class Hooks
 	/**
 	 * Adds assets to support lightbox links.
 	 *
-	 * This function is a callback for the `ICanBoogie\Modules\Pages\PageController::render` event.
+	 * This function is a callback for the `Icybee\Modules\Pages\PageController::render` event.
 	 *
 	 * @param Event $event
 	 */

@@ -9,11 +9,9 @@
  * file that was distributed with this source code.
  */
 
-namespace ICanBoogie\Modules\Pages;
+namespace Icybee\Modules\Pages;
 
 use ICanBoogie\ActiveRecord\Query;
-
-use ICanBoogie\ActiveRecord\Page;
 use ICanBoogie\Exception;
 use ICanBoogie\Route;
 
@@ -86,8 +84,7 @@ class Model extends \ICanBoogie\Modules\Nodes\Model
 		}
 
 		$query = $this->select('nid, parentid, is_online, is_navigation_excluded, pattern')
-		->where('siteid = ?', $site_id)
-		->ordered;
+		->filter_by_siteid($site_id)->ordered;
 
 		return self::$blueprint_cache[$site_id] = Blueprint::from($query);
 	}
@@ -107,7 +104,7 @@ class Model extends \ICanBoogie\Modules\Nodes\Model
 	 *
 	 * @param int $siteid Identifier of the site.
 	 *
-	 * @return ICanBoogie\ActiveRecord\Page
+	 * @return Icybee\Modules\Pages\Page
 	 */
 	public function find_home($siteid)
 	{
@@ -144,9 +141,9 @@ class Model extends \ICanBoogie\Modules\Nodes\Model
 	 *
 	 * @param string $path
 	 *
-	 * @return \ICanBoogie\ActiveRecord\Page
+	 * @return \Icybee\Modules\Pages\Page
 	 */
-	public function find_by_path($path)
+	public function find_by_path($path) // TODO-20120922: use a BluePrint object
 	{
 		global $core;
 
@@ -348,7 +345,7 @@ class Model extends \ICanBoogie\Modules\Nodes\Model
 	 * @param array $entries The array of nodes.
 	 * @param array $parents The array of nodes, where the key is the entry's `nid`.
 	 */
-	static public function nestNodes($entries, &$entries_by_ids=null)
+	static public function nestNodes($entries, &$entries_by_ids=null) // TODO-20120922: deprecate
 	{
 		#
 		# In order to easily access entries, they are store by their Id in an array.
@@ -393,7 +390,7 @@ class Model extends \ICanBoogie\Modules\Nodes\Model
 	 * Default to false (no maximum depth level).
 	 * @param $depth The depth level to start from. Default to 0.
 	 */
-	static public function setNodesDepth($nodes, $max_depth=false, $depth=0)
+	static public function setNodesDepth($nodes, $max_depth=false, $depth=0) // TODO-20120922: deprecate
 	{
 		foreach ($nodes as $node)
 		{
@@ -429,7 +426,7 @@ class Model extends \ICanBoogie\Modules\Nodes\Model
 	 *
 	 * @param $nodes
 	 */
-	static public function levelNodesById($nodes)
+	static public function levelNodesById($nodes) // TODO-20120922: deprecate
 	{
 		$by_id = array();
 

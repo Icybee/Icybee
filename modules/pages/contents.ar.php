@@ -9,10 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace ICanBoogie\ActiveRecord\Pages;
-
-use ICanBoogie\ActiveRecord;
-use ICanBoogie\Core;
+namespace Icybee\Modules\Pages;
 
 class Content extends \ICanBoogie\ActiveRecord
 {
@@ -84,7 +81,7 @@ class Content extends \ICanBoogie\ActiveRecord
 		 */
 		try
 		{
-			$editor = Core::get()->editors[$this->editor];
+			$editor = \ICanBoogie\Core::get()->editors[$this->editor];
 			$rendered = $editor->render($editor->unserialize($this->content));
 		}
 		catch (\ICanBoogie\Exception\HTTP $e)
@@ -95,9 +92,6 @@ class Content extends \ICanBoogie\ActiveRecord
 		{
 			$rendered = \ICanBoogie\Debug::format_alert($e);
 		}
-
-		$editor = Core::get()->editors[$this->editor];
-		$rendered = $editor->render($editor->unserialize($this->content));
 
 		$this->rendered = $rendered;
 

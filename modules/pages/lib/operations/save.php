@@ -9,9 +9,9 @@
  * file that was distributed with this source code.
  */
 
-namespace ICanBoogie\Modules\Pages;
+namespace Icybee\Modules\Pages;
 
-use ICanBoogie\ActiveRecord\Page;
+use Icybee\Modules\Pages\Page;
 use ICanBoogie\Event;
 use ICanBoogie\Route;
 

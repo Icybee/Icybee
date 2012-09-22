@@ -9,10 +9,10 @@
  * file that was distributed with this source code.
  */
 
-namespace ICanBoogie\Modules\Pages;
+namespace Icybee\Modules\Pages;
 
 use ICanBoogie\ActiveRecord\Node;
-use ICanBoogie\ActiveRecord\Page;
+use Icybee\Modules\Pages\Page;
 
 use Brickrouge\Document;
 use Brickrouge\Element;
@@ -73,7 +73,7 @@ class EditBlock extends \ICanBoogie\Modules\Nodes\EditBlock
 
 		if (!$is_alone)
 		{
-			$parentid_el = new \WdPageSelectorElement
+			$parentid_el = new PopPage
 			(
 				'select', array
 				(
@@ -92,7 +92,7 @@ class EditBlock extends \ICanBoogie\Modules\Nodes\EditBlock
 
 		if (!$is_alone)
 		{
-			$location_el = new \WdPageSelectorElement
+			$location_el = new PopPage
 			(
 				'select', array
 				(

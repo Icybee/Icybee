@@ -163,7 +163,7 @@ function query_pages($search, $position, $limit)
 	(
 		'SELECT node.*, page.*, content.content AS body ' . $query_part . ' ORDER BY created DESC LIMIT ' . ($position * $limit) . ', ' . $limit, $query_args
 	)
-	->fetchAll(PDO::FETCH_CLASS, 'ICanBoogie\ActiveRecord\Page', array($model));
+	->fetchAll(PDO::FETCH_CLASS, 'Icybee\Modules\Pages\Page', array($model));
 
 	return array($entries, $count);
 }

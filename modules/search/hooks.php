@@ -17,11 +17,9 @@ use Brickrouge\Element;
 use Brickrouge\Form;
 use Brickrouge\Searchbox;
 
-use WdPatron;
-
 class Hooks
 {
-	static public function form(array $args, WdPatron $patron, $template)
+	static public function form(array $args, \Patron\Engine $patron, $template)
 	{
 		global $core, $document;
 
@@ -117,7 +115,7 @@ class Hooks
 		return $response;
 	}
 
-	static public function matches(array $args, WdPatron $patron, $template)
+	static public function matches(array $args, \Patron\Engine $patron, $template)
 	{
 		$_GET += array
 		(

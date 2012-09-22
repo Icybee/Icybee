@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace ICanBoogie\Modules\Pages;
+namespace Icybee\Modules\Pages;
 
 use Brickrouge\EmptyElementException;
 
@@ -20,6 +20,16 @@ use Brickrouge\Element;
 
 class LanguagesElement extends Element
 {
+	static public function markup(array $args, \Patron\Engine $patron, $template)
+	{
+		if ($template)
+		{
+			throw new \Exception('Templates are currently not supported :(');
+		}
+
+		return new static();
+	}
+
 	public function __construct(array $attributes=array())
 	{
 		parent::__construct
@@ -108,7 +118,7 @@ class LanguagesElement extends Element
 				$core->models['sites']->select('language')->where('status = 1')->order('weight, siteid')->all(\PDO::FETCH_COLUMN)
 			);
 
-			if ($source instanceof ActiveRecord\Page)
+			if ($source instanceof Page)
 			{
 				foreach ($translations as $translation)
 				{
@@ -156,10 +166,10 @@ class LanguagesElement extends Element
 	}
 }
 
-namespace ICanBoogie\Modules\Pages\LanguagesElement;
+namespace Icybee\Modules\Pages\LanguagesElement;
 
 /**
- * Event class for the `ICanBoogie\Modules\Pages\LanguagesElement::collect` event.
+ * Event class for the `Icybee\Modules\Pages\LanguagesElement::collect` event.
  */
 class CollectEvent extends \ICanBoogie\Event
 {
@@ -173,17 +183,17 @@ class CollectEvent extends \ICanBoogie\Event
 	/**
 	 * The event is constructed with the `render:before` event.
 	 *
-	 * @param \ICanBoogie\Modules\Pages\LanguagesElement $target
+	 * @param \Icybee\Modules\Pages\LanguagesElement $target
 	 * @param array $properties
 	 */
-	public function __construct(\ICanBoogie\Modules\Pages\LanguagesElement $target, array $properties)
+	public function __construct(\Icybee\Modules\Pages\LanguagesElement $target, array $properties)
 	{
 		parent::__construct($target, 'collect', $properties);
 	}
 }
 
 /**
- * Event class for the `ICanBoogie\Modules\Pages\LanguagesElement::alter` event.
+ * Event class for the `Icybee\Modules\Pages\LanguagesElement::alter` event.
  */
 class AlterEvent extends \ICanBoogie\Event
 {
@@ -204,17 +214,17 @@ class AlterEvent extends \ICanBoogie\Event
 	/**
 	 * The current page.
 	 *
-	 * @var \ICanBoogie\ActiveRecord\Page
+	 * @var \Icybee\Modules\Pages\Page
 	 */
 	public $page;
 
 	/**
 	 * The event is constructed with the `alter` event.
 	 *
-	 * @param \ICanBoogie\Modules\Pages\LanguagesElement $target
+	 * @param \Icybee\Modules\Pages\LanguagesElement $target
 	 * @param array $properties
 	 */
-	public function __construct(\ICanBoogie\Modules\Pages\LanguagesElement $target, array $properties)
+	public function __construct(\Icybee\Modules\Pages\LanguagesElement $target, array $properties)
 	{
 		parent::__construct($target, 'alter', $properties);
 	}

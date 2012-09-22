@@ -10,7 +10,7 @@
  */
 
 use ICanBoogie\Modules\Contents\Model as ContentsModel;
-use ICanBoogie\Modules\Pages\Model as PagesModel;
+use Icybee\Modules\Pages\Model as PagesModel;
 use ICanBoogie\Event;
 use ICanBoogie\Exception;
 use ICanBoogie\Module;

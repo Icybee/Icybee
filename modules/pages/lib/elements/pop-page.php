@@ -9,10 +9,11 @@
  * file that was distributed with this source code.
  */
 
-use ICanBoogie\Modules\Pages\Model as PagesModel;
+namespace Icybee\Modules\Pages;
+
 use Brickrouge\Element;
 
-class WdPageSelectorElement extends Element
+class PopPage extends Element // TODO-20120922: rewrite this element
 {
 	public function __toString()
 	{
@@ -20,12 +21,15 @@ class WdPageSelectorElement extends Element
 
 		try
 		{
-			$model = $core->models['pages'];
-			$nodes = $model->select('nid, parentid, title')->where('siteid = ?', $core->site_id)->order('weight, created')->all(PDO::FETCH_OBJ);
+			$model = $core->models['pages']; // TODO-20120922: use BluePrint.
+			$nodes = $model->select('nid, parentid, title')
+			->filter_by_siteid($core->site_id)
+			->order('weight, created')
+			->all(\PDO::FETCH_OBJ);
 
-			$tree = PagesModel::nestNodes($nodes);
-			PagesModel::setNodesDepth($tree);
-			$entries = PagesModel::levelNodesById($tree);
+			$tree = Model::nestNodes($nodes);
+			Model::setNodesDepth($tree);
+			$entries = Model::levelNodesById($tree);
 
 			$options = array();
 

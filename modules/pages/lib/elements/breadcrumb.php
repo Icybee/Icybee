@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace ICanBoogie\Modules\Pages;
+namespace Icybee\Modules\Pages;
 
 use ICanBoogie\Event;
 use Brickrouge\Element;
@@ -45,7 +45,7 @@ use Brickrouge\Element;
  * * event - (ICanBoogie\Event) An event object with the following properties:
  *     * slices - (&array) The slices of the breadcrumb
  *     * separator - (&string) The separator for the slices.
- *     * page - (ICanBoogie\ActiveRecord\Page) The current page object.
+ *     * page - (Icybee\Modules\Pages\Page) The current page object.
  *
  * * target - {@link BreadcrumbElement} The breadcrumb element that fired the event.
  *
@@ -63,7 +63,7 @@ use Brickrouge\Element;
  *
  * * event - (ICanBoogie\Event) An event object with the following properties:
  *     * rc - (&string) The rendered inner HTML.
- *     * page - (ICanBoogie\ActiveRecord\Page) The current page object.
+ *     * page - (Icybee\Modules\Pages\Page) The current page object.
  *
  * * sender - {@link BreadcrumbElement} The breadcrumb element that fired the event.
  *
@@ -74,6 +74,31 @@ class BreadcrumbElement extends Element
 	const DIVIDER = '#breadcrumb-divider';
 
 	const DEFAULT_DIVIDER = '›';
+
+	/**
+	 * Returns the breadcrumb for the current page.
+	 *
+	 * The breadcrumb is build and rendered using the #{@link \Brickrouge\Element\Breadcrumb}
+	 * element.
+	 *
+	 * @param array $args
+	 * @param \Patron\Engine $patron
+	 * @param array|string $template
+	 *
+	 * @return string
+	 */
+	static public function markup(array $args, \Patron\Engine $patron, $template)
+	{
+		global $core;
+
+		return new static
+		(
+			array
+			(
+				self::PAGE => $core->request->context->page
+			)
+		);
+	}
 
 	public function __construct($tags)
 	{
@@ -172,10 +197,10 @@ class BreadcrumbElement extends Element
 	}
 }
 
-namespace ICanBoogie\Modules\Pages\BreadcrumbElement;
+namespace Icybee\Modules\Pages\BreadcrumbElement;
 
 /**
- * Event class for the `ICanBoogie\Modules\Pages\BreadcrumbElement::render_inner_html:before`
+ * Event class for the `Icybee\Modules\Pages\BreadcrumbElement::render_inner_html:before`
  * event.
  */
 class BeforeRenderInnerHTMLEvent extends \ICanBoogie\Event
@@ -197,24 +222,24 @@ class BeforeRenderInnerHTMLEvent extends \ICanBoogie\Event
 	/**
 	 * The page for which the breadcrumb is computed.
 	 *
-	 * @var \ICanBoogie\ActiveRecord\Page.
+	 * @var \Icybee\Modules\Pages\Page.
 	 */
 	public $page;
 
 	/**
 	 * The event is constructed with the type `render_inner_html:before`.
 	 *
-	 * @param \ICanBoogie\Modules\Pages\BreadcrumbElement $target
+	 * @param \Icybee\Modules\Pages\BreadcrumbElement $target
 	 * @param array $properties
 	 */
-	public function __construct(\ICanBoogie\Modules\Pages\BreadcrumbElement $target, array $properties)
+	public function __construct(\Icybee\Modules\Pages\BreadcrumbElement $target, array $properties)
 	{
 		parent::__construct($target, 'render_inner_html:before', $properties);
 	}
 }
 
 /**
- * Event class for the `ICanBoogie\Modules\Pages\BreadcrumbElement::render_inner_html`
+ * Event class for the `Icybee\Modules\Pages\BreadcrumbElement::render_inner_html`
  * event.
  */
 class RenderInnerHTMLEvent extends \ICanBoogie\Event
@@ -229,17 +254,17 @@ class RenderInnerHTMLEvent extends \ICanBoogie\Event
 	/**
 	 * The page for which the breadcrumb is computed.
 	 *
-	 * @var \ICanBoogie\ActiveRecord\Page.
+	 * @var \Icybee\Modules\Pages\Page.
 	 */
 	public $page;
 
 	/**
 	 * The event is constructed with the type `render_inner_html`.
 	 *
-	 * @param \ICanBoogie\Modules\Pages\BreadcrumbElement $target
+	 * @param \Icybee\Modules\Pages\BreadcrumbElement $target
 	 * @param array $properties
 	 */
-	public function __construct(\ICanBoogie\Modules\Pages\BreadcrumbElement $target, array $properties)
+	public function __construct(\Icybee\Modules\Pages\BreadcrumbElement $target, array $properties)
 	{
 		parent::__construct($target, 'render_inner_html', $properties);
 	}

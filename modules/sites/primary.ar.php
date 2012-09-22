@@ -19,7 +19,7 @@ use ICanBoogie\Debug;
 /**
  * @property array $translations Translations for the site.
  *
- * @method ICanBoogie\ActiveRecord\Page|null resolve_view_target() resolve_view_target(string $view)
+ * @method Icybee\Modules\Pages\Page|null resolve_view_target() resolve_view_target(string $view)
  * Return the page on which the view is displayed, or null if the view is not displayed.
  *
  * This method is injected by the "pages" module.

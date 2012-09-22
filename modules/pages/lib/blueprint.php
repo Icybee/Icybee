@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace ICanBoogie\Modules\Pages;
+namespace Icybee\Modules\Pages;
 
 use ICanBoogie\ActiveRecord\Query;
 
@@ -228,7 +228,7 @@ class Blueprint
 	 *
 	 * The method adds the `record` property to the blueprint nodes.
 	 *
-	 * @return array[int]\ICanBoogie\ActiveRecord\Page
+	 * @return array[int]\Icybee\Modules\Pages\Page
 	 */
 	public function populate()
 	{

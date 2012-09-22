@@ -28,9 +28,9 @@ class Hooks
 	 * Updates view targets.
 	 *
 	 * @param Operation\ProcessEvent $event
-	 * @param \ICanBoogie\Modules\Pages\SaveOperation $operation
+	 * @param \Icybee\Modules\Pages\SaveOperation $operation
 	 */
-	static public function on_page_save(Operation\ProcessEvent $event, \ICanBoogie\Modules\Pages\SaveOperation $operation)
+	static public function on_page_save(Operation\ProcessEvent $event, \Icybee\Modules\Pages\SaveOperation $operation)
 	{
 		global $core;
 
@@ -199,7 +199,7 @@ class Hooks
 	 * @param Site $site
 	 * @param string $viewid Identifier of the view.
 	 *
-	 * @return ActiveRecord\Page
+	 * @return \Icybee\Modules\Pages\Page
 	 */
 	static public function resolve_view_target(Site $site, $viewid)
 	{

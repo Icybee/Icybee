@@ -10,7 +10,7 @@
  */
 
 use ICanBoogie\Events;
-use ICanBoogie\Modules\Pages\PageController;
+use Icybee\Modules\Pages\PageController;
 
 use Brickrouge\Alert;
 use Brickrouge\Pager;
@@ -84,7 +84,7 @@ class patron_elements_WdMarkups
 
 		Events::attach
 		(
-			'ICanBoogie\Modules\Pages\PageController::render', function(PageController\RenderEvent $event) use($engine, $template, $key)
+			'Icybee\Modules\Pages\PageController::render', function(PageController\RenderEvent $event) use($engine, $template, $key)
 			{
 				#
 				# The event is chained so that is gets executed once the event chain has been

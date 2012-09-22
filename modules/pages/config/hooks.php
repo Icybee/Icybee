@@ -1,41 +1,40 @@
 <?php
 
-namespace ICanBoogie\Modules\Pages;
+namespace Icybee\Modules\Pages;
 
-$hooks = __NAMESPACE__ . '\Hooks';
+$hooks = __NAMESPACE__ . '\Hooks::';
 
 return array
 (
 	'events' => array
 	(
-		'resources.files.path.change' => $hooks . '::resources_files_path_change',
+		'resources.files.path.change' => $hooks . 'resources_files_path_change',
 
-		'Brickrouge\Document::render_title:before' => $hooks . '::on_document_render_title',
+		'Brickrouge\Document::render_title:before' => $hooks . 'on_document_render_title',
 
-		'ICanBoogie\ActiveRecord\Page::urlchange' => $hooks . '::on_urlchange',
-		'ICanBoogie\HTTP\Dispatcher::populate' => $hooks . '::on_http_dispatcher_populate',
+		'Icybee\Modules\Pages\Page::urlchange' => $hooks . 'on_urlchange',
+		'ICanBoogie\HTTP\Dispatcher::populate' => $hooks . 'on_http_dispatcher_populate',
 
-		'Icybee::nodes_load' => 'ICanBoogie\Modules\Pages\PageController::on_nodes_load',
-		'Patron\Engine::nodes_load' => 'ICanBoogie\Modules\Pages\PageController::on_nodes_load',
+		'Icybee::nodes_load' => __NAMESPACE__ . '\PageController::on_nodes_load',
+		'Patron\Engine::nodes_load' => __NAMESPACE__ . '\PageController::on_nodes_load',
 
-		'ICanBoogie\SaveOperation::process' => $hooks . '::invalidate_cache',
-		'ICanBoogie\DeleteOperation::process' => $hooks . '::invalidate_cache',
-		'ICanBoogie\Modules\Nodes\OnlineOperation::process' => $hooks . '::invalidate_cache',
-		'ICanBoogie\Modules\Nodes\OfflineOperation::process' => $hooks . '::invalidate_cache'
+		'ICanBoogie\SaveOperation::process' => $hooks . 'invalidate_cache',
+		'ICanBoogie\DeleteOperation::process' => $hooks . 'invalidate_cache',
+		'ICanBoogie\Modules\Nodes\OnlineOperation::process' => $hooks . 'invalidate_cache',
+		'ICanBoogie\Modules\Nodes\OfflineOperation::process' => $hooks . 'invalidate_cache'
 	),
 
 	'prototypes' => array
 	(
-		'ICanBoogie\ActiveRecord\Site::get_home' => $hooks . '::get_home',
-
-		'ICanBoogie\Core::volatile_get_page' => $hooks . '::core__volatile_get_page'
+		'ICanBoogie\ActiveRecord\Site::get_home' => $hooks . 'get_home',
+		'ICanBoogie\Core::volatile_get_page' => $hooks . 'get_page'
 	),
 
 	'patron.markups' => array
 	(
 		'page:content' => array
 		(
-			'site_pages_WdMarkups::content', array
+			$hooks . 'markup_page_content', array
 			(
 				'id' => array('required' => true),
 				'title' => array('required' => true),
@@ -45,34 +44,17 @@ return array
 			)
 		),
 
-		'page:translations' => array
-		(
-			$hooks . '::markup_page_translations', array
-			(
-				'select' => array('expression' => true, 'required' => true, 'default' => '$page')
-			)
-		),
-
 		'page:languages' => array
 		(
-			'o:site_pages_languages_WdMarkup', array
+			__NAMESPACE__ . '\LanguagesElement::markup', array
 			(
-			)
-		),
 
-		'menu' => array
-		(
-			array('site_pages_WdMarkups', 'menu'), array
-			(
-				'select' => null,
-				'parent' => null,
-				'nest' => true
 			)
 		),
 
 		'navigation' => array
 		(
-			'o:site_pages_navigation_WdMarkup', array
+			__NAMESPACE__ . '\NavigationElement::markup', array
 			(
 				'parent' => 0,
 				'depth' => array('default' => 2),
@@ -84,7 +66,7 @@ return array
 
 		'navigation:leaf' => array
 		(
-			$hooks . '::markup_navigation_leaf', array
+			__NAMESPACE__ . '\NavigationBranchElement::markup_navigation_leaf', array
 			(
 				/* FIXME-20120715: not implemented
 				'level' => 1,
@@ -96,19 +78,9 @@ return array
 
 		'breadcrumb' => array
 		(
-			$hooks . '::markup_breadcrumb', array
+			__NAMESPACE__ . '\BreadcrumbElement::markup', array
 			(
 				'page' => array('expression' => true, 'required' => true, 'default' => 'this')
-			)
-		),
-
-		'sitemap' => array
-		(
-//			array('site_pages_WdMarkups', 'sitemap'), array
-			'o:site_pages_sitemap_WdMarkup', array
-			(
-				'parent' => null,
-				'nest' => false
 			)
 		),
 
@@ -116,17 +88,9 @@ return array
 		# cache
 		#
 
-		'cache' => array
-		(
-			array('site_pages_WdMarkups', 'cache'), array
-			(
-				'scope' => 'global'
-			)
-		),
-
 		'page:region' => array
 		(
-			$hooks . '::markup_page_region', array
+			$hooks . 'markup_page_region', array
 			(
 				'id' => array('required' => true)
 			)
@@ -134,7 +98,10 @@ return array
 
 		'page:title' => array
 		(
-			$hooks . '::markup_page_title', array()
+			$hooks . 'markup_page_title', array
+			(
+
+			)
 		)
 	)
 );

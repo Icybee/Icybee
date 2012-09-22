@@ -1,7 +1,9 @@
 <?php
 
-use ICanBoogie\Module;
+namespace Icybee\Modules\Pages;
+
 use ICanBoogie\ActiveRecord\Model;
+use ICanBoogie\Module;
 
 return array
 (
@@ -12,6 +14,7 @@ return array
 	(
 		'primary' => array
 		(
+			Model::T_ACTIVERECORD_CLASS => __NAMESPACE__ . '\Page',
 			Model::T_EXTENDS => 'nodes',
 			Model::T_SCHEMA => array
 			(
@@ -30,6 +33,7 @@ return array
 
 		'contents' => array
 		(
+			Model::T_ACTIVERECORD_CLASS => __NAMESPACE__ . '\Content',
 			Model::T_SCHEMA => array
 			(
 				'fields' => array
@@ -43,6 +47,7 @@ return array
 		)
 	),
 
+	Module::T_NAMESPACE => __NAMESPACE__,
 	Module::T_REQUIRED => true,
 	Module::T_REQUIRES => array
 	(

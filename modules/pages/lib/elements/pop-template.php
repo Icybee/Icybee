@@ -9,13 +9,15 @@
  * file that was distributed with this source code.
  */
 
+namespace Icybee\Modules\Pages;
+
 use Brickrouge\Element;
 
-class WdAdjustTemplateElement extends Element
+class PopTemplate extends Element
 {
-	public function __construct($tags, $dummy=null)
+	public function __construct(array $attributes=array())
 	{
-		parent::__construct('select', $tags);
+		parent::__construct('select', $attributes);
 	}
 
 	public function __toString()
