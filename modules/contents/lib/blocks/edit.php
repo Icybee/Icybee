@@ -12,8 +12,8 @@
 namespace ICanBoogie\Modules\Contents;
 
 use ICanBoogie\ActiveRecord\Content;
-use ICanBoogie\Modules\Editor\MultiEditorElement;
-use ICanBoogie\Modules\Editor\RTEEditorElement;
+use Icybee\Modules\Editor\MultiEditorElement;
+use Icybee\Modules\Editor\RTEEditorElement;
 
 use Brickrouge\Element;
 use Brickrouge\Form;

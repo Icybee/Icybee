@@ -11,7 +11,7 @@
 
 namespace Icybee\Modules\Members;
 
-use ICanBoogie\Modules\Editor\RTEEditorElement;
+use Icybee\Modules\Editor\RTEEditorElement;
 
 use Brickrouge\Date;
 use Brickrouge\Element;

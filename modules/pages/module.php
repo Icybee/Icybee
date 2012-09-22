@@ -13,8 +13,8 @@ namespace Icybee\Modules\Pages;
 
 use ICanBoogie\ActiveRecord\Node;
 use Icybee\Modules\Pages\Page;
-use ICanBoogie\Modules\Editor\EditorElement;
-use ICanBoogie\Modules\Editor\MultiEditorElement;
+use Icybee\Modules\Editor\EditorElement;
+use Icybee\Modules\Editor\MultiEditorElement;
 
 use Brickrouge\Alert;
 use Brickrouge\Element;

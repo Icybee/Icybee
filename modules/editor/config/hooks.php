@@ -1,6 +1,6 @@
 <?php
 
-namespace ICanBoogie\Modules\Editor;
+namespace Icybee\Modules\Editor;
 
 return array
 (

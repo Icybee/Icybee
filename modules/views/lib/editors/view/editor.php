@@ -18,12 +18,12 @@ use Brickrouge\Element;
 /**
  * View editor.
  */
-class ViewEditor implements \ICanBoogie\Modules\Editor\Editor
+class ViewEditor implements \Icybee\Modules\Editor\Editor
 {
 	/**
 	 * Returns the content as is.
 	 *
-	 * @see ICanBoogie\Modules\Editor.Editor::serialize()
+	 * @see Icybee\Modules\Editor.Editor::serialize()
 	 */
 	public function serialize($content)
 	{
@@ -33,7 +33,7 @@ class ViewEditor implements \ICanBoogie\Modules\Editor\Editor
 	/**
 	 * Returns the serialized content as is.
 	 *
-	 * @see ICanBoogie\Modules\Editor.Editor::unserialize()
+	 * @see Icybee\Modules\Editor.Editor::unserialize()
 	 */
 	public function unserialize($serialized_content)
 	{
@@ -43,7 +43,7 @@ class ViewEditor implements \ICanBoogie\Modules\Editor\Editor
 	/**
 	 * @return ViewEditorElement
 	 *
-	 * @see ICanBoogie\Modules\Editor.Editor::from()
+	 * @see Icybee\Modules\Editor.Editor::from()
 	 */
 	public function from(array $attributes)
 	{

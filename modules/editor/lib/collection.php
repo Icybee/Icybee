@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace ICanBoogie\Modules\Editor;
+namespace Icybee\Modules\Editor;
 
 use ICanBoogie\Core;
 use ICanBoogie\Exception;
@@ -20,7 +20,7 @@ use ICanBoogie\OffsetNotWritable;
  * Editors collection.
  *
  * Editors are collected by synthesizing the `editors` config. The
- * `ICanBoogie\Modules\Editor\Collection::alter` is fired to allow alteration of the collection.
+ * `Icybee\Modules\Editor\Collection::alter` is fired to allow alteration of the collection.
  */
 class Collection implements \ArrayAccess, \IteratorAggregate
 {
@@ -147,10 +147,10 @@ class Collection implements \ArrayAccess, \IteratorAggregate
 	}
 }
 
-namespace ICanBoogie\Modules\Editor\Collection;
+namespace Icybee\Modules\Editor\Collection;
 
 /**
- * Event class for the `ICanBoogie\Modules\Editor\Collection::alter` event.
+ * Event class for the `Icybee\Modules\Editor\Collection::alter` event.
  */
 class AlterEvent extends \ICanBoogie\Event
 {
@@ -164,10 +164,10 @@ class AlterEvent extends \ICanBoogie\Event
 	/**
 	 * The event is constructed with the type `alter`.
 	 *
-	 * @param \ICanBoogie\Modules\Editor\Collection $target
+	 * @param \Icybee\Modules\Editor\Collection $target
 	 * @param array $properties
 	 */
-	public function __construct(\ICanBoogie\Modules\Editor\Collection $target, array $properties)
+	public function __construct(\Icybee\Modules\Editor\Collection $target, array $properties)
 	{
 		parent::__construct($target, 'alter', $properties);
 	}

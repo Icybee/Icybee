@@ -16,7 +16,7 @@ use Brickrouge\Element;
 /**
  * "Form" editor element.
  */
-class FormEditorElement extends PopForm implements \ICanBoogie\Modules\Editor\EditorElement
+class FormEditorElement extends PopForm implements \Icybee\Modules\Editor\EditorElement
 {
 	protected $selector;
 

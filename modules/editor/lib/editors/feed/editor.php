@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace ICanBoogie\Modules\Editor;
+namespace Icybee\Modules\Editor;
 
 /**
  * "Feed" editor.
@@ -19,7 +19,7 @@ class FeedEditor implements Editor
 	/**
 	 * Returns content as is.
 	 *
-	 * @see ICanBoogie\Modules\Editor.Editor::serialize()
+	 * @see Icybee\Modules\Editor.Editor::serialize()
 	 */
 	public function serialize($content)
 	{
@@ -29,7 +29,7 @@ class FeedEditor implements Editor
 	/**
 	 * Returns serialized content as is.
 	 *
-	 * @see ICanBoogie\Modules\Editor.Editor::unserialize()
+	 * @see Icybee\Modules\Editor.Editor::unserialize()
 	 */
 	public function unserialize($serialized_content)
 	{
@@ -38,7 +38,7 @@ class FeedEditor implements Editor
 	/**
 	 * @return FeedEditorElement
 	 *
-	 * @see ICanBoogie\Modules\Editor.Editor::from()
+	 * @see Icybee\Modules\Editor.Editor::from()
 	 */
 	public function from(array $attributes)
 	{

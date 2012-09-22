@@ -1,6 +1,6 @@
 <?php
 
-namespace ICanBoogie\Modules\Editor;
+namespace Icybee\Modules\Editor;
 
 use ICanBoogie\HTTP\Request;
 

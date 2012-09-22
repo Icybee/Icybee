@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace ICanBoogie\Modules\Editor;
+namespace Icybee\Modules\Editor;
 
 use ICanBoogie\Exception;
 
@@ -21,7 +21,7 @@ class WidgetsEditor implements Editor
 	/**
 	 * Returns a JSON string.
 	 *
-	 * @see ICanBoogie\Modules\Editor.Editor::serialize()
+	 * @see Icybee\Modules\Editor.Editor::serialize()
 	 */
 	public function serialize($content)
 	{
@@ -31,7 +31,7 @@ class WidgetsEditor implements Editor
 	/**
 	 * Returns unserialized JSON content.
 	 *
-	 * @see ICanBoogie\Modules\Editor.Editor::unserialize()
+	 * @see Icybee\Modules\Editor.Editor::unserialize()
 	 */
 	public function unserialize($serialized_content)
 	{
@@ -40,7 +40,7 @@ class WidgetsEditor implements Editor
 	/**
 	 * @return WidgetsEditorElement
 	 *
-	 * @see ICanBoogie\Modules\Editor.Editor::from()
+	 * @see Icybee\Modules\Editor.Editor::from()
 	 */
 	public function from(array $attributes)
 	{
@@ -50,7 +50,7 @@ class WidgetsEditor implements Editor
 	/**
 	 * Renders selected widgets.
 	 *
-	 * @see ICanBoogie\Modules\Editor.Editor::render()
+	 * @see Icybee\Modules\Editor.Editor::render()
 	 */
 	public function render($content)
 	{

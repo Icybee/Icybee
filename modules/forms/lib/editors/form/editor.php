@@ -16,12 +16,12 @@ use ICanBoogie\Core;
 /**
  * "Form" editor.
  */
-class FormEditor implements \ICanBoogie\Modules\Editor\Editor
+class FormEditor implements \Icybee\Modules\Editor\Editor
 {
 	/**
 	 * Returns content as is.
 	 *
-	 * @see ICanBoogie\Modules\Editor.Editor::serialize()
+	 * @see Icybee\Modules\Editor.Editor::serialize()
 	 */
 	public function serialize($content)
 	{
@@ -31,7 +31,7 @@ class FormEditor implements \ICanBoogie\Modules\Editor\Editor
 	/**
 	 * Returns serialized content as is.
 	 *
-	 * @see ICanBoogie\Modules\Editor.Editor::unserialize()
+	 * @see Icybee\Modules\Editor.Editor::unserialize()
 	 */
 	public function unserialize($serialized_content)
 	{
@@ -40,7 +40,7 @@ class FormEditor implements \ICanBoogie\Modules\Editor\Editor
 	/**
 	 * @return FormEditorElement
 	 *
-	 * @see ICanBoogie\Modules\Editor.Editor::from()
+	 * @see Icybee\Modules\Editor.Editor::from()
 	 */
 	public function from(array $attributes)
 	{
@@ -52,7 +52,7 @@ class FormEditor implements \ICanBoogie\Modules\Editor\Editor
 	 *
 	 * @return Icybee\Modules\Forms\Form
 	 *
-	 * @see ICanBoogie\Modules\Editor.Editor::render()
+	 * @see Icybee\Modules\Editor.Editor::render()
 	 */
 	public function render($content)
 	{

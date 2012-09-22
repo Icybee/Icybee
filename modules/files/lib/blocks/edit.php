@@ -14,7 +14,7 @@ namespace ICanBoogie\Modules\Files;
 use Brickrouge\Document;
 
 use ICanBoogie\ActiveRecord\File;
-use ICanBoogie\Modules\Editor\RTEEditorElement;
+use Icybee\Modules\Editor\RTEEditorElement;
 use ICanBoogie\Operation;
 use ICanBoogie\Uploaded;
 

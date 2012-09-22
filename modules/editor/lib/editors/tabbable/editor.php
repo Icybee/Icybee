@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace ICanBoogie\Modules\Editor;
+namespace Icybee\Modules\Editor;
 
 /**
  * "Tabbable" editor.
@@ -19,7 +19,7 @@ class TabbableEditor implements Editor
 	/**
 	 * Serializes the content as a JSON string.
 	 *
-	 * @see ICanBoogie\Modules\Editor.Editor::serialize()
+	 * @see Icybee\Modules\Editor.Editor::serialize()
 	 */
 	public function serialize($content)
 	{
@@ -50,7 +50,7 @@ class TabbableEditor implements Editor
 	 *
 	 * @return array
 	 *
-	 * @see ICanBoogie\Modules\Editor.Editor::unserialize()
+	 * @see Icybee\Modules\Editor.Editor::unserialize()
 	 */
 	public function unserialize($serialized_content)
 	{
@@ -60,7 +60,7 @@ class TabbableEditor implements Editor
 	/**
 	 * @return TabbableEditorElement
 	 *
-	 * @see ICanBoogie\Modules\Editor.Editor::from()
+	 * @see Icybee\Modules\Editor.Editor::from()
 	 */
 	public function from(array $attributes)
 	{
@@ -72,7 +72,7 @@ class TabbableEditor implements Editor
 	/**
 	 * The content is rendered using a {@link TabbableEditorRenderer} instance.
 	 *
-	 * @see ICanBoogie\Modules\Editor.Editor::render()
+	 * @see Icybee\Modules\Editor.Editor::render()
 	 */
 	public function render($content)
 	{

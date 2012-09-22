@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace ICanBoogie\Modules\Editor;
+namespace Icybee\Modules\Editor;
 
 use ICanBoogie\Modules\Thumbnailer\Thumbnail;
 use ICanBoogie\Operation;
@@ -24,7 +24,7 @@ class RTEEditor implements Editor
 	/**
 	 * Returns the content as is.
 	 *
-	 * @see ICanBoogie\Modules\Editor.Editor::serialize()
+	 * @see Icybee\Modules\Editor.Editor::serialize()
 	 */
 	public function serialize($content)
 	{
@@ -34,7 +34,7 @@ class RTEEditor implements Editor
 	/**
 	 * Returns the serialized content as is.
 	 *
-	 * @see ICanBoogie\Modules\Editor.Editor::unserialize()
+	 * @see Icybee\Modules\Editor.Editor::unserialize()
 	 */
 	public function unserialize($serialized_content)
 	{
@@ -45,7 +45,7 @@ class RTEEditor implements Editor
 	 * Replaces managed images with width or height attributes by thumbnails, and transform markup
 	 * when the original image can be displayed in a lightbox.
 	 *
-	 * @see ICanBoogie\Modules\Editor.Editor::render()
+	 * @see Icybee\Modules\Editor.Editor::render()
 	 */
 	public function render($content)
 	{
@@ -115,7 +115,7 @@ class RTEEditor implements Editor
 	/**
 	 * @return RTEEditorElement
 	 *
-	 * @see ICanBoogie\Modules\Editor.Editor::from()
+	 * @see Icybee\Modules\Editor.Editor::from()
 	 */
 	public function from(array $attributes)
 	{

@@ -17,7 +17,7 @@ use Brickrouge\Element;
 /**
  * View editor element.
  */
-class ViewEditorElement extends Element implements \ICanBoogie\Modules\Editor\EditorElement
+class ViewEditorElement extends Element implements \Icybee\Modules\Editor\EditorElement
 {
 	static protected function add_assets(Document $document)
 	{

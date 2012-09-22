@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace ICanBoogie\Modules\Dashboard;
+namespace Icybee\Modules\Dashboard;
 
 use ICanBoogie\Errors;
 use ICanBoogie\Operation;

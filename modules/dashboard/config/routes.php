@@ -1,6 +1,6 @@
 <?php
 
-namespace ICanBoogie\Modules\Dashboard;
+namespace Icybee\Modules\Dashboard;
 
 return array
 (
