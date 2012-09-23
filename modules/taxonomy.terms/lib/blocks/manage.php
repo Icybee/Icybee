@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace ICanBoogie\Modules\Taxonomy\Terms;
+namespace Icybee\Modules\Taxonomy\Terms;
 
 use ICanBoogie\ActiveRecord\Query;
 
@@ -74,7 +74,7 @@ class ManageBlock extends \WdManager
 		}
 
 		$query->select('*, (select count(s1.nid) from {self}__nodes as s1 where s1.vtid = term.vtid) AS `popularity`');
-		$query->mode(\PDO::FETCH_CLASS, 'ICanBoogie\ActiveRecord\Taxonomy\Term', array($this->model));
+		$query->mode(\PDO::FETCH_CLASS, 'Icybee\Modules\Taxonomy\Terms\Term', array($this->model));
 
 		return parent::alter_range_query($query, $options);
 	}

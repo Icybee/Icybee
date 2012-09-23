@@ -9,16 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace ICanBoogie\Modules\Taxonomy\Vocabulary;
-
-use ICanBoogie\ActiveRecord;
-use ICanBoogie\Event;
-use ICanBoogie\Modules;
-use ICanBoogie\Operation;
-
-use Brickrouge\Element;
-use Brickrouge\Form;
-use Brickrouge\Widget;
+namespace Icybee\Modules\Taxonomy\Vocabulary;
 
 class Module extends \Icybee\Module
 {
@@ -38,7 +29,7 @@ class Module extends \Icybee\Module
 		$rc  = '<form id="taxonomy-order" method="post">';
 		$rc .= '<input type="hidden" name="#operation" value="' . self::OPERATION_ORDER . '" />';
 		$rc .= '<input type="hidden" name="#destination" value="' . $this . '" />';
-		$rc .= '<input type="hidden" name="' . Operation::KEY . '" value="' . $vid . '" />';
+		$rc .= '<input type="hidden" name="' . \ICanBoogie\Operation::KEY . '" value="' . $vid . '" />';
 		$rc .= '<ol>';
 
 		foreach ($terms as $term)

@@ -9,9 +9,9 @@
  * file that was distributed with this source code.
  */
 
-namespace ICanBoogie\Modules\Taxonomy\Terms;
+namespace Icybee\Modules\Taxonomy\Terms;
 
-use ICanBoogie\ActiveRecord\Taxonomy\Term;
+use Icybee\Modules\Taxonomy\Terms\Term;
 
 use Brickrouge\Element;
 use Brickrouge\Form;

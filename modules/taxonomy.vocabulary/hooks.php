@@ -1,13 +1,9 @@
 <?php
 
-namespace ICanBoogie\Modules\Taxonomy\Vocabulary;
+namespace Icybee\Modules\Taxonomy\Vocabulary;
 
-use ICanBoogie\ActiveRecord;
 use ICanBoogie\Event;
-use ICanBoogie\Modules;
-use ICanBoogie\Operation;
 
-use Brickrouge;
 use Brickrouge\Element;
 use Brickrouge\Form;
 use Brickrouge\Text;
@@ -20,7 +16,7 @@ class Hooks
 	protected static $cache_ar_vocabularies = array();
 	protected static $cache_ar_terms = array();
 
-	public static function get_term(\ICanBoogie\Object\PropertyEvent $event, ActiveRecord\Node $target)
+	public static function get_term(\ICanBoogie\Object\PropertyEvent $event, \ICanBoogie\ActiveRecord\Node $target)
 	{
 		global $core;
 
@@ -71,7 +67,7 @@ class Hooks
 					$vocabulary->vid
 				)
 			)
-			->fetchAll(\PDO::FETCH_CLASS, 'ICanBoogie\ActiveRecord\Taxonomy\Term', array($terms_model));
+			->fetchAll(\PDO::FETCH_CLASS, 'Icybee\Modules\Taxonomy\Terms\Term', array($terms_model));
 
 			foreach ($terms as $term)
 			{
@@ -117,7 +113,7 @@ class Hooks
 		}
 	}
 
-	public static function on_nodes_editblock_alter_children(Event $event, Modules\Nodes\EditBlock $block)
+	public static function on_nodes_editblock_alter_children(Event $event, \Icybee\Modules\Nodes\EditBlock $block)
 	{
 		global $core;
 
@@ -547,7 +543,7 @@ class Hooks
 		$event->result = $result;
 	}
 
-	private static function for_vocabulary_and_term(Event $event, Provider $provider, $options, ActiveRecord\Taxonomy\Vocabulary $vocabulary, ActiveRecord\Taxonomy\Term $term)
+	private static function for_vocabulary_and_term(Event $event, Provider $provider, $options, \Icybee\Modules\Taxonomy\Vocabulary\Vocabulary $vocabulary, \Icybee\Modules\Taxonomy\Terms\Term $term)
 	{
 		$event->query->where('nid IN (SELECT nid FROM {prefix}taxonomy_terms
 		INNER JOIN {prefix}taxonomy_terms__nodes USING(vtid) WHERE vtid = ?)', $term ? $term->vtid : 0);

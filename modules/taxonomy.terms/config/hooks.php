@@ -4,14 +4,14 @@ return array
 (
 	'events' => array
 	(
-		'ICanBoogie\Modules\Nodes\DeleteOperation::process' => 'ICanBoogie\Modules\Taxonomy\Terms\Hooks::on_nodes_delete'
+		'ICanBoogie\Modules\Nodes\DeleteOperation::process' => 'Icybee\Modules\Taxonomy\Terms\Hooks::on_nodes_delete'
 	),
 
 	'patron.markups' => array
 	(
 		'taxonomy:terms' => array
 		(
-			'ICanBoogie\Modules\Taxonomy\Terms\Hooks::markup_terms', array
+			'Icybee\Modules\Taxonomy\Terms\Hooks::markup_terms', array
 			(
 				'vocabulary' => null,
 				'constructor' => null
@@ -20,7 +20,7 @@ return array
 
 		'taxonomy:nodes' => array
 		(
-			'ICanBoogie\Modules\Taxonomy\Terms\Hooks::markup_nodes', array
+			'Icybee\Modules\Taxonomy\Terms\Hooks::markup_nodes', array
 			(
 				'vocabulary' => null,
 				'scope' => null,

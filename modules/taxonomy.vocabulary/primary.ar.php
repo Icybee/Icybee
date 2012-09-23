@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace ICanBoogie\ActiveRecord\Taxonomy;
+namespace Icybee\Modules\Taxonomy\Vocabulary;
 
 use ICanBoogie\ActiveRecord;
 
@@ -127,6 +127,6 @@ class Vocabulary extends ActiveRecord
 		$model = $core->models['taxonomy.terms'];
 
 		return $model->select('term.*')->filter_by_vid($this->vid)
-		->order('weight')->all(\PDO::FETCH_CLASS, __NAMESPACE__ . '\Term', array($model));
+		->order('weight')->all(\PDO::FETCH_CLASS, 'Icybee\Modules\Taxonomy\Terms\Term', array($model));
 	}
 }

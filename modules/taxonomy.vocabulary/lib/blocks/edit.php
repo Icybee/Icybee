@@ -1,8 +1,6 @@
 <?php
 
-namespace ICanBoogie\Modules\Taxonomy\Vocabulary;
-
-use ICanBoogie\ActiveRecord\Taxonomy\Vocabulary;
+namespace Icybee\Modules\Taxonomy\Vocabulary;
 
 use Brickrouge\Element;
 use Brickrouge\Form;

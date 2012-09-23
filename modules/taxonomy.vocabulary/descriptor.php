@@ -1,22 +1,19 @@
 <?php
 
-use ICanBoogie\Module;
+namespace Icybee\Modules\Taxonomy\Vocabulary;
+
 use ICanBoogie\ActiveRecord\Model;
+use ICanBoogie\Module;
 
 return array
 (
-	Module::T_TITLE => 'Vocabulary',
-	Module::T_DESCRIPTION => 'Manage vocabulary',
 	Module::T_CATEGORY => 'organize',
-	Module::T_REQUIRES => array
-	(
-// 		'taxonomy.terms' => '1.x'
-	),
-
+	Module::T_DESCRIPTION => 'Manage vocabulary',
 	Module::T_MODELS => array
 	(
 		'primary' => array
 		(
+			Model::T_ACTIVERECORD_CLASS => __NAMESPACE__ . '\Vocabulary',
 			Model::T_SCHEMA => array
 			(
 				'fields' => array
@@ -50,5 +47,14 @@ return array
 				)
 			)
 		)
-	)
+	),
+
+	Module::T_NAMESPACE => __NAMESPACE__,
+	Module::T_REQUIRES => array
+	(
+// 		'taxonomy.terms' => '1.x'
+	),
+
+	Module::T_TITLE => 'Vocabulary',
+	Module::T_VERSION => '1.0'
 );

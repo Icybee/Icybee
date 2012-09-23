@@ -10,7 +10,7 @@
  */
 
 use ICanBoogie\Exception;
-use ICanBoogie\ActiveRecord\Taxonomy\Term;
+use Icybee\Modules\Taxonomy\Terms\Term;
 
 class taxonomy_support_WdMarkups extends patron_markups_WdHooks
 {
@@ -197,7 +197,7 @@ class taxonomy_support_WdMarkups extends patron_markups_WdHooks
 
 			$conditions_args
 		)
-		->fetchAll(PDO::FETCH_CLASS, 'ICanBoogie\ActiveRecord\Taxonomy\Term', array($model));
+		->fetchAll(PDO::FETCH_CLASS, 'Icybee\Modules\Taxonomy\Terms\Term', array($model));
 
 		if ($constructor)
 		{

@@ -1,23 +1,20 @@
 <?php
 
-use ICanBoogie\Module;
+namespace Icybee\Modules\Taxonomy\Terms;
+
 use ICanBoogie\ActiveRecord\Model;
+use ICanBoogie\Module;
 
 return array
 (
-	Module::T_TITLE => 'Terms',
-	Module::T_DESCRIPTION => 'Manage vocabulary terms',
 	Module::T_CATEGORY => 'organize',
-	Module::T_REQUIRES => array
-	(
-		'nodes' => '1.x',
-		'taxonomy.vocabulary' => '1.x'
-	),
+	Module::T_DESCRIPTION => 'Manage vocabulary terms',
 
 	Module::T_MODELS => array
 	(
 		'primary' => array
 		(
+			Model::T_ACTIVERECORD_CLASS => __NAMESPACE__ . '\Term',
 			Model::T_IMPLEMENTS => array
 			(
 				array('model' => 'taxonomy.vocabulary/primary')
@@ -39,7 +36,6 @@ return array
 		'nodes' => array
 		(
 			Model::T_ALIAS => 'term_node',
-
 			Model::T_IMPLEMENTS => array
 			(
 				array('model' => 'taxonomy.terms/primary')
@@ -55,5 +51,14 @@ return array
 				)
 			)
 		)
-	)
+	),
+
+	Module::T_NAMESPACE => __NAMESPACE__,
+	Module::T_REQUIRES => array
+	(
+		'nodes' => '1.0',
+		'taxonomy.vocabulary' => '1.0'
+	),
+
+	Module::T_TITLE => 'Terms'
 );

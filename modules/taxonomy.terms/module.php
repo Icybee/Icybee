@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace ICanBoogie\Modules\Taxonomy\Terms;
+namespace Icybee\Modules\Taxonomy\Terms;
 
 class Module extends \Icybee\Module
 {

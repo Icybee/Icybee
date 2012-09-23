@@ -9,9 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace ICanBoogie\Modules\Taxonomy\Vocabulary;
-
-use ICanBoogie\ActiveRecord;
+namespace Icybee\Modules\Taxonomy\Vocabulary;
 
 class ManageBlock extends \WdManager
 {
@@ -30,12 +28,12 @@ class ManageBlock extends \WdManager
 	{
 		return array
 		(
-			ActiveRecord\Taxonomy\Vocabulary::VOCABULARY => array
+			Vocabulary::VOCABULARY => array
 			(
 				'label' => 'Vocabulary'
 			),
 
-			ActiveRecord\Taxonomy\Vocabulary::SCOPE => array
+			Vocabulary::SCOPE => array
 			(
 				'label' => 'Portée',
 				'orderable' => false
@@ -76,7 +74,8 @@ EOT;
 	{
 		global $core;
 
-		$scope = $this->module->model('scopes')->select('constructor')->where('vid = ?', $record->vid)->all(\PDO::FETCH_COLUMN);
+		$scope = $this->module->model('scopes')
+		->select('constructor')->where('vid = ?', $record->vid)->all(\PDO::FETCH_COLUMN);
 
 		if ($scope)
 		{

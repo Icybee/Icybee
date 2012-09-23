@@ -1,6 +1,6 @@
 <?php
 
-namespace ICanBoogie\Modules\Taxonomy\Vocabulary;
+namespace Icybee\Modules\Taxonomy\Vocabulary;
 
 $hooks = __NAMESPACE__ . '\Hooks::';
 

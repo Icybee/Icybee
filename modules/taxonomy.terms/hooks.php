@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace ICanBoogie\Modules\Taxonomy\Terms;
+namespace Icybee\Modules\Taxonomy\Terms;
 
 use ICanBoogie\ActiveRecord;
 use ICanBoogie\Event;
@@ -89,7 +89,7 @@ class Hooks
 
 			$conditions_args
 		)
-		->fetchAll(\PDO::FETCH_CLASS, 'ICanBoogie\ActiveRecord\Taxonomy\Term', array($model));
+		->fetchAll(\PDO::FETCH_CLASS, 'Icybee\Modules\Taxonomy\Terms\Term', array($model));
 
 		if ($constructor)
 		{
@@ -128,7 +128,7 @@ class Hooks
 		$term = $patron->context['this'];
 		$order = $args['order'];
 
-		if ($term instanceof ActiveRecord\Taxonomy\Term)
+		if ($term instanceof \Icybee\Modules\Taxonomy\Terms\Term)
 		{
 			$constructor = $term->nodes_constructor;
 			$order = $args['order'] ? strtr($args['order'], ':', ' ') : 'FIELD (nid, ' . $term->nodes_ids . ')';

@@ -9,9 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace ICanBoogie\ActiveRecord\Taxonomy;
-
-use ICanBoogie\ActiveRecord;
+namespace Icybee\Modules\Taxonomy\Terms;
 
 class Term extends \ICanBoogie\ActiveRecord implements \IteratorAggregate
 {
