@@ -17,7 +17,7 @@ class ViewProvider extends \Icybee\Modules\Views\ActiveRecordProvider
 {
 	protected function alter_conditions(array $conditions)
 	{
-		if (isset($this->context['this']) && $this->context['this'] instanceof \ICanBoogie\ActiveRecord\Node)
+		if (isset($this->context['this']) && $this->context['this'] instanceof \Icybee\Modules\Nodes\Node)
 		{
 			$conditions['nid'] = $this->context['this']->nid;
 		}

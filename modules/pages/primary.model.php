@@ -15,12 +15,12 @@ use ICanBoogie\ActiveRecord\Query;
 use ICanBoogie\Exception;
 use ICanBoogie\Route;
 
-class Model extends \ICanBoogie\Modules\Nodes\Model
+class Model extends \Icybee\Modules\Nodes\Model
 {
 	/**
 	 * Before saving the record, we make sure that it is not its own parent.
 	 *
-	 * @see ICanBoogie\Modules\Nodes.Model::save()
+	 * @see Icybee\Modules\Nodes.Model::save()
 	 */
 	public function save(array $properties, $key=null, array $options=array())
 	{
@@ -43,7 +43,7 @@ class Model extends \ICanBoogie\Modules\Nodes\Model
 	 * Before deleting the record, we make sure that it is not used as a parent page or as a
 	 * location target.
 	 *
-	 * @see ICanBoogie\Modules\Nodes.Model::delete()
+	 * @see Icybee\Modules\Nodes.Model::delete()
 	 */
 	public function delete($key)
 	{

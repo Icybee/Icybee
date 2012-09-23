@@ -14,7 +14,7 @@ namespace Icybee\Modules\Files;
 use ICanBoogie\Exception;
 use ICanBoogie\Uploaded;
 
-class Model extends \ICanBoogie\Modules\Nodes\Model
+class Model extends \Icybee\Modules\Nodes\Model
 {
 	const ACCEPT = '#files-accept';
 	const UPLOADED = '#files-uploaded';

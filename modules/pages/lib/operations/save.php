@@ -15,7 +15,7 @@ use Icybee\Modules\Pages\Page;
 use ICanBoogie\Event;
 use ICanBoogie\Route;
 
-class SaveOperation extends \ICanBoogie\Modules\Nodes\SaveOperation
+class SaveOperation extends \Icybee\Modules\Nodes\SaveOperation
 {
 	protected function get_properties()
 	{

@@ -12,7 +12,7 @@
 namespace Icybee\Modules\Views;
 
 use ICanBoogie\ActiveRecord\Model;
-use ICanBoogie\ActiveRecord\Node;
+use Icybee\Modules\Nodes\Node;
 use ICanBoogie\Debug;
 use ICanBoogie\Event;
 use ICanBoogie\Exception;

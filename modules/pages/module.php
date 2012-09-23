@@ -11,7 +11,7 @@
 
 namespace Icybee\Modules\Pages;
 
-use ICanBoogie\ActiveRecord\Node;
+use Icybee\Modules\Nodes\Node;
 use Icybee\Modules\Pages\Page;
 use Icybee\Modules\Editor\EditorElement;
 use Icybee\Modules\Editor\MultiEditorElement;
@@ -21,7 +21,7 @@ use Brickrouge\Element;
 use Brickrouge\Form;
 use Brickrouge\Text;
 
-class Module extends \ICanBoogie\Modules\Nodes\Module
+class Module extends \Icybee\Modules\Nodes\Module
 {
 	/**
 	 * Only the "list" view is available and it is used to create the sitemap.

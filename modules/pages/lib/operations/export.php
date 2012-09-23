@@ -11,7 +11,7 @@
 
 namespace Icybee\Modules\Pages;
 
-class ExportOperation extends \ICanBoogie\Modules\Nodes\ExportOperation
+class ExportOperation extends \Icybee\Modules\Nodes\ExportOperation
 {
 	protected function process()
 	{

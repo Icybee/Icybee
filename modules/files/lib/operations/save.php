@@ -16,7 +16,7 @@ use ICanBoogie\Event;
 use ICanBoogie\Operation;
 use ICanBoogie\Uploaded;
 
-class SaveOperation extends \ICanBoogie\Modules\Nodes\SaveOperation
+class SaveOperation extends \Icybee\Modules\Nodes\SaveOperation
 {
 	/**
 	 * @var Uploaded|bool The optional file to save with the record.
@@ -33,7 +33,7 @@ class SaveOperation extends \ICanBoogie\Modules\Nodes\SaveOperation
 	 * `file` property is defined, which is the case when an asynchronous upload happend, it is
 	 * copied to the `path` property.
 	 *
-	 * @see ICanBoogie\Modules\Nodes.SaveOperation::get_properties()
+	 * @see Icybee\Modules\Nodes.SaveOperation::get_properties()
 	 */
 	protected function get_properties()
 	{
@@ -124,7 +124,7 @@ class SaveOperation extends \ICanBoogie\Modules\Nodes\SaveOperation
 	/**
 	 * The method validates unless there was an error during the file upload.
 	 *
-	 * @see ICanBoogie\Modules\Nodes.SaveOperation::validate()
+	 * @see Icybee\Modules\Nodes.SaveOperation::validate()
 	 */
 	protected function validate(\ICanboogie\Errors $errors)
 	{
@@ -144,7 +144,7 @@ class SaveOperation extends \ICanBoogie\Modules\Nodes\SaveOperation
 	 * Trigger a 'resources.files.path.change' event when the path of the updated record is
 	 * modified.
 	 *
-	 * @see ICanBoogie\Modules\Nodes.SaveOperation::process()
+	 * @see Icybee\Modules\Nodes.SaveOperation::process()
 	 */
 	protected function process()
 	{

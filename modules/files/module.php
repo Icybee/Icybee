@@ -13,7 +13,7 @@ namespace Icybee\Modules\Files;
 
 use ICanBoogie\Uploaded;
 
-class Module extends \ICanBoogie\Modules\Nodes\Module
+class Module extends \Icybee\Modules\Nodes\Module
 {
 	const OPERATION_UPLOAD = 'upload';
 	const OPERATION_UPLOAD_RESPONSE = 'uploadResponse';

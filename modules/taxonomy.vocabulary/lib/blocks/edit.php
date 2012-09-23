@@ -143,7 +143,7 @@ class EditBlock extends \Icybee\EditBlock
 	{
 		global $core;
 
-		if (!$core->user->has_permission(\ICanBoogie\Modules\Nodes\Module::PERMISSION_MODIFY_BELONGING_SITE))
+		if (!$core->user->has_permission(\Icybee\Modules\Nodes\Module::PERMISSION_MODIFY_BELONGING_SITE))
 		{
 			return;
 		}

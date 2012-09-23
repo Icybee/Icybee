@@ -149,12 +149,12 @@ return array
 (
 	'properties' => array
 	(
-		'ICanBoogie\ActiveRecord\Node::title' => 'callback'
+		'Icybee\Modules\Nodes\Node::title' => 'callback'
 	),
 
 	'records' => array
 	(
-		'ICanBoogie\ActiveRecord\Node' => 'callback'
+		'Icybee\Modules\Nodes\Node' => 'callback'
 	),
 
 	'template' => array

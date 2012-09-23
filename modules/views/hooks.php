@@ -12,7 +12,7 @@
 namespace Icybee\Modules\Views;
 
 use ICanBoogie\ActiveRecord;
-use ICanBoogie\ActiveRecord\Node;
+use Icybee\Modules\Nodes\Node;
 use Icybee\Modules\Cache\Collection as CacheCollection;
 use ICanBoogie\Operation;
 use ICanBoogie\Route;

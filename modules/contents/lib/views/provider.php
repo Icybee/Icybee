@@ -15,12 +15,12 @@ use ICanBoogie\ActiveRecord;
 use ICanBoogie\ActiveRecord\Query;
 use ICanBoogie\ActiveRecord\RecordNotFound;
 
-class ViewProvider extends \ICanBoogie\Modules\Nodes\ViewProvider
+class ViewProvider extends \Icybee\Modules\Nodes\ViewProvider
 {
 	/**
 	 * Tries to rescue the record if finding the record failed.
 	 *
-	 * @see ICanBoogie\Modules\Nodes.ViewProvider::__invoke()
+	 * @see Icybee\Modules\Nodes.ViewProvider::__invoke()
 	 */
 	public function __invoke()
 	{
@@ -41,7 +41,7 @@ class ViewProvider extends \ICanBoogie\Modules\Nodes\ViewProvider
 	 * If the view is of type "home" the query is altered to search for nodes which are not
 	 * excluded from _home_.
 	 *
-	 * @see ICanBoogie\Modules\Nodes\ViewProvider::alter_query()
+	 * @see Icybee\Modules\Nodes\ViewProvider::alter_query()
 	 */
 	protected function alter_query(Query $query, array $conditions)
 	{

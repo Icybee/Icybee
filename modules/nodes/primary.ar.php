@@ -9,9 +9,8 @@
  * file that was distributed with this source code.
  */
 
-namespace ICanBoogie\ActiveRecord;
+namespace Icybee\Modules\Nodes;
 
-use ICanBoogie\ActiveRecord\Model;
 use ICanBoogie\I18n;
 use ICanBoogie\Event;
 
@@ -336,10 +335,10 @@ class Node extends \ICanBoogie\ActiveRecord
 	}
 }
 
-namespace ICanBoogie\ActiveRecord\Node;
+namespace Icybee\Modules\Nodes\Node;
 
 /**
- * Event class for the `ICanBoogie\ActiveRecord\Node::alter_css_class_names` event.
+ * Event class for the `Icybee\Modules\Nodes\Node::alter_css_class_names` event.
  */
 class AlterCSSClassNamesEvent extends \ICanBoogie\Event
 {
@@ -353,10 +352,10 @@ class AlterCSSClassNamesEvent extends \ICanBoogie\Event
 	/**
 	 * The event is constructed with the type `alter_css_class_names`.
 	 *
-	 * @param \ICanBoogie\ActiveRecord\Node $target
+	 * @param \Icybee\Modules\Nodes\Node $target
 	 * @param array $properties
 	 */
-	public function __construct(\ICanBoogie\ActiveRecord\Node $target, array $properties)
+	public function __construct(\Icybee\Modules\Nodes\Node $target, array $properties)
 	{
 		parent::__construct($target, 'alter_css_class_names', $properties);
 	}

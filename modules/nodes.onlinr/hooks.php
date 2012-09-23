@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace ICanBoogie\Modules\Nodes\Onlinr;
+namespace Icybee\Modules\Nodes\Onlinr;
 
 use ICanBoogie\ActiveRecord\RecordNotFound;
 use ICanBoogie\Event;

@@ -16,7 +16,7 @@ class Hooks
 	protected static $cache_ar_vocabularies = array();
 	protected static $cache_ar_terms = array();
 
-	public static function get_term(\ICanBoogie\Object\PropertyEvent $event, \ICanBoogie\ActiveRecord\Node $target)
+	public static function get_term(\ICanBoogie\Object\PropertyEvent $event, \Icybee\Modules\Nodes\Node $target)
 	{
 		global $core;
 
@@ -232,7 +232,7 @@ class Hooks
 		);
 	}
 
-	public static function on_node_save(Event $event, \ICanBoogie\Modules\Nodes\SaveOperation $sender)
+	public static function on_node_save(Event $event, \Icybee\Modules\Nodes\SaveOperation $sender)
 	{
 		global $core;
 
@@ -466,7 +466,7 @@ class Hooks
 
 		foreach ($event->result as $record)
 		{
-			if (!($record instanceof \ICanBoogie\ActiveRecord\Node))
+			if (!($record instanceof \Icybee\Modules\Nodes\Node))
 			{
 				/*
 				 * we return them as [ term: [], nodes: []]
@@ -475,7 +475,7 @@ class Hooks
 				 *
 				 * http://demo.icybee.localhost/articles/category/
 				 *
-				trigger_error(\ICanBoogie\format('Expected instance of <q>ICanBoogie\ActiveRecord\Node</q> given: \1', array($record)));
+				trigger_error(\ICanBoogie\format('Expected instance of <q>Icybee\Modules\Nodes\Node</q> given: \1', array($record)));
 
 				var_dump($event); exit;
 				*/

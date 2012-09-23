@@ -11,19 +11,18 @@
 
 namespace Icybee\Modules\Images;
 
-use ICanBoogie\ActiveRecord;
-use ICanBoogie\ActiveRecord\Node;
 use ICanBoogie\Debug;
 use ICanBoogie\Event;
 use ICanBoogie\Events;
 use ICanBoogie\Modules;
-use Icybee\Modules\Contents\ConfigBlock as ContentsConfigBlock;
-use Icybee\Modules\Pages\PageController;
 use ICanBoogie\Operation;
 
 use Brickrouge\Element;
 use Brickrouge\Form;
 
+use Icybee\Modules\Contents\ConfigBlock as ContentsConfigBlock;
+use Icybee\Modules\Nodes\Node;
+use Icybee\Modules\Pages\PageController;
 use Icybee\Modules\Views\ActiveRecordProvider\AlterResultEvent;
 
 class Hooks
@@ -104,7 +103,7 @@ class Hooks
 		}
 	}
 
-	public static function on_contents_editblock_alter_children(Event $event, \ICanBoogie\Modules\Nodes\EditBlock $block)
+	public static function on_contents_editblock_alter_children(Event $event, \Icybee\Modules\Nodes\EditBlock $block)
 	{
 		global $core;
 
@@ -259,7 +258,7 @@ class Hooks
 		);
 	}
 
-	public static function on_nodes_save(Event $event, \ICanBoogie\Modules\Nodes\SaveOperation $operation)
+	public static function on_nodes_save(Event $event, \Icybee\Modules\Nodes\SaveOperation $operation)
 	{
 		$params = &$event->request->params;
 
@@ -400,7 +399,7 @@ class Hooks
 
 	static private $attached;
 
-	public static function on_alter_css_class_names(\ICanBoogie\ActiveRecord\Node\AlterCSSClassNamesEvent $event, ActiveRecord\Node $node)
+	public static function on_alter_css_class_names(\Icybee\Modules\Nodes\Node\AlterCSSClassNamesEvent $event, \Icybee\Modules\Nodes\Node $node)
 	{
 		global $core;
 

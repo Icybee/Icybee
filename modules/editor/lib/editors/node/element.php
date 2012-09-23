@@ -35,7 +35,7 @@ class NodeEditorElement extends Element implements EditorElement
 			$value = json_decode($value);
 		}
 
-		$class = 'ICanBoogie\Modules\Nodes\PopNode';
+		$class = 'Icybee\Modules\Nodes\PopNode';
 		$constructor = $this['data-constructor'] ?: 'nodes';
 
 		if ($constructor == 'images')
@@ -47,7 +47,7 @@ class NodeEditorElement extends Element implements EditorElement
 		(
 			array
 			(
-				\ICanBoogie\Modules\Nodes\PopNode::T_CONSTRUCTOR => $constructor,
+				\Icybee\Modules\Nodes\PopNode::T_CONSTRUCTOR => $constructor,
 
 				'name' => $name,
 				'value' => $value

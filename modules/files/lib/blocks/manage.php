@@ -17,7 +17,7 @@ use ICanBoogie\ActiveRecord\Query;
 /**
  * A block to manage files.
  */
-class ManageBlock extends \ICanBoogie\Modules\Nodes\ManageBlock
+class ManageBlock extends \Icybee\Modules\Nodes\ManageBlock
 {
 	public function __construct(Module $module, array $attributes)
 	{

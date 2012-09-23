@@ -21,7 +21,7 @@ class Hooks
 	 * This is the callback for the `metas` virtual property added to the "nodes", "users" and
 	 * "sites" active records.
 	 *
-	 * @param object An instance of {@link ICanBoogie\ActiveRecord\Node},
+	 * @param object An instance of {@link Icybee\Modules\Nodes\Node},
 	 * {@link Icybee\Modules\Users\User} or {@link Icybee\Modules\Sites\Site}.
 	 *
 	 * @return object A MetasHandler object that can be used to access or modify the metadatas
@@ -65,7 +65,7 @@ class Hooks
 
 		$module = $event->module;
 
-		if ($module instanceof \ICanBoogie\Modules\Nodes\Module)
+		if ($module instanceof \Icybee\Modules\Nodes\Module)
 		{
 			$type = 'node';
 		}
@@ -122,7 +122,7 @@ class Hooks
 
 		$targetid = $event->rc['key'];
 
-		if ($sender instanceof \ICanBoogie\Modules\Nodes\SaveOperation)
+		if ($sender instanceof \Icybee\Modules\Nodes\SaveOperation)
 		{
 			$type = 'node';
 		}
@@ -208,7 +208,7 @@ class Hooks
 
 		$module = $operation->module;
 
-		if ($module instanceof \ICanBoogie\Modules\Nodes\Module)
+		if ($module instanceof \Icybee\Modules\Nodes\Module)
 		{
 			$type = 'node';
 		}

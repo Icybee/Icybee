@@ -11,7 +11,7 @@
 
 namespace Icybee\Modules\Files;
 
-class DeleteOperation extends \ICanBoogie\Modules\Nodes\DeleteOperation
+class DeleteOperation extends \Icybee\Modules\Nodes\DeleteOperation
 {
 
 }

@@ -11,7 +11,7 @@
 
 namespace Icybee\Modules\Forms;
 
-class ManageBlock extends \ICanBoogie\Modules\Nodes\ManageBlock
+class ManageBlock extends \Icybee\Modules\Nodes\ManageBlock
 {
 	public function __construct(Module $module, array $attributes=array())
 	{

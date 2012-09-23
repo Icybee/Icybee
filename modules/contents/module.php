@@ -15,7 +15,7 @@ namespace Icybee\Modules\Contents;
  * The "contents" module extends the "nodes" module by offrering a subtitle, a body
  * (with a customizable editor), an optional excerpt, a date and a new visibility option (home).
  */
-class Module extends \ICanBoogie\Modules\Nodes\Module
+class Module extends \Icybee\Modules\Nodes\Module
 {
 	const OPERATION_HOME_INCLUDE = 'home_include';
 	const OPERATION_HOME_EXCLUDE = 'home_exclude';
@@ -23,7 +23,7 @@ class Module extends \ICanBoogie\Modules\Nodes\Module
 	/**
 	 * Overrites the "view", "list" and "home" views to provide different titles and providers.
 	 *
-	 * @see ICanBoogie\Modules\Nodes.Module::get_views()
+	 * @see Icybee\Modules\Nodes.Module::get_views()
 	 */
 	protected function get_views()
 	{

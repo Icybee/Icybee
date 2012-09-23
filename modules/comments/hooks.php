@@ -11,7 +11,7 @@
 
 namespace Icybee\Modules\Comments;
 
-use ICanBoogie\ActiveRecord\Node;
+use Icybee\Modules\Nodes\Node;
 use ICanBoogie\Event;
 use ICanBoogie\Exception;
 use ICanBoogie\Operation;
@@ -22,7 +22,7 @@ use Brickrouge\Text;
 
 class Hooks
 {
-	public static function before_node_save(Operation\ProcessEvent $event, \ICanBoogie\Modules\Nodes\SaveOperation $sender)
+	public static function before_node_save(Operation\ProcessEvent $event, \Icybee\Modules\Nodes\SaveOperation $sender)
 	{
 		$request = $event->request;
 
@@ -43,9 +43,9 @@ class Hooks
 	 * Deletes all the comments attached to a node.
 	 *
 	 * @param Operation\ProcessEvent $event
-	 * @param ICanBoogie\Modules\Nodes\DeleteOperation $sender
+	 * @param Icybee\Modules\Nodes\DeleteOperation $sender
 	 */
-	public static function on_node_delete(Operation\ProcessEvent $event, \ICanBoogie\Modules\Nodes\DeleteOperation $operation)
+	public static function on_node_delete(Operation\ProcessEvent $event, \Icybee\Modules\Nodes\DeleteOperation $operation)
 	{
 		global $core;
 

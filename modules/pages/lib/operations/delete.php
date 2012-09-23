@@ -13,7 +13,7 @@ namespace Icybee\Modules\Pages;
 
 use ICanBoogie\Errors;
 
-class DeleteOperation extends \ICanBoogie\Modules\Nodes\DeleteOperation
+class DeleteOperation extends \Icybee\Modules\Nodes\DeleteOperation
 {
 	protected function validate(Errors $errors)
 	{

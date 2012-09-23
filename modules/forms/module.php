@@ -11,7 +11,7 @@
 
 namespace Icybee\Modules\Forms;
 
-class Module extends \ICanBoogie\Modules\Nodes\Module
+class Module extends \Icybee\Modules\Nodes\Module
 {
 	const OPERATION_POST = 'post'; // TODO-20120922: rename as OPERATION_SEND
 	const OPERATION_POST_ID = '#post-id'; // TODO-20120922: rename as OPERATION_SEND_FORM_KEY

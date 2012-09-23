@@ -11,7 +11,7 @@
 
 namespace Icybee\Modules\Pages;
 
-class QueryOperationOperation extends \ICanBoogie\Modules\Nodes\QueryOperationOperation
+class QueryOperationOperation extends \Icybee\Modules\Nodes\QueryOperationOperation
 {
 
 }

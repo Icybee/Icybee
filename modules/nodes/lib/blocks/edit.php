@@ -9,9 +9,9 @@
  * file that was distributed with this source code.
  */
 
-namespace ICanBoogie\Modules\Nodes;
+namespace Icybee\Modules\Nodes;
 
-use ICanBoogie\ActiveRecord\Node;
+use Icybee\Modules\Nodes\Node;
 
 use Brickrouge\Element;
 use Brickrouge\Form;

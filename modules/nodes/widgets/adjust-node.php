@@ -11,7 +11,6 @@
 
 namespace Brickrouge\Widget;
 
-use ICanBoogie\ActiveRecord;
 use ICanBoogie\ActiveRecord\Query;
 
 use Brickrouge\A;
@@ -178,7 +177,7 @@ class AdjustNode extends \Brickrouge\Widget
 		return $rc;
 	}
 
-	protected function render_record(ActiveRecord\Node $record, $selected, array $range, array $options)
+	protected function render_record(\Icybee\Modules\Nodes\Node $record, $selected, array $range, array $options)
 	{
 		$recordid = $record->nid;
 

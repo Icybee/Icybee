@@ -18,7 +18,7 @@ use ICanBoogie\Operation;
 use Brickrouge\Button;
 use Brickrouge\Element;
 
-class Form extends \ICanBoogie\ActiveRecord\Node
+class Form extends \Icybee\Modules\Nodes\Node
 {
 	const MODELID = 'modelid';
 	const CONFIG = 'config';

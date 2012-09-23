@@ -11,7 +11,6 @@
 
 namespace Icybee\Modules\Pages;
 
-use ICanBoogie\ActiveRecord;
 use ICanBoogie\AuthenticationRequired;
 use ICanBoogie\Event;
 use ICanBoogie\Exception;
@@ -336,7 +335,7 @@ class PageController
 
 		foreach ($nodes as $node)
 		{
-			if (!$node instanceof ActiveRecord\Node)
+			if (!$node instanceof \Icybee\Modules\Nodes\Node)
 			{
 				throw new Exception('Not a node object: \1', array($node));
 			}

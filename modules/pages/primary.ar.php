@@ -23,7 +23,7 @@ use ICanBoogie\Route;
  * @property-read bool $is_trail Whether the page is in the navigation trail or not.
  * @property-read array[]Page $navigation_children Navigation children of the page.
  */
-class Page extends \ICanBoogie\ActiveRecord\Node
+class Page extends \Icybee\Modules\Nodes\Node
 {
 	const PARENTID = 'parentid';
 	const LOCATIONID = 'locationid';

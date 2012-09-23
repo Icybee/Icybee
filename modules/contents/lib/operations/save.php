@@ -14,12 +14,12 @@ namespace Icybee\Modules\Contents;
 /**
  * Saves a content.
  */
-class SaveOperation extends \ICanBoogie\Modules\Nodes\SaveOperation
+class SaveOperation extends \Icybee\Modules\Nodes\SaveOperation
 {
 	/**
 	 * Serialize the `body` property using its editor.
 	 *
-	 * @see ICanBoogie\Modules\Nodes.SaveOperation::get_properties()
+	 * @see Icybee\Modules\Nodes.SaveOperation::get_properties()
 	 */
 	protected function get_properties()
 	{

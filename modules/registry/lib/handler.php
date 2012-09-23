@@ -24,7 +24,7 @@ class MetasHandler implements \ArrayAccess
 
 	public function __construct(\ICanBoogie\ActiveRecord $target)
 	{
-		if ($target instanceof \ICanBoogie\ActiveRecord\Node)
+		if ($target instanceof \Icybee\Modules\Nodes\Node)
 		{
 			$this->targetid = $target->nid;
 			$type = 'node';

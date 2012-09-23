@@ -18,7 +18,7 @@ use ICanBoogie\Route;
 use Brickrouge\Element;
 use Brickrouge\Text;
 
-class ManageBlock extends \ICanBoogie\Modules\Nodes\ManageBlock
+class ManageBlock extends \Icybee\Modules\Nodes\ManageBlock
 {
 	static protected function add_assets(\Brickrouge\Document $document)
 	{

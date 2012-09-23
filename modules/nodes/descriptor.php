@@ -1,25 +1,19 @@
 <?php
 
-use ICanBoogie\Module;
+namespace Icybee\Modules\Nodes;
+
 use ICanBoogie\ActiveRecord\Model;
+use ICanBoogie\Module;
 
 return array
 (
 	Module::T_CATEGORY => 'contents',
-	Module::T_TITLE => 'Nodes',
 	Module::T_DESCRIPTION => 'Centralized node system base',
-	Module::T_PERMISSION => false,
-	Module::T_REQUIRED => true,
-	Module::T_REQUIRES => array
-	(
-		'sites' => 'x.x',
-		'users' => 'x.x'
-	),
-
 	Module::T_MODELS => array
 	(
 		'primary' => array
 		(
+			Model::T_ACTIVERECORD_CLASS => __NAMESPACE__ . '\Node',
 			Model::T_SCHEMA => array
 			(
 				'fields' => array
@@ -40,8 +34,20 @@ return array
 		)
 	),
 
+	Module::T_NAMESPACE => __NAMESPACE__,
+	Module::T_PERMISSION => false,
 	Module::T_PERMISSIONS => array
 	(
 		'modify belonging site'
-	)
+	),
+
+	Module::T_REQUIRED => true,
+	Module::T_REQUIRES => array
+	(
+		'sites' => 'x.x',
+		'users' => 'x.x'
+	),
+
+	Module::T_TITLE => 'Nodes',
+	Module::T_VERSION => '1.0'
 );

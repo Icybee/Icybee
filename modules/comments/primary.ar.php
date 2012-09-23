@@ -21,7 +21,7 @@ use Textmark_Parser;
  * @property string $css_class A suitable string for the HTML `class` attribute.
  * @property array $css_class_names CSS class names.
  * @property string $excerpt HTML excerpt of the comment, made of the first 55 words.
- * @property ActiveRecord\Node $node The node the comment is attached to.
+ * @property \Icybee\Modules\Nodes\Node $node The node the comment is attached to.
  * @property string $url URL of the comment relative to the website.
  */
 class Comment extends \ICanBoogie\ActiveRecord
@@ -55,7 +55,7 @@ class Comment extends \ICanBoogie\ActiveRecord
 	/**
 	 * Returns the node the comment is attached to.
 	 *
-	 * @return \ICanBoogie\ActiveRecord\Node
+	 * @return \Icybee\Modules\Nodes\Node
 	 */
 	protected function get_node()
 	{

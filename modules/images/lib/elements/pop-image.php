@@ -13,7 +13,7 @@ namespace Icybee\Modules\Images;
 
 use Brickrouge\Element;
 
-class PopImage extends \ICanBoogie\Modules\Nodes\PopNode
+class PopImage extends \Icybee\Modules\Nodes\PopNode
 {
 	const T_PREVIEW_WIDTH = '#preview-width';
 	const T_PREVIEW_HEIGHT = '#preview-height';

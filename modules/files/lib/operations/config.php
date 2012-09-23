@@ -11,6 +11,6 @@
 
 namespace Icybee\Modules\Files;
 
-class ConfigOperation extends \ICanBoogie\Modules\Nodes\ConfigOperation
+class ConfigOperation extends \Icybee\Modules\Nodes\ConfigOperation
 {
 }

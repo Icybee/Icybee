@@ -20,8 +20,8 @@ return array
 
 		'ICanBoogie\SaveOperation::process' => $hooks . 'invalidate_cache',
 		'ICanBoogie\DeleteOperation::process' => $hooks . 'invalidate_cache',
-		'ICanBoogie\Modules\Nodes\OnlineOperation::process' => $hooks . 'invalidate_cache',
-		'ICanBoogie\Modules\Nodes\OfflineOperation::process' => $hooks . 'invalidate_cache'
+		'Icybee\Modules\Nodes\OnlineOperation::process' => $hooks . 'invalidate_cache',
+		'Icybee\Modules\Nodes\OfflineOperation::process' => $hooks . 'invalidate_cache'
 	),
 
 	'prototypes' => array

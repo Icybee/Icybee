@@ -11,7 +11,7 @@
 
 namespace Icybee\Modules\Contents;
 
-class Model extends \ICanBoogie\Modules\Nodes\Model
+class Model extends \Icybee\Modules\Nodes\Model
 {
 
 }

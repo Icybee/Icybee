@@ -377,7 +377,7 @@ class EditBlock extends FormBlock
 
 			if ($url)
 			{
-				$save_mode_options[\ICanBoogie\Modules\Nodes\SaveOperation::MODE_DISPLAY] = t('save_mode_display', array(), array('scope' => 'option'));
+				$save_mode_options[\Icybee\Modules\Nodes\SaveOperation::MODE_DISPLAY] = t('save_mode_display', array(), array('scope' => 'option'));
 			}
 		}
 
@@ -395,7 +395,7 @@ class EditBlock extends FormBlock
 			{
 				global $core;
 
-				if ($record instanceof \ICanBoogie\ActiveRecord\Node && $record->url[0] != '#')
+				if ($record instanceof \Icybee\Modules\Nodes\Node && $record->url[0] != '#')
 				{
 					$event->buttons[] = '<a href="' . $record->url . '" class="actionbar-link">' . t('View', array(), array('scope' => 'button')) . '</a>';
 				}

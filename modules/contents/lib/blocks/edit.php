@@ -17,7 +17,7 @@ use Brickrouge\Text;
 
 use Icybee\Modules\Editor\MultiEditorElement;
 
-class EditBlock extends \ICanBoogie\Modules\Nodes\EditBlock
+class EditBlock extends \Icybee\Modules\Nodes\EditBlock
 {
 	protected function get_attributes()
 	{

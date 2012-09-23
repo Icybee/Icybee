@@ -9,9 +9,9 @@
  * file that was distributed with this source code.
  */
 
-namespace ICanBoogie\Modules\Nodes;
+namespace Icybee\Modules\Nodes;
 
-use ICanBoogie\ActiveRecord\Node;
+use Icybee\Modules\Nodes\Node;
 use ICanBoogie\ActiveRecord\Query;
 use ICanBoogie\Event;
 use ICanBoogie\Exception\HTTP as HTTPException;

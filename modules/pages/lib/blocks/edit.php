@@ -11,7 +11,7 @@
 
 namespace Icybee\Modules\Pages;
 
-use ICanBoogie\ActiveRecord\Node;
+use Icybee\Modules\Nodes\Node;
 use Icybee\Modules\Pages\Page;
 
 use Brickrouge\Document;
@@ -19,7 +19,7 @@ use Brickrouge\Element;
 use Brickrouge\Form;
 use Brickrouge\Text;
 
-class EditBlock extends \ICanBoogie\Modules\Nodes\EditBlock
+class EditBlock extends \Icybee\Modules\Nodes\EditBlock
 {
 	static protected function add_assets(Document $document)
 	{

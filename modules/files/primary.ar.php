@@ -11,7 +11,7 @@
 
 namespace Icybee\Modules\Files;
 
-class File extends \ICanBoogie\ActiveRecord\Node
+class File extends \Icybee\Modules\Nodes\Node
 {
 	const PATH = 'path';
 	const MIME = 'mime';

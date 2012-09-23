@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace ICanBoogie\Modules\Nodes;
+namespace Icybee\Modules\Nodes;
 
 use ICanBoogie\Event;
 use ICanBoogie\I18n;
@@ -92,12 +92,12 @@ class Hooks
 
 	public static function on_modules_activate(Event $event)
 	{
-		\ICanBoogie\Modules\Nodes\Module::create_default_routes();
+		\Icybee\Modules\Nodes\Module::create_default_routes();
 	}
 
 	public static function on_modules_deactivate(Event $event)
 	{
-		\ICanBoogie\Modules\Nodes\Module::create_default_routes();
+		\Icybee\Modules\Nodes\Module::create_default_routes();
 	}
 
 	/**

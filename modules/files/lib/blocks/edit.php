@@ -21,7 +21,7 @@ use ICanBoogie\Uploaded;
 use Brickrouge\Element;
 use Brickrouge\Form;
 
-class EditBlock extends \ICanBoogie\Modules\Nodes\EditBlock
+class EditBlock extends \Icybee\Modules\Nodes\EditBlock
 {
 	const ACCEPT = '#files-accept';
 	const UPLOADED = '#files-uploaded';

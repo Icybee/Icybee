@@ -11,7 +11,7 @@
 
 namespace Icybee\Modules\Contents;
 
-class Content extends \ICanBoogie\ActiveRecord\Node
+class Content extends \Icybee\Modules\Nodes\Node
 {
 	const SUBTITLE = 'subtitle';
 	const BODY = 'body';
@@ -166,7 +166,7 @@ class Content extends \ICanBoogie\ActiveRecord\Node
 	/**
 	 * Overrides the method to support the `date` property.
 	 *
-	 * @see ActiveRecord\Node::get_previous()
+	 * @see \Icybee\Modules\Nodes\Node::get_previous()
 	 */
 	protected function get_previous()
 	{
@@ -176,7 +176,7 @@ class Content extends \ICanBoogie\ActiveRecord\Node
 	/**
 	 * Overrides the method to support the `date` property.
 	 *
-	 * @see ActiveRecord\Node::get_next()
+	 * @see \Icybee\Modules\Nodes\Node::get_next()
 	 */
 	protected function get_next()
 	{

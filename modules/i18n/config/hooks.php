@@ -8,6 +8,6 @@ return array
 (
 	'events' => array
 	(
-		'ICanBoogie\Modules\Nodes\EditBlock::alter_children' => $hooks . 'on_nodes_editblock_alter_children'
+		'Icybee\Modules\Nodes\EditBlock::alter_children' => $hooks . 'on_nodes_editblock_alter_children'
 	)
 );

@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace ICanBoogie\Modules\Nodes;
+namespace Icybee\Modules\Nodes;
 
 use ICanBoogie\Events;
 use ICanBoogie\HTTP\Request;

@@ -101,12 +101,12 @@ class Hooks
 	 *
 	 * This is the getter for the nodes' `site` magic property.
 	 *
-	 * @param \ICanBoogie\ActiveRecord\Node $node
+	 * @param \Icybee\Modules\Nodes\Node $node
 	 *
 	 * @return \Icybee\Modules\Sites\Site|null The site active record associate with the node,
 	 * or null if the node is not associated to a specific site.
 	 */
-	static public function get_node_site(\ICanBoogie\ActiveRecord\Node $node)
+	static public function get_node_site(\Icybee\Modules\Nodes\Node $node)
 	{
 		global $core;
 

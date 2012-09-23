@@ -11,10 +11,10 @@
 
 namespace Icybee\Modules\I18n;
 
-use ICanBoogie\ActiveRecord\Node;
+use Icybee\Modules\Nodes\Node;
 use ICanBoogie\Event;
 use ICanBoogie\Modules;
-use ICanBoogie\Modules\Nodes\PopNode;
+use Icybee\Modules\Nodes\PopNode;
 
 use Brickrouge\Element;
 use Brickrouge\Form;
@@ -39,7 +39,7 @@ class Hooks
 	 *
 	 * @param Event $event
 	 */
-	public static function on_nodes_editblock_alter_children(Event $event, \ICanBoogie\Modules\Nodes\EditBlock $block)
+	public static function on_nodes_editblock_alter_children(Event $event, \Icybee\Modules\Nodes\EditBlock $block)
 	{
 		global $core;
 

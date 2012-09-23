@@ -11,7 +11,7 @@
 
 namespace Icybee\Modules\Pages;
 
-class ExportBlock extends \ICanBoogie\Modules\Nodes\ExportBlock
+class ExportBlock extends \Icybee\Modules\Nodes\ExportBlock
 {
 
 }

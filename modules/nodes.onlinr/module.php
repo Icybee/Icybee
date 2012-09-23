@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace ICanBoogie\Modules\Nodes\Onlinr;
+namespace Icybee\Modules\Nodes\Onlinr;
 
 use ICanBoogie\Event;
 use ICanBoogie\Operation;
@@ -120,7 +120,7 @@ class Module extends \Icybee\Module
 		}
 	}
 
-	public function event_operation_save(Event $event, \ICanBoogie\Modules\Nodes\SaveOperation $sender)
+	public function event_operation_save(Event $event, \Icybee\Modules\Nodes\SaveOperation $sender)
 	{
 		$params = &$sender->params;
 

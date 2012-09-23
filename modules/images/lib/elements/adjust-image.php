@@ -11,7 +11,6 @@
 
 namespace Icybee\Modules\Images;
 
-use ICanBoogie\ActiveRecord;
 use Brickrouge\Element;
 
 class AdjustImage extends \Brickrouge\Widget\AdjustNode
@@ -45,7 +44,7 @@ class AdjustImage extends \Brickrouge\Widget\AdjustNode
 		return parent::get_records($constructor, $options, $limit);
 	}
 
-	protected function render_record(ActiveRecord\Node $record, $selected, array $range, array $options)
+	protected function render_record(\Icybee\Modules\Nodes\Node $record, $selected, array $range, array $options)
 	{
 		$recordid = $record->nid;
 

@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace ICanBoogie\Modules\Nodes;
+namespace Icybee\Modules\Nodes;
 
 class QueryOperationOperation extends \Icybee\Operation\Module\QueryOperation
 {

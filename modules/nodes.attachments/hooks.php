@@ -11,7 +11,7 @@
 
 namespace Icybee\Modules\Nodes\Attachments;
 
-use ICanBoogie\ActiveRecord\Node;
+use Icybee\Modules\Nodes\Node;
 use ICanBoogie\Event;
 use ICanBoogie\HTTP\Request;
 use ICanBoogie\Operation;
@@ -21,7 +21,7 @@ use Brickrouge\Form;
 
 class Hooks
 {
-	public static function on_node_save(Event $event, \ICanBoogie\Modules\Nodes\SaveOperation $operation)
+	public static function on_node_save(Event $event, \Icybee\Modules\Nodes\SaveOperation $operation)
 	{
 		global $core;
 
@@ -151,9 +151,9 @@ class Hooks
 	 * Deletes attachment when the associated node is delete.
 	 *
 	 * @param Event $event
-	 * @param \ICanBoogie\Modules\Nodes\DeleteOperation $operation
+	 * @param \Icybee\Modules\Nodes\DeleteOperation $operation
 	 */
-	public static function on_node_delete(Event $event, \ICanBoogie\Modules\Nodes\DeleteOperation $operation)
+	public static function on_node_delete(Event $event, \Icybee\Modules\Nodes\DeleteOperation $operation)
 	{
 		global $core;
 
@@ -231,7 +231,7 @@ class Hooks
 	 *
 	 * @param Event $event
 	 */
-	public static function on_editblock_alter_children(Event $event, \ICanBoogie\Modules\Nodes\EditBlock $block)
+	public static function on_editblock_alter_children(Event $event, \Icybee\Modules\Nodes\EditBlock $block)
 	{
 		global $core;
 
