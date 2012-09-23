@@ -34,7 +34,7 @@ use Brickrouge\Document;
  *
  * The following properties are injected by the "users" module.
  *
- * @property ICanBoogie\ActiveRecord\User $user Current user object (might be a visitor).
+ * @property Icybee\Modules\Users\User $user Current user object (might be a visitor).
  * @property int $user_id Identifier of the current user ("0" for visitors).
  */
 class Core extends \ICanBoogie\Core

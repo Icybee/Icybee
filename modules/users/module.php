@@ -9,18 +9,14 @@
  * file that was distributed with this source code.
  */
 
-namespace ICanBoogie\Modules\Users;
+namespace Icybee\Modules\Users;
 
-use ICanBoogie;
-use ICanBoogie\ActiveRecord\User;
 use ICanBoogie\Exception;
 use ICanBoogie\Operation;
-use Brickrouge;
+
 use Brickrouge\Button;
 use Brickrouge\Element;
 use Brickrouge\Form;
-use Brickrouge\Text;
-use Brickrouge\Widget;
 
 class Module extends \Icybee\Module
 {
@@ -96,7 +92,7 @@ Cordialement'
 	 */
 	public function install(\ICanBoogie\Errors $errors)
 	{
-		$path = ICanBoogie\DOCUMENT_ROOT . 'protected/all/config/user.php';
+		$path = \ICanBoogie\DOCUMENT_ROOT . 'protected/all/config/user.php';
 
 		if (!file_exists($path))
 		{
@@ -107,9 +103,9 @@ Cordialement'
 				return false;
 			}
 
-			$password_salt = ICanBoogie\Security::generate_token(64, 'wide');
-			$unlock_login_salt = ICanBoogie\Security::generate_token(64, 'wide');
-			$nonce_login_salt = ICanBoogie\Security::generate_token(64, 'wide');
+			$password_salt = \ICanBoogie\Security::generate_token(64, 'wide');
+			$unlock_login_salt = \ICanBoogie\Security::generate_token(64, 'wide');
+			$nonce_login_salt = \ICanBoogie\Security::generate_token(64, 'wide');
 
 			$config = <<<EOT
 <?php
@@ -134,16 +130,7 @@ EOT;
 
 		$core->document->css->add('assets/authenticate.css');
 
-		/*DIRTY
-		$path = rtrim(\ICanBoogie\Route::decontextualize($core->request->path), '/');
-
-		if ($path != '/admin')
-		{
-			\ICanBoogie\log_error('The requested URL requires authentication.');
-		}
-		*/
-
-		return new \Brickrouge\Widget\Users\LoginCombo;
+		return new \Icybee\Modules\Users\LoginComboElement;
 	}
 
 	protected function block_logout()

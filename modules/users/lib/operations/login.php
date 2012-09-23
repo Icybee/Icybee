@@ -9,18 +9,16 @@
  * file that was distributed with this source code.
  */
 
-namespace ICanBoogie\Modules\Users;
+namespace Icybee\Modules\Users;
 
-use ICanBoogie\ActiveRecord\User;
 use ICanBoogie\Mailer;
 use ICanBoogie\I18n;
 use ICanBoogie\I18n\Translator\Proxi;
 use ICanBoogie\Exception;
 use ICanBoogie\Exception\HTTP as HTTPException;
 use ICanBoogie\Security;
-use ICanBoogie\Operation;
 
-class LoginOperation extends Operation
+class LoginOperation extends \ICanBoogie\Operation
 {
 	/**
 	 * Adds form control.
@@ -45,7 +43,7 @@ class LoginOperation extends Operation
 	 */
 	protected function get_form()
 	{
-		return new \Brickrouge\Widget\Users\Login;
+		return new LoginForm();
 	}
 
 	protected function validate(\ICanboogie\Errors $errors)
@@ -124,7 +122,7 @@ class LoginOperation extends Operation
 					(
 						'username' => $username,
 						'token' => $token,
-						'continue' => $_SERVER['REQUEST_URI'] // FIXME-20110924: should be something like $request->uri
+						'continue' => $request->uri
 					)
 				);
 
@@ -201,7 +199,7 @@ EOT
 			)
 		);
 
-		$this->response->location = $_SERVER['REQUEST_URI'];
+		$this->response->location = $this->request->uri;
 
 		return true;
 	}

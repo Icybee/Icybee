@@ -4,7 +4,7 @@ return array
 (
 	'events' => array
 	(
-		'ICanBoogie\Modules\Users\LogoutOperation::process:before' => 'Icybee\Hooks::before_user_logout',
+		'Icybee\Modules\Users\LogoutOperation::process:before' => 'Icybee\Hooks::before_user_logout',
 		'ICanBoogie\Operation::get_form' => 'Icybee\Element\Form::on_operation_get_form',
 		'ICanBoogie\Routes::collect:before' => 'Icybee\Hooks::before_routes_collect'
 	),

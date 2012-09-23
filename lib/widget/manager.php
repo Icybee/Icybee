@@ -664,7 +664,7 @@ class Manager extends Element
 		{
 			$where['siteid'] = '(siteid = 0 OR siteid = ' . $core->site_id . ')';
 		}
-		else if ($module instanceof ICanBoogie\Modules\Users\Module)
+		else if ($module instanceof Icybee\Modules\Users\Module)
 		{
 			#
 			# we load only the entries that where created by the module

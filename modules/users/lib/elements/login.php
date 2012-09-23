@@ -9,9 +9,8 @@
  * file that was distributed with this source code.
  */
 
-namespace Brickrouge\Widget\Users;
+namespace Icybee\Modules\Users;
 
-use ICanBoogie\ActiveRecord\User;
 use ICanBoogie\Operation;
 
 use Brickrouge;
@@ -20,15 +19,28 @@ use Brickrouge\Element;
 use Brickrouge\Form;
 use Brickrouge\Text;
 
-class Login extends Form
+class LoginForm extends Form
 {
-	public function __construct($tags=array())
+	/**
+	 * Adds the "widget.css" and "widget.js" assets.
+	 *
+	 * @param Brickrouge\Document $document
+	 */
+	static protected function add_assets(\Brickrouge\Document $document)
+	{
+		$document->css->add('../../assets/widget.css');
+		$document->js->add('../../assets/widget.js');
+
+		parent::add_assets($document);
+	}
+
+	public function __construct(array $attributes=array())
 	{
 		global $core;
 
 		parent::__construct
 		(
-			$tags + array
+			$attributes + array
 			(
 				Form::ACTIONS => array
 				(
@@ -47,7 +59,7 @@ class Login extends Form
 				Form::HIDDENS => array
 				(
 					Operation::DESTINATION => 'users',
-					Operation::NAME => \ICanBoogie\Modules\Users\Module::OPERATION_LOGIN,
+					Operation::NAME => Module::OPERATION_LOGIN,
 					Operation::SESSION_TOKEN => $core->session->token
 				),
 
@@ -84,23 +96,11 @@ class Login extends Form
 					)
 				),
 
+				Element::WIDGET_CONSTRUCTOR => 'Login',
+
 				'class' => 'widget-login',
-				'name' => 'users/login',
-				'data-widget-constructor' => 'Login'
+				'name' => 'users/login'
 			)
 		);
-	}
-
-	/**
-	 * Adds the "widget.css" and "widget.js" assets.
-	 *
-	 * @param Brickrouge\Document $document
-	 */
-	protected static function add_assets(\Brickrouge\Document $document)
-	{
-		$document->css->add('../assets/widget.css');
-		$document->js->add('../assets/widget.js');
-
-		parent::add_assets($document);
 	}
 }

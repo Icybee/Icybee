@@ -13,7 +13,7 @@ namespace Icybee\Modules\Members;
 
 use ICanBoogie\Uploaded;
 
-class SaveOperation extends \ICanBoogie\Modules\Users\SaveOperation
+class SaveOperation extends \Icybee\Modules\Users\SaveOperation
 {
 	protected $accept = array
 	(

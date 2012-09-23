@@ -9,22 +9,35 @@
  * file that was distributed with this source code.
  */
 
-namespace Brickrouge\Widget\Users;
+namespace Icybee\Modules\Users;
 
 use ICanBoogie\Operation;
-use Brickrouge;
+
 use Brickrouge\Button;
 use Brickrouge\Element;
 use Brickrouge\Form;
 use Brickrouge\Text;
 
-class NonceRequest extends Form
+class NonceRequestForm extends Form
 {
-	public function __construct($tags=array())
+	/**
+	 * Adds the "widget.css" and "widget.js" assets.
+	 *
+	 * @param \Brickrouge\Document $document
+	 */
+	static protected function add_assets(\Brickrouge\Document $document)
+	{
+		parent::add_assets($document);
+
+		$document->css->add('../../assets/widget.css');
+		$document->js->add('../../assets/widget.js');
+	}
+
+	public function __construct(array $attributes=array())
 	{
 		parent::__construct
 		(
-			$tags + array
+			$attributes + array
 			(
 				Form::ACTIONS => new Button
 				(
@@ -55,23 +68,11 @@ class NonceRequest extends Form
 					)
 				),
 
+				Element::WIDGET_CONSTRUCTOR => 'NonceRequest',
+
 				'class' => 'widget-nonce-request',
-				'name' => 'users/nonce-request',
-				'data-widget-constructor' => 'NonceRequest'
+				'name' => 'users/nonce-request'
 			)
 		);
-	}
-
-	/**
-	 * Adds the "widget.css" and "widget.js" assets.
-	 *
-	 * @param \Brickrouge\Document $document
-	 */
-	protected static function add_assets(\Brickrouge\Document $document)
-	{
-		$document->css->add('../assets/widget.css');
-		$document->js->add('../assets/widget.js');
-
-		parent::add_assets($document);
 	}
 }

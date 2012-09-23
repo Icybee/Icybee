@@ -29,7 +29,7 @@ class MetasHandler implements \ArrayAccess
 			$this->targetid = $target->nid;
 			$type = 'node';
 		}
-		else if ($target instanceof \ICanBoogie\ActiveRecord\User)
+		else if ($target instanceof \Icybee\Modules\Users\User)
 		{
 			$this->targetid = $target->uid;
 			$type = 'user';

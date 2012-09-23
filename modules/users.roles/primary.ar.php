@@ -9,15 +9,12 @@
  * file that was distributed with this source code.
  */
 
-namespace ICanBoogie\ActiveRecord\Users;
-
-use ICanBoogie\ActiveRecord;
-use ICanBoogie\Module;
+namespace Icybee\Modules\Users\Roles;
 
 /**
  * A user role.
  */
-class Role extends ActiveRecord
+class Role extends \ICanBoogie\ActiveRecord
 {
 	const RID = 'rid';
 	const NAME = 'name';

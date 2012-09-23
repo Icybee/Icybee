@@ -9,12 +9,12 @@
  * file that was distributed with this source code.
  */
 
-namespace ICanBoogie\Modules\Users\Roles;
+namespace Icybee\Modules\Users\Roles;
 
 use ICanBoogie\Operation;
 use ICanBoogie\Route;
 use ICanBoogie\ActiveRecord\RecordNotFound;
-use ICanBoogie\ActiveRecord\Users\Role;
+use Icybee\Modules\Users\Users\Role;
 use Brickrouge\Button;
 use Brickrouge\Element;
 use Brickrouge\Form;

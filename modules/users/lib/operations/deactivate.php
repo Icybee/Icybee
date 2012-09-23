@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace ICanBoogie\Modules\Users;
+namespace Icybee\Modules\Users;
 
 /**
  * Disables a user account.

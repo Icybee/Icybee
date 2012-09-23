@@ -18,7 +18,7 @@ use Brickrouge\Element;
 use Brickrouge\Form;
 use Brickrouge\Text;
 
-class Module extends \ICanBoogie\Modules\Users\Module
+class Module extends \Icybee\Modules\Users\Module
 {
 	protected function block_edit(array $properties, $permission)
 	{

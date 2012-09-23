@@ -13,7 +13,7 @@ namespace Icybee\Modules\Members;
 
 use ICanBoogie\Operation;
 
-class Member extends \ICanBoogie\ActiveRecord\User
+class Member extends \Icybee\Modules\Users\User
 {
 	public $gender;
 

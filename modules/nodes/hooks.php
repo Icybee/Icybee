@@ -104,9 +104,9 @@ class Hooks
 	 * Checks if the role to be deleted is used or not.
 	 *
 	 * @param BeforeProcessEvent $event
-	 * @param \ICanBoogie\Modules\Users\DeleteOperation $operation
+	 * @param \Icybee\Modules\Users\DeleteOperation $operation
 	 */
-	public static function before_delete_user(BeforeProcessEvent $event, \ICanBoogie\Modules\Users\DeleteOperation $operation)
+	public static function before_delete_user(BeforeProcessEvent $event, \Icybee\Modules\Users\DeleteOperation $operation)
 	{
 		global $core;
 

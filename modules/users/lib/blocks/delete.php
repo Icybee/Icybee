@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace ICanBoogie\Modules\Users;
+namespace Icybee\Modules\Users;
 
 class DeleteBlock extends \Icybee\DeleteBlock
 {

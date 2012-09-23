@@ -9,9 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace ICanBoogie\Modules\Users;
-
-use ICanBoogie\ActiveRecord\User;
+namespace Icybee\Modules\Users;
 
 class Model extends \Icybee\ActiveRecord\Model\Constructor
 {

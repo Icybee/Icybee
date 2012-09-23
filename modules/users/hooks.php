@@ -9,13 +9,12 @@
  * file that was distributed with this source code.
  */
 
-namespace ICanBoogie\Modules\Users;
+namespace Icybee\Modules\Users;
 
-use ICanBoogie\ActiveRecord\User;
 use ICanBoogie\Core;
 use ICanBoogie\HTTP\Response;
 use ICanBoogie\Route;
-use ICanBoogie\Operation\BeforeProcessEvent;
+use ICanBoogie\Operation;
 use ICanBoogie\SecurityException;
 use ICanBoogie\Session;
 
@@ -29,9 +28,9 @@ class Hooks
 	 * Checks if the role to be deleted is used or not.
 	 *
 	 * @param BeforeProcessEvent $event
-	 * @param \ICanBoogie\Modules\Users\Roles\DeleteOperation $operation
+	 * @param \Icybee\Modules\Users\Roles\DeleteOperation $operation
 	 */
-	static public function before_delete_role(BeforeProcessEvent $event, \ICanBoogie\Modules\Users\Roles\DeleteOperation $operation)
+	static public function before_roles_delete(Operation\BeforeProcessEvent $event, \Icybee\Modules\Users\Roles\DeleteOperation $operation)
 	{
 		global $core;
 
@@ -46,6 +45,12 @@ class Hooks
 		$event->errors['rid'] = t('The role %name is used by :count users.', array('name' => $operation->record->name, ':count' => $count));
 	}
 
+	/**
+	 * Displays a login form on {@link SecurityException}.
+	 *
+	 * @param \ICanBoogie\Exception\GetResponseEvent $event
+	 * @param SecurityException $target
+	 */
 	static public function on_security_exception_get_response(\ICanBoogie\Exception\GetResponseEvent $event, SecurityException $target)
 	{
 		global $core;
@@ -88,7 +93,7 @@ class Hooks
 	 *
 	 * @return int|null Returns the identifier of the user or null if the user is a guest.
 	 *
-	 * @see \ICanBoogie\ActiveRecord\User.login()
+	 * @see \Icybee\Modules\Users\User.login()
 	 */
 	public static function get_user_id(Core $core)
 	{
@@ -114,7 +119,7 @@ class Hooks
 	 *
 	 * @param Core $core
 	 *
-	 * @return ActiveRecord\User The user object, or guest user object.
+	 * @return User The user object, or guest user object.
 	 */
 	public static function get_user(Core $core)
 	{

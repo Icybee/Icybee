@@ -9,16 +9,14 @@
  * file that was distributed with this source code.
  */
 
-namespace ICanBoogie\Modules\Users;
+namespace Icybee\Modules\Users;
 
 /**
  * Deletes a user.
  */
-use ICanBoogie\Errors;
-
 class DeleteOperation extends \ICanBoogie\DeleteOperation
 {
-	protected function validate(Errors $errors)
+	protected function validate(\ICanBoogie\Errors $errors)
 	{
 		if ($this->key == 1)
 		{

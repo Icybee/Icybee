@@ -9,14 +9,12 @@
  * file that was distributed with this source code.
  */
 
-namespace ICanBoogie\Modules\Users;
-
-use ICanBoogie\Operation;
+namespace Icybee\Modules\Users;
 
 /**
  * Enables a user account.
  */
-class ActivateOperation extends Operation
+class ActivateOperation extends \ICanBoogie\Operation
 {
 	protected function get_controls()
 	{

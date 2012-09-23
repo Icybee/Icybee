@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace ICanBoogie\Modules\Users\Roles;
+namespace Icybee\Modules\Users\Roles;
 
 /**
  * Saves a role.

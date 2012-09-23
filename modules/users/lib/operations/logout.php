@@ -9,15 +9,12 @@
  * file that was distributed with this source code.
  */
 
-namespace ICanBoogie\Modules\Users;
-
-use ICanBoogie\Exception;
-use ICanBoogie\Operation;
+namespace Icybee\Modules\Users;
 
 /**
  * Log the user out of the system by removing its identifier form its session.
  */
-class LogoutOperation extends Operation
+class LogoutOperation extends \ICanBoogie\Operation
 {
 	/**
 	 * Validates the operation if the user is actually connected.
@@ -26,17 +23,6 @@ class LogoutOperation extends Operation
 	 */
 	protected function validate(\ICanboogie\Errors $errors)
 	{
-		global $core;
-
-		/*
-		if (!$core->user_id)
-		{
-			$errors[] = t('You are not connected.');
-
-			return false;
-		}
-		*/
-
 		return true;
 	}
 
@@ -50,10 +36,9 @@ class LogoutOperation extends Operation
 	{
 		global $core;
 
-		$request = $this->request;
-
 		$core->user->logout();
 
+		$request = $this->request;
 		$this->response->location = isset($request['continue']) ? $request['continue'] : ($request->referer ? $request->referer : '/');
 
 		return true;

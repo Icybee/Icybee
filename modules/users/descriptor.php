@@ -1,23 +1,20 @@
 <?php
 
-use ICanBoogie\Module;
+namespace Icybee\Modules\Users;
+
 use ICanBoogie\ActiveRecord\Model;
+use ICanBoogie\Module;
 
 return array
 (
-	Module::T_TITLE => 'Users',
 	Module::T_DESCRIPTION => 'User management',
 	Module::T_CATEGORY => 'users',
-	Module::T_REQUIRED => true,
-	Module::T_REQUIRES => array
-	(
-		'users.roles' => 'x.x'
-	),
 
 	Module::T_MODELS => array
 	(
 		'primary' => array
 		(
+			Model::T_ACTIVERECORD_CLASS => __NAMESPACE__ . '\User',
 			Model::T_SCHEMA => array
 			(
 				'fields' => array
@@ -64,8 +61,18 @@ return array
 		)
 	),
 
+	Module::T_NAMESPACE => __NAMESPACE__,
 	Module::T_PERMISSIONS => array
 	(
 		'modify own profile'
-	)
+	),
+
+	Module::T_REQUIRED => true,
+	Module::T_REQUIRES => array
+	(
+		'users.roles' => '1.0'
+	),
+
+	Module::T_TITLE => 'Users',
+	Module::T_VERSION => '1.0'
 );

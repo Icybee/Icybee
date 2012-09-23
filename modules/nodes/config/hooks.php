@@ -6,7 +6,7 @@ return array
 	(
 		'Icybee\Modules\Modules\ActivateOperation::process' => 'ICanBoogie\Modules\Nodes\Hooks::on_modules_activate',
 		'Icybee\Modules\Modules\DeactivateOperation::process' => 'ICanBoogie\Modules\Nodes\Hooks::on_modules_deactivate',
-		'ICanBoogie\Modules\Users\DeleteOperation::process:before' => 'ICanBoogie\Modules\Nodes\Hooks::before_delete_user'
+		'Icybee\Modules\Users\DeleteOperation::process:before' => 'ICanBoogie\Modules\Nodes\Hooks::before_delete_user'
 	),
 
 	'patron.markups' => array

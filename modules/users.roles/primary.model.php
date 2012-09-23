@@ -9,9 +9,9 @@
  * file that was distributed with this source code.
  */
 
-namespace ICanBoogie\Modules\Users\Roles;
+namespace Icybee\Modules\Users\Roles;
 
-use ICanBoogie\ActiveRecord\Users\Role;
+use Icybee\Modules\Users\Users\Role;
 use ICanBoogie\Exception;
 
 /**

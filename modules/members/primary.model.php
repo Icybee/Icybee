@@ -11,7 +11,7 @@
 
 namespace Icybee\Modules\Members;
 
-class Model extends \ICanBoogie\Modules\Users\Model
+class Model extends \Icybee\Modules\Users\Model
 {
 	public function save(array $properties, $key=null, array $options=array())
 	{

@@ -11,7 +11,7 @@
 
 namespace Icybee\Admin\Element;
 
-use ICanBoogie\ActiveRecord\Users;
+use Icybee\Modules\Users\Users;
 use ICanBoogie\Module;
 use ICanBoogie\Route;
 use ICanBoogie\Routes;

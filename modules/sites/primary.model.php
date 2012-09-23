@@ -12,7 +12,7 @@
 namespace Icybee\Modules\Sites;
 
 use ICanBoogie\ActiveRecord\ActiveRecordException;
-use ICanBoogie\ActiveRecord\User;
+use Icybee\Modules\Users\User;
 use ICanBoogie\HTTP\Request;
 
 /**

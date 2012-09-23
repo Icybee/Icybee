@@ -1,6 +1,9 @@
 The "Users" module
 ==================
 
+Account security
+----------------
+
 Pour des raisons de sécuté le mot de passe n'est jamais envoyé par e-mail à l'utilisateur qui crée
 son compte ou demande un mot de passe parce qu'il a oublié le sien et ne parvient plus à se
 connecter. À la place, un ticket de connexion exceptionnel est envoyé à son adresse e-mail. Ce
@@ -15,24 +18,16 @@ Preventing brute force login
 
 In order to prevent brute force login, each failed attempt is counted in the metas of the target
 user account. When the number of failed attempts reaches a limit (e.g. 10) the user account is
-disabled and a message with a key to unlock its account is sent to the user's email address.
+locked and a message with a key to unlock it is sent to the user's email address.
 
-Une fois le message envoyé et durant une heure, toutes les demandes de connexion échoueront sans
-pour autant envoyer de message. Passé ce délai les compteurs sont remis à zéro.
+Once the message has been sent all subsequent connection requests will fail during an hour. After
+this delay counter are reseted.
 
+The following metas properties are used for the process:
 
-	`failed_login_count` (int) the number of successive failed attempts. Cleared when the
-	user successfully login.
-	
-	`failed_login_time` (int) Time of the last failed login.	
-	
-	`login_unlock_token` (int) Derivative salted token of the key send by email for the user to unlock
-	its account.
-	
-	`login_unlock_time` (int) Time when the login will be unlocked.
-	
-	
-	
-	
-Un système d'authentication sécurisé
-------------------------------------
+- (int) `failed_login_count`: The number of successive failed attempts. Cleared when the
+user successfully login.
+- (int) `failed_login_time`: Time of the last failed login.
+- (string) `login_unlock_token`: Derivative salted token of the key sent by email for the user
+to unlock its account.
+- (int) `login_unlock_time`: Time at which login is unlocked.

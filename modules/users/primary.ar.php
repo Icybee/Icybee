@@ -9,14 +9,14 @@
  * file that was distributed with this source code.
  */
 
-namespace ICanBoogie\ActiveRecord;
+namespace Icybee\Modules\Users;
 
 use ICanBoogie\ActiveRecord\RecordNotFound;
-use ICanBoogie\ActiveRecord\Users\Role;
 use ICanBoogie\Exception;
 use ICanBoogie\Security;
-use ICanBoogie\Module;
 use ICanBoogie\PropertyNotWritable;
+
+use Icybee\Modules\Users\Roles\Role;
 
 /**
  * A user.
@@ -24,7 +24,7 @@ use ICanBoogie\PropertyNotWritable;
  * @property-read string $name The formatted name of the user.
  * @property-read boolean $is_admin true if the user is admin, false otherwise.
  * @property-read boolean $is_guest true if the user is a guest, false otherwise.
- * @property-read \ICanBoogie\ActiveRecord\Users\Role $role
+ * @property-read \Icybee\Modules\Users\Users\Role $role
  */
 class User extends \ICanBoogie\ActiveRecord
 {
@@ -189,7 +189,7 @@ class User extends \ICanBoogie\ActiveRecord
 	 *
 	 * This is the getter for the {@link $role} magic property.
 	 *
-	 * @return \ICanBoogie\ActiveRecord\Users\Role
+	 * @return \Icybee\Modules\Users\Users\Role
 	 */
 	protected function get_role()
 	{
@@ -427,7 +427,7 @@ class User extends \ICanBoogie\ActiveRecord
 	 *
 	 * @return boolean true if the login is successful.
 	 *
-	 * @see \ICanBoogie\Modules\Users\Hooks\get_user_id
+	 * @see \Icybee\Modules\Users\Hooks\get_user_id
 	 */
 	public function login()
 	{

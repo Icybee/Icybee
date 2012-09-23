@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace ICanBoogie\Modules\Users\Roles;
+namespace Icybee\Modules\Users\Roles;
 
 use ICanBoogie\Operation;
 use ICanBoogie\Route;
@@ -22,6 +22,14 @@ use Brickrouge\Form;
 
 class ManageBlock extends Form
 {
+	static protected function add_assets(\Brickrouge\Document $document)
+	{
+		parent::add_assets($document);
+
+		$document->css->add(\Icybee\ASSETS . 'css/manage.css', -170);
+		$document->css->add('manage.css');
+	}
+
 	public function __construct(Module $module, array $attributes=array())
 	{
 		global $core;
@@ -58,14 +66,6 @@ class ManageBlock extends Form
 				'name' => 'roles/manage'
 			)
 		);
-	}
-
-	protected static function add_assets(\Brickrouge\Document $document)
-	{
-		parent::add_assets($document);
-
-		$document->css->add(\Icybee\ASSETS . 'css/manage.css', -170);
-		$document->css->add('manage.css');
 	}
 
 	protected function render_inner_html()

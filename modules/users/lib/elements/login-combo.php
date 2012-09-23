@@ -9,20 +9,19 @@
  * file that was distributed with this source code.
  */
 
-namespace Brickrouge\Widget\Users;
+namespace Icybee\Modules\Users;
 
 use Brickrouge\A;
-
 use Brickrouge\Element;
 
-class LoginCombo extends Element
+class LoginComboElement extends Element
 {
-	protected $elements=array();
+	protected $elements = array();
 
 	public function __construct(array $attributes=array())
 	{
-		$login = new Login;
-		$password = new NonceRequest;
+		$login = new LoginForm;
+		$password = new NonceRequestForm;
 
 		$password->children['email'][Element::DESCRIPTION] = new A(t('Cancel', array(), array('scope' => 'button')));
 
@@ -33,9 +32,10 @@ class LoginCombo extends Element
 		(
 			'div', $attributes + array
 			(
+				Element::WIDGET_CONSTRUCTOR => 'LoginCombo',
+
 				'id' => 'login',
-				'class' => 'widget-login-combo',
-				'data-widget-constructor' => 'LoginCombo'
+				'class' => 'widget-login-combo'
 			)
 		);
 	}

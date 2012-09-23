@@ -9,10 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace ICanBoogie\Modules\Users;
-
-use ICanBoogie\ActiveRecord\User;
-use ICanBoogie\Operation;
+namespace Icybee\Modules\Users;
 
 /**
  * Create or update a user profile.

@@ -1,19 +1,19 @@
 <?php
 
-use ICanBoogie\Module;
+namespace Icybee\Modules\Users\Roles;
+
 use ICanBoogie\ActiveRecord\Model;
+use ICanBoogie\Module;
 
 return array
 (
-	Module::T_TITLE => 'Roles',
-	Module::T_DESCRIPTION => 'Role management',
 	Module::T_CATEGORY => 'users',
-	Module::T_REQUIRED => true,
-
+	Module::T_DESCRIPTION => 'Role management',
 	Module::T_MODELS => array
 	(
 		'primary' => array
 		(
+			Model::T_ACTIVERECORD_CLASS => __NAMESPACE__ . '\Role',
 			Model::T_SCHEMA => array
 			(
 				'fields' => array
@@ -24,5 +24,10 @@ return array
 				)
 			)
 		)
-	)
+	),
+
+	Module::T_NAMESPACE => __NAMESPACE__,
+	Module::T_REQUIRED => true,
+	Module::T_TITLE => 'Roles',
+	Module::T_VERSION => '1.0'
 );

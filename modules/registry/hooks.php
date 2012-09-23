@@ -22,7 +22,7 @@ class Hooks
 	 * "sites" active records.
 	 *
 	 * @param object An instance of {@link ICanBoogie\ActiveRecord\Node},
-	 * {@link ICanBoogie\ActiveRecord\User} or {@link Icybee\Modules\Sites\Site}.
+	 * {@link Icybee\Modules\Users\User} or {@link Icybee\Modules\Sites\Site}.
 	 *
 	 * @return object A MetasHandler object that can be used to access or modify the metadatas
 	 * associated with that object.
@@ -69,7 +69,7 @@ class Hooks
 		{
 			$type = 'node';
 		}
-		else if ($module instanceof \ICanBoogie\Modules\Users\Module)
+		else if ($module instanceof \Icybee\Modules\Users\Module)
 		{
 			$type = 'user';
 		}
@@ -126,7 +126,7 @@ class Hooks
 		{
 			$type = 'node';
 		}
-		else if ($sender instanceof \ICanBoogie\Modules\Users\SaveOperation)
+		else if ($sender instanceof \Icybee\Modules\Users\SaveOperation)
 		{
 			$type = 'user';
 		}
@@ -212,7 +212,7 @@ class Hooks
 		{
 			$type = 'node';
 		}
-		else if ($module instanceof \ICanBoogie\Modules\Users\Module)
+		else if ($module instanceof \Icybee\Modules\Users\Module)
 		{
 			$type = 'user';
 		}

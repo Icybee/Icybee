@@ -2,7 +2,7 @@
 
 namespace Icybee\Modules\Members;
 
-class ManageBlock extends \ICanBoogie\Modules\Users\ManageBlock
+class ManageBlock extends \Icybee\Modules\Users\ManageBlock
 {
 	protected function render_cell_uid($record, $property)
 	{

@@ -1,8 +1,10 @@
 <?php
 
+namespace Icybee\Modules\Users;
+
 return array
 (
-	'Brickrouge\Widget\Users\Login' => $path . 'widgets' . DIRECTORY_SEPARATOR . 'login.php',
-	'Brickrouge\Widget\Users\LoginCombo' => $path . 'widgets' . DIRECTORY_SEPARATOR . 'login-combo.php',
-	'Brickrouge\Widget\Users\NonceRequest' => $path . 'widgets' . DIRECTORY_SEPARATOR . 'nonce-request.php'
+	__NAMESPACE__ . '\LoginForm' => $path . 'lib/elements/login.php',
+	__NAMESPACE__ . '\LoginComboElement' => $path . 'lib/elements/login-combo.php',
+	__NAMESPACE__ . '\NonceRequestForm' => $path . 'lib/elements/nonce-request.php'
 );

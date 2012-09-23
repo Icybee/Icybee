@@ -11,7 +11,6 @@
 
 namespace Icybee\Element;
 
-use ICanBoogie\ActiveRecord\Role;
 use ICanBoogie\Module;
 use ICanBoogie\Operation;
 use ICanBoogie\Route;
@@ -19,6 +18,8 @@ use ICanBoogie\Route;
 use Brickrouge\A;
 use Brickrouge\Element;
 use Brickrouge\DropdownMenu;
+
+use Icybee\Modules\Users\Roles\Role;
 
 /**
  * The _user menu_ element is made of two parts: a link to the user profile and a dropdown menu.

@@ -9,9 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace ICanBoogie\Modules\Users\Roles;
-
-use ICanBoogie\ActiveRecord\Users\Role;
+namespace Icybee\Modules\Users\Roles;
 
 class PermissionsOperation extends \ICanBoogie\Operation
 {

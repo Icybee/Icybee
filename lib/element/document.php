@@ -11,7 +11,7 @@
 
 namespace Icybee;
 
-use ICanBoogie\ActiveRecord\Users\Role;
+use Icybee\Modules\Users\Users\Role;
 use ICanBoogie\Debug;
 use ICanBoogie\Event;
 use ICanBoogie\Exception;
