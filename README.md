@@ -79,7 +79,7 @@ Icybee comes with the following modules:
 
 ### Dashboard
 
-- [Dashboard](https://github.com/Icybee/Icybee/tree/master/modules/dashboard) (dashboard)
+- [Dashboard](https://github.com/Icybee/Icybee/tree/master/modules/dashboard) `dashboard`
 - [Journal](https://github.com/Icybee/Icybee/tree/master/modules/journal) `journal`
 
 
@@ -87,7 +87,7 @@ Icybee comes with the following modules:
 ### Features
 
 - [Cache](https://github.com/Icybee/Icybee/tree/master/modules/cache) `cache`
-- [Editor](https://github.com/Icybee/Icybee/tree/master/modules/editor) (editor)
+- [Editor](https://github.com/Icybee/Icybee/tree/master/modules/editor) `editor`
 - [I18n](https://github.com/Icybee/Icybee/tree/master/modules/) `i18n`
 - [Modules](https://github.com/Icybee/Icybee/tree/master/modules/modules) `modules`
 - [Registry](https://github.com/Icybee/Icybee/tree/master/modules/registry) `registry`
@@ -99,10 +99,10 @@ Icybee comes with the following modules:
 
 ### Contents
 
-- [Articles](https://github.com/Icybee/Icybee/tree/master/modules/articles) (articles)
-- [Contents](https://github.com/Icybee/Icybee/tree/master/modules/contents) (contents)
-- [News](https://github.com/Icybee/Icybee/tree/master/modules/news) (news)
-- [Nodes](https://github.com/Icybee/Icybee/tree/master/modules/nodes) (nodes)
+- [Articles](https://github.com/Icybee/Icybee/tree/master/modules/articles) `articles`
+- [Contents](https://github.com/Icybee/Icybee/tree/master/modules/contents) `contents`
+- [News](https://github.com/Icybee/Icybee/tree/master/modules/news) `news`
+- [Nodes](https://github.com/Icybee/Icybee/tree/master/modules/nodes) `nodes`
 
 
 
@@ -122,11 +122,10 @@ Icybee comes with the following modules:
 
 ### Resources
 
-- [Files](https://github.com/Icybee/Icybee/tree/master/modules/files) (files)
-- [Images](https://github.com/Icybee/Icybee/tree/master/modules/images) (images)
+- [Files](https://github.com/Icybee/Icybee/tree/master/modules/files) `files`
+- [Images](https://github.com/Icybee/Icybee/tree/master/modules/images) `images`
 - [Nodes attachments](https://github.com/Icybee/Icybee/tree/master/modules/nodes.attachments) `nodes.attachments`
-- [Thumbnailer](https://github.com/Icybee/Icybee/tree/master/modules/thumbnailer) (thumbnailer)
-- [](https://github.com/Icybee/Icybee/tree/master/modules/) ()
+- [Thumbnailer](https://github.com/Icybee/Icybee/tree/master/modules/thumbnailer) `thumbnailer`
 
 
 
