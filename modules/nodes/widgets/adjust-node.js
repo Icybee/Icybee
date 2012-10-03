@@ -89,7 +89,7 @@ Brickrouge.Widget.AdjustNode = new Class
 						this.selected = this.element.getElement('.results li.selected a')
 					}
 
-					document.fireEvent('elementsready', { target: el })
+					Brickrouge.updateDocument(el)
 
 					this.fireEvent('results', { target: this, response: response })
 				}

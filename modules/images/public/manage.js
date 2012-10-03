@@ -183,25 +183,16 @@ if (typeof manager != 'undefined')
 	);
 }
 
-document.addEvent
-(
-	'elementsready', function(ev)
-	{
-		ev.target.getElements('img.pop-preview').each
-		(
-			function (el)
-			{
-				if (el.retrieve('pop-preview'))
-				{
-					return;
-				}
+window.addEvent('brickrouge.update', function(ev) {
 
-				var nid = el.get('data-nid');
+	ev.target.getElements('img.pop-preview').each(function (el) {
 
-				var popPreview = new WdPopupImage(el, '/api/resources.images/' + nid + '/thumbnail?v=$popup');
+		if (el.retrieve('pop-preview'))	return
 
-				el.store('pop-preview', popPreview);
-			}
-		);
-	}
-);
+		var nid = el.get('data-nid')
+		, popPreview = new WdPopupImage(el, '/api/resources.images/' + nid + '/thumbnail?v=$popup');
+
+		el.store('pop-preview', popPreview)
+
+	})
+})

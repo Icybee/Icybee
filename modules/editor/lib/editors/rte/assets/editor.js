@@ -1,4 +1,4 @@
-( function() {
+!function() {
 
 	function apply()
 	{
@@ -30,9 +30,7 @@
 		);
 	}
 
-	window.addEvent('domready', apply);
 	document.addEvent('editors', apply); // TODO-20110123: remove 'domready' and 'editors'
-	document.addEvent('elementsready', apply);
+	window.addEvent('brickrouge.update', apply);
 
-}) ();
-
+} ()

@@ -58,8 +58,8 @@ Brickrouge.Widget.PopNode = new Class
 		this.popover.show()
 
 		/*
-		 * The adjust object is available after the `elementsready` event has been fired. The event
-		 * is fired when the popup is opened.
+		 * The adjust object is available after the `brickrouge.construct` event has been fired.
+		 * The event is fired when the popup is opened.
 		 */
 
 		this.popover.adjust.addEvent('change', this.change.bind(this))

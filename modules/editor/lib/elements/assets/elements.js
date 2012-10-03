@@ -66,11 +66,11 @@ var WdContentsEditor = new Class
 		this.initialize(el)
 
 		document.fireEvent('editors')
-		document.fireEvent('elementsready', { target: el })
+		Brickrouge.updateDocument(el)
 	}
 });
 
-document.addEvent('elementsready', function() {
+window.addEvent('brickrouge.update', function() {
 
 	$$('div.editor-wrapper').each(function(el) {
 

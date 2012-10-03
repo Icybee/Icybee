@@ -340,7 +340,7 @@ Brickrouge.Widget.TabbableEditor = new Class({
 
 					this.attach()
 
-					document.fireEvent('elementsready', { target: pane })
+					Brickrouge.updateDocument(pane)
 
 				}.bind(this)
 

@@ -116,29 +116,24 @@ window.addEvent
 
 (function() {
 
-var init = function(ev)
-{
-	ev.target.getElements('input.search').each
-	(
-		function(el)
-		{
-			if (el.retrieve('widget-search'))
-			{
-				return;
-			}
+	function init(ev)
+	{
+		ev.target.getElements('input.search').each(function(el) {
 
-			var label = el.get('data-placeholder') || 'Search';
+			if (el.retrieve('widget-search')) return
+
+			var label = el.get('data-placeholder') || 'Search'
 
 			if (!el.value)
 			{
-				el.addClass('placeholder');
-				el.value = label;
+				el.addClass('placeholder')
+				el.value = label
 			}
 
 			el.addEvents
 			({
-				focus: function()
-				{
+				focus: function() {
+
 					if (this.hasClass('placeholder'))
 					{
 						this.value = '';
@@ -146,54 +141,29 @@ var init = function(ev)
 					}
 				},
 
-				blur: function()
-				{
+				blur: function() {
+
 					if (!this.value)
 					{
 						this.addClass('placeholder');
 						this.value = label;
 					}
 				}
-			});
+			})
 
-			el.store('widget-search', true);
-		}
-	);
+			el.store('widget-search', true)
+		})
 
-	ev.target.getElements('.autofocus').each
-	(
-		function(el)
-		{
-			el.focus();
-		}
-	);
-
-	//
-	//
-	//
-
-	$$('.popup.info[data-target').each
-	(
-		function(el)
-		{
-			var target = el.get('data-target');
-
-			if (target)
+		ev.target.getElements('.autofocus').each
+		(
+			function(el)
 			{
-				target = document.getElement(target);
+				el.focus();
 			}
+		);
+	}
 
-			//el.adopt(new Element('div.arrow').adopt(new Element('div')));
-
-			el.setStyles({ padding: '1em', top: 10, left: 10 });
-			//el.addClass('below');
-
-			( function() { new Fx.Tween(el, { property: 'opacity' }).start(0).chain(el.destroy.bind(el)); } ).delay(2000);
-		}
-	);
-};
-
-document.addEvent('elementsready', init);
+	window.addEvent('brickrouge.update', init);
 
 })();
 
