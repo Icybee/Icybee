@@ -20,7 +20,7 @@ use Brickrouge\Element;
 use Brickrouge\Form;
 use Brickrouge\Text;
 
-use WdPatron as Patron;
+use Patron\Engine as Patron;
 
 // http://www.google.com/webmasters/docs/search-engine-optimization-starter-guide.pdf
 

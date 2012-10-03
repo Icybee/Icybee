@@ -281,7 +281,7 @@ EOT;
 	 * MARKUPS
 	 */
 
-	static public function comments(array $args, \WdPatron $patron, $template)
+	static public function comments(array $args, \Patron\Engine $patron, $template)
 	{
 		global $core;
 
@@ -328,7 +328,7 @@ EOT;
 		return $patron($template, $entries);
 	}
 
-	static public function form(array $args, \WdPatron $patron, $template)
+	static public function form(array $args, \Patron\Engine $patron, $template)
 	{
 		global $core;
 

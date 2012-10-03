@@ -24,7 +24,7 @@ class Hooks
 	 * Markups
 	 */
 
-	public static function markup_node_navigation(array $args, \WdPatron $patron, $template)
+	public static function markup_node_navigation(array $args, \Patron\Engine $patron, $template)
 	{
 		global $core;
 

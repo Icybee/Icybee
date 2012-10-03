@@ -198,7 +198,7 @@ class Hooks
 
 				if ($record->is_notify)
 				{
-					$patron = new \WdPatron();
+					$patron = new \Patron\Engine();
 
 					if (!$mailer_tags[Mailer::T_MESSAGE])
 					{

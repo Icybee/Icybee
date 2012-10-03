@@ -185,7 +185,7 @@ class Hooks
 		$event->title = $page->title . $event->separator . $page->site->title;
 	}
 
-	public static function markup_page_region(array $args, \WdPatron $patron, $template)
+	public static function markup_page_region(array $args, \Patron\Engine $patron, $template)
 	{
 		global $core;
 

@@ -64,7 +64,7 @@ function render($template, $thisArg=null, array $options=array())
 		$engine = new Engine;
 	}
 
-// 	return WdPatron::get_singleton('Icybee')->__invoke($template, $bind, $options);
+// 	return Patron\Engine::get_singleton('Icybee')->__invoke($template, $bind, $options);
 }
 
 

@@ -1,12 +1,12 @@
 <?php
 
-/**
- * This file is part of the WdPatron software
+/*
+ * This file is part of the Patron package.
  *
- * @author Olivier Laviale <olivier.laviale@gmail.com>
- * @link http://www.weirdog.com/wdpatron/
- * @copyright Copyright (c) 2007-2010 Olivier Laviale
- * @license http://www.weirdog.com/wdpatron/license/
+ * (c) Olivier Laviale <olivier.laviale@gmail.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 use ICanBoogie\Exception;

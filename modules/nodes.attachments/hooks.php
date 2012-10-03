@@ -395,7 +395,7 @@ class Hooks
  	 * Attachments are created using the "resources.files.attached" module.
 	 *
 	 * @param array $args
-	 * @param WdPatron $patron
+	 * @param Patron\Engine $patron
 	 * @param string|null $template
 	 * @return string|null The rendered attached file(s), or null if no files were attached.
 	 */

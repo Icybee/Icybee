@@ -24,7 +24,7 @@ class Hooks
 		$core->models['taxonomy.terms/nodes']->filter_by_nid($event->rc)->delete();
 	}
 
-	public static function markup_terms(array $args, \WdPatron $patron, $template)
+	public static function markup_terms(array $args, \Patron\Engine $patron, $template)
 	{
 		global $core;
 
@@ -121,7 +121,7 @@ class Hooks
 	second temps. Notamment les options d'ordre.
 
 	*/
-	public static function markup_nodes(array $args, \WdPatron $patron, $template)
+	public static function markup_nodes(array $args, \Patron\Engine $patron, $template)
 	{
 		global $core;
 

@@ -19,7 +19,7 @@ class taxonomy_support_WdMarkups extends patron_markups_WdHooks
 		return parent::model($name);
 	}
 
-	static public function popularity(array $args, WdPatron $patron, $template)
+	static public function popularity(array $args, Patron\Engine $patron, $template)
 	{
 		extract($args, EXTR_PREFIX_ALL, 'p');
 
@@ -126,7 +126,7 @@ class taxonomy_support_WdMarkups extends patron_markups_WdHooks
 		return $patron($template, $entries);
 	}
 
-	static public function terms(array $args, WdPatron $patron, $template)
+	static public function terms(array $args, Patron\Engine $patron, $template)
 	{
 		global $core;
 
@@ -230,7 +230,7 @@ class taxonomy_support_WdMarkups extends patron_markups_WdHooks
 
 	*/
 
-	static public function nodes(array $args, WdPatron $patron, $template)
+	static public function nodes(array $args, Patron\Engine $patron, $template)
 	{
 		global $core;
 

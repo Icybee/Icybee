@@ -42,7 +42,7 @@ class Hooks
 		);
 	}
 
-	public static function markup_articles(array $args, \WdPatron $patron, $template)
+	public static function markup_articles(array $args, \Patron\Engine $patron, $template)
 	{
 		global $core;
 
@@ -156,7 +156,7 @@ class Hooks
 		return $patron($template, $entries);
 	}
 
-	public static function markup_articles_read(array $args, \WdPatron $patron, $template)
+	public static function markup_articles_read(array $args, \Patron\Engine $patron, $template)
 	{
 		global $core;
 
@@ -195,7 +195,7 @@ class Hooks
 
 	// TODO-20110627: should move this to the "contents" model.
 
-	public static function markup_by_date(array $args, \WdPatron $patron, $template)
+	public static function markup_by_date(array $args, \Patron\Engine $patron, $template)
 	{
 		global $core;
 
@@ -232,7 +232,7 @@ class Hooks
 
 	// TODO-20110627: should move this to the "contents" model.
 
-	public static function markup_by_author(array $args, \WdPatron $patron, $template)
+	public static function markup_by_author(array $args, \Patron\Engine $patron, $template)
 	{
 		global $core;
 

@@ -19,7 +19,5 @@ return array
 
 	'patron_native_WdMarkups' => $path . 'markups/native.markups.php',
 	'patron_feed_WdMarkups' => $path . 'markups/feed.markups.php',
-	'patron_elements_WdMarkups' => $path . 'markups/elements.markups.php',
-
-	'WdPatron' => $path . 'lib/compat.php'
+	'patron_elements_WdMarkups' => $path . 'markups/elements.markups.php'
 );

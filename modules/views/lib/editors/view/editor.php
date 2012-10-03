@@ -54,7 +54,7 @@ class ViewEditor implements \Icybee\Modules\Editor\Editor
 	{
 		global $core;
 
-		$patron = \WdPatron::get_singleton();
+		$patron = \Patron\Engine::get_singleton();
 		$page = isset($core->request->context->page) ? $core->request->context->page : null;
 
 		if (!$page)

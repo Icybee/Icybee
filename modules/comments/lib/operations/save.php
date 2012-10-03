@@ -219,7 +219,7 @@ class SaveOperation extends \Icybee\SaveOperation
 		# prepare subject and message
 		#
 
-		$patron = new \WdPatron();
+		$patron = new \Patron\Engine();
 		$subject = $patron($options['subject'], $comment);
 		$message = $patron($options['template'], $comment);
 
