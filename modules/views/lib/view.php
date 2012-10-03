@@ -138,7 +138,7 @@ class View extends Object
 
 			return $rc;
 		}
-		catch (\Brickrouge\EmptyElementException $e)
+		catch (\Brickrouge\ElementIsEmpty $e)
 		{
 			return '';
 		}

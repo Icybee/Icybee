@@ -42,7 +42,7 @@ class ActionbarTitle extends Element
 
 		if (!$route || !$route->module)
 		{
-			throw new \Brickrouge\EmptyElementException;
+			throw new \Brickrouge\ElementIsEmpty;
 		}
 
 		$label = $core->modules[$route->module]->title;

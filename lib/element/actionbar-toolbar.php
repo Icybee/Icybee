@@ -35,7 +35,7 @@ class ActionbarToolbar extends Element
 
 		if (empty($buttons))
 		{
-			throw new \Brickrouge\EmptyElementException;
+			throw new \Brickrouge\ElementIsEmpty;
 		}
 
 		return implode($buttons);

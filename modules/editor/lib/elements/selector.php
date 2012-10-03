@@ -12,7 +12,7 @@
 namespace Icybee\Modules\Editor;
 
 use Brickrouge\Element;
-use Brickrouge\EmptyElementException;
+use Brickrouge\ElementIsEmpty;
 
 /**
  * A selector for the available editors.
@@ -40,7 +40,7 @@ class SelectorElement extends Element
 	}
 
 	/**
-	 * @throws EmptyElementException if the element has no options.
+	 * @throws ElementIsEmpty if the element has no options.
 	 *
 	 * @see Brickrouge.Element::render_outer_html()
 	 */
@@ -48,7 +48,7 @@ class SelectorElement extends Element
 	{
 		if (!$this[Element::OPTIONS])
 		{
-			throw new EmptyElementException;
+			throw new ElementIsEmpty;
 		}
 
 		return parent::render_outer_html();

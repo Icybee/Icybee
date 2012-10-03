@@ -11,12 +11,11 @@
 
 namespace Icybee\Modules\Pages;
 
-use Brickrouge\EmptyElementException;
-
 use ICanBoogie\ActiveRecord;
 use ICanBoogie\Event;
 
 use Brickrouge\Element;
+use Brickrouge\ElementIsEmpty;
 
 class LanguagesElement extends Element
 {
@@ -62,7 +61,7 @@ class LanguagesElement extends Element
 
 		if (count($translations_by_language) == 1)
 		{
-			throw new EmptyElementException;
+			throw new ElementIsEmpty;
 		}
 
 		/*

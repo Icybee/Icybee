@@ -77,14 +77,14 @@ class Actionbar extends Element
 			# if route is not defined.
 			#
 
-// 			throw new \Brickrouge\EmptyElementException;
+// 			throw new \Brickrouge\ElementIsEmpty;
 		}
 
 		$actionbar_title = (string) new ActionbarTitle;
 
 		if (!$actionbar_title && !$actionbar_new && !$actionbar_navigation && !$actionbar_toolbar && !$actionbar_search)
 		{
-			throw new \Brickrouge\EmptyElementException;
+			throw new \Brickrouge\ElementIsEmpty;
 		}
 
 		return <<<EOT
@@ -113,7 +113,7 @@ class ActionbarNav extends Element
 
 		if (empty($collection))
 		{
-			throw new \Brickrouge\EmptyElementException;
+			throw new \Brickrouge\ElementIsEmpty;
 		}
 
 		$html = '';
@@ -164,7 +164,7 @@ class ActionbarNav extends Element
 
 		if (!$current_route->module)
 		{
-			throw new \Brickrouge\EmptyElementException;
+			throw new \Brickrouge\ElementIsEmpty;
 		}
 
 		$module_id = $current_route->module;
@@ -245,7 +245,7 @@ class ActionbarContextNav extends Element
 
 		if (empty($collection))
 		{
-			throw new \Brickrouge\EmptyElementException;
+			throw new \Brickrouge\ElementIsEmpty;
 		}
 
 		foreach ($collection as $route)
@@ -331,7 +331,7 @@ class ActionbarSearch extends Element
 
 		if (empty($html))
 		{
-			throw new \Brickrouge\EmptyElementException;
+			throw new \Brickrouge\ElementIsEmpty;
 		}
 
 		return $html;
