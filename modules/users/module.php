@@ -34,7 +34,7 @@ class Module extends \Icybee\Module
 			'password' => array
 			(
 				'subject' => 'Vos paramètres de connexion à Icybee',
-				'from' => 'no-reply@wdpublisher.com',
+				'from' => 'no-reply@example.com',
 				'template' => 'Bonjour,
 
 Voici vos paramètres de connexion au système de gestion de contenu Icybee :
@@ -103,9 +103,9 @@ Cordialement'
 				return false;
 			}
 
-			$password_salt = \ICanBoogie\Security::generate_token(64, 'wide');
-			$unlock_login_salt = \ICanBoogie\Security::generate_token(64, 'wide');
-			$nonce_login_salt = \ICanBoogie\Security::generate_token(64, 'wide');
+			$password_salt = \ICanBoogie\generate_token(64, 'wide');
+			$unlock_login_salt = \ICanBoogie\generate_token(64, 'wide');
+			$nonce_login_salt = \ICanBoogie\generate_token(64, 'wide');
 
 			$config = <<<EOT
 <?php

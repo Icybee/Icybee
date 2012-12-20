@@ -202,10 +202,10 @@ class EditBlock extends \Icybee\EditBlock
 						Element::GROUP => 'advanced',
 						Element::OPTIONS => array
 						(
-							0 => 'Le site est hors ligne',
-							1 => 'Le site est en ligne',
-							2 => 'Le site est en travaux',
-							3 => "Le site est interdit d'accès"
+							Site::STATUS_OK => 'Ok (online)',
+							Site::STATUS_UNAUTHORIZED => 'Unauthorized',
+							Site::STATUS_NOT_FOUND => 'Not found (offline)',
+							Site::STATUS_UNAVAILABLE => 'Unavailable'
 						)
 					)
 				),

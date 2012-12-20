@@ -9,9 +9,8 @@
  * file that was distributed with this source code.
  */
 
-namespace Icybee\Admin\Element;
+namespace Icybee\Element;
 
-use ICanBoogie\Event;
 use Brickrouge\Element;
 
 /**
@@ -29,9 +28,9 @@ class ActionbarToolbar extends Element
 
 	protected function render_inner_html()
 	{
-		$buttons = $this->collect_buttons();
+		$buttons = $this->collect();
 
-		$this->fire_alter_buttons(array('buttons' => &$buttons));
+		new ActionbarToolbar\CollectEvent($this, array('buttons' => &$buttons));
 
 		if (empty($buttons))
 		{
@@ -41,13 +40,34 @@ class ActionbarToolbar extends Element
 		return implode($buttons);
 	}
 
-	protected function collect_buttons()
+	protected function collect()
 	{
 		return array();
 	}
+}
 
-	protected function fire_alter_buttons(array $params)
+namespace Icybee\Element\ActionbarToolbar;
+
+/**
+ * Event class for the `Icybee\Element\ActionbarToolbar::collect` event.
+ */
+class CollectEvent extends \ICanBoogie\Event
+{
+	/**
+	 * Reference to the button array to alter.
+	 *
+	 * @var array
+	 */
+	public $buttons;
+
+	/**
+	 * The event is constructed with the type `collect`.
+	 *
+	 * @param \Icybee\Element\ActionbarToolbar $target
+	 * @param array $payload
+	 */
+	public function __construct(\Icybee\Element\ActionbarToolbar $target, array $payload)
 	{
-		Event::fire('alter_buttons', $params, $this);
+		parent::__construct($target, 'collect', $payload);
 	}
 }

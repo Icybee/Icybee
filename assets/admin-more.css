@@ -676,3 +676,23 @@ body.exception footer {
 body.exception footer a:not(:hover) {
 	color: inherit;
 }
+
+
+
+
+.input-append {
+	position: relative;
+}
+
+.input-append .spinner {
+	float: left;
+	border-top-right-radius: 0;
+	border-bottom-right-radius: 0;
+}
+
+.input-append .spinner + .add-on {
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	height: auto;
+}

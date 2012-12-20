@@ -11,8 +11,9 @@
 
 namespace Icybee\Modules\Pages;
 
+use Icybee\Modules\Files\File;
+
 use ICanBoogie\ActiveRecord;
-use Icybee\Modules\Sites\Site;
 use ICanBoogie\Event;
 use ICanBoogie\FileCache;
 use ICanBoogie\HTTP\Dispatcher;
@@ -21,73 +22,70 @@ use ICanBoogie\HTTP\Response;
 
 use Brickrouge\Element;
 
+use Icybee\Modules\Sites\Site;
+
 class Hooks
 {
-	static public function on_http_dispatcher_populate(Dispatcher\PopulateEvent $event, Dispatcher $target)
+	static public function on_http_dispatcher_collect(Dispatcher\CollectEvent $event, Dispatcher $target)
 	{
-		$event->controllers['pages'] = function(Request $request)
+		$event->dispatchers['pages'] = function(Request $request)
 		{
 			global $core;
 
 			require_once \ICanBoogie\DOCUMENT_ROOT . 'user-startup.php';
 
 			$response = new Response();
-			$controller = new PageController;
+			$controller = new PageController();
 
 			$rc = $controller($request, $response);
 
 			if ($rc instanceof Response)
 			{
-				return $rc;
+				$response = $rc;
+			}
+			else
+			{
+				$response->body = $rc;
 			}
 
-			$response->body = $rc;
-
-			/*
-			$response->cache_control->cacheable = 'public';
-			$response->expires = '+7 days';
-			*/
+			if ($core->user->is_guest && $request->is_get)
+			{
+				$response->cache_control = 'public';
+				$response->expires = '+7 days';
+			}
 
 			return $response;
 		};
 	}
 
 	/**
-	 * The callback is called when the `resources.files.path.change` is triggered, allowing us to
-	 * update content to the changed path of resource.
+	 * The callback is called when the `Icybee\Modules\Files\File::move` event is triggered,
+	 * allowing us to update content to the changed path of resource.
 	 *
-	 * @param Event $event
+	 * @param File\MoveEvent $event
+	 * @param File $target
 	 */
-	static public function resources_files_path_change(Event $event)
+	static public function on_file_move(File\MoveEvent $event, File $target)
 	{
 		global $core;
 
-		try
-		{
-			$model = $core->models['pages/contents'];
-			$path = $event->path;
-
-			if ($path)
-			{
-				$model->execute
-				(
-					'UPDATE {self} SET content = REPLACE(content, ?, ?)', $path
-				);
-			}
-		}
-		catch (\Exception $e) { return; }
+		$core->models['pages/contents']->execute
+		(
+			'UPDATE {self} SET content = REPLACE(content, ?, ?)', $event->from, $event->to
+		);
 	}
 
 	/**
-	 * The callback is called when the `urlchange` event is triggered by a Page activerecord,
+	 * The callback is called when the `Icybee\Modules\Pages\Page::move` event is triggered,
 	 * allowing us to update content to the changed url of the page.
 	 *
 	 * Note that *only* url within something that looks like a HTML attribute are updated, the
 	 * matching pattern is ~="<url>("|/)~
 	 *
-	 * @param Event $event
+	 * @param Page\MoveEvent $event
+	 * @param Page $target
 	 */
-	static public function on_urlchange(Event $event, Page $target)
+	static public function on_page_move(Page\MoveEvent $event, Page $target)
 	{
 		global $core;
 
@@ -105,9 +103,7 @@ class Hooks
 			return;
 		}
 
-		$records = $model->where('content LIKE ?', '%' . $old . '%')->all;
-
-		foreach ($records as $record)
+		foreach ($model->where('content LIKE ?', '%' . $old . '%') as $record)
 		{
 			$content = $record->content;
 			$content = preg_replace('~=\"' . preg_quote($old, '~') . '(\"|\/)~', '="' . $new . '$1', $content);
@@ -155,7 +151,7 @@ class Hooks
 	 *
 	 * @return \Icybee\Modules\Pages\Page
 	 */
-	public static function get_page(\ICanBoogie\Core $core)
+	static public function get_page(\ICanBoogie\Core $core)
 	{
 		return $core->request->context->page;
 	}
@@ -168,14 +164,14 @@ class Hooks
 	 * @return Icybee\Modules\Pages\Page|null The home page of the target site or null if there is
 	 * none.
 	 */
-	public static function get_home(Site $site)
+	static public function get_home(Site $site)
 	{
 		global $core;
 
 		return $core->models['pages']->find_home($site->siteid);
 	}
 
-	public static function on_document_render_title(Event $event)
+	static public function before_document_render_title(\Icybee\Document\BeforeRenderTitleEvent $event)
 	{
 		global $core;
 
@@ -185,33 +181,41 @@ class Hooks
 		$event->title = $page->title . $event->separator . $page->site->title;
 	}
 
-	public static function markup_page_region(array $args, \Patron\Engine $patron, $template)
+	/*
+	 * Markups
+	 */
+
+	static public function markup_page_region(array $args, \Patron\Engine $patron, $template)
 	{
 		global $core;
 
 		$id = $args['id'];
-		$rc = null;
 		$page = $core->request->context->page;
+		$element = new Element('div', array('id' => $id, 'class' => "region region-$id"));
+		$html = null;
 
-		Event::fire
+		new Page\RenderRegionEvent
 		(
-			'markup.page_region.render_inner_html', array
+			$page, array
 			(
 				'id' => $id,
 				'page' => $page,
-				'rc' => &$rc
+				'element' => $element,
+				'html' => &$html
 			)
 		);
 
-		if (!$rc)
+		if (!$html)
 		{
 			return;
 		}
 
-		return '<div id="region-' . $id . '" class="region region-' . $id . '">' . $rc . '</div>';
+		$element[Element::INNER_HTML] = $html;
+
+		return $element;
 	}
 
-	public static function markup_page_title(array $args, $engine, $template)
+	static public function markup_page_title(array $args, $engine, $template)
 	{
 		global $core;
 
@@ -219,13 +223,40 @@ class Hooks
 		$title = $page->title;
 		$html = \ICanBoogie\escape($title);
 
-		Event::fire('render_title', array('title' => $title, 'html' => &$html), $page);
+		new Page\RenderTitleEvent($page, array('title' => $title, 'html' => &$html));
 
 		return $template ? $engine($template, $html) : $html;
 	}
 
 	/**
-	 * The `wdp:content` markup defines editable content zones in a page template.
+	 * Defines an editable page content in a template.
+	 *
+	 * <pre>
+	 * <p:page:content
+	 *     id = qname
+	 *     title = string
+	 *     editor = string
+	 *     inherit = boolean>
+	 *     <!-- Content: with-param*, template? -->
+	 * </p:page:content>
+	 * </pre>
+	 *
+	 * The `id` attribute specifies the identifier of the content, it is required and must be
+	 * unique in the template. The `title` attribute specifies the label of the editor in the
+	 * page editor, it is required. The `editor` attribute specifies the editor to use to edit
+	 * the content, it is optional. The `inherit` attribute specifies that the content can be
+	 * inherited.
+	 *
+	 * Example:
+	 *
+	 * <pre>
+	 * <p:page:content id="body" title="Page body" />
+	 *
+	 * <p:page:content id="picture" title="Decorating picture" editor="image" inherit="inherit">
+	 * <img src="#{@path}" alt="#{@alt}" />
+	 * </p>
+	 *
+	 * </pre>
 	 *
 	 * @param array $args
 	 * @param \Patron\Engine $patron
@@ -381,5 +412,79 @@ class Hooks
 
 			$html
 		);
+	}
+}
+
+namespace Icybee\Modules\Pages\Page;
+
+use Icybee\Modules\Pages\Page;
+
+class RenderTitleEvent extends \ICanBoogie\Event
+{
+	/**
+	 * Title of the page.
+	 *
+	 * @var string
+	 */
+	public $title;
+
+	/**
+	 * Reference to the rendered title of the page.
+	 *
+	 * @var string
+	 */
+	public $html;
+
+	/**
+	 * The event is constructed with the type `render_title`.
+	 *
+	 * @param Page $target
+	 * @param array $payload
+	 */
+	public function __construct(Page $target, array $payload)
+	{
+		parent::__construct($target, 'render_title', $payload);
+	}
+}
+
+class RenderRegionEvent extends \ICanBoogie\Event
+{
+	/**
+	 * Identifier of the region.
+	 *
+	 * @var string
+	 */
+	public $id;
+
+	/**
+	 * Page where the region is rendered.
+	 *
+	 * @var Page
+	 */
+	public $page;
+
+	/**
+	 * The region element.
+	 *
+	 * @var Element
+	 */
+	public $element;
+
+	/**
+	 * Reference to the rendered HTML of the region.
+	 *
+	 * @var string
+	 */
+	public $html;
+
+	/**
+	 * The event is constructed with the type `render_region`.
+	 *
+	 * @param Page $target
+	 * @param array $payload
+	 */
+	public function __construct(Page $target, array $payload)
+	{
+		parent::__construct($target, 'render_region', $payload);
 	}
 }

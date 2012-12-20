@@ -15,7 +15,7 @@ use ICanBoogie\Operation;
 
 class Member extends \Icybee\Modules\Users\User
 {
-	public $gender;
+	public $salutation_code;
 
 	public $number_work;
 	public $number_home;

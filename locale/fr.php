@@ -79,7 +79,7 @@ return array
 
 	"The requested URL requires authentication." => "L'URL demandée requiert une authentification.",
 
-	# Icybee\Admin\Element\ActionbarTitle
+	# Icybee\Element\ActionbarTitle
 
 	"List page on the website" => "Page de la liste sur le site",
 

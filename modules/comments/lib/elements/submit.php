@@ -129,7 +129,7 @@ class SubmitForm extends Form
 		);
 	}
 
-	public function alter_notify($properties)
+	public function alter_notify(\Icybee\Modules\Forms\NotifyParams $properties)
 	{
 		global $core;
 

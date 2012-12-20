@@ -11,8 +11,7 @@
 
 namespace Icybee\Modules\Files;
 
-use ICanBoogie\Exception\HTTP as HTTPException;
-use ICanBoogie\Operation;
+use ICanBoogie\HTTP\HTTPError;
 
 /**
  * Downloads a file.
@@ -21,7 +20,7 @@ use ICanBoogie\Operation;
  *
  * Offline files cannot be downloaded by visitors.
  */
-class DownloadOperation extends Operation
+class DownloadOperation extends \ICanBoogie\Operation
 {
 	/**
 	 * Controls for the operation: record.
@@ -53,12 +52,12 @@ class DownloadOperation extends Operation
 
 		if ($core->user->is_guest && !$record->is_online)
 		{
-			throw new HTTPException
+			throw new HTTPError
 			(
-				'The requested resource requires authentication: %resource', array
+				\ICanBoogie\format('The requested resource requires authentication: %resource', array
 				(
 					'%resource' => $record->constructor . '/' . $this->key
-				),
+				)),
 
 				401
 			);

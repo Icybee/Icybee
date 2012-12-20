@@ -9,9 +9,10 @@
  * file that was distributed with this source code.
  */
 
-namespace Icybee\Admin\Element;
+namespace Icybee\Element;
 
 use ICanBoogie\Module;
+use ICanBoogie\PropertyNotDefined;
 use ICanBoogie\Route;
 use ICanBoogie\Routes;
 
@@ -38,7 +39,15 @@ class ActionbarTitle extends Element
 		}
 
 		$request = $core->request;
-		$route = $request->route;
+
+		try
+		{
+			$route = $request->route;
+		}
+		catch (PropertyNotDefined $e)
+		{
+			$route = null;
+		}
 
 		if (!$route || !$route->module)
 		{

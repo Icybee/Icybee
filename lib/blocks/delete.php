@@ -77,6 +77,13 @@ class DeleteBlock extends Form
 							'type' => 'submit'
 						)
 					)
+				),
+
+				self::CHILDREN => array
+				(
+					$this->title_element,
+					$this->question_element,
+					$this->preview_element
 				)
 			)
 		);
@@ -112,13 +119,23 @@ EOT;
 	}
 
 	/**
-	 * Returns the localized title of the block.
+	 * Returns the localized title.
 	 *
 	 * @return string
 	 */
 	protected function get_title()
 	{
 		return t('Delete a record');
+	}
+
+	/**
+	 * Returns the title element.
+	 *
+	 * @return \Brickrouge\Element
+	 */
+	protected function get_title_element()
+	{
+		return new Element('h2', array(Element::INNER_HTML => \Brickrouge\escape($this->title)));
 	}
 
 	/**
@@ -142,17 +159,12 @@ EOT;
 	}
 
 	/**
-	 * Decorate the form as a block with a title, question and possible preview.
+	 * Returns the localized confirmation question.
 	 *
-	 * Because at this level the method has no way of knowing the name of the record, it uses
-	 * the localized string "record_name" which defaults to "this record".
-	 *
-	 * @see Brickrouge.Element::decorate()
+	 * @return string
 	 */
-	protected function decorate($html)
+	protected function get_question()
 	{
-		$title = \Brickrouge\escape($this->title);
-
 		$record_name = $this->record_name;
 
 		if ($record_name)
@@ -164,18 +176,19 @@ EOT;
 			$record_name = t('record_name', array(), array('default' => 'this record'));
 		}
 
-		$question = t('Are you sure you want to delete :name?', array('name' => $record_name));
-		$preview = $this->render_preview($this->record);
-
-		return <<<EOT
-<div class="block-alert block--delete">
-<h2>$title</h2>
-<p>$question</p>
-<div class="preview">$preview</div>
-$html
-</div>
-EOT;
+		return t('Are you sure you want to delete :name?', array('name' => $record_name));
 	}
+
+	/**
+	 * Returns the confirmation question element.
+	 *
+	 * @return \Brickrouge\Element
+	 */
+	protected function get_question_element()
+	{
+		return new Element('p', array(Element::INNER_HTML => $this->question));
+	}
+
 
 	/**
 	 * Renders a preview of the record.
@@ -187,5 +200,42 @@ EOT;
 	protected function render_preview(\ICanBoogie\ActiveRecord $record)
 	{
 
+	}
+
+	/**
+	 * Returns a preview of the record.
+	 *
+	 * @return string
+	 */
+	protected function get_preview()
+	{
+		return $this->render_preview($this->record);
+	}
+
+	/**
+	 * Returns the preview element.
+	 *
+	 * @return \Brickrouge\Element
+	 */
+	protected function get_preview_element()
+	{
+		return new Element('div', array(Element::INNER_HTML => $this->preview, 'class' => 'preview'));
+	}
+
+	/**
+	 * Decorate the form as a block with a title, question and possible preview.
+	 *
+	 * Because at this level the method has no way of knowing the name of the record, it uses
+	 * the localized string "record_name" which defaults to "this record".
+	 *
+	 * @see Brickrouge.Element::decorate()
+	 */
+	protected function decorate($html)
+	{
+		return <<<EOT
+<div class="block-alert block--delete">
+$html
+</div>
+EOT;
 	}
 }

@@ -167,20 +167,6 @@ window.addEvent
 
 })();
 
-window.addEvent('domready', function() {
-
-	var form = document.forms['change-working-site']
-
-	if (!form) return
-
-	form = $(form)
-
-	form.addEvent('submit', function() {
-
-		form.action = form.getElement('select').get('value')
-	})
-})
-
 /**
  * Reset button for default values
  */

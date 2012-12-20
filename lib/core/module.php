@@ -13,7 +13,7 @@ namespace Icybee;
 
 use ICanBoogie;
 use ICanBoogie\ActiveRecord\Query;
-use Icybee\Modules\Sites\Site;
+use ICanBoogie\AuthenticationRequired;
 use ICanBoogie\Exception;
 use ICanBoogie\Event;
 use ICanBoogie\I18n;
@@ -28,7 +28,8 @@ use Brickrouge\Element;
 use Brickrouge\Form;
 use Brickrouge\SplitButton;
 
-use Icybee\ConfigOperation as ConfigOperation;
+use Icybee\ConfigOperation;
+use Icybee\Modules\Sites\Site;
 
 /**
  * Extends the Module class with the following features:
@@ -74,7 +75,14 @@ class Module extends \ICanBoogie\Module
 			{
 				$block = new $class_name($this, array(), $args);
 
-				$rendered_block = (string) $block;
+				$rendered_block = $block->render();
+			}
+			catch (\ICanBoogie\SecurityException $e)
+			{
+				I18n::pop_scope();
+				I18n::pop_scope();
+
+				throw $e;
 			}
 			catch (\Exception $e)
 			{
@@ -131,7 +139,7 @@ class Module extends \ICanBoogie\Module
 
 		if (!$user_id)
 		{
-			throw new Exception('Guest users cannot lock records');
+			throw new AuthenticationRequired();
 		}
 
 		if (!$key)

@@ -11,6 +11,9 @@
 
 namespace Icybee\Modules\Articles;
 
+/**
+ * An article.
+ */
 class Article extends \Icybee\Modules\Contents\Content
 {
 

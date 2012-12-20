@@ -41,7 +41,7 @@ class SaveOperation extends \ICanBoogie\SaveOperation
 
 		if ($mode)
 		{
-			$core->session->wdpmodule[self::MODE][(string) $this->module] = $mode;
+			$core->session->save_mode[self::MODE][(string) $this->module] = $mode;
 		}
 
 		return parent::control($controls);

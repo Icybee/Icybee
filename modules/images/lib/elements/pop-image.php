@@ -18,7 +18,7 @@ class PopImage extends \Icybee\Modules\Nodes\PopNode
 	const T_PREVIEW_WIDTH = '#preview-width';
 	const T_PREVIEW_HEIGHT = '#preview-height';
 
-	protected static function add_assets(\Brickrouge\Document $document)
+	static protected function add_assets(\Brickrouge\Document $document)
 	{
 		parent::add_assets($document);
 
@@ -26,11 +26,11 @@ class PopImage extends \Icybee\Modules\Nodes\PopNode
 		$document->js->add('pop-image.js');
 	}
 
-	public function __construct($tags=array(), $dummy=null)
+	public function __construct($attributes=array())
 	{
 		parent::__construct
 		(
-			$tags + array
+			$attributes + array
 			(
 				self::T_PREVIEW_WIDTH => 64,
 				self::T_PREVIEW_HEIGHT => 64,
@@ -55,6 +55,14 @@ class PopImage extends \Icybee\Modules\Nodes\PopNode
 			)
 		);
 	}
+	/*
+	protected function decorate($html)
+	{
+		$addon = '+ <input type="file" />';
+
+		return '<div class="input-append">' . $html . '<span class="add-on">' . $addon . '</span></div>';
+	}
+	*/
 
 	protected function getEntry($model, $value)
 	{

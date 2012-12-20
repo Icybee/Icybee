@@ -30,7 +30,7 @@ class ManageBlock extends \Icybee\Modules\Nodes\ManageBlock
 		);
 	}
 
-	protected static function add_assets(\Brickrouge\Document $document)
+	static protected function add_assets(\Brickrouge\Document $document)
 	{
 		parent::add_assets($document);
 
@@ -140,7 +140,7 @@ class ManageBlock extends \Icybee\Modules\Nodes\ManageBlock
 
 	protected function render_cell_title($record, $property)
 	{
-		$rc  = '<a class="download" href="' . wd_entities($record->url('download')) . '"';
+		$rc  = '<a class="download" href="' . \ICanBoogie\escape($record->url('download')) . '"';
 		$rc .= ' title="' . t('Download the file: :path', array(':path' => $record->path)) . '"';
 		$rc .= '>';
 		$rc .= 'download</a>';

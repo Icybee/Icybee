@@ -157,7 +157,9 @@ class FeedEditor implements Editor
 		header('Content-Type: application/atom+xml;charset=utf-8');
 		//header('Content-Type: text/plain');
 
-		return '<?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom">' . $rc . '</feed>';;
+		echo '<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">' . $rc . '</feed>';
+
+		exit;
 	}
 }

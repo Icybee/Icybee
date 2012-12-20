@@ -68,7 +68,7 @@ class ManageBlock extends Form
 		);
 	}
 
-	protected function render_inner_html()
+	public function render()
 	{
 		global $core;
 
@@ -393,6 +393,8 @@ EOT;
 		$rc .= '</tbody>';
 		$rc .= '</table>';
 
-		return $rc . parent::render_inner_html();
+		$this->inner_html = $rc;
+
+		return parent::render();
 	}
 }

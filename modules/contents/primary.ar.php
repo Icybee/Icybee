@@ -20,13 +20,56 @@ class Content extends \Icybee\Modules\Nodes\Node
 	const EDITOR = 'editor';
 	const IS_HOME_EXCLUDED = 'is_home_excluded';
 
+	/**
+	 * Subtitle.
+	 *
+	 * @var string
+	 */
 	public $subtitle;
+
+	/**
+	 * Body of the content.
+	 *
+	 * The body needs to be rendered by its editor in order to obtain the real body.
+	 *
+	 * @var string
+	 */
 	public $body;
+
+	/**
+	 * An excerpt of the body.
+	 *
+	 * @var string
+	 */
 	public $excerpt;
+
+	/**
+	 * Date of the content.
+	 *
+	 * @var string
+	 */
 	public $date;
+
+	/**
+	 * The identifier of the editor that was used to edit the body.
+	 *
+	 * @var string
+	 */
 	public $editor;
+
+	/**
+	 * `true` if the content should not appear on the "home" view.
+	 *
+	 * @var bool
+	 */
 	public $is_home_excluded;
 
+	/**
+	 * The {@link $excerpt} property is unset if it is empty, so that it is created from the body
+	 * when read for the first time.
+	 *
+	 * @param Model $model
+	 */
 	public function __construct(Model $model)
 	{
 		parent::__construct($model);
@@ -44,6 +87,8 @@ class Content extends \Icybee\Modules\Nodes\Node
 	private static $use_cache;
 	private static $cache_model;
 
+	private $rendered_body;
+
 	/**
 	 * Renders the body of the activerecord into a string.
 	 *
@@ -56,6 +101,13 @@ class Content extends \Icybee\Modules\Nodes\Node
 	public function __toString()
 	{
 		global $core;
+
+		$rendered_body = $this->rendered_body;
+
+		if ($rendered_body)
+		{
+			return $rendered_body;
+		}
 
 		if (self::$use_cache === null)
 		{
@@ -73,8 +125,9 @@ class Content extends \Icybee\Modules\Nodes\Node
 					self::$cache_model = $core->models['contents/cache'];
 				}
 
+				$nid = $this->nid;
 				$modified = $this->modified;
-				$cached = self::$cache_model->select('body')->where('nid = ? AND timestamp = ?', $this->nid, $modified)->rc;
+				$cached = self::$cache_model->select('body')->filter_by_nid_and_timestamp($nid, $modified)->rc;
 
 				if ($cached)
 				{
@@ -92,7 +145,7 @@ class Content extends \Icybee\Modules\Nodes\Node
 					(
 						array
 						(
-							'nid' => $this->nid,
+							'nid' => $nid,
 							'timestamp' => $modified,
 							'body' => $rendered_body
 						),
@@ -110,6 +163,8 @@ class Content extends \Icybee\Modules\Nodes\Node
 		{
 			$rendered_body = $e->getMessage();
 		}
+
+		$this->rendered_body = $rendered_body;
 
 		return $rendered_body;
 	}
@@ -170,7 +225,10 @@ class Content extends \Icybee\Modules\Nodes\Node
 	 */
 	protected function get_previous()
 	{
-		return $this->_model->own->visible->where('nid != ? AND date <= ?', $this->nid, $this->date)->order('date DESC, created DESC, nid DESC')->one;
+		$ids = $this->_model->select('nid')->order('date, created, nid')->own->visible->all(\PDO::FETCH_COLUMN);
+		$key = array_search($this->nid, $ids);
+
+		return $key ? $this->_model[$ids[$key - 1]] : null;
 	}
 
 	/**
@@ -180,7 +238,10 @@ class Content extends \Icybee\Modules\Nodes\Node
 	 */
 	protected function get_next()
 	{
-		return $this->_model->own->visible->where('nid != ? AND date > ?', $this->nid, $this->date)->order('date, created, nid')->one;
+		$ids = $this->_model->select('nid')->order('date, created, nid')->own->visible->all(\PDO::FETCH_COLUMN);
+		$key = array_search($this->nid, $ids);
+
+		return $key < count($ids) - 1 ? $this->_model[$ids[$key + 1]] : null;
 	}
 
 	protected function get_excerpt()

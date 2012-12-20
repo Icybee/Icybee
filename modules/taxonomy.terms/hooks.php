@@ -17,14 +17,14 @@ use ICanBoogie\Exception;
 
 class Hooks
 {
-	public static function on_nodes_delete(Event $event)
+	static public function on_nodes_delete(Event $event)
 	{
 		global $core;
 
 		$core->models['taxonomy.terms/nodes']->filter_by_nid($event->rc)->delete();
 	}
 
-	public static function markup_terms(array $args, \Patron\Engine $patron, $template)
+	static public function markup_terms(array $args, \Patron\Engine $patron, $template)
 	{
 		global $core;
 
@@ -115,13 +115,13 @@ class Hooks
 
 	Si scope est défini, il faudrait peut-être modifier 'self' pour qu'il contienne les données du
 	terme. Ou alors utiliser un autre marqueur pour l'occasion... hmm ce serait peut-être le mieux.
-	<wdp:taxonomy:term select="" vacabulary="" scope="" />
+	<p:taxonomy:term select="" vacabulary="" scope="" />
 
 	Les options de 'range' ne doivent pas être appliquée aux termes mais au noeud chargés dans un
 	second temps. Notamment les options d'ordre.
 
 	*/
-	public static function markup_nodes(array $args, \Patron\Engine $patron, $template)
+	static public function markup_nodes(array $args, \Patron\Engine $patron, $template)
 	{
 		global $core;
 

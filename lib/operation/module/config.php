@@ -133,11 +133,11 @@ class BeforePropertiesEvent extends \ICanBoogie\Event
 	 * The event is constructed with the type `properties:before`.
 	 *
 	 * @param \Icybee\ConfigOperation $target
-	 * @param array $properties
+	 * @param array $payload
 	 */
-	public function __construct(\Icybee\ConfigOperation $target, array $properties)
+	public function __construct(\Icybee\ConfigOperation $target, array $payload)
 	{
-		parent::__construct($target, 'properties:before', $properties);
+		parent::__construct($target, 'properties:before', $payload);
 	}
 }
 
@@ -158,16 +158,16 @@ class PropertiesEvent extends \ICanBoogie\Event
 	 *
 	 * @var array
 	 */
-	public $properties;
+	public $payload;
 
 	/**
 	 * The event is constructed with the type `properties`.
 	 *
 	 * @param \Icybee\ConfigOperation $target
-	 * @param array $properties
+	 * @param array $payload
 	 */
-	public function __construct(\Icybee\ConfigOperation $target, array $properties)
+	public function __construct(\Icybee\ConfigOperation $target, array $payload)
 	{
-		parent::__construct($target, 'properties', $properties);
+		parent::__construct($target, 'properties', $payload);
 	}
 }

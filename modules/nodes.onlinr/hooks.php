@@ -26,7 +26,7 @@ class Hooks
 	 *
 	 * @param Event $event
 	 */
-	public static function on_alter_block_edit(Event $event)
+	static public function on_alter_block_edit(Event $event)
 	{
 		global $core;
 

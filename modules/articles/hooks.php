@@ -17,32 +17,7 @@ use ICanBoogie\Event;
 
 class Hooks
 {
-	/**
-	 * The callback is called when the `resources.files.path.change` is triggered, allowing us to
-	 * update contents to the changed path of resources.
-	 *
-	 * @param Event $event
-	 */
-	public static function resources_files_path_change(Event $event) // TODO-20120922: move this to contents module
-	{
-		global $core;
-
-		try
-		{
-			$model = $core->models['articles'];
-		}
-		catch (\Exception $e)
-		{
-			return;
-		}
-
-		$model->execute
-		(
-			'UPDATE {self} SET body = REPLACE(body, ?, ?)', $event->path
-		);
-	}
-
-	public static function markup_articles(array $args, \Patron\Engine $patron, $template)
+	static public function markup_articles(array $args, \Patron\Engine $patron, $template)
 	{
 		global $core;
 
@@ -131,21 +106,12 @@ class Hooks
 
 		$entries = $arq->all;
 
-		Event::fire
-		(
-			'nodes_load', array
-			(
-				'nodes' => $entries
-			),
-
-			$patron
-		);
+		new \BlueTihi\Context\LoadedNodesEvent($engine->context, $entries);
 
 		#
 		# save options, they'll be used to handle pages
 		#
 
-		//$patron->set('self.range', $options);
 		$patron->context['self']['range'] = array
 		(
 			'count' => $count,
@@ -156,7 +122,7 @@ class Hooks
 		return $patron($template, $entries);
 	}
 
-	public static function markup_articles_read(array $args, \Patron\Engine $patron, $template)
+	static public function markup_articles_read(array $args, \Patron\Engine $patron, $template)
 	{
 		global $core;
 
@@ -195,7 +161,7 @@ class Hooks
 
 	// TODO-20110627: should move this to the "contents" model.
 
-	public static function markup_by_date(array $args, \Patron\Engine $patron, $template)
+	static public function markup_by_date(array $args, \Patron\Engine $patron, $template)
 	{
 		global $core;
 
@@ -231,8 +197,9 @@ class Hooks
 	}
 
 	// TODO-20110627: should move this to the "contents" model.
+	// TODO-20121005: should be a view.
 
-	public static function markup_by_author(array $args, \Patron\Engine $patron, $template)
+	static public function markup_by_author(array $args, \Patron\Engine $patron, $template)
 	{
 		global $core;
 

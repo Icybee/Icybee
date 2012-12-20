@@ -11,9 +11,6 @@
 
 namespace Icybee\Modules\Files;
 
-use Icybee\Modules\Files\File;
-use ICanBoogie\Event;
-use ICanBoogie\Operation;
 use ICanBoogie\Uploaded;
 
 class SaveOperation extends \Icybee\Modules\Nodes\SaveOperation
@@ -141,8 +138,7 @@ class SaveOperation extends \Icybee\Modules\Nodes\SaveOperation
 	}
 
 	/**
-	 * Trigger a 'resources.files.path.change' event when the path of the updated record is
-	 * modified.
+	 * Trigger a {@link File\MoveEvent} when the path of the updated record is modified.
 	 *
 	 * @see Icybee\Modules\Nodes.SaveOperation::process()
 	 */
@@ -159,23 +155,44 @@ class SaveOperation extends \Icybee\Modules\Nodes\SaveOperation
 
 			if ($oldpath != $newpath)
 			{
-				$event = Event::fire
-				(
-					'resources.files.path.change', array
-					(
-						'path' => array
-						(
-							$oldpath,
-							$newpath
-						),
-
-						'entry' => $record, // FIXME: record is null if new. attention to cache for existing records !!
-						'module' => $this
-					)
-				);
+				new File\MoveEvent($record, $oldpath, $newpath);
 			}
 		}
 
 		return $rc;
+	}
+}
+
+namespace Icybee\Modules\Files\File;
+
+/**
+ * Event class for the `Icybee\Modules\Files\File` event.
+ */
+class MoveEvent extends \ICanBoogie\Event
+{
+	/**
+	 * Previous path.
+	 *
+	 * @var string
+	 */
+	public $from;
+
+	/**
+	 * New path.
+	 *
+	 * @var string
+	 */
+	public $to;
+
+	/**
+	 * The event is constructed with the type `move`.
+	 *
+	 * @param \Icybee\Modules\Files\File $target
+	 * @param string $from Previous path.
+	 * @param string $to New path.
+	 */
+	public function __construct(\Icybee\Modules\Files\File $target, $from, $to)
+	{
+		parent::__construct($target, 'move', array('from' => $from, 'to' => $to));
 	}
 }

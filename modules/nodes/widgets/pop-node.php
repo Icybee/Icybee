@@ -17,7 +17,7 @@ class PopNode extends \Brickrouge\Widget
 {
 	const T_CONSTRUCTOR = '#popnode-constructor';
 
-	protected static function add_assets(\Brickrouge\Document $document)
+	static protected function add_assets(\Brickrouge\Document $document)
 	{
 		parent::add_assets($document);
 
@@ -28,14 +28,14 @@ class PopNode extends \Brickrouge\Widget
 	{
 		parent::__construct
 		(
-			'a', $attributes + array
+			'div', $attributes + array
 			(
 				self::T_CONSTRUCTOR => 'nodes',
 
 				'placeholder' => 'Sélectionner un enregistrement',
 				'class' => 'spinner',
 				'data-adjust' => 'adjust-node',
-				'href' => '#',
+				'tabindex' => 0,
 			)
 		);
 	}

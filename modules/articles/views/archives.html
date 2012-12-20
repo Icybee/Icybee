@@ -1,13 +1,13 @@
 <ol class="months">
-<wdp:foreach>
+<p:foreach>
 	<li class="month">
 		<h2>#{self.key.format_date('MMMM y').capitalize()} <sup>[#{@count()}]</sup></h2>
 		
 		<ol class="links">
-		<wdp:foreach>
+		<p:foreach>
 			<li class="link"><a href="#{@url}">#{@title}</a></li>
-		</wdp:foreach>
+		</p:foreach>
 		</ol>
 	</li>
-</wdp:foreach>
+</p:foreach>
 </ol>

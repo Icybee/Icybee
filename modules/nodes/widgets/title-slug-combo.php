@@ -94,7 +94,7 @@ class TitleSlugCombo extends \Brickrouge\Widget
 		parent::offsetSet($offset, $value);
 	}
 
-	protected static function add_assets(\Brickrouge\Document $document)
+	static protected function add_assets(\Brickrouge\Document $document)
 	{
 		parent::add_assets($document);
 
@@ -109,7 +109,7 @@ class TitleSlugCombo extends \Brickrouge\Widget
 		$slug = $this->slug_el['value'];
 
 		$tease = '<strong>Slug&nbsp;:</strong> ';
-		$tease .= '<a href="#slug-edit" title="' . t('edit', array(), array('scope' => 'titleslugcombo.element')) . '">' . ($slug ? wd_entities(\ICanBoogie\shorten($slug)) : $this->dataset['auto-label']) . '</a>';
+		$tease .= '<a href="#slug-edit" title="' . t('edit', array(), array('scope' => 'titleslugcombo.element')) . '">' . ($slug ? \ICanBoogie\escape(\ICanBoogie\shorten($slug)) : $this->dataset['auto-label']) . '</a>';
 		$tease .= ' <span>&ndash; <a href="slug-delete" class="warn">' . t('reset', array(), array('scope' => 'titleslugcombo.element')) . '</a></span>';
 
 		$this->slug_tease->inner_html = $tease;

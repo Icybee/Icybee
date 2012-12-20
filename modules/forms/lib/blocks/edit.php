@@ -20,7 +20,7 @@ use Brickrouge\Text;
  */
 class EditBlock extends \Icybee\Modules\Nodes\EditBlock
 {
-	protected static function add_assets(\Brickrouge\Document $document)
+	static protected function add_assets(\Brickrouge\Document $document)
 	{
 		parent::add_assets($document);
 

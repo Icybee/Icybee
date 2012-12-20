@@ -71,7 +71,7 @@ class InterlockBlock extends Element
 	<input type="hidden" name="retry" value="1" />
 
 	<div class="form-actions">
-	<button class="btn-success">Réessayer</button> <span class="small light">$message</span>
+	<button class="btn btn-success">Réessayer</button> <span class="small light">$message</span>
 	</div>
 </form>
 EOT;

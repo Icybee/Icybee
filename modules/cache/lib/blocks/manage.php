@@ -35,7 +35,7 @@ class ManageBlock extends Element
 		);
 	}
 
-	public static function add_assets(\Brickrouge\Document $document)
+	static public function add_assets(\Brickrouge\Document $document)
 	{
 		parent::add_assets($document);
 

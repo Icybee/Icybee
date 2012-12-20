@@ -11,7 +11,6 @@
 
 namespace Icybee\Modules\Users\Roles;
 
-use Icybee\Modules\Users\Users\Role;
 use ICanBoogie\Exception;
 
 /**

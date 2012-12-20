@@ -15,5 +15,6 @@ return array
 	),
 
 	Module::T_REQUIRED => true,
-	Module::T_TITLE => 'Cache'
+	Module::T_TITLE => 'Cache',
+	Module::T_VERSION => '1.0'
 );

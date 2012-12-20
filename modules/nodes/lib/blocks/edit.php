@@ -18,6 +18,9 @@ use Brickrouge\Form;
 
 use Brickrouge\Widget\TitleSlugCombo;
 
+/**
+ * A block used to edit a node.
+ */
 class EditBlock extends \Icybee\EditBlock
 {
 	/**

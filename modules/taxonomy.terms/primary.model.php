@@ -23,7 +23,7 @@ class Model extends \ICanBoogie\ActiveRecord\Model
 	{
 		if (isset($properties[Term::TERM]) && empty($properties[Term::TERMSLUG]))
 		{
-			$properties[Term::TERMSLUG] = wd_slugize($properties[Term::TERM]);
+			$properties[Term::TERMSLUG] = \Icybee\slugize($properties[Term::TERM]);
 		}
 		else if (isset($properties[Term::TERMSLUG]))
 		{

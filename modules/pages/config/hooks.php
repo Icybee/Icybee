@@ -8,18 +8,13 @@ return array
 (
 	'events' => array
 	(
-		'resources.files.path.change' => $hooks . 'resources_files_path_change',
-
-		'Brickrouge\Document::render_title:before' => $hooks . 'on_document_render_title',
-
-		'Icybee\Modules\Pages\Page::urlchange' => $hooks . 'on_urlchange',
-		'ICanBoogie\HTTP\Dispatcher::populate' => $hooks . 'on_http_dispatcher_populate',
-
-		'Icybee::nodes_load' => __NAMESPACE__ . '\PageController::on_nodes_load',
-		'Patron\Engine::nodes_load' => __NAMESPACE__ . '\PageController::on_nodes_load',
-
+		'Brickrouge\Document::render_title:before' => $hooks . 'before_document_render_title',
+		'ICanBoogie\HTTP\Dispatcher::collect' => $hooks . 'on_http_dispatcher_collect',
+		'BlueTihi\Context::loaded_nodes' => __NAMESPACE__ . '\PageController::on_loaded_nodes',
 		'ICanBoogie\SaveOperation::process' => $hooks . 'invalidate_cache',
 		'ICanBoogie\DeleteOperation::process' => $hooks . 'invalidate_cache',
+		'Icybee\Modules\Files\File::move' => $hooks . 'on_file_move',
+		'Icybee\Modules\Pages\Page::move' => $hooks . 'on_page_move',
 		'Icybee\Modules\Nodes\OnlineOperation::process' => $hooks . 'invalidate_cache',
 		'Icybee\Modules\Nodes\OfflineOperation::process' => $hooks . 'invalidate_cache'
 	),

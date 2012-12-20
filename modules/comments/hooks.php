@@ -22,7 +22,11 @@ use Brickrouge\Text;
 
 class Hooks
 {
-	public static function before_node_save(Operation\ProcessEvent $event, \Icybee\Modules\Nodes\SaveOperation $sender)
+	/*
+	 * Events
+	 */
+
+	static public function before_node_save(Operation\BeforeProcessEvent $event, \Icybee\Modules\Nodes\SaveOperation $sender)
 	{
 		$request = $event->request;
 
@@ -45,7 +49,7 @@ class Hooks
 	 * @param Operation\ProcessEvent $event
 	 * @param Icybee\Modules\Nodes\DeleteOperation $sender
 	 */
-	public static function on_node_delete(Operation\ProcessEvent $event, \Icybee\Modules\Nodes\DeleteOperation $operation)
+	static public function on_node_delete(Operation\ProcessEvent $event, \Icybee\Modules\Nodes\DeleteOperation $operation)
 	{
 		global $core;
 
@@ -66,7 +70,7 @@ class Hooks
 		}
 	}
 
-	public static function alter_block_edit(Event $event)
+	static public function alter_block_edit(Event $event)
 	{
 		global $core;
 
@@ -89,7 +93,7 @@ class Hooks
 			);
 		}
 
-		$ns = wd_entities($metas_prefix);
+		$ns = \ICanBoogie\escape($metas_prefix);
 
 		$event->tags = \ICanBoogie\array_merge_recursive
 		(
@@ -171,117 +175,73 @@ EOT
 		);
 	}
 
-	public static function get_comments(Node $ar)
+	static public function on_view_render(Event $event, \Icybee\Modules\Views\View $view)
+	{
+		global $core;
+
+		if ($event->id != 'articles/view')
+		{
+			return;
+		}
+
+		$editor = $core->editors['view'];
+		$list = $editor->render('comments/list');
+		$submit = $editor->render('comments/submit');
+
+		$event->rc .= PHP_EOL . $list . PHP_EOL . $submit;
+	}
+
+	/*
+	 * Prototype
+	 */
+
+	/**
+	 * Returns the comments associated with a node.
+	 *
+	 * @param Node $ar
+	 *
+	 * @return array[]Node
+	 */
+	static public function get_comments(Node $ar)
 	{
 		global $core;
 
 		return $core->models['comments']->where('nid = ? AND status = "approved"', $ar->nid)->order('created')->all;
 	}
 
-	public static function get_comments_count(Node $ar)
+	/**
+	 * Returns the number of comments associated with a node.
+	 *
+	 * @param Node $ar
+	 *
+	 * @return int
+	 */
+	static public function get_comments_count(Node $ar)
 	{
 		global $core;
 
 		return $core->models['comments']->where('nid = ? AND status = "approved"', $ar->nid)->count;
 	}
 
-	public static function get_rendered_comments_count(Node $ar)
+	/**
+	 * Returns the rendered number of comment associated with a node.
+	 *
+	 * The string is formated using the `comments.count` locale string.
+	 *
+	 * @param Node $ar
+	 *
+	 * @return string
+	 */
+	static public function get_rendered_comments_count(Node $ar)
 	{
 		return t('comments.count', array(':count' => $ar->comments_count));
 	}
 
-	public static function dashboard_last()
-	{
-		global $core, $document;
-
-		if (empty($core->modules['comments']))
-		{
-			return;
-		}
-
-		$document->css->add('public/admin.css');
-
-		$model = $core->models['comments'];
-		$entries = $model
-		->where('(SELECT 1 FROM {prefix}nodes WHERE nid = comment.nid AND (siteid = 0 OR siteid = ?)) IS NOT NULL', $core->site_id)
-		->order('created DESC')->limit(5)->all;
-
-		if (!$entries)
-		{
-			return '<p class="nothing">' . t('No record yet') . '</p>';
-		}
-
-		$rc = '';
-		$context = $core->site->path;
-
-		foreach ($entries as $entry)
-		{
-			$url = $entry->url;
-			$author = wd_entities($entry->author);
-
-			if ($entry->author_url)
-			{
-				$author = '<a class="author" href="' . wd_entities($entry->author_url) . '">' . $author . '</a>';
-			}
-			else
-			{
-				$author = '<strong class="author">' . $author . '</strong>';
-			}
-
-			$excerpt = \ICanBoogie\shorten(strip_tags((string) html_entity_decode($entry, ENT_COMPAT, \ICanBoogie\CHARSET)), 140);
-
-			$target_url = $entry->node->url;
-			$target_title = wd_entities(\ICanBoogie\shorten($entry->node->title));
-
-			$image = wd_entities($entry->author_icon);
-
-			$entry_class = $entry->status == 'spam' ? 'spam' : '';
-			$url_edit = "$context/admin/comments/$entry->commentid/edit";
-			$url_delete = "$context/admin/comments/$entry->commentid/delete";
-
-			$date = wd_format_date($entry->created, 'dd MMM');
-
-			$txt_delete = t('Delete');
-			$txt_edit = t('Edit');
-			$txt_display_associated_node = t('Display associated node');
-
-			$rc .= <<<EOT
-<div class="record $entry_class">
-	<div class="options">
-		<img src="$image&amp;s=48" alt="" />
-	</div>
-
-	<div class="contents">
-		<div class="head">
-		$author
-		<span class="date light">$date</span>
-		</div>
-
-		<div class="body"><a href="$url">$excerpt</a></div>
-
-		<div class="actions light">
-			<a href="$url_edit">$txt_edit</a>, <a href="$url_delete" class="danger">$txt_delete</a> − <a href="$target_url" class="target" title="$txt_display_associated_node">$target_title</a>
-		</div>
-	</div>
-</div>
-EOT;
-		}
-
-		$count = $model->joins(':nodes')->where('siteid = 0 OR siteid = ?', $core->site_id)->count;
-		$txt_all_comments = t('comments.count', array(':count' => $count));
-
-		$rc .= <<<EOT
-<div class="panel-footer"><a href="$context/admin/comments">$txt_all_comments</a></div>
-EOT;
-
-		return $rc;
-	}
-
 	/*
-	 * MARKUPS
+	 * Markups
 	 */
 
-	static public function comments(array $args, \Patron\Engine $patron, $template)
+	static public function markup_comments(array $args, \Patron\Engine $patron, $template)
 	{
 		global $core;
 
@@ -328,7 +288,7 @@ EOT;
 		return $patron($template, $entries);
 	}
 
-	static public function form(array $args, \Patron\Engine $patron, $template)
+	static public function markup_form(array $args, \Patron\Engine $patron, $template)
 	{
 		global $core;
 
@@ -369,15 +329,7 @@ EOT
 			);
 		}
 
-		Event::fire
-		(
-			'nodes_load', array
-			(
-				'nodes' => array($form)
-			),
-
-			$patron
-		);
+		new \BlueTihi\Context\LoadedNodesEvent($patron->context, array($form));
 
 		#
 		# Traget Id for the comment
@@ -391,19 +343,94 @@ EOT
 		return $template ? $patron($template, $form) : $form;
 	}
 
-	public static function on_view_render(Event $event, \Icybee\Modules\Views\View $view)
+	/*
+	 * Other
+	 */
+
+	static public function dashboard_last()
 	{
 		global $core;
 
-		if ($event->id != 'articles/view')
+		if (empty($core->modules['comments']))
 		{
 			return;
 		}
 
-		$editor = $core->editors['view'];
-		$list = $editor->render('comments/list');
-		$submit = $editor->render('comments/submit');
+		$document = $core->document;
+		$document->css->add('public/admin.css');
 
-		$event->rc .= PHP_EOL . $list . PHP_EOL . $submit;
+		$model = $core->models['comments'];
+		$entries = $model
+		->where('(SELECT 1 FROM {prefix}nodes WHERE nid = comment.nid AND (siteid = 0 OR siteid = ?)) IS NOT NULL', $core->site_id)
+		->order('created DESC')->limit(5)->all;
+
+		if (!$entries)
+		{
+			return '<p class="nothing">' . t('No record yet') . '</p>';
+		}
+
+		$rc = '';
+		$context = $core->site->path;
+
+		foreach ($entries as $entry)
+		{
+			$url = $entry->url;
+			$author = \ICanBoogie\escape($entry->author);
+
+			if ($entry->author_url)
+			{
+				$author = '<a class="author" href="' . \ICanBoogie\escape($entry->author_url) . '">' . $author . '</a>';
+			}
+			else
+			{
+				$author = '<strong class="author">' . $author . '</strong>';
+			}
+
+			$excerpt = \ICanBoogie\shorten(strip_tags((string) html_entity_decode($entry, ENT_COMPAT, \ICanBoogie\CHARSET)), 140);
+			$target_url = $entry->node->url;
+			$target_title = \ICanBoogie\escape(\ICanBoogie\shorten($entry->node->title));
+
+			$image = \ICanBoogie\escape($entry->author_icon);
+
+			$entry_class = $entry->status == 'spam' ? 'spam' : '';
+			$url_edit = "$context/admin/comments/$entry->commentid/edit";
+			$url_delete = "$context/admin/comments/$entry->commentid/delete";
+
+			$date = \ICanBoogie\I18n\format_date($entry->created, 'dd MMM');
+
+			$txt_delete = t('Delete');
+			$txt_edit = t('Edit');
+			$txt_display_associated_node = t('Display associated node');
+
+			$rc .= <<<EOT
+<div class="record $entry_class">
+	<div class="options">
+		<img src="$image&amp;s=48" alt="" />
+	</div>
+
+	<div class="contents">
+		<div class="head">
+		$author
+		<span class="date light">$date</span>
+		</div>
+
+		<div class="body"><a href="$url">$excerpt</a></div>
+
+		<div class="actions light">
+			<a href="$url_edit">$txt_edit</a>, <a href="$url_delete" class="danger">$txt_delete</a> − <a href="$target_url" class="target" title="$txt_display_associated_node">$target_title</a>
+		</div>
+	</div>
+</div>
+EOT;
+		}
+
+		$count = $model->joins(':nodes')->where('siteid = 0 OR siteid = ?', $core->site_id)->count;
+		$txt_all_comments = t('comments.count', array(':count' => $count));
+
+		$rc .= <<<EOT
+<div class="panel-footer"><a href="$context/admin/comments">$txt_all_comments</a></div>
+EOT;
+
+		return $rc;
 	}
 }

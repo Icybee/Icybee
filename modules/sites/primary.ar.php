@@ -43,10 +43,10 @@ class Site extends \ICanBoogie\ActiveRecord
 
 	const BASE = '/protected/';
 
-	const STATUS_OFFLINE = 0;
-	const STATUS_ONLINE = 1;
-	const STATUS_UNDER_MAINTENANCE = 2;
-	const STATUS_DENIED_ACCESS = 3;
+	const STATUS_OK = 200;
+	const STATUS_UNAUTHORIZED = 401;
+	const STATUS_NOT_FOUND = 404;
+	const STATUS_UNAVAILABLE = 503;
 
 	public $siteid;
 	public $subdomain;

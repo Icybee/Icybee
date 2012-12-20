@@ -15,10 +15,5 @@ return array
 	'!admin:edit' => array
 	(
 
-	),
-
-	'!admin:config' => array
-	(
-
 	)
 );

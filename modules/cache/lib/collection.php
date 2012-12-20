@@ -119,10 +119,10 @@ class CollectEvent extends \ICanBoogie\Event
 	 * The event is constructed with the type `collect`.
 	 *
 	 * @param \Icybee\Modules\Cache\Collection $target
-	 * @param array $properties
+	 * @param array $payload
 	 */
-	public function __construct(\Icybee\Modules\Cache\Collection $target, array $properties)
+	public function __construct(\Icybee\Modules\Cache\Collection $target, array $payload)
 	{
-		parent::__construct($target, 'collect', $properties);
+		parent::__construct($target, 'collect', $payload);
 	}
 }

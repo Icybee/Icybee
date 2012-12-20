@@ -9,7 +9,7 @@ return array
 	'api:editors/new-pane' => array
 	(
 		'pattern' => '/api/editors/tabbable/new-pane',
-		'class' => __NAMESPACE__ . '\TabbableNewPaneOperation',
+		'controller' => __NAMESPACE__ . '\TabbableNewPaneOperation',
 		'via' => Request::METHOD_GET
 	)
 );

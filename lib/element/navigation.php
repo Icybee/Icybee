@@ -9,15 +9,17 @@
  * file that was distributed with this source code.
  */
 
-namespace Icybee\Admin\Element;
+namespace Icybee\Element;
 
-use Icybee\Modules\Users\Users;
 use ICanBoogie\Module;
+use ICanBoogie\PropertyNotDefined;
 use ICanBoogie\Route;
 use ICanBoogie\Routes;
 
 use Brickrouge\A;
 use Brickrouge\DropdownMenu;
+
+use Icybee\Modules\Users\Users;
 
 /**
  * Admin navigation bar.
@@ -95,7 +97,14 @@ class Navigation extends \Brickrouge\Element
 			unset($links['features']);
 		}
 
-		$matching_route = $core->request->route;
+		$matching_route = null;
+
+		try
+		{
+			$matching_route = $core->request->route;
+		}
+		catch (PropertyNotDefined $e) {}
+
 		$selected = $matching_route ? $descriptors[$matching_route->module][Module::T_CATEGORY] : 'dashboard';
 
 		$rc .= '<ul class="nav">';

@@ -145,7 +145,7 @@ class Hooks
 
 			foreach ($response->cursor->pages as $i => $page)
 			{
-				$pages[] = ($pageIndex == $i) ? '<strong>' . $page->label . '</strong>' : '<a href="?start=' . $page->start . '&amp;q=' . wd_entities(urlencode($search)) . '">' . $page->label . '</a>';
+				$pages[] = ($pageIndex == $i) ? '<strong>' . $page->label . '</strong>' : '<a href="?start=' . $page->start . '&amp;q=' . \ICanBoogie\escape(urlencode($search)) . '">' . $page->label . '</a>';
 			}
 
 			$pager = '<div class="pager">' . implode('<span class="separator">, </span>', $pages) . '</div>';

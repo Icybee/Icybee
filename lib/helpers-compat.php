@@ -9,61 +9,9 @@
  * file that was distributed with this source code.
  */
 
-function wd_entities($str, $charset=ICanBoogie\CHARSET)
-{
-	return htmlspecialchars($str, ENT_COMPAT, $charset);
-}
-
-function wd_entities_all($str, $charset=ICanBoogie\CHARSET)
-{
-	return htmlentities($str, ENT_COMPAT, $charset);
-}
-
 function t($str, array $args=array(), array $options=array())
 {
 	return \ICanBoogie\I18n\t($str, $args, $options);
-}
-
-function wd_format_date($time, $pattern='default')
-{
-	return \ICanBoogie\I18n\format_date($time, $pattern);
-}
-
-function wd_date_period($date)
-{
-	return \ICanBoogie\I18n\date_period($date);
-}
-
-// http://www.ranks.nl/resources/stopwords.html
-
-function wd_strip_stopwords($str, $stopwords=null)
-{
-	$stopwords = 'alors au aucuns aussi autre avant avec avoir à bon car ce cela ces ceux chaque
-ci comme comment dans de des dedans dehors depuis deux devrait doit donc dos droite du début elle
-elles en encore essai est et eu fait faites fois font force haut hors ici il ils je juste la le
-les leur là ma maintenant mais mes mine moins mon mot même ni nommés notre nous nouveaux ou où
-par parce parole pas personnes peut peu pièce plupart pour pourquoi quand que quel quelle quelles
-quels qui sa sans ses seulement si sien son sont sous soyez sujet sur ta tandis tellement tels
-tes ton tous tout trop très tu valeur voie voient vont votre vous vu ça étaient état étions été
-être';
-
-	$stopwords = explode(' ', preg_replace('#\s+#', ' ', $stopwords));
-
-	$patterns = array();
-
-	foreach ($stopwords as $word)
-	{
-		$patterns[] = '# ' . preg_quote($word) . ' #i';
-	}
-
-	return preg_replace($patterns, ' ', $str);
-}
-
-function wd_slugize($str, $stopwords=null)
-{
-	$str = wd_strip_stopwords($str);
-
-	return trim(substr(\ICanBoogie\normalize($str), 0, 80), '-');
 }
 
 function wd_spamScore($body, $url, $author, $words=array(), $starters=array())
@@ -244,32 +192,4 @@ function wd_spamScore($body, $url, $author, $words=array(), $starters=array())
 	#
 	# Body used in previous comment
 	#
-}
-
-function wd_discard_substr_by_length($string, $len=3, $separator='-')
-{
-	if (!$len)
-	{
-		return $string;
-	}
-
-	$ar = explode($separator, $string);
-	$ar = array_map('trim', $ar);
-
-	foreach ($ar as $i => $value)
-	{
-		if (is_numeric($value))
-		{
-			continue;
-		}
-
-		if (strlen($value) < $len)
-		{
-			unset($ar[$i]);
-		}
-	}
-
-	$string = implode($separator, $ar);
-
-	return $string;
 }

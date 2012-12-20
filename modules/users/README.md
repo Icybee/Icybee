@@ -31,3 +31,14 @@ user successfully login.
 - (string) `login_unlock_token`: Derivative salted token of the key sent by email for the user
 to unlock its account.
 - (int) `login_unlock_time`: Time at which login is unlocked.
+
+
+
+
+Event callbacks
+---------------
+
+### ICanBoogie\HTTP\Dispatcher::dispatch:before
+
+Ensures that members don't have access to the admin, and that authenticated users only access the
+websites they are restricted to.

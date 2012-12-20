@@ -17,6 +17,14 @@ use Brickrouge\DropdownMenu;
 
 class ManageBlock extends \WdManager
 {
+	static public function add_assets(\Brickrouge\Document $document)
+	{
+		parent::add_assets($document);
+
+		$document->css->add('../../public/admin.css');
+		$document->js->add('../../public/admin.js');
+	}
+
 	public function __construct($module, array $tags=array())
 	{
 		global $core;
@@ -30,14 +38,6 @@ class ManageBlock extends \WdManager
 				self::T_COLUMNS_ORDER => array('title', 'url', 'language', 'timezone', 'modified', 'status')
 			)
 		);
-	}
-
-	public static function add_assets(\Brickrouge\Document $document)
-	{
-		parent::add_assets($document);
-
-		$document->css->add('../../public/admin.css');
-		$document->js->add('../../public/admin.js');
 	}
 
 	protected function columns()
@@ -126,6 +126,13 @@ class ManageBlock extends \WdManager
 
 	protected function render_cell_timezone($record, $property)
 	{
+		$timezone = $record->$property;
+
+		if (!$timezone)
+		{
+			return '<em title="Inherited from the server\'s configuration" class="light">' . date_default_timezone_get() . '</em>';
+		}
+
 		return $this->render_filter_cell($record, $property);
 	}
 
@@ -133,23 +140,23 @@ class ManageBlock extends \WdManager
 	{
 		static $labels = array
 		(
-			'Offline',
-			'Online',
-			'Under maintenance',
-			'Denied access'
+			Site::STATUS_OK => 'Ok (online)',
+			Site::STATUS_UNAUTHORIZED => 'Unauthorized',
+			Site::STATUS_NOT_FOUND => 'Not found (offline)',
+			Site::STATUS_UNAVAILABLE => 'Unavailable'
 		);
 
 		static $classes = array
 		(
-			'btn-danger',
-			'btn-success',
-			'btn-warning',
-			'btn-danger'
+			Site::STATUS_OK => 'btn-success',
+			Site::STATUS_UNAUTHORIZED => 'btn-warning',
+			Site::STATUS_NOT_FOUND => 'btn-danger',
+			Site::STATUS_UNAVAILABLE => 'btn-warning'
 		);
 
 		$status = $record->status;
-		$status_label = $labels[$status];
-		$status_class = $classes[$status];
+		$status_label = isset($labels[$status]) ? $labels[$status] : "<em>Invalid status code: $status</em>";
+		$status_class = isset($classes[$status]) ? $classes[$status] : 'btn-danger';
 		$site_id = $record->siteid;
 
 		$menu = new DropdownMenu
@@ -162,8 +169,10 @@ class ManageBlock extends \WdManager
 			)
 		);
 
+		$classes_json = \Brickrouge\escape(json_encode($classes));
+
 		return <<<EOT
-<div class="btn-group" data-property="status" data-site-id="$site_id">
+<div class="btn-group" data-property="status" data-site-id="$site_id" data-classes="$classes_json">
 	<span class="btn $status_class dropdown-toggle" data-toggle="dropdown"><span class="text">$status_label</span> <span class="caret"></span></span>
     $menu
 </div>

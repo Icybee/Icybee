@@ -11,6 +11,8 @@
 
 namespace Icybee\Modules\Articles;
 
+use Icybee\Modules\Views\View;
+
 class Module extends \Icybee\Modules\Contents\Module
 {
 	/**
@@ -40,7 +42,7 @@ class Module extends \Icybee\Modules\Contents\Module
 					'class' => __NAMESPACE__ . '\ArchivesView',
 					'provider' => 'Icybee\Modules\Contents\ViewProvider',
 					'assets' => $assets,
-					'renders' => \Icybee\Modules\Views\View::RENDERS_MANY
+					'renders' => View::RENDERS_MANY
 				)
 			)
 		);

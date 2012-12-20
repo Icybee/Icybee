@@ -73,7 +73,7 @@ class User extends \ICanBoogie\ActiveRecord
 	 *
 	 * @var string
 	 */
-	private $password_hash;
+	protected $password_hash; // FIXME-20121219: this should be private, but it seams to cause problems.
 
 	/**
 	 * Username of the user.
@@ -144,6 +144,16 @@ class User extends \ICanBoogie\ActiveRecord
 	 * @var bool
 	 */
 	public $is_activated;
+
+	/**
+	 * Defaults `$model` to "users".
+	 *
+	 * @param string|\ICanBoogie\ActiveRecord\Model $model
+	 */
+	public function __construct($model='users')
+	{
+		parent::__construct($model);
+	}
 
 	/**
 	 * Returns the formatted name of the user.
@@ -378,7 +388,16 @@ class User extends \ICanBoogie\ActiveRecord
 		return true;
 	}
 
-	public static function hash_password($password)
+	/**
+	 * Hashes a password.
+	 *
+	 * @param string $password
+	 *
+	 * @throws Exception If the `password_salt` key is empty in the "user" configuration.
+	 *
+	 * @return string
+	 */
+	static public function hash_password($password)
 	{
 		global $core;
 
@@ -390,12 +409,12 @@ class User extends \ICanBoogie\ActiveRecord
 			(
 				'<q>password_salt</q> is empty in the <q>user</q> config, here is one generated randomly: %salt', array
 				(
-					'%salt' => Security::generate_token(64, 'wide')
+					'%salt' => \ICanBoogie\generate_token(64, 'wide')
 				)
 			);
 		}
 
-		return sha1(Security::pbkdf2($password, $config['password_salt']));
+		return sha1(\ICanBoogie\pbkdf2($password, $config['password_salt']));
 	}
 
 	/**
@@ -403,11 +422,12 @@ class User extends \ICanBoogie\ActiveRecord
 	 *
 	 * @param string $password
 	 *
-	 * @return bool `true` if the password match the password hash, `false` otherwise.
+	 * @return bool `true` if the hashed password matches the user's password hash,
+	 * `false` otherwise.
 	 */
-	public function same_password($password)
+	public function compare_password($password)
 	{
-		return $this->password_hash === self::hash_password($password);
+		return self::hash_password($password) === $this->password_hash;
 	}
 
 	/**
@@ -423,9 +443,9 @@ class User extends \ICanBoogie\ActiveRecord
 	 * - The `$core->user_id` property is set to the user id.
 	 * - The session id is regenerated and the user id, ip and user agent are stored in the session.
 	 *
-	 * @throws Exception when attempting to login a guest user.
-	 *
 	 * @return boolean true if the login is successful.
+	 *
+	 * @throws \Exception in attempt to log in a guest user.
 	 *
 	 * @see \Icybee\Modules\Users\Hooks\get_user_id
 	 */
@@ -450,7 +470,7 @@ class User extends \ICanBoogie\ActiveRecord
 	/**
 	 * Log the user out.
 	 *
-	 * The following things happend when the user is logged out:
+	 * The following things happen when the user is logged out:
 	 *
 	 * - The `$core->user` property is unset.
 	 * - The `$core->user_id` property is unset.
@@ -469,11 +489,11 @@ class User extends \ICanBoogie\ActiveRecord
 	{
 		global $core;
 
-		if ($id == 'profile')
+		if ($id === 'profile')
 		{
 			return $core->site->path . '/admin/profile';
 		}
 
-		return '#unknown-url';
+		return parent::url($id);
 	}
 }

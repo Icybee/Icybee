@@ -11,6 +11,11 @@
 
 namespace Icybee\Modules\Pages;
 
+/**
+ * A content of a page.
+ *
+ * @property-read mixed $rendered The rendered version of the content.
+ */
 class Content extends \ICanBoogie\ActiveRecord
 {
 	/**
@@ -76,7 +81,7 @@ class Content extends \ICanBoogie\ActiveRecord
 		}
 
 		/*
-		 * TODO-20120905: Ok we handle ICanBoogie\Exception\HTTP, but what about RecordNotFound and
+		 * TODO-20120905: Ok we handle HTTPError, but what about RecordNotFound and
 		 * others ?
 		 */
 		try
@@ -84,14 +89,16 @@ class Content extends \ICanBoogie\ActiveRecord
 			$editor = \ICanBoogie\Core::get()->editors[$this->editor];
 			$rendered = $editor->render($editor->unserialize($this->content));
 		}
-		catch (\ICanBoogie\Exception\HTTP $e)
+		catch (\ICanBoogie\HTTP\HTTPError $e)
 		{
 			$rendered = $e->getMessage();
 		}
+		/*
 		catch (\Exception $e)
 		{
 			$rendered = \ICanBoogie\Debug::format_alert($e);
 		}
+		*/
 
 		$this->rendered = $rendered;
 

@@ -57,7 +57,7 @@ class Get extends Operation
 
 		if ($user->language)
 		{
-			$core->language = $user->language;
+			$core->locale = $user->language;
 		}
 
 		$request = $this->request;

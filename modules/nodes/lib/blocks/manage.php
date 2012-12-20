@@ -36,7 +36,7 @@ class ManageBlock extends \WdManager
 		);
 	}
 
-	protected static function add_assets(Document $document)
+	static protected function add_assets(Document $document)
 	{
 		parent::add_assets($document);
 
@@ -48,15 +48,16 @@ class ManageBlock extends \WdManager
 	{
 		return array
 		(
-			'url' => array
-			(
-				'label' => null,
-				'class' => 'url',
-			),
-
 			Node::TITLE => array
 			(
 
+			),
+
+			Node::IS_ONLINE => array
+			(
+				'label' => null,
+				'class' => 'is_online',
+				'orderable' => false
 			),
 
 			Node::UID => array
@@ -81,18 +82,6 @@ class ManageBlock extends \WdManager
 				'class' => 'date',
 				self::COLUMN_HOOK => array($this, 'render_cell_datetime'),
 				'default_order' => -1
-			),
-
-			Node::IS_ONLINE => array
-			(
-				'label' => null,
-				'class' => 'is_online',
-				'orderable' => false
-			),
-
-			'translations' => array
-			(
-				'orderable' => false
 			)
 		);
 	}
@@ -147,15 +136,15 @@ class ManageBlock extends \WdManager
 
 		if (isset($filters['is_online']))
 		{
-			$query->where('is_online = ?', $filters['is_online']);
+			$query->filter_by_is_online($filters['is_online']);
 		}
 
 		if (isset($filters['uid']))
 		{
-			$query->where('uid = ?', $filters['uid']);
+			$query->filter_by_uid($filters['uid']);
 		}
 
-		return $query->similar_site->where('constructor = ?', (string) $this->module);
+		return $query->similar_site->filter_by_constructor((string) $this->module);
 	}
 
 	protected function alter_records(array $records)
@@ -373,7 +362,7 @@ class ManageBlock extends \WdManager
 		}
 
 		$title = $record->$property;
-		$label = $title ? wd_entities(\ICanBoogie\shorten($title, 52, .75, $shortened)) : $this->t->__invoke('<em>no title</em>');
+		$label = $title ? \ICanBoogie\escape(\ICanBoogie\shorten($title, 52, .75, $shortened)) : $this->t->__invoke('<em>no title</em>');
 
 		if ($shortened)
 		{

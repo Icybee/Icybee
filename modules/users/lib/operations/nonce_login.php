@@ -12,9 +12,8 @@
 namespace Icybee\Modules\Users;
 
 use ICanBoogie\Exception;
-use ICanBoogie\Exception\HTTP as HTTPException;
+use ICanBoogie\HTTP\HTTPError;
 use ICanBoogie\Operation;
-use ICanBoogie\Security;
 
 /**
  * The "nonce-login" operation is used to login a user using a one time, time limited pass created
@@ -60,7 +59,7 @@ class NonceLoginOperation extends Operation
 
 		if ($expires < $now)
 		{
-			throw new HTTPException('This nonce login has expired.');
+			throw new HTTPError('This nonce login has expired.');
 		}
 
 		$config = $core->configs['user'];
@@ -71,21 +70,21 @@ class NonceLoginOperation extends Operation
 			(
 				'<em>nonce_login_salt</em> is empty in the <em>user</em> config, here is one generated randomly: %salt', array
 				(
-					'%salt' => Security::generate_token(64, 'wide')
+					'%salt' => \ICanBoogie\generate_token(64, 'wide')
 				)
 			);
 		}
 
-		if ($user->metas['nonce_login.token'] != base64_encode(Security::pbkdf2($token, $config['nonce_login_salt'])))
+		if ($user->metas['nonce_login.token'] != base64_encode(\ICanBoogie\pbkdf2($token, $config['nonce_login_salt'])))
 		{
-			throw new HTTPException('Invalid token');
+			throw new HTTPError('Invalid token');
 		}
 
 		$ip = $_SERVER['REMOTE_ADDR'];
 
 		if ($ip != $user->metas['nonce_login.ip'])
 		{
-			throw new HTTPException('Invalid remote address');
+			throw new HTTPError('Invalid remote address');
 		}
 
 		return true;

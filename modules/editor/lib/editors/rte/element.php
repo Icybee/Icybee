@@ -25,20 +25,7 @@ class RTEEditorElement extends Element implements EditorElement
 	{
 		parent::add_assets($document);
 
-		$document->css->add('mooeditable/Assets/MooEditable/MooEditable.css');
-		$document->css->add('mooeditable/Assets/MooEditable/MooEditable.Image.css');
-		$document->css->add('mooeditable/Assets/MooEditable/MooEditable.Extras.css');
-		$document->css->add('mooeditable/Assets/MooEditable/MooEditable.SilkTheme.css');
-		$document->css->add('mooeditable/Assets/MooEditable/MooEditable.Paste.css');
-
-		$document->js->add('mooeditable/Source/MooEditable/MooEditable.js');
-		$document->js->add('mooeditable/Source/MooEditable/MooEditable.Image.js');
-		$document->js->add('mooeditable/Source/MooEditable/MooEditable.UI.MenuList.js');
-		$document->js->add('mooeditable/Source/MooEditable/MooEditable.Extras.js');
-		$document->js->add('mooeditable/Source/MooEditable/MooEditable.Paste.js');
-		$document->js->add('mooeditable/Source/MooEditable/MooEditable.CleanPaste.js');
-		$document->js->add('mooeditable/Source/MooEditable/MooEditable.Outline.js');
-
+		$document->css->add('assets/editor.css');
 		$document->js->add('assets/editor.js');
 	}
 

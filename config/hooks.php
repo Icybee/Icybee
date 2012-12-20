@@ -1,12 +1,16 @@
 <?php
 
+namespace Icybee;
+
+$hooks = __NAMESPACE__ . '\Hooks::';
+
 return array
 (
 	'events' => array
 	(
-		'Icybee\Modules\Users\LogoutOperation::process:before' => 'Icybee\Hooks::before_user_logout',
+		'Icybee\Modules\Users\LogoutOperation::process:before' => $hooks . 'before_user_logout',
 		'ICanBoogie\Operation::get_form' => 'Icybee\Element\Form::on_operation_get_form',
-		'ICanBoogie\Routes::collect:before' => 'Icybee\Hooks::before_routes_collect'
+		'ICanBoogie\Routes::collect:before' => $hooks . 'before_routes_collect'
 	),
 
 	'prototypes' => array
@@ -21,6 +25,16 @@ return array
 			'Icybee\Document::markup_document_metas', array()
 		),
 
+		'document:css' => array
+		(
+			'Icybee\Document::markup_document_css', array()
+		),
+
+		'document:js' => array
+		(
+			'Icybee\Document::markup_document_js', array()
+		),
+
 		'document:title' => array
 		(
 			'Icybee\Document::markup_document_title', array()
@@ -29,15 +43,6 @@ return array
 		'alerts' => array
 		(
 			'Icybee\Hooks::markup_alerts', array()
-		),
-
-		'render' => array
-		(
-			'Icybee\Hooks::markup_render', array
-			(
-				'select' => array('default' => 'this', 'expression' => true),
-				'property' => array()
-			)
 		)
 	)
 );

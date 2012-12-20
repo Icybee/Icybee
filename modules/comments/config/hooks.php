@@ -23,9 +23,9 @@ return array
 
 	'patron.markups' => array
 	(
-		'feedback:comments' => array
+		'comments' => array
 		(
-			$hooks . 'comments', array
+			$hooks . 'markup_comments', array
 			(
 				'node' => null,
 				'order' => 'created asc',
@@ -36,9 +36,9 @@ return array
 			)
 		),
 
-		'feedback:comments:form' => array
+		'comments:form' => array
 		(
-			$hooks . 'form', array
+			$hooks . 'markup_form', array
 			(
 				'select' => array('expression' => true, 'default' => 'this', 'required' => true)
 			)

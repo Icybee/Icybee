@@ -17,6 +17,7 @@ use ICanBoogie\Operation;
 use ICanBoogie\Route;
 
 use Brickrouge\Element;
+use Brickrouge\ElementIsEmpty;
 
 /**
  * A menu that helps managing the contents of pages.
@@ -40,7 +41,7 @@ class AdminMenu extends Element
 
 		if (!$core->user_id || $core->user instanceof \Icybee\Modules\Members\Member)
 		{
-			return;
+			throw new ElementIsEmpty();
 		}
 
 		$document = $core->document;
@@ -59,7 +60,7 @@ class AdminMenu extends Element
 			# the page ourselves to present the admin menu on cached pages.
 			#
 
-			return;
+			throw new ElementIsEmpty();
 		}
 
 		$translator = new Proxi();

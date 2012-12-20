@@ -12,7 +12,7 @@
 namespace Icybee\Modules\Sites;
 
 use ICanBoogie\HTTP\Dispatcher;
-use ICanBoogie\HTTP\Response;
+use ICanBoogie\HTTP\RedirectResponse;
 use ICanBoogie\HTTP\Request;
 use ICanBoogie\Route;
 
@@ -21,7 +21,7 @@ class Hooks
 	/**
 	 * Redirects the request if it matches no site.
 	 *
-	 * Only online websites are used if the users is a guest or a member.
+	 * Only online websites are used if the user is a guest or a member.
 	 *
 	 * @param Dispatcher\BeforeDispatchEvent $event
 	 * @param Dispatcher $target
@@ -52,10 +52,11 @@ class Hooks
 		try
 		{
 			$query = $core->models['sites']->order('weight');
+			$user = $core->user;
 
-			if ($core->user->is_guest || $core->user instanceof \Icybee\Modules\Members\Member)
+			if ($user->is_guest || $user instanceof \Icybee\Modules\Members\Member)
 			{
-				$query->where('status = 1');
+				$query->where('status = ?', Site::STATUS_OK);
 			}
 
 			$site = $query->one;
@@ -78,11 +79,10 @@ class Hooks
 						$location .= '?' . $query_string;
 					}
 
-					$event->response = new Response
+					$event->response = new RedirectResponse
 					(
-						302, array
+						$location, 302, array
 						(
-							'Location' => $location,
 							'Icybee-Redirected-By' => __CLASS__ . '::' . __FUNCTION__
 						)
 					);

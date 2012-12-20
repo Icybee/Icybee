@@ -11,10 +11,11 @@
 
 namespace Icybee\Modules\Nodes;
 
-use Icybee\Modules\Nodes\Node;
 use ICanBoogie\ActiveRecord\Query;
 use ICanBoogie\Event;
 use ICanBoogie\Exception;
+use ICanBoogie\HTTP\HTTPError;
+use ICanBoogie\HTTP\NotFound;
 
 class ViewProvider extends \Icybee\Modules\Views\ActiveRecordProvider
 {
@@ -37,14 +38,14 @@ class ViewProvider extends \Icybee\Modules\Views\ActiveRecordProvider
 		{
 			if (!$rc)
 			{
-				throw new Exception\HTTP('The requested record was not found.', array(), 404);
+				throw new NotFound('The requested record was not found.');
 			}
 
 			if (!$rc->is_online)
 			{
 				if (!$core->user->has_permission(\ICanBoogie\Module::PERMISSION_ACCESS, $rc->constructor))
 				{
-					throw new Exception\HTTP('The requested record requires authentication.', array(), 401);
+					throw new HTTPError('The requested record requires authentication.', 401);
 				}
 
 				$rc->title .= ' ✎';
@@ -61,8 +62,6 @@ class ViewProvider extends \Icybee\Modules\Views\ActiveRecordProvider
 					$page->node = $rc;
 				}
 			}
-
-			$this->fire_load($rc);
 		}
 
 		return $rc;
@@ -95,16 +94,16 @@ class ViewProvider extends \Icybee\Modules\Views\ActiveRecordProvider
 
 		if (isset($conditions['nid']))
 		{
-			$query->where('nid = ?', $conditions['nid']);
+			$query->filter_by_nid($conditions['nid']);
 		}
 		else if (isset($conditions['slug']))
 		{
-			$query->where('slug = ?', $conditions['slug']);
+			$query->filter_by_slug($conditions['slug']);
 		}
 
 		if ($this->returns == self::RETURNS_MANY)
 		{
-			$query->where('is_online = 1');
+			$query->filter_by_is_online(true);
 		}
 
 		return parent::alter_query($query, $conditions)->order('created DESC');
@@ -135,10 +134,5 @@ class ViewProvider extends \Icybee\Modules\Views\ActiveRecordProvider
 		}
 
 		return parent::extract_result($query);
-	}
-
-	protected function fire_load($rc)
-	{
-		Event::fire('nodes_load', array('nodes' => is_array($rc) ? $rc : array($rc)), $this); // FIXME: $patron was used instead of $this
 	}
 }

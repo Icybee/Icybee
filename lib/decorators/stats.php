@@ -52,13 +52,13 @@ class StatsDecorator
 
 			foreach ($connection->profiling as $note)
 			{
-				$queries_time += $note[0];
+				$queries_time += $note[1] - $note[0];
 			}
 		}
 
 		$html = $this->component . PHP_EOL . '<!-- ' . \ICanBoogie\format
 		(
-			'icybee v:version - in :elapsed ms (core: :elapsed_core ms, db: :elapsed_queries ms), using :memory-usage (peak: :memory-peak), queries: :queries-count (:queries-details)', array
+			'icybee :version – in :elapsed ms (core: :elapsed_core ms, db: :elapsed_queries ms), using :memory-usage (peak: :memory-peak), queries: :queries-count (:queries-details)', array
 			(
 				'version' => \Icybee\VERSION,
 				'elapsed' => number_format(($now - $_SERVER['REQUEST_TIME_FLOAT']) * 1000, 2, '.', ''),
@@ -72,22 +72,7 @@ class StatsDecorator
 		);
 
 		$html .= "\n\n" . $this->render_events();
-
-		/*
-		if ($events)
-		{
-			$html .= "\n\nEvents:\n\n";
-
-			foreach ($events as $type => $data)
-			{
-				list($count, $time) = $data;
-
-				$html .= "$type: $count (" . number_format($time * 1000, 2, '.', '') . "ms)\n";
-			}
-
-			$html .= "\n";
-		}
-		*/
+		$html .= "\n\n" . $this->render_queries();
 
 		$html .= ' -->';
 
@@ -96,7 +81,7 @@ class StatsDecorator
 
 	protected function render_events()
 	{
-		$events = \ICanBoogie\Event::$profiling['callbacks'];
+		$events = \ICanBoogie\Event::$profiling['hooks'];
 
 		$max_length_type = 0;
 		$max_length_callback = 0;
@@ -155,7 +140,7 @@ class StatsDecorator
 		$line_width = 4 + 2 + 8 + 1 + $max_length_type + 1 + $max_length_callback;
 
 		$html = '';
-		$html .= sprintf("Events: %f ms\n", $time_total * 1000);
+		$html .= sprintf("Events: %.3f ms\n", $time_total * 1000);
 		$html .= str_repeat('—', $line_width) . PHP_EOL;
 
 		foreach ($events as $i => $event)
@@ -167,7 +152,7 @@ class StatsDecorator
 				$callback = 'Closure 0x' . spl_object_hash($callback);
 			}
 
-			$html .= sprintf("%4d: %f %-{$max_length_type}s %-{$max_length_callback}s", $i, $time * 1000, $type, $callback) . PHP_EOL;
+			$html .= sprintf("%4d: %2.3f %-{$max_length_type}s %-{$max_length_callback}s", $i, $time * 1000, $type, $callback) . PHP_EOL;
 		}
 
 		$html .= str_repeat('—', $line_width) . PHP_EOL;
@@ -185,6 +170,39 @@ class StatsDecorator
 			list($time, $type) = $trace;
 
 			$html .= sprintf("%4d: %9s %s\n", $i, sprintf("%5.3f", ($time - $time_ref) * 1000), $type);
+		}
+
+		return $html;
+	}
+
+	protected function render_queries()
+	{
+		global $core;
+
+		$html = '';
+
+		foreach ($core->connections as $id => $connection)
+		{
+			$traces = $connection->profiling;
+			$total_time = 0;
+			$lines = '';
+			$line_width = 0;
+
+			foreach ($traces as $i => $trace)
+			{
+				list($start, $finish, $query) = $trace;
+
+				$total_time += $finish - $start;
+				$line = sprintf("%4d: %9s %s\n", $i, sprintf("%5.3f", ($finish - $start) * 1000), $query);
+				$line_width = max($line_width, strlen($line));
+				$lines .= $line;
+			}
+
+			$header = sprintf("Queries to '%s': %d in %s ms", $id, count($traces), sprintf("%5.3f", ($total_time) * 1000));
+
+			$html .= $header . PHP_EOL;
+			$html .= str_repeat('—', strlen($header)) . PHP_EOL;
+			$html .= $lines . PHP_EOL . PHP_EOL;
 		}
 
 		return $html;

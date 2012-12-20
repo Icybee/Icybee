@@ -16,13 +16,14 @@ use Textmark_Parser;
 /**
  * A comment.
  *
- * @property string $absolute_url URL of the comment.
- * @property string $author_icon URL of the author's Gravatar.
- * @property string $css_class A suitable string for the HTML `class` attribute.
- * @property array $css_class_names CSS class names.
- * @property string $excerpt HTML excerpt of the comment, made of the first 55 words.
- * @property \Icybee\Modules\Nodes\Node $node The node the comment is attached to.
- * @property string $url URL of the comment relative to the website.
+ * @property-read string $absolute_url URL of the comment.
+ * @property-read string $author_icon URL of the author's Gravatar.
+ * @property-read string $css_class A suitable string for the HTML `class` attribute.
+ * @property-read array $css_class_names CSS class names.
+ * @property-read string $excerpt HTML excerpt of the comment, made of the first 55 words.
+ * @property-read bool $is_author `true` if the author of the comment is the author of the attached node.
+ * @property-read \Icybee\Modules\Nodes\Node $node The node the comment is attached to.
+ * @property-read string $url URL of the comment relative to the website.
  */
 class Comment extends \ICanBoogie\ActiveRecord
 {
@@ -39,17 +40,90 @@ class Comment extends \ICanBoogie\ActiveRecord
 	const NOTIFY = 'notify';
 	const CREATED = 'created';
 
+	/**
+	 * Comment identifier.
+	 *
+	 * @var int
+	 */
 	public $commentid;
+
+	/**
+	 * Node identifier.
+	 *
+	 * @var int
+	 */
 	public $nid;
+
+	/**
+	 * Parent comment identifier.
+	 *
+	 * @var int
+	 */
 	public $parentid;
+
+	/**
+	 * User identifier.
+	 *
+	 * The user identifier is zero (0) if the user is a guest.
+	 *
+	 * @var int
+	 */
 	public $uid;
+
+	/**
+	 * Author name.
+	 *
+	 * @var string
+	 */
 	public $author;
+
+	/**
+	 * Author email.
+	 *
+	 * @var string
+	 */
 	public $author_email;
+
+	/**
+	 * Author's website URL.
+	 *
+	 * @var string
+	 */
 	public $author_url;
+
+	/**
+	 * Author IP.
+	 *
+	 * @var string
+	 */
 	public $author_ip;
+
+	/**
+	 * Body of the comment.
+	 *
+	 * @var string
+	 */
 	public $contents;
+
+	/**
+	 * Status. One of `pending`, `approved` and `spam`.
+	 *
+	 * @var string
+	 */
 	public $status;
+
+	/**
+	 * Notify status. One of `no`, `yes`, `author` and `done`.
+	 *
+	 * @var string
+	 */
 	public $notify;
+
+	/**
+	 * Date created.
+	 *
+	 * @var string
+	 */
 	public $created;
 
 	/**
@@ -79,6 +153,11 @@ class Comment extends \ICanBoogie\ActiveRecord
 		return ($node ? $this->node->url : '#unknown-node-' . $this->nid) . '#comment-' . $this->commentid;
 	}
 
+	/**
+	 * Returns the absolute URL of the comment.
+	 *
+	 * @return string
+	 */
 	protected function get_absolute_url()
 	{
 		$node = $this->node;
@@ -131,7 +210,7 @@ class Comment extends \ICanBoogie\ActiveRecord
 	 *
 	 * @return boolean `true` if the author is the same, `false` otherwise.
 	 */
-	protected function get_is_author()
+	protected function volatile_get_is_author()
 	{
 		return $this->node->uid == $this->uid;
 	}

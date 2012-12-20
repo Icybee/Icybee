@@ -20,7 +20,10 @@ Brickrouge.Widget.PopNode = new Class
 		this.parent(el, options)
 
 		this.popover = null
-		this.fetchAdjustOperation = null
+		this.fetchAdjustOperation = new Request.Widget
+		(
+			this.options.adjust + '/popup', this.setupAdjust.bind(this)
+		)
 	},
 
 	open: function()
@@ -34,14 +37,6 @@ Brickrouge.Widget.PopNode = new Class
 			this.popover.show({ selected: value })
 
 			return
-		}
-
-		if (!this.fetchAdjustOperation)
-		{
-			this.fetchAdjustOperation = new Request.Widget
-			(
-				this.options.adjust + '/popup', this.setupAdjust.bind(this)
-			)
 		}
 
 		this.fetchAdjustOperation.get({ selected: value, constructor: this.options.constructor })

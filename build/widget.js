@@ -7,15 +7,14 @@
  * file that was distributed with this source code.
  */
 
-var Icybee = {
+this.Icybee = {
 
 	Widget: {
 
 		AdjustPopover: new Class
 		({
-			Implements: [ Options, Events ],
-
 			Extends: Brickrouge.Popover,
+			Implements: [ Options, Events ],
 
 			initialize: function(el, options)
 			{
@@ -27,9 +26,6 @@ var Icybee = {
 
 			show: function()
 			{
-				this.element.setStyle('display', 'none')
-				document.body.appendChild(this.element)
-
 				this.parent()
 
 				this.adjust = this.element.getElement('.popover-content :first-child').get('widget')
@@ -39,13 +35,6 @@ var Icybee = {
 					this.adjust.addEvent('results', this.repositionCallback)
 					this.adjust.addEvent('adjust', this.quickRepositionCallback)
 				}
-			},
-
-			close: function()
-			{
-				this.parent()
-
-				this.element.dispose()
 			}
 		})
 	}

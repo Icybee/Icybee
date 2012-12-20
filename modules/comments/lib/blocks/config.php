@@ -11,44 +11,23 @@
 
 namespace Icybee\Modules\Comments;
 
-use Icybee\Modules\Comments\Comment;
 use Brickrouge\Element;
 use Brickrouge\Form;
 use Brickrouge\Text;
 
+/**
+ * Configuration block.
+ */
 class ConfigBlock extends \Icybee\ConfigBlock
 {
 	protected function get_attributes()
 	{
-		global $core;
-
-		// TODO-20101101: move this to operation `config`
-
-		$ns = $this->module->flat_id;
-
-		$keywords = $core->registry[$ns . '.spam.keywords'];
-		$keywords = preg_split('#[\s,]+#', $keywords, 0, PREG_SPLIT_NO_EMPTY);
-
-		sort($keywords);
-
-		$keywords = implode(', ', $keywords);
-
 		return \ICanBoogie\array_merge_recursive
 		(
 			parent::get_attributes(), array
 			(
-				Form::VALUES => array
-				(
-					"global[$ns.spam.keywords]" => $keywords // TODO-20120218: should be in alter_values
-				),
-
 				Element::GROUPS => array
 				(
-					'primary' => array
-					(
-
-					),
-
 					'response' => array
 					(
 						'title' => "Message de notification à l'auteur lors d'une réponse"
@@ -56,9 +35,7 @@ class ConfigBlock extends \Icybee\ConfigBlock
 
 					'spam' => array
 					(
-						'title' => 'Filtres anti-spam',
-						'description' => "Les paramètres des filtres anti-spam s'appliquent à tous
-						les sites."
+						'title' => 'Paramètres anti-spam'
 					)
 				)
 			)

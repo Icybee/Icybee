@@ -75,7 +75,7 @@ class AdminDecorator
 		#
 
 		$component = (string) $this->component;
-		$actionbar = new \Icybee\Admin\Element\Actionbar;
+		$actionbar = new \Icybee\Element\Actionbar;
 		$shortcuts = $this->render_shortcuts();
 		$navigation = $this->render_navigation();
 
@@ -123,7 +123,7 @@ EOT;
 			return;
 		}
 
-		return new \Icybee\Admin\Element\Navigation(array('id' => 'navigation'));
+		return new \Icybee\Element\Navigation(array('id' => 'navigation'));
 	}
 
 	protected function render_shortcuts()

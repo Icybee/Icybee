@@ -230,11 +230,11 @@ class BeforeRenderInnerHTMLEvent extends \ICanBoogie\Event
 	 * The event is constructed with the type `render_inner_html:before`.
 	 *
 	 * @param \Icybee\Modules\Pages\BreadcrumbElement $target
-	 * @param array $properties
+	 * @param array $payload
 	 */
-	public function __construct(\Icybee\Modules\Pages\BreadcrumbElement $target, array $properties)
+	public function __construct(\Icybee\Modules\Pages\BreadcrumbElement $target, array $payload)
 	{
-		parent::__construct($target, 'render_inner_html:before', $properties);
+		parent::__construct($target, 'render_inner_html:before', $payload);
 	}
 }
 
@@ -262,10 +262,10 @@ class RenderInnerHTMLEvent extends \ICanBoogie\Event
 	 * The event is constructed with the type `render_inner_html`.
 	 *
 	 * @param \Icybee\Modules\Pages\BreadcrumbElement $target
-	 * @param array $properties
+	 * @param array $payload
 	 */
-	public function __construct(\Icybee\Modules\Pages\BreadcrumbElement $target, array $properties)
+	public function __construct(\Icybee\Modules\Pages\BreadcrumbElement $target, array $payload)
 	{
-		parent::__construct($target, 'render_inner_html', $properties);
+		parent::__construct($target, 'render_inner_html', $payload);
 	}
 }

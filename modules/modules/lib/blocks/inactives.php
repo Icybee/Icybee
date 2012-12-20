@@ -18,6 +18,8 @@ use Brickrouge\Button;
 use Brickrouge\Element;
 use Brickrouge\Form;
 
+use Icybee\Element\ActionbarToolbar;
+
 class InactivesBlock extends ManageBlock
 {
 	public function __construct(Module $module, array $attributes=array())
@@ -86,9 +88,9 @@ class InactivesBlock extends ManageBlock
 
 	protected function attach_buttons()
 	{
-		\ICanBoogie\Events::attach
+		\ICanBoogie\Event\attach
 		(
-			'Icybee\Admin\Element\ActionbarToolbar::alter_buttons', function(\ICanBoogie\Event $event, \Icybee\Admin\Element\ActionbarToolbar $target)
+			function(ActionbarToolbar\CollectEvent $event, ActionbarToolbar $target)
 			{
 				$event->buttons[] = new Button
 				(

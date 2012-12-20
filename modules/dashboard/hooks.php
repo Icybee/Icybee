@@ -12,7 +12,7 @@
 namespace Icybee\Modules\Dashboard;
 
 use ICanBoogie\HTTP\Dispatcher;
-use ICanBoogie\HTTP\Response;
+use ICanBoogie\HTTP\RedirectResponse;
 use ICanBoogie\Route;
 
 class Hooks
@@ -35,6 +35,6 @@ class Hooks
 			return;
 		}
 
-		$event->response = new Response(302, array('Location' => Route::contextualize('/admin/dashboard')));
+		$event->response = new RedirectResponse(Route::contextualize('/admin/dashboard'));
 	}
 }

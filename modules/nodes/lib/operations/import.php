@@ -57,7 +57,7 @@ class ImportOperation extends Operation
 		# override form
 		#
 
-		Events::attach('ICanBoogie\Operation::get_form', function(Operation\GetFormEvent $event, SaveOperation $operation) use($save) {
+		Event\attach(function(Operation\GetFormEvent $event, SaveOperation $operation) use($save) {
 
 			if ($event->request !== $save)
 			{

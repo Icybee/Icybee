@@ -165,10 +165,10 @@ class AlterEvent extends \ICanBoogie\Event
 	 * The event is constructed with the type `alter`.
 	 *
 	 * @param \Icybee\Modules\Editor\Collection $target
-	 * @param array $properties
+	 * @param array $payload
 	 */
-	public function __construct(\Icybee\Modules\Editor\Collection $target, array $properties)
+	public function __construct(\Icybee\Modules\Editor\Collection $target, array $payload)
 	{
-		parent::__construct($target, 'alter', $properties);
+		parent::__construct($target, 'alter', $payload);
 	}
 }

@@ -2,12 +2,14 @@
 
 namespace Icybee\Modules\Comments;
 
+$hooks = __NAMESPACE__ . '\Hooks::';
+
 return array
 (
 	'feedback-comments-last' => array
 	(
 		'title' => "Last comments",
-		'callback' => __NAMESPACE__ . '\Hooks::dashboard_last',
+		'callback' => $hooks . 'dashboard_last',
 		'column' => 1
 	)
 );

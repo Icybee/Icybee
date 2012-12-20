@@ -127,14 +127,14 @@ class NavigationBranchElement extends Element
 			}
 		};
 
-		$html = '<h5><a href="' . \Brickrouge\escape($parent->url) . '">' . \Brickrouge\escape($parent->label) . '</a></h5>';
+		$html = '<div class="nav-branch-header"><h5><a href="' . \Brickrouge\escape($parent->url) . '">' . \Brickrouge\escape($parent->label) . '</a></h5></div>';
 
 		if ($tree_blueprint)
 		{
 			$collect_ids($tree_blueprint);
 
 			$pages = $core->models['pages']->find($ids);
-			$html .= $this->render_page_recursive($tree_blueprint, $pages, $parent->depth + 1, 0);
+			$html .= '<div class="nav-branch-content">' . $this->render_page_recursive($tree_blueprint, $pages, $parent->depth + 1, 0) . '</div>';
 		}
 
 		return $html;

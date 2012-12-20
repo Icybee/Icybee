@@ -32,7 +32,7 @@ class StatusOperation extends \ICanBoogie\Operation
 		{
 			$status = $this->request['status'];
 
-			if ($status === null || !in_array($status, array(Site::STATUS_ONLINE, Site::STATUS_OFFLINE, Site::STATUS_UNDER_MAINTENANCE, Site::STATUS_DENIED_ACCESS)))
+			if ($status === null || !in_array($status, array(Site::STATUS_OK, Site::STATUS_UNAVAILABLE, Site::STATUS_UNAUTHORIZED, Site::STATUS_NOT_FOUND)))
 			{
 				throw new \InvalidArgumentException('Invalid status value.');
 			}
@@ -45,10 +45,10 @@ class StatusOperation extends \ICanBoogie\Operation
 	{
 		static $status_names = array
 		(
-			Site::STATUS_OFFLINE => 'offline',
-			Site::STATUS_ONLINE => 'online',
-			Site::STATUS_UNDER_MAINTENANCE => 'under maintenance',
-			Site::STATUS_DENIED_ACCESS => 'restricted'
+			Site::STATUS_OK => 'ok (online)',
+			Site::STATUS_UNAVAILABLE => 'unavailable',
+			Site::STATUS_UNAUTHORIZED => 'unauthorized',
+			Site::STATUS_NOT_FOUND => 'not found (offline)'
 		);
 
 		if ($this->request->is_put)

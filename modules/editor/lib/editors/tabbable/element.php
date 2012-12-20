@@ -183,6 +183,16 @@ EOT;
 		$editor_id = $pane['editor_id'];
 		$name = $pane['name'];
 		$editor = $core->editors[$editor_id];
+		$value = null;
+
+		if (!empty($pane['content']))
+		{
+			$value = $pane['content'];
+		}
+		else if (!empty($pane['serialized_content']))
+		{
+			$value = $editor->unserialize($pane['serialized_content']);
+		}
 
 		$content = new Group
 		(
@@ -210,7 +220,7 @@ EOT;
 							MultiEditorElement::SELECTOR_NAME => "{$name}[editor_id]",
 
 							'name' => "{$name}[content]",
-							'value' => $editor->unserialize($pane['serialized_content']),
+							'value' => $value,
 
 							'data-provides' => 'content'
 						)

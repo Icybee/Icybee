@@ -29,6 +29,8 @@ use Brickrouge\Form;
 use Brickrouge\Ranger;
 use Brickrouge\Text;
 
+use Icybee\Element\ActionbarSearch;
+
 class Manager extends Element
 {
 	const REPEAT_PLACEHOLDER = '<span class="lighter">―</span>';
@@ -176,141 +178,128 @@ class Manager extends Element
 
 	/**
 	 * Renders the object into a HTML string.
-	 *
-	 * @see Element::__toString()
 	 */
-	public function __toString()
+	public function render()
 	{
 		global $core;
 
+		static::handle_assets();
+
+		$module_id = $this->module->id;
+		$session = $core->session;
+
+		$options = $this->retrieve_options($module_id);
+
+		$modifiers = array_diff_assoc($_GET, $options);
+		// FIXME: if modifiers ?
+
+		$this->options = $this->update_options($options, $modifiers);
+
+		$this->store_options($this->options, $module_id);
+
+		#
+		# load entries
+		#
+
+		list($conditions, $conditions_args) = $this->get_query_conditions($this->options);
+
+		$query = $this->model->where(implode(' AND ', $conditions), $conditions_args);
+		$query = $this->alter_query($query, $this->options['filters']);
+
+		$this->count = $query->count;
+
+		$query = $this->alter_range_query($query, $this->options);
+
 		try
 		{
-			static::handle_assets();
-
-			$module_id = $this->module->id;
-			$session = $core->session;
-
-			$options = $this->retrieve_options($module_id);
-
-			$modifiers = array_diff_assoc($_GET, $options);
-			// FIXME: if modifiers ?
-
-			$this->options = $this->update_options($options, $modifiers);
-
-			$this->store_options($this->options, $module_id);
-
-			#
-			# load entries
-			#
-
-			list($conditions, $conditions_args) = $this->get_query_conditions($this->options);
-
-			$query = $this->model->where(implode(' AND ', $conditions), $conditions_args);
-			$query = $this->alter_query($query, $this->options['filters']);
-
-			$this->count = $query->count;
-
-			$query = $this->alter_range_query($query, $this->options);
-
-			try
-			{
-				$records = $this->load_range($query);
-			}
-			catch (\Exception $e)
-			{
-				$options['order'] = array();
-				$options['filters'] = array();
-
-				$this->store_options($options, $module_id);
-
-				return "There was an error in the SQL statement, orders and filters have been reseted,
-				plase reload the page.<br /><br />" . $e->getMessage();
-			}
-
-			$this->entries = $this->alter_records($records);
-
-			#
-			# extend columns with additional information.
-			#
-
-			$this->columns = $this->extend_columns($this->columns);
-
-			Event::fire('alter_columns', array('columns' => &$this->columns, 'records' => &$this->entries), $this);
-
-			$rc  = PHP_EOL;
-			$rc .= '<form id="manager" method="get" action="">' . PHP_EOL;
-
-			$rc .= new Element
-			(
-				'input', array
-				(
-					'name' => Operation::DESTINATION,
-					'type' => 'hidden',
-					'value' => (string) $this->module
-				)
-			);
-
-			$rc .= new Element
-			(
-				'input', array
-				(
-					'name' => self::T_BLOCK,
-					'type' => 'hidden',
-					'value' => $this[self::T_BLOCK] ?: 'manage'
-				)
-			);
-
-			if ($this->entries || $this->options['filters'])
-			{
-				if ($this->entries)
-				{
-					$body  = '<tbody>';
-					$body .= $this->render_body();
-					$body .= '</tbody>';
-				}
-				else
-				{
-					$body  = '<tbody class="empty"><tr><td colspan="' . count($this->columns) . '">' . $this->render_empty_body() . '</td></tr></tbody>';
-				}
-
-				$head = $this->render_head();
-				$foot = $this->render_foot();
-
-				$rc .= '<table class="group manage" cellpadding="4" cellspacing="0">';
-
-				$rc .= $head . PHP_EOL . $foot . PHP_EOL . $body . PHP_EOL;
-
-				$rc .= '</table>' . PHP_EOL;
-			}
-			else
-			{
-				$rc .= $this->render_empty_body();
-			}
-
-			$rc .= '</form>' . PHP_EOL;
-
-			$search = $this->render_search();
-			$browse = $this->browse;
-
-			\ICanBoogie\Events::attach
-			(
-				'Icybee\Admin\Element\ActionbarSearch::alter_inner_html', function(Event $event, \Icybee\Admin\Element\ActionbarSearch $sender) use($search, $browse)
-				{
-					$event->html .= $browse . $search;
-				}
-			);
-
-
-
-			return $rc;
+			$records = $this->load_range($query);
 		}
 		catch (\Exception $e)
 		{
-			return \ICanBoogie\Debug::format_alert($e);
+			$options['order'] = array();
+			$options['filters'] = array();
+
+			$this->store_options($options, $module_id);
+
+			return "There was an error in the SQL statement, orders and filters have been reseted,
+			plase reload the page.<br /><br />" . $e->getMessage();
 		}
+
+		$this->entries = $this->alter_records($records);
+
+		#
+		# extend columns with additional information.
+		#
+
+		$this->columns = $this->extend_columns($this->columns);
+
+		new Manager\AlterColumnsEvent($this, array('columns' => &$this->columns, 'records' => &$this->entries));
+
+		$rc  = PHP_EOL;
+		$rc .= '<form id="manager" method="get" action="">' . PHP_EOL;
+
+		$rc .= new Element
+		(
+			'input', array
+			(
+				'name' => Operation::DESTINATION,
+				'type' => 'hidden',
+				'value' => (string) $this->module
+			)
+		);
+
+		$rc .= new Element
+		(
+			'input', array
+			(
+				'name' => self::T_BLOCK,
+				'type' => 'hidden',
+				'value' => $this[self::T_BLOCK] ?: 'manage'
+			)
+		);
+
+		if ($this->entries || $this->options['filters'])
+		{
+			if ($this->entries)
+			{
+				$body  = '<tbody>';
+				$body .= $this->render_body();
+				$body .= '</tbody>';
+			}
+			else
+			{
+				$body  = '<tbody class="empty"><tr><td colspan="' . count($this->columns) . '">' . $this->render_empty_body() . '</td></tr></tbody>';
+			}
+
+			$head = $this->render_head();
+			$foot = $this->render_foot();
+
+			$rc .= '<table class="group manage" cellpadding="4" cellspacing="0">';
+
+			$rc .= $head . PHP_EOL . $foot . PHP_EOL . $body . PHP_EOL;
+
+			$rc .= '</table>' . PHP_EOL;
+		}
+		else
+		{
+			$rc .= $this->render_empty_body();
+		}
+
+		$rc .= '</form>' . PHP_EOL;
+
+		$search = $this->render_search();
+		$browse = $this->browse;
+
+		\ICanBoogie\Event\attach(function(ActionbarSearch\AlterInnerHTMLEvent $event, ActionbarSearch $sender) use($search, $browse) {
+
+			$event->html .= $browse . $search;
+
+		});
+
+		return $rc;
 	}
 
-	protected static function add_assets(\Brickrouge\Document $document)
+	static protected function add_assets(\Brickrouge\Document $document)
 	{
 		parent::add_assets($document);
 
@@ -658,20 +647,9 @@ class Manager extends Element
 
 		// TODO: move this to their respective manager
 
-		$module = $this->module;
-
-		if ($module instanceof ICanBoogie\Modules\Vocabulary\Module)
+		if ($this->module instanceof \Icybee\Modules\Taxonomy\Vocabulary\Module)
 		{
 			$where['siteid'] = '(siteid = 0 OR siteid = ' . $core->site_id . ')';
-		}
-		else if ($module instanceof Icybee\Modules\Users\Module)
-		{
-			#
-			# we load only the entries that where created by the module
-			#
-
-			$where[] = 'constructor = ?';
-			$params[] = (string) $module;
 		}
 
 		return array($where, $params);
@@ -817,7 +795,7 @@ class Manager extends Element
 
 		$url = strtr($url, array('+' => '%20'));
 
-		return wd_entities($url);
+		return \ICanBoogie\escape($url);
 	}
 
 	/**
@@ -1154,7 +1132,7 @@ EOT;
 	 * @param string $property
 	 * @param null|string $label Defines the label for the filter link. If null the value of the
 	 * property is used instead. If the value of the property is used it is escapted using the
-	 * {@link wd_entities()} function, otherwise the label is use as is.
+	 * {@link \ICanBoogie\escape()} function, otherwise the label is use as is.
 	 *
 	 * @return string
 	 */
@@ -1167,7 +1145,7 @@ EOT;
 
 		if ($label === null)
 		{
-			$label = wd_entities($value);
+			$label = \ICanBoogie\escape($value);
 		}
 
 		if (isset($this->options['filters'][$property]))
@@ -1175,8 +1153,8 @@ EOT;
 			return $label;
 		}
 
-		$title = wd_entities(t('Display only: :identifier', array(':identifier' => strip_tags($label))));
-		$url = wd_entities($property . '=') . urlencode($value);
+		$title = \ICanBoogie\escape(t('Display only: :identifier', array(':identifier' => strip_tags($label))));
+		$url = \ICanBoogie\escape($property . '=') . urlencode($value);
 
 		return <<<EOT
 <a class="filter" href="?$url" title="$title">$label</a>
@@ -1191,7 +1169,7 @@ EOT;
 
 		if ($label === null)
 		{
-			$label = wd_entities($value);
+			$label = \ICanBoogie\escape($value);
 		}
 
 		if ($key === null)
@@ -1199,7 +1177,7 @@ EOT;
 			$key = $record->{$this->idtag};
 		}
 
-		$title = wd_entities(t('Display only: :identifier', array(':identifier' => strip_tags($label))));
+		$title = \ICanBoogie\escape(t('Display only: :identifier', array(':identifier' => strip_tags($label))));
 
 		return <<<EOT
 <a class="edit" href="{$core->site->path}/admin/{$this->module}/$key/edit" title="$title">$label</a>
@@ -1208,7 +1186,7 @@ EOT;
 
 	protected function render_raw_cell($record, $property)
 	{
-		return wd_entities($record->$property);
+		return \ICanBoogie\escape($record->$property);
 	}
 
 	/**
@@ -1283,7 +1261,7 @@ EOT;
 
 		if ($year == $today_year && $month == $today_month && $day <= $today_day && $day > $today_day - 6)
 		{
-			$label = wd_date_period($value);
+			$label = \ICanBoogie\I18n\date_period($value);
 			$label = ucfirst($label);
 
 			if ($filtering && $filter == $today)
@@ -1560,11 +1538,11 @@ EOT;
 
 		if (mb_strlen($label) > self::MODIFY_MAX_LENGTH)
 		{
-			$label = wd_entities(trim(mb_substr($label, 0, self::MODIFY_MAX_LENGTH))) . '…';
+			$label = \ICanBoogie\escape(trim(mb_substr($label, 0, self::MODIFY_MAX_LENGTH))) . '…';
 		}
 		else
 		{
-			$label = wd_entities($entry->$tag);
+			$label = \ICanBoogie\escape($entry->$tag);
 		}
 
 		$title = $core->user->has_ownership($resume->module, $entry) ? 'Edit this item' : 'View this item';
@@ -1611,5 +1589,38 @@ EOT;
 		$email = $record->$property;
 
 		return '<a href="mailto:' . $email . '" title="' . t('Send an E-mail') . '">' . $email . '</a>';
+	}
+}
+
+namespace Icybee\Manager;
+
+/**
+ * Event class for the `Icybee\Manager::alter_columns` event.
+ */
+class AlterColumnsEvent extends \ICanBoogie\Event
+{
+	/**
+	 * Reference to the columns of the element.
+	 *
+	 * @var array[string]array
+	 */
+	public $columns;
+
+	/**
+	 * Reference to the records displayed by the element.
+	 *
+	 * @var array
+	 */
+	public $records;
+
+	/**
+	 * The event is constructed with the type `alter_columns`.
+	 *
+	 * @param \Icybee\Manager $target
+	 * @param array $payload
+	 */
+	public function __construct(\Icybee\Manager $target, array $payload)
+	{
+		parent::__construct($target, 'alter_columns', $payload);
 	}
 }

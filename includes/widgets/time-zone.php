@@ -61,9 +61,7 @@ class TimeZone extends \Brickrouge\Widget
 
 		foreach ($offsets as $offset => $zones)
 		{
-			$date = getdate($now + $offset);
-
-			$options[$offset] = $f->format_datetime($date);
+			$options[$offset] = $f->format_datetime($now + $offset);
 		}
 
 		date_default_timezone_set($tz);

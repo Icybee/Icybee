@@ -84,17 +84,17 @@ abstract class ActiveRecordProvider extends Provider
 	 * {@link ActiveRecordProvider\BeforeAlterConditionsEvent} and
 	 * {@link ActiveRecordProvider\AlterConditionsEvent} events.
 	 *
-	 * @param array $properties The properties of the events.
+	 * @param array $payload Event payload.
 	 *
 	 * @return array The altered conditions.
 	 */
-	protected function fire_alter_conditions(array $properties)
+	protected function fire_alter_conditions(array $payload)
 	{
-		new ActiveRecordProvider\BeforeAlterConditionsEvent($this, $properties);
-		$properties['conditions'] = $this->alter_conditions($properties['conditions']);
-		new ActiveRecordProvider\AlterConditionsEvent($this, $properties);
+		new ActiveRecordProvider\BeforeAlterConditionsEvent($this, $payload);
+		$payload['conditions'] = $this->alter_conditions($payload['conditions']);
+		new ActiveRecordProvider\AlterConditionsEvent($this, $payload);
 
-		return $properties['conditions'];
+		return $payload['conditions'];
 	}
 
 	/**
@@ -115,17 +115,17 @@ abstract class ActiveRecordProvider extends Provider
 	 * {@link ActiveRecordProvider\BeforeAlterQueryEvent} and
 	 * {@link ActiveRecordProvider\AlterQueryEvent} events.
 	 *
-	 * @param array $properties The properties of the events.
+	 * @param array $payload Event payload.
 	 *
 	 * @return array The altered query.
 	 */
-	protected function fire_alter_query(array $properties)
+	protected function fire_alter_query(array $payload)
 	{
-		new ActiveRecordProvider\BeforeAlterQueryEvent($this, $properties);
-		$properties['query'] = $this->alter_query($properties['query'], $properties['conditions']);
-		new ActiveRecordProvider\AlterQueryEvent($this, $properties);
+		new ActiveRecordProvider\BeforeAlterQueryEvent($this, $payload);
+		$payload['query'] = $this->alter_query($payload['query'], $payload['conditions']);
+		new ActiveRecordProvider\AlterQueryEvent($this, $payload);
 
-		return $properties['query'];
+		return $payload['query'];
 	}
 
 	/**
@@ -133,17 +133,17 @@ abstract class ActiveRecordProvider extends Provider
 	 * {@link ActiveRecordProvider\BeforeAlterContextEvent} and
 	 * {@link ActiveRecordProvider\AlterContextEvent} events.
 	 *
-	 * @param array $properties The properties of the events.
+	 * @param array $payload Event payload.
 	 *
 	 * @return array The altered context.
 	 */
-	protected function fire_alter_context(array $properties)
+	protected function fire_alter_context(array $payload)
 	{
-		new ActiveRecordProvider\BeforeAlterContextEvent($this, $properties);
-		$properties['context'] = $this->alter_context($properties['context'], $properties['query'], $properties['conditions']);
-		new ActiveRecordProvider\AlterContextEvent($this, $properties);
+		new ActiveRecordProvider\BeforeAlterContextEvent($this, $payload);
+		$payload['context'] = $this->alter_context($payload['context'], $payload['query'], $payload['conditions']);
+		new ActiveRecordProvider\AlterContextEvent($this, $payload);
 
-		return $properties['context'];
+		return $payload['context'];
 	}
 
 	/**
@@ -243,11 +243,11 @@ class BeforeAlterConditionsEvent extends AlterEvent
 	 * The event is constructed with the type `alter_conditions:before`.
 	 *
 	 * @param Icybee\Modules\Views\ActiveRecordProvider $target
-	 * @param array $properties
+	 * @param array $payload
 	 */
-	public function __construct(\Icybee\Modules\Views\ActiveRecordProvider $target, array $properties)
+	public function __construct(\Icybee\Modules\Views\ActiveRecordProvider $target, array $payload)
 	{
-		parent::__construct($target, 'alter_conditions:before', $properties);
+		parent::__construct($target, 'alter_conditions:before', $payload);
 	}
 }
 
@@ -260,11 +260,11 @@ class AlterConditionsEvent extends AlterEvent
 	 * The event is constructed with the type `alter_conditions`.
 	 *
 	 * @param Icybee\Modules\Views\ActiveRecordProvider $target
-	 * @param array $properties
+	 * @param array $payload
 	 */
-	public function __construct(\Icybee\Modules\Views\ActiveRecordProvider $target, array $properties)
+	public function __construct(\Icybee\Modules\Views\ActiveRecordProvider $target, array $payload)
 	{
-		parent::__construct($target, 'alter_conditions', $properties);
+		parent::__construct($target, 'alter_conditions', $payload);
 	}
 }
 
@@ -277,11 +277,11 @@ class BeforeAlterQueryEvent extends AlterEvent
 	 * The event is constructed with the type `alter_query:before`.
 	 *
 	 * @param Icybee\Modules\Views\ActiveRecordProvider $target
-	 * @param array $properties
+	 * @param array $payload
 	 */
-	public function __construct(\Icybee\Modules\Views\ActiveRecordProvider $target, array $properties)
+	public function __construct(\Icybee\Modules\Views\ActiveRecordProvider $target, array $payload)
 	{
-		parent::__construct($target, 'alter_query:before', $properties);
+		parent::__construct($target, 'alter_query:before', $payload);
 	}
 }
 
@@ -294,11 +294,11 @@ class AlterQueryEvent extends AlterEvent
 	 * The event is constructed with the type `alter_query`.
 	 *
 	 * @param Icybee\Modules\Views\ActiveRecordProvider $target
-	 * @param array $properties
+	 * @param array $payload
 	 */
-	public function __construct(\Icybee\Modules\Views\ActiveRecordProvider $target, array $properties)
+	public function __construct(\Icybee\Modules\Views\ActiveRecordProvider $target, array $payload)
 	{
-		parent::__construct($target, 'alter_query', $properties);
+		parent::__construct($target, 'alter_query', $payload);
 	}
 }
 
@@ -311,11 +311,11 @@ class BeforeAlterContextEvent extends AlterEvent
 	 * The event is constructed with the type `alter_context:before`.
 	 *
 	 * @param Icybee\Modules\Views\ActiveRecordProvider $target
-	 * @param array $properties
+	 * @param array $payload
 	 */
-	public function __construct(\Icybee\Modules\Views\ActiveRecordProvider $target, array $properties)
+	public function __construct(\Icybee\Modules\Views\ActiveRecordProvider $target, array $payload)
 	{
-		parent::__construct($target, 'alter_context:before', $properties);
+		parent::__construct($target, 'alter_context:before', $payload);
 	}
 }
 
@@ -328,11 +328,11 @@ class AlterContextEvent extends AlterEvent
 	 * The event is constructed with the type `alter_context`.
 	 *
 	 * @param Icybee\Modules\Views\ActiveRecordProvider $target
-	 * @param array $properties
+	 * @param array $payload
 	 */
-	public function __construct(\Icybee\Modules\Views\ActiveRecordProvider $target, array $properties)
+	public function __construct(\Icybee\Modules\Views\ActiveRecordProvider $target, array $payload)
 	{
-		parent::__construct($target, 'alter_context', $properties);
+		parent::__construct($target, 'alter_context', $payload);
 	}
 }
 
@@ -345,10 +345,10 @@ class AlterResultEvent extends AlterEvent
 	 * The event is constructed with the type `alter_result`.
 	 *
 	 * @param \Icybee\Modules\Views\ActiveRecordProvider $target
-	 * @param array $properties
+	 * @param array $payload
 	 */
-	public function __construct(\Icybee\Modules\Views\ActiveRecordProvider $target, array $properties)
+	public function __construct(\Icybee\Modules\Views\ActiveRecordProvider $target, array $payload)
 	{
-		parent::__construct($target, 'alter_result', $properties);
+		parent::__construct($target, 'alter_result', $payload);
 	}
 }

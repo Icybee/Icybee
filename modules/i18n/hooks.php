@@ -39,7 +39,7 @@ class Hooks
 	 *
 	 * @param Event $event
 	 */
-	public static function on_nodes_editblock_alter_children(Event $event, \Icybee\Modules\Nodes\EditBlock $block)
+	static public function on_nodes_editblock_alter_children(Event $event, \Icybee\Modules\Nodes\EditBlock $block)
 	{
 		global $core;
 

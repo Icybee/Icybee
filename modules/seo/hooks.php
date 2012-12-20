@@ -26,7 +26,7 @@ use Patron\Engine as Patron;
 
 class Hooks
 {
-	public static function on_page_controller_render(PageController\RenderEvent $event, PageController $target)
+	static public function on_page_controller_render(PageController\RenderEvent $event, PageController $target)
 	{
 		global $core;
 
@@ -72,7 +72,7 @@ EOT;
 		$event->html = str_replace('</body>', $insert . '</body>', $event->html);
 	}
 
-	public static function on_document_render_title(Event $event)
+	static public function before_document_render_title(\Icybee\Document\BeforeRenderTitleEvent $event)
 	{
 		global $core;
 
@@ -83,7 +83,7 @@ EOT;
 		$event->title = $title . $event->separator . $site_title;
 	}
 
-	public static function before_document_render_metas(Event $event)
+	static public function before_document_render_metas(\Icybee\Document\BeforeRenderMetasEvent $event)
 	{
 		global $core;
 
@@ -115,7 +115,7 @@ EOT;
 		}
 	}
 
-	static public function on_document_render_metas(Event $event)
+	static public function on_document_render_metas(\Icybee\Document\RenderMetasEvent $event)
 	{
 		global $core;
 
@@ -130,7 +130,7 @@ EOT;
 
 		if ($node && $node->has_property('absolute_url'))
 		{
-			$event->rc .= '<link rel="canonical" href="' . $node->absolute_url . '" />' . PHP_EOL;
+			$event->html .= '<link rel="canonical" href="' . $node->absolute_url . '" />' . PHP_EOL;
 		}
 	}
 

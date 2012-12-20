@@ -1,52 +1,36 @@
-window.addEvent
-(
-	'load', function()
-	{
-		var form = $(document.body).getElement('form.edit');
+window.addEvent('load', function() {
 
-		form.getElements('input[type=text]').each
-		(
-			function (el)
-			{
-				if (!el.value)
+	var form = $(document.body).getElement('.form-primary.edit')
+	, constructor = form.getElement('[name="#destination"]').value
+	, emptyControls = []
+
+	form.getElements('input[type=text]').each(function (el) {
+
+		if (!el.value)
+		{
+			emptyControls.push(el)
+		}
+	})
+
+	form.getElements('.widget-file').each(function(el) {
+
+		var widget = el.get('widget')
+
+		widget.options.uploadUrl = '/api/' + constructor + '/upload'
+
+		widget.addEvent('change', function(response) {
+
+			Object.each(response.properties, function(value, key) {
+
+				var input = document.id(form.elements[key])
+
+				if (!input || emptyControls.indexOf(input) == -1)
 				{
-					el.addClass('was-empty');
+					return
 				}
-			}
-		);
 
-		var form = $(document.body).getElement('form.edit');
-		var constructor = $(form.elements['#destination']).get('value');
-
-		$$('.widget-file').each
-		(
-			function(el)
-			{
-				var widget = el.get('widget');
-
-				widget.options.uploadUrl = '/api/' + constructor + '/upload';
-
-				widget.addEvent
-				(
-					'change', function(response)
-					{
-						Object.each
-						(
-							response.properties, function(value, key)
-							{
-								var input = $(form.elements[key]);
-
-								if (!input || !input.hasClass('was-empty'))
-								{
-									return;
-								}
-
-								input.value = value;
-							}
-						);
-					}
-				);
-			}
-		);
-	}
-);
+				input.value = value
+			})
+		})
+	})
+})

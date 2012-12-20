@@ -47,7 +47,7 @@ class Blocks extends Operation
 
 		if ($core->user_id && $core->user->language)
 		{
-			$core->language = $core->user->language;
+			$core->locale = $core->user->language;
 		}
 
 		$request = $this->request;

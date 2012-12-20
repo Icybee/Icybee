@@ -116,25 +116,6 @@ $form = new Brickrouge\Form
 	)
 );
 
-/*
-class site_search__search_WdView
-{
-
-}
-
-$sender = new site_search__search_WdView();
-
-Event::fire
-(
-	'render:before', array
-	(
-		'form' => &$form
-	),
-
-	$sender
-);
-*/
-
 echo '<div class="conditions">' . $form . '</div>';
 
 if (empty($_GET['q']))

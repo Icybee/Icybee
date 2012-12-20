@@ -353,10 +353,10 @@ class AlterCSSClassNamesEvent extends \ICanBoogie\Event
 	 * The event is constructed with the type `alter_css_class_names`.
 	 *
 	 * @param \Icybee\Modules\Nodes\Node $target
-	 * @param array $properties
+	 * @param array $payload
 	 */
-	public function __construct(\Icybee\Modules\Nodes\Node $target, array $properties)
+	public function __construct(\Icybee\Modules\Nodes\Node $target, array $payload)
 	{
-		parent::__construct($target, 'alter_css_class_names', $properties);
+		parent::__construct($target, 'alter_css_class_names', $payload);
 	}
 }

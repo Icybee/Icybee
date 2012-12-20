@@ -11,8 +11,14 @@
 
 namespace Icybee\Modules\Nodes;
 
+/**
+ * A block used to confirm the deletion of a node.
+ */
 class DeleteBlock extends \Icybee\DeleteBlock
 {
+	/**
+	 * Returns the title of the node.
+	 */
 	protected function get_record_name()
 	{
 		return $this->record->title;

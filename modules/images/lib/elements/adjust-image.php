@@ -28,15 +28,12 @@ class AdjustImage extends \Brickrouge\Widget\AdjustNode
 		);
 	}
 
-	protected static function add_assets(\Brickrouge\Document $document)
+	static protected function add_assets(\Brickrouge\Document $document)
 	{
 		parent::add_assets($document);
 
 		$document->css->add('adjust-image.css');
 		$document->js->add('adjust-image.js');
-
-		$document->css->add('../../public/manage.css');
-		$document->js->add('../../public/manage.js');
 	}
 
 	protected function get_records($constructor, array $options, $limit=16)

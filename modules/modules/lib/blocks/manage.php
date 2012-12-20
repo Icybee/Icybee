@@ -18,6 +18,8 @@ use Brickrouge\Button;
 use Brickrouge\Element;
 use Brickrouge\Form;
 
+use Icybee\Element\ActionbarToolbar;
+
 class ManageBlock extends Form
 {
 	protected $module;
@@ -116,7 +118,7 @@ class ManageBlock extends Form
 		return $categories;
 	}
 
-	protected static function add_assets(\Brickrouge\Document $document)
+	static protected function add_assets(\Brickrouge\Document $document)
 	{
 		parent::add_assets($document);
 
@@ -155,9 +157,12 @@ class ManageBlock extends Form
 			}
 		}
 
+		$hiddens = $this->render_hiddens($this->hiddens);
 		$thead = $this->render_head($columns);
 
 		return <<<EOT
+$hiddens
+
 <table class="manage" cellpadding="4" cellspacing="0">
 	$thead
 
@@ -165,8 +170,7 @@ class ManageBlock extends Form
 		$body
 	</tbody>
 </table>
-EOT
-		. parent::render_inner_html();
+EOT;
 	}
 
 	protected function render_head(array $columns)
@@ -459,9 +463,9 @@ EOT;
 
 	protected function attach_buttons()
 	{
-		\ICanBoogie\Events::attach
+		\ICanBoogie\Event\attach
 		(
-			'Icybee\Admin\Element\ActionbarToolbar::alter_buttons', function(\ICanBoogie\Event $event, \Icybee\Admin\Element\ActionbarToolbar $target)
+			function(ActionbarToolbar\CollectEvent $event, ActionbarToolbar $target)
 			{
 				$event->buttons[] = new Button
 				(
@@ -476,7 +480,7 @@ EOT;
 		);
 	}
 
-	public static function resolve_module_title($module_id)
+	static public function resolve_module_title($module_id)
 	{
 		global $core;
 

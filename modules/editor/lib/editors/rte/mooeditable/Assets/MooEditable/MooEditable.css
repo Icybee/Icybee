@@ -204,13 +204,11 @@ CUSTOM
 {
 	background-color: #E8E8E8;
 	border-bottom: 1px solid #CFCFCF;
-	border-radius: 4px 4px 0 0;
 }
 	
 .mooeditable-iframe
 {
 	background-color: white;
-	border-radius: 0 0 4px 4px;
 }
 
 .mooeditable-ui-button

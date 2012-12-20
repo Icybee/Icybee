@@ -14,11 +14,16 @@ namespace Icybee\Modules\Pages;
 use ICanBoogie\AuthenticationRequired;
 use ICanBoogie\Event;
 use ICanBoogie\Exception;
+use ICanBoogie\HTTP\NotFound;
+use ICanBoogie\HTTP\RedirectResponse;
 use ICanBoogie\HTTP\Request;
 use ICanBoogie\HTTP\Response;
+use ICanBoogie\HTTP\ServiceUnavailable;
 use ICanBoogie\Route;
 
 use Brickrouge\Alert;
+
+use Icybee\Modules\Sites\Site;
 
 define(__NAMESPACE__ . '\PageController\CSS_DOCUMENT_PLACEHOLDER', uniqid());
 define(__NAMESPACE__ . '\PageController\JS_DOCUMENT_PLACEHOLDER', uniqid());
@@ -107,7 +112,7 @@ class PageController
 
 		# admin menu
 
-		$admin_menu = $this->get_admin_menu();
+		$admin_menu = (string) new \Icybee\Element\AdminMenu();
 
 		if ($admin_menu)
 		{
@@ -160,12 +165,10 @@ class PageController
 
 		$response = new Response
 		(
-			200, array
+			$html, 200, array
 			(
 				'Content-Type' => 'text/html; charset=utf-8'
-			),
-
-			$html
+			)
 		);
 
 		$response->cache_control = 'public';
@@ -187,7 +190,7 @@ class PageController
 	 * Resolves a request into a page.
 	 *
 	 * @param Request $request
-	 * @throws Exception\HTTP
+	 * @throws NotFound
 	 *
 	 * @return Icybee\Modules\Pages\Page
 	 */
@@ -199,29 +202,23 @@ class PageController
 
 		if (!$site->siteid)
 		{
-			throw new Exception\HTTP('Unable to find matching website.', array(), 404);
+			throw new NotFound('Unable to find matching website.');
 		}
 
 		$status = $site->status;
 
-		if ($status == 2)
+		switch ($status)
 		{
-			throw new Exception\HTTP
+			case Site::STATUS_UNAUTHORIZED: throw new AuthenticationRequired();
+			case Site::STATUS_NOT_FOUND: throw new NotFound
 			(
-				'The website is currently down for maintenance.', array(), 503
-			);
-		}
-		else if ($status == 3)
-		{
-			throw new Exception\HTTP
-			(
-				'Access to the requested URL %uri is forbidden.', array
+				\ICanBoogie\format("The requested URL does not exists: %uri", array
 				(
 					'uri' => $request->uri
-				),
-
-				403
+				))
 			);
+
+			case Site::STATUS_UNAVAILABLE: throw new ServiceUnavailable();
 		}
 
 		$path = $request->path;
@@ -232,11 +229,10 @@ class PageController
 		{
 			if ($page->location)
 			{
-				return new Response
+				return new RedirectResponse
 				(
-					301, array
+					$page->location->url, 301, array
 					(
-						'Location' => $page->location->url,
 						'Icybee-Redirected-By' => __FILE__ . '::' . __LINE__
 					)
 				);
@@ -251,11 +247,10 @@ class PageController
 
 			if (!$parsed_url_pattern[1] && $page->url != $path)
 			{
-				return new Response
+				return new RedirectResponse
 				(
-					301, array
+					$page->url . ($query_string ? '?' . $query_string : ''), 301, array
 					(
-						'Location' => $page->url . ($query_string ? '?' . $query_string : ''),
 						'Icybee-Redirected-By' => __FILE__ . '::' . __LINE__
 					)
 				);
@@ -264,9 +259,9 @@ class PageController
 
 		if (!$page)
 		{
-			throw new Exception\HTTP('The requested URL was not found on this server.', array(), 404);
+			throw new NotFound;
 		}
-		else if (!$page->is_online || $page->site->status != 1)
+		else if (!$page->is_online || $page->site->status != Site::STATUS_OK)
 		{
 			#
 			# Offline pages are displayed if the user has ownership, otherwise an HTTP exception
@@ -322,14 +317,9 @@ class PageController
 		return new \Patron\Engine;
 	}
 
-	protected function get_admin_menu()
-	{
-		return new \Icybee\Element\AdminMenu();
-	}
-
 	static public $nodes = array();
 
-	public static function on_nodes_load(Event $event)
+	static public function on_loaded_nodes(\BlueTihi\Context\LoadedNodesEvent $event)
 	{
 		$nodes = $event->nodes;
 
@@ -384,11 +374,11 @@ class BeforeRenderEvent extends \ICanBoogie\Event
 	 * The event is constructed with the type `render:before`.
 	 *
 	 * @param \Icybee\Modules\Pages\PageController $target
-	 * @param array $properties
+	 * @param array $payload
 	 */
-	public function __construct(\Icybee\Modules\Pages\PageController $target, array $properties)
+	public function __construct(\Icybee\Modules\Pages\PageController $target, array $payload)
 	{
-		parent::__construct($target, 'render:before', $properties);
+		parent::__construct($target, 'render:before', $payload);
 	}
 }
 
@@ -422,10 +412,10 @@ class RenderEvent extends \ICanBoogie\Event
 	 * The event is constructed with the type `render`.
 	 *
 	 * @param \Icybee\Modules\Pages\PageController $target
-	 * @param array $properties
+	 * @param array $payload
 	 */
-	public function __construct(\Icybee\Modules\Pages\PageController $target, array $properties)
+	public function __construct(\Icybee\Modules\Pages\PageController $target, array $payload)
 	{
-		parent::__construct($target, 'render', $properties);
+		parent::__construct($target, 'render', $payload);
 	}
 }

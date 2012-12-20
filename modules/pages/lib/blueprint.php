@@ -27,7 +27,7 @@ class Blueprint
 	 *
 	 * @return Blueprint
 	 */
-	public static function from(Query $query)
+	static public function from(Query $query)
 	{
 		$query->mode(\PDO::FETCH_CLASS, __NAMESPACE__ . '\BluePrintNode');
 
@@ -68,7 +68,7 @@ class Blueprint
 		return new static($query->model, $relation, $children, $index, $tree);
 	}
 
-	private static function set_depth(array $branch, $depth=0)
+	static private function set_depth(array $branch, $depth=0)
 	{
 		foreach ($branch as $node)
 		{

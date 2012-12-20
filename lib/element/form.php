@@ -28,7 +28,7 @@ class Form extends \Brickrouge\Form
 	 * @param \ICanBoogie\Operation\GetFormEvent $event
 	 * @param Operation $operation
 	 */
-	public static function on_operation_get_form(\ICanBoogie\Operation\GetFormEvent $event, Operation $operation)
+	static public function on_operation_get_form(\ICanBoogie\Operation\GetFormEvent $event, Operation $operation)
 	{
 		$request = $event->request;
 
@@ -43,7 +43,7 @@ class Form extends \Brickrouge\Form
 		}
 		catch (\Exception $e)
 		{
-			throw new \ICanBoogie\Operation\ExpiredFormException($e->getMessage());
+			throw new \ICanBoogie\Operation\FormHasExpired($e->getMessage());
 		}
 
 		if ($form)

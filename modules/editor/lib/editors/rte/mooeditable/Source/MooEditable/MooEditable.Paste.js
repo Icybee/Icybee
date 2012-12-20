@@ -62,24 +62,6 @@ MooEditable.UI.PasteDialog = new Class
 		return this.dummy_el;
 	},
 
-	/*
-	click: function()
-	{
-		//console.log('click: %a', this);
-
-		if (this.adjust)
-		{
-			this.close();
-
-			return this;
-		}
-
-		this.fireEvent('click', arguments);
-
-		return this;
-	},
-	*/
-
 	close: function()
 	{
 		if (this.adjust)

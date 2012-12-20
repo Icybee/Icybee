@@ -21,7 +21,7 @@ use Brickrouge\Form;
 
 class Hooks
 {
-	public static function on_node_save(Event $event, \Icybee\Modules\Nodes\SaveOperation $operation)
+	static public function on_node_save(Event $event, \Icybee\Modules\Nodes\SaveOperation $operation)
 	{
 		global $core;
 
@@ -153,7 +153,7 @@ class Hooks
 	 * @param Event $event
 	 * @param \Icybee\Modules\Nodes\DeleteOperation $operation
 	 */
-	public static function on_node_delete(Event $event, \Icybee\Modules\Nodes\DeleteOperation $operation)
+	static public function on_node_delete(Event $event, \Icybee\Modules\Nodes\DeleteOperation $operation)
 	{
 		global $core;
 
@@ -168,7 +168,7 @@ class Hooks
 	 * @param Event $event
 	 * @param \Icybee\Modules\Files\DeleteOperation $operation
 	 */
-	public static function on_file_delete(Event $event, \Icybee\Modules\Files\DeleteOperation $operation)
+	static public function on_file_delete(Event $event, \Icybee\Modules\Files\DeleteOperation $operation)
 	{
 		global $core;
 
@@ -182,7 +182,7 @@ class Hooks
 	 *
 	 * @return array|null An array of attachments or null if there is none.
 	 */
-	public static function get_attachments(Node $ar)
+	static public function get_attachments(Node $ar)
 	{
 		global $core;
 
@@ -231,7 +231,7 @@ class Hooks
 	 *
 	 * @param Event $event
 	 */
-	public static function on_editblock_alter_children(Event $event, \Icybee\Modules\Nodes\EditBlock $block)
+	static public function on_editblock_alter_children(Event $event, \Icybee\Modules\Nodes\EditBlock $block)
 	{
 		global $core;
 
@@ -277,7 +277,7 @@ class Hooks
 		);
 	}
 
-	public static function on_files_configblock_alter_children(Event $event, \Icybee\Modules\Files\ConfigBlock $block)
+	static public function on_files_configblock_alter_children(Event $event, \Icybee\Modules\Files\ConfigBlock $block)
 	{
 		global $core;
 
@@ -339,7 +339,7 @@ class Hooks
 	 *
 	 * @param Event $event
 	 */
-	public static function before_config_operation_properties(Event $event, \Icybee\Modules\Files\ConfigOperation $sender)
+	static public function before_config_operation_properties(Event $event, \Icybee\Modules\Files\ConfigOperation $sender)
 	{
 		global $core;
 
@@ -364,7 +364,7 @@ class Hooks
 	}
 
 	/**
-	 * The `wdp:node:attachments` markup can be used to render a node attachments.
+	 * The `node:attachments` markup can be used to render a node attachments.
 	 *
 	 * There is actually two modes for rendering the attachments, depending on their number:
 	 *
@@ -382,10 +382,10 @@ class Hooks
 	 *     <div class="node-attachments">
 	 *     <h5>#{t:Attached files}</h5>
 	 *     <ul>
-	 *     <wdp:foreach>
+	 *     <p:foreach>
 	 *     <p><a href="#{@url('download')}">#{@label}</a>
 	 *     <span class="metas">(#{@extension} – #{@size.format_size()}</span></p>
-	 *     </wdp:foreach>
+	 *     </p:foreach>
 	 *     </ul>
 	 *     </div>
 	 *

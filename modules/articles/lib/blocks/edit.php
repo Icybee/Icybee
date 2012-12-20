@@ -14,6 +14,9 @@ namespace Icybee\Modules\Articles;
 use Brickrouge\Form;
 use Brickrouge\Element;
 
+/**
+ * A block used to edit articles.
+ */
 class EditBlock extends \Icybee\Modules\Contents\EditBlock
 {
 	protected function get_children()

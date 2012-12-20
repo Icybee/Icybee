@@ -11,17 +11,27 @@
 
 namespace Icybee\Modules\Nodes;
 
-use Icybee\Modules\Nodes\Node;
 use ICanBoogie\ActiveRecord\Query;
 use ICanBoogie\Exception;
 
+/**
+ * Nodes model.
+ */
 class Model extends \Icybee\ActiveRecord\Model\Constructor
 {
+	/**
+	 * If the {@link Node::$modified} property is not defined it is set to the current datetime.
+	 *
+	 * If the {@link Node::$slug} property is empty but the {@link Node::$title} property is
+	 * defined its value is used.
+	 *
+	 * The {@link Node:$slug} property is always slugized.
+	 */
 	public function save(array $properties, $key=null, array $options=array())
 	{
 		global $core;
 
-		if (!$key && !array_key_exists(Node::UID, $properties))
+		if (!$key && !array_key_exists(Node::UID, $properties)) // TODO-20121004: move this to operation
 		{
 			$properties[Node::UID] = $core->user_id;
 		}
@@ -38,7 +48,7 @@ class Model extends \Icybee\ActiveRecord\Model\Constructor
 
 		if (isset($properties[Node::SLUG]))
 		{
-			$properties[Node::SLUG] = wd_slugize($properties[Node::SLUG]);
+			$properties[Node::SLUG] = \Icybee\slugize($properties[Node::SLUG]);
 		}
 
 		return parent::save($properties, $key, $options);
@@ -104,12 +114,12 @@ class Model extends \Icybee\ActiveRecord\Model\Constructor
 	/**
 	 * Alerts the query to match records of a similar site.
 	 *
-	 * A record is considered on a similar website when it doesn't belong to a website
+	 * A record is considered of a similar website when it doesn't belong to a website
 	 * (`siteid = 0') or it matches the specified website.
 	 *
 	 * @param Query $query
-	 * @param int $siteid The identifier of a website. If the identifier is `null` the current
-	 * website identifier is used instead.
+	 * @param int $siteid The identifier of the website to match. If the identifier is `null` the
+	 * current website identifier is used instead.
 	 *
 	 * @return Query
 	 */
@@ -120,61 +130,20 @@ class Model extends \Icybee\ActiveRecord\Model\Constructor
 		return $query->where('siteid = 0 OR siteid = ?', $siteid !== null ? $siteid : $core->site->siteid);
 	}
 
+	/**
+	 * Alerts the query to match recors of a similar language.
+	 *
+	 * A record is considered of a similar language when it doesn't have a language defined
+	 * (`language` = "") or it matches the specified language.
+	 *
+	 * @param Query $query
+	 * @param string $language The language to match. If the language is `null` the current
+	 * language is used instead.
+	 */
 	protected function scope_similar_language(Query $query, $language=null)
 	{
 		global $core;
 
-		return $query->where('language = 0 OR language = ?', $language !== null ? $language : $core->site->language);
-	}
-
-	public function parseConditions(array $conditions)
-	{
-		$where = array();
-		$args = array();
-
-		foreach ($conditions as $identifier => $value)
-		{
-			switch ($identifier)
-			{
-				case 'nid':
-				{
-					$where[] = '`nid` = ?';
-					$args[] = $value;
-				}
-				break;
-
-				case 'constructor':
-				{
-					$where[] = '`constructor` = ?';
-					$args[] = $value;
-				}
-				break;
-
-				case 'slug':
-				case 'title':
-				{
-					$where[] = '(slug = ? OR title = ?)';
-					$args[] = $value;
-					$args[] = $value;
-				}
-				break;
-
-				case 'language':
-				{
-					$where[] = '(language = "" OR language = ?)';
-					$args[] = $value;
-				}
-				break;
-
-				case 'is_online':
-				{
-					$where[] = 'is_online = ?';
-					$args[] = $value;
-				}
-				break;
-			}
-		}
-
-		return array($where, $args);
+		return $query->where('language = "" OR language = ?', $language !== null ? $language : $core->site->language);
 	}
 }

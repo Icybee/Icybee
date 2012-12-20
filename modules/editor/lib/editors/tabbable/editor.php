@@ -54,6 +54,11 @@ class TabbableEditor implements Editor
 	 */
 	public function unserialize($serialized_content)
 	{
+		if (is_array($serialized_content))
+		{
+			return $serialized_content;
+		}
+
 		return json_decode($serialized_content, true);
 	}
 

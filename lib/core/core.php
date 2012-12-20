@@ -13,6 +13,7 @@ namespace Icybee;
 
 use ICanBoogie\Debug;
 use ICanBoogie\Exception;
+use ICanBoogie\HTTP\HTTPError;
 use ICanBoogie\Module;
 use ICanBoogie\Operation;
 use ICanBoogie\Route;
@@ -81,7 +82,7 @@ class Core extends \ICanBoogie\Core
 	 *
 	 * @param \Exception $exception
 	 */
-	public static function exception_handler(\Exception $exception)
+	static public function exception_handler(\Exception $exception)
 	{
 		global $core;
 
@@ -116,7 +117,7 @@ class Core extends \ICanBoogie\Core
 		$formated_exception = Debug::format_alert($exception);
 		$reported = false;
 
-		if (!($exception instanceof Exception\HTTP))
+		if (!($exception instanceof HTTPError))
 		{
 			Debug::report($formated_exception);
 
@@ -171,7 +172,7 @@ class Core extends \ICanBoogie\Core
 	protected function run_context()
 	{
 		$this->site = $site = \Icybee\Modules\Sites\Model::find_by_request($this->initial_request);
-		$this->language = $site->language;
+		$this->locale = $site->language;
 
 		if ($site->timezone)
 		{

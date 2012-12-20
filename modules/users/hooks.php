@@ -12,11 +12,18 @@
 namespace Icybee\Modules\Users;
 
 use ICanBoogie\Core;
+use ICanBoogie\HTTP\RedirectResponse;
+use ICanBoogie\HTTP\Request;
 use ICanBoogie\HTTP\Response;
-use ICanBoogie\Route;
 use ICanBoogie\Operation;
+use ICanBoogie\PermissionRequired;
+use ICanBoogie\PropertyNotDefined;
+use ICanBoogie\Route;
 use ICanBoogie\SecurityException;
 use ICanBoogie\Session;
+
+use Icybee\AdminDecorator;
+use Icybee\DocumentDecorator;
 
 class Hooks
 {
@@ -48,10 +55,10 @@ class Hooks
 	/**
 	 * Displays a login form on {@link SecurityException}.
 	 *
-	 * @param \ICanBoogie\Exception\GetResponseEvent $event
+	 * @param \ICanBoogie\Exception\RescueEvent $event
 	 * @param SecurityException $target
 	 */
-	static public function on_security_exception_get_response(\ICanBoogie\Exception\GetResponseEvent $event, SecurityException $target)
+	static public function on_security_exception_rescue(\ICanBoogie\Exception\RescueEvent $event, SecurityException $target)
 	{
 		global $core;
 
@@ -69,15 +76,113 @@ class Hooks
 
 		$event->response = new Response
 		(
-			$target->getCode(), array
+			(string) $document, $target->getCode(), array
 			(
 				'Content-Type' => 'text/html; charset=utf-8'
-			),
-
-			(string) $document
+			)
 		);
 
 		$event->stop();
+	}
+
+	/**
+	 * Displays an _available websites_ form on {@link WebsiteAdminNotAccessible}.
+	 *
+	 * @param \ICanboogie\Exception\RescueEvent $event
+	 * @param WebsiteAdminNotAccessible $target
+	 */
+	static public function on_website_admin_not_accessible_rescue(\ICanboogie\Exception\RescueEvent $event, WebsiteAdminNotAccessible $target)
+	{
+		global $core;
+
+		$block = $core->modules['users']->getBlock('available-sites');
+
+		$document = new \Icybee\DocumentDecorator(new \Icybee\AdminDecorator($block));
+
+		$event->response = new Response
+		(
+			(string) $document, $target->getCode(), array
+			(
+				'Content-Type' => 'text/html; charset=utf-8'
+			)
+		);
+
+		$event->stop();
+	}
+
+	/**
+	 * The {@link PermissionRequired} exception is thrown if a member attempts to enter the admin.
+	 *
+	 * Authenticated users who don't have access to the admin of a website are redirected to the
+	 * `/admin/pofile/sites` URL, in which case the `response` property of the event is altered
+	 * with a {@link RedirectResponse}.
+	 *
+	 * @param \ICanBoogie\HTTP\Dispatcher\BeforeDispatchEvent $event
+	 * @param \ICanBoogie\HTTP\Dispatcher $target
+	 *
+	 * @throws PermissionRequired if a member attempt to enter the admin.
+	 * @throws WebsiteAdminNotAccessible if a user attempts to access the admin of a website he
+	 * doesn't have access to.
+	 */
+	static public function before_http_dispatcher_dispatch(\ICanBoogie\HTTP\Dispatcher\BeforeDispatchEvent $event, \ICanBoogie\HTTP\Dispatcher $target)
+	{
+		global $core;
+
+		// FIXME-20121219: we should only check routes, if an operation is sent to '/admin/'
+		// we might cancel that, that's not the intended behaviour.
+		// Maybe the route dispatcher should emit events before and after routing.
+		// This quick fix considers that request with a method different then GET are operations
+		// and cancel the process.
+
+		if ($core->request->method != Request::METHOD_GET)
+		{
+			return;
+		}
+
+		// /FIXME-20121219
+
+		$user = $core->user;
+
+		if ($user->is_guest)
+		{
+			return;
+		}
+
+		$path = Route::decontextualize($core->request->path);
+
+		if (strpos($path, '/admin/') !== 0)
+		{
+			return;
+		}
+
+		if ($user instanceof \Icybee\Modules\Members\Member)
+		{
+			throw new PermissionRequired();
+		}
+
+		if (strpos($path, '/admin/profile/sites') === 0)
+		{
+			return;
+		}
+
+		$restricted_sites = null;
+
+		try
+		{
+			$restricted_sites = $user->restricted_sites_ids;
+		}
+		catch (PropertyNotDefined $e)
+		{
+			throw $e;
+		}
+		catch (\Exception $e) { }
+
+		if (!$restricted_sites || in_array($core->site_id, $restricted_sites))
+		{
+			return;
+		}
+
+		throw new WebsiteAdminNotAccessible();
 	}
 
 	/*
@@ -95,7 +200,7 @@ class Hooks
 	 *
 	 * @see \Icybee\Modules\Users\User.login()
 	 */
-	public static function get_user_id(Core $core)
+	static public function get_user_id(Core $core)
 	{
 		if (!Session::exists())
 		{
@@ -121,7 +226,7 @@ class Hooks
 	 *
 	 * @return User The user object, or guest user object.
 	 */
-	public static function get_user(Core $core)
+	static public function get_user(Core $core)
 	{
 		$user = null;
 		$uid = $core->user_id;
@@ -147,5 +252,16 @@ class Hooks
 		}
 
 		return $user;
+	}
+
+	/*
+	 * Markups
+	 */
+
+	static public function markup_form_login(array $args, $engine, $template)
+	{
+		$form = new LoginForm();
+
+		return $template ? $engine($template, $form) : $form;
 	}
 }

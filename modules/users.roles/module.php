@@ -11,10 +11,10 @@
 
 namespace Icybee\Modules\Users\Roles;
 
+use ICanBoogie\ActiveRecord\RecordNotFound;
 use ICanBoogie\Operation;
 use ICanBoogie\Route;
-use ICanBoogie\ActiveRecord\RecordNotFound;
-use Icybee\Modules\Users\Users\Role;
+
 use Brickrouge\Button;
 use Brickrouge\Element;
 use Brickrouge\Form;
@@ -66,8 +66,6 @@ class Module extends \Icybee\Module
 				array($model)
 			);
 
-			var_dump($role);
-
 			$role->save();
 		}
 
@@ -95,9 +93,18 @@ class Module extends \Icybee\Module
 
 	public function is_installed(\ICanBoogie\Errors $errors)
 	{
+		if (!parent::is_installed($errors))
+		{
+			return false;
+		}
+
 		try
 		{
 			$this->model->find(array(1, 2));
+		}
+		catch (StatementInvalid $e)
+		{
+			/* the model */
 		}
 		catch (RecordNotFound $e)
 		{
@@ -111,5 +118,7 @@ class Module extends \Icybee\Module
 				$errors[$this->id] = t('User role is missing');
 			}
 		}
+
+		return !$errors->count();
 	}
 }

@@ -14,5 +14,8 @@
 	border: 0;
 	margin: 1em 0 0 0;
 	background: transparent;
-	text-align: center;
+}
+
+.widget-login-combo .form-actions {
+	text-align: center;	
 }

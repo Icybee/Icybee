@@ -47,16 +47,6 @@ class LanguagesElement extends Element
 		$page = $core->request->context->page;
 		$translations_by_language = $this->collect();
 
-		Event::fire // COMPAT
-		(
-			'alter.page.languages:before', array
-			(
-				'translations_by_languages' => &$translations_by_language
-			),
-
-			$page
-		);
-
 		new LanguagesElement\CollectEvent($this, array('languages' => &$translations_by_language));
 
 		if (count($translations_by_language) == 1)
@@ -183,11 +173,11 @@ class CollectEvent extends \ICanBoogie\Event
 	 * The event is constructed with the `render:before` event.
 	 *
 	 * @param \Icybee\Modules\Pages\LanguagesElement $target
-	 * @param array $properties
+	 * @param array $payload
 	 */
-	public function __construct(\Icybee\Modules\Pages\LanguagesElement $target, array $properties)
+	public function __construct(\Icybee\Modules\Pages\LanguagesElement $target, array $payload)
 	{
-		parent::__construct($target, 'collect', $properties);
+		parent::__construct($target, 'collect', $payload);
 	}
 }
 
@@ -221,10 +211,10 @@ class AlterEvent extends \ICanBoogie\Event
 	 * The event is constructed with the `alter` event.
 	 *
 	 * @param \Icybee\Modules\Pages\LanguagesElement $target
-	 * @param array $properties
+	 * @param array $payload
 	 */
-	public function __construct(\Icybee\Modules\Pages\LanguagesElement $target, array $properties)
+	public function __construct(\Icybee\Modules\Pages\LanguagesElement $target, array $payload)
 	{
-		parent::__construct($target, 'alter', $properties);
+		parent::__construct($target, 'alter', $payload);
 	}
 }

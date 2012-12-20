@@ -36,5 +36,6 @@ return array
 	),
 
 	Module::T_NAMESPACE => __NAMESPACE__,
-	Module::T_TITLE => 'Journal'
+	Module::T_TITLE => 'Journal',
+	Module::T_VERSION => '0.2-dev'
 );

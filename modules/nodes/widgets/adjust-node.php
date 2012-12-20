@@ -39,7 +39,7 @@ class AdjustNode extends \Brickrouge\Widget
 // 		$this->dataset['adjust'] = 'adjust-node';
 	}
 
-	protected static function add_assets(\Brickrouge\Document $document)
+	static protected function add_assets(\Brickrouge\Document $document)
 	{
 		parent::add_assets($document);
 
@@ -167,6 +167,7 @@ class AdjustNode extends \Brickrouge\Widget
 		$rc .= '</ul>';
 
 		$rc .= new Element\Nodes\Pager
+// 		$rc .= new Brickrouge\Pager
 		(
 			'div', $range + array
 			(

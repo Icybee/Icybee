@@ -21,7 +21,10 @@ class SaveOperation extends \Icybee\Modules\Nodes\SaveOperation
 	{
 		global $core;
 
-		$properties = parent::get_properties();
+		$properties = parent::get_properties() + array
+		(
+			Page::PARENTID => 0
+		);
 
 		if (!$this->key)
 		{
@@ -30,11 +33,20 @@ class SaveOperation extends \Icybee\Modules\Nodes\SaveOperation
 
 			if (empty($properties[Page::WEIGHT]))
 			{
-				$weight = $this->module->model
-				->where('siteid = ? AND parentid = ?', $siteid, isset($properties[Page::PARENTID]) ? $properties[Page::PARENTID] : 0)
-				->maximum('weight');
+				$model = $this->module->model;
 
-				$properties[Page::WEIGHT] = ($weight === null) ? 0 : $weight + 1;
+				if ($model->count())
+				{
+					$weight = $model
+					->where('siteid = ? AND parentid = ?', $siteid, $properties[Page::PARENTID])
+					->maximum('weight');
+
+					$properties[Page::WEIGHT] = ($weight === null) ? 0 : $weight + 1;
+				}
+				else
+				{
+					$properties[Page::WEIGHT] = 0;
+				}
 			}
 		}
 
@@ -153,25 +165,46 @@ class SaveOperation extends \Icybee\Modules\Nodes\SaveOperation
 			$record = $this->module->model[$nid];
 			$newurl = $record->url;
 
-			//\ICanBoogie\log('oldurl: \1, newurl: \2', array($oldurl, $newurl));
-
-			if ($oldurl != $newurl)
+			if ($newurl && $newurl != $oldurl)
 			{
-// 				FIXME-20110710: the event should be 'move' with the record as sender.
-
-				Event::fire
-				(
-					'urlchange', array
-					(
-						'from' => $oldurl,
-						'to' => $newurl
-					),
-
-					$record
-				);
+				new Page\MoveEvent($record, $oldurl, $newurl);
 			}
 		}
 
 		return $rc;
+	}
+}
+
+namespace Icybee\Modules\Pages\Page;
+
+/**
+ * Event class for the `Icybee\Modules\Pages\Page::move` event.
+ */
+class MoveEvent extends \ICanBoogie\Event
+{
+	/**
+	 * Previous path.
+	 *
+	 * @var string
+	 */
+	public $from;
+
+	/**
+	 * New path.
+	 *
+	 * @var string
+	 */
+	public $to;
+
+	/**
+	 * The event is constructed with the type `move`.
+	 *
+	 * @param \Icybee\Modules\Pages\Page $target
+	 * @param string $from Previous path.
+	 * @param string $to New path.
+	 */
+	public function __construct(\Icybee\Modules\Pages\Page $target, $from, $to)
+	{
+		parent::__construct($target, 'move', array('from' => $from, 'to' => $to));
 	}
 }

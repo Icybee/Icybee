@@ -24,7 +24,7 @@ class Hooks
 	 * @param ProcessEvent $event
 	 * @param Operation $operation
 	 */
-	public static function on_operation_process(ProcessEvent $event, Operation $operation)
+	static public function on_operation_process(ProcessEvent $event, Operation $operation)
 	{
 		global $core;
 

@@ -12,11 +12,11 @@
 namespace Icybee\Modules\Views;
 
 use ICanBoogie\ActiveRecord\Model;
-use Icybee\Modules\Nodes\Node;
 use ICanBoogie\Debug;
 use ICanBoogie\Event;
 use ICanBoogie\Exception;
 use ICanBoogie\I18n;
+use ICanBoogie\HTTP\HTTPError;
 use ICanBoogie\Module;
 use ICanBoogie\Object;
 
@@ -25,6 +25,8 @@ use Brickrouge\Element;
 use Brickrouge\Pager;
 
 use BlueTihi\Context;
+
+use Icybee\Modules\Nodes\Node;
 
 /**
  * A view on provided data.
@@ -213,7 +215,7 @@ class View extends Object
 	 */
 	protected function fire_render_before(array $params=array())
 	{
-		return Event::fire('render:before', $params, $this);
+		return new View\BeforeRenderEvent($this, $params);
 	}
 
 	/**
@@ -225,7 +227,7 @@ class View extends Object
 	 */
 	protected function fire_render(array $params=array())
 	{
-		return Event::fire('render', $params, $this);
+		return new View\RenderEvent($this, $params);
 	}
 
 	/**
@@ -269,8 +271,8 @@ class View extends Object
 			(
 				' <ul><li>The placeholder %placeholder was tried, but it does not exists.</li><li>The %message was tried, but it does not exists.</li></ul>', array
 				(
-					'placeholder' => $module_flat_id . ".$type.placeholder",
-					'message' => $module_flat_id . '.' . $type . '.empty_view'
+					'placeholder' => "$module_flat_id.$type.placeholder",
+					'message' => "$module_flat_id.$type.empty_view"
 				)
 			);
 		}
@@ -289,15 +291,15 @@ class View extends Object
 	}
 
 	/**
-	 * Fires the `render_inner_html:empty` event on the view using the specified parameters.
+	 * Fires {@link View\RescueEvent} using the specified payload.
 	 *
-	 * @param array $params
+	 * @param array $payload
 	 *
 	 * @return mixed
 	 */
-	protected function fire_render_empty_inner_html(array $params=array())
+	protected function fire_render_empty_inner_html(array $payload=array())
 	{
-		return Event::fire('render_inner_html:empty', $params, $this);
+		return new View\RescueEvent($this, $payload);
 	}
 
 	protected function init_range()
@@ -363,28 +365,27 @@ class View extends Object
 
 			if (is_array($bind) && current($bind) instanceof Node)
 			{
-				Event::fire('nodes_load', array('nodes' => $bind), $engine);
+				new \BlueTihi\Context\LoadedNodesEvent($engine->context, $bind);
 			}
 			else if ($bind instanceof Node)
 			{
-				Event::fire('nodes_load', array('nodes' => array($bind)), $engine);
+				new \BlueTihi\Context\LoadedNodesEvent($engine->context, array($bind));
 			}
 			else if (!$bind)
 			{
 				$this->element->add_class('empty');
 
-				$rc = (string) $this->render_empty_inner_html();
+				$html = (string) $this->render_empty_inner_html();
 
 				$this->fire_render_empty_inner_html
 				(
 					array
 					(
-						'id' => $id,
-						'rc' => &$rc
+						'html' => &$html
 					)
 				);
 
-				return $rc;
+				return $html;
 			}
 		}
 
@@ -637,7 +638,7 @@ class View extends Object
 	/**
 	 * Checks if the view access is valid.
 	 *
-	 * @throws Exception\HTTP when the view access requires authentication.
+	 * @throws HTTPError when the view access requires authentication.
 	 *
 	 * @return boolean true
 	 */
@@ -647,17 +648,59 @@ class View extends Object
 
 		if ($access_callback && !call_user_func($access_callback, $this))
 		{
-			throw new Exception\HTTP
+			throw new HTTPError
 			(
-				'The requested URL %uri requires authentication.', array
+				\ICanBoogie\format('The requested URL %uri requires authentication.', array
 				(
 					'%uri' => $_SERVER['REQUEST_URI']
-				),
+				)),
 
 				401
 			);
 		}
 
 		return true;
+	}
+}
+
+namespace Icybee\Modules\Views\View;
+
+/**
+ * Event fired before the view is rendered.
+ */
+class BeforeRenderEvent extends \ICanBoogie\Event
+{
+	public function __construct(\Icybee\Modules\Views\View $target, array $payload)
+	{
+		parent::__construct($target, 'render:before', $payload);
+	}
+}
+
+/**
+ * Event fired after the view was rendered.
+ */
+class RenderEvent extends \ICanBoogie\Event
+{
+	public function __construct(\Icybee\Modules\Views\View $target, array $payload)
+	{
+		parent::__construct($target, 'render', $payload);
+	}
+}
+
+/**
+ * Event fired when the view inner HTML is empty.
+ */
+class RescueEvent extends \ICanBoogie\Event
+{
+	/**
+	 * Reference to the rescued HTML.
+	 *
+	 * @var string
+	 */
+	public $html;
+
+	public function __construct(\Icybee\Modules\Views\View $target, array $payload)
+	{
+		parent::__construct($target, 'rescue', $payload);
 	}
 }

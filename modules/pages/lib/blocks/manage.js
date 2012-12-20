@@ -7,9 +7,10 @@ var WdDroppableTableRow = new Class
 
 	getParent: function()
 	{
-		var level = this.getLevel();
+		var level = this.getLevel()
+		, parent = this.element.getPrevious()
 
-		for (parent = this.element.getPrevious() ; parent ; parent = parent.getPrevious())
+		for ( ; parent ; parent = parent.getPrevious())
 		{
 			var parent_level = this.getLevel(parent);
 
@@ -241,13 +242,14 @@ var WdDraggableTableRow = new Class
 
 		/* search children */
 
-		var level = this.getLevel();
+		var level = this.getLevel()
+		, child = this.element.getNext()
 
 		//console.log('level: %d', level);
 
 		this.dragged = [ new WdDroppableTableRow(this.element) ];
 
-		for (child = this.element.getNext() ; child ; child = child.getNext())
+		for ( ; child ; child = child.getNext())
 		{
 			var child_level = child.getElements('div.indentation').length;
 
@@ -473,7 +475,6 @@ var WdDraggableTableRow = new Class
 	changeLevel: function(slide)
 	{
 		var level = this.getLevel();
-		var parent = null;
 
 		switch (slide)
 		{
@@ -553,6 +554,7 @@ var WdDraggableTableRow = new Class
 		{
 			update_button.set('opacity', 0);
 			update_button.setStyle('display', 'inline');
+			update_button.setStyle('visibility', 'visible');
 			update_button.get('tween').start(1);
 		}
 	}

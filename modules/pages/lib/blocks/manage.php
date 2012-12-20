@@ -211,7 +211,7 @@ class ManageBlock extends \Icybee\Modules\Nodes\ManageBlock
 
 	protected function getJobs()
 	{
-		$rc = '<div class="update" style="float: left"><button name="update">Enregistrer les modifications</button>&nbsp;</div>' . parent::getJobs();
+		$rc = '<div class="update" style="float: left"><button name="update" class="btn btn-primary">Enregistrer les modifications</button>&nbsp;</div>' . parent::getJobs();
 
 		return $rc;
 	}
@@ -400,7 +400,7 @@ EOT;
 			}
 		}
 
-		$rc .= self::modify_code(wd_entities($record->title), $record->nid, $this);
+		$rc .= self::modify_code(\ICanBoogie\escape($record->title), $record->nid, $this);
 
 		if (0)
 		{

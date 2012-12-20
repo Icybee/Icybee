@@ -6,11 +6,6 @@ $hooks = __NAMESPACE__ . '\Hooks::';
 
 return array
 (
-	'events' => array
-	(
-		'resources.files.path.change' => $hooks . 'resources_files_path_change' // FIXME-20120922: this event is no longer fired
-	),
-
 	'patron.markups' => array
 	(
 		'articles' => array
@@ -36,15 +31,6 @@ return array
 				'section' => null,
 				'order' => 'desc',
 				'limit' => 0
-			)
-		),
-
-		'articles:authors' => array
-		(
-			$hooks . 'markup_articles_authors', array
-			(
-				'section' => null,
-				'order' => 'asc'
 			)
 		),
 

@@ -29,7 +29,7 @@ class ManageBlock extends \WdManager
 		);
 	}
 
-	protected static function add_assets(\Brickrouge\Document $document)
+	static protected function add_assets(\Brickrouge\Document $document)
 	{
 		parent::add_assets($document);
 
@@ -75,6 +75,16 @@ class ManageBlock extends \WdManager
 				'orderable' => false
 			)
 		);
+	}
+
+	protected function get_query_conditions(array $options)
+	{
+		list($where, $params) = parent::get_query_conditions($options);
+
+		$where[] = 'constructor = ?';
+		$params[] = $this->module->id;
+
+		return array($where, $params);
 	}
 
 	protected function jobs()

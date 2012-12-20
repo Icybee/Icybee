@@ -15,6 +15,15 @@ return array
 
 	'patron.markups' => array
 	(
+		'node' => array
+		(
+			$hooks . 'markup_node', array
+			(
+				'select' => array('required' => true),
+				'constructor' => null
+			)
+		),
+
 		'node:navigation' => array
 		(
 			$hooks . 'markup_node_navigation'

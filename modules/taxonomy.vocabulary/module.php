@@ -36,7 +36,7 @@ class Module extends \Icybee\Module
 		{
 			$rc .= '<li>';
 			$rc .= '<input type="hidden" name="terms[' . $term->vtid . ']" value="' . $term->weight . '" />';
-			$rc .= wd_entities($term->term);
+			$rc .= \ICanBoogie\escape($term->term);
 			$rc .= '</li>';
 		}
 

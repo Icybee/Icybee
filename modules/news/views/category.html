@@ -1,23 +1,23 @@
-<wdp:news:list select="$request">
-	<wdp:variable name="$page.title">#{@first().category=}</wdp:variable>
+<p:news:list select="$request">
+	<p:variable name="$page.title">#{@first().category=}</p:variable>
 
 	<ol>
-	<wdp:foreach>
+	<p:foreach>
 		<li>
 			<h2><a href="#{@url}">#{@title}</a></h2>
 
 			<div class="metas"><time datetime="#{@date}" pubdate="pubdate">#{@date.format_date('long')}</time></div>
 
 			<div class="contents">
-				<wdp:if test="@image">
+				<p:if test="@image">
 				<img src="#{@image.thumbnail('news-list')}" alt="#{@image.title}" class="illustration" />
-				</wdp:if>
+				</p:if>
 
 				<div class="body">#{@excerpt=}</div>
 			</div>
 		</li>
-	</wdp:foreach>
+	</p:foreach>
 	</ol>
 
-	<wdp:pager range="self.range" />
-</wdp:news:list>
+	<p:pager range="self.range" />
+</p:news:list>

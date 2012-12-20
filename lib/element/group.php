@@ -19,6 +19,7 @@ class Group extends \Brickrouge\Group
 
 		$this->tag_name = 'div';
 		$this->add_class('group');
+		$this->add_class('clearfix');
 	}
 
 	protected function render_group_legend($legend)

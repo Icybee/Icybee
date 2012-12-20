@@ -17,11 +17,12 @@ use ICanBoogie\Events;
 use ICanBoogie\Exception;
 use ICanBoogie\HTTP\Request;
 use ICanBoogie\HTTP\Response;
-use Icybee\Modules\Pages\PageController;
 use ICanBoogie\Operation;
 use ICanBoogie\Routes;
 
 use Brickrouge\Alert;
+
+use Icybee\Modules\Pages\PageController;
 
 class Hooks
 {
@@ -134,7 +135,9 @@ class Hooks
 					'controller' => 'Icybee\BlockController',
 					'title' => '.delete',
 					'block' => 'delete',
-					'visibility' => 'auto'
+					'visibility' => 'auto',
+					'via' => 'ANY',
+					'module' => $module_id
 				);
 			}
 		}
@@ -153,7 +156,7 @@ class Hooks
 	 *
 	 * @return Operation
 	 */
-	public static function dispatch_query_operation(Request $request)
+	static public function dispatch_query_operation(Request $request)
 	{
 		global $core;
 
@@ -207,7 +210,16 @@ class Hooks
 	/**
 	 * Displays the alerts issued during request processing.
 	 *
+	 * <pre>
+	 * <p:alerts>
+	 *     <!-- Content: template? -->
+	 * </p:alerts>
+	 * </pre>
+	 *
 	 * A marker is placed in the rendered HTML that will later be replaced by the actual alerts.
+	 *
+	 * The following alerts are displayed: `success`, `info` and `error`. `debug` alert and
+	 * displayed if the debug mode is {@link Debug::MODE_DEV}.
 	 *
 	 * @param array $args
 	 * @param mixed $engine
@@ -215,13 +227,13 @@ class Hooks
 	 *
 	 * @return string
 	 */
-	public static function markup_alerts(array $args, $engine, $template)
+	static public function markup_alerts(array $args, $engine, $template)
 	{
-		$key = '<!-- alert-markup-placeholder-' . md5(uniqid()) . ' -->';
+		$key = '<!-- alert-markup-placeholder-' . uniqid() . ' -->';
 
-		Events::attach
+		Event\attach
 		(
-			'Icybee\Modules\Pages\PageController::render', function(PageController\RenderEvent $event, PageController $target) use($engine, $template, $key)
+			function(PageController\RenderEvent $event, PageController $target) use($engine, $template, $key)
 			{
 				$types = array('success', 'info', 'error');
 
@@ -230,19 +242,19 @@ class Hooks
 					$types[] = 'debug';
 				}
 
-				$alert = '';
+				$alerts = '';
 
 				foreach ($types as $type)
 				{
-					$alert .= new Alert(Debug::fetch_messages($type), array(Alert::CONTEXT => $type));
+					$alerts .= new Alert(Debug::fetch_messages($type), array(Alert::CONTEXT => $type));
 				}
 
 				if ($template)
 				{
-					$alert = $engine($template, $alert);
+					$alerts = $engine($template, $alerts);
 				}
 
-				$event->html = str_replace($key, $alert, $event->html);
+				$event->html = str_replace($key, $alerts, $event->html);
 			}
 		);
 

@@ -22,7 +22,7 @@ class PropertyRenderers implements \IteratorIterator, \ArrayAccess
 	 *
 	 * @return Events
 	 */
-	public static function get()
+	static public function get()
 	{
 		if (!self::$instance)
 		{
@@ -42,7 +42,7 @@ class PropertyRenderers implements \IteratorIterator, \ArrayAccess
 	 *
 	 * @return array[string]array
 	 */
-	public static function synthesize_config(array $fragments)
+	static public function synthesize_config(array $fragments)
 	{
 		$collection = array();
 
@@ -139,7 +139,7 @@ class PropertyRenderers implements \IteratorIterator, \ArrayAccess
 
 class Rendering
 {
-	public static function render($source, array $options=array())
+	static public function render($source, array $options=array())
 	{
 
 	}

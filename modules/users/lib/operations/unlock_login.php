@@ -11,10 +11,6 @@
 
 namespace Icybee\Modules\Users;
 
-use ICanBoogie\Exception;
-use ICanBoogie\Exception\HTTP as HTTPException;
-use ICanBoogie\Security;
-
 /**
  * Unlocks login locked after multiple failed login attempts.
  *
@@ -46,25 +42,25 @@ class UnlockLoginOperation extends \ICanBoogie\Operation
 
 		if (!$user)
 		{
-			throw new HTTPException('Unknown user', array(), 404);
+			throw new \Exception('Unknown user');
 		}
 
 		$config = $core->configs['user'];
 
 		if (!$config || empty($config['unlock_login_salt']))
 		{
-			throw new Exception
+			throw new \Exception(\ICanBoogie\format
 			(
 				'<em>unlock_login_salt</em> is empty in the <em>user</em> config, here is one generated randomly: %salt', array
 				(
-					'%salt' => Security::generate_token(64, 'wide')
+					'%salt' => \ICanBoogie\generate_token(64, 'wide')
 				)
-			);
+			));
 		}
 
-		if ($user->metas['login_unlock_token'] != base64_encode(Security::pbkdf2($token, $config['unlock_login_salt'])))
+		if ($user->metas['login_unlock_token'] != base64_encode(\ICanBoogie\pbkdf2($token, $config['unlock_login_salt'])))
 		{
-			throw new HTTPException('Invalid token.', array());
+			throw new \Exception('Invalid token.');
 		}
 
 		return true;

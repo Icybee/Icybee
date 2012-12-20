@@ -3,7 +3,6 @@
 namespace Icybee\Modules\Forms;
 
 use Brickrouge\Element;
-use Brickrouge\Form;
 use Brickrouge\Group;
 use Brickrouge\Text;
 
@@ -23,7 +22,7 @@ class EmailComposer extends Group
 						(
 							array
 							(
-								Form::LABEL => 'email_from'
+								Group::LABEL => 'email_from'
 							)
 						),
 
@@ -31,7 +30,7 @@ class EmailComposer extends Group
 						(
 							array
 							(
-								Form::LABEL => 'email_destination'
+								Group::LABEL => 'email_destination'
 							)
 						),
 
@@ -39,7 +38,7 @@ class EmailComposer extends Group
 						(
 							array
 							(
-								Form::LABEL => 'email_bcc'
+								Group::LABEL => 'email_bcc'
 							)
 						),
 
@@ -47,7 +46,7 @@ class EmailComposer extends Group
 						(
 							array
 							(
-								Form::LABEL => 'email_subject'
+								Group::LABEL => 'email_subject'
 							)
 						),
 
@@ -55,7 +54,7 @@ class EmailComposer extends Group
 						(
 							'textarea', array
 							(
-								Form::LABEL => 'email_template'
+								Group::LABEL => 'email_template'
 							)
 						)
 					)

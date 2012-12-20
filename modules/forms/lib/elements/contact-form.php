@@ -96,6 +96,8 @@ class ContactForm extends \Brickrouge\Form
 	{
 		global $core;
 
+		$p = \Patron\PREFIX;
+
 		return array
 		(
 			'notify_destination' => $core->user->email,
@@ -105,7 +107,7 @@ class ContactForm extends \Brickrouge\Form
 Un message a été posté depuis le formulaire de contact :
 
 Nom : #{@gender.index('Mme', 'Mlle', 'M')} #{@lastname} #{@firstname}
-<wdp:if test="@company">Société : #{@company}</wdp:if>
+<{$p}if test="@company">Société : #{@company}</{$p}if>
 E-Mail : #{@email}
 
 Message : #{@message}

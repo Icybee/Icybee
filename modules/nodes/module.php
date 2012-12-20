@@ -11,17 +11,15 @@
 
 namespace Icybee\Modules\Nodes;
 
-use Icybee\Modules\Nodes\Node;
-use ICanBoogie\ActiveRecord\Query;
 use ICanBoogie\Event;
-use ICanBoogie\Exception\HTTP as HTTPException;
 
 use Brickrouge\Element;
 use Brickrouge\Form;
 use Brickrouge\Widget;
 
-use WdAdjustNodeWidget;
-
+/**
+ * Nodes module.
+ */
 class Module extends \Icybee\Module
 {
 	const PERMISSION_MODIFY_BELONGING_SITE = 'modify belonging site';
@@ -72,150 +70,7 @@ class Module extends \Icybee\Module
 		);
 	}
 
-	static public function dashboard_now()
-	{
-		global $core, $document;
-
-		$document->css->add('public/dashboard.css');
-
-		$counts = $core->models['nodes']->similar_site->count('constructor');
-
-		if (!$counts)
-		{
-			return '<p class="nothing">' . t('No record yet') . '</p>';
-		}
-
-		$categories = array
-		(
-			'contents' => array(),
-			'resources' => array(),
-			'other' => array()
-		);
-
-		$default_category = 'other';
-
-		foreach ($counts as $constructor => $count)
-		{
-			if (!isset($core->modules[$constructor]))
-			{
-				continue;
-			}
-
-			$descriptor = $core->modules->descriptors[$constructor];
-			$category = $descriptor[self::T_CATEGORY];
-
-			if (!isset($categories[$category]))
-			{
-				$category = $default_category;
-			}
-
-			$title = t($descriptor[self::T_TITLE], array(), array('scope' => 'module_title'));
-			$title = t(strtr($constructor, '.', '_') . '.name.other', array(), array('default' => $title));
-
-			$categories[$category][] = array
-			(
-				$title, $constructor, $count
-			);
-		}
-
-		$head = '';
-		$max_by_category = 0;
-
-		foreach ($categories as $category => $entries)
-		{
-			$max_by_category = max($max_by_category, count($entries));
-			$head .= '<th>&nbsp;</th><th>' . t($category, array(), array('scope' => 'module_category')) . '</th>';
-		}
-
-		$body = '';
-		$path = $core->site->path;
-
-		for ($i = 0 ; $i < $max_by_category ; $i++)
-		{
-			$body .= '<tr>';
-
-			foreach ($categories as $category => $entries)
-			{
-				if (empty($entries[$i]))
-				{
-					$body .= '<td colspan="2">&nbsp;</td>';
-
-					continue;
-				}
-
-				list($title, $constructor, $count) = $entries[$i];
-
-				$body .= <<<EOT
-<td class="count">$count</td>
-<td class="constructor"><a href="$path/admin/$constructor">$title</a></td>
-EOT;
-			}
-
-			$body .= '</tr>';
-		}
-
-		return $rc = <<<EOT
-<table>
-	<thead><tr>$head</tr></thead>
-	<tbody>$body</tbody>
-</table>
-EOT;
-	}
-
-	static public function dashboard_user_modified()
-	{
-		global $core, $document;
-
-		$document->css->add('public/dashboard.css');
-
-		$model = $core->models['nodes'];
-
-		$entries = $model
-		->where('uid = ? AND (siteid = 0 OR siteid = ?)', array($core->user_id, $core->site_id))
-		->order('modified desc')
-		->limit(10)
-		->all;
-
-		if (!$entries)
-		{
-			return '<p class="nothing">' . t('No record yet') . '</p>';
-		}
-
-		$last_date = null;
-		$context = $core->site->path;
-
-		$rc = '<table>';
-
-		foreach ($entries as $record)
-		{
-			$date = wd_date_period($record->modified);
-
-			if ($date === $last_date)
-			{
-				$date = '&mdash;';
-			}
-			else
-			{
-				$last_date = $date;
-			}
-
-			$title = \ICanBoogie\shorten($record->title, 48);
-			$title = wd_entities($title);
-
-			$rc .= <<<EOT
-	<tr>
-	<td class="date light">$date</td>
-	<td class="title"><a href="$context/admin/{$record->constructor}/{$record->nid}/edit">{$title}</a></td>
-	</tr>
-EOT;
-		}
-
-		$rc .= '</table>';
-
-		return $rc;
-	}
-
-	public static function create_default_routes()
+	static public function create_default_routes()
 	{
 		global $core;
 
@@ -231,7 +86,6 @@ EOT;
 			$common = array
 			(
 				'module' => $module_id,
-// 				'workspace' => $descriptor[self::T_CATEGORY],
 				'controller' => 'Icybee\BlockController',
 				'visibility' => 'visible'
 			);
@@ -303,7 +157,7 @@ EOT;
 			+ $common;
 		}
 
-		Event::fire('create_default_routes', array('routes' => &$routes), $core->modules['nodes']);
+		new Module\CreateDefaultRoutesEvent($core->modules['nodes'], array('routes' => &$routes));
 
 // 		var_dump($routes);
 
@@ -320,5 +174,31 @@ class Pager extends \Brickrouge\Pager
 	protected function getURL($n)
 	{
 		return '#' . $n;
+	}
+}
+
+namespace Icybee\Modules\Nodes\Module;
+
+/**
+ * Event class for the `Icybee\Modules\Nodes\Module::create_default_routes` event.
+ */
+class CreateDefaultRoutesEvent extends \ICanBoogie\Event
+{
+	/**
+	 * Reference to the default routes.
+	 *
+	 * @var array[string]array
+	 */
+	public $routes;
+
+	/**
+	 * The event is created with the type `create_default_routes`.
+	 *
+	 * @param \Icybee\Modules\Nodes\Module $target
+	 * @param array $payload
+	 */
+	public function __construct(\Icybee\Modules\Nodes\Module $target, array $payload)
+	{
+		parent::__construct($target, 'create_default_routes', $payload);
 	}
 }

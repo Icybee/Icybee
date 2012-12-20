@@ -29,6 +29,11 @@ class Form extends \Icybee\Modules\Nodes\Node
 
 	const FORM_RECORD_TAG = '#form-record';
 
+	/**
+	 * Identifier of the form model.
+	 *
+	 * @var string
+	 */
 	public $modelid;
 
 	/**
@@ -65,6 +70,13 @@ class Form extends \Icybee\Modules\Nodes\Node
 	public $notify_template;
 	public $pageid;
 
+	/**
+	 * Returns the model definition.
+	 *
+	 * @throws Exception if the form model is not defined.
+	 *
+	 * @return array
+	 */
 	protected function get_model()
 	{
 		global $core;
@@ -137,7 +149,12 @@ class Form extends \Icybee\Modules\Nodes\Node
 		);
 	}
 
-	public function __toString()
+	/**
+	 * Renders the record into an HTML form.
+	 *
+	 * @return string
+	 */
+	public function render()
 	{
 		global $core;
 
@@ -154,82 +171,87 @@ class Form extends \Icybee\Modules\Nodes\Node
 			return '<div id="' . $this->slug . '">' . $this->complete . '</div>';
 		}
 
-		try
+		$form = $this->form;
+
+		if (isset($form->hiddens[Operation::DESTINATION]) && isset($form->hiddens[Operation::NAME]))
 		{
-			$form = $this->form;
+			$destination = $form->hiddens[Operation::DESTINATION];
+			$name = $access = $form->hiddens[Operation::NAME];
 
-			if (isset($form->hiddens[Operation::DESTINATION]) && isset($form->hiddens[Operation::NAME]))
+			if ($name == 'save')
 			{
-				$destination = $form->hiddens[Operation::DESTINATION];
-				$name = $access = $form->hiddens[Operation::NAME];
+				$access = Module::PERMISSION_CREATE;
+			}
+			else if ($name == 'post' && $destination == 'forms')
+			{
+				$access = 'post form';
+			}
 
-				if ($name == 'save')
-				{
-					$access = Module::PERMISSION_CREATE;
-				}
-				else if ($name == 'post' && $destination == 'forms')
-				{
-					$access = 'post form';
-				}
-
-				if (!$core->user->has_permission($access, $destination))
-				{
-					return (string) new \Brickrouge\Alert
-					(
-						<<<EOT
+			if (!$core->user->has_permission($access, $destination))
+			{
+				return (string) new \Brickrouge\Alert
+				(
+					<<<EOT
 <p>You don't have permission to execute the <q>$name</q> operation on the <q>$destination</q> module,
 <a href="{$core->site->path}/admin/users.roles">the <q>{$core->user->role->name}</q> role should be modified</a>.</p>
 EOT
-						, array(), 'error'
-					);
-				}
+					, array(), 'error'
+				);
 			}
+		}
 
-			$core->document->css->add('public/page.css');
+		$core->document->css->add('public/page.css');
 
-			// FIXME-20110531: saving the form disables validation during the "forms/send" operation
-			//$this->form->save();
+		// FIXME-20110531: saving the form disables validation during the "forms/send" operation
+		//$this->form->save();
 
-			$before = $this->before;
-			$after = $this->after;
-			$form = $this->form;
+		$before = $this->before;
+		$after = $this->after;
+		$form = $this->form;
 
-			new Form\BeforeRenderEvent
+		new Form\BeforeRenderEvent
+		(
+			$this, array
 			(
-				$this, array
-				(
-					'before' => &$before,
-					'after' => &$after,
-					'form' => $form,
-				)
-			);
+				'before' => &$before,
+				'after' => &$after,
+				'form' => $form,
+			)
+		);
 
-			$normalized = \ICanBoogie\normalize($this->slug);
+		$normalized = \ICanBoogie\normalize($this->slug);
 
-			if ($before)
-			{
-				$before = '<div class="form-before form-before--' . $normalized . '">' . $before . '</div>';
-			}
+		if ($before)
+		{
+			$before = '<div class="form-before form-before--' . $normalized . '">' . $before . '</div>';
+		}
 
-			if ($after)
-			{
-				$after = '<div class="form-after form-after--' . $normalized . '">' . $after . '</div>';
-			}
+		if ($after)
+		{
+			$after = '<div class="form-after form-after--' . $normalized . '">' . $after . '</div>';
+		}
 
-			$html = $before . $form . $after;
+		$html = $before . $form . $after;
 
-			new Form\RenderEvent
+		new Form\RenderEvent
+		(
+			$this, array
 			(
-				$this, array
-				(
-					'html' => &$html,
-					'before' => $before,
-					'after' => $after,
-					'form' => $form,
-				)
-			);
+				'html' => &$html,
+				'before' => $before,
+				'after' => $after,
+				'form' => $form,
+			)
+		);
 
-			return $html;
+		return $html;
+	}
+
+	public function __toString()
+	{
+		try
+		{
+			return $this->render();
 		}
 		catch (\Exception $e)
 		{
@@ -272,11 +294,11 @@ class BeforeRenderEvent extends \ICanBoogie\Event
 	 * The event is created with the type `render:before`.
 	 *
 	 * @param \Icybee\Modules\Forms\Form $target
-	 * @param array $properties
+	 * @param array $payload
 	 */
-	public function __construct(\Icybee\Modules\Forms\Form $target, array $properties)
+	public function __construct(\Icybee\Modules\Forms\Form $target, array $payload)
 	{
-		parent::__construct($target, 'render:before', $properties);
+		parent::__construct($target, 'render:before', $payload);
 	}
 }
 
@@ -317,10 +339,10 @@ class RenderEvent extends \ICanBoogie\Event
 	 * The event is created with the type `render`.
 	 *
 	 * @param \Icybee\Modules\Forms\Form $target
-	 * @param array $properties
+	 * @param array $payload
 	 */
-	public function __construct(\Icybee\Modules\Forms\Form $target, array $properties)
+	public function __construct(\Icybee\Modules\Forms\Form $target, array $payload)
 	{
-		parent::__construct($target, 'render', $properties);
+		parent::__construct($target, 'render', $payload);
 	}
 }

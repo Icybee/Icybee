@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Icybee\Admin\Element;
+namespace Icybee\Element;
 
 use ICanBoogie\Event;
 use ICanBoogie\Exception;
@@ -313,33 +313,6 @@ class ActionbarContextNav extends Element
 		}
 
 		return $collection;
-	}
-}
-
-class ActionbarSearch extends Element
-{
-	public function __construct(array $attributes=array())
-	{
-		parent::__construct('div', $attributes + array('class' => 'actionbar-search'));
-	}
-
-	protected function render_inner_html()
-	{
-		$html = parent::render_inner_html();
-
-		$this->fire_alter_inner_html(array('html' => &$html));
-
-		if (empty($html))
-		{
-			throw new \Brickrouge\ElementIsEmpty;
-		}
-
-		return $html;
-	}
-
-	protected function fire_alter_inner_html(array $params)
-	{
-		Event::fire('alter_inner_html', $params, $this);
 	}
 }
 

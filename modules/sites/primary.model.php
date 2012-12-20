@@ -99,7 +99,7 @@ class Model extends \ICanBoogie\ActiveRecord\Model
 			# guest users don't have access to sites that are not online.
 			#
 
-			if ($site->status != 1 && $user && $user->is_guest)
+			if ($site->status != Site::STATUS_OK && $user && $user->is_guest)
 			{
 				continue;
 			}
@@ -147,7 +147,7 @@ class Model extends \ICanBoogie\ActiveRecord\Model
 	 *
 	 * @return Site
 	 */
-	private static function get_default_site()
+	static private function get_default_site()
 	{
 		global $core;
 
@@ -160,7 +160,7 @@ class Model extends \ICanBoogie\ActiveRecord\Model
 					'title' => 'Undefined',
 					'language' => $core->language,
 					'timezone' => $core->timezone,
-					'status' => 1
+					'status' => Site::STATUS_OK
 				)
 			);
 		}

@@ -23,36 +23,6 @@ class Module extends \ICanBoogie\Module
 		$core->document->css->add('/public/dashboard.css');
 		$core->document->js->add('/public/dashboard.js');
 
-		if (0 && $core->user->is_admin)
-		{
-			foreach ($core->modules->descriptors as $id => $descriptor)
-			{
-				if (empty($core->modules[$id]))
-				{
-					continue;
-				}
-
-				$module = $core->modules[$id];
-
-				$is_installed = $module->is_installed();
-
-				if ($is_installed === null || $is_installed)
-				{
-					continue;
-				}
-
-				\ICanBoogie\log_error('Module %name is not correctly installed.', array('%name' => $module->title));
-			}
-		}
-
-		$event = Event::fire
-		(
-			'alter.block.dashboard', array
-			(
-				'panels' => array()
-			)
-		);
-
 		$panels = $core->configs->synthesize('dashboard', 'merge');
 
 		foreach ($panels as $i => $panel)

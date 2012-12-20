@@ -15,8 +15,6 @@ use ICanBoogie\Mailer;
 use ICanBoogie\I18n;
 use ICanBoogie\I18n\Translator\Proxi;
 use ICanBoogie\Exception;
-use ICanBoogie\Exception\HTTP as HTTPException;
-use ICanBoogie\Security;
 
 class LoginOperation extends \ICanBoogie\Operation
 {
@@ -70,15 +68,15 @@ class LoginOperation extends \ICanBoogie\Operation
 		{
 			if ($login_unlock_time > $now)
 			{
-				throw new HTTPException
+				throw new \ICanBoogie\HTTP\HTTPError
 				(
-					"The user account has been locked after multiple failed login attempts.
+					\ICanBoogie\format("The user account has been locked after multiple failed login attempts.
 					An e-mail has been sent to unlock the account. Login attempts are locked until %time,
 					unless you unlock the account using the email sent.", array
 					(
 						'%count' => $user->metas['failed_login_count'],
 						'%time' => I18n\format_date($login_unlock_time, 'HH:mm')
-					),
+					)),
 
 					403
 				);
@@ -87,7 +85,7 @@ class LoginOperation extends \ICanBoogie\Operation
 			$user->metas['login_unlock_time'] = null;
 		}
 
-		if (!$user->same_password($password))
+		if (!$user->compare_password($password))
 		{
 			$errors[User::PASSWORD] = t('Unknown username/password combination.');
 
@@ -104,14 +102,14 @@ class LoginOperation extends \ICanBoogie\Operation
 					(
 						'<q>unlock_login_salt</q> is empty in the <q>user</q> config, here is one generated randomly: %salt', array
 						(
-							'%salt' => Security::generate_token(64, 'wide')
+							'%salt' => \ICanBoogie\generate_token(64, 'wide')
 						)
 					);
 				}
 
-				$token = base64_encode(Security::generate_token(32, 'wide'));
+				$token = base64_encode(\ICanBoogie\generate_token(32, 'wide'));
 
-				$user->metas['login_unlock_token'] = base64_encode(Security::pbkdf2($token, $config['unlock_login_salt']));
+				$user->metas['login_unlock_token'] = base64_encode(\ICanBoogie\pbkdf2($token, $config['unlock_login_salt']));
 				$user->metas['login_unlock_time'] = $now + 3600;
 
 				$until = I18n\format_date($now + 3600, 'HH:mm');

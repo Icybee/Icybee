@@ -152,9 +152,10 @@ class NavigationElement extends Element // TODO-20120922: rewrite this element
 			$rc = $template ? $patron($template, $tree) : static::render_navigation_tree($tree);
 		}
 
-		Event::fire
+		/*
+		new Event
 		(
-			'alter.markup.navigation', array
+			null, 'alter.markup.navigation', array
 			(
 				'rc' => &$rc,
 				'page' => $page,
@@ -162,6 +163,7 @@ class NavigationElement extends Element // TODO-20120922: rewrite this element
 				'args' => $args
 			)
 		);
+		*/
 
 		return $rc;
 	}

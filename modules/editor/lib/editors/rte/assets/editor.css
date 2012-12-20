@@ -1,0 +1,362 @@
+.mooeditable-container{
+	position: relative;
+	border: 2px solid #ddd;
+}
+
+.mooeditable-ui-toolbar{
+	color: inherit;
+	background-color: #eee;
+	padding: 2px;
+}
+
+.mooeditable-ui-toolbar:after{
+	content: ".";
+	display: block;
+	height: 0;
+	clear: both;
+	visibility: hidden;
+}
+
+.mooeditable-ui-toolbar .toolbar-item,
+.mooeditable-ui-toolbar .toolbar-separator{
+	display: -moz-inline-box;
+	display: inline-block;
+	vertical-align: middle;
+}
+
+.mooeditable-ui-toolbar .mooeditable-ui-button{
+	cursor: pointer;
+	border: 0;
+	width: auto;
+	height: auto;
+	margin: 2px;
+	padding: 2px;
+	vertical-align: middle;
+	color: inherit;
+	background-color: transparent;
+}
+* html .mooeditable-ui-toolbar .mooeditable-ui-button{ /* IE6 */
+	width: 24px;
+	overflow: visible;
+	padding: 2px 4px;
+}
+*:first-child+html .mooeditable-ui-toolbar .mooeditable-ui-button{ /* IE7 */
+	min-width: 24px;
+	overflow: visible;
+	padding: 2px 4px;
+}
+
+.mooeditable-ui-toolbar .mooeditable-ui-button.active,
+.mooeditable-ui-toolbar .mooeditable-ui-button.onActive{
+	color: inherit;
+	background-color: #ddd;
+}
+
+.mooeditable-ui-toolbar .mooeditable-ui-button:hover,
+.mooeditable-ui-toolbar .mooeditable-ui-button.hover{
+	color: inherit;
+	background-color: #fff;
+}
+
+.mooeditable-ui-toolbar .mooeditable-ui-button.disabled{
+	cursor: default;
+}
+
+.mooeditable-ui-toolbar .mooeditable-ui-button.disabled:hover{
+	color: inherit;
+	background-color: transparent;
+}
+
+.mooeditable-ui-toolbar .mooeditable-ui-button .button-icon{
+	display: -moz-inline-box;
+	display: inline-block;
+	width: 16px;
+	height: 16px;
+	vertical-align: middle;
+	color: inherit;
+	background: transparent url(images/mooeditable-toolbarbuttons-tango.png) no-repeat 0 -8px;
+}
+
+.mooeditable-ui-toolbar .mooeditable-ui-button .button-text{
+	display: none;
+	font-size: 13px;
+	vertical-align: middle;
+}
+
+.mooeditable-ui-toolbar .mooeditable-ui-button-text .button-icon{
+	display: none;
+}
+.mooeditable-ui-toolbar .mooeditable-ui-button-text .button-text{
+	display: inline;
+}
+
+.mooeditable-ui-toolbar .mooeditable-ui-button-icon-text{
+	width: auto;
+}
+.mooeditable-ui-toolbar .mooeditable-ui-button-icon-text .button-text{
+	display: inline;
+	margin-left: 4px;
+}
+
+.mooeditable-ui-toolbar .toolbar-separator{
+	width: 1px;
+	height: 24px;
+	margin: 2px;
+	text-indent: -999em;
+	color: inherit;
+	background-color: #cfcfcf;
+}
+
+.mooeditable-ui-toolbar .bold-item .button-icon{ background-position: 0 0; } 
+.mooeditable-ui-toolbar .createlink-item .button-icon{ background-position: 0 -16px; } 
+.mooeditable-ui-toolbar .indent-item .button-icon{ background-position: 0 -32px; } 
+.mooeditable-ui-toolbar .insertorderedlist-item .button-icon{ background-position: 0 -48px; } 
+.mooeditable-ui-toolbar .insertunorderedlist-item .button-icon{ background-position: 0 -64px; } 
+.mooeditable-ui-toolbar .italic-item .button-icon{ background-position: 0 -80px; } 
+.mooeditable-ui-toolbar .outdent-item .button-icon{ background-position: 0 -96px; } 
+.mooeditable-ui-toolbar .redo-item .button-icon{ background-position: 0 -112px; } 
+.mooeditable-ui-toolbar .strikethrough-item .button-icon{ background-position: 0 -128px; } 
+.mooeditable-ui-toolbar .toggleview-item .button-icon{ background-position: 0 -144px; } 
+.mooeditable-ui-toolbar .underline-item .button-icon{ background-position: 0 -160px; } 
+.mooeditable-ui-toolbar .undo-item .button-icon{ background-position: 0 -176px; } 
+.mooeditable-ui-toolbar .unlink-item .button-icon{ background-position: 0 -192px; } 
+.mooeditable-ui-toolbar .urlimage-item .button-icon{ background-position: 0 -208px; } 
+
+.mooeditable-iframe{
+	margin: 0;
+	padding: 0;
+	border: 0;
+	width: 100%;
+	vertical-align: top;
+}
+
+.mooeditable-textarea{
+	margin: 0 !important;
+	padding: 0 !important;
+	border: 0 !important;
+	width: 100% !important;
+	resize: none !important; /* disable resizable textareas in Webkit */
+	outline: 0 !important; /* disable focus ring in Safari */
+}
+
+.mooeditable-ui-dialog{
+	color: inherit;
+	background-color: #ddd;
+	position: absolute;
+	display: block;
+	cursor: default;
+	font-size: 12px;
+	z-index: 100;
+	width: 100%;
+}
+
+.mooeditable-ui-dialog .dialog-content{
+	padding: 4px 10px;
+}
+
+.mooeditable-ui-dialog .dialog-content *{
+	vertical-align: middle;
+}
+
+.mooeditable-ui-dialog input{
+	margin: 0 8px;
+}
+
+.mooeditable-ui-dialog input.text{
+	width: 300px;
+}
+
+.mooeditable-ui-button-overlay{
+	color: inherit;
+	background-color: #ddd;
+	font-size: 12px;
+	z-index: 100;
+	outline: 0;
+	-moz-outline: 0;
+	-webkit-outline: 0;
+}
+
+.mooeditable-ui-button-overlay .overlay-content{
+	padding: 10px;
+}
+
+.mooeditable-resizer {
+	height: 8px;
+	background-color: #eee;
+	border-top: 1px solid #ddd;
+	cursor: s-resize;
+}
+
+/*
+**
+
+CUSTOM
+
+*/
+
+.mooeditable-container
+{
+	border: 1px solid #CFCFCF;
+	border-radius: 4px;
+}
+
+.mooeditable-ui-toolbar
+{
+	background-color: #E8E8E8;
+	border-bottom: 1px solid #CFCFCF;
+}
+	
+.mooeditable-iframe
+{
+	background-color: white;
+}
+
+.mooeditable-ui-button
+{
+	border-radius: 0;
+	box-shadow: none;
+	background: transparent;
+}
+
+textarea.editor.moo
+{
+	visibility: hidden;
+}
+
+.mooeditable-resizer {
+	background-color: #E8E8E8;
+	border-top-color: #cfcfcf;
+}
+.mooeditable-ui-toolbar .image-item .button-icon{ background-position: 0 -208px; } 
+.mooeditable-ui-toolbar .justifycenter-item .button-icon,
+.mooeditable-ui-toolbar .justifyright-item .button-icon,
+.mooeditable-ui-toolbar .justifyfull-item .button-icon,
+.mooeditable-ui-toolbar .justifyleft-item .button-icon{
+	background-image: url(images/mooeditable-extras-toolbarbuttons-tango.png);
+}
+
+.mooeditable-ui-toolbar .justifycenter-item .button-icon{ background-position: 0 0; } 
+.mooeditable-ui-toolbar .justifyfull-item .button-icon{ background-position: 0 -16px; } 
+.mooeditable-ui-toolbar .justifyleft-item .button-icon{ background-position: 0 -32px; } 
+.mooeditable-ui-toolbar .justifyright-item .button-icon{ background-position: 0 -48px; } 
+
+.mooeditable-ui-toolbar .removeformat-item .button-icon { background: transparent url(Other/removeformat.png) no-repeat center center; }
+.mooeditable-ui-toolbar .insertHorizontalRule-item .button-icon { background: transparent url(Other/hr.png) no-repeat center center; }
+/*
+ A change to the original MooEditable style
+ 
+ * Famfamfam Silk Iconset
+ * Darker gray color for mouse over selections 
+ * Rounded corners for buttons and overlays (only supported on WebKit and FireFox) 
+ 
+ Usage:
+        Include MooEditable.SilkTheme.css to overwrite the default settings
+        
+ 		<link rel="stylesheet" type="text/css" href="../../Assets/MooEditable/MooEditable.css">
+		<link rel="stylesheet" type="text/css" href="../../Assets/MooEditable/MooEditable.Extras.css">
+		<link rel="stylesheet" type="text/css" href="../../Assets/MooEditable/MooEditable.SilkTheme.css">
+ 
+ 
+ Author: Olivier Refalo
+ */
+
+
+.mooeditable-ui-toolbar .mooeditable-ui-button .button-icon{
+	background: transparent url(images/mooeditable-toolbarbuttons-silk.png) no-repeat 0 -8px;
+}
+
+.mooeditable-ui-toolbar .bold-item .button-icon{ background-position: 0 -16px; } 
+.mooeditable-ui-toolbar .createlink-item .button-icon{ background-position: 0 -32px; } 
+.mooeditable-ui-toolbar .indent-item .button-icon{ background-position: 0 -48px; } 
+.mooeditable-ui-toolbar .insertorderedlist-item .button-icon{ background-position: 0 -64px; } 
+.mooeditable-ui-toolbar .insertunorderedlist-item .button-icon{ background-position: 0 -80px; } 
+.mooeditable-ui-toolbar .italic-item .button-icon{ background-position: 0 -96px; } 
+.mooeditable-ui-toolbar .outdent-item .button-icon{ background-position: 0 -176px; } 
+.mooeditable-ui-toolbar .redo-item .button-icon{ background-position: 0 -208px; } 
+.mooeditable-ui-toolbar .strikethrough-item .button-icon{ background-position: 0 -224px; } 
+.mooeditable-ui-toolbar .toggleview-item .button-icon{ background-position: 0 -240px; } 
+.mooeditable-ui-toolbar .underline-item .button-icon{ background-position: 0 -256px; } 
+.mooeditable-ui-toolbar .undo-item .button-icon{ background-position: 0 -272px; } 
+.mooeditable-ui-toolbar .unlink-item .button-icon{ background-position: 0 -288px; } 
+.mooeditable-ui-toolbar .urlimage-item .button-icon{ background-position: 0 -304px; }
+.mooeditable-ui-toolbar .image-item .button-icon{ background-position: 0 -304px; }
+.mooeditable-ui-toolbar .removeformat-item .button-icon{ background-position: 0 -320px; }
+.mooeditable-ui-toolbar .forecolor-item .button-icon{background-position: 0 -192px;}
+.mooeditable-ui-toolbar .smiley-item .button-icon{
+	background: transparent url(Smiley/smile.png) no-repeat top left;
+}
+
+.mooeditable-ui-toolbar .justifycenter-item .button-icon,
+.mooeditable-ui-toolbar .justifyright-item .button-icon,
+.mooeditable-ui-toolbar .justifyfull-item .button-icon,
+.mooeditable-ui-toolbar .justifyleft-item .button-icon{
+	background-image: url(images/mooeditable-toolbarbuttons-silk.png);
+}
+.mooeditable-ui-toolbar .justifycenter-item .button-icon{ background-position: 0 -112px; } 
+.mooeditable-ui-toolbar .justifyfull-item .button-icon{ background-position: 0 -128px; } 
+.mooeditable-ui-toolbar .justifyleft-item .button-icon{ background-position: 0 -144px; } 
+.mooeditable-ui-toolbar .justifyright-item .button-icon{ background-position: 0 -160px; } 
+
+.mooeditable-ui-toolbar .mooeditable-ui-button:hover,
+.mooeditable-ui-toolbar .mooeditable-ui-button.hover{
+	-webkit-border-radius: 3px;
+	-moz-border-radius: 3px;
+	border-radius: 3px;
+}
+
+.mooeditable-ui-button-overlay{
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	border-radius: 5px;
+}
+
+.mooeditable-ui-toolbar .mooeditable-ui-button.active,
+.mooeditable-ui-toolbar .mooeditable-ui-button.onActive{
+	background-color: #B5D5FF;
+	-webkit-border-radius: 3px;
+	-moz-border-radius: 3px;
+	border-radius: 3px;
+}@CHARSET "UTF-8";
+
+div.mooeditable-ui-dialog.mooeditable-paste-dialog
+{
+	background-color: white;
+	box-shadow: 0 5px 20px 0 gray;
+	-moz-box-shadow: 0 5px 20px 0 gray;
+	-webkit-box-shadow: 0 5px 20px 0 gray;
+	border: 1px solid #CFCFCF; 
+}
+
+div.mooeditable-ui-dialog.mooeditable-paste-dialog textarea
+{
+	width: 100%;
+	border: none;
+	background-color: white;
+	box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+}
+
+div.mooeditable-ui-dialog div.mooeditable-ui-dialog-contents-frame
+{
+	margin: 1em;
+	border: 1px solid #CFCFCF;
+}
+
+div.mooeditable-ui-dialog div.mooeditable-ui-dialog-action-frame
+{
+	background-color: #F6F6F6;
+	border-top: 1px solid #CFCFCF;
+	text-align: center;
+}
+
+div.mooeditable-ui-dialog div.mooeditable-ui-dialog-action-frame button
+{
+	font-size: 12px;
+	margin: 0.8em 1ex;
+}
+
+button.mooeditable-ui-button.paste-item span.button-icon
+{
+	background: url(icons.png) 0 -160px no-repeat;
+}

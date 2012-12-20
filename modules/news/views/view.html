@@ -1,17 +1,17 @@
 <div class="metas">
-	<wdp:if test="@category">
+	<p:if test="@category">
 	<a href="#{@url('vocabulary/category/list')}" class="#{@category.css_class}">#{@category}</a><span class="separator"> &ndash;</span>
-	</wdp:if>
+	</p:if>
 
 	<time datetime="#{@date}" pubdate="pubdate">#{@date.format_date()}</time>
 </div>
 
 <div class="contents">
-	<wdp:if test="@image">
+	<p:if test="@image">
 	<a href="#{@image.path}" rel="lightbox" class="illustration">#{@image.thumbnail('news-view')=}</a>
-	</wdp:if>
+	</p:if>
 
 	<div class="body">#{@=}</div>
 </div>
 
-<wdp:node:navigation />
+<p:node:navigation />

@@ -20,7 +20,7 @@ class ImageUpload extends \Icybee\Modules\Files\FileUpload
 	const THUMBNAIL_WIDTH = 64;
 	const THUMBNAIL_HEIGHT = 64;
 
-	protected static function add_assets(\Brickrouge\Document $document)
+	static protected function add_assets(\Brickrouge\Document $document)
 	{
 		parent::add_assets($document);
 

@@ -19,6 +19,8 @@ use ICanBoogie\Operation;
 
 use Brickrouge\Element;
 use Brickrouge\Form;
+use Brickrouge\Group;
+use Brickrouge\Text;
 
 use Icybee\Modules\Contents\ConfigBlock as ContentsConfigBlock;
 use Icybee\Modules\Nodes\Node;
@@ -57,7 +59,7 @@ class Hooks
 	 * @param AlterResultEvent $event
 	 * @param \Icybee\Modules\Contents\ViewProvider $provider
 	 */
-	public static function on_contents_provider_alter_result(AlterResultEvent $event, \Icybee\Modules\Contents\ViewProvider $provider)
+	static public function on_contents_provider_alter_result(AlterResultEvent $event, \Icybee\Modules\Contents\ViewProvider $provider)
 	{
 		global $core;
 
@@ -103,7 +105,7 @@ class Hooks
 		}
 	}
 
-	public static function on_contents_editblock_alter_children(Event $event, \Icybee\Modules\Nodes\EditBlock $block)
+	static public function on_contents_editblock_alter_children(Event $event, \Icybee\Modules\Nodes\EditBlock $block)
 	{
 		global $core;
 
@@ -133,9 +135,10 @@ class Hooks
 		(
 			array
 			(
-				Form::LABEL => 'Image',
+				Form::LABEL => $core->registry['resources_images.inject.' . $flat_id . '.title'] ?: 'Image',
 				Element::GROUP => $group,
 				Element::REQUIRED => $core->registry['resources_images.inject.' . $flat_id . '.required'],
+				Element::DESCRIPTION => $core->registry['resources_images.inject.' . $flat_id . '.description'],
 
 				'value' => $imageid
 			)
@@ -148,7 +151,7 @@ class Hooks
 	 * @param Event $event
 	 * @param \Icybee\Modules\Contents\ConfigBlock $block
 	 */
-	public static function on_contents_configblock_alter_children(Event $event, ContentsConfigBlock $block)
+	static public function on_contents_configblock_alter_children(Event $event, ContentsConfigBlock $block)
 	{
 		global $core;
 
@@ -216,6 +219,26 @@ class Hooks
 					)
 				),
 
+				"global[resources_images.inject][$target_flat_id.title]" => new Text
+				(
+					array
+					(
+						Group::LABEL => "Titre du champ",
+						Element::GROUP => 'resources_images__inject',
+
+						'placeholder' => 'Image'
+					)
+				),
+
+				"global[resources_images.inject][$target_flat_id.description]" => new Text
+				(
+					array
+					(
+						Group::LABEL => "Description du champ",
+						Element::GROUP => 'resources_images__inject'
+					)
+				),
+
 				"global[resources_images.inject][$target_flat_id.required]" => new Element
 				(
 					Element::TYPE_CHECKBOX, array
@@ -258,7 +281,7 @@ class Hooks
 		);
 	}
 
-	public static function on_nodes_save(Event $event, \Icybee\Modules\Nodes\SaveOperation $operation)
+	static public function on_nodes_save(Event $event, \Icybee\Modules\Nodes\SaveOperation $operation)
 	{
 		$params = &$event->request->params;
 
@@ -273,7 +296,7 @@ class Hooks
 		$entry->metas['resources_images.imageid'] = $imageid ? $imageid : null;
 	}
 
-	public static function before_contents_config(Event $event, \Icybee\Modules\Contents\ConfigOperation $operation)
+	static public function before_contents_config(Event $event, \Icybee\Modules\Contents\ConfigOperation $operation)
 	{
 		if (!isset($event->request->params['global']['resources_images.inject']))
 		{
@@ -383,7 +406,7 @@ class Hooks
 	 *
 	 * @param Event $event
 	 */
-	public static function on_page_controller_render(PageController\RenderEvent $event, PageController $target)
+	static public function on_page_controller_render(PageController\RenderEvent $event, PageController $target)
 	{
 		global $core;
 
@@ -399,7 +422,7 @@ class Hooks
 
 	static private $attached;
 
-	public static function on_alter_css_class_names(\Icybee\Modules\Nodes\Node\AlterCSSClassNamesEvent $event, \Icybee\Modules\Nodes\Node $node)
+	static public function on_alter_css_class_names(\Icybee\Modules\Nodes\Node\AlterCSSClassNamesEvent $event, \Icybee\Modules\Nodes\Node $node)
 	{
 		global $core;
 

@@ -11,14 +11,13 @@
 
 namespace Icybee\Modules\Forms;
 
-use ICanBoogie\Event;
 use ICanBoogie\Exception;
 use ICanBoogie\Operation;
 use ICanBoogie\Mailer;
 
 class Hooks
 {
-	public static function markup_form(array $args, \Patron\Engine $patron, $template)
+	static public function markup_form(array $args, \Patron\Engine $patron, $template)
 	{
 		global $core;
 
@@ -31,9 +30,7 @@ class Hooks
 		}
 		else
 		{
-			list($conditions, $conditions_args) = $model->parseConditions(array('slug' => $id, 'language' => $core->request->context->page->language));
-
-			$form = $model->where(implode(' AND ', $conditions), $conditions_args)->one;
+			$form = $model->own->visible->filter_by_slug($id)->one;
 		}
 
 		if (!$form)
@@ -41,15 +38,7 @@ class Hooks
 			throw new Exception('Unable to retrieve form using supplied conditions: %conditions', array('%conditions' => json_encode($args['select'])));
 		}
 
-		Event::fire
-		(
-			'nodes_load', array
-			(
-				'nodes' => array($form)
-			),
-
-			$patron
-		);
+		new \BlueTihi\Context\LoadedNodesEvent($patron->context, array($form));
 
 		if (!$form->is_online)
 		{
@@ -93,7 +82,7 @@ class Hooks
 	 * @param \ICanBoogie\Operation\GetFormEvent $event
 	 * @param Operation $operation
 	 */
-	public static function on_operation_get_form(\ICanBoogie\Operation\GetFormEvent $event, Operation $operation)
+	static public function on_operation_get_form(Operation\GetFormEvent $event, Operation $operation)
 	{
 		global $core;
 
@@ -110,9 +99,9 @@ class Hooks
 		$event->form = $form;
 		$event->stop();
 
-		\ICanBoogie\Events::attach
+		\ICanBoogie\Event\attach
 		(
-			get_class($operation) . '::process', function(\ICanBoogie\Operation\ProcessEvent $event, Operation $operation) use ($record, $form)
+			get_class($operation) . '::process', function(Operation\ProcessEvent $event, Operation $operation) use ($record, $form)
 			{
 				global $core;
 
@@ -120,7 +109,6 @@ class Hooks
 				$bind = $event->request->params;
 				$template = $record->notify_template;
 				$mailer = null;
-
 				$mailer_tags = array
 				(
 					Mailer::T_BCC => $record->notify_bcc,
@@ -130,56 +118,41 @@ class Hooks
 					Mailer::T_MESSAGE => null
 				);
 
-				Event::fire
+				$notify_params = new NotifyParams
 				(
-					'alter_notify:before', array
+					array
 					(
 						'rc' => &$rc,
 						'bind' => &$bind,
 						'template' => &$template,
 						'mailer' => &$mailer,
-						'mailer_tags' => &$mailer_tags,
+						'mailer_tags' => &$mailer_tags
+					)
+				);
+
+				new Form\BeforeAlterNotifyEvent
+				(
+					$record, array
+					(
+						'params' => $notify_params,
 						'event' => $event,
 						'operation' => $operation
-					),
-
-					$record
+					)
 				);
 
 				if (method_exists($form, 'alter_notify'))
 				{
-					$form->alter_notify
-					(
-						new NotifyParams
-						(
-							array
-							(
-								'rc' => &$rc,
-								'bind' => &$bind,
-								'template' => &$template,
-								'mailer' => &$mailer,
-								'mailer_tags' => &$mailer_tags
-							)
-						),
-
-						$record, $event, $operation
-					);
+					$form->alter_notify($notify_params, $record, $event, $operation);
 				}
 
-				Event::fire
+				new Form\AlterNotifyEvent
 				(
-					'alter_notify', array
+					$record, array
 					(
-						'rc' => &$rc,
-						'bind' => &$bind,
-						'template' => &$template,
-						'mailer' => &$mailer,
-						'mailer_tags' => &$mailer_tags,
+						'params' => $notify_params,
 						'event' => $event,
 						'operation' => $operation
-					),
-
-					$record
+					)
 				);
 
 				#
@@ -217,163 +190,22 @@ class Hooks
 						$mailer = new Mailer($mailer_tags);
 					}
 
-					\ICanBoogie\log('operation send mailer: \1', array($mailer));
-
 					$mailer();
 				}
 
-				new SentEvent
+				new Form\NotifyEvent
 				(
 					$record, array
 					(
-						'rc' => &$rc,
-						'bind' => &$bind,
+						'params' => $notify_params,
+						'message' => &$message,
 						'event' => $event,
 						'request' => $event->request,
-						'operation' => $operation,
-						'message' => &$message,
-						'mailer' => &$mailer,
-						'mailer_tags' => &$mailer_tags
+						'operation' => $operation
 					)
 				);
 			}
 		);
-	}
-}
-
-class BeforeAlterNotify extends Event
-{
-	/**
-	 * Reference to the operation result.
-	 *
-	 * @var mixed
-	 */
-	public $rc;
-
-	/**
-	 * Reference to the thisArg of the template.
-	 *
-	 * @var mixed
-	 */
-	public $bind;
-
-	/**
-	 * Reference to the message template.
-	 *
-	 * @var string
-	 */
-	public $template;
-
-	/**
-	 * Reference to the mailer variable.
-	 *
-	 * One can provide a mailer to use instead of creating one using `mailer_tags`.
-	 *
-	 * @var Mailer
-	 */
-	public $mailer;
-
-	/**
-	 * Reference to the tags used to create the mailer.
-	 *
-	 * @var array
-	 */
-	public $mailer_tags;
-
-	/**
-	 * The {@link ProcessEvent} event.
-	 */
-	public $event;
-
-	/**
-	 * The operation.
-	 *
-	 * @var Operation
-	 */
-	public $operation;
-
-	/**
-	 * The event is constructed with the type `alter_notify:before`.
-	 *
-	 * @param \Icybee\Modules\Forms\Form $target
-	 * @param array $properties
-	 */
-	public function __construct($target, array $properties)
-	{
-		parent::__construct($target, 'alter_notify:before', $properties);
-	}
-}
-
-/**
- * Event class for the `Icybee\Modules\Forms\Form::sent` event.
- */
-class SentEvent extends Event
-{
-	/**
-	 * Result of the operation.
-	 *
-	 * @var mixed
-	 */
-	public $rc;
-
-	/**
-	 * The bind value that was used to render the notify template.
-	 *
-	 * @var mixed
-	 */
-	public $bind;
-
-	/**
-	 * The operation `process` event.
-	 *
-	 * @var \ICanBoogie\OperationProcessEvent
-	 */
-	public $event;
-
-	/**
-	 * The request that triggered the operation.
-	 *
-	 * @var \ICanBoogie\HTTP\Request
-	 */
-	public $request;
-
-	/**
-	 * The operation that submitted the form.
-	 *
-	 * @var \ICanBoogie\Operation
-	 */
-	public $operation;
-
-	/**
-	 * Reference to the message sent.
-	 *
-	 * @var string
-	 */
-	public $message;
-
-	/**
-	 * The mailer object.
-	 *
-	 * @var Mailer
-	 */
-	public $mailer;
-
-	/**
-	 * Reference to the mailer tags.
-	 *
-	 * @var array
-	 */
-	public $mailer_tags;
-
-	/**
-	 * The event is constructed with the type `sent`.
-	 *
-	 * @param \Icybee\Modules\Forms\Form $target
-	 * @param array $properties
-	 */
-	public function __construct(\Icybee\Modules\Forms\Form $target, array $properties)
-	{
-		parent::__construct($target, 'sent', $properties);
 	}
 }
 
@@ -422,5 +254,135 @@ class NotifyParams
 		{
 			$this->$k = &$v;
 		}
+	}
+}
+
+namespace Icybee\Modules\Forms\Form;
+
+/**
+ * Event class for the `Icybee\Modules\Forms\Form::alter_notify:before` event.
+ */
+class BeforeAlterNotifyEvent extends \ICanBoogie\Event
+{
+	/**
+	 * Notify parameters.
+	 *
+	 * @var \Icybee\Modules\Forms\NotifyParams
+	 */
+	public $params;
+
+	/**
+	 * The event that triggered the notification.
+	 *
+	 * @var \ICanBoogie\Operation\ProcessEvent
+	 */
+	public $event;
+
+	/**
+	 * The operation that triggered the {@link ProcessEvent} event.
+	 *
+	 * @var \ICanBoogie\Operation
+	 */
+	public $operation;
+
+	/**
+	 * The event is constructed with the type `alter_notify:before`.
+	 *
+	 * @param \Icybee\Modules\Forms\Form $target
+	 * @param array $payload
+	 */
+	public function __construct(\Icybee\Modules\Forms\Form $target, array $payload)
+	{
+		parent::__construct($target, 'alter_notify:before', $payload);
+	}
+}
+
+/**
+ * Event class for the `Icybee\Modules\Forms\Form::alter_notify` event.
+ */
+class AlterNotifyEvent extends \ICanBoogie\Event
+{
+	/**
+	 * Notify parameters.
+	 *
+	 * @var \Icybee\Modules\Forms\NotifyParams
+	 */
+	public $params;
+
+	/**
+	 * The event that triggered the notification.
+	 *
+	 * @var \ICanBoogie\Operation\ProcessEvent
+	 */
+	public $event;
+
+	/**
+	 * The operation that triggered the {@link ProcessEvent} event.
+	 *
+	 * @var \ICanBoogie\Operation
+	 */
+	public $operation;
+
+	/**
+	 * The event is constructed with the type `alter_notify`.
+	 *
+	 * @param \Icybee\Modules\Forms\Form $target
+	 * @param array $payload
+	 */
+	public function __construct(\Icybee\Modules\Forms\Form $target, array $payload)
+	{
+		parent::__construct($target, 'alter_notify', $payload);
+	}
+}
+
+/**
+ * Event class for the `Icybee\Modules\Forms\Form::notify` event.
+ */
+class NotifyEvent extends \ICanBoogie\Event
+{
+	/**
+	 * Notify parameters.
+	 *
+	 * @var \Icybee\Modules\Forms\NotifyParams
+	 */
+	public $params;
+
+	/**
+	 * Reference to the message sent.
+	 *
+	 * @var string
+	 */
+	public $message;
+
+	/**
+	 * The operation `process` event.
+	 *
+	 * @var \ICanBoogie\OperationProcessEvent
+	 */
+	public $event;
+
+	/**
+	 * The request that triggered the operation.
+	 *
+	 * @var \ICanBoogie\HTTP\Request
+	 */
+	public $request;
+
+	/**
+	 * The operation that submitted the form.
+	 *
+	 * @var \ICanBoogie\Operation
+	 */
+	public $operation;
+
+	/**
+	 * The event is constructed with the type `notify`.
+	 *
+	 * @param \Icybee\Modules\Forms\Form $target
+	 * @param array $payload
+	 */
+	public function __construct(\Icybee\Modules\Forms\Form $target, array $payload)
+	{
+		parent::__construct($target, 'notify', $payload);
 	}
 }

@@ -1,11 +1,11 @@
 <div class="articles">
-<wdp:foreach>
+<p:foreach>
 	<div class="article">
 		<h4><a href="#{@url}">#{@title}</a></h4>
 		<div class="excerpt">#{@excerpt=}</div>
 		<div class="metas">#{@date.format_date()}
-		<wdp:if test="@comments_count">−&nbsp;<a href="#{@url}#view-comments-list">#{@rendered_comments_count}</a></wdp:if>
+		<p:if test="@comments_count">−&nbsp;<a href="#{@url}#view-comments-list">#{@rendered_comments_count}</a></p:if>
 		</div>
 	</div>
-</wdp:foreach>
+</p:foreach>
 </div>

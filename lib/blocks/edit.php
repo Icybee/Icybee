@@ -13,6 +13,7 @@ namespace Icybee;
 
 use ICanBoogie\Event;
 use ICanBoogie\Exception;
+use ICanBoogie\HTTP\HTTPError;
 use ICanBoogie\I18n;
 use ICanBoogie\Operation;
 use ICanBoogie\Route;
@@ -22,6 +23,8 @@ use Brickrouge\Button;
 use Brickrouge\Element;
 use Brickrouge\Form;
 use Brickrouge\SplitButton;
+
+use Icybee\Element\ActionbarToolbar;
 
 /**
  * A record editor.
@@ -117,22 +120,6 @@ class EditBlock extends FormBlock
 		}
 	}
 
-	/**
-	 * The block is rendered within the `<module_flat_id>.edit` i18n scope.
-	 *
-	 * @see FormBlock::__toString()
-	 */
-	public function __toString()
-	{
-		I18n::push_scope($this->module->flat_id . '.edit');
-
-		$html = parent::__toString();
-
-		I18n::pop_scope();
-
-		return $html;
-	}
-
 	protected function get_permission()
 	{
 		global $core;
@@ -163,7 +150,7 @@ class EditBlock extends FormBlock
 
 		if (!$key && !$this->permission)
 		{
-			throw new Exception\HTTP("You don't have permission to create records in the %id module.", array('id' => $module_id), 403);
+			throw new HTTPError(\ICanBoogie\format("You don't have permission to create records in the %id module.", array('id' => $module_id)), 403);
 		}
 
 		#
@@ -360,7 +347,7 @@ class EditBlock extends FormBlock
 		global $core;
 
 		$module = $this->module;
-		$mode = isset($core->session->wdpmodule[SaveOperation::MODE][$module->id]) ? $core->session->wdpmodule[SaveOperation::MODE][$module->id] : SaveOperation::MODE_LIST;
+		$mode = isset($core->session->save_mode[SaveOperation::MODE][$module->id]) ? $core->session->save_mode[SaveOperation::MODE][$module->id] : SaveOperation::MODE_LIST;
 
 		$save_mode_options = array
 		(
@@ -389,9 +376,9 @@ class EditBlock extends FormBlock
 		$key = $this->key;
 		$block = $this;
 
-		\ICanBoogie\Events::attach
+		\ICanBoogie\Event\attach
 		(
-			'Icybee\Admin\Element\ActionbarToolbar::alter_buttons', function(Event $event, \Icybee\Admin\Element\ActionbarToolbar $sender) use($record, $module, $key, $save_mode_options, $mode, $block)
+			function(ActionbarToolbar\CollectEvent $event, ActionbarToolbar $sender) use($record, $module, $key, $save_mode_options, $mode, $block)
 			{
 				global $core;
 

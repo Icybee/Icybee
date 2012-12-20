@@ -13,6 +13,9 @@ namespace Icybee\Modules\Pages;
 
 use ICanBoogie\Route;
 
+use Icybee\Modules\Sites\Site;
+
+
 /**
  * A page.
  *
@@ -520,7 +523,7 @@ class Page extends \Icybee\Modules\Nodes\Node
 	{
 		global $core;
 
-		if ($core->user->is_guest && $this->site->status != 1)
+		if ($core->user->is_guest && $this->site->status != Site::STATUS_OK)
 		{
 			return false;
 		}

@@ -201,7 +201,7 @@ form.navbar-search {
   font-size: 14px;
   /* we use a fixed value so that the height of the form is the same as the browse element*/
 
-  padding: 2px 0.5ex;
+  padding: 0 0.5ex 0 0;
   background-color: #F6F6F6;
   border-radius: 4px;
   float: left;
@@ -212,8 +212,8 @@ form.navbar-search input {
   position: relative;
   border-radius: 0;
   box-shadow: none;
-  padding: 2px 0;
-  width: 32ex !important;
+  padding: 3px .5ex;
+  width: 24ex !important;
 }
 form.navbar-search input.placeholder {
   font-style: italic;
@@ -312,13 +312,6 @@ form.navbar-search.active:not(.focus) button {
 .spinner:hover {
   background-color: #E6E6E6;
 }
-.spinner:active {
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15) inset, 0 1px 2px rgba(0, 0, 0, 0.05);
-}
-.spinner:focus {
-  border-color: #A3C0E5;
-  background-color: #B5D5FF;
-}
 .spinner.placeholder {
   color: #808080 !important;
   font-style: italic;
@@ -326,6 +319,24 @@ form.navbar-search.active:not(.focus) button {
 .spinner:not(.placeholder) .spinner-placeholder,
 .spinner.placeholder .spinner-content {
   display: none;
+}
+.popover.contrast .spinner {
+  border-color: #454545;
+  box-shadow: 0 1px 1px rgba(255, 255, 255, 0.075) inset;
+  background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAMCAYAAABWdVznAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAEpJREFUeNpi+P//PwMReCaMzcRAGMxE5jCRopiQhpnYBJlIUYxLw0x8bmQiRTG6hplEhBhcA1GKYRqIVgwCjKDYIwUwMZAIAAIMAFDNLOnGORGSAAAAAElFTkSuQmCC');
+  background-color: rgba(0, 0, 0, 0.3);
+}
+.popover.contrast .spinner:hover {
+  background-color: rgba(51, 51, 51, 0.3);
+}
+.spinner:active,
+.popover.contrast .spinner:active {
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15) inset, 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+.spinner:focus,
+.popover.contrast .spinner:focus {
+  border-color: #A3C0E5;
+  background-color: #B5D5FF;
 }
 form {
   margin: 0;
@@ -393,6 +404,7 @@ form {
   background: white;
   border-bottom: 1px solid #ccc;
   margin: 0;
+  max-width: none;
 }
 .form-primary > .group > .group-description.control-group {
   font-size: inherit;

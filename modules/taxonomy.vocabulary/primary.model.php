@@ -17,7 +17,7 @@ class Model extends \ICanBoogie\ActiveRecord\Model
 	{
 		if (isset($properties['vocabulary']) && empty($properties['vocabularyslug']))
 		{
-			$properties['vocabularyslug'] = wd_slugize($properties['vocabulary']);
+			$properties['vocabularyslug'] = \Icybee\slugize($properties['vocabulary']);
 		}
 
 		if (isset($properties['vocabularyslug']))

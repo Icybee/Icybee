@@ -16,7 +16,7 @@ class Hooks
 	protected static $cache_ar_vocabularies = array();
 	protected static $cache_ar_terms = array();
 
-	public static function get_term(\ICanBoogie\Object\PropertyEvent $event, \Icybee\Modules\Nodes\Node $target)
+	static public function get_term(\ICanBoogie\Object\PropertyEvent $event, \Icybee\Modules\Nodes\Node $target)
 	{
 		global $core;
 
@@ -113,7 +113,7 @@ class Hooks
 		}
 	}
 
-	public static function on_nodes_editblock_alter_children(Event $event, \Icybee\Modules\Nodes\EditBlock $block)
+	static public function on_nodes_editblock_alter_children(Event $event, \Icybee\Modules\Nodes\EditBlock $block)
 	{
 		global $core;
 
@@ -232,7 +232,7 @@ class Hooks
 		);
 	}
 
-	public static function on_node_save(Event $event, \Icybee\Modules\Nodes\SaveOperation $sender)
+	static public function on_node_save(Event $event, \Icybee\Modules\Nodes\SaveOperation $sender)
 	{
 		global $core;
 
@@ -324,7 +324,7 @@ class Hooks
 		}
 	}
 
-	public static function on_collect_views(ViewsCollection\CollectEvent $event, ViewsCollection $target)
+	static public function on_collect_views(ViewsCollection\CollectEvent $event, ViewsCollection $target)
 	{
 		global $core;
 
@@ -404,7 +404,7 @@ class Hooks
 		}
 	}
 
-	public static function on_alter_provider_query(Event $event, Provider $provider)
+	static public function on_alter_provider_query(Event $event, Provider $provider)
 	{
 		global $core;
 
@@ -431,7 +431,7 @@ class Hooks
 
 			$event->view->range['limit'] = null; // cancel limit TODO-20120403: this should be improved.
 
-			\ICanBoogie\Events::attach('Icybee\Modules\Views\ActiveRecordProvider::alter_result', array(__CLASS__, 'on_alter_provider_result'));
+			\ICanBoogie\Event\attach(array(__CLASS__, 'on_alter_provider_result'));
 
 			return;
 		}
@@ -455,7 +455,7 @@ class Hooks
 		}
 	}
 
-	public static function on_alter_provider_result(\Icybee\Modules\Views\ActiveRecordProvider\AlterResultEvent $event, \Icybee\Modules\Views\ActiveRecordProvider $provider)
+	static public function on_alter_provider_result(\Icybee\Modules\Views\ActiveRecordProvider\AlterResultEvent $event, \Icybee\Modules\Views\ActiveRecordProvider $provider)
 	{
 		global $core;
 
@@ -543,7 +543,7 @@ class Hooks
 		$event->result = $result;
 	}
 
-	private static function for_vocabulary_and_term(Event $event, Provider $provider, $options, \Icybee\Modules\Taxonomy\Vocabulary\Vocabulary $vocabulary, \Icybee\Modules\Taxonomy\Terms\Term $term)
+	static private function for_vocabulary_and_term(Event $event, Provider $provider, $options, \Icybee\Modules\Taxonomy\Vocabulary\Vocabulary $vocabulary, \Icybee\Modules\Taxonomy\Terms\Term $term)
 	{
 		$event->query->where('nid IN (SELECT nid FROM {prefix}taxonomy_terms
 		INNER JOIN {prefix}taxonomy_terms__nodes USING(vtid) WHERE vtid = ?)', $term ? $term->vtid : 0);
@@ -551,7 +551,7 @@ class Hooks
 
 
 		/*
-		\ICanBoogie\Events::attach
+		\ICanBoogie\Event\attach
 		(
 			'Icybee\Modules\Pages\Page::render_title', function()
 			{
@@ -561,7 +561,7 @@ class Hooks
 		*/
 	}
 
-	public static function before_breadcrumb_render_inner_html(\Icybee\Modules\Pages\BreadcrumbElement\BeforeRenderInnerHTMLEvent $event, \Icybee\Modules\Pages\BreadcrumbElement $target)
+	static public function before_breadcrumb_render_inner_html(\Icybee\Modules\Pages\BreadcrumbElement\BeforeRenderInnerHTMLEvent $event, \Icybee\Modules\Pages\BreadcrumbElement $target)
 	{
 		foreach ($event->slices as &$slice)
 		{

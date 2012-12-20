@@ -13,7 +13,7 @@ namespace Icybee\Modules\Images;
 
 class Model extends \Icybee\Modules\Files\Model
 {
-	protected static $accept = array
+	static protected $accept = array
 	(
 		'image/gif', 'image/png', 'image/jpeg'
 	);
@@ -29,21 +29,21 @@ class Model extends \Icybee\Modules\Files\Model
 		$rc = parent::save($properties, $key, $options);
 
 		#
-		# we update the "width" and "height" properties if the file is updated
+		# We update the "width" and "height" properties if the file is updated.
 		#
 
-		if ($rc && ($uploaded || isset($properties[Image::PATH])))
+		if ($uploaded || isset($properties[Image::PATH]))
 		{
 			if (!$key)
 			{
 				$key = $rc;
 			}
 
-			$path = $this->parent->select(Image::PATH)->where(array('{primary}' => $key))->rc;
+			$path = $this->parent->select(Image::PATH)->filter_by_nid($key)->rc;
 
 			if ($path)
 			{
-				list($w, $h) = getimagesize($_SERVER['DOCUMENT_ROOT'] . $path);
+				list($w, $h) = getimagesize(\ICanBoogie\DOCUMENT_ROOT . $path);
 
 				$this->update
 				(
