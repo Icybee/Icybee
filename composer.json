@@ -24,7 +24,9 @@
         "icanboogie/routing": "dev-master",
         "icanboogie/i18n": "dev-master",
         "icanboogie/icanboogie": "dev-master",
-        "brickrouge/brickrouge": "dev-master"
+        "brickrouge/brickrouge": "dev-master",
+        "icybee/bluetihi": "dev-master",
+        "icybee/patron": "dev-master"
     },
     "autoload": {
         "classmap": ["lib/", "includes/", "modules/"]
