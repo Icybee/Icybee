@@ -12,11 +12,12 @@
 namespace Icybee\Modules\Views;
 
 use ICanBoogie\ActiveRecord;
-use Icybee\Modules\Nodes\Node;
-use Icybee\Modules\Cache\Collection as CacheCollection;
 use ICanBoogie\Operation;
+use ICanBoogie\PropertyNotDefined;
 use ICanBoogie\Route;
 
+use Icybee\Modules\Cache\Collection as CacheCollection;
+use Icybee\Modules\Nodes\Node;
 use Icybee\Modules\Sites\Site;
 
 class Hooks
@@ -160,7 +161,7 @@ class Hooks
 	 *
 	 * @param Node $node
 	 */
-	static public function get_url(Node $node)
+	static public function get_url(ActiveRecord $node)
 	{
 		return $node->url('view');
 	}
@@ -171,11 +172,18 @@ class Hooks
 	 * @param Node $node
 	 * @param string $type The URL type.
 	 */
-	static public function absolute_url(Node $node, $type='view')
+	static public function absolute_url(ActiveRecord $node, $type='view')
 	{
 		global $core;
 
-		$site = $node->site ? $node->site : $core->site;
+		try
+		{
+			$site = $node->site ? $node->site : $core->site;
+		}
+		catch (PropertyNotDefined $e)
+		{
+			$site = $core->site;
+		}
 
 		return $site->url . substr($node->url($type), strlen($site->path));
 	}

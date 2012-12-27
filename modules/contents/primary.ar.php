@@ -11,6 +11,8 @@
 
 namespace Icybee\Modules\Contents;
 
+use ICanBoogie\PropertyNotWritable;
+
 class Content extends \Icybee\Modules\Nodes\Node
 {
 	const SUBTITLE = 'subtitle';
@@ -193,9 +195,14 @@ class Content extends \Icybee\Modules\Nodes\Node
 	 *
 	 * @return string
 	 */
-	protected function get_year()
+	protected function volatile_get_year()
 	{
 		return substr($this->date, 0, 4);
+	}
+
+	protected function volatile_set_year()
+	{
+		throw new PropertyNotWritable(array('year', $this));
 	}
 
 	/**
@@ -203,9 +210,14 @@ class Content extends \Icybee\Modules\Nodes\Node
 	 *
 	 * @return string
 	 */
-	protected function get_month()
+	protected function volatile_get_month()
 	{
 		return substr($this->date, 5, 2);
+	}
+
+	protected function volatile_set_month()
+	{
+		throw new PropertyNotWritable(array('month', $this));
 	}
 
 	/**
@@ -213,9 +225,14 @@ class Content extends \Icybee\Modules\Nodes\Node
 	*
 	* @return string
 	*/
-	protected function get_day()
+	protected function volatile_get_day()
 	{
 		return substr($this->date, 8, 2);
+	}
+
+	protected function volatile_set_day()
+	{
+		throw new PropertyNotWritable(array('day', $this));
 	}
 
 	/**

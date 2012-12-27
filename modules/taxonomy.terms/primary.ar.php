@@ -11,6 +11,11 @@
 
 namespace Icybee\Modules\Taxonomy\Terms;
 
+/**
+ * A term of a vocabulary.
+ *
+ * @property-read array $nodes_keys
+ */
 class Term extends \ICanBoogie\ActiveRecord implements \IteratorAggregate
 {
 	const VTID = 'vtid';
@@ -19,17 +24,56 @@ class Term extends \ICanBoogie\ActiveRecord implements \IteratorAggregate
 	const TERMSLUG = 'termslug';
 	const WEIGHT = 'weight';
 
+	/**
+	 * Identifier of the vocabulary term.
+	 *
+	 * @var int
+	 */
 	public $vtid;
+
+	/**
+	 * Identifier of the vocabulary the term belongs to.
+	 *
+	 * @var int
+	 */
 	public $vid;
+
+	/**
+	 * Name of the term.
+	 *
+	 * @var string
+	 */
 	public $term;
+
+	/**
+	 * Normalized name of the term.
+	 *
+	 * @var string
+	 */
 	public $termslug;
+
+	/**
+	 * Weight of the term relative to other terms in the same vocabulary.
+	 *
+	 * @var int
+	 */
 	public $weight;
 
+	/**
+	 * The `$model` property defaults to "taxonomy.terms".
+	 *
+	 * @param string $model
+	 */
 	public function __construct($model='taxonomy.terms')
 	{
 		parent::__construct($model);
 	}
 
+	/**
+	 * Returns the {@link $term} property.
+	 *
+	 * @return string
+	 */
 	public function __toString()
 	{
 		return $this->term;
@@ -43,11 +87,62 @@ class Term extends \ICanBoogie\ActiveRecord implements \IteratorAggregate
 		return new \ArrayIterator($this->nodes);
 	}
 
+	/**
+	 * Returns the vocabulary the term belongs to.
+	 *
+	 * @return \Icybee\Modules\Taxonomy\Vocabulary\Vocabulary
+	 */
 	protected function get_vocabulary()
 	{
 		global $core;
 
 		return $this->vid ? $core->models['taxonomy.vocabulary'][$this->vid] : null;
+	}
+
+	static private $nodes_keys_by_vid_and_vtid = array();
+
+	/**
+	 * Returns the nodes keys associated with the term.
+	 *
+	 * Note: In order to reduce the number of database requests, the nodes keys of _all_ the terms
+	 * in the same vocabulary are gathered.
+	 *
+	 * @return array
+	 */
+	protected function get_nodes_keys()
+	{
+		global $core;
+
+		$vid = $this->vid;
+
+		if (!isset(self::$nodes_keys_by_vid_and_vtid[$vid]))
+		{
+			$groups = $core->models['taxonomy.terms/nodes']
+			->select('vtid, nid')
+			->filter_by_vid($this->vid)
+			->order('term_node.weight')
+			->all(\PDO::FETCH_COLUMN | \PDO::FETCH_GROUP);
+
+			foreach ($groups as &$keys)
+			{
+				if (empty($keys)) continue;
+
+				$keys = array_combine($keys, $keys);
+			}
+
+			unset($keys);
+
+			self::$nodes_keys_by_vid_and_vtid[$vid] = $groups;
+		}
+
+		$vtid = $this->vtid;
+
+		if (!isset(self::$nodes_keys_by_vid_and_vtid[$vid][$vtid]))
+		{
+			return array();
+		}
+
+		return self::$nodes_keys_by_vid_and_vtid[$vid][$vtid];
 	}
 
 	/**

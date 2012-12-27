@@ -64,8 +64,7 @@ class SubmitForm extends Form
 							array
 							(
 								Element::LABEL => 'Name',
-								Element::REQUIRED => true,
-// 								'readonly' => $is_member
+								Element::REQUIRED => true
 							)
 						),
 
@@ -75,8 +74,7 @@ class SubmitForm extends Form
 							(
 								Element::LABEL => 'E-mail',
 								Element::REQUIRED => true,
-								Element::VALIDATOR => array('Brickrouge\Form::validate_email'),
-// 								'readonly' => $is_member
+								Element::VALIDATOR => array('Brickrouge\Form::validate_email')
 							)
 						),
 
@@ -94,6 +92,8 @@ class SubmitForm extends Form
 							(
 								Element::REQUIRED => true,
 								Element::LABEL_MISSING => 'Message',
+
+								'class' => 'span6',
 								'rows' => 8
 							)
 						),
@@ -133,15 +133,7 @@ class SubmitForm extends Form
 	{
 		global $core;
 
-		$comment = $core->models['comments'][$properties->rc['key']];
-
-		#
-		# if the comment is approved we change the location to the comment location, otherwise
-		# the location is changed to the location of the form element.
-		#
-
-// 		$operation->location = ($comment->status == 'approved') ? $comment->url : $_SERVER['REQUEST_URI'] . '#' . $operation->record->slug;
-		$properties->bind = $comment;
+		$properties->bind = $core->models['comments'][$properties->rc['key']];
 	}
 
 	static public function get_defaults()

@@ -263,7 +263,7 @@ class EditBlock extends FormBlock
 		(
 			parent::get_values(),
 			$schema ? array_fill_keys(array_keys($schema['fields']), null) : array(),
-			$record ? get_object_vars($record) : array(),
+			$record ? $record->to_array() : array(),
 			$params ? $params : array()
 		);
 	}

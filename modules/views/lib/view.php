@@ -43,6 +43,9 @@ class View extends Object
 	const RENDERS_OTHER = 3;
 	const TITLE = 'title';
 
+	// FIXME-20121226: defined the conditions handled by the provider of the view, particuliarly
+	// required ones.
+
 	protected $id;
 
 	/**
@@ -544,6 +547,22 @@ class View extends Object
 
 		if (preg_match('#\.html$#', $this->page->template))
 		{
+			if (Debug::$mode == Debug::MODE_DEV)
+			{
+
+				$possible_templates = implode(PHP_EOL, $this->template_resolver->templates);
+
+				$html = <<<EOT
+
+<!-- Possible templates for view "{$this->id}":
+
+$possible_templates
+
+-->
+$html
+EOT;
+			}
+
 			$this->element[Element::INNER_HTML] = $html;
 
 			$html = (string) $this->element;
@@ -552,87 +571,43 @@ class View extends Object
 		return $html;
 	}
 
+	/**
+	 * Returns the template resolver of the view.
+	 *
+	 * @return \Icybee\Modules\Views\TemplateResolver
+	 */
+	protected function get_template_resolver()
+	{
+		return new TemplateResolver($this->id, $this->type, $this->module_id);
+	}
+
+	/**
+	 * Resolves the template location of the view.
+	 *
+	 * The template location is resolved using a {@link TemplateResolver} instance.
+	 *
+	 * @throws Exception if the template location could not be resolved.
+	 *
+	 * @return string
+	 */
 	protected function resolve_template_location()
 	{
-		global $core;
+		$resolver = $this->template_resolver;
+		$template = $resolver();
 
-		$id = $this->id;
-		$type = $this->type;
-		$templates = array();
-
-		if (true)
+		if (!$template)
 		{
-			/*
-			$templates_base = array
+			throw new Exception
 			(
-				str_replace('/', '--', str_replace($this->module->id . '/', '', str_replace(':', '-', $id))),
-				$type
+				'Unable to resolve template for view %id. Tried: :list', array
+				(
+					'id' => $this->id,
+					':list' => implode("\n<br />", $resolver->templates)
+				)
 			);
-			*/
-
-			$templates_base = array();
-
-			$parts = explode('/', $id);
-			$module_id = array_shift($parts);
-			$type = array_pop($parts);
-
-			while (count($parts))
-			{
-				$templates_base[] = implode('--', $parts) . '--' . $type;
-
-				array_pop($parts);
-			}
-
-			$templates_base[] = $type;
-
-			$templates_base = array_unique($templates_base);
-
-// 			\ICanBoogie\log('templates bases: \1', array($templates_base));
-
-			$descriptors = $core->modules->descriptors;
-			$descriptor = $descriptors[$this->module->id];
-
-			while ($descriptor)
-			{
-				foreach ($templates_base as $template)
-				{
-					$pathname = \ICanBoogie\DOCUMENT_ROOT . 'protected/all/templates/views/' . \ICanBoogie\normalize($descriptor[Module::T_ID]) . '--' . $template;
-					$templates[] = $pathname;
-
-					$pathname = $descriptor[Module::T_PATH] . 'views/' . $template;
-					$templates[] = $pathname;
-				}
-
-				$descriptor = $descriptor[Module::T_EXTENDS] ? $descriptors[$descriptor[Module::T_EXTENDS]] : null;
-			}
-
-			foreach ($templates_base as $template)
-			{
-				$pathname = \ICanBoogie\DOCUMENT_ROOT . 'protected/all/templates/views/' . $template;
-				$templates[] = $pathname;
-			}
 		}
 
-// 		\ICanBoogie\log('templates: \1', array($templates));
-
-		$handled = array('php', 'html');
-
-		foreach ($templates as $template)
-		{
-			foreach ($handled as $extension)
-			{
-				$pathname = $template . '.' . $extension;
-
-// 				\ICanBoogie\log("tryed: $pathname");
-
-				if (file_exists($pathname))
-				{
-					return $pathname;
-				}
-			}
-		}
-
-		throw new Exception('Unable to resolve template for view %id. Tried: :list', array('id' => $id, ':list' => implode("\n<br />", $templates)));
+		return $template;
 	}
 
 	/**

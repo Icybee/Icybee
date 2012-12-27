@@ -27,7 +27,7 @@ class SaveOperation extends \Icybee\SaveOperation
 			$properties['scope'] = $request['scope'];
 		}
 
-		if (!$this->key || !$core->user->has_permission(Modules\Nodes\Module::PERMISSION_MODIFY_BELONGING_SITE))
+		if (!$this->key || !$core->user->has_permission(\Icybee\Modules\Nodes\Module::PERMISSION_MODIFY_BELONGING_SITE))
 		{
 			$properties['siteid'] = $core->site_id;
 		}

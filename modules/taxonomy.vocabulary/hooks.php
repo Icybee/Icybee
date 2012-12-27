@@ -11,10 +11,12 @@ use Brickrouge\Text;
 use Icybee\Modules\Views\Collection as ViewsCollection;
 use Icybee\Modules\Views\Provider;
 
+use Icybee\Modules\Views\ActiveRecordProvider;
+
 class Hooks
 {
-	protected static $cache_ar_vocabularies = array();
-	protected static $cache_ar_terms = array();
+	static private $cache_vocabularies = array();
+	static private $cache_record_terms = array();
 
 	static public function get_term(\ICanBoogie\Object\PropertyEvent $event, \Icybee\Modules\Nodes\Node $target)
 	{
@@ -23,94 +25,118 @@ class Hooks
 		$constructor = $target->constructor;
 		$property = $vocabularyslug = $event->property;
 		$siteid = $target->siteid;
+		$nid = $target->nid;
 
 		$use_slug = false;
 
-		if (substr($property, -4, 4) == 'slug')
+		if (substr($property, -4, 4) === 'slug')
 		{
 			$use_slug = true;
 			$vocabularyslug = substr($property, 0, -4);
 		}
 
-		$key = $siteid . '-' . $constructor . '-' . $vocabularyslug;
+		$cache_key = $siteid . '>' . $constructor . '>' . $vocabularyslug;
+		$record_cache_key = $cache_key . '>' . $nid;
 
-		if (!isset(self::$cache_ar_vocabularies[$key]))
+		if (!isset(self::$cache_record_terms[$record_cache_key]))
 		{
-			self::$cache_ar_vocabularies[$key] = $core->models['taxonomy.vocabulary']
-			->joins('INNER JOIN {self}__scopes USING(vid)')
-			->where('constructor = ? AND vocabularyslug = ? AND (siteid = 0 OR siteid = ?)', (string) $constructor, $vocabularyslug, $target->siteid)
-			->order('siteid DESC')
-			->one;
+			#
+			# vocabulary for this constructor on this website
+			#
+
+			if (!isset(self::$cache_vocabularies[$cache_key]))
+			{
+				self::$cache_vocabularies[$cache_key] = $core->models['taxonomy.vocabulary']
+				->joins(':taxonomy.vocabulary/scopes')
+				->where('siteid = 0 OR siteid = ?', $target->siteid)
+				->filter_by_constructor((string) $constructor)
+				->filter_by_vocabularyslug($vocabularyslug)
+				->order('siteid DESC')
+				->one;
+			}
+
+			$vocabulary = self::$cache_vocabularies[$cache_key];
+
+			if (!$vocabulary)
+			{
+				return;
+			}
+
+			if ($vocabulary->is_required)
+			{
+				$event->value = 'uncategorized';
+			}
+
+			$terms = $vocabulary->terms;
+			$rc = null;
+
+			if ($vocabulary->is_multiple || $vocabulary->is_tags)
+			{
+				foreach ($terms as $term)
+				{
+					if (empty($term->nodes_keys[$nid]))
+					{
+						continue;
+					}
+
+					$rc[] = $term;
+				}
+			}
+			else
+			{
+				foreach ($terms as $term)
+				{
+					if (empty($term->nodes_keys[$nid]))
+					{
+						continue;
+					}
+
+					$rc = $term;
+
+					break;
+				}
+			}
+
+			self::$cache_record_terms[$record_cache_key] = $rc === null ? false : $rc;
 		}
 
-		$vocabulary = self::$cache_ar_vocabularies[$key];
+		$rc = self::$cache_record_terms[$record_cache_key];
 
-		if (!$vocabulary)
+		if ($rc === false)
 		{
 			return;
 		}
 
-		if ($vocabulary->is_required)
+		if ($use_slug)
 		{
-			$event->value = 'uncategorized';
-		}
-
-		if (!isset(self::$cache_ar_terms[$key]))
-		{
-			$terms_model = $core->models['taxonomy.terms'];
-
-			$terms = $terms_model->query
-			(
-				'SELECT term.*, (SELECT GROUP_CONCAT(nid) FROM {self}__nodes tnode WHERE tnode.vtid = term.vtid) AS nodes_ids
-				FROM {self} term WHERE vid = ? ORDER BY weight, term', array
-				(
-					$vocabulary->vid
-				)
-			)
-			->fetchAll(\PDO::FETCH_CLASS, 'Icybee\Modules\Taxonomy\Terms\Term', array($terms_model));
-
-			foreach ($terms as $term)
+			if (is_array($rc))
 			{
-				$term->nodes_ids = array_flip(explode(',', $term->nodes_ids));
-			}
+				$terms = $rc;
+				$rc = array();
 
-			self::$cache_ar_terms[$key] = $terms;
-		}
-
-		$nid = $target->nid;
-
-		if ($vocabulary->is_multiple || $vocabulary->is_tags)
-		{
-			$rc = array();
-
-			foreach (self::$cache_ar_terms[$key] as $term)
-			{
-				if (!isset($term->nodes_ids[$nid]))
+				foreach ($terms as $term)
 				{
-					continue;
+					$rc[] = $term->termslug;
 				}
-
-				$rc[] = $use_slug ? $term->termslug : $term;
 			}
-
-			$event->value = $rc;
-			$event->stop();
-		}
-		else
-		{
-			foreach (self::$cache_ar_terms[$key] as $term)
+			else
 			{
-				if (!isset($term->nodes_ids[$nid]))
-				{
-					continue;
-				}
-
-				$event->value = $use_slug ? $term->termslug : $term;
-				$event->stop();
-
-				return;
+				$rc = $rc->termslug;
 			}
 		}
+
+		#
+		# now that we have the value for the property we can set a prototype method to provide the
+		# value without the events overhead.
+		#
+
+		$target->prototype['volatile_get_' . $property] = function(\Icybee\Modules\Nodes\Node $target) use($rc, $property)
+		{
+			return $rc;
+		};
+
+		$event->value = $rc;
+		$event->stop();
 	}
 
 	static public function on_nodes_editblock_alter_children(Event $event, \Icybee\Modules\Nodes\EditBlock $block)
@@ -232,20 +258,21 @@ class Hooks
 		);
 	}
 
-	static public function on_node_save(Event $event, \Icybee\Modules\Nodes\SaveOperation $sender)
+	static public function on_node_save(\ICanBoogie\Operation\ProcessEvent $event, \Icybee\Modules\Nodes\SaveOperation $target)
 	{
 		global $core;
 
 		$name = 'vocabulary';
-		$params = $event->request->params;
+		$request = $event->request;
+		$vocabularies = $request[$name];
 
-		if (empty($params[$name]))
+		if (!$vocabularies)
 		{
 			return;
 		}
 
 		$nid = $event->rc['key'];
-		$vocabularies = $params[$name]['vid'];
+		$vocabularies = $vocabularies['vid'];
 
 		#
 		# on supprime toutes les liaisons pour cette node
@@ -404,7 +431,7 @@ class Hooks
 		}
 	}
 
-	static public function on_alter_provider_query(Event $event, Provider $provider)
+	static public function on_alter_provider_query(\Icybee\Modules\Views\ActiveRecordProvider\AlterQueryEvent $event, \Icybee\Modules\Views\ActiveRecordProvider $provider)
 	{
 		global $core;
 
@@ -425,6 +452,14 @@ class Hooks
 		$vocabulary = $event->view->options['taxonomy vocabulary'];
 		$condition = $vocabulary->vocabularyslug . 'slug';
 
+		#
+		# FIXME-20121226: It has to be known that the conditions is `<vocabularyslug>slug`.
+		#
+		# is condition is required by "in vocabulary and a term", but we don't check that, which
+		# can cause problems when the pattern of the page is incorrect e.g. "tagslug" instead of
+		# "tagsslug"
+		#
+
 		if (empty($event->conditions[$condition]))
 		{
 			# show all by category ?
@@ -439,6 +474,12 @@ class Hooks
 		$condition_value = $event->conditions[$condition];
 
 		$term = $core->models['taxonomy.terms']->where('vid = ? AND termslug = ?', array($vocabulary->vid, $condition_value))->order('term.weight')->one;
+
+		Event\attach(function(ActiveRecordProvider\AlterContextEvent $event, ActiveRecordProvider $target) use($term) {
+
+			$event->context['term'] = $term;
+
+		});
 
 		$event->query->where('nid IN (SELECT nid FROM {prefix}taxonomy_terms
 		INNER JOIN {prefix}taxonomy_terms__nodes USING(vtid) WHERE vtid = ?)', $term ? $term->vtid : 0);

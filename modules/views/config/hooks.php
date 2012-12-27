@@ -20,6 +20,12 @@ return array
 		'Icybee\Modules\Nodes\Node::absolute_url' => $hooks . 'absolute_url',
 		'Icybee\Modules\Nodes\Node::get_url' => $hooks . 'get_url',
 		'Icybee\Modules\Nodes\Node::get_absolute_url' => $hooks . 'get_absolute_url',
+
+		'Icybee\Modules\Users\User::url' => $hooks . 'url',
+		'Icybee\Modules\Users\User::absolute_url' => $hooks . 'absolute_url',
+		'Icybee\Modules\Users\User::get_url' => $hooks . 'get_url',
+		'Icybee\Modules\Users\User::get_absolute_url' => $hooks . 'get_absolute_url',
+
 		'Icybee\Modules\Sites\Site::resolve_view_target' => $hooks . 'resolve_view_target',
 		'Icybee\Modules\Sites\Site::resolve_view_url' => $hooks . 'resolve_view_url',
 		'ICanBoogie\Core::get_views' => __NAMESPACE__ . '\Collection::get'

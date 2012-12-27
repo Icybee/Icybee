@@ -1,7 +1,7 @@
 <ul class="categories unstyled">
 	<p:foreach>
 		<li class="category">
-		<h2><a href="#{@nodes.first().url('category')=}" title="Voir tous les articles de la catégorie #{@term}">#{@term}</a> <sup>[#{@nodes.count()}]</sup></h2>
+		<h2><a href="/categories/#{@nodes.first().category.termslug}" title="Voir tous les articles de la catégorie #{@term}">#{@term}</a> <sup>[#{@nodes.count()}]</sup></h2>
 		<ul class="links">
 		<p:foreach in="@nodes">
 			<li class="article"><a href="#{@url}" title="Lien permanent vers : #{@title}">#{@title}</a></li>		

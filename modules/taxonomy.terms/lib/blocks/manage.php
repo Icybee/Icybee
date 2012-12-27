@@ -82,12 +82,7 @@ class ManageBlock extends \WdManager
 	protected function get_cell_term($record, $property)
 	{
 		$label = $record->term;
-		/*
-		if ($label != $entry->termslug)
-		{
-			$label .= ' <small>(' . $entry->termslug . ')</small>';
-		}
-		*/
+
 		return self::modify_code($label, $record->vtid, $this);
 	}
 

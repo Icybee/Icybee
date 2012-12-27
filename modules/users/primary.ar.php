@@ -155,6 +155,18 @@ class User extends \ICanBoogie\ActiveRecord
 		parent::__construct($model);
 	}
 
+	public function __get($property)
+	{
+		$value = parent::__get($property);
+
+		if ($property === 'css_class_names')
+		{
+			new User\AlterCSSClassNamesEvent($this, $value);
+		}
+
+		return $value;
+	}
+
 	/**
 	 * Returns the formatted name of the user.
 	 *
@@ -489,11 +501,77 @@ class User extends \ICanBoogie\ActiveRecord
 	{
 		global $core;
 
-		if ($id === 'profile')
+		if ($id === 'admin:profile')
 		{
 			return $core->site->path . '/admin/profile';
 		}
 
 		return parent::url($id);
+	}
+
+	/**
+	 * Returns the CSS class of the node.
+	 *
+	 * @return string
+	 */
+	protected function get_css_class()
+	{
+		return $this->css_class();
+	}
+
+	/**
+	 * Returns the CSS class names of the node.
+	 *
+	 * @return array[string]mixed
+	 */
+	protected function get_css_class_names()
+	{
+		return array
+		(
+			'type' => 'user',
+			'id' => 'user-' . $this->uid,
+			'username' => 'user-' . $this->username,
+			'constructor' => 'constructor-' . \ICanBoogie\normalize($this->constructor)
+		);
+	}
+
+	/**
+	 * Return the CSS class of the node.
+	 *
+	 * @param string|array $modifiers CSS class names modifiers
+	 *
+	 * @return string
+	 */
+	public function css_class($modifiers=null)
+	{
+		return \Icybee\render_css_class($this->css_class_names, $modifiers);
+	}
+}
+
+namespace Icybee\Modules\Users\User;
+
+/**
+ * Event class for the `Icybee\Modules\Users\User::alter_css_class_names` event.
+ */
+class AlterCSSClassNamesEvent extends \ICanBoogie\Event
+{
+	/**
+	 * Reference to the class names to alter.
+	 *
+	 * @var array[string]mixed
+	 */
+	public $names;
+
+	/**
+	 * The event is constructed with the type `alter_css_class_names`.
+	 *
+	 * @param \Icybee\Modules\Users\User $target Target user.
+	 * @param array $name CSS class names.
+	 */
+	public function __construct(\Icybee\Modules\Users\User $target, array &$names)
+	{
+		$this->names = &$names;
+
+		parent::__construct($target, 'alter_css_class_names');
 	}
 }

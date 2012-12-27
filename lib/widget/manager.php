@@ -11,6 +11,8 @@
 
 namespace Icybee;
 
+use ICanBoogie\I18n;
+
 use ICanBoogie;
 use ICanBoogie\ActiveRecord;
 use ICanBoogie\ActiveRecord\Model;
@@ -1562,7 +1564,7 @@ EOT;
 		);
 	}
 
-	static public function modify_code($label, $key, $resume)
+	static public function modify_code($label, $key, $resume) // FIXME-20121226: this should not be static
 	{
 		global $core;
 
@@ -1570,7 +1572,7 @@ EOT;
 		(
 			'a', array
 			(
-				Element::INNER_HTML => $label,
+				Element::INNER_HTML => $label ?: '<em>' . I18n\t('No title') . '</em>', // FIXME-20121226: use objet's translator
 
 				'class' => 'edit',
 				'title' => t('Edit this item'),

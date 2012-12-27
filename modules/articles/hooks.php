@@ -17,7 +17,7 @@ use ICanBoogie\Event;
 
 class Hooks
 {
-	static public function markup_articles(array $args, \Patron\Engine $patron, $template)
+	static public function markup_articles(array $args, \Patron\Engine $engine, $template)
 	{
 		global $core;
 
@@ -112,14 +112,14 @@ class Hooks
 		# save options, they'll be used to handle pages
 		#
 
-		$patron->context['self']['range'] = array
+		$engine->context['self']['range'] = array
 		(
 			'count' => $count,
 			'limit' => $attr_limit,
 			'page' => $attr_page
 		);
 
-		return $patron($template, $entries);
+		return $engine($template, $entries);
 	}
 
 	static public function markup_articles_read(array $args, \Patron\Engine $patron, $template)
