@@ -17,6 +17,24 @@
 	display: inline-block;
 }
 
+.cell--status {
+	width: 8ex;
+}
+
+td.cell--status {
+	font-size: 12px;
+}
+
+.cell--status .btn-group {
+	white-space: nowrap;
+}
+
+.cell--status .dropdown-menu {
+	left: auto;
+	right: 0;
+	text-align: left;
+}
+
 /*
 .cell--comment span {
 	font-size: .8571em;

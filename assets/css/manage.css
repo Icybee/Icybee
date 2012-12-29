@@ -28,6 +28,10 @@ table.manage th {
 	white-space: nowrap;
 }
 
+table.manage th i[class^="icon-"] {
+	line-height: normal;	
+}
+
 table.manage th.measure,
 table.manage td.measure {
 	text-align: right;

@@ -8,6 +8,6 @@ return array
 	(
 		'pattern' => '/admin/dashboard',
 		'block' => 'dashboard',
-		'controller' => 'Icybee\BlockController'
+		'controller' => __NAMESPACE__ . '\BlockController'
 	)
 );

@@ -6,6 +6,6 @@ return array
 (
 	'events' => array
 	(
-		'ICanBoogie\HTTP\Dispatcher::dispatch:before' => __NAMESPACE__ . '\Hooks::before_dispatcher_dispatch'
+		'ICanBoogie\Routing\Dispatcher::dispatch:before' => __NAMESPACE__ . '\Hooks::before_routing_dispatcher_dispatch'
 	)
 );

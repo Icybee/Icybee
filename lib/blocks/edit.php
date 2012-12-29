@@ -479,8 +479,8 @@ class EditBlock extends FormBlock
 
 		if (!$this->permission)
 		{
-			$element[self::ACTIONS] = null;
-			$element[self::DISABLED] = true;
+			$element[Form::ACTIONS] = null;
+			$element[Form::DISABLED] = true;
 		}
 
 		$language = $core->site->language;

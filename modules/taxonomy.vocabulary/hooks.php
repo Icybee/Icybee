@@ -17,17 +17,29 @@ class Hooks
 {
 	static private $cache_vocabularies = array();
 	static private $cache_record_terms = array();
+	static private $cache_record_properties = array();
 
 	static public function get_term(\ICanBoogie\Object\PropertyEvent $event, \Icybee\Modules\Nodes\Node $target)
 	{
 		global $core;
 
+		$property = $event->property;
+		$cache_record_properties_key = spl_object_hash($target) . '_' . $property;
+
+		if (isset(self::$cache_record_properties[$cache_record_properties_key]))
+		{
+			$event->value = self::$cache_record_properties[$cache_record_properties_key];
+			$event->stop();
+
+			return;
+		}
+
 		$constructor = $target->constructor;
-		$property = $vocabularyslug = $event->property;
 		$siteid = $target->siteid;
 		$nid = $target->nid;
 
 		$use_slug = false;
+		$vocabularyslug = $property;
 
 		if (substr($property, -4, 4) === 'slug')
 		{
@@ -36,9 +48,9 @@ class Hooks
 		}
 
 		$cache_key = $siteid . '>' . $constructor . '>' . $vocabularyslug;
-		$record_cache_key = $cache_key . '>' . $nid;
+		$cache_record_terms_key = $cache_key . '>' . $nid;
 
-		if (!isset(self::$cache_record_terms[$record_cache_key]))
+		if (!isset(self::$cache_record_terms[$cache_record_terms_key]))
 		{
 			#
 			# vocabulary for this constructor on this website
@@ -97,10 +109,10 @@ class Hooks
 				}
 			}
 
-			self::$cache_record_terms[$record_cache_key] = $rc === null ? false : $rc;
+			self::$cache_record_terms[$cache_record_terms_key] = $rc === null ? false : $rc;
 		}
 
-		$rc = self::$cache_record_terms[$record_cache_key];
+		$rc = self::$cache_record_terms[$cache_record_terms_key];
 
 		if ($rc === false)
 		{
@@ -125,15 +137,27 @@ class Hooks
 			}
 		}
 
+		self::$cache_record_properties[$cache_record_properties_key] = $rc;
+
+		/*
+		$cache = &self::$cache_record_properties;
+
 		#
 		# now that we have the value for the property we can set a prototype method to provide the
 		# value without the events overhead.
 		#
 
-		$target->prototype['volatile_get_' . $property] = function(\Icybee\Modules\Nodes\Node $target) use($rc, $property)
+		$target->prototype['volatile_get_' . $property] = function(\Icybee\Modules\Nodes\Node $target) use($property, &$cache)
 		{
-			return $rc;
+			$cache_record_properties_key = spl_object_hash($target) . '_' . $property;
+
+			var_dump($cache);
+
+			return $cache[$cache_record_properties_key];
 		};
+		*/
+
+		$target->$property = $rc;
 
 		$event->value = $rc;
 		$event->stop();

@@ -501,7 +501,7 @@ class User extends \ICanBoogie\ActiveRecord
 	{
 		global $core;
 
-		if ($id === 'admin:profile')
+		if ($id === 'profile')
 		{
 			return $core->site->path . '/admin/profile';
 		}

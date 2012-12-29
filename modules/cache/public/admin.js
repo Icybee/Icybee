@@ -115,5 +115,5 @@ window.addEvent('domready', function() {
 		}
 	})
 
-	Brickrouge.constructWidgets()
+	Brickrouge.updateDocument()
 })

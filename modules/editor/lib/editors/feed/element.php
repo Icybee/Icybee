@@ -113,11 +113,14 @@ class FeedEditorElement extends Element implements EditorElement
 
 		if ($value)
 		{
-			$values = json_decode($value, true);
-
-			foreach ($values as $identifier => $value)
+			if (is_string($value))
 			{
-				$this->elements[$identifier]['value'] = $value;
+				$value = json_decode($value, true);
+			}
+
+			foreach ($value as $identifier => $v)
+			{
+				$this->elements[$identifier]['value'] = $v;
 			}
 		}
 

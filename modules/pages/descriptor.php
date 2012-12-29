@@ -40,7 +40,7 @@ return array
 				(
 					'pageid' => array('foreign', 'primary' => true),
 					'contentid' => array('varchar', 64, 'primary' => true),
-					'content' => 'text',
+					'content' => array('text', 'long'),
 					'editor' => array('varchar', 32)
 				)
 			)

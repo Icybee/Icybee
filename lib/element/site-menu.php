@@ -55,7 +55,7 @@ class SiteMenu extends Element
 
 			if (count($sites) > 1)
 			{
-				$path = Route::decontextualize($core->request->path);
+				$path = $core->request->decontextualized_path;
 
 				foreach ($sites as $asite)
 				{

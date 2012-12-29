@@ -12,8 +12,8 @@
 namespace Icybee\Modules\Users;
 
 use ICanBoogie\Exception;
-use ICanBoogie\HTTP\HTTPError;
 use ICanBoogie\Operation;
+use ICanBoogie\PermissionRequired;
 
 /**
  * The "nonce-login" operation is used to login a user using a one time, time limited pass created
@@ -47,7 +47,7 @@ class NonceLoginOperation extends Operation
 
 		if (!$token)
 		{
-			$errors['token'] = t('Token is required.');
+			$errors['token'] = 'Token is required.';
 
 			return false;
 		}
@@ -59,7 +59,7 @@ class NonceLoginOperation extends Operation
 
 		if ($expires < $now)
 		{
-			throw new HTTPError('This nonce login has expired.');
+			throw new PermissionRequired('This nonce login ticket has expired.');
 		}
 
 		$config = $core->configs['user'];
@@ -77,14 +77,14 @@ class NonceLoginOperation extends Operation
 
 		if ($user->metas['nonce_login.token'] != base64_encode(\ICanBoogie\pbkdf2($token, $config['nonce_login_salt'])))
 		{
-			throw new HTTPError('Invalid token');
+			throw new PermissionRequired('Invalid nonce token.');
 		}
 
 		$ip = $_SERVER['REMOTE_ADDR'];
 
 		if ($ip != $user->metas['nonce_login.ip'])
 		{
-			throw new HTTPError('Invalid remote address');
+			throw new PermissionRequired("Remote address don't match.");
 		}
 
 		return true;

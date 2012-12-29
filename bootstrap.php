@@ -16,7 +16,7 @@ namespace Icybee;
  *
  * @var string
  */
-const VERSION = 'dev-master (2012-12-06)';
+const VERSION = 'dev-master (2012-12-29)';
 
 /**
  * Root path for the Icybee package.
@@ -38,11 +38,6 @@ $locale = array();
 $vendor = dirname(dirname(__DIR__)) . DIRECTORY_SEPARATOR;
 $packages = array
 (
-	'icanboogie/common' => 'ICanBoogie\Common',
-	'icanboogie/prototype' => 'ICanBoogie\Prototype',
-	'icanboogie/activerecord' => 'ICanBoogie\ActiveRecord',
-	'icanboogie/event' => 'ICanBoogie\Event',
-	'icanboogie/http' => 'ICanBoogie\HTTP',
 	'icanboogie/i18n' => 'ICanBoogie\I18n',
 	'icanboogie/icanboogie' => 'ICanBoogie',
 	'brickrouge/brickrouge' => 'Brickrouge',
@@ -107,7 +102,11 @@ $core = new Core
 	array
 	(
 		'config paths' => $config,
-		'locale paths' => $locale
+		'locale paths' => $locale,
+		'modules paths' => array
+		(
+			dirname(__DIR__) . DIRECTORY_SEPARATOR . 'modules'
+		)
 	)
 );
 
@@ -191,36 +190,6 @@ Event\attach(function(Dispatcher\CollectEvent $event, Dispatcher $dispatcher) {
 			}
 		}
 	};
-});
-
-/**
- * Prevent members to access Icybee admin.
- */
-Event\attach(function(Dispatcher\BeforeDispatchEvent $event, Dispatcher $target) { // TODO-20121219: move this to "members" module.
-
-	global $core;
-
-	$request = $event->request;
-
-	if ($request->method != Request::METHOD_GET)
-	{
-		return;
-	}
-
-	$path = normalize_url_path(Route::decontextualize($request->path));
-
-	if (strpos($path, '/admin/') !== 0)
-	{
-		return;
-	}
-
-	if (!($core->user instanceof \Icybee\Modules\Members\Member))
-	{
-		return;
-	}
-
-	throw new PermissionRequired("Members are not allowed to access the admin.");
-
 });
 
 Event\attach(function(Dispatcher\DispatchEvent $event, Dispatcher $target) {

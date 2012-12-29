@@ -107,7 +107,7 @@ class ImageUpload extends \Icybee\Modules\Files\FileUpload
 		$details = array
 		(
 			'<span title="Path: ' . $path . '">' . basename($path) . '</span>',
-			t('Image size: \1&times;\2px', array($entry_width, $entry_height))
+			t('Image size: {0}&times;{1}px', array($entry_width, $entry_height))
 		);
 
 		if (($entry_width != $w) || ($entry_height != $h))

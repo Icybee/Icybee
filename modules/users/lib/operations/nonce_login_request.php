@@ -12,9 +12,11 @@
 namespace Icybee\Modules\Users;
 
 use ICanBoogie\Exception;
+use ICanBoogie\I18n;
 use ICanBoogie\I18n\Translator\Proxi;
 use ICanBoogie\Mailer;
 use ICanBoogie\Operation;
+use ICanBoogie\PermissionRequired;
 
 /**
  * Provides a nonce login.
@@ -35,7 +37,7 @@ class NonceLoginRequestOperation extends Operation
 	{
 		if (!$this->request['email'])
 		{
-			$errors['email'] = t('The field %field is required!', array('%field' => 'Votre adresse E-Mail'));
+			$errors['email'] = new I18n\FormattedString('The field %field is required!', array('%field' => 'Votre adresse E-Mail'));
 
 			return false;
 		}
@@ -44,7 +46,7 @@ class NonceLoginRequestOperation extends Operation
 
 		if (!filter_var($email, FILTER_VALIDATE_EMAIL))
 		{
-			$errors['email'] = t('Invalid e-mail address: %email.', array('%email' => $email));
+			$errors['email'] = new I18n\FormattedString('Invalid e-mail address: %email.', array('%email' => $email));
 
 			return false;
 		}
@@ -53,7 +55,7 @@ class NonceLoginRequestOperation extends Operation
 
 		if (!$user)
 		{
-			$errors['email'] = t('Unknown e-mail address.');
+			$errors['email'] = I18n\t('Unknown e-mail address.');
 
 			return false;
 		}
@@ -63,14 +65,14 @@ class NonceLoginRequestOperation extends Operation
 
 		if ($expires && ($now + self::FRESH_PERIOD - $expires < self::COOLOFF_DELAY))
 		{
-			throw new \ICanBoogie\HTTP\HTTPError
+			throw new PermissionRequired
 			(
 				\ICanBoogie\format
 				(
 					"A message has already been sent to your e-mail address. In order to reduce
 					abuses, you won't be able to request a new one until :time.", array
 					(
-						':time' => wd_format_date($expires - self::FRESH_PERIOD + self::COOLOFF_DELAY, 'HH:mm')
+						':time' => I18n\format_date($expires - self::FRESH_PERIOD + self::COOLOFF_DELAY, 'HH:mm')
 					)
 				),
 

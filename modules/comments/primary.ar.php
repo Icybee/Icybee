@@ -37,6 +37,9 @@ class Comment extends \ICanBoogie\ActiveRecord
 	const AUTHOR_IP = 'author_ip';
 	const CONTENTS = 'contents';
 	const STATUS = 'status';
+	const STATUS_APPROVED = 'approved';
+	const STATUS_PENDING = 'pending';
+	const STATUS_SPAM = 'spam';
 	const NOTIFY = 'notify';
 	const CREATED = 'created';
 

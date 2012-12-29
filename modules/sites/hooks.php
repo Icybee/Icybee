@@ -18,6 +18,43 @@ use ICanBoogie\Route;
 
 class Hooks
 {
+	static public function on_core_run(\ICanBoogie\Core\RunEvent $event, \ICanBoogie\Core $target)
+	{
+		$target->site = $site = Model::find_by_request($event->request);
+		$target->locale = $site->language;
+
+		if ($site->timezone)
+		{
+			$target->timezone = $site->timezone;
+		}
+
+		$path = $site->path;
+
+		if ($path)
+		{
+			/*
+			 * Contextualize the API string by prefixing it with the current site path.
+			 */
+			Route::$contextualize_callback = function ($str) use ($path)
+			{
+				return $path . $str;
+			};
+
+			/*
+			 * Decontextualize the API string by removing the current site path.
+			 */
+			Route::$decontextualize_callback = function ($str) use ($path)
+			{
+				if (strpos($str, $path . '/') === 0)
+				{
+					$str = substr($str, strlen($path));
+				}
+
+				return $str;
+			};
+		}
+	}
+
 	/**
 	 * Redirects the request if it matches no site.
 	 *

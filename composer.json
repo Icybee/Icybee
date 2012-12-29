@@ -27,7 +27,9 @@
 		"icanboogie/image": "dev-master",
 		"brickrouge/brickrouge": "dev-master",
 		"icybee/bluetihi": "dev-master",
-		"icybee/patron": "dev-master"
+		"icybee/patron": "dev-master",
+		
+		"icybee/module-thumbnailer": "dev-master"
 	},
 	"autoload": {
 		"classmap": ["lib/", "includes/", "modules/"]

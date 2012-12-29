@@ -10,9 +10,9 @@ return array
 	(
 		'ICanBoogie\AuthenticationRequired::rescue' => $hooks . 'on_security_exception_rescue',
 		'ICanBoogie\PermissionRequired::rescue' => $hooks . 'on_security_exception_rescue',
-		'ICanBoogie\HTTP\Dispatcher::dispatch:before' => $hooks . 'before_http_dispatcher_dispatch',
+		'ICanBoogie\Routing\Dispatcher::dispatch:before' => $hooks . 'before_routing_dispatcher_dispatch',
 		'Icybee\Modules\Users\Roles\DeleteOperation::process:before' => $hooks . 'before_roles_delete',
-		__NAMESPACE__ . '\WebsiteAdminNotAccessible::rescue' => $hooks . 'on_website_admin_not_accessible_rescue'
+		'Icybee\Modules\Users\WebsiteAdminNotAccessible::rescue' => $hooks . 'on_website_admin_not_accessible_rescue'
 	),
 
 	'prototypes' => array

@@ -8,6 +8,7 @@ return array
 (
 	'events' => array
 	(
+		'ICanBoogie\Core::run' => $hooks . 'on_core_run',
 		'ICanBoogie\HTTP\Dispatcher::dispatch:before' => $hooks . 'before_http_dispatcher_dispatch'
 	),
 

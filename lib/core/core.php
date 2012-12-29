@@ -162,49 +162,4 @@ class Core extends \ICanBoogie\Core
 
 		return new Modules($config['modules paths'], $config['cache modules'] ? $this->vars : null);
 	}
-
-	/**
-	 * Override the method to select the site corresponding to the URL and set the appropriate
-	 * language and timezone.
-	 *
-	 * @see \ICanBoogie.Core::run_context()
-	 */
-	protected function run_context()
-	{
-		$this->site = $site = \Icybee\Modules\Sites\Model::find_by_request($this->initial_request);
-		$this->locale = $site->language;
-
-		if ($site->timezone)
-		{
-			$this->timezone = $site->timezone;
-		}
-
-		$path = $this->site->path;
-
-		if ($path)
-		{
-			/*
-			 * Contextualize the API string by prefixing it with the current site path.
-			 */
-			Route::$contextualize_callback = function ($str) use ($path)
-			{
-				return $path . $str;
-			};
-
-			/*
-			 * Decontextualize the API string by removing the current site path.
-			 */
-			Route::$decontextualize_callback = function ($str) use ($path)
-			{
-				if (strpos($str, $path . '/') === 0)
-				{
-					$str = substr($str, strlen($path));
-				}
-
-				return $str;
-			};
-		}
-
-		parent::run_context();
-	}
 }

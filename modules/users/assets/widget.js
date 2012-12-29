@@ -35,7 +35,7 @@ Brickrouge.Widget.LoginCombo = new Class({
 
 	initialize: function(el, options)
 	{
-		this.element = el = $(el)
+		this.element = el = document.id(el)
 
 		var forms = el.getElements('form')
 		, login = forms[0]
@@ -51,14 +51,14 @@ Brickrouge.Widget.LoginCombo = new Class({
 			loginSlide.slideOut().chain(nonceSlide.slideIn.bind(nonceSlide))
 
 			return nonceSlide;
-		};
+		}
 
 		function nonceOut()
 		{
 			nonceSlide.slideOut().chain(loginSlide.slideIn.bind(loginSlide))
 
 			return loginSlide
-		};
+		}
 
 		login.getElement('a').addEvent('click', function(ev) {
 
@@ -76,10 +76,10 @@ Brickrouge.Widget.LoginCombo = new Class({
 
 		shake = (function (target, amplitude, duration)
 		{
-			target = $(target)
+			target = document.id(target)
 			target.setStyle('position', 'relative')
 
-			var fx = new Fx.Tween(target, { property: 'left', duration: duration/5 })
+			var fx = new Fx.Tween(target, { property: 'left', duration: duration / 5 })
 
 			return function()
 			{
@@ -96,9 +96,13 @@ Brickrouge.Widget.LoginCombo = new Class({
 
 		login.get('widget').addEvent('failure', shake)
 
-		nonce.get('widget').addEvent('success', function() {
+		nonce.get('widget').addEvent('success', function(response) {
 
-			nonceOut.delay(4000)
+			this.alert(response.message, 'success')
+			this.element.reset()
+
+			nonceOut.delay(6000)
+
 		})
 	}
 })

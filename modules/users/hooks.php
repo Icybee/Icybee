@@ -12,6 +12,7 @@
 namespace Icybee\Modules\Users;
 
 use ICanBoogie\Core;
+use ICanBoogie\Debug;
 use ICanBoogie\HTTP\RedirectResponse;
 use ICanBoogie\HTTP\Request;
 use ICanBoogie\HTTP\Response;
@@ -64,9 +65,19 @@ class Hooks
 
 		$request = $event->request;
 
+		if ($request->context->dispatcher instanceof \ICanBoogie\OperationDispatcher && $request->is_xhr)
+		{
+			return;
+		}
+
 		if (Route::decontextualize($request->normalized_path) != '/admin/')
 		{
 			\ICanBoogie\log_error($target->getMessage());
+		}
+
+		if (Debug::$mode == Debug::MODE_DEV)
+		{
+			\ICanBoogie\log('Rescued exception from {0}@{1}', array($target->getFile(), $target->getLine()));
 		}
 
 		$block = $core->modules['users']->getBlock('connect');
@@ -124,38 +135,20 @@ class Hooks
 	 * @throws WebsiteAdminNotAccessible if a user attempts to access the admin of a website he
 	 * doesn't have access to.
 	 */
-	static public function before_http_dispatcher_dispatch(\ICanBoogie\HTTP\Dispatcher\BeforeDispatchEvent $event, \ICanBoogie\HTTP\Dispatcher $target)
+	static public function before_routing_dispatcher_dispatch(\ICanBoogie\Routing\Dispatcher\BeforeDispatchEvent $event, \ICanBoogie\Routing\Dispatcher $target)
 	{
 		global $core;
 
-		// FIXME-20121219: we should only check routes, if an operation is sent to '/admin/'
-		// we might cancel that, that's not the intended behaviour.
-		// Maybe the route dispatcher should emit events before and after routing.
-		// This quick fix considers that request with a method different then GET are operations
-		// and cancel the process.
-
-		if ($core->request->method != Request::METHOD_GET)
-		{
-			return;
-		}
-
-		// /FIXME-20121219
-
-		$user = $core->user;
-
-		if ($user->is_guest)
-		{
-			return;
-		}
-
-		$path = Route::decontextualize($core->request->path);
+		$path = $event->request->decontextualized_path;
 
 		if (strpos($path, '/admin/') !== 0)
 		{
 			return;
 		}
 
-		if ($user instanceof \Icybee\Modules\Members\Member)
+		$user = $core->user;
+
+		if ($user->is_guest || $user instanceof \Icybee\Modules\Members\Member)
 		{
 			throw new PermissionRequired();
 		}

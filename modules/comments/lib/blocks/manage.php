@@ -11,11 +11,11 @@
 
 namespace Icybee\Modules\Comments;
 
-use Icybee\Modules\Comments\Comment;
 use ICanBoogie\ActiveRecord\Query;
 
 use Brickrouge\A;
 use Brickrouge\Document;
+use Brickrouge\DropdownMenu;
 use Brickrouge\Element;
 
 class ManageBlock extends \WdManager
@@ -25,6 +25,7 @@ class ManageBlock extends \WdManager
 		parent::add_assets($document);
 
 		$document->css->add('../../public/admin.css');
+		$document->js->add('../../public/admin.js');
 	}
 
 	public function __construct($module, array $attributes=array())
@@ -67,7 +68,8 @@ class ManageBlock extends \WdManager
 
 				'orderable' => false,
 
-				'label' => 'Status'
+				'label' => 'Status',
+				'class' => 'pull-right'
 			),
 
 			'score' => array
@@ -140,7 +142,43 @@ class ManageBlock extends \WdManager
 
 	protected function render_cell_status($record, $property)
 	{
-		return $this->render_filter_cell($record, $property, $this->t($record->$property, array('scope' => '.status')));
+		static $labels = array
+		(
+			Comment::STATUS_APPROVED => 'Approved',
+			Comment::STATUS_PENDING => 'Pending',
+			Comment::STATUS_SPAM => 'Spam'
+		);
+
+		static $classes = array
+		(
+			Comment::STATUS_APPROVED => 'btn-success',
+			Comment::STATUS_PENDING => 'btn-warning',
+			Comment::STATUS_SPAM => 'btn-danger'
+		);
+
+		$status = $record->status;
+		$status_label = isset($labels[$status]) ? $labels[$status] : "<em>Invalid status code: $status</em>";
+		$status_class = isset($classes[$status]) ? $classes[$status] : 'btn-danger';
+		$commentid = $record->commentid;
+
+		$menu = new DropdownMenu
+		(
+			array
+			(
+				DropdownMenu::OPTIONS => $labels,
+
+				'value' => $status
+			)
+		);
+
+		$classes_json = \Brickrouge\escape(json_encode($classes));
+
+		return <<<EOT
+<div class="btn-group" data-property="status" data-key="$commentid" data-classes="$classes_json">
+	<span class="btn $status_class dropdown-toggle" data-toggle="dropdown"><span class="text">$status_label</span> <span class="caret"></span></span>
+    $menu
+</div>
+EOT;
 	}
 
 	protected function render_cell_url($record)
@@ -192,9 +230,9 @@ class ManageBlock extends \WdManager
 
 		if ($email)
 		{
-			$rc .= '<br /><span class="small">';
+			$rc .= ' <span class="small">&lt;';
 			$rc .= new A($email, 'mailto:' . $email);
-			$rc .= '</span>';
+			$rc .= '&gt;</span>';
 		}
 
 		$url = $record->author_url;

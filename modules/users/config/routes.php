@@ -25,7 +25,7 @@ return array
 	'admin:profile' => array
 	(
 		'pattern' => '/admin/profile',
-		'controller' => 'Icybee\BlockController',
+		'controller' => __NAMESPACE__ . '\ProfileController',
 		'title' => 'Profile',
 		'block' => 'profile',
 		'visibility' => 'auto'
