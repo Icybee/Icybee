@@ -32,7 +32,7 @@ body
 {
 	color: #404040;
 	background-color: #E8E8E8;
-	font-family: Roboto, Arial, Helvetica, sans-serif;
+	font-family: Roboto, Droid Sans, Arial, Helvetica, sans-serif;
 	font-size: 14px;
 	margin: 0;
 	padding: 0;
@@ -549,15 +549,6 @@ ___BOOTSTRAP {}
 	opacity: 1;
 }
 
-.block--delete {
-	padding: 16px;
-}
-
-.block--delete h3 {
-	margin-top: 0;
-}
-
-
 .label {
     background-color: #999999;
     border-radius: 3px 3px 3px 3px;
@@ -591,10 +582,11 @@ ___BOOTSTRAP {}
 	padding: 16px;
 }
 
-.block-alert h2 {
+.block-alert .block-title {
 	margin-top: 0;
 }
 
+/*
 .block-alert p {
 	margin: 0;
 }
@@ -602,20 +594,28 @@ ___BOOTSTRAP {}
 .block-alert p + * {
 	margin-top: 1.33em;
 }
+*/
 
-.block-alert.block-alert--interlock form {
+.block--interlock form {
 	margin-top: 0;
 }
 
 .block-alert .form-actions {
 	background-color: transparent;
 	border-top: 0;
-	margin: 0;
-	padding: 16px 0 0 0 !important;
+	margin: 1em 0 0 0;
+	padding: 0 !important;
 }
 
 .block-alert .controls-label { /* fix missing bold on control label */
 	font-weight: bold;
+}
+
+
+
+
+.block--delete {
+	padding: 16px;
 }
 
 .block--delete .alert {
@@ -629,14 +629,18 @@ ___BOOTSTRAP {}
 	padding-left: 17px;
 }
 
-.block--delete .preview p {
-	max-width: 76ex;
-}
-
 .block--delete .preview:empty {
 	display: none;
 }
 
+.block--delete .preview p {
+	max-width: 76ex;
+}
+
+
+.block--delete .dependencies ul ul {
+	margin-top: 1em;
+}
 
 
 

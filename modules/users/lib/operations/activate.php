@@ -11,6 +11,8 @@
 
 namespace Icybee\Modules\Users;
 
+use ICanBoogie\I18n\FormattedString;
+
 /**
  * Enables a user account.
  */
@@ -39,7 +41,7 @@ class ActivateOperation extends \ICanBoogie\Operation
 		$record->is_activated = true;
 		$record->save();
 
-		$this->response->message = t('!name account is active.', array('!name' => $record->name));
+		$this->response->message = new FormattedString('!name account is active.', array('!name' => $record->name));
 
 		return true;
 	}

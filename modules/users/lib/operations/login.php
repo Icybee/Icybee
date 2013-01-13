@@ -13,6 +13,7 @@ namespace Icybee\Modules\Users;
 
 use ICanBoogie\Mailer;
 use ICanBoogie\I18n;
+use ICanBoogie\I18n\FormattedString;
 use ICanBoogie\I18n\Translator\Proxi;
 use ICanBoogie\Exception;
 
@@ -27,7 +28,7 @@ class LoginOperation extends \ICanBoogie\Operation
 	{
 		return array
 		(
-			self::CONTROL_SESSION_TOKEN => true,
+// 			self::CONTROL_SESSION_TOKEN => true,
 			self::CONTROL_FORM => true
 		)
 
@@ -56,7 +57,7 @@ class LoginOperation extends \ICanBoogie\Operation
 
 		if (!$user)
 		{
-			$errors[User::PASSWORD] = t('Unknown username/password combination.');
+			$errors[User::PASSWORD] = new FormattedString('Unknown username/password combination.');
 
 			return false;
 		}
@@ -87,7 +88,7 @@ class LoginOperation extends \ICanBoogie\Operation
 
 		if (!$user->compare_password($password))
 		{
-			$errors[User::PASSWORD] = t('Unknown username/password combination.');
+			$errors[User::PASSWORD] = new FormattedString('Unknown username/password combination.');
 
 			$user->metas['failed_login_count'] += 1;
 			$user->metas['failed_login_time'] = $now;
@@ -161,7 +162,7 @@ EOT
 
 		if (!$user->is_admin && !$user->is_activated)
 		{
-			$this->response->errors[] = t('User %username is not activated', array('%username' => $username));
+			$this->response->errors[] = new FormattedString('User %username is not activated', array('%username' => $username));
 
 			return false;
 		}
@@ -197,7 +198,7 @@ EOT
 			)
 		);
 
-		$this->response->location = $this->request->uri;
+		$this->response->location = $this->request['continue'] ?: $this->request->uri;
 
 		return true;
 	}

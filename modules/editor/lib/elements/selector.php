@@ -11,6 +11,8 @@
 
 namespace Icybee\Modules\Editor;
 
+use ICanBoogie\I18n;
+
 use Brickrouge\Element;
 use Brickrouge\ElementIsEmpty;
 
@@ -27,7 +29,7 @@ class SelectorElement extends Element
 
 		foreach ($core->editors as $id => $editor)
 		{
-			$options[$id] = t($id, array(), array('scope' => 'editor_title'));
+			$options[$id] = I18n\t($id, array(), array('scope' => 'editor_title'));
 		}
 
 		parent::__construct

@@ -102,6 +102,7 @@ class Core extends \ICanBoogie\Core
 			}
 
 			header('HTTP/1.0 ' . $code . ' ' . $class . ': ' . $normalized_message);
+			header('X-ICanBoogie-Exception: ' . \ICanBoogie\strip_root($exception->getFile()) . '@' . $exception->getLine());
 		}
 
 		if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'] == 'XMLHttpRequest')

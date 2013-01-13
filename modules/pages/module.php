@@ -11,15 +11,16 @@
 
 namespace Icybee\Modules\Pages;
 
-use Icybee\Modules\Nodes\Node;
-use Icybee\Modules\Pages\Page;
-use Icybee\Modules\Editor\EditorElement;
-use Icybee\Modules\Editor\MultiEditorElement;
+use ICanBoogie\I18n;
 
 use Brickrouge\Alert;
 use Brickrouge\Element;
 use Brickrouge\Form;
 use Brickrouge\Text;
+
+use Icybee\Modules\Nodes\Node;
+use Icybee\Modules\Editor\EditorElement;
+use Icybee\Modules\Editor\MultiEditorElement;
 
 class Module extends \Icybee\Modules\Nodes\Module
 {
@@ -93,7 +94,7 @@ class Module extends \Icybee\Modules\Nodes\Module
 		return array
 		(
 			'title' => 'Copy entries',
-			'message' => t('Are you sure you want to copy the :count selected entries ?', array(':count' => count($entries))),
+			'message' => I18n\t('Are you sure you want to copy the :count selected entries ?', array(':count' => count($entries))),
 			'confirm' => array('Don\'t copy', 'Copy'),
 			'params' => array
 			(
@@ -109,11 +110,11 @@ class Module extends \Icybee\Modules\Nodes\Module
 
 		if ($elements)
 		{
-			$template_description .= ' ' . t("The following elements are editable:");
+			$template_description .= ' ' . I18n\t("The following elements are editable:");
 		}
 		else
 		{
-			$template_description = t("The <q>:template</q> template does not define any editable element.", array(':template' => $template));
+			$template_description = I18n\t("The <q>:template</q> template does not define any editable element.", array(':template' => $template));
 		}
 
 		$elements = array_merge
@@ -199,7 +200,7 @@ class Module extends \Icybee\Modules\Nodes\Module
 		{
 			$id = $editable['id'];
 			$title = $editable['title'];
-			$title = t($id, array(), array('scope' => array('content', 'title'), 'default' => $title));
+			$title = I18n\t($id, array(), array('scope' => array('content', 'title'), 'default' => $title));
 
 			$does_inherit = !empty($editable['inherit']);
 
@@ -267,7 +268,7 @@ class Module extends \Icybee\Modules\Nodes\Module
 								Form::LABEL => $title,
 								Element::GROUP => 'contents.inherit',
 								Element::INNER_HTML => '',
-								Element::DESCRIPTION => t
+								Element::DESCRIPTION => I18n\t
 								(
 									'This content is currently inherited from the <q><a href="!url">!title</a></q> parent page. <a href="#edit" class="btn">Edit the content</a>', array
 									(
@@ -282,7 +283,7 @@ class Module extends \Icybee\Modules\Nodes\Module
 					}
 					else
 					{
-						$editor_description .= t('No parent page define this content.');
+						$editor_description .= I18n\t('No parent page define this content.');
 					}
 				}
 			}
@@ -302,7 +303,7 @@ class Module extends \Icybee\Modules\Nodes\Module
 				{
 					$elements["contents[$id]"] = new Alert
 					(
-						t('Éditeur inconnu : %editor', array('%editor' => $editable['editor'])), array
+						I18n\t('Éditeur inconnu : %editor', array('%editor' => $editable['editor'])), array
 						(
 							Form::LABEL => $title,
 							Element::GROUP => $does_inherit ? 'contents.inherit' : 'contents',
@@ -387,7 +388,7 @@ class Module extends \Icybee\Modules\Nodes\Module
 			$template = 'home.html';
 		}
 
-		$description = t("The template defines a page model of which some elements are editable.");
+		$description = I18n\t("The template defines a page model of which some elements are editable.");
 
 		if (!$nid)
 		{
@@ -476,12 +477,12 @@ class Module extends \Icybee\Modules\Nodes\Module
 		{
 //			\ICanBoogie\log("entry template: $template ($record->nid), from: $inherited->template ($inherited->nid: $inherited->title)");
 
-			$description .= ' ' . t
+			$description .= ' ' . I18n\t
 			(
 				'This page uses the <q>:template</q> template, inherited from the parent page <q><a href="!url">!title</a></q>.', array
 				(
 					'template' => $template,
-					'url' => \ICanBoogie\Route::contextualize("/admin/{$this->id}/{$definer->nid}/edit"),
+					'url' => \ICanBoogie\Routing\contextualize("/admin/{$this->id}/{$definer->nid}/edit"),
 					'title' => $definer->title
 				)
 			);

@@ -11,6 +11,8 @@
 
 namespace Icybee\Modules\Files;
 
+use ICanBoogie\I18n;
+
 use Brickrouge\Element;
 use ICanBoogie\Uploaded;
 
@@ -59,7 +61,7 @@ class FileUpload extends \Brickrouge\File
 
 	protected function preview($path)
 	{
-		$rc = '<a class="download" href="' . $path . '">' . t('download', array(), array('scope' => array('fileupload', 'element'))) . '</a>';
+		$rc = '<a class="download" href="' . $path . '">' . I18n\t('download', array(), array('scope' => array('fileupload', 'element'))) . '</a>';
 
 		return $rc;
 	}

@@ -3,15 +3,15 @@
 namespace Icybee\Modules\Taxonomy\Vocabulary;
 
 use ICanBoogie\Event;
+use ICanBoogie\I18n;
 
 use Brickrouge\Element;
 use Brickrouge\Form;
 use Brickrouge\Text;
 
+use Icybee\Modules\Views\ActiveRecordProvider;
 use Icybee\Modules\Views\Collection as ViewsCollection;
 use Icybee\Modules\Views\Provider;
-
-use Icybee\Modules\Views\ActiveRecordProvider;
 
 class Hooks
 {
@@ -264,7 +264,7 @@ class Hooks
 						Element::GROUP => 'organize',
 						Element::OPTIONS => array(null => '') + $options,
 						Element::REQUIRED => $vocabulary->is_required,
-						Element::INLINE_HELP => '<a href="' . $edit_url . '">' . t('Edit the vocabulary <q>!vocabulary</q>', array('!vocabulary' => $vocabulary->vocabulary)) . '</a>.',
+						Element::INLINE_HELP => '<a href="' . $edit_url . '">' . I18n\t('Edit the vocabulary <q>!vocabulary</q>', array('!vocabulary' => $vocabulary->vocabulary)) . '</a>.',
 
 						'value' => $value
 					)

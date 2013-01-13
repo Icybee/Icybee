@@ -11,8 +11,8 @@
 
 namespace Icybee\Modules\Files;
 
-use Icybee\Modules\Files\File;
 use ICanBoogie\ActiveRecord\Query;
+use ICanBoogie\I18n;
 
 /**
  * A block to manage files.
@@ -141,7 +141,7 @@ class ManageBlock extends \Icybee\Modules\Nodes\ManageBlock
 	protected function render_cell_title($record, $property)
 	{
 		$rc  = '<a class="download" href="' . \ICanBoogie\escape($record->url('download')) . '"';
-		$rc .= ' title="' . t('Download the file: :path', array(':path' => $record->path)) . '"';
+		$rc .= ' title="' . I18n\t('Download the file: :path', array(':path' => $record->path)) . '"';
 		$rc .= '>';
 		$rc .= 'download</a>';
 

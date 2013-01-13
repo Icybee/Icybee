@@ -12,6 +12,7 @@
 namespace Icybee\Modules\Users\Roles;
 
 use ICanBoogie\ActiveRecord\RecordNotFound;
+use ICanBoogie\I18n;
 use ICanBoogie\Operation;
 use ICanBoogie\Route;
 
@@ -60,7 +61,7 @@ class Module extends \Icybee\Module
 			(
 				array
 				(
-					Role::NAME => t('Visitor')
+					Role::NAME => I18n\t('Visitor')
 				),
 
 				array($model)
@@ -79,7 +80,7 @@ class Module extends \Icybee\Module
 			(
 				array
 				(
-					Role::NAME => t('User')
+					Role::NAME => I18n\t('User')
 				),
 
 				array($model)
@@ -110,12 +111,12 @@ class Module extends \Icybee\Module
 		{
 			if (!$e->records[1])
 			{
-				$errors[$this->id] = t('Visitor role is missing');
+				$errors[$this->id] = I18n\t('Visitor role is missing');
 			}
 
 			if (!$e->records[2])
 			{
-				$errors[$this->id] = t('User role is missing');
+				$errors[$this->id] = I18n\t('User role is missing');
 			}
 		}
 

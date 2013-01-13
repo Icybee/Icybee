@@ -12,6 +12,7 @@
 namespace Brickrouge\Widget;
 
 use ICanBoogie\ActiveRecord\Query;
+use ICanBoogie\I18n;
 
 use Brickrouge\A;
 use Brickrouge\Element;
@@ -55,7 +56,7 @@ class AdjustNode extends \Brickrouge\Widget
 		$constructor = $this[self::T_CONSTRUCTOR];
 
 		$rc .= '<div class="search">';
-		$rc .= new Text(array('class' => 'search', 'placeholder' => t('Search')));
+		$rc .= new Text(array('class' => 'search', 'placeholder' => I18n\t('Search')));
 		$rc .= $this->get_results(array('selected' => $this['value']), $constructor);
 		$rc .= '</div>';
 
@@ -200,8 +201,8 @@ class AdjustNode extends \Brickrouge\Widget
 
 		(
 			$search
-			? t('Aucun enregistrement ne correspond aux termes de recherche spécifiés (%search)', array('%search' => $search))
-			: t("Il n'y a pas d'enregistrements")
+			? I18n\t('Aucun enregistrement ne correspond aux termes de recherche spécifiés (%search)', array('%search' => $search))
+			: I18n\t("Il n'y a pas d'enregistrements")
 		)
 
 		. '</p>';

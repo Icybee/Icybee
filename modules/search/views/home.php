@@ -11,6 +11,7 @@
 
 use ICanBoogie\Event;
 use ICanBoogie\Exception;
+use ICanBoogie\I18n;
 use ICanBoogie\Module;
 
 use Brickrouge\Button;
@@ -55,7 +56,7 @@ foreach ($constructors as $i => $constructor)
 
 //$constructors[] = 'google';
 
-$constructors_options = array(null => t('search.option.all'));
+$constructors_options = array(null => I18n\t('search.option.all'));
 
 foreach ($constructors as $constructor)
 {
@@ -66,7 +67,7 @@ foreach ($constructors as $constructor)
 		continue;
 	}
 
-	$constructors_options[$constructor] = t(strtr($constructor, '.', '_'), array(), array('scope' => 'module_title', 'default' => $core->modules->descriptors[$constructor][Module::T_TITLE]));
+	$constructors_options[$constructor] = I18n\t(strtr($constructor, '.', '_'), array(), array('scope' => 'module_title', 'default' => $core->modules->descriptors[$constructor][Module::T_TITLE]));
 }
 
 $document->js->add('../public/widget.js');
@@ -83,10 +84,10 @@ $form = new Brickrouge\Form
 			(
 				array
 				(
-					Form::LABEL => t('search.label.keywords'),
+					Form::LABEL => I18n\t('search.label.keywords'),
 
 					'autofocus' => true,
-					'placeholder' => t('search.label.keywords'),
+					'placeholder' => I18n\t('search.label.keywords'),
 					'class' => 'unstyled'
 				)
 			),
@@ -95,7 +96,7 @@ $form = new Brickrouge\Form
 			(
 				'select', array
 				(
-					Form::LABEL => t('search.label.in'),
+					Form::LABEL => I18n\t('search.label.in'),
 					Element::OPTIONS => $constructors_options,
 					'class' => 'unstyled'
 				)
@@ -160,7 +161,7 @@ if (empty($_GET['constructor']))
 }
 else if (!in_array($_GET['constructor'], $constructors))
 {
-	echo t("Le constructeur %constructor n'est pas supporté pour la recherche", array('%constructor' => $_GET['constructor']));
+	echo I18n\t("Le constructeur %constructor n'est pas supporté pour la recherche", array('%constructor' => $_GET['constructor']));
 }
 else
 {

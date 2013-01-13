@@ -11,6 +11,7 @@
 
 namespace Icybee\Modules\Modules;
 
+use ICanBoogie\I18n;
 use ICanBoogie\Operation;
 use ICanBoogie\Route;
 
@@ -109,7 +110,7 @@ class ManageBlock extends Form
 				list($category) = explode('.', $id);
 			}
 
-			$category = t($category, array(), array('scope' => 'module_category', 'default' => ucfirst($category)));
+			$category = I18n\t($category, array(), array('scope' => 'module_category', 'default' => ucfirst($category)));
 			$categories[$category][$id] = $descriptor;
 		}
 
@@ -179,7 +180,7 @@ EOT;
 
 		foreach ($columns as $id => $column)
 		{
-			$html .= '<th><div>' . ($column['label'] ? t($column['label'], array(), array('scope' => 'title')) : '&nbsp;') . '</div></th>';
+			$html .= '<th><div>' . ($column['label'] ? I18n\t($column['label'], array(), array('scope' => 'title')) : '&nbsp;') . '</div></th>';
 		}
 
 		return <<<EOT
@@ -243,9 +244,15 @@ EOT;
 	{
 		$title = $descriptor['_locale_title'];
 
-		$html = \ICanBoogie\Routes::get()->find('/admin/' . $module_id) ? '<a href="' . Route::contextualize('/admin/' . $module_id) . '">' . $title . '</a>' : $title;
+		$html = \ICanBoogie\Routes::get()->find('/admin/' . $module_id) ? '<a href="' . \ICanBoogie\Routing\contextualize('/admin/' . $module_id) . '">' . $title . '</a>' : $title;
 
-		$description = t('module_description.' . strtr($module_id, '.', '_'), array(), array('default' => t($descriptor[Module::T_DESCRIPTION]) ?: '<em class="light">' . t('No description') . '</em>'));
+		$description = I18n\t
+		(
+			'module_description.' . strtr($module_id, '.', '_'), array(), array
+			(
+				'default' => I18n\t($descriptor[Module::T_DESCRIPTION]) ?: '<em class="light">' . I18n\t('No description') . '</em>'
+			)
+		);
 
 		if ($description)
 		{
@@ -297,17 +304,13 @@ EOT;
 			foreach ($requires as $require_id => $version)
 			{
 				$label = self::resolve_module_title($require_id);
+				$label_class = isset($core->modules[$require_id]) ? 'success' : 'warning';
 
-				if (!isset($core->modules[$require_id]))
-				{
-					$html .= '<span class="label label-warning">' . $label . '</span>';
-				}
-				else
-				{
-					$html .= '<span class="label label-success">' . $label . '</span>';
-				}
+				$html .= <<<EOT
+<span class="label label-{$label_class}" title="Version $version">$label</span>
+EOT;
 
-				$html .= '<span class="small light"> ' . $version . '</span> ';
+				$html .= ' ';
 			}
 
 			$html .= '</div>';
@@ -317,7 +320,7 @@ EOT;
 
 		if ($usage)
 		{
-			$html .= '<div class="usage light">' . t('Used by :count modules', array(':count' => $usage)) . '</div>';
+			$html .= '<div class="usage light">' . I18n\t('Used by :count modules', array(':count' => $usage)) . '</div>';
 		}
 
 		return $html;
@@ -351,13 +354,13 @@ EOT;
 
 			if (empty($core->modules->descriptors[$extends]))
 			{
-				$errors[$module_id] = t('Requires the %module module which is missing.', array('%module' => $extends));
+				$errors[$module_id] = I18n\t('Requires the %module module which is missing.', array('%module' => $extends));
 
 				break;
 			}
 			else if (!isset($core->modules[$extends]))
 			{
-				$errors[$module_id] = t('Requires the %module module which is disabled.', array('%module' => $extends));
+				$errors[$module_id] = I18n\t('Requires the %module module which is disabled.', array('%module' => $extends));
 
 				break;
 			}
@@ -374,7 +377,7 @@ EOT;
 
 				if (!$extends_is_installed)
 				{
-					$errors[$module_id] = t('Requires the %module module which is disabled.', array('%module' => $extends));
+					$errors[$module_id] = I18n\t('Requires the %module module which is disabled.', array('%module' => $extends));
 
 					break;
 				}
@@ -401,7 +404,7 @@ EOT;
 			}
 			catch (\Exception $e)
 			{
-				$errors[$module->id] = t
+				$errors[$module->id] = I18n\t
 				(
 					'Exception with module %module: :message', array
 					(
@@ -413,16 +416,16 @@ EOT;
 
 			if ($is_installed)
 			{
-				$html .= t('Installed');
+				$html .= I18n\t('Installed');
 			}
 			else if ($is_installed === false)
 			{
 				$html .= '<a class="install" href="';
-				$html .= Route::contextualize("/admin/{$this->module}/{$module}/install");
+				$html .= \ICanBoogie\Routing\contextualize("/admin/{$this->module}/{$module}/install");
 
 				\ICanBoogie\log_error('The module %title is not properly installed.', array('title' => $module->title));
 
-				$html .= '">' . t('Install module') . '</a>';
+				$html .= '">' . I18n\t('Install module') . '</a>';
 
 				if (isset($errors[$module_id]))
 				{
@@ -445,7 +448,7 @@ EOT;
 			$descriptors, function(&$descriptor)
 			{
 				$id = $descriptor[Module::T_ID];
-				$title = t
+				$title = I18n\t
 				(
 					strtr($id, '.', '_'), array(), array
 					(
@@ -484,7 +487,7 @@ EOT;
 	{
 		global $core;
 
-		return t
+		return I18n\t
 		(
 			'module_title.' . strtr($module_id, '.', '_'), array(), array
 			(

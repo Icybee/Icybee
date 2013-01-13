@@ -60,24 +60,73 @@ class ManageBlock extends \WdManager
 		return $options;
 	}
 
+	/**
+	 * Alters the query with the 'vid' filter.
+	 *
+	 * @see Icybee.Manager::alter_query()
+	 */
+	protected function alter_query(Query $query, array $filters)
+	{
+		$query = parent::alter_query($query, $filters);
+
+		if (isset($filters['vid']))
+		{
+			$query->filter_by_vid($filters['vid']);
+		}
+
+		return $query;
+	}
+
 	protected function alter_range_query(Query $query, array $options)
 	{
-		$order = $options['order'];
-
-		if (isset($order['vid']))
-		{
-			$query->order('vocabulary ' . ($order['vid'] < 0 ? 'desc' : 'asc'));
-		}
-		else if (isset($order['popularity']))
-		{
-			$query->order('popularity ' . ($order['popularity'] < 0 ? 'desc' : 'asc'));
-		}
-
 		$query->select('*, (select count(s1.nid) from {self}__nodes as s1 where s1.vtid = term.vtid) AS `popularity`');
 		$query->mode(\PDO::FETCH_CLASS, 'Icybee\Modules\Taxonomy\Terms\Term', array($this->model));
 
 		return parent::alter_range_query($query, $options);
 	}
+
+	/*
+	 * Columns
+	 */
+
+	/**
+	 * Extends the "vid" column by providing vocabulary filters.
+	 *
+	 * @param array $column
+	 * @param string $id
+	 */
+	protected function extend_column_vid(array $column, $id, array $fields)
+	{
+		global $core;
+
+		$keys = $this->module->model->select('DISTINCT vid')->all(\PDO::FETCH_COLUMN);
+
+		if (!$keys || count($keys) == 1)
+		{
+			return array
+			(
+				'sortable' => false
+			)
+
+			+ parent::extend_column($column, $id, $fields);
+		}
+
+		$vocabulary = $core->models['taxonomy.vocabulary']->select('CONCAT("=", vid), vocabulary')->where(array('vid' => $keys))->order('vocabulary')->pairs;
+
+		return array
+		(
+			'filters' => array
+			(
+				'options' => $vocabulary
+			)
+		)
+
+		+ parent::extend_column($column, $id, $fields);
+	}
+
+	/*
+	 * Cells
+	 */
 
 	protected function get_cell_term($record, $property)
 	{

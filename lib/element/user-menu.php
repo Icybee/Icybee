@@ -71,11 +71,11 @@ class UserMenu extends Element
 			$roles = substr($roles, 2);
 		}
 
-		$username = new A($user->name, Route::contextualize('/admin/profile'));
+		$username = new A($user->name, \ICanBoogie\Routing\contextualize('/admin/profile'));
 
 		$options = array
 		(
-			Route::contextualize('/admin/profile') => 'Profile',
+			\ICanBoogie\Routing\contextualize('/admin/profile') => 'Profile',
 			false,
 			Operation::encode('users/logout') => 'Logout'
 		);

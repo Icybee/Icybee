@@ -12,6 +12,8 @@
 namespace Icybee\Modules\Users;
 
 use ICanBoogie\Exception;
+use ICanBoogie\I18n;
+use ICanBoogie\I18n\FormattedString;
 use ICanBoogie\Operation;
 
 use Brickrouge\Button;
@@ -71,7 +73,7 @@ Cordialement'
 
 		if (!$config)
 		{
-			$errors[$this->id] = t('The <q>user</q> config is missing.');
+			$errors[$this->id] = new FormattedString('The <q>user</q> config is missing.');
 
 			return false;
 		}
@@ -98,7 +100,7 @@ Cordialement'
 		{
 			if (!is_writable(dirname($path)))
 			{
-				$errors[$this->id] = t('The file %path must be writable during installation', array('%path' => $path));
+				$errors[$this->id] = new FormattedString('The file %path must be writable during installation', array('%path' => $path));
 
 				return false;
 			}
@@ -163,7 +165,7 @@ EOT;
 	{
 		global $core;
 
-		$core->document->page_title = t('My profile');
+		$core->document->page_title = I18n\t('My profile');
 
 		$module = $this;
 		$user = $core->user;

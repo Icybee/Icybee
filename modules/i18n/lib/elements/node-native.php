@@ -11,10 +11,12 @@
 
 namespace Icybee\Modules\I18n;
 
-use Icybee\Modules\Pages\Model as PagesModel;
+use ICanBoogie\I18n;
 
 use Brickrouge\Element;
 use Brickrouge\Form;
+
+use Icybee\Modules\Pages\Model as PagesModel;
 
 /**
  * An element to select the language of a node.
@@ -36,7 +38,7 @@ class NodeNativeElement extends Element
 			(
 				Form::LABEL => 'nativeid',
 				Element::GROUP => 'i18n',
-				Element::DESCRIPTION => t('nativeid', array('native' => $native, 'language' => $site->language), array('scope' => 'element.description'))
+				Element::DESCRIPTION => I18n\t('nativeid', array('native' => $native, 'language' => $site->language), array('scope' => 'element.description'))
 			)
 		);
 	}

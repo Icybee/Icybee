@@ -11,8 +11,8 @@
 
 namespace Icybee\Modules\Nodes;
 
-use Icybee\Modules\Nodes\Node;
 use ICanBoogie\ActiveRecord\Query;
+use ICanBoogie\I18n;
 use ICanBoogie\Route;
 
 use Brickrouge\A;
@@ -90,8 +90,8 @@ class ManageBlock extends \WdManager
 	{
 		return parent::jobs() + array
 		(
-			'online' => t('online.operation.short_title'),
-			'offline' => t('offline.operation.short_title')
+			'online' => I18n\t('online.operation.short_title'),
+			'offline' => I18n\t('offline.operation.short_title')
 		);
 	}
 
@@ -343,7 +343,7 @@ class ManageBlock extends \WdManager
 		(
 			'Display', $url, array
 			(
-				'title' => t('View this entry on the website'),
+				'title' => $this->t('View this entry on the website'),
 				'class' => 'view'
 			)
 		);
@@ -383,7 +383,7 @@ class ManageBlock extends \WdManager
 				Element::INNER_HTML => $label,
 
 				'class' => 'edit',
-				'href' => Route::contextualize('/admin/' . $record->constructor . '/' . $record->nid . '/edit'),
+				'href' => \ICanBoogie\Routing\contextualize('/admin/' . $record->constructor . '/' . $record->nid . '/edit'),
 				'title' => $shortened ? $this->t->__invoke('manager.edit_named', array(':title' => $title ? $title : 'unnamed')) : $this->t->__invoke('manager.edit'),
 			)
 		);

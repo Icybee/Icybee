@@ -100,6 +100,7 @@ EOT;
 		{
 			$description = html_entity_decode($description, ENT_QUOTES, \ICanBoogie\CHARSET);
 			$description = trim(strip_tags($description));
+			$description = preg_replace('#\s+#', ' ', $description);
 
 			$event->metas['Description'] = $description;
 		}

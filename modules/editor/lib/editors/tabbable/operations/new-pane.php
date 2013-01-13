@@ -11,6 +11,8 @@
 
 namespace Icybee\Modules\Editor;
 
+use ICanBoogie\I18n;
+
 /**
  * Returns a new pane for the {@link TabbableEditor}.
  */
@@ -25,7 +27,7 @@ class TabbableNewPaneOperation extends \ICanBoogie\Operation
 	{
 		if (!$this->request['control_name'])
 		{
-			$errors['control_name'] = t('The %identifier is required.', array('identifier' => 'control_name'));
+			$errors['control_name'] = I18n\t('The %identifier is required.', array('identifier' => 'control_name'));
 		}
 
 		return true;

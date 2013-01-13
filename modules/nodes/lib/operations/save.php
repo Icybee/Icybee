@@ -11,6 +11,8 @@
 
 namespace Icybee\Modules\Nodes;
 
+use ICanBoogie\I18n\FormattedString;
+
 use Icybee\Modules\Nodes\Node;
 
 /**
@@ -74,7 +76,7 @@ class SaveOperation extends \Icybee\SaveOperation
 		$rc = parent::process();
 		$record = $this->module->model[$rc['key']];
 
-		$this->response->message = array
+		$this->response->message = new FormattedString
 		(
 			$rc['mode'] == 'update' ? '%title has been updated in :module.' : '%title has been created in %module.', array
 			(
@@ -83,7 +85,7 @@ class SaveOperation extends \Icybee\SaveOperation
 			)
 		);
 
-		$this->response->message = array
+		$this->response->message = new FormattedString
 		(
 			$rc['mode'] == 'update' ? '%title has been updated in :module.' : '%title has been created in %module.', array
 			(

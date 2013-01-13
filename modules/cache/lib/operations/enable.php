@@ -11,6 +11,8 @@
 
 namespace Icybee\Modules\Cache;
 
+use ICanBoogie\I18n\FormattedString;
+
 /**
  * Enables the specified cache.
  *
@@ -23,7 +25,7 @@ class EnableOperation extends BaseOperation
 		$cache = $this->collection[$this->key];
 		$cache->clear();
 
-		$this->response->message = array('The cache %cache has been enabled.', array('cache' => $this->key));
+		$this->response->message = new FormattedString('The cache %cache has been enabled.', array('cache' => $this->key));
 
 		return $cache->enable();
 	}

@@ -80,8 +80,8 @@ class AttachmentsElement extends Element
 		$limit = ini_get('upload_max_filesize') * 1024 * 1024;
 		$limit_formated = \ICanBoogie\I18n\format_size($limit);
 
-		$label_join = t('Add a new attachment');
-		$label_limit = t('The maximum size for each attachment is :size', array(':size' => $limit_formated));
+		$label_join = I18n\t('Add a new attachment');
+		$label_limit = I18n\t('The maximum size for each attachment is :size', array(':size' => $limit_formated));
 
 		$label_join = new \Brickrouge\File
 		(
@@ -125,7 +125,7 @@ EOT;
 
 			$links = array
 			(
-				'<a href="#remove" class="btn btn-warning">' . t('label.remove') . '</a>'
+				'<a href="#remove" class="btn btn-warning">' . I18n\t('label.remove') . '</a>'
 			);
 		}
 		else
@@ -138,9 +138,9 @@ EOT;
 
 			$links = array
 			(
-				'<a href="' . \ICanBoogie\Route::contextualize('/admin/files/' . $fid . '/edit') . '" class="btn"><i class="icon-pencil"></i> ' . t('label.edit') .'</a>',
-				'<a href="' . Operation::encode('files/' . $fid . '/download') . '" class="btn"><i class="icon-download-alt"></i> ' . t('label.download') . '</a>',
-				$hard_bond ? '<a href="#delete" class="btn btn-danger"><i class="icon-remove icon-white"></i> ' . t('Delete file') .'</a>' : '<a href="#remove" class="btn btn-warning"><i class="icon-remove"></i> ' . t('Break link') . '</a>'
+				'<a href="' . \ICanBoogie\Routing\contextualize('/admin/files/' . $fid . '/edit') . '" class="btn"><i class="icon-pencil"></i> ' . I18n\t('label.edit') .'</a>',
+				'<a href="' . Operation::encode('files/' . $fid . '/download') . '" class="btn"><i class="icon-download-alt"></i> ' . I18n\t('label.download') . '</a>',
+				$hard_bond ? '<a href="#delete" class="btn btn-danger"><i class="icon-remove icon-white"></i> ' . I18n\t('Delete file') .'</a>' : '<a href="#remove" class="btn btn-warning"><i class="icon-remove"></i> ' . t('Break link') . '</a>'
 			);
 
 			$node = $core->models['nodes'][$entry->nid];

@@ -11,6 +11,8 @@
 
 namespace Icybee\Modules\Taxonomy\Vocabulary;
 
+use ICanBoogie\I18n;
+
 class Module extends \Icybee\Module
 {
 	const OPERATION_ORDER = 'order';
@@ -24,7 +26,7 @@ class Module extends \Icybee\Module
 		$document->js->add('public/order.js');
 		$document->css->add('public/order.css');
 
-		$terms = $core->models['taxonomy.terms']->where('vid = ?', $vid)->order('term.weight, vtid')->all;
+		$terms = $core->models['taxonomy.terms']->filter_by_vid($vid)->order('term.weight, vtid')->all;
 
 		$rc  = '<form id="taxonomy-order" method="post">';
 		$rc .= '<input type="hidden" name="#operation" value="' . self::OPERATION_ORDER . '" />';
@@ -43,7 +45,7 @@ class Module extends \Icybee\Module
 		$rc .= '</ol>';
 
 		$rc .= '<div class="actions">';
-		$rc .= '<button class="save">' . t('label.save') . '</button>';
+		$rc .= '<button class="save">' . I18n\t('label.save') . '</button>';
 		$rc .= '</div>';
 
 		$rc .= '</form>';

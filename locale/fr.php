@@ -59,8 +59,13 @@ return array
 	'Hello :username' => 'Bonjour :username',
 	'See the website' => 'Voir le site',
 
+	# DeleteBlock
+
 	'Delete a record' => 'Supprimer un enregistrement',
 	'Are you sure you want to delete :name?' => "Êtes-vous sûr de vouloir supprimer :name ?",
+	'The following dependencies were found, they will also be deleted:' => "Les dépendances suivantes ont été trouvées, elles seront également supprimées :",
+
+	#
 
 	'Edit' => 'Éditer',
 	'Edit: !title' => "Éditer : !title",

@@ -35,6 +35,6 @@ class Hooks
 			return;
 		}
 
-		$event->response = new RedirectResponse(Route::contextualize('/admin/dashboard'));
+		$event->response = new RedirectResponse(\ICanBoogie\Routing\contextualize('/admin/dashboard'));
 	}
 }

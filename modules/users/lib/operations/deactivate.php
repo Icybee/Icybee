@@ -11,6 +11,8 @@
 
 namespace Icybee\Modules\Users;
 
+use ICanBoogie\I18n\FormattedString;
+
 /**
  * Disables a user account.
  */
@@ -22,7 +24,7 @@ class DeactivateOperation extends ActivateOperation
 		$record->is_activated = false;
 		$record->save();
 
-		$this->response->message = t('!name account is deactivated.', array('!name' => $record->name));
+		$this->response->message = new FormattedString('!name account is deactivated.', array('!name' => $record->name));
 
 		return true;
 	}

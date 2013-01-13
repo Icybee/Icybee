@@ -11,6 +11,8 @@
 
 namespace Icybee\Modules\Members;
 
+use ICanBoogie\I18n;
+
 use Brickrouge\Element;
 use Brickrouge\Date;
 use Brickrouge\Form;
@@ -73,9 +75,9 @@ class EditBlock extends \Icybee\Modules\Users\EditBlock
 						Element::OPTIONS => array
 						(
 							null => '',
-							t('salutation.misses'),
-							t('salutation.miss'),
-							t('salutation.mister')
+							I18n\t('salutation.misses'),
+							I18n\t('salutation.miss'),
+							I18n\t('salutation.mister')
 						)
 					)
 				),

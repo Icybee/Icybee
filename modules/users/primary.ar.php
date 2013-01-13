@@ -46,6 +46,41 @@ class User extends \ICanBoogie\ActiveRecord
 	const RESTRICTED_SITES = 'restricted_sites';
 
 	/**
+	 * User name should be displayed as `$username`.
+	 *
+	 * @var int
+	 */
+	const NAME_AS_USERNAME = 0;
+
+	/**
+	 * User name should be displayed as `$firstname`.
+	 *
+	 * @var int
+	 */
+	const NAME_AS_FIRSTNAME = 1;
+
+	/**
+	 * User name should be displayed as `$lastname`.
+	 *
+	 * @var int
+	 */
+	const NAME_AS_LASTNAME = 2;
+
+	/**
+	 * User name should be displayed as `$firstname $lastname`.
+	 *
+	 * @var int
+	 */
+	const NAME_AS_FIRSTNAME_LASTNAME = 3;
+
+	/**
+	 * User name should be displayed as `$lastname $firstname`.
+	 *
+	 * @var int
+	 */
+	const NAME_AS_LASTNAME_FIRSTNAME = 4;
+
+	/**
 	 * User identifier.
 	 *
 	 * @var string
@@ -73,7 +108,7 @@ class User extends \ICanBoogie\ActiveRecord
 	 *
 	 * @var string
 	 */
-	protected $password_hash; // FIXME-20121219: this should be private, but it seams to cause problems.
+	protected $password_hash; // FIXME-20121219: this should be private, but it seams to cause problems :'(
 
 	/**
 	 * Username of the user.
@@ -181,11 +216,11 @@ class User extends \ICanBoogie\ActiveRecord
 	{
 		$values = array
 		(
-			$this->username,
-			$this->firstname,
-			$this->lastname,
-			$this->firstname . ' ' . $this->lastname,
-			$this->lastname . ' ' . $this->firstname
+			self::NAME_AS_USERNAME => $this->username,
+			self::NAME_AS_FIRSTNAME => $this->firstname,
+			self::NAME_AS_LASTNAME => $this->lastname,
+			self::NAME_AS_FIRSTNAME_LASTNAME => $this->firstname . ' ' . $this->lastname,
+			self::NAME_AS_LASTNAME_FIRSTNAME => $this->lastname . ' ' . $this->firstname
 		);
 
 		$rc = isset($values[$this->display]) ? $values[$this->display] : null;

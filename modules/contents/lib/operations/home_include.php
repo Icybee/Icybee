@@ -11,6 +11,8 @@
 
 namespace Icybee\Modules\Contents;
 
+use ICanBoogie\I18n\FormattedString;
+
 /**
  * Includes a record is the home page.
  */
@@ -44,7 +46,7 @@ class HomeIncludeOperation extends \ICanBoogie\Operation
 		$record->is_home_excluded = false;
 		$record->save();
 
-		$this->response->message = array('%title is now included in the home page', array('%title' => $record->title));
+		$this->response->message = new FormattedString('%title is now included in the home page', array('%title' => $record->title));
 
 		return true;
 	}

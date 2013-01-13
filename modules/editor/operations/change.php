@@ -13,6 +13,7 @@ namespace Icybee\Modules\Editor;
 
 use ICanBoogie\Errors;
 use ICanBoogie\Exception;
+use ICanBoogie\I18n\FormattedString;
 use ICanBoogie\Operation;
 
 /**
@@ -36,17 +37,17 @@ class ChangeOperation extends Operation
 
 		if (!$this->key)
 		{
-			$errors['editor_id'] = t('The %property is required.', array('property' => 'editor_id'));
+			$errors['editor_id'] = new FormattedString('The %property is required.', array('property' => 'editor_id'));
 		}
 
 		if (empty($request['selector_name']))
 		{
-			$errors['selector_name'] = t('The %property is required.', array('property' => 'selector_name'));
+			$errors['selector_name'] = new FormattedString('The %property is required.', array('property' => 'selector_name'));
 		}
 
 		if (empty($request['contents_name']))
 		{
-			$errors['contents_name'] = t('The %property is required.', array('property' => 'contents_name'));
+			$errors['contents_name'] = new FormattedString('The %property is required.', array('property' => 'contents_name'));
 		}
 
 		return !$errors->count();

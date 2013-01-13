@@ -102,7 +102,7 @@ class ManageBlock extends \Icybee\ManageBlock
 
 	protected function render_cell_message($record, $property)
 	{
-		return t($record->$property, unserialize($record->variables) ?: array());
+		return $this->t($record->$property, unserialize($record->variables) ?: array());
 	}
 
 	protected function render_cell_severity($record, $property)
@@ -123,7 +123,7 @@ class ManageBlock extends \Icybee\ManageBlock
 
 	protected function render_cell_type($record, $property)
 	{
-		return $this->render_filter_cell($record, $property, t($record->$property, array(), array('scope' => 'type')));
+		return $this->render_filter_cell($record, $property, $this->t($record->$property, array(), array('scope' => 'type')));
 	}
 
 	/**
@@ -182,7 +182,7 @@ class ManageBlock extends \Icybee\ManageBlock
 		}
 		else
 		{
-			$label = t('Guest');
+			$label = $this->t('Guest');
 		}
 
 		return parent::render_filter_cell($record, $property, $label);

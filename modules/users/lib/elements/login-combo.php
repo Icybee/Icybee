@@ -11,6 +11,8 @@
 
 namespace Icybee\Modules\Users;
 
+use ICanBoogie\I18n;
+
 use Brickrouge\A;
 use Brickrouge\Element;
 
@@ -23,7 +25,7 @@ class LoginComboElement extends Element
 		$login = new LoginForm;
 		$password = new NonceRequestForm;
 
-		$password->children['email'][Element::DESCRIPTION] = new A(t('Cancel', array(), array('scope' => 'button')));
+		$password->children['email'][Element::DESCRIPTION] = new A(I18n\t('Cancel', array(), array('scope' => 'button')));
 
 		$this->elements['login'] = $login;
 		$this->elements['password'] = $password;

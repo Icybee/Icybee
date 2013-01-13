@@ -11,6 +11,8 @@
 
 namespace Icybee\Modules\Members;
 
+use ICanBoogie\PermissionRequired;
+
 class Hooks
 {
 	/**

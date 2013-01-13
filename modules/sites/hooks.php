@@ -14,10 +14,21 @@ namespace Icybee\Modules\Sites;
 use ICanBoogie\HTTP\Dispatcher;
 use ICanBoogie\HTTP\RedirectResponse;
 use ICanBoogie\HTTP\Request;
-use ICanBoogie\Route;
+use ICanBoogie\Routing;
 
 class Hooks
 {
+	/**
+	 * Initializes the {@link Core::$site}, {@link Core::$locale} and {@link Core::$timezone}
+	 * properties of the core object.
+	 *
+	 * If the current site has a path, the {@link Routing\contextualize()} and
+	 * {@link Routing\decontextualize()} helpers are patched.
+	 *
+	 * @param \ICanBoogie\Core\RunEvent $event
+	 * @param \ICanBoogie\Core $target
+	 * @return string
+	 */
 	static public function on_core_run(\ICanBoogie\Core\RunEvent $event, \ICanBoogie\Core $target)
 	{
 		$target->site = $site = Model::find_by_request($event->request);
@@ -32,18 +43,12 @@ class Hooks
 
 		if ($path)
 		{
-			/*
-			 * Contextualize the API string by prefixing it with the current site path.
-			 */
-			Route::$contextualize_callback = function ($str) use ($path)
+			Routing\Helpers::patch('contextualize', function ($str) use ($path)
 			{
 				return $path . $str;
-			};
+			});
 
-			/*
-			 * Decontextualize the API string by removing the current site path.
-			 */
-			Route::$decontextualize_callback = function ($str) use ($path)
+			Routing\Helpers::patch('decontextualize', function ($str) use ($path)
 			{
 				if (strpos($str, $path . '/') === 0)
 				{
@@ -51,7 +56,7 @@ class Hooks
 				}
 
 				return $str;
-			};
+			});
 		}
 	}
 
@@ -79,7 +84,7 @@ class Hooks
 			return;
 		}
 
-		$path = \ICanBoogie\normalize_url_path(Route::decontextualize($request->path));
+		$path = \ICanBoogie\normalize_url_path(\ICanBoogie\Routing\decontextualize($request->path));
 
 		if (strpos($path, '/api/') === 0)
 		{

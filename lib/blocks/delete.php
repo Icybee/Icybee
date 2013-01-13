@@ -12,6 +12,7 @@
 namespace Icybee;
 
 use ICanBoogie\ActiveRecord;
+use ICanBoogie\I18n;
 use ICanBoogie\Operation;
 use ICanBoogie\Route;
 
@@ -64,7 +65,7 @@ class DeleteBlock extends Form
 					Operation::NAME => Module::OPERATION_DELETE,
 					Operation::KEY => $this->key,
 
-					'#location' => Route::contextualize("/admin/{$module->id}")
+					'#location' => \ICanBoogie\Routing\contextualize("/admin/{$module->id}")
 				),
 
 				self::ACTIONS => array
@@ -83,7 +84,8 @@ class DeleteBlock extends Form
 				(
 					$this->title_element,
 					$this->question_element,
-					$this->preview_element
+					$this->preview_element,
+					$this->dependencies_element
 				)
 			)
 		);
@@ -99,12 +101,11 @@ class DeleteBlock extends Form
 		{
 			try
 			{
-				$title = $this->title;
-				$message = t('Unknown record id: %key', array('%key' => $this->key));
+				$message = I18n\t('Unknown record id: %key', array('%key' => $this->key));
 
 				return <<<EOT
 <div class="block-alert block--delete">
-<h2>$title</h2>
+$this->title_element
 <div class="alert alert-error">$message</div>
 </div>
 EOT;
@@ -125,7 +126,7 @@ EOT;
 	 */
 	protected function get_title()
 	{
-		return t('Delete a record');
+		return I18n\t('Delete a record');
 	}
 
 	/**
@@ -135,7 +136,7 @@ EOT;
 	 */
 	protected function get_title_element()
 	{
-		return new Element('h2', array(Element::INNER_HTML => \Brickrouge\escape($this->title)));
+		return new Element('h1', array(Element::INNER_HTML => \Brickrouge\escape($this->title), 'class' => 'block-title'));
 	}
 
 	/**
@@ -173,10 +174,10 @@ EOT;
 		}
 		else
 		{
-			$record_name = t('record_name', array(), array('default' => 'this record'));
+			$record_name = I18n\t('record_name', array(), array('default' => 'this record'));
 		}
 
-		return t('Are you sure you want to delete :name?', array('name' => $record_name));
+		return I18n\t('Are you sure you want to delete :name?', array('name' => $record_name));
 	}
 
 	/**
@@ -188,7 +189,6 @@ EOT;
 	{
 		return new Element('p', array(Element::INNER_HTML => $this->question));
 	}
-
 
 	/**
 	 * Renders a preview of the record.
@@ -219,7 +219,71 @@ EOT;
 	 */
 	protected function get_preview_element()
 	{
-		return new Element('div', array(Element::INNER_HTML => $this->preview, 'class' => 'preview'));
+		return $this->preview ? new Element('div', array(Element::INNER_HTML => $this->preview, 'class' => 'preview')) : null;
+	}
+
+	/**
+	 * Renders the dependencies of the record.
+	 *
+	 * @param array $dependencies
+	 *
+	 * @return string
+	 */
+	protected function render_dependencies(array $dependencies)
+	{
+		$html = null;
+
+		foreach ($dependencies as $module_id => $by_module)
+		{
+			$html .= '<li>';
+			$html .= '<strong>' . I18n\t(count($by_module) == 1 ? 'one' : 'other', array(), array('scope' => "$module_id.name")) . '</strong>';
+			$html .= '<ul>';
+
+			foreach ($by_module as $key => $dependency)
+			{
+				$html .= '<li><a href="' . $dependency['edit_url'] . '">' . $dependency['title'] . '</a></li>';
+			}
+
+			$html .= '</ul>';
+			$html .= '</li>';
+		}
+
+		if (!$html)
+		{
+			return null;
+		}
+
+		$p = I18n\t('The following dependencies were found, they will also be deleted:');
+
+		return <<<EOT
+<p>$p</p>
+<ul>$html</ul>
+EOT;
+	}
+
+	/**
+	 * Returns the dependencies of the record.
+	 *
+	 * @return string
+	 */
+	protected function get_dependencies()
+	{
+		$record = $this->record;
+		$dependencies = array();
+
+		new \ICanBoogie\ActiveRecord\CollectDependenciesEvent($record, $dependencies);
+
+		return $this->render_dependencies($dependencies);
+	}
+
+	/**
+	 * Returns the dependencies element.
+	 *
+	 * @return \Brickrouge\Element
+	 */
+	protected function get_dependencies_element()
+	{
+		return $this->dependencies ? new Element('div', array(Element::INNER_HTML => $this->dependencies, 'class' => 'dependencies')) : null;
 	}
 
 	/**
@@ -227,15 +291,64 @@ EOT;
 	 *
 	 * Because at this level the method has no way of knowing the name of the record, it uses
 	 * the localized string "record_name" which defaults to "this record".
-	 *
-	 * @see Brickrouge.Element::decorate()
 	 */
 	protected function decorate($html)
 	{
-		return <<<EOT
-<div class="block-alert block--delete">
-$html
-</div>
-EOT;
+		return '<div class="block-alert block--delete">' . $html . '</div>';
+	}
+}
+
+/*
+ * Events
+ */
+
+namespace ICanBoogie\ActiveRecord;
+
+use ICanBoogie\Route;
+
+/**
+ * Event class for the `ICanBoogie\ActiveRecord::collect_dependencies` event.
+ */
+class CollectDependenciesEvent extends \ICanBoogie\Event
+{
+	/**
+	 * Reference to the dependencies.
+	 *
+	 * @var array[string]\ICanBoogie\ActiveRecord
+	 */
+	public $dependencies;
+
+	/**
+	 * The event is constructed with the type 'collect_dependencies'.
+	 *
+	 * @param \ICanBoogie\ActiveRecord $target
+	 * @param array $dependencies
+	 */
+	public function __construct(\ICanBoogie\ActiveRecord $target, array &$dependencies)
+	{
+		$this->dependencies = &$dependencies;
+
+		parent::__construct($target, 'collect_dependencies');
+	}
+
+	/**
+	 * Adds a dependency.
+	 *
+	 * @param string $module_id Identifier of the module managin the dependency.
+	 * @param int $key Identifier of the dependency.
+	 * @param string $title Title of the dependency.
+	 * @param string|true|null $edit_url The URL where the dependency can be edited. If `true`
+	 * the URL if automatically generated using the following pattern:
+	 * `/admin/:module_id/:key/edit`.
+	 * @param string|null $view_url The URL on the website where the dependency can be viewed.
+	 */
+	public function add($module_id, $key, $title, $edit_url=null, $view_url=null)
+	{
+		if ($edit_url === true)
+		{
+			$edit_url = \ICanBoogie\Routing\contextualize("/admin/$module_id/$key/edit");
+		}
+
+		$this->dependencies[$module_id][$key] = array('title' => $title, 'edit_url' => $edit_url, 'view_url' => $view_url);
 	}
 }

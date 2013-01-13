@@ -11,6 +11,8 @@
 
 namespace Icybee\Modules\Cache;
 
+use ICanBoogie\I18n\FormattedString;
+
 /**
  * Disables the specified cache.
  */
@@ -20,7 +22,7 @@ class DisableOperation extends BaseOperation
 	{
 		$cache = $this->collection[$this->key];
 
-		$this->response->message = array('The cache %cache has been disabled.', array('cache' => $this->key));
+		$this->response->message = new FormattedString('The cache %cache has been disabled.', array('cache' => $this->key));
 
 		return $cache->disable();
 	}

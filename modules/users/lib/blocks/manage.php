@@ -11,7 +11,7 @@
 
 namespace Icybee\Modules\Users;
 
-use Icybee\Modules\Users\User;
+use ICanBoogie\I18n;
 
 use Brickrouge\Element;
 
@@ -95,8 +95,8 @@ class ManageBlock extends \WdManager
 
 		$jobs = array
 		(
-			Module::OPERATION_ACTIVATE => t('activate.operation.title'),
-			Module::OPERATION_DEACTIVATE => t('deactivate.operation.title')
+			Module::OPERATION_ACTIVATE => I18n\t('activate.operation.title'),
+			Module::OPERATION_DEACTIVATE => I18n\t('deactivate.operation.title')
 		);
 
 		return $jobs;

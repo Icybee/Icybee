@@ -1,7 +1,9 @@
 <?php
 
-use Brickrouge\Pager;
+use ICanBoogie\I18n;
 use ICanBoogie\Module;
+
+use Brickrouge\Pager;
 
 if (!defined('PREG_CLASS_SEARCH_EXCLUDE'))
 {
@@ -217,13 +219,13 @@ function make_set($constructor, $entries, $count, $search, $has_pager=false)
 	if (empty($_GET['constructor']))
 	{
 		$title = ($constructor == 'google' ? 'Google' : $core->modules->descriptors[$constructor][Module::T_TITLE]);
-		$title = t(strtr($constructor, '.', '_'), array(), array('scope' => 'module_title', 'default' => $title));
+		$title = I18n\t(strtr($constructor, '.', '_'), array(), array('scope' => 'module_title', 'default' => $title));
 
 		$rc .= '<h2>' . $title . '</h2>';
 	}
 
 	$rc .= '<p class="count">';
-	$rc .= t('found', array(':count' => $count, '%search' => $search), array('scope' => array($flat_id, 'search')));
+	$rc .= I18n\t('found', array(':count' => $count, '%search' => $search), array('scope' => array($flat_id, 'search')));
 	$rc .= '</p>';
 
 	if ($entries)
@@ -266,7 +268,7 @@ function make_set($constructor, $entries, $count, $search, $has_pager=false)
 				$more_url = '?' . http_build_query(array('q' => $search, 'constructor' => $constructor));
 
 				$rc .= '<p class="more"><a href="' . $more_url . '">';
-				$rc .= t('more', array(':count' => $count, '%search' => $search), array('scope' => array($flat_id, 'search')));
+				$rc .= I18n\t('more', array(':count' => $count, '%search' => $search), array('scope' => array($flat_id, 'search')));
 				$rc .= '</a></p>';
 			}
 		}

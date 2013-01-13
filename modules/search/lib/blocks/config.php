@@ -11,6 +11,7 @@
 
 namespace Icybee\Modules\Search;
 
+use ICanBoogie\I18n;
 use ICanBoogie\Route;
 
 use Brickrouge\A;
@@ -39,11 +40,11 @@ class ConfigBlock extends \Icybee\ConfigBlock
 
 		if ($page)
 		{
-			$description_link = (string) new A($page->title, Route::contextualize("/admin/pages/$page->nid/edit"));
+			$description_link = (string) new A($page->title, \ICanBoogie\Routing\contextualize("/admin/pages/$page->nid/edit"));
 		}
 		else
 		{
-			$description_link = '<q>' . new A('Pages', Route::contextualize('/admin/pages')) . '</q>';
+			$description_link = '<q>' . new A('Pages', \ICanBoogie\Routing\contextualize('/admin/pages')) . '</q>';
 		}
 
 		return \ICanBoogie\array_merge_recursive
@@ -54,7 +55,7 @@ class ConfigBlock extends \Icybee\ConfigBlock
 				(
 					'primary' => array
 					(
-						'description' => t($page ? 'description' : 'description_nopage', array(':link' => $description_link))
+						'description' => I18n\t($page ? 'description' : 'description_nopage', array(':link' => $description_link))
 					)
 				)
 			)
@@ -112,7 +113,7 @@ class ConfigBlock extends \Icybee\ConfigBlock
 				continue;
 			}
 
-			$options[$module_id] = t($descriptor[Module::T_TITLE], array(), array('scope' => 'module_title'));
+			$options[$module_id] = I18n\t($descriptor[Module::T_TITLE], array(), array('scope' => 'module_title'));
 		}
 
 		$options['google'] = '<em>Google</em>';

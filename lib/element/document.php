@@ -113,7 +113,7 @@ class Document extends \Brickrouge\Document
 
 		foreach ($metas as $name => $content)
 		{
-			if ($name === 'og')
+			if (is_array($content))
 			{
 				continue;
 			}
@@ -121,9 +121,17 @@ class Document extends \Brickrouge\Document
 			$html .= '<meta name="' . \ICanBoogie\escape($name) . '" content="' . \ICanBoogie\escape($content) . '" />' . PHP_EOL;
 		}
 
-		foreach ($metas['og'] as $property => $content)
+		foreach ($metas as $name => $properties)
 		{
-			$html .= '<meta property="og:' . \ICanBoogie\escape($property) . '" content="' . \ICanBoogie\escape($content) . '" />' . PHP_EOL;
+			if (!is_array($properties))
+			{
+				continue;
+			}
+
+			foreach ($properties as $property => $content)
+			{
+				$html .= '<meta property="' . $name . ':' . \ICanBoogie\escape($property) . '" content="' . \ICanBoogie\escape($content) . '" />' . PHP_EOL;
+			}
 		}
 
 		new Document\RenderMetasEvent($document, array('html' => &$html));

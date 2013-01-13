@@ -243,7 +243,7 @@ class View extends Object
 		global $core;
 
 		$html = null;
-		$default = t('The view %name is empty.', array('%name' => $this->id));
+		$default = I18n\t('The view %name is empty.', array('%name' => $this->id));
 		$type = $this->type;
 		$module = $this->module;
 		$module_flat_id = $module->flat_id;
@@ -270,7 +270,7 @@ class View extends Object
 				$default = 'No record found.';
 			}
 
-			$default .= t
+			$default .= I18n\t
 			(
 				' <ul><li>The placeholder %placeholder was tried, but it does not exists.</li><li>The %message was tried, but it does not exists.</li></ul>', array
 				(
@@ -282,7 +282,7 @@ class View extends Object
 
 		if (!$html)
 		{
-			$html = t('empty_view', array(), array('scope' => $module_flat_id . '.' . $type, 'default' => $default));
+			$html = I18n\t('empty_view', array(), array('scope' => $module_flat_id . '.' . $type, 'default' => $default));
 
 			if ($html)
 			{

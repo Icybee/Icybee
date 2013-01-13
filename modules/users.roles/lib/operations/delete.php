@@ -11,6 +11,8 @@
 
 namespace Icybee\Modules\Users\Roles;
 
+use ICanBoogie\I18n\FormattedString;
+
 /**
  * Deletes a role.
  */
@@ -44,7 +46,7 @@ class DeleteOperation extends \ICanBoogie\DeleteOperation
 	{
 		if ($this->key == 1 || $this->key == 2)
 		{
-			$errors[] = t('The role %name cannot be deleted.', array('name' => $this->record->name));
+			$errors[] = new FormattedString('The role %name cannot be deleted.', array('name' => $this->record->name));
 		}
 
 		return parent::validate($errors);

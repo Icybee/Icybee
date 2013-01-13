@@ -11,6 +11,8 @@
 
 namespace Brickrouge\Widget;
 
+use ICanBoogie\I18n;
+
 use Brickrouge;
 use Brickrouge\Element;
 use Brickrouge\Text;
@@ -55,7 +57,7 @@ class TitleSlugCombo extends \Brickrouge\Widget
 						)
 					),
 
-					'<a href="#slug-collapse" class="small">' . t('fold', array(), array('scope' => 'titleslugcombo.element')) . '</a>',
+					'<a href="#slug-collapse" class="small">' . I18n\t('fold', array(), array('scope' => 'titleslugcombo.element')) . '</a>',
 
 					'<div class="slug">',
 
@@ -74,7 +76,7 @@ class TitleSlugCombo extends \Brickrouge\Widget
 					'</div>'
 				),
 
-				'data-auto-label' => '<em>' . t('auto', array(), array('scope' => 'titleslugcombo.element')) . '</em>'
+				'data-auto-label' => '<em>' . I18n\t('auto', array(), array('scope' => 'titleslugcombo.element')) . '</em>'
 			)
 		);
 	}
@@ -109,8 +111,8 @@ class TitleSlugCombo extends \Brickrouge\Widget
 		$slug = $this->slug_el['value'];
 
 		$tease = '<strong>Slug&nbsp;:</strong> ';
-		$tease .= '<a href="#slug-edit" title="' . t('edit', array(), array('scope' => 'titleslugcombo.element')) . '">' . ($slug ? \ICanBoogie\escape(\ICanBoogie\shorten($slug)) : $this->dataset['auto-label']) . '</a>';
-		$tease .= ' <span>&ndash; <a href="slug-delete" class="warn">' . t('reset', array(), array('scope' => 'titleslugcombo.element')) . '</a></span>';
+		$tease .= '<a href="#slug-edit" title="' . I18n\t('edit', array(), array('scope' => 'titleslugcombo.element')) . '">' . ($slug ? \ICanBoogie\escape(\ICanBoogie\shorten($slug)) : $this->dataset['auto-label']) . '</a>';
+		$tease .= ' <span>&ndash; <a href="slug-delete" class="warn">' . I18n\t('reset', array(), array('scope' => 'titleslugcombo.element')) . '</a></span>';
 
 		$this->slug_tease->inner_html = $tease;
 

@@ -57,8 +57,6 @@ class taxonomy_support_WdMarkups
 		# query
 		#
 
-//		echo t('where: <code>\1</code> \2', array($where, $params));
-
 		global $core;
 
 		$entries = $core->db->query

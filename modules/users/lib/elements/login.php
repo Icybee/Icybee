@@ -11,6 +11,7 @@
 
 namespace Icybee\Modules\Users;
 
+use ICanBoogie\I18n;
 use ICanBoogie\Operation;
 
 use Brickrouge;
@@ -82,7 +83,7 @@ class LoginForm extends Form
 						(
 							Form::LABEL => 'password',
 							Element::REQUIRED => true,
-							Element::DESCRIPTION => '<a href="#lost-password" rel="nonce-request">' . t
+							Element::DESCRIPTION => '<a href="#lost-password" rel="nonce-request">' . I18n\t
 							(
 								'lost_password', array(), array
 								(

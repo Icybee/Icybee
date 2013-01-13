@@ -11,6 +11,7 @@
 
 namespace Icybee\Modules\Images;
 
+use ICanBoogie\I18n;
 use ICanBoogie\Operation;
 
 use Brickrouge\Element;
@@ -77,7 +78,7 @@ class GalleryBlock extends ManageBlock
 					Element::INNER_HTML => \ICanBoogie\escape($title),
 
 					'class' => 'edit',
-					'title' => t('Edit this item'),
+					'title' => I18n\t('Edit this item'),
 					'href' => $context . '/admin/' . $module_id . '/' . $entry->nid . '/edit'
 				)
 			);
@@ -93,7 +94,7 @@ class GalleryBlock extends ManageBlock
 						Element::TYPE_CHECKBOX, array
 						(
 							'class' => 'key',
-							'title' => t('Toggle selection for entry #\1', array($entry->nid)),
+							'title' => I18n\t('Toggle selection for entry #\1', array($entry->nid)),
 							'value' => $entry->nid
 						)
 					);

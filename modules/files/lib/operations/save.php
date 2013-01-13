@@ -11,6 +11,8 @@
 
 namespace Icybee\Modules\Files;
 
+use ICanBoogie\I18n\FormattedString;
+
 use ICanBoogie\Uploaded;
 
 class SaveOperation extends \Icybee\Modules\Nodes\SaveOperation
@@ -129,7 +131,7 @@ class SaveOperation extends \Icybee\Modules\Nodes\SaveOperation
 
 		if ($file && $file->er)
 		{
-			$errors[File::PATH] = t('Unable to upload file %file: :message.', array('%file' => $file->name, ':message' => $file->er_message));
+			$errors[File::PATH] = new FormattedString('Unable to upload file %file: :message.', array('%file' => $file->name, ':message' => $file->er_message));
 
 			return false;
 		}

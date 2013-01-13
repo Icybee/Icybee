@@ -11,6 +11,7 @@
 
 namespace Icybee\Element;
 
+use ICanBoogie\I18n;
 use ICanBoogie\Module;
 use ICanBoogie\PropertyNotDefined;
 use ICanBoogie\Route;
@@ -76,7 +77,7 @@ class Navigation extends \Brickrouge\Element
 
 			$menus[$category][$route['pattern']] = $route;
 
-			$links[$category] = t($category, array(), array('scope' => 'module_category')); // TODO: a same category is translated multiple time
+			$links[$category] = I18n\t($category, array(), array('scope' => 'module_category')); // TODO: a same category is translated multiple time
 		}
 
 		uasort($links, 'ICanBoogie\unaccent_compare_ci');
@@ -120,7 +121,7 @@ class Navigation extends \Brickrouge\Element
 				$rc .= '<li>';
 			}
 
-			$url = Route::contextualize('/admin/'. $path);
+			$url = \ICanBoogie\Routing\contextualize('/admin/'. $path);
 
 			$rc .= '<a href="' . \ICanBoogie\escape($url) . '">' . $label . '</a>';
 
@@ -149,8 +150,8 @@ class Navigation extends \Brickrouge\Element
 			$title = $route['title'];
 			$module_id = $route['module'];
 			$module_flat_id = strtr($module_id, '.', '_');
-			$title = t($module_flat_id, array(), array('scope' => 'module_title', 'default' => $descriptors[$module_id][Module::T_TITLE]));
-			$url = Route::contextualize($route['pattern']);
+			$title = I18n\t($module_flat_id, array(), array('scope' => 'module_title', 'default' => $descriptors[$module_id][Module::T_TITLE]));
+			$url = \ICanBoogie\Routing\contextualize($route['pattern']);
 			$options[$url] = array($title, $url);
 		}
 

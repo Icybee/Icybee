@@ -11,13 +11,16 @@
 
 namespace Icybee\Modules\Nodes\Attachments;
 
-use Icybee\Modules\Nodes\Node;
 use ICanBoogie\Event;
 use ICanBoogie\HTTP\Request;
+use ICanBoogie\I18n;
+use ICanBoogie\I18n\FormattedString;
 use ICanBoogie\Operation;
 
 use Brickrouge\Element;
 use Brickrouge\Form;
+
+use Icybee\Modules\Nodes\Node;
 
 class Hooks
 {
@@ -84,7 +87,7 @@ class Hooks
 
 				if (!$fileid)
 				{
-					$operation->errors[] = t('Unable to save file: \1', array($attached_params));
+					$operation->errors[] = new FormattedString('Unable to save file: {0}', array($attached_params));
 
 					continue;
 				}
@@ -301,7 +304,7 @@ class Hooks
 			}
 
 			$constructor = strtr($constructor, '.', '_');
-			$scope[$constructor] = t($descriptor[Module::T_TITLE]);
+			$scope[$constructor] = I18n\t($descriptor[Module::T_TITLE]);
 		}
 
 		asort($scope);
@@ -324,7 +327,7 @@ class Hooks
 		(
 			Element::TYPE_CHECKBOX_GROUP, array
 			(
-				Form::LABEL => t('nodes_attachments.element.label.scope'),
+				Form::LABEL => I18n\t('nodes_attachments.element.label.scope'),
 				Element::OPTIONS => $scope,
 				Element::GROUP => 'attachments',
 
@@ -415,11 +418,11 @@ class Hooks
 		{
 			$file = $files[0];
 
-			$rc .= '<p>' . self::make_link($file, t('Download attachment')) . '</p>';
+			$rc .= '<p>' . self::make_link($file, I18n\t('Download attachment')) . '</p>';
 		}
 		else
 		{
-			$rc .= '<h5>' . t('Attachments') . '</h5>';
+			$rc .= '<h5>' . I18n\t('Attachments') . '</h5>';
 			$rc .= '<ul>';
 
 			foreach ($files as $file)

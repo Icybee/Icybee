@@ -11,6 +11,7 @@
 
 namespace Icybee\Modules\Members;
 
+use ICanBoogie\I18n\FormattedString;
 use ICanBoogie\Uploaded;
 
 class SaveOperation extends \Icybee\Modules\Users\SaveOperation
@@ -30,7 +31,7 @@ class SaveOperation extends \Icybee\Modules\Users\SaveOperation
 		{
 			if ($file->er)
 			{
-				$errors['photo'] = t('Unable to upload file %file: :message.', array
+				$errors['photo'] = new FormattedString('Unable to upload file %file: :message.', array
 				(
 					'%file' => $file->name,
 					':message' => $file->er_message
@@ -51,7 +52,7 @@ class SaveOperation extends \Icybee\Modules\Users\SaveOperation
 
 		if (!$this->key && isset($this->properties['email-verify']) && $this->request['email-verify'] != $this->properties['email'])
 		{
-			$errors['email-verify'] = t("E-mail and E-mail confirm don't match");
+			$errors['email-verify'] = new FormattedString("E-mail and E-mail confirm don't match");
 
 			return false;
 		}

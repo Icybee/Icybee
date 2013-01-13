@@ -11,15 +11,15 @@
 
 namespace Icybee\Modules\Files;
 
-use Brickrouge\Document;
-
-use Icybee\Modules\Files\File;
-use Icybee\Modules\Editor\RTEEditorElement;
+use ICanBoogie\I18n;
 use ICanBoogie\Operation;
 use ICanBoogie\Uploaded;
 
 use Brickrouge\Element;
+use Brickrouge\Document;
 use Brickrouge\Form;
+
+use Icybee\Modules\Editor\RTEEditorElement;
 
 class EditBlock extends \Icybee\Modules\Nodes\EditBlock
 {
@@ -60,7 +60,7 @@ class EditBlock extends \Icybee\Modules\Nodes\EditBlock
 			(
 				Element::CHILDREN => array
 				(
-					t('The folder %folder is not writable !', array('%folder' => $folder))
+					I18n\t('The folder %folder is not writable !', array('%folder' => $folder))
 				)
 			);
 		}

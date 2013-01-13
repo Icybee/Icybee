@@ -32,48 +32,29 @@ define('Icybee\ROOT', rtrim(__DIR__, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR)
  */
 define('Icybee\ASSETS', ROOT . 'assets' . DIRECTORY_SEPARATOR);
 
-$config = array();
-$locale = array();
-
-$vendor = dirname(dirname(__DIR__)) . DIRECTORY_SEPARATOR;
-$packages = array
-(
-	'icanboogie/i18n' => 'ICanBoogie\I18n',
-	'icanboogie/icanboogie' => 'ICanBoogie',
-	'brickrouge/brickrouge' => 'Brickrouge',
-	'icybee/bluetihi' => 'BlueTihi',
-	'icybee/patron' => 'Patron'
-);
-
 /*
- * Icybee requires the ICanBoogie framework, the Brickrouge tookit and the Patron engine.
- *
- * If Phar packages are available they are used instead. You should pay attention to this as this
- * may cause a hit on performance.
+ * Helpers
  */
-foreach ($packages as $package => $namespace)
-{
-	$pathname = $vendor . $package;
-	$package_root = $pathname;
+require_once ROOT . 'lib/helpers.php';
+require_once ROOT . 'lib/helpers-compat.php';
 
-	if (file_exists($pathname . '.phar'))
-	{
-		$package_root = 'phar://' . $pathname . '.phar';
+Core::add_path(ROOT);
 
-		require_once $pathname . '.phar';
-	}
-
-	$config[] = $package_root;
-	$locale[] = $package_root;
-}
-
-$config[] = ROOT;
-$locale[] = ROOT;
-
-if (!class_exists('Icybee\Core', false))
-{
-	require_once ROOT . 'lib/core/core.php';
-}
+/**
+ * The core instance is the heart of the ICanBoogie framework.
+ *
+ * @var Icybee\Core
+ */
+$core = new Core
+(
+	array
+	(
+		'modules paths' => array
+		(
+			dirname(__DIR__) . DIRECTORY_SEPARATOR . 'modules' . DIRECTORY_SEPARATOR
+		)
+	)
+);
 
 
 \Brickrouge\Helpers::patch('t', 'ICanBoogie\I18n\t');
@@ -89,26 +70,20 @@ if (!class_exists('Icybee\Core', false))
 	return \ICanBoogie\Core::get()->session;
 });
 
-require_once ROOT . 'lib/helpers.php';
-require_once ROOT . 'lib/helpers-compat.php';
 
-/**
- * The core instance is the heart of the ICanBoogie framework.
- *
- * @var Icybee\Core
- */
-$core = new Core
-(
-	array
-	(
-		'config paths' => $config,
-		'locale paths' => $locale,
-		'modules paths' => array
-		(
-			dirname(__DIR__) . DIRECTORY_SEPARATOR . 'modules'
-		)
-	)
-);
+/*
+\Brickrouge\Helpers::patch('store_form_errors', function($name, $errors) {
+
+	\ICanBoogie\Core::get()->session->brickrouge_errors[$name] = $errors;
+
+});
+
+\Brickrouge\Helpers::patch('retrieve_form_errors', function($name) {
+
+	return \ICanBoogie\Core::get()->session->brickrouge_errors[$name];
+
+});
+*/
 
 # FIXME-20121205: we need to run the core before attaching events, otherwise config events won't
 # be attached.
@@ -130,8 +105,8 @@ use ICanBoogie\HTTP\Dispatcher;
 use ICanBoogie\HTTP\RedirectResponse;
 use ICanBoogie\HTTP\Request;
 
-Event\attach(function(Dispatcher\CollectEvent $event, Dispatcher $dispatcher) {
-
+Event\attach(function(Dispatcher\CollectEvent $event, Dispatcher $dispatcher)
+{
 	/**
 	 * Router for admin routes.
 	 *
@@ -144,7 +119,7 @@ Event\attach(function(Dispatcher\CollectEvent $event, Dispatcher $dispatcher) {
 	{
 		global $core;
 
-		$path = normalize_url_path(Route::decontextualize($request->path));
+		$path = normalize_url_path(\ICanBoogie\Routing\decontextualize($request->path));
 
 		if (strpos($path, '/admin/') !== 0)
 		{
@@ -182,7 +157,7 @@ Event\attach(function(Dispatcher\CollectEvent $event, Dispatcher $dispatcher) {
 
 				return new RedirectResponse
 				(
-					Route::contextualize($route->pattern), 302, array
+					\ICanBoogie\Routing\contextualize($route->pattern), 302, array
 					(
 						'Icybee-Redirected-By' => __FILE__ . '::' . __LINE__
 					)
@@ -192,15 +167,15 @@ Event\attach(function(Dispatcher\CollectEvent $event, Dispatcher $dispatcher) {
 	};
 });
 
-Event\attach(function(Dispatcher\DispatchEvent $event, Dispatcher $target) {
-
+Event\attach(function(Dispatcher\DispatchEvent $event, Dispatcher $target)
+{
 	#
 	# We chain the event so that it is called after the event callbacks have been processed,
 	# for instance a _cache_ callback that may cache the response.
 	#
 
-	$event->chain(function(Dispatcher\DispatchEvent $event, Dispatcher $target) {
-
+	$event->chain(function(Dispatcher\DispatchEvent $event, Dispatcher $target)
+	{
 		$response = $event->response;
 
 		if (!$response)

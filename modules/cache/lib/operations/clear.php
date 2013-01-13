@@ -11,6 +11,8 @@
 
 namespace Icybee\Modules\Cache;
 
+use ICanBoogie\I18n\FormattedString;
+
 /**
  * Clears the specified cache.
  */
@@ -22,7 +24,7 @@ class ClearOperation extends BaseOperation
 
 		$cache->clear();
 
-		$this->response->message = array('The cache %cache has been cleared.', array('cache' => $this->key));
+		$this->response->message = new FormattedString('The cache %cache has been cleared.', array('cache' => $this->key));
 
 		return $cache->stat();
 	}

@@ -11,6 +11,8 @@
 
 namespace Icybee\Modules\Cache;
 
+use ICanBoogie\I18n;
+
 class Module extends \Icybee\Module
 {
 	static public function get_files_stat($path, $pattern=null)
@@ -67,7 +69,7 @@ class Module extends \Icybee\Module
 
 		return array
 		(
-			$n, t(':count files<br /><span class="small">:size</span>', array(':count' => $n, 'size' => \ICanBoogie\I18n\format_size($size)))
+			$n, I18n\t(':count files<br /><span class="small">:size</span>', array(':count' => $n, 'size' => \ICanBoogie\I18n\format_size($size)))
 		);
 	}
 
@@ -86,7 +88,7 @@ class Module extends \Icybee\Module
 
 		return array
 		(
-			$n, t(':count files<br /><span class="small">:size</span>', array(':count' => $n, 'size' => \ICanBoogie\I18n\format_size($size)))
+			$n, I18n\t(':count files<br /><span class="small">:size</span>', array(':count' => $n, 'size' => \ICanBoogie\I18n\format_size($size)))
 		);
 	}
 

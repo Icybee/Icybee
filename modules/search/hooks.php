@@ -12,6 +12,7 @@
 namespace Icybee\Modules\Search;
 
 use ICanBoogie\Exception;
+use ICanBoogie\I18n;
 
 use Brickrouge\Element;
 use Brickrouge\Form;
@@ -30,7 +31,7 @@ class Hooks
 			throw new Exception\Config($core->modules['search']);
 		}
 
-		$label = t('search.label.search');
+		$label = I18n\t('search.label.search');
 
 		$tags = array
 		(

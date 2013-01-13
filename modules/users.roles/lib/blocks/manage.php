@@ -11,6 +11,7 @@
 
 namespace Icybee\Modules\Users\Roles;
 
+use ICanBoogie\I18n;
 use ICanBoogie\Operation;
 use ICanBoogie\Route;
 use ICanBoogie\Routes;
@@ -107,9 +108,9 @@ class ManageBlock extends Form
 				list($package) = explode('.', $m_id);
 			}
 
-			$package = t($package, array(), array('scope' => 'module_category', 'default' => $package));
+			$package = I18n\t($package, array(), array('scope' => 'module_category', 'default' => $package));
 
-			$packages[$package][t($name)] = array_merge
+			$packages[$package][I18n\t($name)] = array_merge
 			(
 				$descriptor, array
 				(
@@ -124,9 +125,9 @@ class ManageBlock extends Form
 		(
 			array
 			(
-				t('General') => array
+				I18n\t('General') => array
 				(
-					t('All') => array(Module::T_ID => 'all')
+					I18n\t('All') => array(Module::T_ID => 'all')
 				)
 			),
 
@@ -178,7 +179,7 @@ class ManageBlock extends Form
 					(
 						Element::INNER_HTML => $role->name,
 						'href' => $context . '/admin/' . $this->module . '/' . $role->rid . '/edit',
-						'title' => t('Edit entry')
+						'title' => I18n\t('Edit entry')
 					)
 				);
 			}
@@ -208,7 +209,7 @@ class ManageBlock extends Form
 
 					$actions_rows .= new A
 					(
-						t('Delete', array(), array('scope' => 'button')), Route::contextualize('/admin/users.roles/' . $role->rid . '/delete'), array
+						I18n\t('Delete', array(), array('scope' => 'button')), \ICanBoogie\Routing\contextualize('/admin/users.roles/' . $role->rid . '/delete'), array
 						(
 							'class' => 'btn btn-danger'
 						)
@@ -248,7 +249,7 @@ EOT;
 
 		foreach (Module::$levels as $i => $level)
 		{
-			$role_options[$i] = t('permission.' . $level, array(), array('default' => $level));
+			$role_options[$i] = I18n\t('permission.' . $level, array(), array('default' => $level));
 		}
 
 		$user_has_access = $core->user->has_permission(Module::PERMISSION_ADMINISTER, $this->module);
@@ -378,7 +379,7 @@ EOT;
 						. '</td>';
 					}
 
-					$label = t($pname, array(), array('scope' => array($flat_id, 'permission')));
+					$label = I18n\t($pname, array(), array('scope' => array($flat_id, 'permission')));
 
 					$rc .= <<<EOT
 <tr class="perm">

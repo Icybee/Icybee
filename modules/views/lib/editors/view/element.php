@@ -11,6 +11,8 @@
 
 namespace Icybee\Modules\Views;
 
+use ICanBoogie\I18n;
+
 use Brickrouge\Document;
 use Brickrouge\Element;
 
@@ -69,11 +71,11 @@ class ViewEditorElement extends Element implements \Icybee\Modules\Editor\Editor
 				if (isset($descriptor[Module::T_CATEGORY]))
 				{
 					$category = $descriptors[$module_id][Module::T_CATEGORY];
-					$category = t($category, array(), array('scope' => 'module_category'));
+					$category = I18n\t($category, array(), array('scope' => 'module_category'));
 				}
 
 				$subcategory = $descriptor[Module::T_TITLE];
-				$subcategory = t(strtr($module_id, '.', '_'), array(), array('scope' => 'module_title', 'default' => $subcategory));
+				$subcategory = I18n\t(strtr($module_id, '.', '_'), array(), array('scope' => 'module_title', 'default' => $subcategory));
 			}
 
 			$categories[$category][$subcategory][$id] = $view;
@@ -162,7 +164,7 @@ EOT;
 						continue;
 					}
 
-					$title = t($view['title'], $view['title args']);
+					$title = I18n\t($view['title'], $view['title args']);
 
 					$description = null;
 

@@ -11,6 +11,8 @@
 
 namespace Icybee\Modules\Forms;
 
+use ICanBoogie\I18n;
+
 use Brickrouge\Element;
 use Brickrouge\Form;
 use Brickrouge\Text;
@@ -72,8 +74,8 @@ class EditBlock extends \Icybee\Modules\Nodes\EditBlock
 			asort($models_options);
 		}
 
-		$label_default_values = t('Default values');
-		$description_notify = t('description_notify', array(':link' => '<a href="http://github.com/Weirdog/WdPatron" target="_blank">WdPatron</a>'));
+		$label_default_values = I18n\t('Default values');
+		$description_notify = I18n\t('description_notify', array(':link' => '<a href="http://github.com/Weirdog/WdPatron" target="_blank">WdPatron</a>'));
 
 		return array_merge
 		(
@@ -120,7 +122,7 @@ class EditBlock extends \Icybee\Modules\Nodes\EditBlock
 						Element::GROUP => 'messages',
 						Element::REQUIRED => true,
 						Element::DESCRIPTION => 'complete',
-						Element::DEFAULT_VALUE => '<p>' . t('default.complete') . '</p>',
+						Element::DEFAULT_VALUE => '<p>' . I18n\t('default.complete') . '</p>',
 
 						'rows' => 5
 					)

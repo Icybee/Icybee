@@ -11,6 +11,8 @@
 
 namespace Icybee\Modules\Views;
 
+use ICanBoogie\PropertyNotReadable;
+
 /**
  * Provides data for a view.
  */
@@ -33,6 +35,18 @@ abstract class Provider
 		$this->module = $module;
 		$this->conditions = $conditions;
 		$this->returns = $returns;
+	}
+
+	public function __get($property)
+	{
+		static $readers = array('returns');
+
+		if (in_array($property, $readers))
+		{
+			return $this->$property;
+		}
+
+		throw new PropertyNotReadable($property);
 	}
 
 	abstract public function __invoke();

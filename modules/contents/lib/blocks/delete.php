@@ -17,8 +17,6 @@ class DeleteBlock extends \Icybee\Modules\Nodes\DeleteBlock
 {
 	/**
 	 * Returns the record excerpt as preview.
-	 *
-	 * @see Icybee.DeleteBlock::render_preview()
 	 */
 	protected function render_preview(ActiveRecord $record)
 	{

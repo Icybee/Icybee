@@ -19,6 +19,7 @@ use ICanBoogie\HTTP\RedirectResponse;
 use ICanBoogie\HTTP\Request;
 use ICanBoogie\HTTP\Response;
 use ICanBoogie\HTTP\ServiceUnavailable;
+use ICanBoogie\I18n;
 use ICanBoogie\Route;
 
 use Brickrouge\Alert;
@@ -59,8 +60,8 @@ class PageController
 					array
 					(
 						'siteid' => $core->site_id,
-						'title' => t($e->getTitle(), array(), array('scope' => 'exception')),
-						'body' => t($e->getMessage(), array(), array('scope' => 'exception'))
+						'title' => I18n\t($e->getCode(), array(), array('scope' => 'exception')),
+						'body' => I18n\t($e->getMessage(), array(), array('scope' => 'exception'))
 					)
 				);
 
@@ -171,6 +172,7 @@ class PageController
 			)
 		);
 
+		/*
 		$response->cache_control = 'public';
 
 		foreach ($core->modules as $module_id => $module)
@@ -182,6 +184,7 @@ class PageController
 				$response->cache_control = 'no-store, no-cache, must-revalidate, post-check=0, pre-check=0';
 			}
 		}
+		*/
 
 		return $response;
 	}

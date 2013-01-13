@@ -44,8 +44,6 @@ class Model extends \ICanBoogie\ActiveRecord\Model
 
 				// TODO: handle default values
 
-				//echo t(__CLASS__ . '::' . __FUNCTION__ . ':> rc: \1', array($rc));
-
 				$this->cached_values[$name] = $rc;
 			}
 			else

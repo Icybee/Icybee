@@ -71,8 +71,11 @@ class StatsDecorator
 			)
 		);
 
-		$html .= "\n\n" . $this->render_events();
-		$html .= "\n\n" . $this->render_queries();
+		if (Debug::$mode == Debug::MODE_DEV || $core->user->is_admin)
+		{
+			$html .= "\n\n" . $this->render_events();
+			$html .= "\n\n" . $this->render_queries();
+		}
 
 		$html .= ' -->';
 
@@ -139,9 +142,11 @@ class StatsDecorator
 
 		$line_width = 4 + 2 + 8 + 1 + $max_length_type + 1 + $max_length_callback;
 
-		$html = '';
-		$html .= sprintf("Events: %.3f ms\n", $time_total * 1000);
-		$html .= str_repeat('—', $line_width) . PHP_EOL;
+		$title = sprintf("Events: %d in %.3f ms", count($events), $time_total * 1000);
+
+		$html = PHP_EOL;
+		$html .= $title . PHP_EOL;
+		$html .= str_repeat('—', strlen($title)) . PHP_EOL;
 
 		foreach ($events as $i => $event)
 		{
@@ -155,13 +160,12 @@ class StatsDecorator
 			$html .= sprintf("%4d: %2.3f %-{$max_length_type}s %-{$max_length_callback}s", $i, $time * 1000, $type, $callback) . PHP_EOL;
 		}
 
-		$html .= str_repeat('—', $line_width) . PHP_EOL;
-
 		#
 		# unused events
 		#
 
-		$html .= "Unused events:\n\n";
+		$html .= "\n\nUnused events\n";
+		$html .= "—————————————\n";
 
 		$time_ref = $_SERVER['REQUEST_TIME_FLOAT'];
 

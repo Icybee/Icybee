@@ -11,6 +11,8 @@
 
 namespace Icybee\Modules\Taxonomy\Vocabulary;
 
+use ICanBoogie\I18n;
+
 class ManageBlock extends \WdManager
 {
 	public function __construct($module, array $attributes=array())
@@ -53,8 +55,8 @@ class ManageBlock extends \WdManager
 			$last = array_pop($terms);
 
 			$includes = $terms
-				? t('Comprenant&nbsp;: !list et !last', array('!list' => \ICanBoogie\shorten(implode(', ', $terms), 128, 1), '!last' => $last))
-				: t('Comprenant&nbsp;: !entry', array('!entry' => $last));
+				? I18n\t('Comprenant&nbsp;: !list et !last', array('!list' => \ICanBoogie\shorten(implode(', ', $terms), 128, 1), '!last' => $last))
+				: I18n\t('Comprenant&nbsp;: !entry', array('!entry' => $last));
 		}
 		else
 		{
@@ -83,14 +85,14 @@ EOT;
 
 			foreach ($scope as &$constructor)
 			{
-				$constructor = '<a href="' . $context . '/admin/' . $constructor . '">' . t($core->modules->descriptors[$constructor][Module::T_TITLE]) . '</a>';
+				$constructor = '<a href="' . $context . '/admin/' . $constructor . '">' . I18n\t($core->modules->descriptors[$constructor][Module::T_TITLE]) . '</a>';
 			}
 
 			$last = array_pop($scope);
 
 			$includes = $scope
-				? t(':list and :last', array(':list' => \ICanBoogie\shorten(implode(', ', $scope), 128, 1), ':last' => $last))
-				: t(':one', array(':one' => $last));
+				? I18n\t(':list and :last', array(':list' => \ICanBoogie\shorten(implode(', ', $scope), 128, 1), ':last' => $last))
+				: I18n\t(':one', array(':one' => $last));
 		}
 		else
 		{

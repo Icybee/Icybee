@@ -11,6 +11,8 @@
 
 namespace Icybee\Modules\Users;
 
+use ICanBoogie\I18n\FormattedString;
+
 /**
  * Create or update a user profile.
  */
@@ -145,12 +147,12 @@ class SaveOperation extends \Icybee\Operation\Constructor\Save
 		{
 			if (!$this->request[User::PASSWORD . '-verify'])
 			{
-				$errors[User::PASSWORD . '-verify'] = t('Password verify is empty.');
+				$errors[User::PASSWORD . '-verify'] = new FormattedString('Password verify is empty.');
 			}
 
 			if ($properties[User::PASSWORD] != $this->request[User::PASSWORD . '-verify'])
 			{
-				$errors[User::PASSWORD . '-verify'] = t('Password and password verify don\'t match.');
+				$errors[User::PASSWORD . '-verify'] = new FormattedString('Password and password verify don\'t match.');
 			}
 		}
 
@@ -168,7 +170,7 @@ class SaveOperation extends \Icybee\Operation\Constructor\Save
 
 			if ($used)
 			{
-				$errors[User::USERNAME] = t("L'identifiant %username est déjà utilisé.", array('%username' => $username));
+				$errors[User::USERNAME] = new FormattedString("L'identifiant %username est déjà utilisé.", array('%username' => $username));
 			}
 		}
 
@@ -183,7 +185,7 @@ class SaveOperation extends \Icybee\Operation\Constructor\Save
 
 			if ($used)
 			{
-				$errors[User::EMAIL] = t("L'adresse email %email est déjà utilisée.", array('%email' => $email));
+				$errors[User::EMAIL] = new FormattedString("L'adresse email %email est déjà utilisée.", array('%email' => $email));
 			}
 		}
 
@@ -200,13 +202,13 @@ class SaveOperation extends \Icybee\Operation\Constructor\Save
 
 		if ($core->user_id == $uid)
 		{
-			$this->response->message = array("Your profile has been updated.", array());
+			$this->response->message = new FormattedString("Your profile has been updated.");
 		}
 		else
 		{
 			$record = $this->module->model[$uid];
 
-			$this->response->message = array($rc['mode'] == 'update' ? "%name's profile has been updated." : "%name's profile has been created.", array('name' => $record->name));
+			$this->response->message = new FormattedString($rc['mode'] == 'update' ? "%name's profile has been updated." : "%name's profile has been created.", array('name' => $record->name));
 		}
 
 		return $rc;

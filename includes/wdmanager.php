@@ -156,7 +156,7 @@ class WdManager extends \Icybee\Manager
 
 		if (empty($this->user_cache[$uid]))
 		{
-			return '<em class="error">' . t('Unknown user: %uid', array('%uid' => $uid)) . '</em>';
+			return '<em class="error">' . $this->t('Unknown user: %uid', array('%uid' => $uid)) . '</em>';
 		}
 
 		$user = $this->user_cache[$uid];

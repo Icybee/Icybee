@@ -11,6 +11,8 @@
 
 namespace Icybee\Modules\Modules;
 
+use ICanBoogie\I18n;
+use ICanBoogie\I18n\FormattedString;
 use ICanBoogie\Operation;
 use ICanBoogie\Route;
 
@@ -46,11 +48,11 @@ class DeactivateOperation extends Operation
 
 				if ($n)
 				{
-					$errors[] = t
+					$errors[] = new FormattedString
 					(
 						'The module %title cannot be disabled, :count modules are using it.', array
 						(
-							'title' => t($module_id, array(), array('scope' => 'module_title')),
+							'title' => I18n\t($module_id, array(), array('scope' => 'module_title')),
 							':count' => $n
 						)
 					);
@@ -79,7 +81,7 @@ class DeactivateOperation extends Operation
 
 		$core->vars['enabled_modules'] = array_values($enabled);
 
-		$this->response->location = Route::contextualize('/admin/' . (string) $this->module);
+		$this->response->location = \ICanBoogie\Routing\contextualize('/admin/' . (string) $this->module);
 
 		return true;
 	}

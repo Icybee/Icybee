@@ -11,6 +11,8 @@
 
 namespace Icybee\Modules\Cache;
 
+use ICanBoogie\I18n\FormattedString;
+
 /**
  * Configures the specified cache.
  */
@@ -22,7 +24,7 @@ class ConfigOperation extends BaseOperation
 
 		$cache->config($this->request);
 
-		$this->response->message = array('The cache %cache has been configured.', array('cache' => $this->key));
+		$this->response->message = new FormattedString('The cache %cache has been configured.', array('cache' => $this->key));
 
 		return $cache->config_preview;
 	}

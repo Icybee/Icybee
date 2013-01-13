@@ -12,6 +12,7 @@
 namespace Icybee\Operation\Module;
 
 use ICanBoogie\Exception;
+use ICanBoogie\I18n;
 use ICanBoogie\Operation;
 
 /**
@@ -63,12 +64,12 @@ class QueryOperation extends Operation
 
 		return $this->{$this->callback}() + array
 		(
-			'title' => t('title', array(), $t_options),
-			'message' => t('confirm', array(':count' => $count), $t_options),
+			'title' => I18n\t('title', array(), $t_options),
+			'message' => I18n\t('confirm', array(':count' => $count), $t_options),
 			'confirm' => array
 			(
-				t('cancel', array(), $t_options),
-				t('continue', array(), $t_options)
+				I18n\t('cancel', array(), $t_options),
+				I18n\t('continue', array(), $t_options)
 			)
 		);
 	}

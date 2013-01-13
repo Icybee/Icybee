@@ -11,6 +11,7 @@
 
 namespace Icybee\Element;
 
+use ICanBoogie\I18n;
 use ICanBoogie\Module;
 use ICanBoogie\PropertyNotDefined;
 use ICanBoogie\Route;
@@ -82,7 +83,7 @@ EOT;
 		}
 
 		$label = \Brickrouge\escape($label);
-		$url = \Brickrouge\escape(Route::contextualize('/admin/' . $route->module));
+		$url = \Brickrouge\escape(\ICanBoogie\Routing\contextualize('/admin/' . $route->module));
 
 		return <<<EOT
 <h1><a href="$url">$label</a></h1>
@@ -108,7 +109,7 @@ EOT;
 
 		if ($list_url{0} != '#')
 		{
-			$options[$list_url] = new A(t("List page on the website"), $list_url);
+			$options[$list_url] = new A(I18n\t("List page on the website"), $list_url);
 		}
 
 		#
@@ -125,7 +126,7 @@ EOT;
 
 				if ($r)
 				{
-					$url = Route::contextualize($r->pattern);
+					$url = \ICanBoogie\Routing\contextualize($r->pattern);
 
 					if ($options)
 					{
@@ -134,7 +135,7 @@ EOT;
 
 					$options[$url] = new A
 					(
-						t('Configuration', array(), array('scope' => 'block_title')), $url
+						I18n\t('Configuration', array(), array('scope' => 'block_title')), $url
 					);
 				}
 			}
@@ -171,13 +172,12 @@ EOT;
 				continue;
 			}
 
-			$url = Route::contextualize($r['pattern']);
+			$url = \ICanBoogie\Routing\contextualize($r['pattern']);
 			$module_flat_id = strtr($r_module_id, '.', '_');
 
 			$options_routes[$url] = new A
 			(
-// 				t($descriptors[$r_module_id][Module::T_TITLE], array(), array('scope' => 'module_title')), $url
-				t($module_flat_id, array(), array('scope' => 'module_title', 'default' => $descriptors[$r_module_id][Module::T_TITLE])), $url
+				I18n\t($module_flat_id, array(), array('scope' => 'module_title', 'default' => $descriptors[$r_module_id][Module::T_TITLE])), $url
 			);
 		}
 

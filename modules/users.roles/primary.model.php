@@ -12,6 +12,7 @@
 namespace Icybee\Modules\Users\Roles;
 
 use ICanBoogie\Exception;
+use ICanBoogie\I18n;
 
 /**
  * Primary model of the Roles module (users.roles).
@@ -43,7 +44,7 @@ class Model extends \ICanBoogie\ActiveRecord\Model
 	{
 		if ($rid == 1)
 		{
-			throw new Exception('The role %role (%rid) cannot be deleted.', array('%role' => t('Visitor'), '%rid' => $rid));
+			throw new Exception('The role %role (%rid) cannot be deleted.', array('%role' => I18n\t('Visitor'), '%rid' => $rid));
 		}
 
 		// FIXME-20110709: deleted role is not removed from users records.

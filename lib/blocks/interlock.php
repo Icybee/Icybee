@@ -42,7 +42,7 @@ class InterlockBlock extends Element
 
 		$this->parse_params($params);
 
-		parent::__construct('div', array('class' => 'block-alert block-alert--interlock'));
+		parent::__construct('div', array('class' => 'block-alert block--interlock'));
 	}
 
 	protected function parse_params(array $params)
@@ -62,13 +62,13 @@ class InterlockBlock extends Element
 		$message = $time ? "Le verrou devrait disparaitre dans $time minutes." : "Le verrou devrait disparaitre dans moins d'une minutes.";
 
 		return <<<EOT
-<h2>Édition impossible</h2>
-
-<p>Impossible d'éditer l'enregistrement parce qu'il est en cours d'édition par
-<em>$luser->name</em> <span class="small">($luser->username)</span>.</p>
+<h1 class="block-title">Édition impossible</h1>
 
 <form method="get" action="">
 	<input type="hidden" name="retry" value="1" />
+
+	<p>Impossible d'éditer l'enregistrement parce qu'il est en cours d'édition par
+	<em title="Username: $luser->username">$luser->name</em>.</p>
 
 	<div class="form-actions">
 	<button class="btn btn-success">Réessayer</button> <span class="small light">$message</span>

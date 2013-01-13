@@ -11,6 +11,7 @@
 
 namespace Icybee\Modules\Images;
 
+use ICanBoogie\I18n;
 use ICanBoogie\Operation;
 
 use Brickrouge\Element;
@@ -107,19 +108,19 @@ class ImageUpload extends \Icybee\Modules\Files\FileUpload
 		$details = array
 		(
 			'<span title="Path: ' . $path . '">' . basename($path) . '</span>',
-			t('Image size: {0}&times;{1}px', array($entry_width, $entry_height))
+			I18n\t('Image size: {0}&times;{1}px', array($entry_width, $entry_height))
 		);
 
 		if (($entry_width != $w) || ($entry_height != $h))
 		{
-			$details[] = t('Display ratio: :ratio%', array(':ratio' => round(($w * $h) / ($entry_width * $entry_height) * 100)));
+			$details[] = I18n\t('Display ratio: :ratio%', array(':ratio' => round(($w * $h) / ($entry_width * $entry_height) * 100)));
 		}
 		else
 		{
-			$details[] = t('Displayed as is');
+			$details[] = I18n\t('Displayed as is');
 		}
 
-		$details[] = \ICanBoogie\I18n\format_size(filesize($_SERVER['DOCUMENT_ROOT'] . $path));
+		$details[] = I18n\format_size(filesize($_SERVER['DOCUMENT_ROOT'] . $path));
 
 		return $details;
 	}

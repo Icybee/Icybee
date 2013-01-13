@@ -74,7 +74,7 @@ class ActivateOperation extends Operation
 
 		$core->vars['enabled_modules'] = array_keys($enabled);
 
-		$this->response->location = Route::contextualize('/admin/' . (string) $this->module);
+		$this->response->location = \ICanBoogie\Routing\contextualize('/admin/' . (string) $this->module);
 
 		return true;
 	}

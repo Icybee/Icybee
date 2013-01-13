@@ -15,7 +15,6 @@ use ICanBoogie\Route;
 
 use Icybee\Modules\Sites\Site;
 
-
 /**
  * A page.
  *

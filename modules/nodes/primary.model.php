@@ -11,6 +11,7 @@
 
 namespace Icybee\Modules\Nodes;
 
+use ICanBoogie\ActiveRecord;
 use ICanBoogie\ActiveRecord\Query;
 use ICanBoogie\Exception;
 
@@ -58,8 +59,6 @@ class Model extends \Icybee\ActiveRecord\Model\Constructor
 	 * Makes sure the node to delete is not used as a native target by other nodes.
 	 *
 	 * @throws Exception if the node to delete is the native target of another node.
-	 *
-	 * @see ICanBoogie\ActiveRecord.Table::delete()
 	 */
 	public function delete($key)
 	{
@@ -139,11 +138,41 @@ class Model extends \Icybee\ActiveRecord\Model\Constructor
 	 * @param Query $query
 	 * @param string $language The language to match. If the language is `null` the current
 	 * language is used instead.
+	 *
+	 * @return Query
 	 */
 	protected function scope_similar_language(Query $query, $language=null)
 	{
 		global $core;
 
 		return $query->where('language = "" OR language = ?', $language !== null ? $language : $core->site->language);
+	}
+
+	/**
+	 * Finds the users the records belong to.
+	 *
+	 * The `user` property of the records is set to the user they belong to.
+	 *
+	 * @param array $records
+	 *
+	 * @return array
+	 */
+	public function including_user(array $records)
+	{
+		$keys = array();
+
+		foreach ($records as $record)
+		{
+			$keys[$record->uid] = $record;
+		}
+
+		$users = ActiveRecord\get_model('users')->find_using_constructor(array_keys($keys));
+
+		foreach ($users as $key => $user)
+		{
+			$keys[$key]->user = $user;
+		}
+
+		return $records;
 	}
 }

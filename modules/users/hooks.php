@@ -16,6 +16,7 @@ use ICanBoogie\Debug;
 use ICanBoogie\HTTP\RedirectResponse;
 use ICanBoogie\HTTP\Request;
 use ICanBoogie\HTTP\Response;
+use ICanBoogie\I18n\FormattedString;
 use ICanBoogie\Operation;
 use ICanBoogie\PermissionRequired;
 use ICanBoogie\PropertyNotDefined;
@@ -50,7 +51,7 @@ class Hooks
 			return;
 		}
 
-		$event->errors['rid'] = t('The role %name is used by :count users.', array('name' => $operation->record->name, ':count' => $count));
+		$event->errors['rid'] = new FormattedString('The role %name is used by :count users.', array('name' => $operation->record->name, ':count' => $count));
 	}
 
 	/**
@@ -70,14 +71,9 @@ class Hooks
 			return;
 		}
 
-		if (Route::decontextualize($request->normalized_path) != '/admin/')
+		if ($target instanceof PermissionRequired || \ICanBoogie\Routing\decontextualize($request->normalized_path) != '/admin/')
 		{
 			\ICanBoogie\log_error($target->getMessage());
-		}
-
-		if (Debug::$mode == Debug::MODE_DEV)
-		{
-			\ICanBoogie\log('Rescued exception from {0}@{1}', array($target->getFile(), $target->getLine()));
 		}
 
 		$block = $core->modules['users']->getBlock('connect');

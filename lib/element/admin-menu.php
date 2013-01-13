@@ -101,7 +101,7 @@ class AdminMenu extends Element
 
 			$pathname = $routes[$id]->pattern;
 
-			$links[] = '<a href="' . \ICanBoogie\escape(Route::contextualize($pathname)) . '">' . $module->title . '</a>';
+			$links[] = '<a href="' . \ICanBoogie\escape(\ICanBoogie\Routing\contextualize($pathname)) . '">' . $module->title . '</a>';
 		}
 
 		if ($links)
@@ -149,7 +149,7 @@ class AdminMenu extends Element
 
 			foreach ($nodes as $node)
 			{
-				$contents .= '<li><a href="' . Route::contextualize('/admin/' . $node->constructor . '/' . $node->nid . '/edit') . '" title="' . $translator->__invoke('Edit: !title', array('!title' => $node->title)) . '">' . \ICanBoogie\escape(\ICanBoogie\shorten($node->title)) . '</a></li>';
+				$contents .= '<li><a href="' . \ICanBoogie\Routing\contextualize('/admin/' . $node->constructor . '/' . $node->nid . '/edit') . '" title="' . $translator->__invoke('Edit: !title', array('!title' => $node->title)) . '">' . \ICanBoogie\escape(\ICanBoogie\shorten($node->title)) . '</a></li>';
 			}
 
 			$contents .= '</ul>';

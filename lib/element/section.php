@@ -11,6 +11,8 @@
 
 namespace Brickrouge;
 
+use ICanBoogie\I18n;
+
 class Section extends Element
 {
 	const T_PANEL_CLASS = '#form-section-panel-class';
@@ -37,13 +39,13 @@ class Section extends Element
 
 			if (is_object($element))
 			{
-				$label = t($element[Form::LABEL]);
+				$label = I18n\t($element[Form::LABEL]);
 
 				if ($label)
 				{
 					if ($label{0} == '.')
 					{
-						$label = t(substr($label, 1), array(), array('scope' => array('element', 'label')));
+						$label = I18n\t(substr($label, 1), array(), array('scope' => array('element', 'label')));
 					}
 
 					$rc .= '<div class="form-label form-label-' . $context_class . '">';

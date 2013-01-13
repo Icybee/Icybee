@@ -12,6 +12,7 @@
 namespace Icybee\Modules\Dashboard;
 
 use ICanBoogie\Event;
+use ICanBoogie\I18n;
 
 class Module extends \ICanBoogie\Module
 {
@@ -99,7 +100,7 @@ class Module extends \ICanBoogie\Module
 				continue;
 			}
 
-			$title = t($id, array(), array('scope' => array('dashboard', 'title'), 'default' => $descriptor['title']));
+			$title = I18n\t($id, array(), array('scope' => array('dashboard', 'title'), 'default' => $descriptor['title']));
 
 			$panel = <<<EOT
 	<div class="panel" id="$id">

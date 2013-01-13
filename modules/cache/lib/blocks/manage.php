@@ -11,6 +11,8 @@
 
 namespace Icybee\Modules\Cache;
 
+use ICanBoogie\I18n;
+
 use Brickrouge\Button;
 use Brickrouge\Element;
 
@@ -50,7 +52,7 @@ class ManageBlock extends Element
 
 		foreach (Collection::get() as $cache_id => $cache)
 		{
-			$section_title = t(ucfirst($cache->group), array(), array('scope' => 'cache.group'));
+			$section_title = I18n\t(ucfirst($cache->group), array(), array('scope' => 'cache.group'));
 			$groups[$section_title][$cache_id] = $cache;
 		}
 
@@ -92,8 +94,8 @@ EOT;
 					)
 				);
 
-				$title = t($cache->title, array(), array('scope' => 'cache.title'));
-				$description = t($cache->description, array(), array('scope' => 'cache.description'));
+				$title = I18n\t($cache->title, array(), array('scope' => 'cache.title'));
+				$description = I18n\t($cache->description, array(), array('scope' => 'cache.description'));
 
 				$config_preview = $cache->config_preview;
 

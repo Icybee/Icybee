@@ -11,6 +11,7 @@
 
 namespace Icybee\Operation\Module;
 
+use ICanBoogie\I18n;
 use ICanBoogie\Operation;
 
 class Blocks extends Operation
@@ -29,7 +30,7 @@ class Blocks extends Operation
 	{
 		if (!$this->request['name'])
 		{
-			$errors['name'] = t('Missing block name');
+			$errors['name'] = I18n\t('Missing block name');
 
 			return false;
 		}

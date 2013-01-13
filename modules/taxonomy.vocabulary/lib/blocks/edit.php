@@ -1,6 +1,17 @@
 <?php
 
+/*
+ * This file is part of the Icybee package.
+ *
+ * (c) Olivier Laviale <olivier.laviale@gmail.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace Icybee\Modules\Taxonomy\Vocabulary;
+
+use ICanBoogie\I18n;
 
 use Brickrouge\Element;
 use Brickrouge\Form;
@@ -110,7 +121,7 @@ class EditBlock extends \Icybee\EditBlock
 				continue;
 			}
 
-			$scope_options[$module_id] = t($module_id, array(), array('scpope' => 'module_title', 'default' => $descriptor[Module::T_TITLE]));
+			$scope_options[$module_id] = I18n\t($module_id, array(), array('scpope' => 'module_title', 'default' => $descriptor[Module::T_TITLE]));
 		}
 
 		uasort($scope_options, 'ICanBoogie\unaccent_compare_ci');

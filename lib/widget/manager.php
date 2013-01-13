@@ -160,7 +160,7 @@ class Manager extends Element
 					# now that entries have a primary key, we can add the 'delete' job
 					#
 
-					$this->addJob(Module::OPERATION_DELETE, t('delete.operation.short_title'));
+					$this->addJob(Module::OPERATION_DELETE, I18n\t('delete.operation.short_title'));
 				}
 				break;
 
@@ -694,11 +694,20 @@ class Manager extends Element
 		return $query->all;
 	}
 
+	/**
+	 * Alters records.
+	 *
+	 * The function return the records _as is_ but subclasses can implement the method to
+	 * load all the dependencies of the records in a single step.
+	 *
+	 * @param array $records
+	 *
+	 * @return array
+	 */
 	protected function alter_records(array $records)
 	{
 		return $records;
 	}
-
 
 	protected function extend_columns(array $columns)
 	{
@@ -914,7 +923,7 @@ EOT;
 						),
 
 						'class' => 'checkbox-wrapper rectangle',
-						'title' => t('Toggle selection for the entries ([alt] to toggle selection)')
+						'title' => $this->t('Toggle selection for the entries ([alt] to toggle selection)')
 					)
 				);
 			}
@@ -972,7 +981,7 @@ EOT;
 
 		if ($header['filtering'])
 		{
-			$options[$header['reset']] = t('Display all');
+			$options[$header['reset']] =$this->t('Display all');
 			$options[] = false;
 		}
 
@@ -983,7 +992,7 @@ EOT;
 				$qs = $id . $qs;
 			}
 
-			$options['?' . $qs] = t($label);
+			$options['?' . $qs] = $this->t($label);
 		}
 
 		$dropdown_menu = new DropdownMenu
@@ -1044,16 +1053,16 @@ EOT;
 
 		if ($search)
 		{
-			$message = t('Your search <q><strong>!search</strong></q> did not match any record.', array('!search' => $search));
+			$message = $this->t('Your search <q><strong>!search</strong></q> did not match any record.', array('!search' => $search));
 		}
 		else if ($this->options['filters'])
 		{
 			$filters = implode(', ', $this->options['filters']);
-			$message = t('Your selection <q><strong>!selection</strong></q> dit not match any record.', array('!selection' => $filters));
+			$message = $this->t('Your selection <q><strong>!selection</strong></q> dit not match any record.', array('!selection' => $filters));
 		}
 		else
 		{
-			$message = t('manager.create_first', array('!url' => $core->site->path . '/admin/' . $this->module . '/new'));
+			$message = $this->t('manager.create_first', array('!url' => $core->site->path . '/admin/' . $this->module . '/new'));
 			$context = 'info';
 		}
 
@@ -1121,7 +1130,7 @@ EOT;
 					)
 				),
 
-				'title' => t('Toggle selection for record #:key', array('key' => $value)),
+				'title' =>$this->t('Toggle selection for record #:key', array('key' => $value)),
 				'class' => 'checkbox-wrapper rectangle'
 			)
 		);
@@ -1155,7 +1164,7 @@ EOT;
 			return $label;
 		}
 
-		$title = \ICanBoogie\escape(t('Display only: :identifier', array(':identifier' => strip_tags($label))));
+		$title = \ICanBoogie\escape($this->t('Display only: :identifier', array(':identifier' => strip_tags($label))));
 		$url = \ICanBoogie\escape($property . '=') . urlencode($value);
 
 		return <<<EOT
@@ -1179,7 +1188,7 @@ EOT;
 			$key = $record->{$this->idtag};
 		}
 
-		$title = \ICanBoogie\escape(t('Display only: :identifier', array(':identifier' => strip_tags($label))));
+		$title = \ICanBoogie\escape($this->t('Display only: :identifier', array(':identifier' => strip_tags($label))));
 
 		return <<<EOT
 <a class="edit" href="{$core->site->path}/admin/{$this->module}/$key/edit" title="$title">$label</a>
@@ -1272,7 +1281,7 @@ EOT;
 			}
 			else
 			{
-				$ttl = t('Display only: :identifier', array(':identifier' => $label));
+				$ttl = $this->t('Display only: :identifier', array(':identifier' => $label));
 
 				$rc = <<<EOT
 <a href="?$property=$select" title="$ttl" class="filter">$label</a>
@@ -1293,7 +1302,7 @@ EOT;
 				}
 				else
 				{
-					$ttl = t('Display only: :identifier', array(':identifier' => $select));
+					$ttl = $this->t('Display only: :identifier', array(':identifier' => $select));
 
 					$rc .= <<<EOT
 <a class="filter" href="?$property=$select" title="$ttl">$value</a>
@@ -1367,13 +1376,13 @@ EOT;
 					(
 						array
 						(
-							'title' => t('Search in the records'),
+							'title' => $this->t('Search in the records'),
 							'value' => $search,
 							'size' => '16',
 							'class' => 'search' . ($search ? '' : ' empty'),
 							'tabindex' => 0,
 
-							'data-placeholder' => t('Search')
+							'data-placeholder' => $this->t('Search')
 						)
 					),
 
@@ -1471,7 +1480,7 @@ EOT;
 			return;
 		}
 
-		$options = array(null => t('For the selection…', array(), array('scope' => 'manager')));
+		$options = array(null => $this->t('For the selection…', array(), array('scope' => 'manager')));
 
 		foreach ($this->jobs as $operation => $label)
 		{
@@ -1558,7 +1567,7 @@ EOT;
 				Element::INNER_HTML => $label,
 
 				'class' => 'edit',
-				'title' => t($title),
+				'title' => $this->t($title),
 				'href' => $core->site->path . '/admin/' . $path . '/' . $entry->$key . '/edit'
 			)
 		);
@@ -1575,7 +1584,7 @@ EOT;
 				Element::INNER_HTML => $label ?: '<em>' . I18n\t('No title') . '</em>', // FIXME-20121226: use objet's translator
 
 				'class' => 'edit',
-				'title' => t('Edit this item'),
+				'title' => I18n\t('Edit this item'),
 				'href' => $core->site->path . '/admin/' . $resume->module . '/' . $key . '/edit'
 			)
 		);
@@ -1583,14 +1592,14 @@ EOT;
 
 	protected function render_cell_boolean($record, $property)
 	{
-		return $this->render_filter_cell($record, $property, $record->$property ? $this->t->__invoke('Yes') : '');
+		return $this->render_filter_cell($record, $property, $record->$property ? $this->t('Yes') : '');
 	}
 
 	protected function render_cell_email($record, $property)
 	{
 		$email = $record->$property;
 
-		return '<a href="mailto:' . $email . '" title="' . t('Send an E-mail') . '">' . $email . '</a>';
+		return '<a href="mailto:' . $email . '" title="' . $this->t('Send an E-mail') . '">' . $email . '</a>';
 	}
 }
 

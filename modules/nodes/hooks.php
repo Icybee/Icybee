@@ -12,7 +12,6 @@
 namespace Icybee\Modules\Nodes;
 
 use ICanBoogie\ActiveRecord\RecordNotFound;
-
 use ICanBoogie\Event;
 use ICanBoogie\I18n;
 use ICanBoogie\Operation\BeforeProcessEvent;
@@ -184,7 +183,7 @@ class Hooks
 
 		if (!$counts)
 		{
-			return '<p class="nothing">' . t('No record yet') . '</p>';
+			return '<p class="nothing">' . I18n\t('No record yet') . '</p>';
 		}
 
 		$categories = array
@@ -211,8 +210,8 @@ class Hooks
 				$category = $default_category;
 			}
 
-			$title = t($descriptor[Module::T_TITLE], array(), array('scope' => 'module_title'));
-			$title = t(strtr($constructor, '.', '_') . '.name.other', array(), array('default' => $title));
+			$title = I18n\t($descriptor[Module::T_TITLE], array(), array('scope' => 'module_title'));
+			$title = I18n\t(strtr($constructor, '.', '_') . '.name.other', array(), array('default' => $title));
 
 			$categories[$category][] = array
 			(
@@ -226,7 +225,7 @@ class Hooks
 		foreach ($categories as $category => $entries)
 		{
 			$max_by_category = max($max_by_category, count($entries));
-			$head .= '<th>&nbsp;</th><th>' . t($category, array(), array('scope' => 'module_category')) . '</th>';
+			$head .= '<th>&nbsp;</th><th>' . I18n\t($category, array(), array('scope' => 'module_category')) . '</th>';
 		}
 
 		$body = '';
@@ -280,7 +279,7 @@ EOT;
 
 		if (!$entries)
 		{
-			return '<p class="nothing">' . t('No record yet') . '</p>';
+			return '<p class="nothing">' . I18n\t('No record yet') . '</p>';
 		}
 
 		$last_date = null;

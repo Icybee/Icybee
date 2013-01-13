@@ -11,8 +11,10 @@
 
 namespace Icybee\Modules\Sites;
 
-use Icybee\Modules\Sites\Site;
 use ICanBoogie\Errors;
+use ICanBoogie\I18n\FormattedString;
+
+use Icybee\Modules\Sites\Site;
 
 class StatusOperation extends \ICanBoogie\Operation
 {
@@ -59,7 +61,7 @@ class StatusOperation extends \ICanBoogie\Operation
 			$record->status = $status;
 			$record->save();
 
-			$this->response->message = array('The site %title is now ' . $status_names[$status] . '.', array('title' => $record->title));
+			$this->response->message = new FormattedString('The site %title is now ' . $status_names[$status] . '.', array('title' => $record->title));
 		}
 
 		return $this->record->status;

@@ -13,6 +13,7 @@ namespace Icybee\Element;
 
 use ICanBoogie\Event;
 use ICanBoogie\Exception;
+use ICanBoogie\I18n;
 use ICanBoogie\Module;
 use ICanBoogie\PropertyNotDefined;
 use ICanBoogie\Route;
@@ -137,7 +138,7 @@ class ActionbarNav extends Element
 			$title = substr($title, 1);
 		}
 
-		$title = t($title, array(), array('scope' => 'block.title'));
+		$title = I18n\t($title, array(), array('scope' => 'block.title'));
 		$pattern = $pathname = $route['pattern'];
 
 		if (Route::is_pattern($pattern))
@@ -145,7 +146,7 @@ class ActionbarNav extends Element
 			$pathname = Route::format($pattern, $core->request->path_params);
 		}
 
-		$link = new A($title, Route::contextualize($pathname), array('class' => 'actionbar-link'));
+		$link = new A($title, \ICanBoogie\Routing\contextualize($pathname), array('class' => 'actionbar-link'));
 
 		if ($pattern == $current_route->pattern)
 		{
@@ -265,10 +266,10 @@ class ActionbarContextNav extends Element
 			$title = substr($title, 1);
 		}
 
-		$title = t($title, array(), array('scope' => 'block.title'));
+		$title = I18n\t($title, array(), array('scope' => 'block.title'));
 		$pattern = $route['pattern'];
 
-		$link = new A($title, Route::contextualize($pattern), array('class' => 'actionbar-link'));
+		$link = new A($title, \ICanBoogie\Routing\contextualize($pattern), array('class' => 'actionbar-link'));
 
 		if ($pattern == $current_route['pattern'])
 		{
@@ -354,7 +355,7 @@ class ActionbarNew extends SplitButton
 			return '';
 		}
 
-		return new A($label, Route::contextualize($this[self::PATTERN]), array('class' => 'btn ' . $class));
+		return new A($label, \ICanBoogie\Routing\contextualize($this[self::PATTERN]), array('class' => 'btn ' . $class));
 	}
 
 	protected function render_splitbutton_toggle($class)
@@ -418,11 +419,11 @@ EOT;
 
 			$flat_id = strtr($module_id, '.', '_');
 
-			$translations[$module_id] = t
+			$translations[$module_id] = I18n\t
 			(
 				$flat_id . '.name', array(':count' => 1), array
 				(
-					'default' => \ICanBoogie\singularize(t("module_title.$flat_id", array(), array('default' => $descriptors[$module_id][Module::T_TITLE])))
+					'default' => \ICanBoogie\singularize(I18n\t("module_title.$flat_id", array(), array('default' => $descriptors[$module_id][Module::T_TITLE])))
 				)
 			);
 		}
@@ -437,7 +438,7 @@ EOT;
 
 			$label = $translations[$v];
 
-			$v = new A($label, Route::contextualize($k));
+			$v = new A($label, \ICanBoogie\Routing\contextualize($k));
 
 		});
 

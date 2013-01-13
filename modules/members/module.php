@@ -11,12 +11,14 @@
 
 namespace Icybee\Modules\Members;
 
-use Icybee\Modules\Editor\RTEEditorElement;
+use ICanBoogie\I18n;
 
 use Brickrouge\Date;
 use Brickrouge\Element;
 use Brickrouge\Form;
 use Brickrouge\Text;
+
+use Icybee\Modules\Editor\RTEEditorElement;
 
 class Module extends \Icybee\Modules\Users\Module
 {
@@ -111,9 +113,9 @@ EOT
 							Element::OPTIONS => array
 							(
 								null => '',
-								t('salutation.misses'),
-								t('salutation.miss'),
-								t('salutation.mister')
+								I18n\t('salutation.misses'),
+								I18n\t('salutation.miss'),
+								I18n\t('salutation.mister')
 							)
 						)
 					),

@@ -11,6 +11,7 @@
 
 namespace Icybee\Modules\Files;
 
+use ICanBoogie\I18n\FormattedString;
 use ICanBoogie\Uploaded;
 
 class Module extends \Icybee\Modules\Nodes\Module
@@ -64,13 +65,13 @@ class Module extends \Icybee\Modules\Nodes\Module
 				}
 				else
 				{
-					$errors[$this->id] = t('Unable to create %directory directory, its parent is not writtable', array('%directory' => $path));
+					$errors[$this->id] = new FormattedString('Unable to create %directory directory, its parent is not writtable', array('%directory' => $path));
 				}
 			}
 		}
 		else
 		{
-			$errors[$this->id] = t('The %var var is empty is core config', array('%var' => 'repository.temp'));
+			$errors[$this->id] = new FormattedString('The %var var is empty is core config', array('%var' => 'repository.temp'));
 		}
 
 		$path = $core->config['repository.files'];
@@ -91,13 +92,13 @@ class Module extends \Icybee\Modules\Nodes\Module
 				}
 				else
 				{
-					$errors[$this->id] = t('Unable to create %directory directory, its parent is not writtable', array('%directory' => $path));
+					$errors[$this->id] = new FormattedString('Unable to create %directory directory, its parent is not writtable', array('%directory' => $path));
 				}
 			}
 		}
 		else
 		{
-			$errors[$this->id] = t('The %var var is empty is core config', array('%var' => 'repository.files'));
+			$errors[$this->id] = new FormattedString('The %var var is empty is core config', array('%var' => 'repository.files'));
 		}
 
 		return parent::install($errors);
@@ -117,14 +118,14 @@ class Module extends \Icybee\Modules\Nodes\Module
 
 		if (!is_dir($root . $path))
 		{
-			$errors[$this->id] = t('The %directory directory is missing.', array('%directory' => $path));
+			$errors[$this->id] = new FormattedString('The %directory directory is missing.', array('%directory' => $path));
 		}
 
 		$path = $core->config['repository.files'];
 
 		if (!is_dir($root . $path))
 		{
-			$errors[$this->id] = t('The %directory directory is missing.', array('%directory' => $path));
+			$errors[$this->id] = new FormattedString('The %directory directory is missing.', array('%directory' => $path));
 		}
 
 		return parent::is_installed($errors);

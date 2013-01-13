@@ -351,9 +351,9 @@ class EditBlock extends FormBlock
 
 		$save_mode_options = array
 		(
-			SaveOperation::MODE_LIST => t('save_mode_list', array(), array('scope' => 'option')),
-			SaveOperation::MODE_CONTINUE => t('save_mode_continue', array(), array('scope' => 'option')),
-			SaveOperation::MODE_NEW => t('save_mode_new', array(), array('scope' => 'option')),
+			SaveOperation::MODE_LIST => I18n\t('save_mode_list', array(), array('scope' => 'option')),
+			SaveOperation::MODE_CONTINUE => I18n\t('save_mode_continue', array(), array('scope' => 'option')),
+			SaveOperation::MODE_NEW => I18n\t('save_mode_new', array(), array('scope' => 'option')),
 		);
 
 		$record = $this->record;
@@ -364,7 +364,7 @@ class EditBlock extends FormBlock
 
 			if ($url)
 			{
-				$save_mode_options[\Icybee\Modules\Nodes\SaveOperation::MODE_DISPLAY] = t('save_mode_display', array(), array('scope' => 'option'));
+				$save_mode_options[\Icybee\Modules\Nodes\SaveOperation::MODE_DISPLAY] = I18n\t('save_mode_display', array(), array('scope' => 'option'));
 			}
 		}
 
@@ -384,7 +384,7 @@ class EditBlock extends FormBlock
 
 				if ($record instanceof \Icybee\Modules\Nodes\Node && $record->url[0] != '#')
 				{
-					$event->buttons[] = '<a href="' . $record->url . '" class="actionbar-link">' . t('View', array(), array('scope' => 'button')) . '</a>';
+					$event->buttons[] = '<a href="' . $record->url . '" class="actionbar-link">' . I18n\t('View', array(), array('scope' => 'button')) . '</a>';
 				}
 
 				$locked = true;
@@ -400,7 +400,7 @@ class EditBlock extends FormBlock
 					{
 						$event->buttons[] = new A
 						(
-							t('Delete', array(), array('scope' => 'button')), Route::contextualize('/admin/' . $module . '/' . $key . '/delete'), array
+							I18n\t('Delete', array(), array('scope' => 'button')), \ICanBoogie\Routing\contextualize('/admin/' . $module . '/' . $key . '/delete'), array
 							(
 								'class' => 'btn btn-danger'
 							)

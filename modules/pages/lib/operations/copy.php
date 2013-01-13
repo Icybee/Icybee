@@ -11,6 +11,8 @@
 
 namespace Icybee\Modules\Pages;
 
+use ICanBoogie\I18n\FormattedString;
+
 class CopyOperation extends \ICanBoogie\Operation
 {
 	protected function get_controls()
@@ -53,7 +55,7 @@ class CopyOperation extends \ICanBoogie\Operation
 			return;
 		}
 
-		$this->response->message = array('Page %title was copied to %copy', array('title' => $title, 'copy' => $record->title));
+		$this->response->message = new FormattedString('Page %title was copied to %copy', array('title' => $title, 'copy' => $record->title));
 
 		foreach ($contents as $record)
 		{

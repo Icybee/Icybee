@@ -9,11 +9,6 @@
  * file that was distributed with this source code.
  */
 
-function t($str, array $args=array(), array $options=array())
-{
-	return \ICanBoogie\I18n\t($str, $args, $options);
-}
-
 function wd_spamScore($body, $url, $author, $words=array(), $starters=array())
 {
 	#
