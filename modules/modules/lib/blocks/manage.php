@@ -429,7 +429,14 @@ EOT;
 
 				if (isset($errors[$module_id]))
 				{
-					$html .= '<div class="error">' . implode('; ', (array) $errors[$module_id]) . '</div>';
+					$error = $errors[$module_id];
+
+					if (is_array($error))
+					{
+						$error = implode('; ', $error);
+					}
+
+					$html .= '<div class="error">' . $error . '</div>';
 				}
 			}
 			else // null

@@ -24,12 +24,12 @@ return array
 
 	'label' => array
 	(
-		'display_as' => 'Display as',
+		'name_as' => 'Name as',
 		'email' => 'E-mail',
 		'email_confirm' => 'Confirm e-mail',
 		'firstname' => 'Firstname',
 		'is_activated' => "The user's account is active",
-		'lastconnection' => 'Date connected',
+		'logged_at' => 'Date connected',
 		'lastname' => 'Lastname',
 		'lost_password' => 'I forgot my password',
 		'name' => 'Name',
@@ -78,6 +78,8 @@ return array
 
 	'nonce_login_request.operation' => array
 	(
+		'already_sent' => "A message has already been sent to your e-mail address. In order to reduce abuses, you won't be able to request a new one until :time.",
+
 		'title' => 'Request a nonce login',
 		'message' => array
 		(

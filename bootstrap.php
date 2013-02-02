@@ -11,12 +11,14 @@
 
 namespace Icybee;
 
+global $core;
+
 /**
  * Version string for the Icybee package.
  *
  * @var string
  */
-const VERSION = 'dev-master (2012-12-29)';
+const VERSION = 'dev-master (2013-01-25)';
 
 /**
  * Root path for the Icybee package.

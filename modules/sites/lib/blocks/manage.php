@@ -15,7 +15,7 @@ use Icybee\Modules\Sites\Site;
 
 use Brickrouge\DropdownMenu;
 
-class ManageBlock extends \WdManager
+class ManageBlock extends \Icybee\ManageBlock
 {
 	static public function add_assets(\Brickrouge\Document $document)
 	{

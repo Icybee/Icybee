@@ -27,6 +27,7 @@ class Hooks
 	 *
 	 * @param \ICanBoogie\Core\RunEvent $event
 	 * @param \ICanBoogie\Core $target
+	 *
 	 * @return string
 	 */
 	static public function on_core_run(\ICanBoogie\Core\RunEvent $event, \ICanBoogie\Core $target)

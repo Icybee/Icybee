@@ -106,8 +106,6 @@ class Module extends \Icybee\Modules\Nodes\Module
 
 	/**
 	 * Overrides the method to check if the "tmp" and "files" directories exist in the repository.
-	 *
-	 * @see ICanBoogie.Module::is_installed()
 	 */
 	public function is_installed(\ICanBoogie\Errors $errors)
 	{

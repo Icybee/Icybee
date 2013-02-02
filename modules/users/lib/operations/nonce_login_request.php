@@ -13,6 +13,7 @@ namespace Icybee\Modules\Users;
 
 use ICanBoogie\Exception;
 use ICanBoogie\I18n;
+use ICanBoogie\I18n\FormattedString;
 use ICanBoogie\I18n\Translator\Proxi;
 use ICanBoogie\Mailer;
 use ICanBoogie\Operation;
@@ -35,6 +36,8 @@ class NonceLoginRequestOperation extends Operation
 
 	protected function validate(\ICanboogie\Errors $errors)
 	{
+		global $core;
+
 		if (!$this->request['email'])
 		{
 			$errors['email'] = new I18n\FormattedString('The field %field is required!', array('%field' => 'Votre adresse E-Mail'));
@@ -46,7 +49,7 @@ class NonceLoginRequestOperation extends Operation
 
 		if (!filter_var($email, FILTER_VALIDATE_EMAIL))
 		{
-			$errors['email'] = new I18n\FormattedString('Invalid e-mail address: %email.', array('%email' => $email));
+			$errors['email'] = new I18n\FormattedString("Invalid email address: %email.", array('%email' => $email));
 
 			return false;
 		}
@@ -55,7 +58,7 @@ class NonceLoginRequestOperation extends Operation
 
 		if (!$user)
 		{
-			$errors['email'] = I18n\t('Unknown e-mail address.');
+			$errors['email'] = I18n\t("Unknown email address.");
 
 			return false;
 		}
@@ -65,16 +68,32 @@ class NonceLoginRequestOperation extends Operation
 
 		if ($expires && ($now + self::FRESH_PERIOD - $expires < self::COOLOFF_DELAY))
 		{
+			/*
+
+			var_dump($now, new \ICanBoogie\DateTime(null, 'UTC'), new \DateTime('now'), new \ICanBoogie\DateTime($expires));
+
+			exit;
+
+			$expires_date = new \ICanBoogie\DateTime($expires - self::FRESH_PERIOD + self::COOLOFF_DELAY, new \DateTimeZone('UTC'));
+			$expires_date->timezone = $core->timezone;
+
 			throw new PermissionRequired
 			(
-				\ICanBoogie\format
+				new FormattedString('nonce_login_request.already_sent', array
 				(
-					"A message has already been sent to your e-mail address. In order to reduce
-					abuses, you won't be able to request a new one until :time.", array
-					(
-						':time' => I18n\format_date($expires - self::FRESH_PERIOD + self::COOLOFF_DELAY, 'HH:mm')
-					)
-				),
+					':time' => $expires_date->format('H:m')
+				)),
+
+				403
+			);
+			*/
+
+			throw new PermissionRequired
+			(
+				new I18n\FormattedString("A message has already been sent to your e-mail address. In order to reduce abuses, you won't be able to request a new one until :time.", array
+				(
+					':time' => I18n\format_date($expires - self::FRESH_PERIOD + self::COOLOFF_DELAY, 'HH:mm')
+				)),
 
 				403
 			);

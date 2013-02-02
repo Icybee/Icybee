@@ -42,6 +42,19 @@ class Role extends \ICanBoogie\ActiveRecord
 		parent::__construct($model);
 	}
 
+	/**
+	 * TODO-20130121: This is a workaround to include `perms` in the array so that is is same by
+	 * the model. What we should do is map perms to serialized perms, and maybe create a
+	 * Permissions object for this purpose.
+	 */
+	public function to_array()
+	{
+		return parent::to_array() + array
+		(
+			'perms' => $this->perms
+		);
+	}
+
 	protected function get_perms()
 	{
 		return (array) json_decode($this->serialized_perms, true);

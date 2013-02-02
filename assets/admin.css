@@ -27,7 +27,7 @@
 form.navbar-search{border:1px solid #CFCFCF;font-size:14px;padding:0 0.5ex 0 0;background-color:#F6F6F6;border-radius:4px;float:left;}form.navbar-search input{border:none;background:transparent;position:relative;border-radius:0;box-shadow:none;padding:3px .5ex;width:24ex !important;}form.navbar-search input.placeholder{font-style:italic;color:#808080;}
 form.navbar-search input:focus{box-shadow:none;}
 form.navbar-search input:not(.placeholder)+button{visibility:visible;}
-form.navbar-search button{color:#808080;border:none;font-weight:normal;font-size:12px;text-shadow:none;line-height:16px !important;padding:0;margin-left:1ex;box-shadow:none;visibility:hidden;text-indent:14px;opacity:.6;overflow:hidden;vertical-align:middle;}form.navbar-search button:hover,form.navbar-search button:active{opacity:.8;background-color:transparent;background-position:-312px 0;}
+form.navbar-search button{color:#808080;border:none;background:transparent;font-weight:normal;font-size:16px;text-shadow:none;line-height:16px !important;padding:0;margin-left:1ex;box-shadow:none;visibility:hidden;opacity:.6;overflow:hidden;vertical-align:middle;}form.navbar-search button:hover,form.navbar-search button:active{opacity:.8;background-color:transparent;background-position:-312px 0;}
 form.navbar-search button:active{opacity:1;}
 form.navbar-search.active:not(.focus){background-color:#FFC;}form.navbar-search.active:not(.focus) button{color:#808080;}
 .alert-wrapper{background-color:white;padding:16px 16px 15px 16px;border-bottom:1px solid #cfcfcf;}.alert-wrapper:empty{display:none;}

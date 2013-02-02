@@ -11,8 +11,6 @@
 
 namespace Icybee\Modules\Pages;
 
-use Icybee\Modules\Pages\Page;
-
 use Brickrouge\Element;
 
 class NavigationBranchElement extends Element
@@ -112,6 +110,8 @@ class NavigationBranchElement extends Element
 
 		$tree_blueprint = $this->build_blueprint($page, $parent_id);
 
+		new NavigationBranchElement\AlterBlueprintEvent($this, $tree_blueprint, $page, $parent_id);
+
 		$ids = array();
 
 		$collect_ids = function(array $blueprint) use(&$collect_ids, &$ids)
@@ -164,5 +164,51 @@ class NavigationBranchElement extends Element
 <ul class="nav nav-depth-$depth nav-relative-depth-$relative_depth">$html</ul>
 EOT;
 		}
+	}
+}
+
+namespace Icybee\Modules\Pages\NavigationBranchElement;
+
+/**
+ * Event class for the event `Icybee\Modules\Pages\NavigationBranchElement::alter_blueprint`.
+ */
+class AlterBlueprintEvent extends \ICanBoogie\Event
+{
+	/**
+	 * Reference to the blueprint of the navigation branch.
+	 *
+	 * @var \Icybee\Modules\Pages\Blueprint
+	 */
+	public $blueprint;
+
+	/**
+	 * Page where the navigation branch is displayed.
+	 *
+	 * @var \Icybee\Modules\Pages\Page
+	 */
+	public $page;
+
+	/**
+	 * Identifier of the parent of the branch.
+	 *
+	 * @var int
+	 */
+	public $parent_id;
+
+	/**
+	 * The event is constructed with the type `alter_blueprint`.
+	 *
+	 * @param \Icybee\Modules\Pages\NavigationBranchElement $target
+	 * @param \Icybee\Modules\Pages\Blueprint $blueprint
+	 * @param \Icybee\Modules\Pages\Page $page
+	 * @param int $parent_id
+	 */
+	public function __construct(\Icybee\Modules\Pages\NavigationBranchElement $target, array &$blueprint, \Icybee\Modules\Pages\Page $page, $parent_id)
+	{
+		$this->blueprint = &$blueprint;
+		$this->page = $page;
+		$this->parent_id = $parent_id;
+
+		parent::__construct($target, 'alter_blueprint');
 	}
 }

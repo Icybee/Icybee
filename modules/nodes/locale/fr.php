@@ -21,7 +21,7 @@ return array
 
 		'slug' => "Le <q>slug</q> est la version du titre utilisable dans les URL. Écrit en
 		minuscules, il ne contient que lettres non accentuées, chiffres et traits d'union. S'il
-		est vide lors de l'enregistrement, le <q>slug</q> est automatiquement crée à partir du
+		est vide lors de l'enregistrement, le <q>slug</q> est automatiquement créé à partir du
 		titre.",
 
 		'siteid' => "Parce que vous en avez la permission, vous pouvez choisir le site

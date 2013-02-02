@@ -129,8 +129,6 @@ class ManageBlock extends \Icybee\ManageBlock
 	/**
 	 * Extends the "uid" column by providing users filters.
 	 *
-	 * @see WdManager::extend_column()
-	 *
 	 * @param array $column
 	 * @param string $id
 	 */

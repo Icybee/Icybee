@@ -1,4 +1,8 @@
 
+.widget-login-combo form {
+	margin: 0;
+}
+
 .widget-login-combo div.wrapper {
 	position: static;
 	overflow: hidden;
@@ -16,6 +20,13 @@
 	background: transparent;
 }
 
-.widget-login-combo .form-actions {
+body.page-slug-authenticate .widget-login-combo .form-actions {
 	text-align: center;	
+}
+
+.widget-nonce-request.form-inline fieldset,
+.widget-nonce-request.form-inline .control-group,
+.widget-nonce-request.form-inline .controls,
+.widget-nonce-request.form-inline .form-actions {
+	display: inline-block;
 }

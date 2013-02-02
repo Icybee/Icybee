@@ -117,3 +117,19 @@ class Content extends \ICanBoogie\ActiveRecord
 		}
 	}
 }
+
+/*
+ * Events
+ */
+namespace Icybee\Modules\Pages\Content;
+
+/**
+ * Event class for the `Icybee\Modules\Pages\Content::render` event.
+ */
+class RenderEvent extends \ICanBoogie\Event
+{
+	public function __construct(\Icybee\Modules\Pages\Content $target)
+	{
+		parent::__construct($target, 'render');
+	}
+}

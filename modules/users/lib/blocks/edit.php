@@ -11,6 +11,8 @@
 
 namespace Icybee\Modules\Users;
 
+use Brickrouge\Group;
+
 use Icybee\Modules\Users\User;
 
 use Brickrouge\Document;
@@ -155,7 +157,7 @@ class EditBlock extends \Icybee\EditBlock
 				(
 					array
 					(
-						Form::LABEL => 'firstname'
+						Group::LABEL => 'firstname'
 					)
 				),
 
@@ -163,7 +165,15 @@ class EditBlock extends \Icybee\EditBlock
 				(
 					array
 					(
-						Form::LABEL => 'lastname'
+						Group::LABEL => 'lastname'
+					)
+				),
+
+				User::NICKNAME => new Text
+				(
+					array
+					(
+						Group::LABEL => 'Nickname'
 					)
 				),
 
@@ -171,16 +181,16 @@ class EditBlock extends \Icybee\EditBlock
 				(
 					array
 					(
-						Form::LABEL => 'username',
+						Group::LABEL => 'username',
 						Element::REQUIRED => true
 					)
 				) : null,
 
-				User::DISPLAY => new Element
+				User::NAME_AS => new Element
 				(
 					'select', array
 					(
-						Form::LABEL => 'display_as',
+						Group::LABEL => 'name_as',
 						Element::OPTIONS => $display_options
 					)
 				),
@@ -193,7 +203,7 @@ class EditBlock extends \Icybee\EditBlock
 				(
 					array
 					(
-						Form::LABEL => 'email',
+						Group::LABEL => 'email',
 						Element::GROUP => 'connection',
 						Element::REQUIRED => true,
 
@@ -247,7 +257,7 @@ class EditBlock extends \Icybee\EditBlock
 				(
 					'select', array
 					(
-						Form::LABEL => 'language',
+						Group::LABEL => 'language',
 						Element::GROUP => 'advanced',
 						Element::DESCRIPTION => 'language',
 						Element::OPTIONS => array(null => '') + $languages
@@ -258,7 +268,7 @@ class EditBlock extends \Icybee\EditBlock
 				(
 					array
 					(
-						Form::LABEL => 'timezone',
+						Group::LABEL => 'timezone',
 						Element::GROUP => 'advanced',
 						Element::DESCRIPTION => "Si la zone horaire n'est pas définie celle
 						du site sera utilisée à la place."

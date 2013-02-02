@@ -26,10 +26,11 @@ return array
 					'username' => array('varchar', 32, 'unique' => true),
 					'firstname' => array('varchar', 32),
 					'lastname' => array('varchar', 32),
-					'display' => array('integer', 'tiny'),
+					'nickname' => array('varchar', 32),
+					'name_as' => array('integer', 'tiny'),
 					'language' => array('varchar', 8),
 					'timezone' => array('varchar', 32),
-					'lastconnection' => 'datetime',
+					'logged_at' => 'datetime',
 					'created' => array('timestamp', 'default' => 'current_timestamp()'),
 					'is_activated' => array('boolean', 'indexed' => true)
 				)

@@ -118,21 +118,4 @@ class ViewProvider extends \Icybee\Modules\Views\ActiveRecordProvider
 	{
 		return $context;
 	}
-
-	/**
-	 * @return ActiveRecord|array[ActiveRecord]|null If the view's type is "view" the method returns an
-	 * ActiveRecord, or null if no record matching the conditions could be found, otherwise the
-	 * method returns an array of ActiveRecord.
-	 *
-	 * @see BriskView.ActiveRecordProvider::extract_result()
-	 */
-	protected function extract_result(Query $query)
-	{
-		if ($this->returns == self::RETURNS_ONE)
-		{
-			return $query->one;
-		}
-
-		return parent::extract_result($query);
-	}
 }

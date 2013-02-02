@@ -43,12 +43,12 @@ class PermissionsOperation extends \ICanBoogie\Operation
 
 			foreach ($perms as $perm => $name)
 			{
-				if ($name == 'inherit')
+				if ($name === 'inherit')
 				{
 					continue;
 				}
 
-				if ($name == 'on')
+				if ($name === 'on')
 				{
 					if (isset($core->modules->descriptors[$perm]))
 					{

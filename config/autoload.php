@@ -67,6 +67,5 @@ return array
 	'Icybee\ManageBlock' => $path . 'lib/blocks/manage.php',
 	'Icybee\FormBlock' => $path . 'lib/blocks/form.php',
 
-	'WdEMailNotifyElement' => $includes . 'wdemailnotifyelement.php',
-	'WdManager' => $includes . 'wdmanager.php',
+	'WdEMailNotifyElement' => $includes . 'wdemailnotifyelement.php'
 );

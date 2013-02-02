@@ -82,7 +82,20 @@ tellement tels tes ton tous tout trop très tu valeur voie voient vont votre vou
 	return preg_replace($patterns, ' ', $str);
 }
 
-function slugize($str, $stopwords=null)
+/**
+ * Creates a string suitable for an URL path.
+ *
+ * To create the _slug_, stop words are removed with the {@link strip_stopwords} then the string
+ * is normalized with {@link ICanBoogie\normalize} and limited to 80 characters.
+ *
+ * @param string $str
+ *
+ * TODO-20130128: Add a locale_id param so that a localized dictionnary is used to strip stop
+ * words.
+ *
+ * @return string
+ */
+function slugize($str)
 {
 	$str = \Icybee\strip_stopwords($str);
 

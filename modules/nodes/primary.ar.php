@@ -150,7 +150,7 @@ class Node extends \ICanBoogie\ActiveRecord
 
 		if ($property === 'css_class_names')
 		{
-			new Node\AlterCSSClassNamesEvent($this, array('names' => &$value));
+			new \Icybee\AlterCSSClassNamesEvent($this, $value);
 		}
 
 		return $value;
@@ -332,31 +332,5 @@ class Node extends \ICanBoogie\ActiveRecord
 	public function css_class($modifiers=null)
 	{
 		return \Icybee\render_css_class($this->css_class_names, $modifiers);
-	}
-}
-
-namespace Icybee\Modules\Nodes\Node;
-
-/**
- * Event class for the `Icybee\Modules\Nodes\Node::alter_css_class_names` event.
- */
-class AlterCSSClassNamesEvent extends \ICanBoogie\Event
-{
-	/**
-	 * Reference to the class names to alter.
-	 *
-	 * @var array[string]mixed
-	 */
-	public $names;
-
-	/**
-	 * The event is constructed with the type `alter_css_class_names`.
-	 *
-	 * @param \Icybee\Modules\Nodes\Node $target
-	 * @param array $payload
-	 */
-	public function __construct(\Icybee\Modules\Nodes\Node $target, array $payload)
-	{
-		parent::__construct($target, 'alter_css_class_names', $payload);
 	}
 }

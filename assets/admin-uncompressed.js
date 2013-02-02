@@ -51,7 +51,7 @@ window.addEvent('click:relay(.group-toggler input[type="checkbox"])', function(e
 
 	window.addEvent('icanboogie.xhr.hidenotice', function() {
 
-		if (!dummy || !dummy.parentNode) return
+		if (!dummy || !dummy.getParent()) return
 
 		messageTween.start(0)
 		dummyTween.start(0).chain(function() {

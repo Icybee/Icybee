@@ -13,6 +13,7 @@ namespace Icybee\Modules\Editor;
 
 use ICanBoogie\Core;
 use ICanBoogie\Exception;
+use ICanBoogie\OffsetNotDefined;
 use ICanBoogie\OffsetNotReadable;
 use ICanBoogie\OffsetNotWritable;
 
@@ -116,7 +117,7 @@ class Collection implements \ArrayAccess, \IteratorAggregate
 
 		if (!$this->offsetExists($offset))
 		{
-			throw new OffsetNotReadable(array($offset, $this));
+			throw new EditorNotDefined($offset);
 		}
 
 		$class = $this->collection[$offset];
@@ -144,6 +145,17 @@ class Collection implements \ArrayAccess, \IteratorAggregate
 	public function getIterator()
 	{
 		return new \ArrayIterator($this->collection);
+	}
+}
+
+/**
+ * Exception thrown in attempt to use an undefined editor.
+ */
+class EditorNotDefined extends OffsetNotDefined
+{
+	public function __construct($editor_id, $code=500, \Exception $previous)
+	{
+		parent::__construct("Editor not defined: $editor_id", $code, $previous);
 	}
 }
 

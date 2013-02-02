@@ -253,4 +253,24 @@ class Hooks
 
 		return $template ? $engine($template, $form) : $form;
 	}
+
+	/**
+	 * Retrieves the current user.
+	 *
+	 * <pre>
+	 * <p:user>
+	 * <!-- Content: with-param*, template -->
+	 * </p:user>
+	 * </pre>
+	 *
+	 * @param array $args
+	 * @param \Patron\Engine $engine
+	 * @param array $template
+	 */
+	static public function markup_user(array $args, $engine, $template)
+	{
+		global $core;
+
+		return $engine($template, $core->user);
+	}
 }

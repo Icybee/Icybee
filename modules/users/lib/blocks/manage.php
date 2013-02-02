@@ -15,7 +15,7 @@ use ICanBoogie\I18n;
 
 use Brickrouge\Element;
 
-class ManageBlock extends \WdManager
+class ManageBlock extends \Icybee\ManageBlock
 {
 	public function __construct($module, array $tags=array())
 	{
@@ -24,7 +24,7 @@ class ManageBlock extends \WdManager
 			$module, $tags + array
 			(
 				self::T_KEY => User::UID,
-				self::T_COLUMNS_ORDER => array(User::USERNAME, User::IS_ACTIVATED, User::EMAIL, 'role', User::CREATED, User::LASTCONNECTION)
+				self::T_COLUMNS_ORDER => array(User::USERNAME, User::IS_ACTIVATED, User::EMAIL, 'role', User::CREATED, User::LOGGED_AT)
 			)
 		);
 	}
@@ -63,7 +63,7 @@ class ManageBlock extends \WdManager
 				'class' => 'date'
 			),
 
-			User::LASTCONNECTION => array
+			User::LOGGED_AT => array
 			(
 				'class' => 'date'
 			),
@@ -146,7 +146,7 @@ class ManageBlock extends \WdManager
 		return $this->render_cell_datetime($record, $property);
 	}
 
-	protected function render_cell_lastconnection($record, $property)
+	protected function render_cell_logged_at($record, $property)
 	{
 		if (!((int) $record->$property))
 		{

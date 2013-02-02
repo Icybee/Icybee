@@ -12,14 +12,41 @@
 namespace Icybee\Modules\Users;
 
 /**
- * Log the user out of the system by removing its identifier form its session.
+ * Log the user out of the system.
+ *
+ * @property-read User $record The active record representing the user that was logged out. This
+ * property is still available after the user was logged out, unlike the {@link $user} property of
+ * the `$core` object.
  */
 class LogoutOperation extends \ICanBoogie\Operation
 {
 	/**
-	 * Validates the operation if the user is actually connected.
+	 * Returns the record of the user to logout.
 	 *
-	 * @see ICanBoogie.Operation::validate()
+	 * The current user is returned.
+	 */
+	protected function get_record()
+	{
+		global $core;
+
+		return $core->user;
+	}
+
+	/**
+	 * Adds the {@link CONTROL_RECORD} control.
+	 */
+	protected function get_controls()
+	{
+		return array
+		(
+			self::CONTROL_RECORD => true
+		)
+
+		+ parent::get_controls();
+	}
+
+	/**
+	 * Always returns `true`.
 	 */
 	protected function validate(\ICanboogie\Errors $errors)
 	{
@@ -27,16 +54,15 @@ class LogoutOperation extends \ICanBoogie\Operation
 	}
 
 	/**
-	 * Removes the user id form the session and set the location of the operation to the location
-	 * defined by the request's `continue` parameter or the request's referer, or '/'.
+	 * Logs out the user.
 	 *
-	 * @see ICanBoogie.Operation::process()
+	 * The {@link logout()} method of the user is invoked to log the user out.
+	 *
+	 * The location of the response can be defined by the `continue` request parameter or the request referer, or '/'.
 	 */
 	protected function process()
 	{
-		global $core;
-
-		$core->user->logout();
+		$this->record->logout();
 
 		$request = $this->request;
 		$this->response->location = isset($request['continue']) ? $request['continue'] : ($request->referer ? $request->referer : '/');

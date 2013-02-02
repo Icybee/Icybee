@@ -22,7 +22,7 @@ use Brickrouge\Element;
 /**
  * A block to manage nodes.
  */
-class ManageBlock extends \WdManager
+class ManageBlock extends \Icybee\ManageBlock
 {
 	public function __construct(Module $module, array $attributes=array())
 	{
@@ -286,7 +286,7 @@ class ManageBlock extends \WdManager
 	/**
 	 * Extends the "uid" column by providing users filters.
 	 *
-	 * @see WdManager::extend_column()
+	 * @see \Icybee\ManageBlock::extend_column()
 	 *
 	 * @param array $column
 	 * @param string $id
@@ -463,7 +463,8 @@ class ManageBlock extends \WdManager
 					)
 				),
 
-				'class' => 'checkbox-wrapper circle'
+				'class' => 'checkbox-wrapper circle',
+				'title' => "Publish or unpublish the record form the website"
 			)
 		);
 	}

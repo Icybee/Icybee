@@ -13,7 +13,7 @@ namespace Icybee\Modules\Taxonomy\Terms;
 
 use ICanBoogie\ActiveRecord\Query;
 
-class ManageBlock extends \WdManager
+class ManageBlock extends \Icybee\ManageBlock
 {
 	public function __construct(Module $module, array $attributes=array())
 	{

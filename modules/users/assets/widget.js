@@ -10,9 +10,11 @@ Brickrouge.Widget.Login = new Class({
 
 	onSuccess: function(response)
 	{
-		if (response.location)
+		var location = response.location || response.redirect_to
+
+		if (location)
 		{
-			window.location = response.location
+			window.location = location
 		}
 		else
 		{

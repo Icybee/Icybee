@@ -13,7 +13,7 @@ namespace Icybee\Modules\Taxonomy\Vocabulary;
 
 use ICanBoogie\I18n;
 
-class ManageBlock extends \WdManager
+class ManageBlock extends \Icybee\ManageBlock
 {
 	public function __construct($module, array $attributes=array())
 	{

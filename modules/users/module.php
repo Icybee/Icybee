@@ -11,6 +11,8 @@
 
 namespace Icybee\Modules\Users;
 
+use Icybee\Modules\Views\View;
+
 use ICanBoogie\Exception;
 use ICanBoogie\I18n;
 use ICanBoogie\I18n\FormattedString;
@@ -51,6 +53,18 @@ Cordialement'
 			*/
 		)
 	);
+
+	protected function get_views()
+	{
+		return array
+		(
+			'nonce_login_request' => array
+			(
+				View::TITLE => 'Nonce login request',
+				View::RENDERS => View::RENDERS_OTHER
+			)
+		);
+	}
 
 	protected function resolve_primary_model_tags($tags)
 	{

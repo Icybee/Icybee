@@ -35,9 +35,9 @@ class User extends \ICanBoogie\ActiveRecord
 	const USERNAME = 'username';
 	const FIRSTNAME = 'firstname';
 	const LASTNAME = 'lastname';
-	const DISPLAY = 'display';
+	const NICKNAME = 'nickname';
 	const CREATED = 'created';
-	const LASTCONNECTION = 'lastconnection';
+	const LOGGED_AT = 'logged_at';
 	const CONSTRUCTOR = 'constructor';
 	const LANGUAGE = 'language';
 	const TIMEZONE = 'timezone';
@@ -45,40 +45,49 @@ class User extends \ICanBoogie\ActiveRecord
 	const ROLES = 'roles';
 	const RESTRICTED_SITES = 'restricted_sites';
 
+	const NAME_AS = 'name_as';
+
 	/**
-	 * User name should be displayed as `$username`.
+	 * The {@link $name} property should be created from `$username`.
 	 *
 	 * @var int
 	 */
 	const NAME_AS_USERNAME = 0;
 
 	/**
-	 * User name should be displayed as `$firstname`.
+	 * The {@link $name} property should be created from `$firstname`.
 	 *
 	 * @var int
 	 */
 	const NAME_AS_FIRSTNAME = 1;
 
 	/**
-	 * User name should be displayed as `$lastname`.
+	 * The {@link $name} property should be created from `$lastname`.
 	 *
 	 * @var int
 	 */
 	const NAME_AS_LASTNAME = 2;
 
 	/**
-	 * User name should be displayed as `$firstname $lastname`.
+	 * The {@link $name} property should be created from `$firstname $lastname`.
 	 *
 	 * @var int
 	 */
 	const NAME_AS_FIRSTNAME_LASTNAME = 3;
 
 	/**
-	 * User name should be displayed as `$lastname $firstname`.
+	 * The {@link $name} property should be created from `$lastname $firstname`.
 	 *
 	 * @var int
 	 */
 	const NAME_AS_LASTNAME_FIRSTNAME = 4;
+
+	/**
+	 * The {@link $name} property should be created from `$nickname`.
+	 *
+	 * @var int
+	 */
+	const NAME_AS_NICKNAME = 5;
 
 	/**
 	 * User identifier.
@@ -118,25 +127,32 @@ class User extends \ICanBoogie\ActiveRecord
 	public $username;
 
 	/**
-	 * Firstname of the user.
+	 * First name of the user.
 	 *
 	 * @var string
 	 */
 	public $firstname;
 
 	/**
-	 * Lastname of the user.
+	 * Last name of the user.
 	 *
 	 * @var string
 	 */
 	public $lastname;
 
 	/**
+	 * Nickname of the user.
+	 *
+	 * @var string
+	 */
+	public $nickname;
+
+	/**
 	 * Prefered format to create the value of the {@link $name} property.
 	 *
 	 * @var string
 	 */
-	public $display;
+	public $name_as;
 
 	/**
 	 * The date the user record was created.
@@ -146,11 +162,11 @@ class User extends \ICanBoogie\ActiveRecord
 	public $created;
 
 	/**
-	 * The date of the last connection of the user.
+	 * The date at which the user logged.
 	 *
 	 * @var string
 	 */
-	public $lastconnection;
+	public $logged_at;
 
 	/**
 	 * Constructor of the user record (module id).
@@ -196,7 +212,7 @@ class User extends \ICanBoogie\ActiveRecord
 
 		if ($property === 'css_class_names')
 		{
-			new User\AlterCSSClassNamesEvent($this, $value);
+			new \Icybee\AlterCSSClassNamesEvent($this, $value);
 		}
 
 		return $value;
@@ -205,8 +221,9 @@ class User extends \ICanBoogie\ActiveRecord
 	/**
 	 * Returns the formatted name of the user.
 	 *
-	 * The format of the name is defined by the {@link $display} property. The {@link $username},
-	 * {@link $firstname} and {@link $lastname} properties can be used to format the name.
+	 * The format of the name is defined by the {@link $name_as} property. The {@link $username},
+	 * {@link $firstname}, {@link $lastname} and {@link $nickname} properties can be used to
+	 * format the name.
 	 *
 	 * This is the getter for the {@link $name} magic property.
 	 *
@@ -220,10 +237,11 @@ class User extends \ICanBoogie\ActiveRecord
 			self::NAME_AS_FIRSTNAME => $this->firstname,
 			self::NAME_AS_LASTNAME => $this->lastname,
 			self::NAME_AS_FIRSTNAME_LASTNAME => $this->firstname . ' ' . $this->lastname,
-			self::NAME_AS_LASTNAME_FIRSTNAME => $this->lastname . ' ' . $this->firstname
+			self::NAME_AS_LASTNAME_FIRSTNAME => $this->lastname . ' ' . $this->firstname,
+			self::NAME_AS_NICKNAME => $this->nickname
 		);
 
-		$rc = isset($values[$this->display]) ? $values[$this->display] : null;
+		$rc = isset($values[$this->name_as]) ? $values[$this->name_as] : null;
 
 		if (!trim($rc))
 		{
@@ -465,7 +483,9 @@ class User extends \ICanBoogie\ActiveRecord
 	}
 
 	/**
-	 * Compares a password to the user password.
+	 * Compares a password to the user's password hash.
+	 *
+	 * The specified password is hashed with the {@link hash_password} method.
 	 *
 	 * @param string $password
 	 *
@@ -580,33 +600,5 @@ class User extends \ICanBoogie\ActiveRecord
 	public function css_class($modifiers=null)
 	{
 		return \Icybee\render_css_class($this->css_class_names, $modifiers);
-	}
-}
-
-namespace Icybee\Modules\Users\User;
-
-/**
- * Event class for the `Icybee\Modules\Users\User::alter_css_class_names` event.
- */
-class AlterCSSClassNamesEvent extends \ICanBoogie\Event
-{
-	/**
-	 * Reference to the class names to alter.
-	 *
-	 * @var array[string]mixed
-	 */
-	public $names;
-
-	/**
-	 * The event is constructed with the type `alter_css_class_names`.
-	 *
-	 * @param \Icybee\Modules\Users\User $target Target user.
-	 * @param array $name CSS class names.
-	 */
-	public function __construct(\Icybee\Modules\Users\User $target, array &$names)
-	{
-		$this->names = &$names;
-
-		parent::__construct($target, 'alter_css_class_names');
 	}
 }

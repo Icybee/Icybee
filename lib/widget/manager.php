@@ -11,18 +11,15 @@
 
 namespace Icybee;
 
-use ICanBoogie\I18n;
-
-use ICanBoogie;
 use ICanBoogie\ActiveRecord;
 use ICanBoogie\ActiveRecord\Model;
 use ICanBoogie\ActiveRecord\Query;
 use ICanBoogie\Event;
 use ICanBoogie\Exception;
+use ICanBoogie\I18n;
 use ICanBoogie\I18n\Translator\Proxi;
 use ICanBoogie\Operation;
 
-use Brickrouge;
 use Brickrouge\Alert;
 use Brickrouge\Button;
 use Brickrouge\DropdownMenu;
@@ -104,7 +101,7 @@ class Manager extends Element
 	 * array|null order: Columns used to sort the records.
 	 * string|null search: Key words to search for, altering the query conditions.
 	 * array filters: The filters currently used to filter the records, ready for the
-	 * ICanBoogie\ActiveRecord\Query::where() method.
+	 * \ICanBoogie\ActiveRecord\Query::where() method.
 	 */
 	protected $options = array();
 
@@ -1203,7 +1200,7 @@ EOT;
 	/**
 	 * Renders cell value as time.
 	 *
-	 * @param ICanBoogie\ActiveRecord $record
+	 * @param \ICanBoogie\ActiveRecord $record
 	 * @param string $property
 	 *
 	 * @return string
@@ -1221,7 +1218,7 @@ EOT;
 	/**
 	 * Renders cell value as date.
 	 *
-	 * @param ICanBoogie\ActiveRecord $record
+	 * @param \ICanBoogie\ActiveRecord $record
 	 * @param string $property
 	 *
 	 * @return string
@@ -1322,7 +1319,7 @@ EOT;
 	/**
 	 * Renders the value as date and time.
 	 *
-	 * @param ICanBoogie\ActiveRecord $record
+	 * @param \ICanBoogie\ActiveRecord $record
 	 * @param string $property
 	 *
 	 * @return string
@@ -1338,7 +1335,7 @@ EOT;
 	/**
 	 * Renders cell value as size.
 	 *
-	 * @param ICanBoogie\ActiveRecord $record
+	 * @param \ICanBoogie\ActiveRecord $record
 	 * @param string $property
 	 *
 	 * @return string
@@ -1388,7 +1385,7 @@ EOT;
 
 					new Button
 					(
-						'×', array
+						'', array
 						(
 							'type' => 'button',
 							'class' => 'icon-remove'

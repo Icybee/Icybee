@@ -422,7 +422,7 @@ class Hooks
 
 	static private $attached;
 
-	static public function on_alter_css_class_names(\Icybee\Modules\Nodes\Node\AlterCSSClassNamesEvent $event, \Icybee\Modules\Nodes\Node $node)
+	static public function on_alter_css_class_names(\Icybee\AlterCSSClassNamesEvent $event, \Icybee\Modules\Nodes\Node $node)
 	{
 		global $core;
 

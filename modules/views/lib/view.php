@@ -284,10 +284,12 @@ class View extends Object
 		{
 			$html = I18n\t('empty_view', array(), array('scope' => $module_flat_id . '.' . $type, 'default' => $default));
 
+			/*
 			if ($html)
 			{
 				$html = '<div class="alert">' . $html . '</div>';
 			}
+			*/
 		}
 
 		return $html;

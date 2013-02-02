@@ -11,8 +11,6 @@
 
 namespace Icybee\Modules\Pages;
 
-use Icybee\Modules\Files\File;
-
 use ICanBoogie\ActiveRecord;
 use ICanBoogie\Event;
 use ICanBoogie\FileCache;
@@ -22,6 +20,7 @@ use ICanBoogie\HTTP\Response;
 
 use Brickrouge\Element;
 
+use Icybee\Modules\Files\File;
 use Icybee\Modules\Sites\Site;
 
 class Hooks
@@ -48,11 +47,15 @@ class Hooks
 				$response->body = $rc;
 			}
 
+			/*
 			if ($core->user->is_guest && $request->is_get)
 			{
 				$response->cache_control = 'public';
 				$response->expires = '+7 days';
 			}
+			*/
+
+			$response->cache_control = 'private, no-cache, no-store, must-revalidate';
 
 			return $response;
 		};
@@ -71,7 +74,7 @@ class Hooks
 
 		$core->models['pages/contents']->execute
 		(
-			'UPDATE {self} SET content = REPLACE(content, ?, ?)', $event->from, $event->to
+			'UPDATE {self} SET content = REPLACE(content, ?, ?)', array($event->from, $event->to)
 		);
 	}
 

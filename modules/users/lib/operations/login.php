@@ -21,8 +21,6 @@ class LoginOperation extends \ICanBoogie\Operation
 {
 	/**
 	 * Adds form control.
-	 *
-	 * @see ICanBoogie.Operation::get_controls()
 	 */
 	protected function get_controls()
 	{
@@ -37,8 +35,6 @@ class LoginOperation extends \ICanBoogie\Operation
 
 	/**
 	 * Returns the "connect" form of the target module.
-	 *
-	 * @see ICanBoogie.Operation::get_form()
 	 */
 	protected function get_form()
 	{
@@ -53,14 +49,16 @@ class LoginOperation extends \ICanBoogie\Operation
 		$username = $request[User::USERNAME];
 		$password = $request[User::PASSWORD];
 
-		$user = $core->models['users']->where('username = ? OR email = ?', $username, $username)->one;
+		$uid = $core->models['users']->select('uid')->where('username = ? OR email = ?', $username, $username)->rc;
 
-		if (!$user)
+		if (!$uid)
 		{
 			$errors[User::PASSWORD] = new FormattedString('Unknown username/password combination.');
 
 			return false;
 		}
+
+		$user = $core->models['users'][$uid];
 
 		$now = time();
 		$login_unlock_time = $user->metas['login_unlock_time'];
@@ -176,29 +174,28 @@ EOT
 	 * Saves the user id in the session, sets the `user` property of the core object, updates the
 	 * user's last connection date and finaly changes the operation location to the same request
 	 * uri.
-	 *
-	 * @see ICanBoogie.Operation::process()
 	 */
 	protected function process()
 	{
 		global $core;
 
 		$user = $this->record;
-
-		$user->login();
-
 		$user->metas['failed_login_count'] = null;
 		$user->metas['failed_login_time'] = null;
+		$user->login();
 
 		$core->models['users']->execute
 		(
-			'UPDATE {self} SET lastconnection = now() WHERE uid = ?', array
+			'UPDATE {self} SET logged_at = now() WHERE uid = ?', array
 			(
 				$core->user_id
 			)
 		);
 
-		$this->response->location = $this->request['continue'] ?: $this->request->uri;
+		if (!$this->request->is_xhr)
+		{
+			$this->response->location = $this->request['continue'] ?: $this->request->uri;
+		}
 
 		return true;
 	}

@@ -152,7 +152,7 @@ class SaveOperation extends \Icybee\Operation\Constructor\Save
 
 			if ($properties[User::PASSWORD] != $this->request[User::PASSWORD . '-verify'])
 			{
-				$errors[User::PASSWORD . '-verify'] = new FormattedString('Password and password verify don\'t match.');
+				$errors[User::PASSWORD . '-verify'] = new FormattedString("Password and password verify don't match.");
 			}
 		}
 
@@ -196,13 +196,19 @@ class SaveOperation extends \Icybee\Operation\Constructor\Save
 	{
 		global $core;
 
+		$previous_uid = $core->user_id;
+
 		$rc = parent::process();
 
 		$uid = $rc['key'];
 
-		if ($core->user_id == $uid)
+		if (!$previous_uid)
 		{
-			$this->response->message = new FormattedString("Your profile has been updated.");
+			$this->response->message = new FormattedString("Your profile has been created.");
+		}
+		else if ($core->user_id == $uid)
+		{
+			$this->response->message = new FormattedString($rc['mode'] == 'update' ? "Your profile has been updated." : "Your profile has been created.");
 		}
 		else
 		{

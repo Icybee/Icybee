@@ -35,8 +35,8 @@ return array
 		mot de passe est généré automatiquement. Pour le personnaliser, veuillez saisir le mot de
 		passe.",
 
-		'password_update' => "Si vous souhaitez changer de mot de passe, veuillez saisissez le
-		nouveau dans ce champ. Sinon, laissez le champ vide.",
+		'password_update' => "Si vous souhaitez changer de mot de passe, veuillez saisir le
+		nouveau dans ce champ. Sinon, laissez-le vide.",
 
 		'roles' => "Parce que vous en avec la permission, vous pouvez choisir le ou les rôles de
 		l'utilisateur."
@@ -53,17 +53,18 @@ return array
 	'label' => array
 	(
 		'logout' => 'Déconnexion',
-		'display_as' => 'Afficher comme',
+		'name_as' => 'Nom comme',
 		'email' => 'E-mail',
 		'firstname' => 'Prénom',
 		'Firstname' => 'Prénom',
 		'is_activated' => "Le compte de l'utilisateur est actif",
-		'lastconnection' => 'Connecté le',
+		'logged_at' => 'Connecté le',
 		'lastname' => 'Nom',
 		'Lastname' => 'Nom',
 		'lost_password' => "J'ai oublié mon mot de passe",
 		'name' => 'Nom',
 		'Name' => 'Nom',
+		'Nickname' => 'Surnom',
 		'password' => 'Mot de passe',
 		'Password' => 'Mot de passe',
 		'password_confirm' => 'Confirmation',
@@ -84,17 +85,24 @@ return array
 		'connection' => 'Connexion'
 	),
 
-	'users.manager.label.lastconnection' => 'Connecté le',
+	'users.manager.label.logged_at' => 'Connecté le',
 
 	'permission.modify own profile' => 'Modifier son profil',
 
-	'nonce_login_request.operation' => array
+	# operation/nonce_login_request
+
+	'nonce_login_request' => array
 	(
-		'title' => 'Demander une connexion a usage unique',
-		'message' => array
+		'already_sent' => "Un message a déjà été envoyé à votre adresse email. Afin de réduire les abus, un nouveau ne pourra être envoyé avant :time.",
+
+		'operation' => array
 		(
-			'subject' => "Voici un message pour vous aider à vous connecter",
-			'template' => <<<EOT
+
+			'title' => 'Demander une connexion a usage unique',
+			'message' => array
+			(
+				'subject' => "Voici un message pour vous aider à vous connecter",
+				'template' => <<<EOT
 Ce message a été envoyé pour vous aider à vous connecter.
 
 En utilisant l'URL suivante vous serez en mesure de vous connecter
@@ -104,15 +112,16 @@ et de mettre à jour votre mot de passe.
 
 Cette URL est a usage unique et n'est valable que jusqu'à :until.
 
-Si vous n'avez pas crée de profil ni demandé un nouveau mot de passe, ce message peut être le
+Si vous n'avez pas créé de profil ni demandé un nouveau mot de passe, ce message peut être le
 résultat d'une tentative d'attaque sur le site. Si vous pensez que c'est le cas, merci de contacter
 son administrateur.
 
 L'adresse distante était : :ip.
 EOT
-		),
+			),
 
-		'success' => "Un message pour vous aider à vous connecter a été envoyé à l'adresse %email."
+			'success' => "Un message pour vous aider à vous connecter a été envoyé à l'adresse %email."
+		)
 	),
 
 
@@ -127,6 +136,7 @@ EOT
 	'Administrator' => 'Administrateur',
 	'My profile' => 'Mon profil',
 	'User profile' => 'Profil utilisateur',
+	"Password and password verify don't match." => "Le mot de passe et sa vérification ne correspondent pas.",
 
 	#
 	# resume
@@ -142,11 +152,13 @@ EOT
 
 	'confirm' => 'confirmer',
 
-	'Your profile has been updated.' => 'Votre profil a été mis à jour.',
+	"Your profile has been created." => "Votre profil a été créé.",
+	"Your profile has been updated." => "Votre profil a été mis à jour.",
+	"%name's profile has been created." => "Le profil de %name a été créé.",
+	"%name's profile has been updated." => "Le profil de %name a été mis à jour.",
 
-	#
-	# publisher
-	#
+	# operation/nonce_login_request
 
-	'Welcome back \1&nbsp;! You can use the \2 to manage your articles and images.' => 'Bienvenue \1&nbsp;! Vous pouvez utiliser le \2 pour gérer vos articles et images.'
+	"Invalid email address: %email." => "Adresse e-mail invalide : %email.",
+	"Unknown email address." => "Adresse e-mail inconnue."
 );

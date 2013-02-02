@@ -173,9 +173,30 @@ abstract class ActiveRecordProvider extends Provider
 		return $query->limit($page * $limit, $limit);
 	}
 
+	/**
+	 * Extracts a result from the query.
+	 *
+	 * The returned result depends on the return type:
+	 *
+	 * - If the return type is {@link RETURNS_ONE} the first record is returned.
+	 *
+	 * - If the return type is {@link RETURNS_MANY} a number of records is returned according
+	 * to the range limit and range page, the `count` value of the range is updated with the
+	 * number of records matching the query. The {@link count_result()} method is used for this.
+	 *
+	 * - Otherwise, all the records matching the query are returned.
+	 *
+	 * @return ActiveRecord|array[ActiveRecord]|null If the provider must return one record,
+	 * the method returns an ActiveRecord, or null if no record matching the conditions could be
+	 * found, otherwise the method returns an array of ActiveRecord.
+	 */
 	protected function extract_result(Query $query)
 	{
-		if ($this->returns == self::RETURNS_MANY)
+		if ($this->returns == self::RETURNS_ONE)
+		{
+			return $query->one;
+		}
+		else if ($this->returns == self::RETURNS_MANY)
 		{
 			$range = &$this->view->range;
 			$range['count'] = $this->count_result($query);

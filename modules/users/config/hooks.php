@@ -23,6 +23,11 @@ return array
 
 	'patron.markups' => array
 	(
+		'user' => array
+		(
+			$hooks . 'markup_user'
+		),
+
 		'users:form:login' => array
 		(
 			$hooks . 'markup_form_login'
