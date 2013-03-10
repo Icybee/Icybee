@@ -19,8 +19,6 @@ abstract class ActiveRecordProvider extends Provider
 {
 	/**
 	 * @return array[ActiveRecord]|ActiveRecord|null
-	 *
-	 * @see Icybee\Modules\Views.Provider::__invoke()
 	 */
 	public function __invoke()
 	{

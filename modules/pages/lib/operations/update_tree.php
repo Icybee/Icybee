@@ -11,9 +11,7 @@
 
 namespace Icybee\Modules\Pages;
 
-use ICanBoogie\Operation;
-
-class UpdateTreeOperation extends Operation
+class UpdateTreeOperation extends \ICanBoogie\Operation
 {
 	protected function get_controls()
 	{
@@ -40,7 +38,7 @@ class UpdateTreeOperation extends Operation
 		{
 			// FIXME-20100429: cached entries are not updated here, we should flush the cache.
 
-			$update->execute(array($parentid, $w++, $nid));
+			$update($parentid, $w++, $nid);
 		}
 
 		return true;

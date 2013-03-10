@@ -32,6 +32,18 @@ class DocumentDecorator
 
 	public function __toString()
 	{
+		try
+		{
+			return $this->render();
+		}
+		catch (\Exception $e)
+		{
+			return Debug::format_alert($e);
+		}
+	}
+
+	public function render()
+	{
 		global $core;
 
 		$component = (string) $this->component;
@@ -42,9 +54,16 @@ class DocumentDecorator
 		$body = $this->body;
 		$body[Element::INNER_HTML] = $component . PHP_EOL . PHP_EOL . $document->js;
 
+		$api_base = '';
+
+		if (isset($core->site))
+		{
+			$api_base = $core->site->path;
+		}
+
 		return <<<EOT
 <!DOCTYPE html>
-<html lang="{$core->language}" data-api-base="{$core->site->path}">
+<html lang="{$core->language}" data-api-base="{$api_base}">
 <head>
 <meta charset="utf-8" />
 <title>$title</title>

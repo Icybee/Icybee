@@ -148,7 +148,9 @@ class ManageBlock extends \Icybee\ManageBlock
 
 	protected function render_cell_logged_at($record, $property)
 	{
-		if (!((int) $record->$property))
+		$logged_at = $record->$property;
+
+		if ($logged_at->is_empty)
 		{
 			return '<em class="small">Never connected</em>';
 		}

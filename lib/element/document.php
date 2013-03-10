@@ -28,37 +28,21 @@ use Icybee\Modules\Users\Users\Role;
 
 class Document extends \Brickrouge\Document
 {
-	public $on_setup = false;
-	protected $changed_site;
-
-	public $title;
-	public $page_title;
-
-	public $content;
-
-	public function __construct()
-	{
-		global $core;
-
-		parent::__construct();
-
-		$cache_assets = $core->config['cache assets'];
-
-		$this->css->use_cache = $cache_assets;
-		$this->js->use_cache = $cache_assets;
-	}
-
 	/**
 	 * Getter hook for the use ICanBoogie\Core::$document property.
 	 *
 	 * @return Document
 	 */
-	static public function hook_get_document()
+	static public function get()
 	{
 		global $document;
 
-		return $document = new \Brickrouge\Document();
+		return $document = new static;
 	}
+
+	/*
+	 * Markups
+	 */
 
 	static public function markup_document_title(array $args, \Patron\Engine $patron, $template)
 	{
@@ -197,6 +181,75 @@ class Document extends \Brickrouge\Document
 		$document = $core->document;
 
 		return $template ? $patron($template, $document->js) : (string) $document->js;
+	}
+
+	/*
+	 * Object
+	 */
+
+	public $title;
+	public $page_title;
+
+	public function __construct()
+	{
+		global $core;
+
+		parent::__construct();
+
+		$cache_assets = $core->config['cache assets'];
+
+		$this->css->use_cache = $cache_assets;
+		$this->js->use_cache = $cache_assets;
+	}
+
+	public function __get($property)
+	{
+		$value = parent::__get($property);
+
+		if ($property === 'css_class_names')
+		{
+			new \Icybee\AlterCSSClassNamesEvent($this, $value);
+		}
+
+		return $value;
+	}
+
+	/**
+	 * Returns the CSS class of the node.
+	 *
+	 * @return string
+	 */
+	protected function get_css_class()
+	{
+		return $this->css_class();
+	}
+
+	/**
+	 * Returns the CSS class names of the node.
+	 *
+	 * @return array[string]mixed
+	 */
+	protected function get_css_class_names()
+	{
+		global $core;
+
+		$names = $core->request->context->page->css_class_names;
+
+		unset($names['active']);
+
+		return $names;
+	}
+
+	/**
+	 * Return the CSS class of the node.
+	 *
+	 * @param string|array $modifiers CSS class names modifiers
+	 *
+	 * @return string
+	 */
+	public function css_class($modifiers=null)
+	{
+		return \Icybee\render_css_class($this->css_class_names, $modifiers);
 	}
 }
 

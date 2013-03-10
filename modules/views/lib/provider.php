@@ -56,12 +56,18 @@ abstract class Provider
 	 *
 	 * @param array $conditions
 	 */
-	abstract protected function alter_conditions(array $conditions);
+	protected function alter_conditions(array $conditions)
+	{
+		return $conditions;
+	}
 
 	/**
 	 * Alters rendering context.
 	 *
 	 * @param array $context
 	 */
-	abstract protected function alter_context(\BlueTihi\Context $context, \ICanBoogie\ActiveRecord\Query $query, array $conditions);
+	protected function alter_context(\BlueTihi\Context $context, \ICanBoogie\ActiveRecord\Query $query, array $conditions)
+	{
+		return $context;
+	}
 }

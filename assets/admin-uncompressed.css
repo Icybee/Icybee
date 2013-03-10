@@ -30,34 +30,28 @@
   box-sizing: border-box;
 }
 @font-face {
-  font-family: 'Roboto';
-  font-style: normal;
-  font-weight: bold;
-  src: local('Roboto Medium'), local('Roboto-Medium'), url('http://themes.googleusercontent.com/static/fonts/roboto/v2/RxZJdnzeo3R5zSexge8UUbO3LdcAZYWl9Si6vvxL-qU.woff') format('woff');
-}
-@font-face {
-  font-family: 'Roboto';
-  font-style: italic;
-  font-weight: bold;
-  src: local('Roboto Medium Italic'), local('Roboto-MediumItalic'), url('http://themes.googleusercontent.com/static/fonts/roboto/v2/OLffGBTaF0XFOW1gnuHF0brIa-7acMAeDBVuclsi6Gc.woff') format('woff');
-}
-@font-face {
-  font-family: 'Roboto';
+  font-family: "Roboto";
   font-style: normal;
   font-weight: 400;
-  src: local('Roboto Regular'), local('Roboto-Regular'), url('http://themes.googleusercontent.com/static/fonts/roboto/v2/CrYjSnGjrRCn0pd9VQsnFOvvDin1pK8aKteLpeZ5c0A.woff') format('woff');
+  src: local("Roboto Regular"), local("Roboto-Regular"), url("http://themes.googleusercontent.com/static/fonts/roboto/v7/2UX7WLTfW3W8TclTUvlFyQ.woff") format("woff");
 }
 @font-face {
-  font-family: 'Roboto';
+  font-family: "Roboto";
   font-style: normal;
-  font-weight: 100;
-  src: local('Roboto Thin'), local('Roboto-Thin'), url('http://themes.googleusercontent.com/static/fonts/roboto/v2/vzIUHo9z-oJ4WgkpPOtg13YhjbSpvc47ee6xR_80Hnw.woff') format('woff');
+  font-weight: bold;
+  src: local("Roboto Medium"), local("Roboto-Medium"), url("http://themes.googleusercontent.com/static/fonts/roboto/v7/RxZJdnzeo3R5zSexge8UUT8E0i7KZn-EPnyo3HZu7kw.woff") format("woff");
 }
 @font-face {
-  font-family: 'Roboto';
+  font-family: "Roboto";
   font-style: italic;
   font-weight: 400;
-  src: local('Roboto Italic'), local('Roboto-Italic'), url('http://themes.googleusercontent.com/static/fonts/roboto/v2/1pO9eUAp8pSF8VnRTP3xnnYhjbSpvc47ee6xR_80Hnw.woff') format('woff');
+  src: local("Roboto Italic"), local("Roboto-Italic"), url("http://themes.googleusercontent.com/static/fonts/roboto/v7/1pO9eUAp8pSF8VnRTP3xnvesZW2xOQ-xsNqO47m55DA.woff") format("woff");
+}
+@font-face {
+  font-family: "Roboto";
+  font-style: italic;
+  font-weight: bold;
+  src: local("Roboto Medium Italic"), local("Roboto-MediumItalic"), url("http://themes.googleusercontent.com/static/fonts/roboto/v7/OLffGBTaF0XFOW1gnuHF0YbN6UDyHWBl620a-IRfuBk.woff") format("woff");
 }
 #contents {
   border: 0;
@@ -480,7 +474,7 @@ div::not(.input-append) + .btn.reset-default-value {
 }
 .form-primary .combo {
   background-color: white;
-  padding: 1em;
+  padding: 4px 6px;
   border: 1px solid #ccc;
   border-radius: 3px;
 }

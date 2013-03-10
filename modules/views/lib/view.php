@@ -621,7 +621,7 @@ EOT;
 	 */
 	protected function validate_access()
 	{
-		$access_callback = $this->options['access_callback'];
+		$access_callback = $this->options[self::ACCESS_CALLBACK];
 
 		if ($access_callback && !call_user_func($access_callback, $this))
 		{

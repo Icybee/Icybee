@@ -12,6 +12,7 @@
 namespace Icybee\Modules\Users;
 
 use ICanBoogie\ActiveRecord\RecordNotFound;
+use ICanBoogie\DateTime;
 use ICanBoogie\Exception;
 use ICanBoogie\Security;
 use ICanBoogie\PropertyNotWritable;
@@ -25,6 +26,8 @@ use Icybee\Modules\Users\Roles\Role;
  * @property-read boolean $is_admin true if the user is admin, false otherwise.
  * @property-read boolean $is_guest true if the user is a guest, false otherwise.
  * @property-read \Icybee\Modules\Users\Users\Role $role
+ *
+ * @property \DateTime|mixed $logged_at The date at which the user logged.
  */
 class User extends \ICanBoogie\ActiveRecord
 {
@@ -97,7 +100,18 @@ class User extends \ICanBoogie\ActiveRecord
 	public $uid;
 
 	/**
+	 * Constructor of the user record (module id).
+	 *
+	 * The property MUST be defined to persist the record.
+	 *
+	 * @var string
+	 */
+	public $constructor;
+
+	/**
 	 * User email.
+	 *
+	 * The property MUST be defined to persist the record.
 	 *
 	 * @var string
 	 */
@@ -106,7 +120,8 @@ class User extends \ICanBoogie\ActiveRecord
 	/**
 	 * User password.
 	 *
-	 * The property is only used to modifiy the password.
+	 * The property is only used to update the {@link $password_hash} property when the
+	 * record is saved.
 	 *
 	 * @var string
 	 */
@@ -115,12 +130,17 @@ class User extends \ICanBoogie\ActiveRecord
 	/**
 	 * User password hash.
 	 *
+	 * Note: The property MUST NOT be private, otherwise only instances of the class can be
+	 * initialized with a value, for subclasses instances the property would be `null`.
+	 *
 	 * @var string
 	 */
-	protected $password_hash; // FIXME-20121219: this should be private, but it seams to cause problems :'(
+	protected $password_hash;
 
 	/**
 	 * Username of the user.
+	 *
+	 * The property MUST be defined to persist the record.
 	 *
 	 * @var string
 	 */
@@ -131,28 +151,28 @@ class User extends \ICanBoogie\ActiveRecord
 	 *
 	 * @var string
 	 */
-	public $firstname;
+	public $firstname = '';
 
 	/**
 	 * Last name of the user.
 	 *
 	 * @var string
 	 */
-	public $lastname;
+	public $lastname = '';
 
 	/**
 	 * Nickname of the user.
 	 *
 	 * @var string
 	 */
-	public $nickname;
+	public $nickname = '';
 
 	/**
 	 * Prefered format to create the value of the {@link $name} property.
 	 *
 	 * @var string
 	 */
-	public $name_as;
+	public $name_as = self::NAME_AS_USERNAME;
 
 	/**
 	 * The date the user record was created.
@@ -164,46 +184,74 @@ class User extends \ICanBoogie\ActiveRecord
 	/**
 	 * The date at which the user logged.
 	 *
-	 * @var string
+	 * @var mixed
 	 */
-	public $logged_at;
+	private $logged_at;
 
 	/**
-	 * Constructor of the user record (module id).
+	 * Returns the login date.
 	 *
-	 * @var string
+	 * @return \ICanBoogie\DateTime
 	 */
-	public $constructor;
+	protected function volatile_get_logged_at()
+	{
+		$logged_at = $this->logged_at;
+
+		if ($logged_at instanceof DateTime)
+		{
+			return $logged_at;
+		}
+
+		return $this->logged_at = $logged_at === null ? DateTime::none() : new DateTime($logged_at, 'utc');
+	}
+
+	/**
+	 * Sets the {@link $logget_at} property.
+	 *
+	 * @param mixed $value
+	 */
+	protected function volatile_set_logged_at($value)
+	{
+		$this->logged_at = $value;
+	}
 
 	/**
 	 * Prefered language of the user.
 	 *
 	 * @var string
 	 */
-	public $language;
+	public $language = '';
 
 	/**
 	 * Prefered timezone of the user.
 	 *
 	 * @var string
 	 */
-	public $timezone;
+	public $timezone = '';
 
 	/**
 	 * State of the user account activation.
 	 *
 	 * @var bool
 	 */
-	public $is_activated;
+	public $is_activated = false;
 
 	/**
 	 * Defaults `$model` to "users".
+	 *
+	 * Initializes the {@link $constructor} property with the model identifier if it is not
+	 * defined.
 	 *
 	 * @param string|\ICanBoogie\ActiveRecord\Model $model
 	 */
 	public function __construct($model='users')
 	{
 		parent::__construct($model);
+
+		if (empty($this->constructor))
+		{
+			$this->constructor = $this->_model_id;
+		}
 	}
 
 	public function __get($property)
@@ -216,6 +264,28 @@ class User extends \ICanBoogie\ActiveRecord
 		}
 
 		return $value;
+	}
+
+	/**
+	 * Adds the {@link $logged_at} property.
+	 */
+	public function __sleep()
+	{
+		return parent::__sleep() + array
+		(
+			'logged_at' => 'logged_at'
+		);
+	}
+
+	/**
+	 * Adds the {@link $logged_at} property.
+	 */
+	public function to_array()
+	{
+		return parent::to_array() + array
+		(
+			'logged_at' => $this->volatile_get_logged_at()
+		);
 	}
 
 	/**
@@ -249,14 +319,6 @@ class User extends \ICanBoogie\ActiveRecord
 		}
 
 		return $rc;
-	}
-
-	/**
-	 * @throws PropertyNotWritable in attempt to write {@link $name}.
-	 */
-	protected function volatile_set_name()
-	{
-		throw new PropertyNotWritable(array('name', $this));
 	}
 
 	/**
@@ -307,11 +369,9 @@ class User extends \ICanBoogie\ActiveRecord
 
 		try
 		{
-			$model = $core->models['users.roles'];
-
 			if (!$this->uid)
 			{
-				return array($model[1]);
+				return array($core->models['users.roles'][1]);
 			}
 		}
 		catch (\Exception $e)
@@ -343,19 +403,11 @@ class User extends \ICanBoogie\ActiveRecord
 	 *
 	 * This is the getter for the {@link $is_admin} magic property.
 	 *
-	 * @return boolean true if the user is the admin user, false otherwise.
+	 * @return boolean `true` if the user is the admin user, `false` otherwise.
 	 */
 	protected function volatile_get_is_admin()
 	{
-		return ($this->uid == 1);
-	}
-
-	/**
-	 * @throws PropertyNotWritable in attempt to write {@link $is_admin}.
-	 */
-	protected function volatile_set_is_admin()
-	{
-		throw new PropertyNotWritable(array('is_admin', $this));
+		return $this->uid == 1;
 	}
 
 	/**
@@ -363,19 +415,11 @@ class User extends \ICanBoogie\ActiveRecord
 	 *
 	 * This is the getter for the {@link $is_guest} magic property.
 	 *
-	 * @return boolean true if the user is a guest user, false otherwise.
+	 * @return boolean `true` if the user is a guest user, `false` otherwise.
 	 */
 	protected function volatile_get_is_guest()
 	{
-		return ($this->uid == 0);
-	}
-
-	/**
-	 * @throws PropertyNotWritable in attempt to write {@link $is_guest}.
-	 */
-	protected function volatile_set_is_guest()
-	{
-		throw new PropertyNotWritable(array('is_guest', $this));
+		return !$this->uid;
 	}
 
 	/**
@@ -434,8 +478,7 @@ class User extends \ICanBoogie\ActiveRecord
 		{
 			$record = (object) $record;
 		}
-
-		if (!is_object($record))
+		else if (!is_object($record))
 		{
 			throw new \InvalidArgumentException("<q>record</q> must be an object.");
 		}
@@ -474,7 +517,7 @@ class User extends \ICanBoogie\ActiveRecord
 			(
 				'<q>password_salt</q> is empty in the <q>user</q> config, here is one generated randomly: %salt', array
 				(
-					'%salt' => \ICanBoogie\generate_token(64, 'wide')
+					'%salt' => \ICanBoogie\generate_token(64, \ICanBoogie\TOKEN_WIDE)
 				)
 			);
 		}

@@ -223,7 +223,7 @@ li:hover > .dropdown-menu {
 
 .navbar .dropdown-menu {
     border-radius: 4px;
-    margin-top: 14px;
+    margin-top: 12px;
     font-size: 13px;
 }
 .navbar .dropdown-menu:before {
@@ -657,7 +657,7 @@ body.exception h1 small {
 	color: #808080;
 }
 
-body.exception .alert {
+body.exception #contents-wrapper > .alert {
 	border-left: 0;
 	border-right: 0;
 	border-radius: 0;

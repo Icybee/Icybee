@@ -35,7 +35,28 @@ class NonceLoginOperation extends Operation
 	{
 		global $core;
 
-		return $this->request['email'] ? $core->models['users']->filter_by_email($this->request['email'])->one : null;
+		$email = $this->request['email'];
+
+		if (!$email)
+		{
+			return;
+		}
+
+		/* @var $user User */
+
+		$user = $core->models['users']->filter_by_email($this->request['email'])->one;
+
+		if (!$user)
+		{
+			return;
+		}
+
+		if ($user->constructor != 'users')
+		{
+			$user = $core->models[$user->constructor][$user->uid];
+		}
+
+		return $user;
 	}
 
 	protected function validate(\ICanboogie\Errors $errors)
@@ -70,7 +91,7 @@ class NonceLoginOperation extends Operation
 			(
 				'<em>nonce_login_salt</em> is empty in the <em>user</em> config, here is one generated randomly: %salt', array
 				(
-					'%salt' => \ICanBoogie\generate_token(64, 'wide')
+					'%salt' => \ICanBoogie\generate_token(64, \ICanBoogie\TOKEN_WIDE)
 				)
 			);
 		}
@@ -99,6 +120,8 @@ class NonceLoginOperation extends Operation
 		$user->metas['nonce_login.ip'] = null;
 
 		$user->login();
+
+		\ICanBoogie\log_info("You are now logged in, please enter your password.");
 
 		$this->response->location = $user->url('profile');
 

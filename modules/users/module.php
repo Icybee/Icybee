@@ -119,9 +119,9 @@ Cordialement'
 				return false;
 			}
 
-			$password_salt = \ICanBoogie\generate_token(64, 'wide');
-			$unlock_login_salt = \ICanBoogie\generate_token(64, 'wide');
-			$nonce_login_salt = \ICanBoogie\generate_token(64, 'wide');
+			$password_salt = \ICanBoogie\generate_token(64, \ICanBoogie\TOKEN_WIDE);
+			$unlock_login_salt = \ICanBoogie\generate_token(64, \ICanBoogie\TOKEN_WIDE);
+			$nonce_login_salt = \ICanBoogie\generate_token(64, \ICanBoogie\TOKEN_WIDE);
 
 			$config = <<<EOT
 <?php

@@ -49,16 +49,18 @@ class Site extends \ICanBoogie\ActiveRecord
 	const STATUS_UNAVAILABLE = 503;
 
 	public $siteid;
-	public $subdomain;
-	public $domain;
 	public $path;
 	public $tld;
+	public $domain;
+	public $subdomain;
 	public $title;
 	public $admin_title;
 	public $model;
+	public $weight;
 	public $language;
-	public $timezone;
 	public $nativeid;
+	public $timezone;
+	public $email;
 	public $status;
 	public $modified;
 
@@ -84,8 +86,6 @@ class Site extends \ICanBoogie\ActiveRecord
 
 	/**
 	 * Clears the sites cache.
-	 *
-	 * @see ICanBoogie.ActiveRecord::save()
 	 */
 	public function save()
 	{

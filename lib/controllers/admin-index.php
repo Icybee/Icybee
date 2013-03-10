@@ -14,7 +14,7 @@ namespace Icybee;
 use ICanBoogie\AuthenticationRequired;
 use ICanBoogie\HTTP\Request;
 
-class AdminIndexController extends \ICanBoogie\Controller
+class AdminIndexController extends \ICanBoogie\Routing\Controller
 {
 	public function __invoke(Request $request)
 	{

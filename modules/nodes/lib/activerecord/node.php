@@ -14,6 +14,21 @@ namespace Icybee\Modules\Nodes;
 use ICanBoogie\I18n;
 use ICanBoogie\Event;
 
+use Icybee\Modules\Users\User;
+
+/**
+ * A node representation.
+ *
+ * @property $css_class
+ * @property $css_class_names
+ * @property $native
+ * @property $user User The user owning the node.
+ * @property-read $next
+ * @property-read $previous
+ * @property-read $translation
+ * @property-read $translations
+ * @property-read $translations_keys
+ */
 class Node extends \ICanBoogie\ActiveRecord
 {
 	const NID = 'nid';
@@ -114,12 +129,12 @@ class Node extends \ICanBoogie\ActiveRecord
 	/**
 	 * Creates a Node instance.
 	 *
-	 * The `slug` property is unset if it is empty but the `title` property is defined. The slug
-	 * will be created on the fly when accessed throught the `slug` property.
+	 * The {@link $slug} property is unset if it is empty but the {@link $title} property is
+	 * defined. The slug will be created on the fly when the {@link $slug} property is accessed.
 	 */
-	public function __construct($model)
+	public function __construct($model='nodes')
 	{
-		if (!$this->slug && $this->title)
+		if (empty($this->slug))
 		{
 			unset($this->slug);
 		}
@@ -128,22 +143,9 @@ class Node extends \ICanBoogie\ActiveRecord
 	}
 
 	/**
-	 * Adds the {@link slug} property if it is defined.
-	 *
-	 * @see ICanBoogie.ActiveRecord::__sleep()
+	 * Fires {@link \Icybee\AlterCSSClassNamesEvent} after the {@link $css_class_names} property
+	 * was get.
 	 */
-	public function __sleep()
-	{
-		$keys = parent::__sleep();
-
-		if (isset($this->slug))
-		{
-			$keys['slug'] = 'slug';
-		}
-
-		return $keys;
-	}
-
 	public function __get($property)
 	{
 		$value = parent::__get($property);
@@ -156,15 +158,15 @@ class Node extends \ICanBoogie\ActiveRecord
 		return $value;
 	}
 
-	protected function get_slug()
+	protected function volatile_get_slug()
 	{
 		return \ICanBoogie\normalize($this->title);
 	}
 
 	/**
-	 * Return the previous online sibling for the node.
+	 * Return the previous visible sibling for the node.
 	 *
-	 * @return Node|bool The previous sibling for the node or false if there is none.
+	 * @return Node|bool
 	 */
 	protected function get_previous()
 	{
@@ -172,9 +174,9 @@ class Node extends \ICanBoogie\ActiveRecord
 	}
 
 	/**
-	* Return the next online sibling for the node.
+	* Return the next visible sibling for the node.
 	*
-	* @return Node|bool The next sibling for the node or false if there is none.
+	* @return Node|bool
 	*/
 	protected function get_next()
 	{
@@ -182,15 +184,25 @@ class Node extends \ICanBoogie\ActiveRecord
 	}
 
 	/**
-	 * Return the user object for the owner of the node.
+	 * Return the user owning the node.
 	 *
-	 * @return object The user object for the owner of the node.
+	 * @return User
 	 */
-	protected function get_user()
+	protected function volatile_get_user()
 	{
 		global $core;
 
 		return $core->models['users'][$this->uid];
+	}
+
+	/**
+	 * Sets the {@link $uid} property using a {@link User} instance.
+	 *
+	 * @param User $user
+	 */
+	protected function volatile_set_user(User $user)
+	{
+		$this->uid = $user->uid;
 	}
 
 	private static $translations_keys;

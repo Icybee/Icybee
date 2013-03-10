@@ -13,7 +13,7 @@ namespace Icybee;
 
 use ICanBoogie\HTTP\Request;
 
-class ConfigController extends \ICanBoogie\Controller
+class ConfigController extends \ICanBoogie\Routing\Controller
 {
 	public function __invoke(Request $request)
 	{

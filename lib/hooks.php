@@ -260,4 +260,30 @@ class Hooks
 
 		return $key;
 	}
+
+	/**
+	 * The BODY element.
+	 *
+	 * <pre>
+	 * <p:body
+	 *     class = string>
+	 *     <!-- Content: with-param*, template? -->
+	 * </p:body>
+	 * </pre>
+	 *
+	 * The `class` attribute of the element can be specified with the `class` param. It is extended
+	 * with the class of the {@link \Icybee\Document} instance.
+	 *
+	 * @param array $args
+	 * @param mixed $engine
+	 * @param mixed $template
+	 *
+	 * @return string
+	 */
+	static public function markup_body(array $args, $engine, $template)
+	{
+		global $core;
+
+		return '<body class="' . trim($args['class'] . ' ' . $core->document->css_class) . '">' . $engine($template) . '</body>';
+	}
 }

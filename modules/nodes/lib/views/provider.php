@@ -25,8 +25,6 @@ class ViewProvider extends \Icybee\Modules\Views\ActiveRecordProvider
 	 *
 	 * @throws a HTTPException with code 401 if the record is offline and user don't have access
 	 * permission and the view is of type "view".
-	 *
-	 * @see BriskView.Provider::__invoke()
 	 */
 	public function __invoke()
 	{
@@ -69,8 +67,6 @@ class ViewProvider extends \Icybee\Modules\Views\ActiveRecordProvider
 
 	/**
 	 * Returns the conditions unaltered.
-	 *
-	 * @see Icybee\Views.Provider::alter_conditions()
 	 */
 	protected function alter_conditions(array $conditions)
 	{
@@ -85,8 +81,6 @@ class ViewProvider extends \Icybee\Modules\Views\ActiveRecordProvider
 	 *
 	 * Finaly if the return type is RETURN_MANY the query is altered to search for online nodes
 	 * only.
-	 *
-	 * @see BriskView.ActiveRecordProvider::alter_query()
 	 */
 	protected function alter_query(Query $query, array $conditions)
 	{
@@ -111,8 +105,6 @@ class ViewProvider extends \Icybee\Modules\Views\ActiveRecordProvider
 
 	/**
 	 * Returns the rendering context unaltered.
-	 *
-	 * @see Icybee\Views.Provider::alter_context()
 	 */
 	protected function alter_context(\BlueTihi\Context $context, Query $query, array $conditions)
 	{

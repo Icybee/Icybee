@@ -170,7 +170,7 @@ class Hooks
 	 */
 	static public function get_core_site(\ICanBoogie\Core $core)
 	{
-		return Model::find_by_request($core->request);
+		return Model::find_by_request($core->request ?: $core->initial_request);
 	}
 
 	/**

@@ -39,7 +39,7 @@ class Model extends \Icybee\ActiveRecord\Model\Constructor
 
 		$properties += array
 		(
-			Node::MODIFIED => date('Y-m-d H:i:s')
+			Node::MODIFIED => gmdate('Y-m-d H:i:s')
 		);
 
 		if (empty($properties[Node::SLUG]) && isset($properties[Node::TITLE]))
@@ -167,6 +167,8 @@ class Model extends \Icybee\ActiveRecord\Model\Constructor
 		}
 
 		$users = ActiveRecord\get_model('users')->find_using_constructor(array_keys($keys));
+
+		/* @var $user \Icybee\Modules\Users\User */
 
 		foreach ($users as $key => $user)
 		{

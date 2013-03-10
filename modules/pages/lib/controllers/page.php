@@ -85,8 +85,6 @@ class PageController
 		// we have to set '$page', otherwise a new variable '$page' is created
 
 		$request->context->page = $page;
-		$this->context['$page'] = $page;
-		$this->context['this'] = $page;
 
 		#
 
@@ -108,7 +106,10 @@ class PageController
 		# template
 
 		$template = $this->resolve_template($page->template);
+		$document = $core->document;
 		$engine = $this->resolve_engine($template);
+		$engine->context['document'] = $document;
+
 		$html = $engine($template, $page, array('file' => $page->template));
 
 		# admin menu
@@ -135,8 +136,6 @@ class PageController
 		#
 		# late replace
 		#
-
-		$document = $core->document;
 
 		/*
 		$markup = '<!-- $document.css -->';

@@ -11,8 +11,13 @@
 
 namespace Icybee\Modules\Members;
 
+use ICanBoogie\Debug;
+use ICanBoogie\HTTP\Request;
 use ICanBoogie\I18n\FormattedString;
 use ICanBoogie\Uploaded;
+use ICanBoogie\Operation;
+
+use Icybee\Modules\Users\User;
 
 class SaveOperation extends \Icybee\Modules\Users\SaveOperation
 {
@@ -73,7 +78,23 @@ class SaveOperation extends \Icybee\Modules\Users\SaveOperation
 		{
 			$user = $this->module->model[$rc['key']];
 
-			$user->login();
+			try
+			{
+				Request::from(array('path' => Operation::encode('users/login')), array($_SERVER))->post(array(User::USERNAME => $this->request['email'], User::PASSWORD => $this->request['password']));
+			}
+			catch (\Exception $e)
+			{
+				if (Debug::is_dev())
+				{
+					throw $e;
+				}
+				else
+				{
+					Debug::report($e);
+
+					$user->login();
+				}
+			}
 		}
 
 		return $rc;

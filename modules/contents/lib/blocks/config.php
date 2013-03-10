@@ -44,7 +44,7 @@ class ConfigBlock extends \Icybee\ConfigBlock
 				(
 					array
 					(
-						Form::LABEL => 'default_editor'
+						Group::LABEL => 'default_editor'
 					)
 				),
 
@@ -60,7 +60,7 @@ class ConfigBlock extends \Icybee\ConfigBlock
 				(
 					array
 					(
-						Form::LABEL => 'limits_home',
+						Group::LABEL => 'limits_home',
 						Element::DEFAULT_VALUE => 3,
 						Element::GROUP => 'limits'
 					)
@@ -70,7 +70,7 @@ class ConfigBlock extends \Icybee\ConfigBlock
 				(
 					array
 					(
-						Form::LABEL => 'limits_list',
+						Group::LABEL => 'limits_list',
 						Element::DEFAULT_VALUE => 10,
 						Element::GROUP => 'limits'
 					)

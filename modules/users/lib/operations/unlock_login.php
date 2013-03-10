@@ -53,7 +53,7 @@ class UnlockLoginOperation extends \ICanBoogie\Operation
 			(
 				'<em>unlock_login_salt</em> is empty in the <em>user</em> config, here is one generated randomly: %salt', array
 				(
-					'%salt' => \ICanBoogie\generate_token(64, 'wide')
+					'%salt' => \ICanBoogie\generate_token(64, \ICanBoogie\TOKEN_WIDE)
 				)
 			));
 		}

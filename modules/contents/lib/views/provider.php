@@ -45,19 +45,22 @@ class ViewProvider extends \Icybee\Modules\Nodes\ViewProvider
 	 */
 	protected function alter_query(Query $query, array $conditions)
 	{
-		if (!empty($conditions['year']))
+		foreach ($conditions as $property => $value)
 		{
-			$query->where('YEAR(date) = ?', $conditions['year']);
-		}
+			switch ($property)
+			{
+				case 'year':
+					$query->where('YEAR(date) = ?', (int) $value);
+					break;
 
-		if (!empty($conditions['month']))
-		{
-			$query->where('MONTH(date) = ?', $conditions['month']);
-		}
+				case 'month':
+					$query->where('MONTH(date) = ?', (int) $value);
+					break;
 
-		if (!empty($conditions['day']))
-		{
-			$query->where('DAY(date) = ?', $conditions['day']);
+				case 'day':
+					$query->where('DAY(date) = ?', (int) $value);
+					break;
+			}
 		}
 
 		if ($this->view->type == 'home')

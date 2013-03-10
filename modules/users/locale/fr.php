@@ -108,7 +108,7 @@ Ce message a été envoyé pour vous aider à vous connecter.
 En utilisant l'URL suivante vous serez en mesure de vous connecter
 et de mettre à jour votre mot de passe.
 
-:url
+<:url>
 
 Cette URL est a usage unique et n'est valable que jusqu'à :until.
 
@@ -160,5 +160,9 @@ EOT
 	# operation/nonce_login_request
 
 	"Invalid email address: %email." => "Adresse e-mail invalide : %email.",
-	"Unknown email address." => "Adresse e-mail inconnue."
+	"Unknown email address." => "Adresse e-mail inconnue.",
+
+	# operation/nonce_login
+
+	"You are now logged in, please enter your password." => "Vous êtes maintenant connecté, saisissez votre mot de passe."
 );

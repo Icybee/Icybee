@@ -149,6 +149,11 @@ class Hooks
 			throw new PermissionRequired();
 		}
 
+		if ($user->language)
+		{
+			$core->locale = $user->language;
+		}
+
 		if (strpos($path, '/admin/profile/sites') === 0)
 		{
 			return;
@@ -187,7 +192,7 @@ class Hooks
 	 *
 	 * @return int|null Returns the identifier of the user or null if the user is a guest.
 	 *
-	 * @see \Icybee\Modules\Users\User.login()
+	 * @see \Icybee\Modules\Users\User::login()
 	 */
 	static public function get_user_id(Core $core)
 	{

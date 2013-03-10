@@ -152,10 +152,6 @@ class Core extends \ICanBoogie\Core
 
 	/**
 	 * Override the method to provide our own accessor.
-	 *
-	 * @see \ICanBoogie.Core::get_modules()
-	 *
-	 * @return Accessor\Modules
 	 */
 	protected function get_modules()
 	{

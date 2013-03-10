@@ -15,18 +15,5 @@ return array
 		'Brickrouge\Document::render_title:before' => $hooks . 'before_document_render_title',
 		'Brickrouge\Document::render_metas:before' => $hooks . 'before_document_render_metas',
 		'Brickrouge\Document::render_metas' => $hooks . 'on_document_render_metas'
-	),
-
-	'patron.markups' => array // TODO-20120922: these markups should be defined elsewhere
-	(
-		'document:metas' => array
-		(
-			$hooks . 'markup_document_metas', array()
-		),
-
-		'document:title' => array
-		(
-			$hooks . 'markup_document_title', array()
-		),
 	)
 );

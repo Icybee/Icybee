@@ -14,6 +14,7 @@ return array
 	(
 		'primary' => array
 		(
+			Model::T_CLASS => __NAMESPACE__ . '\Model',
 			Model::T_ACTIVERECORD_CLASS => __NAMESPACE__ . '\User',
 			Model::T_SCHEMA => array
 			(
@@ -31,7 +32,7 @@ return array
 					'language' => array('varchar', 8),
 					'timezone' => array('varchar', 32),
 					'logged_at' => 'datetime',
-					'created' => array('timestamp', 'default' => 'current_timestamp()'),
+					'created' => array('timestamp', 'default' => 'CURRENT_TIMESTAMP'),
 					'is_activated' => array('boolean', 'indexed' => true)
 				)
 			)

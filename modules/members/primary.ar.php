@@ -52,6 +52,16 @@ class Member extends \Icybee\Modules\Users\User
 
 	public $photo;
 
+	/**
+	 * Defaults `$model` to "members".
+	 *
+	 * @param string|\ICanBoogie\ActiveRecord\Model $model
+	 */
+	public function __construct($model='members')
+	{
+		parent::__construct($model);
+	}
+
 	// TODO-20110108: thumbnailer should support the 'thumbnail' method for members as well,
 	// or maybe the "images" module should have a special support for users.
 

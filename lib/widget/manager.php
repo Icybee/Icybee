@@ -14,6 +14,7 @@ namespace Icybee;
 use ICanBoogie\ActiveRecord;
 use ICanBoogie\ActiveRecord\Model;
 use ICanBoogie\ActiveRecord\Query;
+use ICanBoogie\DateTime;
 use ICanBoogie\Event;
 use ICanBoogie\Exception;
 use ICanBoogie\I18n;
@@ -1226,7 +1227,14 @@ EOT;
 	protected function render_cell_date($record, $property)
 	{
 		$tag = $property;
-		$value = substr($record->$property, 0, 10);
+		$date = $record->$property;
+
+		if (!($date instanceof DateTime))
+		{
+			$date = new DateTime($date, 'utc');
+		}
+
+		$value = $date->as_date;
 
 		if (isset($this->last_rendered_cell[$property]) && $value == $this->last_rendered_cell[$property])
 		{
@@ -1235,13 +1243,14 @@ EOT;
 
 		$this->last_rendered_cell[$property] = $value;
 
-		if (!(int) $value || !preg_match('#(\d{4})-(\d{2})-(\d{2})#', $value, $date))
+		if ($date->is_empty)
 		{
 			return;
 		}
 
-		list(, $year, $month, $day) = $date;
-
+		$year = $date->year;
+		$month = $date->month;
+		$day = $date->day;
 
 		$filtering = false;
 		$filter = null;
@@ -1255,14 +1264,15 @@ EOT;
 		$parts = array
 		(
 			array($year, $year),
-			array($month, "$year-$month"),
-			array($day, "$year-$month-$day")
+			array($date->format('m'), $date->format('Y-m')),
+			array($date->format('d'), $date->as_date)
 		);
 
-		$today = date('Y-m-d');
-		$today_year = substr($today, 0, 4);
-		$today_month = substr($today, 5, 2);
-		$today_day = substr($today, 8, 2);
+		$today = new DateTime('now', 'utc');
+		$today_year = $today->year;
+		$today_month = $today->month;
+		$today_day = $today->day;
+		$today_formatted = $today->as_date;
 
 		$select = $parts[2][1];
 		$diff_days = $day - $today_day;
@@ -1272,7 +1282,7 @@ EOT;
 			$label = \ICanBoogie\I18n\date_period($value);
 			$label = ucfirst($label);
 
-			if ($filtering && $filter == $today)
+			if ($filtering && $filter == $today_formatted)
 			{
 				$rc = $label;
 			}

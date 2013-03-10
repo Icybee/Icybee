@@ -15,7 +15,7 @@ return array
 
 	'prototypes' => array
 	(
-		'ICanBoogie\Core::get_document' => 'Icybee\Document::hook_get_document'
+		'ICanBoogie\Core::get_document' => 'Icybee\Document::get'
 	),
 
 	'patron.markups' => array
@@ -43,6 +43,14 @@ return array
 		'alerts' => array
 		(
 			'Icybee\Hooks::markup_alerts', array()
+		),
+
+		'body' => array
+		(
+			'Icybee\Hooks::markup_body', array
+			(
+				'class' => null
+			)
 		)
 	)
 );

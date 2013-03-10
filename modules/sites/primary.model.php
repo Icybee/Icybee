@@ -172,8 +172,6 @@ class Model extends \ICanBoogie\ActiveRecord\Model
 	/**
 	 * Makes sure that if defined the `path` property starts with a slash '/' but doesn't end
 	 * with one.
-	 *
-	 * @see ICanBoogie\ActiveRecord.Model::save()
 	 */
 	public function save(array $properties, $key=null, array $options=array())
 	{
@@ -191,7 +189,7 @@ class Model extends \ICanBoogie\ActiveRecord\Model
 
 		if (empty($properties['modified']))
 		{
-			$properties['modified'] = date('Y-m-d H:i:s');
+			$properties['modified'] = gmdate('Y-m-d H:i:s');
 		}
 
 		return parent::save($properties, $key, $options);

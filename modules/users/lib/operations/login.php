@@ -26,7 +26,6 @@ class LoginOperation extends \ICanBoogie\Operation
 	{
 		return array
 		(
-// 			self::CONTROL_SESSION_TOKEN => true,
 			self::CONTROL_FORM => true
 		)
 
@@ -101,12 +100,12 @@ class LoginOperation extends \ICanBoogie\Operation
 					(
 						'<q>unlock_login_salt</q> is empty in the <q>user</q> config, here is one generated randomly: %salt', array
 						(
-							'%salt' => \ICanBoogie\generate_token(64, 'wide')
+							'%salt' => \ICanBoogie\generate_token(64, \ICanBoogie\TOKEN_WIDE)
 						)
 					);
 				}
 
-				$token = base64_encode(\ICanBoogie\generate_token(32, 'wide'));
+				$token = base64_encode(\ICanBoogie\generate_token(32, \ICanBoogie\TOKEN_WIDE));
 
 				$user->metas['login_unlock_token'] = base64_encode(\ICanBoogie\pbkdf2($token, $config['unlock_login_salt']));
 				$user->metas['login_unlock_time'] = $now + 3600;
@@ -138,7 +137,7 @@ You receive this message because your account has been locked.
 After multiple failed login attempts your account has been locked until $until. You can use the
 following link to unlock your account and try to login again:
 
-$url
+<$url>
 
 If you forgot your password, you'll be able to request a new one.
 

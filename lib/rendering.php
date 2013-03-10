@@ -46,7 +46,7 @@ class PropertyRenderers implements \IteratorIterator, \ArrayAccess
 	{
 		$collection = array();
 
-		foreach ($fragments as $path => $fragment)
+		foreach ($fragments as $pathname => $fragment)
 		{
 			if (empty($fragment['properties']))
 			{
@@ -62,7 +62,7 @@ class PropertyRenderers implements \IteratorIterator, \ArrayAccess
 						'Property definition must be <code>{class}/{property}</code> given: :key in %path', array
 						(
 							'key' => $key,
-							'path' => $path . 'config/hooks.php'
+							'path' => $pathname
 						)
 					));
 				}

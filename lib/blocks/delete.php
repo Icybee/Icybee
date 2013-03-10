@@ -235,8 +235,10 @@ EOT;
 
 		foreach ($dependencies as $module_id => $by_module)
 		{
+			$flat_id = strtr($module_id, '.', '_');
+
 			$html .= '<li>';
-			$html .= '<strong>' . I18n\t(count($by_module) == 1 ? 'one' : 'other', array(), array('scope' => "$module_id.name")) . '</strong>';
+			$html .= '<strong>' . I18n\t(count($by_module) == 1 ? 'one' : 'other', array(), array('scope' => "$flat_id.name")) . '</strong>';
 			$html .= '<ul>';
 
 			foreach ($by_module as $key => $dependency)

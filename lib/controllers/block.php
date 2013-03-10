@@ -13,7 +13,7 @@ namespace Icybee;
 
 use ICanBoogie\HTTP\Request;
 
-class BlockController extends \ICanBoogie\Controller
+class BlockController extends \ICanBoogie\Routing\Controller
 {
 	protected $request;
 

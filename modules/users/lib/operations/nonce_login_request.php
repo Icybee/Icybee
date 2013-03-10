@@ -11,7 +11,7 @@
 
 namespace Icybee\Modules\Users;
 
-use ICanBoogie\Exception;
+use ICanBoogie\DateTime;
 use ICanBoogie\I18n;
 use ICanBoogie\I18n\FormattedString;
 use ICanBoogie\I18n\Translator\Proxi;
@@ -27,29 +27,50 @@ class NonceLoginRequestOperation extends Operation
 	const FRESH_PERIOD = 3600;
 	const COOLOFF_DELAY = 900;
 
+	/**
+	 * Returns the record assocaiated with the email address specified by the `email` param.
+	 *
+	 * @return User|null
+	 */
 	protected function get_record()
 	{
 		global $core;
 
-		return $core->models['users']->filter_by_email($this->request['email'])->one;
+		$email = $this->request['email'];
+
+		if (!$email)
+		{
+			return;
+		}
+
+		/* @var $record User */
+
+		$record = $core->models['users']->filter_by_email($email)->one;
+
+		if ($record && $record->constructor != 'users')
+		{
+			$record = $core->models[$record->constructor][$record->uid];
+		}
+
+		return $record;
 	}
 
 	protected function validate(\ICanboogie\Errors $errors)
 	{
 		global $core;
 
-		if (!$this->request['email'])
+		$email = $this->request['email'];
+
+		if (!$email)
 		{
-			$errors['email'] = new I18n\FormattedString('The field %field is required!', array('%field' => 'Votre adresse E-Mail'));
+			$errors['email'] = new FormattedString('The field %field is required!', array('%field' => 'Votre adresse E-Mail'));
 
 			return false;
 		}
 
-		$email = $this->request['email'];
-
 		if (!filter_var($email, FILTER_VALIDATE_EMAIL))
 		{
-			$errors['email'] = new I18n\FormattedString("Invalid email address: %email.", array('%email' => $email));
+			$errors['email'] = new FormattedString("Invalid email address: %email.", array('%email' => $email));
 
 			return false;
 		}
@@ -58,7 +79,7 @@ class NonceLoginRequestOperation extends Operation
 
 		if (!$user)
 		{
-			$errors['email'] = I18n\t("Unknown email address.");
+			$errors['email'] = new FormattedString("Unknown email address.");
 
 			return false;
 		}
@@ -90,9 +111,9 @@ class NonceLoginRequestOperation extends Operation
 
 			throw new PermissionRequired
 			(
-				new I18n\FormattedString("A message has already been sent to your e-mail address. In order to reduce abuses, you won't be able to request a new one until :time.", array
+				new FormattedString("A message has already been sent to your e-mail address. In order to reduce abuses, you won't be able to request a new one until :time.", array
 				(
-					':time' => I18n\format_date($expires - self::FRESH_PERIOD + self::COOLOFF_DELAY, 'HH:mm')
+					':time' => DateTime::from($expires - self::FRESH_PERIOD + self::COOLOFF_DELAY)->local->format('H:i')
 				)),
 
 				403
@@ -108,7 +129,7 @@ class NonceLoginRequestOperation extends Operation
 
 		$user = $this->record;
 
-		$token = md5(\ICanBoogie\generate_token(32, 'wide'));
+		$token = md5(\ICanBoogie\generate_token(32, \ICanBoogie\TOKEN_WIDE));
 		$expires = time() + self::FRESH_PERIOD;
 		$ip = $_SERVER['REMOTE_ADDR'];
 
@@ -116,13 +137,13 @@ class NonceLoginRequestOperation extends Operation
 
 		if (!$config || empty($config['nonce_login_salt']))
 		{
-			throw new Exception
+			throw new \Exception(new I18n\FormattedString
 			(
 				'<q>nonce_login_salt</q> is empty in the <q>user</q> config, here is one generated randomly: %salt', array
 				(
-					'%salt' => \ICanBoogie\generate_token(64, 'wide')
+					'%salt' => \ICanBoogie\generate_token(64, \ICanBoogie\TOKEN_WIDE)
 				)
-			);
+			));
 		}
 
 		$user->metas['nonce_login.token'] = base64_encode(\ICanBoogie\pbkdf2($token, $config['nonce_login_salt']));
