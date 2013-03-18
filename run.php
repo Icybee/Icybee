@@ -32,7 +32,6 @@ $core = new Core
 	)
 );
 
-
 \Brickrouge\Helpers::patch('t', 'ICanBoogie\I18n\t');
 \Brickrouge\Helpers::patch('render_exception', 'ICanBoogie\Debug::format_alert');
 
@@ -45,7 +44,6 @@ $core = new Core
 {
 	return \ICanBoogie\Core::get()->session;
 });
-
 
 /*
 \Brickrouge\Helpers::patch('store_form_errors', function($name, $errors) {
@@ -129,7 +127,7 @@ Event\attach(function(Dispatcher\CollectEvent $event, Dispatcher $dispatcher)
 					}
 				}
 
-				$route = $routes[$route_id]; //TODO-20120829: $route should be an object.
+				$route = $routes[$route_id];
 
 				return new RedirectResponse
 				(
@@ -154,12 +152,7 @@ Event\attach(function(Dispatcher\DispatchEvent $event, Dispatcher $target)
 	{
 		$response = $event->response;
 
-		if (!$response)
-		{
-			return;
-		}
-
-		if ($response->content_type->type != 'text/html')
+		if (!$response || $response->content_type->type != 'text/html')
 		{
 			return;
 		}

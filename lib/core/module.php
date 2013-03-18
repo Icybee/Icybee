@@ -103,7 +103,7 @@ class Module extends \ICanBoogie\Module
 	protected function resolve_block_class($name)
 	{
 		$module = $this;
-		$class_name = \ICanBoogie\camelize('-' . $name) . 'Block';
+		$class_name = \ICanBoogie\camelize($name) . 'Block';
 
 		while ($module)
 		{

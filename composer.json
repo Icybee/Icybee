@@ -24,6 +24,7 @@
 		"brickrouge/brickrouge": "*",
 		"icybee/bluetihi": "*",
 		"icybee/patron": "*",
+		"icybee/module-sites": "*",
 		"icybee/module-thumbnailer": "*"
 	},
 	"autoload": {

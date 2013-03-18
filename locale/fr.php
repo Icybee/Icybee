@@ -37,6 +37,9 @@ return array
 		(
 			'Date created' => 'Crée le',
 			'Date modified' => 'Modifié le',
+
+			'created_at' => 'Crée le',
+			'updated_at' => 'Modifié le'
 		)
 	),
 
