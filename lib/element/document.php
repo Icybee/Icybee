@@ -314,6 +314,9 @@ class RenderMetasEvent extends \ICanBoogie\Event
 
 /**
  * Event class for the `Brickrouge\Document::render_title:before` event.
+ *
+ * @todo-20130318: is `title` the only property of the payload ? there should be `page_title`,
+ * `site_title` and `separator`. Or an array of parts with the `page` and `site` key.
  */
 class BeforeRenderTitleEvent extends \ICanBoogie\Event
 {
