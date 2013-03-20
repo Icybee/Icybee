@@ -19,8 +19,6 @@ class ViewProvider extends \Icybee\Modules\Nodes\ViewProvider
 {
 	/**
 	 * Tries to rescue the record if finding the record failed.
-	 *
-	 * @see Icybee\Modules\Nodes.ViewProvider::__invoke()
 	 */
 	public function __invoke()
 	{
@@ -40,8 +38,6 @@ class ViewProvider extends \Icybee\Modules\Nodes\ViewProvider
 	 *
 	 * If the view is of type "home" the query is altered to search for nodes which are not
 	 * excluded from _home_.
-	 *
-	 * @see Icybee\Modules\Nodes\ViewProvider::alter_query()
 	 */
 	protected function alter_query(Query $query, array $conditions)
 	{
@@ -79,6 +75,8 @@ class ViewProvider extends \Icybee\Modules\Nodes\ViewProvider
 	 *
 	 * @return Content|null The record best matching the condition slug, or null if
 	 * none was similar enough.
+	 *
+	 * @throws RecordNotFound if the record could not be rescued.
 	 */
 	protected function rescue()
 	{
@@ -118,13 +116,22 @@ class ViewProvider extends \Icybee\Modules\Nodes\ViewProvider
 		}
 		else if ($key)
 		{
+			# FIXME-20130310: We MUST throw an exception !
+
 			$record = $model[$key];
 
 			\ICanBoogie\log('The record %title was rescued!', array('title' => $record->title));
 
+			header('HTTP/1.1 301 Moved Permanently');
+			header('Location: ' . $record->url);
+
+			exit;
+
+			/*
 			//TODO-20120109: should we redirect to the correct record URL ?
 
 			return $record;
+			*/
 		}
 	}
 }
