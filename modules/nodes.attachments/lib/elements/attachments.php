@@ -11,6 +11,7 @@
 
 namespace Icybee\Modules\Nodes\Attachments;
 
+use ICanBoogie\I18n;
 use ICanBoogie\Uploaded;
 use ICanBoogie\Operation;
 

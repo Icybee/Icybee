@@ -13,7 +13,6 @@ return array
 	(
 		'primary' => array
 		(
-			Model::T_ACTIVERECORD_CLASS => __NAMESPACE__ . '\Vocabulary',
 			Model::T_SCHEMA => array
 			(
 				'fields' => array
@@ -38,6 +37,8 @@ return array
 
 		'scopes' => array
 		(
+			Model::ACTIVERECORD_CLASS => 'ICanBoogie\ActiveRecord',
+			Model::CLASSNAME => 'ICanBoogie\ActiveRecord\Model',
 			Model::T_SCHEMA => array
 			(
 				'fields' => array

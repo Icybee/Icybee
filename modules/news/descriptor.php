@@ -2,6 +2,7 @@
 
 namespace Icybee\Modules\News;
 
+use ICanBoogie\ActiveRecord\Model;
 use ICanBoogie\Module;
 
 return array
@@ -10,7 +11,11 @@ return array
 	Module::T_EXTENDS => 'contents',
 	Module::T_MODELS => array
 	(
-		'primary' => 'inherit'
+		'primary' => array
+		(
+			Model::CLASSNAME => __NAMESPACE__ . '\Model',
+			Model::EXTENDING => 'contents'
+		)
 	),
 
 	Module::T_NAMESPACE => __NAMESPACE__,

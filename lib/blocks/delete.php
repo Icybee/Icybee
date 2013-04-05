@@ -29,6 +29,13 @@ use Brickrouge\Form;
  */
 class DeleteBlock extends Form
 {
+	static protected function add_assets(\Brickrouge\Document $document)
+	{
+		parent::add_assets($document);
+
+		$document->css->add('delete.css');
+	}
+
 	/**
 	 * Module associated with this block.
 	 *

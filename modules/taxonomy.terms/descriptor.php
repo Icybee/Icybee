@@ -14,13 +14,12 @@ return array
 	(
 		'primary' => array
 		(
-			Model::T_ACTIVERECORD_CLASS => __NAMESPACE__ . '\Term',
-			Model::T_IMPLEMENTS => array
+			Model::IMPLEMENTING => array
 			(
 				array('model' => 'taxonomy.vocabulary/primary')
 			),
 
-			Model::T_SCHEMA => array
+			Model::SCHEMA => array
 			(
 				'fields' => array
 				(
@@ -35,13 +34,15 @@ return array
 
 		'nodes' => array
 		(
-			Model::T_ALIAS => 'term_node',
-			Model::T_IMPLEMENTS => array
+			Model::ALIAS => 'term_node',
+			Model::ACTIVERECORD_CLASS => 'ICanBoogie\ActiveRecord',
+			Model::CLASSNAME => 'ICanBoogie\ActiveRecord\Model',
+			Model::IMPLEMENTING => array
 			(
 				array('model' => 'taxonomy.terms/primary')
 			),
 
-			Model::T_SCHEMA => array
+			Model::SCHEMA => array
 			(
 				'fields' => array
 				(

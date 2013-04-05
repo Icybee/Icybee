@@ -14,7 +14,6 @@ return array
 	(
 		'primary' => array
 		(
-			Model::T_ACTIVERECORD_CLASS => __NAMESPACE__ . '\Article',
 			Model::T_EXTENDS => 'contents'
 		)
 	),

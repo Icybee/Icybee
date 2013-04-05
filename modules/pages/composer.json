@@ -1,0 +1,28 @@
+{
+	"name": "icybee/module-pages",
+	"type": "icybee-module",
+	"description": "Manages pages",
+	"keywords": ["node"],
+	"license": "BSD-3-Clause",
+	"authors": [
+		{
+			"name": "Olivier Laviale",
+			"email": "olivier.laviale@gmail.com",
+			"homepage": "http://www.weirdog.com/",
+			"role" : "Developer"
+		}
+	],
+	"support": {
+		"issues": "https://github.com/Icybee/module-pages/issues",
+		"source": "https://github.com/Icybee/module-pages"
+	},
+	"minimum-stability": "dev",
+	"require": {
+		"php": ">=5.3.0",
+		"icybee/module-installer": "*",
+		"icanboogie/activerecord": "*"
+	},
+	"autoload": {
+		"classmap": [ "lib" ]
+	}
+}

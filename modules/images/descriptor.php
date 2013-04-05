@@ -14,7 +14,6 @@ return array
 	(
 		'primary' => array
 		(
-			Model::T_ACTIVERECORD_CLASS => __NAMESPACE__ . '\Image',
 			Model::T_EXTENDS => 'files',
 			Model::T_SCHEMA => array
 			(

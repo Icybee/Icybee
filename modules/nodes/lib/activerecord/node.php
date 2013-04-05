@@ -19,17 +19,15 @@ use Icybee\Modules\Users\User;
 /**
  * A node representation.
  *
- * @property $css_class
- * @property $css_class_names
- * @property $native
- * @property $user User The user owning the node.
- * @property-read $next
- * @property-read $previous
- * @property-read $translation
- * @property-read $translations
- * @property-read $translations_keys
+ * @property Node $native
+ * @property User $user The user owning the node.
+ * @property-read Node $next
+ * @property-read Node $previous
+ * @property-read Node $translation
+ * @property-read array[string]Node $translations
+ * @property-read array[string]int $translations_keys
  */
-class Node extends \ICanBoogie\ActiveRecord
+class Node extends \ICanBoogie\ActiveRecord implements \Icybee\CSSClassNames
 {
 	const NID = 'nid';
 	const UID = 'uid';
@@ -158,6 +156,12 @@ class Node extends \ICanBoogie\ActiveRecord
 		return $value;
 	}
 
+	/**
+	 * Returns a slug created from the {@link $title} property if the {@link $slug} property is not
+	 * accessible.
+	 *
+	 * @return string
+	 */
 	protected function volatile_get_slug()
 	{
 		return \ICanBoogie\normalize($this->title);

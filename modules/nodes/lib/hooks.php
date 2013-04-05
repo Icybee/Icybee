@@ -22,6 +22,65 @@ use Brickrouge\Element;
 class Hooks
 {
 	/*
+	 * Events
+	 */
+
+	static public function on_modules_activate(Event $event)
+	{
+		\Icybee\Modules\Nodes\Module::create_default_routes();
+	}
+
+	static public function on_modules_deactivate(Event $event)
+	{
+		\Icybee\Modules\Nodes\Module::create_default_routes();
+	}
+
+	/**
+	 * Checks if the user to be deleted has nodes.
+	 *
+	 * @param BeforeProcessEvent $event
+	 * @param \Icybee\Modules\Users\DeleteOperation $operation
+	 */
+	static public function before_delete_user(BeforeProcessEvent $event, \Icybee\Modules\Users\DeleteOperation $operation)
+	{
+		global $core;
+
+		$uid = $operation->key;
+		$count = $core->models['nodes']->filter_by_uid($uid)->count;
+
+		if (!$count)
+		{
+			return;
+		}
+
+		$event->errors['uid'] = I18n\t('The user %name is used by :count nodes.', array('name' => $operation->record->name, ':count' => $count));
+	}
+
+	/**
+	 * Adds the orders attached to a member to the dependency collection.
+	 *
+	 * @param \ICanBoogie\ActiveRecord\CollectDependenciesEvent $event
+	 * @param \Icybee\Modules\Users\User $target
+	 */
+	static public function on_user_collect_dependencies(\ICanBoogie\ActiveRecord\CollectDependenciesEvent $event, \Icybee\Modules\Users\User $target)
+	{
+		global $core;
+
+		$nodes = $core->models['nodes']
+		->select('nid, constructor, title')
+		->filter_by_uid($target->uid)
+		->order('created DESC')
+		->all(\PDO::FETCH_OBJ);
+
+		/* @var $nodes Node */
+
+		foreach ($nodes as $node)
+		{
+			$event->add($node->constructor, $node->nid, $node->title, true);
+		}
+	}
+
+	/*
 	 * Markups
 	 */
 
@@ -76,7 +135,7 @@ class Hooks
 	{
 		global $core;
 
-		$core->document->css->add('public/page.css');
+		$core->document->css->add(DIR . 'public/page.css');
 
 		$record = $patron->context['this'];
 
@@ -135,41 +194,6 @@ class Hooks
 	}
 
 	/*
-	 * Events
-	 */
-
-	static public function on_modules_activate(Event $event)
-	{
-		\Icybee\Modules\Nodes\Module::create_default_routes();
-	}
-
-	static public function on_modules_deactivate(Event $event)
-	{
-		\Icybee\Modules\Nodes\Module::create_default_routes();
-	}
-
-	/**
-	 * Checks if the role to be deleted is used or not.
-	 *
-	 * @param BeforeProcessEvent $event
-	 * @param \Icybee\Modules\Users\DeleteOperation $operation
-	 */
-	static public function before_delete_user(BeforeProcessEvent $event, \Icybee\Modules\Users\DeleteOperation $operation)
-	{
-		global $core;
-
-		$uid = $operation->key;
-		$count = $core->models['nodes']->filter_by_uid($uid)->count;
-
-		if (!$count)
-		{
-			return;
-		}
-
-		$event->errors['uid'] = I18n\t('The user %name is used by :count nodes.', array('name' => $operation->record->name, ':count' => $count));
-	}
-
-	/*
 	 * Dashboard
 	 */
 
@@ -177,7 +201,7 @@ class Hooks
 	{
 		global $core, $document;
 
-		$document->css->add('public/dashboard.css');
+		$document->css->add(DIR . 'public/dashboard.css');
 
 		$counts = $core->models['nodes']->similar_site->count('constructor');
 
@@ -267,7 +291,7 @@ EOT;
 	{
 		global $core, $document;
 
-		$document->css->add('public/dashboard.css');
+		$document->css->add(DIR . 'public/dashboard.css');
 
 		$model = $core->models['nodes'];
 

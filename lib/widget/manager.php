@@ -15,6 +15,7 @@ use ICanBoogie\ActiveRecord;
 use ICanBoogie\ActiveRecord\Model;
 use ICanBoogie\ActiveRecord\Query;
 use ICanBoogie\DateTime;
+use ICanBoogie\Debug;
 use ICanBoogie\Event;
 use ICanBoogie\Exception;
 use ICanBoogie\I18n;
@@ -221,8 +222,8 @@ class Manager extends Element
 
 			$this->store_options($options, $module_id);
 
-			return "There was an error in the SQL statement, orders and filters have been reseted,
-			plase reload the page.<br /><br />" . $e->getMessage();
+			return "<div class=\"alert alert-block\">There was an error in the SQL statement, orders and filters have been reseted,
+			please reload the page." . Debug::format_alert($e) . '</div>';
 		}
 
 		$this->entries = $this->alter_records($records);
@@ -561,7 +562,7 @@ class Manager extends Element
 	{
 		global $core;
 
-		static $supported_types = array('varchar', 'text', 'timestamp', 'datetime', 'date');
+		static $supported_types = array('varchar', 'text'/*, 'timestamp', 'datetime', 'date'*/);
 
 		$where = array();
 		$params = array();
@@ -588,6 +589,11 @@ class Manager extends Element
 					if (!in_array($type, $supported_types))
 					{
 						continue;
+					}
+
+					if (!empty($definition['null']))
+					{
+						$identifier = "IFNULL(`$identifier`, \"\")";
 					}
 
 					$concats .= ', `' . $identifier . '`';
@@ -921,7 +927,7 @@ EOT;
 						),
 
 						'class' => 'checkbox-wrapper rectangle',
-						'title' => $this->t('Toggle selection for the entries ([alt] to toggle selection)')
+						'title' => $t('Toggle selection for the entries ([alt] to toggle selection)')
 					)
 				);
 			}

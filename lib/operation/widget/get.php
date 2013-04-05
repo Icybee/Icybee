@@ -34,7 +34,7 @@ class Get extends Operation
 
 	protected function validate(\ICanboogie\Errors $errors)
 	{
-		$this->widget_class = $class = 'Brickrouge\Widget\\' . \ICanBoogie\camelize('-' . $this->request['class'], '-');
+		$this->widget_class = $class = 'Brickrouge\Widget\\' . \ICanBoogie\camelize(strtr($this->request['class'], '-', '_'));
 
 		if (!class_exists($class, true))
 		{

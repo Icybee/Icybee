@@ -1,8 +1,7 @@
 The "Users" module
 ==================
 
-Account security
-----------------
+## Security
 
 Pour des raisons de sécuté le mot de passe n'est jamais envoyé par e-mail à l'utilisateur qui crée
 son compte ou demande un mot de passe parce qu'il a oublié le sien et ne parvient plus à se
@@ -13,8 +12,7 @@ immédiatement, ce qui lui permet de modifier son mot de passe par exemple.
 Pour encore plus de sécurité, l'adresse IP de la requête est également consignée, ce qui réduit
 encore un peu plus les risques d'interceptions.   
 
-Preventing brute force login
-----------------------------
+### Preventing brute force login
 
 In order to prevent brute force login, each failed attempt is counted in the metas of the target
 user account. When the number of failed attempts reaches a limit (e.g. 10) the user account is
@@ -35,10 +33,13 @@ to unlock its account.
 
 
 
-Event callbacks
----------------
 
-### ICanBoogie\HTTP\Dispatcher::dispatch:before
+## Event hooks
 
-Ensures that members don't have access to the admin, and that authenticated users only access the
-websites they are restricted to.
+### Members don't have access to the admin
+
+To ensures that members don't have access to the admin, and that authenticated users only access
+the websites they are restricted to.
+
+ICanBoogie\HTTP\Dispatcher::dispatch:before
+

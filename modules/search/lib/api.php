@@ -1,5 +1,7 @@
 <?php
 
+namespace Icybee\Modules\Search;
+
 use ICanBoogie\I18n;
 use ICanBoogie\Module;
 
@@ -92,12 +94,6 @@ if (!defined('PREG_CLASS_SEARCH_EXCLUDE'))
 	'\x{4e00}-\x{9fbb}\x{f900}-\x{fad9}');
 }
 
-
-function _likelize($str)
-{
-	return '%' . trim($str) . '%';
-}
-
 function query_google($search, $position, $limit)
 {
 	$site = 'atalian.com';
@@ -188,7 +184,11 @@ function query_contents($constructor, $search, $position, $limit)
 	$model = $core->models[$constructor];
 
 	$words = explode(' ', $search);
-	$words = array_map('_likelize', $words);
+	$words = array_map(function($str) {
+
+		return '%' . trim($str) . '%';
+
+	}, $words);
 
 	$properties = array('title', 'body');
 	$concat = str_repeat(' AND CONCAT_WS(" ", ' . implode(', ', $properties) . ') LIKE ?', count($words));
@@ -296,102 +296,102 @@ function make_set($constructor, $entries, $count, $search, $has_pager=false)
  *   A string containing HTML for the excerpt.
  */
 function search_excerpt($keys, $text) {
-  // We highlight around non-indexable or CJK characters.
-  $boundary = '(?:(?<=['. PREG_CLASS_SEARCH_EXCLUDE . PREG_CLASS_CJK .'])|(?=['. PREG_CLASS_SEARCH_EXCLUDE . PREG_CLASS_CJK .']))';
+	// We highlight around non-indexable or CJK characters.
+	$boundary = '(?:(?<=['. PREG_CLASS_SEARCH_EXCLUDE . PREG_CLASS_CJK .'])|(?=['. PREG_CLASS_SEARCH_EXCLUDE . PREG_CLASS_CJK .']))';
 
-  // Extract positive keywords and phrases
-  preg_match_all('/ ("([^"]+)"|(?!OR)([^" ]+))/', ' '. $keys, $matches);
-  $keys = array_merge($matches[2], $matches[3]);
+	// Extract positive keywords and phrases
+	preg_match_all('/ ("([^"]+)"|(?!OR)([^" ]+))/', ' '. $keys, $matches);
+	$keys = array_merge($matches[2], $matches[3]);
 
-  // Prepare text
-  $text = ' '. strip_tags(str_replace(array('<', '>'), array(' <', '> '), $text)) .' ';
-  array_walk($keys, '_search_excerpt_replace');
-  $workkeys = $keys;
+	// Prepare text
+	$text = ' '. strip_tags(str_replace(array('<', '>'), array(' <', '> '), $text)) .' ';
+	array_walk($keys, '_search_excerpt_replace');
+	$workkeys = $keys;
 
-  // Extract a fragment per keyword for at most 4 keywords.
-  // First we collect ranges of text around each keyword, starting/ending
-  // at spaces.
-  // If the sum of all fragments is too short, we look for second occurrences.
-  $ranges = array();
-  $included = array();
-  $length = 0;
-  while ($length < 256 && count($workkeys)) {
-    foreach ($workkeys as $k => $key) {
-      if (strlen($key) == 0) {
-        unset($workkeys[$k]);
-        unset($keys[$k]);
-        continue;
-      }
-      if ($length >= 256) {
-        break;
-      }
-      // Remember occurrence of key so we can skip over it if more occurrences
-      // are desired.
-      if (!isset($included[$key])) {
-        $included[$key] = 0;
-      }
-      // Locate a keyword (position $p), then locate a space in front (position
-      // $q) and behind it (position $s)
-      if (preg_match('/'. $boundary . $key . $boundary .'/iu', $text, $match, PREG_OFFSET_CAPTURE, $included[$key])) {
-        $p = $match[0][1];
-        if (($q = strpos($text, ' ', max(0, $p - 60))) !== FALSE) {
-          $end = substr($text, $p, 80);
-          if (($s = strrpos($end, ' ')) !== FALSE) {
-            $ranges[$q] = $p + $s;
-            $length += $p + $s - $q;
-            $included[$key] = $p + 1;
-          }
-          else {
-            unset($workkeys[$k]);
-          }
-        }
-        else {
-          unset($workkeys[$k]);
-        }
-      }
-      else {
-        unset($workkeys[$k]);
-      }
-    }
-  }
+	// Extract a fragment per keyword for at most 4 keywords.
+	// First we collect ranges of text around each keyword, starting/ending
+	// at spaces.
+	// If the sum of all fragments is too short, we look for second occurrences.
+	$ranges = array();
+	$included = array();
+	$length = 0;
+	while ($length < 256 && count($workkeys)) {
+		foreach ($workkeys as $k => $key) {
+			if (strlen($key) == 0) {
+				unset($workkeys[$k]);
+				unset($keys[$k]);
+				continue;
+			}
+			if ($length >= 256) {
+				break;
+			}
+			// Remember occurrence of key so we can skip over it if more occurrences
+			// are desired.
+			if (!isset($included[$key])) {
+				$included[$key] = 0;
+			}
+			// Locate a keyword (position $p), then locate a space in front (position
+			// $q) and behind it (position $s)
+			if (preg_match('/'. $boundary . $key . $boundary .'/iu', $text, $match, PREG_OFFSET_CAPTURE, $included[$key])) {
+				$p = $match[0][1];
+				if (($q = strpos($text, ' ', max(0, $p - 60))) !== FALSE) {
+					$end = substr($text, $p, 80);
+					if (($s = strrpos($end, ' ')) !== FALSE) {
+						$ranges[$q] = $p + $s;
+						$length += $p + $s - $q;
+						$included[$key] = $p + 1;
+					}
+					else {
+						unset($workkeys[$k]);
+					}
+				}
+				else {
+					unset($workkeys[$k]);
+				}
+			}
+			else {
+				unset($workkeys[$k]);
+			}
+		}
+	}
 
-  // If we didn't find anything, return the beginning.
-  if (count($ranges) == 0) {
-    return truncate_utf8($text, 256) .' …';
-  }
+	// If we didn't find anything, return the beginning.
+	if (count($ranges) == 0) {
+		return truncate_utf8($text, 256) .' …';
+	}
 
-  // Sort the text ranges by starting position.
-  ksort($ranges);
+	// Sort the text ranges by starting position.
+	ksort($ranges);
 
-  // Now we collapse overlapping text ranges into one. The sorting makes it O(n).
-  $newranges = array();
-  foreach ($ranges as $from2 => $to2) {
-    if (!isset($from1)) {
-      $from1 = $from2;
-      $to1 = $to2;
-      continue;
-    }
-    if ($from2 <= $to1) {
-      $to1 = max($to1, $to2);
-    }
-    else {
-      $newranges[$from1] = $to1;
-      $from1 = $from2;
-      $to1 = $to2;
-    }
-  }
-  $newranges[$from1] = $to1;
+	// Now we collapse overlapping text ranges into one. The sorting makes it O(n).
+	$newranges = array();
+	foreach ($ranges as $from2 => $to2) {
+		if (!isset($from1)) {
+			$from1 = $from2;
+			$to1 = $to2;
+			continue;
+		}
+		if ($from2 <= $to1) {
+			$to1 = max($to1, $to2);
+		}
+		else {
+			$newranges[$from1] = $to1;
+			$from1 = $from2;
+			$to1 = $to2;
+		}
+	}
+	$newranges[$from1] = $to1;
 
-  // Fetch text
-  $out = array();
-  foreach ($newranges as $from => $to) {
-    $out[] = substr($text, $from, $to - $from);
-  }
-  $text = (isset($newranges[0]) ? '' : '… ') . implode(' … ', $out) .' …';
+	// Fetch text
+	$out = array();
+	foreach ($newranges as $from => $to) {
+		$out[] = substr($text, $from, $to - $from);
+	}
+	$text = (isset($newranges[0]) ? '' : '… ') . implode(' … ', $out) .' …';
 
-  // Highlight keywords. Must be done at once to prevent conflicts ('strong' and '<strong>').
-  $text = preg_replace('/'. $boundary .'('. implode('|', $keys) .')'. $boundary .'/iu', '<strong>\0</strong>', $text);
-  return $text;
+	// Highlight keywords. Must be done at once to prevent conflicts ('strong' and '<strong>').
+	$text = preg_replace('/'. $boundary .'('. implode('|', $keys) .')'. $boundary .'/iu', '<strong>\0</strong>', $text);
+	return $text;
 }
 
 /**
@@ -402,19 +402,19 @@ function search_excerpt($keys, $text) {
  * Helper function for array_walk in search_except.
  */
 function _search_excerpt_replace(&$text) {
-  $text = preg_quote($text, '/');
+	$text = preg_quote($text, '/');
 }
 
 function search_forms() {
-  $forms['search_theme_form']= array(
-    'callback' => 'search_box',
-    'callback arguments' => array('search_theme_form'),
-  );
-  $forms['search_block_form']= array(
-    'callback' => 'search_box',
-    'callback arguments' => array('search_block_form'),
-  );
-  return $forms;
+	$forms['search_theme_form']= array(
+		'callback' => 'search_box',
+		'callback arguments' => array('search_theme_form'),
+	);
+	$forms['search_block_form']= array(
+		'callback' => 'search_box',
+		'callback arguments' => array('search_block_form'),
+	);
+	return $forms;
 }
 
 
@@ -435,30 +435,30 @@ function search_forms() {
  */
 function truncate_utf8($string, $len, $wordsafe = FALSE, $dots = FALSE) {
 
-  if (mb_strlen($string) <= $len) {
-    return $string;
-  }
+	if (mb_strlen($string) <= $len) {
+		return $string;
+	}
 
-  if ($dots) {
-    $len -= 4;
-  }
+	if ($dots) {
+		$len -= 4;
+	}
 
-  if ($wordsafe) {
-    $string = mb_substr($string, 0, $len + 1); // leave one more character
-    if ($last_space = strrpos($string, ' ')) { // space exists AND is not on position 0
-      $string = substr($string, 0, $last_space);
-    }
-    else {
-      $string = mb_substr($string, 0, $len);
-    }
-  }
-  else {
-    $string = mb_substr($string, 0, $len);
-  }
+	if ($wordsafe) {
+		$string = mb_substr($string, 0, $len + 1); // leave one more character
+		if ($last_space = strrpos($string, ' ')) { // space exists AND is not on position 0
+			$string = substr($string, 0, $last_space);
+		}
+		else {
+			$string = mb_substr($string, 0, $len);
+		}
+	}
+	else {
+		$string = mb_substr($string, 0, $len);
+	}
 
-  if ($dots) {
-    $string .= ' ...';
-  }
+	if ($dots) {
+		$string .= ' ...';
+	}
 
-  return $string;
+	return $string;
 }

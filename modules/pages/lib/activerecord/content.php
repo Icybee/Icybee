@@ -84,15 +84,17 @@ class Content extends \ICanBoogie\ActiveRecord
 		 * TODO-20120905: Ok we handle HTTPError, but what about RecordNotFound and
 		 * others ?
 		 */
-		try
+// 		try
 		{
 			$editor = \ICanBoogie\Core::get()->editors[$this->editor];
 			$rendered = $editor->render($editor->unserialize($this->content));
 		}
+		/*
 		catch (\ICanBoogie\HTTP\HTTPError $e)
 		{
 			$rendered = $e->getMessage();
 		}
+		*/
 		/*
 		catch (\Exception $e)
 		{

@@ -14,8 +14,6 @@ return array
 	(
 		'primary' => array
 		(
-			Model::T_CLASS => __NAMESPACE__ . '\Model',
-			Model::T_ACTIVERECORD_CLASS => __NAMESPACE__ . '\User',
 			Model::T_SCHEMA => array
 			(
 				'fields' => array
@@ -40,7 +38,9 @@ return array
 
 		'has_many_roles' => array
 		(
-			Model::T_SCHEMA => array
+			Model::ACTIVERECORD_CLASS => 'ICanBoogie\ActiveRecord',
+			Model::CLASSNAME => 'ICanBoogie\ActiveRecord\Model',
+			Model::SCHEMA => array
 			(
 				'fields' => array
 				(
@@ -52,7 +52,9 @@ return array
 
 		'has_many_sites' => array
 		(
-			Model::T_SCHEMA => array
+			Model::ACTIVERECORD_CLASS => 'ICanBoogie\ActiveRecord',
+			Model::CLASSNAME => 'ICanBoogie\ActiveRecord\Model',
+			Model::SCHEMA => array
 			(
 				'fields' => array
 				(

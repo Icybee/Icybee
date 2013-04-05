@@ -81,7 +81,7 @@ class Model extends \Icybee\ActiveRecord\Model\Constructor
 	 */
 	protected function scope_online(Query $query)
 	{
-		return $query->where('is_online = 1');
+		return $query->filter_by_is_online(true);
 	}
 
 	/**
@@ -93,7 +93,7 @@ class Model extends \Icybee\ActiveRecord\Model\Constructor
 	 */
 	protected function scope_offline(Query $query)
 	{
-		return $query->where('is_online = 0');
+		return $query->filter_by_is_online(false);
 	}
 
 	/**
@@ -107,7 +107,7 @@ class Model extends \Icybee\ActiveRecord\Model\Constructor
 	{
 		global $core;
 
-		return $query->where('is_online = 1 AND (siteid = 0 OR siteid = ?) AND (language = "" OR language = ?)', $core->site->siteid, $core->site->language);
+		return $query->online->similar_site->similar_language;
 	}
 
 	/**

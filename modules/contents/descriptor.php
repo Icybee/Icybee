@@ -15,7 +15,6 @@ return array
 	(
 		'primary' => array
 		(
-			Model::T_ACTIVERECORD_CLASS => __NAMESPACE__ . '\Content',
 			Model::T_EXTENDS => 'nodes',
 			Model::T_SCHEMA => array
 			(
@@ -33,8 +32,10 @@ return array
 
 		'cache' => array
 		(
-			Model::T_CONNECTION => 'local',
-			Model::T_SCHEMA => array
+			Model::ACTIVERECORD_CLASS => 'ICanBoogie\ActiveRecord',
+			Model::CLASSNAME => 'ICanBoogie\ActiveRecord\Model',
+			Model::CONNECTION => 'local',
+			Model::SCHEMA => array
 			(
 				'fields' => array
 				(

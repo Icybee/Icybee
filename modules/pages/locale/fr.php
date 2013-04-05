@@ -2,19 +2,35 @@
 
 return array
 (
-	'pages.search' => array
+	'pages' => array
 	(
-		'found' => array
+		'count' => array
 		(
-			'none' => 'Aucun résulat trouvé dans les pages.',
-			'one' => 'Un résultat trouvé dans les pages.',
-			'other' => ':count résultats trouvés dans les pages.'
+			'none' => 'Aucune page',
+			'one' => 'Une page',
+			'other' => ':count pages'
 		),
 
-		'more' => array
+		'name' => array
 		(
-			'one' => 'Voir le résultat trouvé pour %search dans les pages',
-			'other' => 'Voir les :count résultats trouvés pour %search dans les pages'
+			'one' => 'Page',
+			'other' => 'Pages'
+		),
+
+		'search' => array
+		(
+			'found' => array
+			(
+				'none' => 'Aucun résulat trouvé dans les pages.',
+				'one' => 'Un résultat trouvé dans les pages.',
+				'other' => ':count résultats trouvés dans les pages.'
+			),
+
+			'more' => array
+			(
+				'one' => 'Voir le résultat trouvé pour %search dans les pages',
+				'other' => 'Voir les :count résultats trouvés pour %search dans les pages'
+			)
 		)
 	),
 

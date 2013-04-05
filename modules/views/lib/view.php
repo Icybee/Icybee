@@ -344,9 +344,12 @@ class View extends Object
 	/**
 	 * Renders the inner HTML of the view.
 	 *
+	 * If the data provided implements {@link \Icybee\CSSClassNames}, the class names of the
+	 * record are added those of the view element.
+	 *
 	 * @throws Exception
 	 *
-	 * @return html
+	 * @return string The inner HTML of the view element.
 	 */
 	protected function render_inner_html($template_path, $engine)
 	{
@@ -391,6 +394,15 @@ class View extends Object
 				);
 
 				return $html;
+			}
+
+			#
+			# appending record's css class names to the view element's class.
+			#
+
+			if ($bind instanceof \Icybee\CSSClassNames)
+			{
+				$this->element['class'] .= ' ' . $bind->css_class;
 			}
 		}
 

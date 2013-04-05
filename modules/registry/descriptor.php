@@ -14,7 +14,8 @@ return array
 	(
 		'primary' => array
 		(
-			Model::T_SCHEMA => array
+			Model::ACTIVERECORD_CLASS => 'ICanBoogie\ActiveRecord',
+			Model::SCHEMA => array
 			(
 				'fields' => array
 				(
@@ -26,7 +27,9 @@ return array
 
 		'node' => array
 		(
-			Model::T_SCHEMA => array
+			Model::ACTIVERECORD_CLASS => 'ICanBoogie\ActiveRecord',
+			Model::CLASSNAME => 'ICanBoogie\ActiveRecord\Model',
+			Model::SCHEMA => array
 			(
 				'fields' => array
 				(
@@ -39,7 +42,9 @@ return array
 
 		'user' => array
 		(
-			Model::T_SCHEMA => array
+			Model::ACTIVERECORD_CLASS => 'ICanBoogie\ActiveRecord',
+			Model::CLASSNAME => 'ICanBoogie\ActiveRecord\Model',
+			Model::SCHEMA => array
 			(
 				'fields' => array
 				(
@@ -52,7 +57,9 @@ return array
 
 		'site' => array
 		(
-			Model::T_SCHEMA => array
+			Model::ACTIVERECORD_CLASS => 'ICanBoogie\ActiveRecord',
+			Model::CLASSNAME => 'ICanBoogie\ActiveRecord\Model',
+			Model::SCHEMA => array
 			(
 				'fields' => array
 				(

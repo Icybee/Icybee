@@ -14,10 +14,10 @@ namespace Icybee\Modules\Nodes;
 class NodeTest extends \PHPUnit_Framework_TestCase
 {
 	/**
-	 * Checks the the defined slug is returned and not created from the title, and that the
-	 * slug is exported by {@link Node::to_array()}.
+	 * Checks that the defined slug is returned and not created from the title, and that the
+	 * slug is exported by {@link Node::to_array()} and `__sleep`.
 	 */
-	public function test_slug()
+	public function testDefinedSlug()
 	{
 		$node = new Node;
 		$node->title = 'The quick brown fox';
@@ -33,10 +33,9 @@ class NodeTest extends \PHPUnit_Framework_TestCase
 	}
 
 	/**
-	 * Checks that the {@link Node::$slug} property is created from {@link Node::$title} and that
-	 * it is not exported by {@link Node::to_array()} when it is created that way.
+	 * The `slug` getter MUST NOT create the property.
 	 */
-	public function test_lazy_slug()
+	public function testUndefinedSlug()
 	{
 		$node = new Node;
 		$node->title = 'The quick brown fox';

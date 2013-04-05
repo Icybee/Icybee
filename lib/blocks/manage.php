@@ -95,8 +95,6 @@ class ManageBlock extends \Icybee\Manager
 	 *
 	 * If the 'uid' column exists a cache is prepared for the {@link render_cell_user()} method
 	 * with the users objects associated with the displayed records.
-	 *
-	 * @see Icybee\Manager::alter_records()
 	 */
 	protected function alter_records(array $records)
 	{

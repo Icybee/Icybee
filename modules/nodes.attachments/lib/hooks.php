@@ -290,15 +290,16 @@ class Hooks
 		}
 
 		$scope = array();
+		$modules = $core->modules;
 
-		foreach ($core->modules->descriptors as $constructor => $descriptor)
+		foreach ($modules->descriptors as $constructor => $descriptor)
 		{
-			if (!isset($core->modules[$constructor]) || $constructor == 'nodes')
+			if (!isset($modules[$constructor]) || $constructor == 'nodes')
 			{
 				continue;
 			}
 
-			if (!Module::is_extending($constructor, 'nodes'))
+			if (!$modules->is_extending($constructor, 'nodes'))
 			{
 				continue;
 			}

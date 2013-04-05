@@ -17,6 +17,11 @@ use Brickrouge\Element;
 
 class NavigationElement extends Element // TODO-20120922: rewrite this element
 {
+	public function __construct()
+	{
+		// this is fake :(
+	}
+
 	static protected function render_navigation_tree(array $tree, $depth=1)
 	{
 		$rc = '';
@@ -142,29 +147,74 @@ class NavigationElement extends Element // TODO-20120922: rewrite this element
 			}
 		);
 
-		$rc = null;
+		$html = null;
 		$tree = $subset->tree;
 
 		if ($tree)
 		{
 			$subset->populate();
 
-			$rc = $template ? $patron($template, $tree) : static::render_navigation_tree($tree);
+			$html = $template ? $patron($template, $tree) : static::render_navigation_tree($tree);
 		}
 
-		/*
-		new Event
-		(
-			null, 'alter.markup.navigation', array
-			(
-				'rc' => &$rc,
-				'page' => $page,
-				'blueprint' => $subset,
-				'args' => $args
-			)
-		);
-		*/
+		new NavigationElement\AlterEvent(new self, $html, $page, $blueprint, $args);
 
-		return $rc;
+		return $html;
+	}
+}
+
+namespace Icybee\Modules\Pages\NavigationElement;
+
+use Icybee\Modules\Pages\Blueprint;
+use Icybee\Modules\Pages\NavigationElement;
+use Icybee\Modules\Pages\Page;
+
+class AlterEvent extends \ICanBoogie\Event
+{
+	/**
+	 * Reference to the rendered HTML.
+	 *
+	 * @var string
+	 */
+	public $html;
+
+	/**
+	 * Page for which the navigation is rendered.
+	 *
+	 * @var Page
+	 */
+	public $page;
+
+	/**
+	 * Blueprint of the navigation.
+	 *
+	 * @var Blueprint
+	 */
+	public $blueprint;
+
+	/**
+	 * Options of the navigation.
+	 *
+	 * @var array
+	 */
+	public $options;
+
+	/**
+	 * The event is constructed with the type `alter`.
+	 *
+	 * @param NavigationElement $target
+	 * @param string $html
+	 * @param Page $page
+	 * @param Blueprint $blueprint
+	 * @param array $options
+	 */
+	public function __construct(NavigationElement $target, &$html, Page $page, Blueprint $blueprint, array $options)
+	{
+		$this->html = &$html;
+		$this->page = $page;
+		$this->blueprint = $blueprint;
+		$this->options = $options;
+
+		parent::__construct($target, 'alter');
 	}
 }

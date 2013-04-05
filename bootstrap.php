@@ -16,24 +16,26 @@ namespace Icybee;
  *
  * @var string
  */
-const VERSION = 'dev-master (2013-02-21)';
+const VERSION = 'dev-master (2013-04-05)';
 
 /**
- * Root path for the Icybee package.
+ * Path to the directory of the Icybee package.
+ *
+ * The path includes a trailing directory separator.
  *
  * @var string
  */
-define('Icybee\ROOT', rtrim(__DIR__, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR);
+define('Icybee\DIR', rtrim(__DIR__, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR);
 
 /**
  * Assets path for the Icybee package.
  *
  * @var string
  */
-define('Icybee\ASSETS', ROOT . 'assets' . DIRECTORY_SEPARATOR);
+define('Icybee\ASSETS', DIR . 'assets' . DIRECTORY_SEPARATOR);
 
 /*
  * Helpers
  */
-require_once ROOT . 'lib/helpers.php';
-require_once ROOT . 'lib/helpers-compat.php';
+require_once DIR . 'lib/helpers.php';
+require_once DIR . 'lib/helpers-compat.php';

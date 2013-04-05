@@ -2,37 +2,36 @@ var WdPopupImage = new Class
 ({
 	initialize: function(el, src)
 	{
-		this.element = $(el);
-		this.src = src;
+		this.element = document.id(el)
+		this.src = src
 
-		this.element.addEvent('mouseenter', this.onMouseEnter.bind(this));
-		this.element.addEvent('mouseleave', this.onMouseLeave.bind(this));
+		this.element.addEvent('mouseenter', this.onMouseEnter.bind(this))
+		this.element.addEvent('mouseleave', this.onMouseLeave.bind(this))
 
 		this.onMouseMove = function(ev)
 		{
-			var popup = self.popup;
+			var popup = self.popup
+			, target = ev.target
 
 			if (!popup)
 			{
-				return;
+				return
 			}
 
-			var target = ev.target;
-
-			popup.setStyle('left', ev.client.x + target.getSize().x + 10);
+			popup.setStyle('left', ev.client.x + target.getSize().x + 10)
 		};
 	},
 
 	onMouseEnter: function()
 	{
-		this.cancel = false;
+		this.cancel = false
 
-		var func = this.popup ? this.show : this.load;
-		var delay = this.element.get('data-pop-preview-delay') || 100;
+		var func = this.popup ? this.show : this.load
+		, delay = this.element.get('data-pop-preview-delay') || 100
 
 //		window.addEvent('mousemove', this.onMouseMove);
 
-		func.delay(delay, this);
+		func.delay(delay, this)
 	},
 
 	load: function()
@@ -42,62 +41,58 @@ var WdPopupImage = new Class
 			return;
 		}
 
-		new Asset.image
-		(
-			this.src,
+		new Asset.image(this.src, {
+
+			onload: function(popup)
 			{
-				onload: function(popup)
+				var targetClass = this.element.get('data-pop-preview-target')
+				, target = this.element
+
+				if (targetClass)
 				{
-					var targetClass = this.element.get('data-pop-preview-target');
-					var target = this.element;
-
-					if (targetClass)
-					{
-						target = this.element.getParent(targetClass) || target;
-					}
-
-					//
-					// setup image
-					//
-
-					coord = target.getCoordinates();
-
-					popup.id = 'pop-preview';
-
-					popup.setStyles
-					(
-						{
-							position: 'absolute',
-							top: coord.top + (coord.height - popup.height) / 2 - 2,
-							left: coord.left + coord.width + 20,
-							opacity: 0
-						}
-					);
-
-					popup.set('tween', { duration: 'short', link: 'cancel' });
-
-					popup.addEvent('mouseenter', this.onMouseLeave.bind(this));
-
-					if (this.popup)
-					{
-						//console.info('kill multiple for: %s', this.src);
-
-						popup.destroy();
-
-						return;
-					}
-
-					this.popup = popup;
-
-					//
-					// show
-					//
-
-					this.show();
+					target = this.element.getParent(targetClass) || target;
 				}
-				.bind(this)
+
+				//
+				// setup image
+				//
+
+				coord = target.getCoordinates();
+
+				popup.id = 'pop-preview';
+
+				popup.setStyles
+				(
+					{
+						position: 'absolute',
+						top: coord.top + (coord.height - popup.height) / 2 - 2,
+						left: coord.left + coord.width + 20,
+						opacity: 0
+					}
+				);
+
+				popup.set('tween', { duration: 'short', link: 'cancel' })
+				popup.addEvent('mouseenter', this.onMouseLeave.bind(this))
+
+				if (this.popup)
+				{
+					//console.info('kill multiple for: %s', this.src);
+
+					popup.destroy()
+
+					return
+				}
+
+				this.popup = popup
+
+				//
+				// show
+				//
+
+				this.show()
 			}
-		);
+			.bind(this)
+		})
 	},
 
 	onMouseLeave: function()
@@ -161,27 +156,36 @@ var WdPopupImage = new Class
 
 if (typeof manager != 'undefined')
 {
-	manager.addEvent
-	(
-	 	'ready', function()
-		{
-	 		if (manager.blockName == 'manage')
-	 		{
-				manager.element.getElements('a[rel="lightbox[]"]').each
-				(
-					function(el)
-					{
-						var children = el.getChildren();
+	manager.addEvent('ready', function() {
 
-						new WdPopupImage(children[0], children[1].value);
-					}
-				);
-	 		}
+		Slimbox.scanPage()
 
-			Slimbox.scanPage();
-		}
-	);
+	})
 }
+
+!function() {
+
+	var popovers = []
+
+	document.body.addEvent('mouseenter:relay([data-popover-image])', function(ev, el) {
+
+		var uniqueNumber = el.uniqueNumber
+		, popover
+
+		popovers[uniqueNumber]
+
+		if (popovers[uniqueNumber]) return
+
+		popover = new WdPopupImage(el, el.get('data-popover-image'))
+		popover.load()
+
+		popovers[uniqueNumber] = popover
+
+	})
+
+} ()
+
+
 
 window.addEvent('brickrouge.update', function(ev) {
 

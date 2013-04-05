@@ -85,15 +85,6 @@ class SaveOperation extends \Icybee\SaveOperation
 			)
 		);
 
-		$this->response->message = new FormattedString
-		(
-			$rc['mode'] == 'update' ? '%title has been updated in :module.' : '%title has been created in %module.', array
-			(
-				'title' => \ICanBoogie\shorten($record->title),
-				'module' => $this->module->title
-			)
-		);
-
 		if ($this->mode == self::MODE_DISPLAY)
 		{
 			$url = $record->url;

@@ -15,6 +15,16 @@ use ICanBoogie\ActiveRecord\Query;
 
 class ManageBlock extends \Icybee\Modules\Files\ManageBlock
 {
+	static protected function add_assets(\Brickrouge\Document $document)
+	{
+		parent::add_assets($document);
+
+		$document->js->add(DIR . 'public/slimbox.js');
+		$document->css->add(DIR . 'public/slimbox.css');
+		$document->js->add('manage.js');
+		$document->css->add('manage.css');
+	}
+
 	public function __construct(Module $module, array $attributes)
 	{
 		parent::__construct
@@ -27,16 +37,6 @@ class ManageBlock extends \Icybee\Modules\Files\ManageBlock
 				)
 			)
 		);
-	}
-
-	static protected function add_assets(\Brickrouge\Document $document)
-	{
-		parent::add_assets($document);
-
-		$document->js->add('../../public/slimbox.js');
-		$document->css->add('../../public/slimbox.css');
-		$document->js->add('manage.js');
-		$document->css->add('manage.css');
 	}
 
 	protected function columns()
@@ -129,8 +129,6 @@ class ManageBlock extends \Icybee\Modules\Files\ManageBlock
 
 	/**
 	 * Alters the range query to support the "surface" virtual property.
-	 *
-	 * @see Icybee\Manager::alter_range_query()
 	 */
 	protected function alter_range_query(Query $query, array $options)
 	{
@@ -149,6 +147,7 @@ class ManageBlock extends \Icybee\Modules\Files\ManageBlock
 		$path = $record->path;
 		$thumbnail_element = $record->thumbnail('$icon')->to_element();
 		$thumbnail_element->add_class('icon');
+		$thumbnail_element['data-popover-image'] = $record->thumbnail('$popup')->url;
 
 		$rc  = '<a href="' . \ICanBoogie\escape($path) . '" rel="lightbox[]">';
 		$rc .= $thumbnail_element;

@@ -12,7 +12,7 @@
 namespace Icybee\Modules\Contents;
 
 use Brickrouge\Element;
-use Brickrouge\Form;
+use Brickrouge\Group;
 use Brickrouge\Text;
 
 /**

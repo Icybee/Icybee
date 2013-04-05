@@ -50,40 +50,6 @@ class Modules extends \ICanBoogie\Modules
 		return $index;
 	}
 
-	/**
-	 * Adds autoloading of the manager's class for the specified module.
-	 *
-	 * @see ICanBoogie.Modules::alter_descriptor()
-	 */
-	protected function alter_descriptor(array $descriptor)
-	{
-		$descriptor = parent::alter_descriptor($descriptor);
-
-		$path = $descriptor[Module::T_PATH];
-
-		$p = $path . 'lib' . DIRECTORY_SEPARATOR . 'blocks';
-
-		if (file_exists($p))
-		{
-			$di = new \DirectoryIterator($p);
-
-			foreach ($di as $file)
-			{
-				$pathname = $file->getPathname();
-
-				if (pathinfo($pathname, PATHINFO_EXTENSION) != 'php')
-				{
-					continue;
-				}
-
-				$class_name = $descriptor[Module::T_NAMESPACE] . '\\' . \ICanBoogie\camelize('-' . basename($pathname, '.php')) . 'Block';
-				$descriptor['__autoload'][$class_name] = $pathname;
-			}
-		}
-
-		return $descriptor;
-	}
-
 	public function ids_by_property($tag, $default=null)
 	{
 		$rc = array();

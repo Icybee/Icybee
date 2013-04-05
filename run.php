@@ -13,7 +13,7 @@ namespace Icybee;
 
 global $core;
 
-Core::add_path(ROOT);
+Core::add_path(DIR);
 
 /**
  * The core instance is the heart of the ICanBoogie framework.
@@ -26,7 +26,7 @@ $core = new Core
 	(
 		'modules paths' => array
 		(
-			ROOT . 'modules' . DIRECTORY_SEPARATOR,
+			DIR . 'modules' . DIRECTORY_SEPARATOR,
 			dirname(__DIR__) . DIRECTORY_SEPARATOR . 'modules' . DIRECTORY_SEPARATOR
 		)
 	)

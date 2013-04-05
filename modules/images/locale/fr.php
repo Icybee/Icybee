@@ -2,6 +2,22 @@
 
 return array
 (
+	'images' => array
+	(
+		'count' => array
+		(
+			'none' => "Aucune image",
+			'one' => "Une image",
+			'other' => ":count images"
+		),
+
+		'name' => array
+		(
+			'one' => "Image",
+			'other' => "Images"
+		)
+	),
+
 	'block.title' => array
 	(
 		'gallery' => 'Galerie'

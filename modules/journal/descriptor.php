@@ -13,6 +13,7 @@ return array
 	(
 		'primary' => array
 		(
+			Model::CLASSNAME => 'ICanBoogie\ActiveRecord\Model',
 			Model::T_ACTIVERECORD_CLASS => __NAMESPACE__ . '\Entry',
 			Model::T_SCHEMA => array
 			(

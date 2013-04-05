@@ -28,10 +28,11 @@ class FeedEditorElement extends Element implements EditorElement
 		global $core;
 
 		$constructors = array();
+		$modules = $core->modules;
 
-		foreach ($core->modules->descriptors as $module_id => $descriptor)
+		foreach ($modules->descriptors as $module_id => $descriptor)
 		{
-			if ($module_id == 'contents' || !Module::is_extending($module_id, 'contents'))
+			if ($module_id == 'contents' || !$modules->is_extending($module_id, 'contents'))
 			{
 				continue;
 			}

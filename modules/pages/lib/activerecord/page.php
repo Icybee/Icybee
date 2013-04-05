@@ -19,6 +19,7 @@ use Icybee\Modules\Sites\Site;
  * A page.
  *
  * @property Page $parent Parent page of the page.
+ * @property \Icybee\Modules\Sites\Site $site The site the page belongs to.
  * @property-read bool $is_accessible Whether the page is accessible or not.
  * @property-read bool $is_active Wheter the page is active or not.
  * @property-read bool $is_home Whether the page is the home page of the site or not.
@@ -86,16 +87,19 @@ class Page extends \Icybee\Modules\Nodes\Node
 
 	/**
 	 * @var string Part of the URL captured by the pattern.
+	 * @todo-20130307: rename as "path_part"
 	 */
 	public $url_part;
 
 	/**
 	 * @var array Variables captured from the URL using the pattern.
+	 * @todo-20130327: rename as "path_params"
 	 */
 	public $url_variables = array();
 
 	/**
 	 * @var Node Node object currently acting as the body of the page.
+	 * @todo-20130327: use request's context instead
 	 */
 	public $node;
 
@@ -128,15 +132,7 @@ class Page extends \Icybee\Modules\Nodes\Node
 	{
 		$keys = parent::__sleep();
 
-		if (isset($this->language))
-		{
-			$keys['language'] = 'language';
-		}
-
-		if (isset($this->label))
-		{
-			$keys['label'] = 'label';
-		}
+		// TODO-20130327: is this necessary
 
 		if (isset($this->template))
 		{
@@ -154,15 +150,13 @@ class Page extends \Icybee\Modules\Nodes\Node
 	 */
 	protected function volatile_get_language()
 	{
-		return $this->siteid ? $this->site->language : null;
+		return $this->site ? $this->site->language : null;
 	}
 
 	/**
 	 * Returns the previous online sibling for the page.
 	 *
 	 * @return Page|false The previous sibling, or false if there is none.
-	 *
-	 * @see ICanBoogie\ActiveRecord.Node::get_previous()
 	 */
 	protected function get_previous()
 	{
@@ -175,8 +169,6 @@ class Page extends \Icybee\Modules\Nodes\Node
 	 * Returns the next online sibling for the page.
 	 *
 	 * @return Page|false The next sibling, or false if there is none.
-	 *
-	 * @see ICanBoogie\ActiveRecord.Node::get_next()
 	 */
 	protected function get_next()
 	{
@@ -244,8 +236,6 @@ class Page extends \Icybee\Modules\Nodes\Node
 	 * Returns the absulte URL of the pages.
 	 *
 	 * @return string The absolute URL of the page.
-	 *
-	 * @see site_pages_view_WdHooks::get_absolute_url()
 	 */
 	protected function get_absolute_url()
 	{
@@ -283,10 +273,11 @@ class Page extends \Icybee\Modules\Nodes\Node
 		return $translations;
 	}
 
-	// TODO-20100706: Shouldn't url_pattern be null if there was no pattern in the path ? We
-	// wouldn't have to check for '<' to know if the URL has a pattern, on the other hand we would
-	// have to do two pass each time we try to get the URL.
-
+	/**
+	 * Returns the URL pattern of the page.
+	 *
+	 * @return string
+	 */
 	protected function get_url_pattern()
 	{
 		global $core;
@@ -301,21 +292,17 @@ class Page extends \Icybee\Modules\Nodes\Node
 		$parent = $this->parent;
 		$pattern = $this->pattern;
 
-		$rc = ($parent ? $parent->url_pattern : $site->path . '/') . ($pattern ? $pattern : $this->slug);
-
-		if ($this->has_child)
-		{
-			$rc .= '/';
-		}
-		else
-		{
-			$rc .= $this->extension;
-		}
-
-		return $rc;
+		return ($parent ? $parent->url_pattern : $site->path . '/')
+		. ($pattern ? $pattern : $this->slug)
+		. ($this->has_child ? '/' : $this->extension);
 	}
 
-	protected function get_extension()
+	/**
+	 * Returns the extension used by the page.
+	 *
+	 * @return string
+	 */
+	protected function volatile_get_extension()
 	{
 		$template = $this->template;
 
@@ -326,15 +313,31 @@ class Page extends \Icybee\Modules\Nodes\Node
 	}
 
 	/**
-	 * Checks if the page record is the home page.
+	 * Returns if the page is accessible or not in the navigation tree.
+	 */
+	protected function volatile_get_is_accessible()
+	{
+		global $core;
+
+		if ($core->user->is_guest && $this->site->status != Site::STATUS_OK)
+		{
+			return false;
+		}
+
+		return ($this->parent && !$this->parent->is_accessible) ? false : $this->is_online;
+	}
+
+	/**
+	 * Checks if the page is the home page.
 	 *
-	 * A page is considered a home page when the page has no parent and its weight value is zero.
+	 * A page is considered a home page when the page has no parent, its weight value is zero and
+	 * it is online.
 	 *
-	 * @return bool true if the page record is the home page, false otherwise.
+	 * @return bool `true` if the page record is the home page, `false` otherwise.
 	 */
 	protected function volatile_get_is_home()
 	{
-		return (!$this->parentid && $this->is_online && $this->weight == 0);
+		return (!$this->parentid && !$this->weight && $this->is_online);
 	}
 
 	/**
@@ -343,6 +346,8 @@ class Page extends \Icybee\Modules\Nodes\Node
 	 * The global variable `page` must be defined in order to identify the active page.
 	 *
 	 * @return bool true if the page record is the active page, false otherwise.
+	 *
+	 * @todo-20130327: create the set_active_page() and get_active_page() helpers ?
 	 */
 	protected function volatile_get_is_active()
 	{
@@ -358,22 +363,20 @@ class Page extends \Icybee\Modules\Nodes\Node
 	 *
 	 * @return bool true if the page is in the active page trail, false otherwise.
 	 */
-	protected function get_is_trail()
+	protected function volatile_get_is_trail()
 	{
 		global $core;
 
-		$node = $core->request->context->page;
+		$node = $core->request->context->page; // TODO-20130327: use a get_active_page() helper ?
 
 		while ($node)
 		{
-			if ($node->nid != $this->nid)
+			if ($node->nid == $this->nid)
 			{
-				$node = $node->parent;
-
-				continue;
+				return true;
 			}
 
-			return true;
+			$node = $node->parent;
 		}
 
 		return false;
@@ -384,7 +387,7 @@ class Page extends \Icybee\Modules\Nodes\Node
 	 *
 	 * @return Icybee\Modules\Pages\Page|null The location target, or null if there is none.
 	 */
-	protected function get_location()
+	protected function volatile_get_location()
 	{
 		return $this->locationid ? $this->_model[$this->locationid] : null;
 	}
@@ -394,7 +397,7 @@ class Page extends \Icybee\Modules\Nodes\Node
 	 *
 	 * @return Icybee\Modules\Pages\Page
 	 */
-	protected function get_home()
+	protected function volatile_get_home()
 	{
 		return $this->_model->find_home($this->siteid);
 	}
@@ -514,29 +517,8 @@ class Page extends \Icybee\Modules\Nodes\Node
 		return $this->parent ? $this->parent->depth + 1 : 0;
 	}
 
-	/**
-	 * Returns if the page is accessible or not in the navigation tree.
-	 */
-
-	protected function get_is_accessible()
+	protected function volatile_get_template()
 	{
-		global $core;
-
-		if ($core->user->is_guest && $this->site->status != Site::STATUS_OK)
-		{
-			return false;
-		}
-
-		return ($this->parent && !$this->parent->is_accessible) ? false : $this->is_online;
-	}
-
-	protected function get_template()
-	{
-		if (isset($this->layout))
-		{
-			return $this->layout;
-		}
-
 		if ($this->is_home)
 		{
 			return 'home.html';
@@ -597,8 +579,6 @@ class Page extends \Icybee\Modules\Nodes\Node
 	 * - `node-id`: "node-id-<nid>" if the page displays a node.
 	 * - `node-constructor`: "node-constructor-<normalized_constructor>" if the page displays a node.
 	 * - `template`: "template-<name>" the name of the page's template, without its extension.
-	 *
-	 * @see ICanBoogie\ActiveRecord.Node::get_css_class_names()
 	 */
 	protected function get_css_class_names()
 	{
@@ -634,12 +614,12 @@ class Page extends \Icybee\Modules\Nodes\Node
 
 	// TODO-20101115: these should be methods added by the "firstposition' module
 
-	protected function get_description()
+	protected function volatile_get_description()
 	{
 		return $this->metas['description'];
 	}
 
-	protected function get_document_title()
+	protected function volatile_get_document_title()
 	{
 		return $this->metas['document_title'] ? $this->metas['document_title'] : $this->title;
 	}

@@ -13,6 +13,8 @@ namespace Icybee;
 
 /**
  * Extends the ICanBoogie\SaveOperation class to add save mode (continue, list, new).
+ *
+ * @todo-20130329: use event hooks rather then a class.
  */
 class SaveOperation extends \ICanBoogie\SaveOperation
 {
@@ -29,10 +31,7 @@ class SaveOperation extends \ICanBoogie\SaveOperation
 
 	/**
 	 * Update the session save mode according to the save mode defined in the operation parameters.
-	 *
-	 * @see ICanBoogie.Operation::control()
 	 */
-
 	protected function control(array $controls)
 	{
 		global $core;
@@ -53,8 +52,6 @@ class SaveOperation extends \ICanBoogie\SaveOperation
 	 * - list: The constructor index location.
 	 * - continue: The record edit location.
 	 * - new: The edit location for new records.
-	 *
-	 * @see ICanBoogie\SaveOperation::process()
 	 */
 	protected function process()
 	{

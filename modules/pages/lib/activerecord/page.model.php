@@ -321,7 +321,7 @@ class Model extends \Icybee\Modules\Nodes\Model
 
 			if ($parent)
 			{
-				$page->parent = $parent;
+// 				$page->parent = $parent;
 
 				if (!$parent->is_online)
 				{

@@ -106,15 +106,16 @@ class EditBlock extends \Icybee\EditBlock
 		global $core;
 
 		$scope_options = array();
+		$modules = $core->modules;
 
-		foreach ($core->modules->descriptors as $module_id => $descriptor)
+		foreach ($modules->descriptors as $module_id => $descriptor)
 		{
-			if ($module_id == 'nodes' || !isset($core->modules[$module_id]))
+			if ($module_id == 'nodes' || !isset($modules[$module_id]))
 			{
 				continue;
 			}
 
-			$is_instance = Module::is_extending($module_id, 'nodes');
+			$is_instance = $modules->is_extending($module_id, 'nodes');
 
 			if (!$is_instance)
 			{

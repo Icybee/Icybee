@@ -156,7 +156,6 @@ class Hooks
 		global $core;
 
 		$core->document->css->add('public/admin.css');
-		$core->document->js->add('public/admin.js');
 
 		$module_id = $event->module->id;
 

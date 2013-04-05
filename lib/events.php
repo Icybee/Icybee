@@ -36,3 +36,14 @@ class AlterCSSClassNamesEvent extends \ICanBoogie\Event
 		parent::__construct($target, 'alter_css_class_names');
 	}
 }
+
+/**
+ * Interface for classes implementing CSSClassNames.
+ *
+ * @property-read string $css_class The CSS class of the instance.
+ * @property-read array[string]mixed $css_class_names The CSS class names of the instance.
+ */
+interface CSSClassNames
+{
+	public function css_class($modifiers=null);
+}

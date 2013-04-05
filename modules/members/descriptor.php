@@ -13,7 +13,6 @@ return array
 	(
 		'primary' => array
 		(
-			Model::T_ACTIVERECORD_CLASS => __NAMESPACE__ . '\Member',
 			Model::T_EXTENDS => 'users',
 			Model::T_SCHEMA => array
 			(

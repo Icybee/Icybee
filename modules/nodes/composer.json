@@ -2,7 +2,7 @@
 	"name": "icybee/module-nodes",
 	"type": "library",
 	"description": "Implements Nodes",
-	"keywords": ["node"],
+	"keywords": [ "node" ],
 	"license": "BSD-3-Clause",
 	"authors": [
 		{
@@ -12,9 +12,14 @@
 			"role" : "Developer"
 		}
 	],
+	"support": {
+		"issues": "https://github.com/Icybee/module-nodes/issues",
+		"source": "https://github.com/Icybee/module-nodes"
+	},
 	"minimum-stability": "dev",
 	"require": {
 		"php": ">=5.3.0",
+		"icybee/module-installer": "*",
 		"icanboogie/activerecord": "*"
 	},
 	"autoload": {

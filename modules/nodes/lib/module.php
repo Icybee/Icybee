@@ -75,10 +75,11 @@ class Module extends \Icybee\Module
 		global $core;
 
 		$routes = array();
+		$modules = $core->modules;
 
-		foreach ($core->modules->enabled_modules_descriptors as $module_id => $descriptor)
+		foreach ($modules->enabled_modules_descriptors as $module_id => $descriptor)
 		{
-			if ($module_id == 'nodes' || $module_id == 'contents' || !self::is_extending($module_id, 'nodes'))
+			if ($module_id == 'nodes' || $module_id == 'contents' || !$modules->is_extending($module_id, 'nodes'))
 			{
 				continue;
 			}
@@ -104,7 +105,7 @@ class Module extends \Icybee\Module
 
 			+ $common;
 
-			if ($module_id == 'contents' || self::is_extending($module_id, 'contents') || $module_id == 'files' || self::is_extending($module_id, 'files'))
+			if ($module_id == 'contents' || $modules->is_extending($module_id, 'contents') || $module_id == 'files' || $modules->is_extending($module_id, 'files'))
 			{
 				# config'
 
@@ -157,7 +158,7 @@ class Module extends \Icybee\Module
 			+ $common;
 		}
 
-		new Module\CreateDefaultRoutesEvent($core->modules['nodes'], array('routes' => &$routes));
+		new Module\CreateDefaultRoutesEvent($modules['nodes'], array('routes' => &$routes));
 
 // 		var_dump($routes);
 

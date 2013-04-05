@@ -100,6 +100,7 @@ class ConfigBlock extends \Icybee\ConfigBlock
 		global $core;
 
 		$options = array();
+		$modules = $core->modules;
 
 		foreach ($core->modules->descriptors as $module_id => $descriptor)
 		{
@@ -108,7 +109,7 @@ class ConfigBlock extends \Icybee\ConfigBlock
 				continue;
 			}
 
-			if (!Module::is_extending($module_id, 'contents') && !Module::is_extending($module_id, 'pages'))
+			if (!$modules->is_extending($module_id, 'contents') && !$modules->is_extending($module_id, 'pages'))
 			{
 				continue;
 			}

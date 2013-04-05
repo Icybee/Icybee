@@ -9,9 +9,9 @@
  * file that was distributed with this source code.
  */
 
-namespace Icybee\Modules\Jobs;
+namespace Icybee\Modules\Forms;
 
-class Module extends \ICanBoogie\Module
+class Model extends \Icybee\Modules\Nodes\Model
 {
 
 }

@@ -14,9 +14,8 @@ return array
 	(
 		'primary' => array
 		(
-			Model::T_ACTIVERECORD_CLASS => __NAMESPACE__ . '\Page',
-			Model::T_EXTENDS => 'nodes',
-			Model::T_SCHEMA => array
+			Model::EXTENDING => 'nodes',
+			Model::SCHEMA => array
 			(
 				'fields' => array
 				(
@@ -33,8 +32,8 @@ return array
 
 		'contents' => array
 		(
-			Model::T_ACTIVERECORD_CLASS => __NAMESPACE__ . '\Content',
-			Model::T_SCHEMA => array
+			Model::CLASSNAME => 'ICanBoogie\ActiveRecord\Model',
+			Model::SCHEMA => array
 			(
 				'fields' => array
 				(
