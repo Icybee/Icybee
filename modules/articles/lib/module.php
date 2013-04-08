@@ -24,7 +24,7 @@ class Module extends \Icybee\Modules\Contents\Module
 	{
 		$assets = array
 		(
-			'css' => array(__DIR__ . '/public/page.css')
+			'css' => array(DIR . 'public/page.css')
 		);
 
 		return \ICanBoogie\array_merge_recursive

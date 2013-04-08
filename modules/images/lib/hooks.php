@@ -155,7 +155,7 @@ class Hooks
 	{
 		global $core;
 
-		$core->document->css->add('public/admin.css');
+		$core->document->css->add(DIR . 'public/admin.css');
 
 		$module_id = $event->module->id;
 
@@ -415,8 +415,8 @@ class Hooks
 		}
 
 		$document = $core->document;
-		$document->css->add('public/slimbox.css');
-		$document->js->add('public/slimbox.js');
+		$document->css->add(DIR . 'public/slimbox.css');
+		$document->js->add(DIR . 'public/slimbox.js');
 	}
 
 	static private $attached;

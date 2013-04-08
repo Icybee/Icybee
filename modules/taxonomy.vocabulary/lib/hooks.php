@@ -169,8 +169,8 @@ class Hooks
 
 		$document = $core->document;
 
-		$document->css->add('public/support.css');
-		$document->js->add('public/support.js');
+		$document->css->add(DIR . 'public/support.css');
+		$document->js->add(DIR . 'public/support.js');
 
 		$vocabularies = $core->models['taxonomy.vocabulary']
 		->joins('INNER JOIN {self}__scopes USING(vid)')

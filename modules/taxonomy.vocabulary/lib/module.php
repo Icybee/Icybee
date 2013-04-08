@@ -23,8 +23,8 @@ class Module extends \Icybee\Module
 
 		$document = $core->document;
 
-		$document->js->add('public/order.js');
-		$document->css->add('public/order.css');
+		$document->js->add(DIR . 'public/order.js');
+		$document->css->add(DIR . 'public/order.css');
 
 		$terms = $core->models['taxonomy.terms']->filter_by_vid($vid)->order('term.weight, vtid')->all;
 

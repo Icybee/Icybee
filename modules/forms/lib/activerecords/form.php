@@ -200,7 +200,7 @@ EOT
 			}
 		}
 
-		$core->document->css->add('public/page.css');
+		$core->document->css->add(DIR . 'public/page.css');
 
 		// FIXME-20110531: saving the form disables validation during the "forms/send" operation
 		//$this->form->save();

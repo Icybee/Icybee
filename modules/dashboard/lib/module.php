@@ -21,8 +21,8 @@ class Module extends \ICanBoogie\Module
 		global $core;
 
 		$core->document->title = 'Dashboard';
-		$core->document->css->add('/public/dashboard.css');
-		$core->document->js->add('/public/dashboard.js');
+		$core->document->css->add(DIR . 'public/dashboard.css');
+		$core->document->js->add(DIR . 'public/dashboard.js');
 
 		$panels = $core->configs->synthesize('dashboard', 'merge');
 

@@ -25,8 +25,8 @@ class ViewEditorElement extends Element implements \Icybee\Modules\Editor\Editor
 	{
 		parent::add_assets($document);
 
-		$document->css->add('assets/editor.css');
-		$document->js->add('assets/editor.js');
+		$document->css->add(__DIR__ . '/assets/editor.css');
+		$document->js->add(__DIR__ . '/assets/editor.js');
 	}
 
 	public function __construct(array $attributes)

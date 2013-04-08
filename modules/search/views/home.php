@@ -27,7 +27,7 @@ require_once dirname(__DIR__) . '/lib/api.php';
 $_home_limit = $core->site->metas->get('search.limits.home', 5);
 $_list_limit = $core->site->metas->get('search.limits.list', 10);
 
-$core->document->css->add('../public/page.css');
+$core->document->css->add(DIR . 'public/page.css');
 
 #
 #
@@ -124,7 +124,7 @@ if (empty($_GET['q']))
 	return;
 }
 
-$document->css->add('../public/page.css');
+$document->css->add(DIR . 'public/page.css');
 
 $search = $_GET['q'];
 $position = isset($_GET['page']) ? (int) $_GET['page'] : 0;

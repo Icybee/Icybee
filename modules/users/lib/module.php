@@ -144,7 +144,7 @@ EOT;
 	{
 		global $core;
 
-		$core->document->css->add('assets/authenticate.css');
+		$core->document->css->add(DIR . 'assets/authenticate.css');
 
 		return new \Icybee\Modules\Users\LoginComboElement;
 	}

@@ -22,8 +22,6 @@ class Module extends \Icybee\Modules\Nodes\Module
 
 	/**
 	 * Overrites the "view", "list" and "home" views to provide different titles and providers.
-	 *
-	 * @see Icybee\Modules\Nodes.Module::get_views()
 	 */
 	protected function get_views()
 	{
@@ -31,7 +29,7 @@ class Module extends \Icybee\Modules\Nodes\Module
 		(
 			'assets' => array
 			(
-				'css' => array(__DIR__ . '/assets/page.css')
+				'css' => array(DIR . 'assets/page.css')
 			),
 
 			'provider' => __NAMESPACE__ . '\ViewProvider'
