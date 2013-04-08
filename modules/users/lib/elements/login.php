@@ -34,8 +34,8 @@ class LoginForm extends Form
 	 */
 	static protected function add_assets(\Brickrouge\Document $document)
 	{
-		$document->css->add('../../assets/widget.css');
-		$document->js->add('../../assets/widget.js');
+		$document->css->add(DIR . 'public/widget.css');
+		$document->js->add(DIR . 'public/widget.js');
 
 		parent::add_assets($document);
 	}

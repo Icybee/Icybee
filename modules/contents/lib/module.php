@@ -29,7 +29,7 @@ class Module extends \Icybee\Modules\Nodes\Module
 		(
 			'assets' => array
 			(
-				'css' => array(DIR . 'assets/page.css')
+				'css' => array(DIR . 'public/page.css')
 			),
 
 			'provider' => __NAMESPACE__ . '\ViewProvider'

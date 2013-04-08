@@ -29,8 +29,8 @@ class NonceRequestForm extends Form
 	{
 		parent::add_assets($document);
 
-		$document->css->add('../../assets/widget.css');
-		$document->js->add('../../assets/widget.js');
+		$document->css->add(DIR . 'public/widget.css');
+		$document->js->add(DIR . 'public/widget.js');
 	}
 
 	public function __construct(array $attributes=array())

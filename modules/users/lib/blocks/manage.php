@@ -33,7 +33,7 @@ class ManageBlock extends \Icybee\ManageBlock
 	{
 		parent::add_assets($document);
 
-		$document->css->add('../../assets/admin.css');
+		$document->css->add(DIR . 'public/admin.css');
 		$document->js->add('manage.js');
 	}
 

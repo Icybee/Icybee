@@ -30,7 +30,7 @@ class EditBlock extends \Icybee\EditBlock
 	{
 		parent::add_assets($document);
 
-		$document->js->add('../../assets/admin.js');
+		$document->js->add(DIR . 'public/admin.js');
 	}
 
 	protected function get_permission()
