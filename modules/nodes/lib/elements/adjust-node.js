@@ -11,7 +11,7 @@ Brickrouge.Widget.AdjustNode = new Class
 
 	initialize: function(el, options)
 	{
-		this.element = $(el)
+		this.element = document.id(el)
 		this.setOptions(options)
 		this.selected = this.element.getElement('.records li.selected a')
 		this.attachSearch()

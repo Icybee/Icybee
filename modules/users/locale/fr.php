@@ -157,6 +157,10 @@ EOT
 	"%name's profile has been created." => "Le profil de %name a été créé.",
 	"%name's profile has been updated." => "Le profil de %name a été mis à jour.",
 
+	# operation/activate
+
+	"!name account is active." => "Le compte de !name est actif.",
+
 	# operation/nonce_login_request
 
 	"Invalid email address: %email." => "Adresse e-mail invalide : %email.",

@@ -13,9 +13,8 @@ return array
 	(
 		'primary' => array
 		(
-			Model::CLASSNAME => 'ICanBoogie\ActiveRecord\Model',
-			Model::T_ACTIVERECORD_CLASS => __NAMESPACE__ . '\Entry',
-			Model::T_SCHEMA => array
+			Model::ACTIVERECORD_CLASS => __NAMESPACE__ . '\Entry',
+			Model::SCHEMA => array
 			(
 				'fields' => array
 				(
@@ -25,12 +24,11 @@ return array
 					'type' => array('varchar', 64),
 					'severity' => array('integer', 3),
 					'class' => 'varchar',
-					'message' => 'text',
-					'variables' => 'blob',
+					'serialized_message' => 'text',
 					'link' => 'text',
 					'location' => 'text',
 					'referer' => 'text',
-					'timestamp' => array('timestamp', 'default' => 'current_timestamp()')
+					'timestamp' => array('timestamp', 'default' => 'CURRENT_TIMESTAMP')
 				)
 			)
 		)

@@ -144,19 +144,17 @@ class ManageBlock extends \Icybee\Modules\Files\ManageBlock
 
 	protected function render_cell_title($record, $property)
 	{
-		$path = $record->path;
-		$thumbnail_element = $record->thumbnail('$icon')->to_element();
-		$thumbnail_element->add_class('icon');
-		$thumbnail_element['data-popover-image'] = $record->thumbnail('$popup')->url;
+		$icon = $record->thumbnail('$icon')->to_element
+		(
+			array
+			(
+				'class' => 'icon',
+				'data-popover-image' => $record->thumbnail('$popup')->url
+			)
+		);
 
-		$rc  = '<a href="' . \ICanBoogie\escape($path) . '" rel="lightbox[]">';
-		$rc .= $thumbnail_element;
-		$rc .= '<input type="hidden" value="' . \ICanBoogie\escape($record->thumbnail('$popup')->url) . '" />';
-		$rc .= '</a>';
-
-		$rc .= parent::render_cell_title($record, $property);
-
-		return $rc;
+		return '<a href="' . \ICanBoogie\escape($record->path) . '" rel="lightbox[]">' . $icon . '</a>'
+		. parent::render_cell_title($record, $property);
 	}
 
 	protected function render_cell_surface($record)

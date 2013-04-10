@@ -45,26 +45,44 @@ class AdjustImage extends \Brickrouge\Widget\AdjustNode
 	{
 		$recordid = $record->nid;
 
+		/*
+		 * TODO-20130409: Modify AdjustNode.js so that we can use [data-nid] instead of A.
+		 *
+		return new Element
+		(
+			'img', array
+			(
+				'src' => $record->thumbnail('w:64;h:64')->url,
+				'alt' => $record->alt,
+				'width' => 64,
+				'height' => 64,
+				'title' => $record->title,
+
+				'data-nid' => $recordid,
+				'data-popover-image' => $record->thumbnail('$popup')->url,
+				'data-popover-target' => '.widget-adjust-image',
+				'data-title' => $record->title,
+				'data-path' => $record->path
+			)
+		);
+		*/
+
 		return new Element
 		(
 			'a', array
 			(
 				Element::CHILDREN => array
 				(
-					new Element
+					$record->thumbnail('w:64;h:64')->to_element
 					(
-						'img', array
+						array
 						(
-							'src' => $record->thumbnail('w:64;h:64')->url,
 							'alt' => $record->alt,
-							'width' => 64,
-							'height' => 64,
-							'class' => 'pop-preview',
 							'title' => $record->title,
 
 							'data-nid' => $recordid,
-							'data-pop-preview-delay' => 1000,
-							'data-pop-preview-target' => '.widget-adjust-image'
+							'data-popover-image' => $record->thumbnail('$popup')->url,
+							'data-popover-target' => '.widget-adjust-image'
 						)
 					)
 				),

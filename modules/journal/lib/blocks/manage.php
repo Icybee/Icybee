@@ -102,7 +102,7 @@ class ManageBlock extends \Icybee\ManageBlock
 
 	protected function render_cell_message($record, $property)
 	{
-		return $this->t($record->$property, unserialize($record->variables) ?: array());
+		return $record->$property;
 	}
 
 	protected function render_cell_severity($record, $property)

@@ -148,7 +148,13 @@ EOT;
 
 			if ($node instanceof \Icybee\Modules\Images\Image)
 			{
-				$preview = $node->thumbnail('$icon');
+				$preview = $node->thumbnail('$icon')->to_element
+				(
+					array
+					(
+						'data-popover-image' => $node->thumbnail('$popup')->url
+					)
+				);
 			}
 		}
 

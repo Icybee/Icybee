@@ -11,15 +11,7 @@
 
 namespace Icybee\Modules\Journal;
 
-use ICanBoogie\Operation;
-
-class Module extends \Icybee\Module
+class Model extends \ICanBoogie\ActiveRecord\Model
 {
-	public function log_operation(Operation $operation, $severity=Entry::SEVERITY_INFO, $link=null)
-	{
-		$entry = Entry::from($operation);
-		$entry->severity = $severity;
-		$entry->link = $link;
-		$entry->save();
-	}
+
 }

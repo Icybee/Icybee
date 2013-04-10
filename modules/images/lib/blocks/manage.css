@@ -19,16 +19,3 @@ table.manage td.size
 	text-align: right;
 	white-space: nowrap;
 }
-
-img#pop-preview
-{
-	border: 2px solid gray;
-	z-index: 1000;
-	background: white;
-	padding: 1px;
-	border: 1px solid #CCC;
-	
-	box-shadow: 0 10px 40px gray;
-	-moz-box-shadow: 0 10px 40px gray;
-	-webkit-box-shadow: 0 10px 40px gray;
-}

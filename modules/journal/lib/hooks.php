@@ -28,18 +28,20 @@ class Hooks
 	{
 		global $core;
 
-		if (empty($operation->response->message))
+		if (!$operation->response->message)
 		{
 			return;
 		}
 
-		try
+// 		try
 		{
 			$core->modules['journal']->log_operation($operation);
 		}
+		/*
 		catch (\Exception $e)
 		{
 			Debug::report($e);
 		}
+		*/
 	}
 }

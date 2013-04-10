@@ -29,7 +29,7 @@ use Icybee\Modules\Users\Roles\Role;
  *
  * @property \DateTime|mixed $logged_at The date at which the user logged.
  */
-class User extends \ICanBoogie\ActiveRecord
+class User extends \ICanBoogie\ActiveRecord implements \Icybee\CSSClassNames
 {
 	const UID = 'uid';
 	const EMAIL = 'email';
@@ -517,7 +517,7 @@ class User extends \ICanBoogie\ActiveRecord
 			(
 				'<q>password_salt</q> is empty in the <q>user</q> config, here is one generated randomly: %salt', array
 				(
-					'%salt' => \ICanBoogie\generate_token(64, \ICanBoogie\TOKEN_WIDE)
+					'%salt' => \ICanBoogie\generate_token_wide()
 				)
 			);
 		}

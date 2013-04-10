@@ -73,3 +73,29 @@ button+.btn.reset-default-value,input+.btn.reset-default-value,div.input-append+
 textarea+.btn.reset-default-value,div::not(.input-append)+.btn.reset-default-value{margin-top:.5em;}
 .form-primary .combo{background-color:white;padding:4px 6px;border:1px solid #ccc;border-radius:3px;}
 .form-primary .combo input,.form-primary .combo textarea,.form-primary .combo select,.form-primary .combo .like-input{background-color:#F6F6F6;}
+
+
+
+
+
+
+
+
+
+img#pop-preview
+{
+	border: 2px solid gray;
+	z-index: 1020; /* 10 above .popover */
+	background: white;
+	padding: 1px;
+	border: 1px solid #CCC;
+	
+	box-shadow: 0 10px 40px gray;
+	-moz-box-shadow: 0 10px 40px gray;
+	-webkit-box-shadow: 0 10px 40px gray;
+	
+	background: rgba(0,0,0,.8);
+	padding: 3px;
+	border-radius: 3px;
+	border: 0;
+}
