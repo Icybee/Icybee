@@ -27,6 +27,7 @@
 		"icybee/patron": "*",
 		"icybee/module-cache": "*",
 		"icybee/module-sites": "*",
+		"icybee/module-nodes": "*",
 		"icybee/module-thumbnailer": "*"
 	},
 	"autoload": {
