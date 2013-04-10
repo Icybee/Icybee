@@ -1,7 +1,6 @@
 @CHARSET "UTF-8";
 
-.node-navigation
-{
+.node-navigation {
 	clear: both;
 	color: #BFBFBF;
 	margin-top: 2em;
@@ -11,44 +10,36 @@
 	line-height: 1.33em;
 }
 
-.node-navigation a:not(:hover)
-{
+.node-navigation a:not (:hover ) {
 	color: inherit;
 }
 
-.node-navigation .list
-{
+.node-navigation .list {
 	text-align: center;
 }
 
-.node-navigation .cycle
-{
+.node-navigation .cycle {
 	margin-top: -1.33em; /* line-height */
 }
 
-.node-navigation .cycle a
-{
+.node-navigation .cycle a {
 	display: block;
 	width: 30%;
 }
 
-.node-navigation .next
-{
+.node-navigation .next {
 	float: right;
 	text-align: right;
 }
 
-.node-navigation .previous
-{
+.node-navigation .previous {
 	float: left;
 }
 
-.node-navigation .next::after
-{
+.node-navigation .next::after {
 	content: "\00A0\2192";
 }
 
-.node-navigation .previous::before
-{
+.node-navigation .previous::before {
 	content: "\2190\00A0";
 }

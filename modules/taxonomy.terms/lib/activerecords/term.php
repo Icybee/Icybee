@@ -212,7 +212,7 @@ class Term extends \ICanBoogie\ActiveRecord implements \IteratorAggregate
 	 */
 	public function css_class($modifiers=null)
 	{
-		return \Icybee\render_css_class($this->css_class_names, $modifiers);
+		return \Brickrouge\render_css_class($this->css_class_names, $modifiers);
 	}
 
 	/**

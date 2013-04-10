@@ -344,7 +344,7 @@ class View extends Object
 	/**
 	 * Renders the inner HTML of the view.
 	 *
-	 * If the data provided implements {@link \Icybee\CSSClassNames}, the class names of the
+	 * If the data provided implements {@link \Brickrouge\CSSClassNames}, the class names of the
 	 * record are added those of the view element.
 	 *
 	 * @throws Exception
@@ -400,7 +400,7 @@ class View extends Object
 			# appending record's css class names to the view element's class.
 			#
 
-			if ($bind instanceof \Icybee\CSSClassNames)
+			if ($bind instanceof \Brickrouge\CSSClassNames)
 			{
 				$this->element['class'] .= ' ' . $bind->css_class;
 			}

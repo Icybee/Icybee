@@ -27,7 +27,7 @@ use Icybee\Modules\Users\User;
  * @property-read array[string]Node $translations
  * @property-read array[string]int $translations_keys
  */
-class Node extends \ICanBoogie\ActiveRecord implements \Icybee\CSSClassNames
+class Node extends \ICanBoogie\ActiveRecord implements \Brickrouge\CSSClassNames
 {
 	const NID = 'nid';
 	const UID = 'uid';
@@ -141,7 +141,7 @@ class Node extends \ICanBoogie\ActiveRecord implements \Icybee\CSSClassNames
 	}
 
 	/**
-	 * Fires {@link \Icybee\AlterCSSClassNamesEvent} after the {@link $css_class_names} property
+	 * Fires {@link \Brickrouge\AlterCSSClassNamesEvent} after the {@link $css_class_names} property
 	 * was get.
 	 */
 	public function __get($property)
@@ -150,7 +150,7 @@ class Node extends \ICanBoogie\ActiveRecord implements \Icybee\CSSClassNames
 
 		if ($property === 'css_class_names')
 		{
-			new \Icybee\AlterCSSClassNamesEvent($this, $value);
+			new \Brickrouge\AlterCSSClassNamesEvent($this, $value);
 		}
 
 		return $value;
@@ -347,6 +347,6 @@ class Node extends \ICanBoogie\ActiveRecord implements \Icybee\CSSClassNames
 	 */
 	public function css_class($modifiers=null)
 	{
-		return \Icybee\render_css_class($this->css_class_names, $modifiers);
+		return \Brickrouge\render_css_class($this->css_class_names, $modifiers);
 	}
 }

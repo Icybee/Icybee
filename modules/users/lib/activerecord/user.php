@@ -14,7 +14,6 @@ namespace Icybee\Modules\Users;
 use ICanBoogie\ActiveRecord\RecordNotFound;
 use ICanBoogie\DateTime;
 use ICanBoogie\Exception;
-use ICanBoogie\Security;
 use ICanBoogie\PropertyNotWritable;
 
 use Icybee\Modules\Users\Roles\Role;
@@ -29,7 +28,7 @@ use Icybee\Modules\Users\Roles\Role;
  *
  * @property \DateTime|mixed $logged_at The date at which the user logged.
  */
-class User extends \ICanBoogie\ActiveRecord implements \Icybee\CSSClassNames
+class User extends \ICanBoogie\ActiveRecord implements \Brickrouge\CSSClassNames
 {
 	const UID = 'uid';
 	const EMAIL = 'email';
@@ -260,7 +259,7 @@ class User extends \ICanBoogie\ActiveRecord implements \Icybee\CSSClassNames
 
 		if ($property === 'css_class_names')
 		{
-			new \Icybee\AlterCSSClassNamesEvent($this, $value);
+			new \Brickrouge\AlterCSSClassNamesEvent($this, $value);
 		}
 
 		return $value;
@@ -642,6 +641,6 @@ class User extends \ICanBoogie\ActiveRecord implements \Icybee\CSSClassNames
 	 */
 	public function css_class($modifiers=null)
 	{
-		return \Icybee\render_css_class($this->css_class_names, $modifiers);
+		return \Brickrouge\render_css_class($this->css_class_names, $modifiers);
 	}
 }

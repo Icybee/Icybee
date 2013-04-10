@@ -26,8 +26,6 @@ class Module extends \Icybee\Module
 
 	/**
 	 * Defines the "view", "list" and "home" views.
-	 *
-	 * @see Icybee.Module::get_views()
 	 */
 	protected function get_views()
 	{

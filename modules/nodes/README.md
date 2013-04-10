@@ -61,6 +61,21 @@ cleaned with the `make clean` command.
 
 
 
+## Testing
+
+The test suite is ran with the `make test` command. [Composer](http://getcomposer.org/) is
+automatically installed as well as all the dependencies required to run the suite. The package
+directory can later be cleaned with the `make clean` command.
+
+The package is continuously tested by [Travis CI](http://about.travis-ci.org/).
+
+[![Build Status](https://travis-ci.org/Icybee/modules-nodes.png?branch=master)](https://travis-ci.org/Icybee/modules-nodes)
+
+
+
+
+
+
 ## License
 
 The module is licensed under the New BSD License - See the LICENSE file for details.
@@ -116,13 +131,30 @@ module (constructor).
 Checks if the user being deleted is used by any node. If the user is used and error
 with the `uid` key is added to the error collector.
 
-Markups
--------
+
+
+
+
+## Patron markups
+
+
+
+
 
 ### node:navigation
 
 The markup creates a navigation block with links to the list, the next record and the
 previous record.
 
+```html
+<p:node:navigation />
+```
+
+
+
+
 
 ## Dashboard panels
+
+The module provides two dashboard panels. One displays a summary of the number of records per node
+category. The other displays a list of the last nodes updated by the user.

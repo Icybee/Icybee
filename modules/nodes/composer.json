@@ -20,7 +20,8 @@
 	"require": {
 		"php": ">=5.3.0",
 		"icybee/module-installer": "*",
-		"icanboogie/activerecord": "*"
+		"icanboogie/activerecord": "*",
+		"brickrouge/css-class-names": "*"
 	},
 	"autoload": {
 		"classmap": [ "lib" ]

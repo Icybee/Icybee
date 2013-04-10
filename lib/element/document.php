@@ -208,7 +208,7 @@ class Document extends \Brickrouge\Document
 
 		if ($property === 'css_class_names')
 		{
-			new \Icybee\AlterCSSClassNamesEvent($this, $value);
+			new \Brickrouge\AlterCSSClassNamesEvent($this, $value);
 		}
 
 		return $value;
@@ -249,7 +249,7 @@ class Document extends \Brickrouge\Document
 	 */
 	public function css_class($modifiers=null)
 	{
-		return \Icybee\render_css_class($this->css_class_names, $modifiers);
+		return \Brickrouge\render_css_class($this->css_class_names, $modifiers);
 	}
 }
 
