@@ -25,6 +25,7 @@
 		"icybee/bluetihi": "*",
 		"icybee/patron": "*",
 		"icybee/module-cache": "*",
+		"icybee/module-files": "*",
 		"icybee/module-nodes": "*",
 		"icybee/module-sites": "*",
 		"icybee/module-users": "*",

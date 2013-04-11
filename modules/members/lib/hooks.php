@@ -34,7 +34,7 @@ class Hooks
 			return;
 		}
 
-		if (!($core->user instanceof \Icybee\Modules\Members\Member))
+		if (!($core->user instanceof Member))
 		{
 			return;
 		}
