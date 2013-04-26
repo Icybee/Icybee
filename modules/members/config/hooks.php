@@ -8,6 +8,7 @@ return array
 (
 	'events' => array
 	(
-		'ICanBoogie\Routing\Dispatcher::dispatch:before' => $hooks . 'before_routing_dispatcher_dispatch'
+		'ICanBoogie\Routing\Dispatcher::dispatch:before' => $hooks . 'before_routing_dispatcher_dispatch',
+		'Icybee\Modules\Members\SaveOperation::process' => $hooks . 'on_save'
 	)
 );

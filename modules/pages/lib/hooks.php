@@ -162,9 +162,9 @@ class Hooks
 	/**
 	 * Returns the home page of the target site.
 	 *
-	 * @param Icybee\Modules\Sites\Site $site
+	 * @param \Icybee\Modules\Sites\Site $site
 	 *
-	 * @return Icybee\Modules\Pages\Page|null The home page of the target site or null if there is
+	 * @return \Icybee\Modules\Pages\Page|null The home page of the target site or null if there is
 	 * none.
 	 */
 	static public function get_home(Site $site)

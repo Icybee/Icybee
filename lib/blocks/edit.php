@@ -106,7 +106,7 @@ class EditBlock extends FormBlock
 		try
 		{
 			$element = parent::render();
-			$element->save();
+			$this->element->save();
 
 			I18n::pop_scope();
 

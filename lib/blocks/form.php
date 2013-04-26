@@ -170,7 +170,9 @@ abstract class FormBlock extends \ICanBoogie\Object
 
 		+ $params['attributes'];
 
-		return $this->alter_element($this->element, $params);
+		$this->alter_element($this->element, $params);
+
+		return $this;
 	}
 
 	/**
@@ -184,7 +186,17 @@ abstract class FormBlock extends \ICanBoogie\Object
 	{
 		try
 		{
-			return (string) $this->render();
+// 			$html = (string) $this->render();
+
+			$this->render();
+
+			I18n::push_scope($this->module . '.' . \ICanBoogie\underscore(basename(strtr(get_class($this), '\\', '/'))));
+
+			$html = (string) $this->element;
+
+			I18n::pop_scope();
+
+			return $html;
 		}
 		catch (\Exception $e)
 		{

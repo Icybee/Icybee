@@ -11,6 +11,8 @@
 
 namespace Icybee\Modules\Members;
 
+use ICanBoogie\HTTP\Request;
+use ICanBoogie\Operation;
 use ICanBoogie\PermissionRequired;
 
 class Hooks
@@ -34,11 +36,54 @@ class Hooks
 			return;
 		}
 
-		if (!($core->user instanceof Member))
+		if (!($core->user instanceof \Icybee\Modules\Members\Member))
 		{
 			return;
 		}
 
 		throw new PermissionRequired("Members are not allowed to access the admin interface.");
+	}
+
+	/**
+	 * Automatically logs the member after it has created its account.
+	 *
+	 * @param \ICanBoogie\Operation\ProcessEvent $event
+	 * @param SaveOperation $target
+	 */
+	static public function on_save(\ICanBoogie\Operation\ProcessEvent $event, SaveOperation $target)
+	{
+		global $core;
+
+		if ($target->key || !$core->user->is_guest)
+		{
+			return;
+		}
+
+		try
+		{
+			Request::from(Operation::encode('users/login'), array($_SERVER))->post
+			(
+				array
+				(
+					Member::USERNAME => $event->request['email'],
+					Member::PASSWORD => $event->request['password']
+				)
+			);
+
+			$event->response->location = $event->request['redirect_to'] ?: $target->record->url('profile');
+		}
+		catch (\Exception $e)
+		{
+			if (Debug::is_dev())
+			{
+				throw $e;
+			}
+			else
+			{
+				Debug::report($e);
+
+				$target->record->login();
+			}
+		}
 	}
 }

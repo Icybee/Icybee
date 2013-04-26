@@ -75,6 +75,7 @@ class StatsDecorator
 		{
 			$html .= "\n\n" . $this->render_events();
 			$html .= "\n\n" . $this->render_queries();
+			$html .= $this->render_translations();
 		}
 
 		$html .= ' -->';
@@ -210,5 +211,22 @@ class StatsDecorator
 		}
 
 		return $html;
+	}
+
+	protected function render_translations()
+	{
+		$html = '';
+
+		foreach (\ICanBoogie\I18n\Translator::$missing as $str)
+		{
+			$html .= $str . PHP_EOL;
+		}
+
+		if (!$html)
+		{
+			return;
+		}
+
+		return "\n\nMissing translations\n————————————————————\n\n$html\n";
 	}
 }

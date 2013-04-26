@@ -25,10 +25,11 @@ abstract class ConfigBlock extends FormBlock
 {
 	public function render()
 	{
-		$element = parent::render();
-		$element->save();
+		parent::render();
 
-		return $element;
+		$this->element->save();
+
+		return $this;
 	}
 
 	protected function get_permission()

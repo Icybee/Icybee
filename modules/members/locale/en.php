@@ -6,5 +6,7 @@ return array
 	(
 		'company' => 'Company',
 		'position' => 'Position'
-	)
+	),
+
+	'module_title.members' => 'Members'
 );

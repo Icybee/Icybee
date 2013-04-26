@@ -10,4 +10,3 @@
  */
 
 require __DIR__ . '/../vendor/autoload.php';
-require __DIR__ . '/../../nodes/lib/activerecord/node.php';

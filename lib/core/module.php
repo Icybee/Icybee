@@ -75,7 +75,7 @@ class Module extends \ICanBoogie\Module
 			{
 				$block = new $class_name($this, array(), $args);
 
-				$rendered_block = $block->render();
+// 				$rendered_block = $block->render();
 			}
 			catch (\ICanBoogie\SecurityException $e)
 			{
@@ -86,13 +86,13 @@ class Module extends \ICanBoogie\Module
 			}
 			catch (\Exception $e)
 			{
-				$rendered_block = \ICanBoogie\Debug::format_alert($e);
+				$block = \ICanBoogie\Debug::format_alert($e);
 			}
 
 			I18n::pop_scope();
 			I18n::pop_scope();
 
-			return $rendered_block;
+			return $block;
 		}
 
 // 		\ICanBoogie\log_info("Block class not found for <q>$name</q> falling to callbacks.");

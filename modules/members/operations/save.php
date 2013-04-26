@@ -64,39 +64,4 @@ class SaveOperation extends \Icybee\Modules\Users\SaveOperation
 
 		return parent::validate($errors);
 	}
-
-	protected function process()
-	{
-		global $core;
-
-		$rc = parent::process();
-
-		// FIXME-20110802: If a new user was created and the current user is a guest, the new
-		// user object is used to log in the guest user.
-
-		if (!$this->key && !$core->user_id)
-		{
-			$user = $this->module->model[$rc['key']];
-
-			try
-			{
-				Request::from(array('path' => Operation::encode('users/login')), array($_SERVER))->post(array(User::USERNAME => $this->request['email'], User::PASSWORD => $this->request['password']));
-			}
-			catch (\Exception $e)
-			{
-				if (Debug::is_dev())
-				{
-					throw $e;
-				}
-				else
-				{
-					Debug::report($e);
-
-					$user->login();
-				}
-			}
-		}
-
-		return $rc;
-	}
 }

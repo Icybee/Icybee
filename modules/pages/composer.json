@@ -2,7 +2,7 @@
 	"name": "icybee/module-pages",
 	"type": "icybee-module",
 	"description": "Manages pages",
-	"keywords": ["node"],
+	"keywords": [ "page", "sitemap" ],
 	"license": "BSD-3-Clause",
 	"authors": [
 		{
@@ -20,6 +20,7 @@
 	"require": {
 		"php": ">=5.3.0",
 		"icybee/module-installer": "*",
+		"icybee/module-nodes": "*",
 		"icanboogie/activerecord": "*"
 	},
 	"autoload": {

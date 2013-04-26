@@ -1134,7 +1134,7 @@ EOT;
 					)
 				),
 
-				'title' =>$this->t('Toggle selection for record #:key', array('key' => $value)),
+				'title' => $this->t('Toggle selection for record #:key', array('key' => $value)),
 				'class' => 'checkbox-wrapper rectangle'
 			)
 		);
