@@ -71,13 +71,13 @@ class Form extends \Icybee\Modules\Nodes\Node
 	public $pageid;
 
 	/**
-	 * Returns the model definition.
+	 * Returns the model definition for the form.
 	 *
 	 * @throws Exception if the form model is not defined.
 	 *
 	 * @return array
 	 */
-	protected function get_model()
+	protected function get_form_model()
 	{
 		global $core;
 
@@ -118,7 +118,7 @@ class Form extends \Icybee\Modules\Nodes\Node
 	 */
 	protected function get_form()
 	{
-		$class = $this->model['class'];
+		$class = $this->form_model['class'];
 
 		return new $class
 		(
@@ -202,9 +202,6 @@ EOT
 
 		$core->document->css->add(DIR . 'public/page.css');
 
-		// FIXME-20110531: saving the form disables validation during the "forms/send" operation
-		//$this->form->save();
-
 		$before = $this->before;
 		$after = $this->after;
 		$form = $this->form;
@@ -251,7 +248,7 @@ EOT
 	{
 		try
 		{
-			return $this->render();
+			return (string) $this->render();
 		}
 		catch (\Exception $e)
 		{

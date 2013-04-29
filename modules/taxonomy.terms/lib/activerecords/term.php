@@ -154,7 +154,7 @@ class Term extends \ICanBoogie\ActiveRecord implements \IteratorAggregate
 	{
 		global $core;
 
-		$ids = $this->_model
+		$ids = $this->model
 		->select('nid')
 		->joins('INNER JOIN {prefix}taxonomy_terms__nodes ttnode USING(vtid)') // FIXME-20110614 Query should be cleverer then that
 		->joins(':nodes')

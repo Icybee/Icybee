@@ -119,7 +119,7 @@ class Hooks
 			}
 		}
 
-		$constructor = isset($target->constructor) ? $target->constructor : $target->_model->id;
+		$constructor = isset($target->constructor) ? $target->constructor : $target->model->id;
 		$constructor = strtr($constructor, '.', '_');
 
 		$key = 'views.targets.' . $constructor . '/' . $type;

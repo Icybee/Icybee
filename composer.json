@@ -29,6 +29,7 @@
 		"icybee/module-files": "*",
 		"icybee/module-images": "*",
 		"icybee/module-nodes": "*",
+		"icybee/module-pages": "*",
 		"icybee/module-sites": "*",
 		"icybee/module-users": "*",
 		"icybee/module-thumbnailer": "*"

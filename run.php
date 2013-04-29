@@ -27,7 +27,7 @@ $core = new Core
 		'modules paths' => array
 		(
 			DIR . 'modules' . DIRECTORY_SEPARATOR,
-			dirname(__DIR__) . DIRECTORY_SEPARATOR . 'modules' . DIRECTORY_SEPARATOR
+			\ICanBoogie\Modules\DIR
 		)
 	)
 );
