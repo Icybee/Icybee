@@ -21,10 +21,5 @@ return array
 		(
 			'dsn' => 'sqlite:' . ICanBoogie\REPOSITORY . 'local.sqlite'
 		)
-	),
-
-	'modules paths' => array
-	(
-		$path . 'modules'
 	)
 );
