@@ -11,7 +11,7 @@
 
 namespace Icybee\Modules\Taxonomy\Terms;
 
-class SaveOperation extends \Icybee\SaveOperation
+class SaveOperation extends \ICanBoogie\SaveOperation
 {
 
 }

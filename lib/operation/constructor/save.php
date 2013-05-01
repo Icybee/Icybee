@@ -11,12 +11,10 @@
 
 namespace Icybee\Operation\Constructor;
 
-class Save extends \Icybee\SaveOperation
+class Save extends \ICanBoogie\SaveOperation // FIXME-20130501: is this still used ?
 {
 	/**
 	 * Adds the constructor id to the properties.
-	 *
-	 * @see ICanBoogie\SaveOperation::get_properties()
 	 */
 	protected function get_properties()
 	{

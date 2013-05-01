@@ -347,13 +347,13 @@ class EditBlock extends FormBlock
 		global $core;
 
 		$module = $this->module;
-		$mode = isset($core->session->save_mode[SaveOperation::MODE][$module->id]) ? $core->session->save_mode[SaveOperation::MODE][$module->id] : SaveOperation::MODE_LIST;
+		$mode = isset($core->session->operation_save_mode[$module->id]) ? $core->session->operation_save_mode[$module->id] : OPERATION_SAVE_MODE_LIST;
 
 		$save_mode_options = array
 		(
-			SaveOperation::MODE_LIST => I18n\t('save_mode_list', array(), array('scope' => 'option')),
-			SaveOperation::MODE_CONTINUE => I18n\t('save_mode_continue', array(), array('scope' => 'option')),
-			SaveOperation::MODE_NEW => I18n\t('save_mode_new', array(), array('scope' => 'option')),
+			OPERATION_SAVE_MODE_LIST => I18n\t('save_mode_list', array(), array('scope' => 'option')),
+			OPERATION_SAVE_MODE_CONTINUE => I18n\t('save_mode_continue', array(), array('scope' => 'option')),
+			OPERATION_SAVE_MODE_NEW => I18n\t('save_mode_new', array(), array('scope' => 'option')),
 		);
 
 		$record = $this->record;
@@ -364,7 +364,7 @@ class EditBlock extends FormBlock
 
 			if ($url)
 			{
-				$save_mode_options[\Icybee\Modules\Nodes\SaveOperation::MODE_DISPLAY] = I18n\t('save_mode_display', array(), array('scope' => 'option'));
+				$save_mode_options[OPERATION_SAVE_MODE_DISPLAY] = I18n\t('save_mode_display', array(), array('scope' => 'option'));
 			}
 		}
 
@@ -407,7 +407,7 @@ class EditBlock extends FormBlock
 						);
 					}
 
-					if (isset($block->actions[SaveOperation::MODE]))
+					if (isset($block->actions[OPERATION_SAVE_MODE]))
 					{
 						$event->buttons[] = new SplitButton
 						(
@@ -428,7 +428,7 @@ class EditBlock extends FormBlock
 		(
 			array
 			(
-				SaveOperation::MODE => new Element
+				OPERATION_SAVE_MODE => new Element
 				(
 					Element::TYPE_RADIO_GROUP, array
 					(

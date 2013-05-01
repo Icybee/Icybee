@@ -34,6 +34,17 @@ define('Icybee\DIR', rtrim(__DIR__, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR);
  */
 define('Icybee\ASSETS', DIR . 'assets' . DIRECTORY_SEPARATOR);
 
+/**
+ * Operation save mode constants.
+ *
+ * @var string
+ */
+const OPERATION_SAVE_MODE = '#operation-save-mode';
+const OPERATION_SAVE_MODE_CONTINUE = 'continue';
+const OPERATION_SAVE_MODE_LIST = 'list';
+const OPERATION_SAVE_MODE_NEW = 'new';
+const OPERATION_SAVE_MODE_DISPLAY = 'display';
+
 /*
  * Helpers
  */

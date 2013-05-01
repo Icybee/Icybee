@@ -208,6 +208,89 @@ class Hooks
 	}
 
 	/**
+	 * Alters the response location according to the _operation save mode_.
+	 *
+	 * The following modes are supported:
+	 *
+	 * - {@link OPERATION_SAVE_MODE_LIST}: Location is the module's index.
+	 * - {@link OPERATION_SAVE_MODE_CONTINUE}: Location is the edit URL of the record.
+	 * - {@link OPERATION_SAVE_MODE_NEW}: Location is a blank edit form.
+	 * - {@link OPERATION_SAVE_MODE_DISPLAY}: Location is the URL of the record.
+	 *
+	 * The _operation save mode_ is saved in the session per module:
+	 *
+	 *     $core->session[operation_save_mode][<module_id>]
+	 *
+	 * @param \ICanBoogie\Operation\BeforeControlEvent $event
+	 * @param \ICanBoogie\SaveOperation $target
+	 */
+	static public function before_save_operation_control(\ICanBoogie\Operation\BeforeControlEvent $event, \ICanBoogie\SaveOperation $target)
+	{
+		global $core;
+
+		$mode = $event->request[OPERATION_SAVE_MODE];
+
+		if (!$mode)
+		{
+			return;
+		}
+
+		$core->session->operation_save_mode[$target->module->id] = $mode;
+
+		$eh = $core->events->attach(function(\ICanBoogie\Operation\ProcessEvent $event, \ICanBoogie\SaveOperation $operation) use($mode, $target, &$eh) {
+
+			$eh->detach();
+
+			if ($operation != $target || $event->request->uri != $event->response->location)
+			{
+				return;
+			}
+
+			$location = '/admin/' . $target->module->id;
+
+			switch ($mode)
+			{
+				case OPERATION_SAVE_MODE_CONTINUE:
+				{
+					$location .= '/' . $event->rc['key'] . '/edit';
+				}
+				break;
+
+				case OPERATION_SAVE_MODE_NEW:
+				{
+					$location .= '/new';
+				}
+				break;
+
+				case OPERATION_SAVE_MODE_DISPLAY:
+				{
+					try
+					{
+						$url = $target->record->url;
+
+						if ($url && $url{0} != '#')
+						{
+							$location = $url;
+						}
+					}
+					catch (\Exception $e)
+					{
+						return;
+					}
+				}
+				break;
+			}
+
+			$event->response->location = \ICanBoogie\Routing\contextualize($location);
+
+		});
+	}
+
+	/*
+	 * Markups
+	 */
+
+	/**
 	 * Displays the alerts issued during request processing.
 	 *
 	 * <pre>
