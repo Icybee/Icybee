@@ -11,9 +11,8 @@
 
 namespace Icybee\ActiveRecord\Model;
 
-use ICanBoogie\ActiveRecord\RecordNotFound;
-
 use ICanBoogie\ActiveRecord\Query;
+use ICanBoogie\ActiveRecord\RecordNotFound;
 
 /**
  * This is the super class for all models using constructors (currently "nodes" and "users").
@@ -26,16 +25,16 @@ class Constructor extends \ICanBoogie\ActiveRecord\Model
 
 	protected $constructor;
 
-	public function __construct($tags)
+	public function __construct(array $attributes)
 	{
-		if (empty($tags[self::T_CONSTRUCTOR]))
+		if (empty($attributes[self::T_CONSTRUCTOR]))
 		{
 			throw new \Exception('The T_CONSTRUCTOR tag is required');
 		}
 
-		$this->constructor = $tags[self::T_CONSTRUCTOR];
+		$this->constructor = $attributes[self::T_CONSTRUCTOR];
 
-		parent::__construct($tags);
+		parent::__construct($attributes);
 	}
 
 	/**
@@ -52,8 +51,7 @@ class Constructor extends \ICanBoogie\ActiveRecord\Model
 	}
 
 	/**
-	 * We override the load() method to make sure that records are loaded using their true
-	 * constructor.
+	 * Makes sure that records are found using their true constructor.
 	 */
 	public function find($key)
 	{
@@ -74,7 +72,7 @@ class Constructor extends \ICanBoogie\ActiveRecord\Model
 	}
 
 	/**
-	 * Find records using their constructor.
+	 * Finds records using their constructor.
 	 *
 	 * Unlike {@link find()} this method is designed to find records that where created by
 	 * different constructors. The result is the same, bu where {@link find()} uses a new request
@@ -89,6 +87,11 @@ class Constructor extends \ICanBoogie\ActiveRecord\Model
 	 */
 	public function find_using_constructor(array $keys)
 	{
+		if (!$keys)
+		{
+			return array();
+		}
+
 		$records = array_combine($keys, array_fill(0, count($keys), null));
 		$missing = $records;
 
@@ -151,7 +154,9 @@ class Constructor extends \ICanBoogie\ActiveRecord\Model
 	/**
 	 * Adds the "constructor = <constructor>" condition to the query.
 	 *
-	 * @return ICanBoogie\ActiveRecord\Query
+	 * @param Query $query The query to alter.
+	 *
+	 * @return Query
 	 */
 	protected function scope_own(Query $query)
 	{
