@@ -281,7 +281,12 @@ class Hooks
 				break;
 			}
 
-			$event->response->location = \ICanBoogie\Routing\contextualize($location);
+			if ($mode != OPERATION_SAVE_MODE_DISPLAY)
+			{
+				$location = \ICanBoogie\Routing\contextualize($location);
+			}
+
+			$event->response->location = $location;
 
 		});
 	}
