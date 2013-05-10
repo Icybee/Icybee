@@ -57,7 +57,7 @@ class TimeZone extends \Brickrouge\Element
 		}
 
 		$html = '';
-		$html .= '<option>&nbsp;</option>';
+		$html .= '<option value="">&nbsp;</option>';
 
 		foreach ($groups as $group => $timezones)
 		{
