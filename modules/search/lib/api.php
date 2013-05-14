@@ -3,7 +3,6 @@
 namespace Icybee\Modules\Search;
 
 use ICanBoogie\I18n;
-use ICanBoogie\Module;
 
 use Brickrouge\Pager;
 
@@ -161,7 +160,7 @@ function query_pages($search, $position, $limit)
 	(
 		'SELECT node.*, page.*, content.content AS body ' . $query_part . ' ORDER BY created DESC LIMIT ' . ($position * $limit) . ', ' . $limit, $query_args
 	)
-	->fetchAll(PDO::FETCH_CLASS, 'Icybee\Modules\Pages\Page', array($model));
+	->fetchAll(\PDO::FETCH_CLASS, 'Icybee\Modules\Pages\Page', array($model));
 
 	return array($entries, $count);
 }
@@ -305,7 +304,7 @@ function search_excerpt($keys, $text) {
 
 	// Prepare text
 	$text = ' '. strip_tags(str_replace(array('<', '>'), array(' <', '> '), $text)) .' ';
-	array_walk($keys, '_search_excerpt_replace');
+	array_walk($keys, __NAMESPACE__ . '\_search_excerpt_replace');
 	$workkeys = $keys;
 
 	// Extract a fragment per keyword for at most 4 keywords.

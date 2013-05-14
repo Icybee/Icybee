@@ -9,10 +9,11 @@
  * file that was distributed with this source code.
  */
 
+namespace Icybee\Modules\Search;
+
 use ICanBoogie\Event;
 use ICanBoogie\Exception;
 use ICanBoogie\I18n;
-use ICanBoogie\Module;
 
 use Brickrouge\Button;
 use Brickrouge\Element;
@@ -72,11 +73,11 @@ foreach ($constructors as $constructor)
 
 $document->js->add('../public/widget.js');
 
-$form = new Brickrouge\Form
+$form = new Form
 (
 	array
 	(
-		Brickrouge\Form::VALUES => $_GET,
+		Form::VALUES => $_GET,
 
 		Element::CHILDREN => array
 		(
