@@ -26,6 +26,7 @@
 		"icybee/patron": "*",
 		"icybee/module-cache": "*",
 		"icybee/module-contents": "*",
+		"icybee/module-editor": "*",
 		"icybee/module-files": "*",
 		"icybee/module-images": "*",
 		"icybee/module-nodes": "*",
