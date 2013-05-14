@@ -18,6 +18,50 @@ window.addEvent('domready', function() {
 		checkToggle()
 	}
 
+	var block = document.getElement('.block-edit--forms')
+
+	if (!block) return
+
+	var form = block.getElement('form')
+	, moldId = document.id(form.modelid)
+
+	function getDefaults(id)
+	{
+		new Request.API({
+
+			url: 'forms/' + id + '/defaults',
+
+			onSuccess: function(response)
+			{
+				Object.each(response.rc, function(value, name) {
+
+					console.log('name: ', name, value)
+
+					if (!form[name]) return
+
+					form[name].set('data-default-value', value)
+				})
+
+				Brickrouge.updateDocument(form)
+			}
+
+		}).get()
+	}
+
+	moldId.addEvent('change', function(ev) {
+
+		getDefaults(moldId.value)
+
+	})
+
+	if (moldId.value)
+	{
+		getDefaults(moldId.value)
+	}
+
+
+//	var form = document.getElement('')
+
 		/*
 		$$('form.edit div.is_notify').each
 		(

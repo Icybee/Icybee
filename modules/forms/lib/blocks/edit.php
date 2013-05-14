@@ -26,8 +26,8 @@ class EditBlock extends \Icybee\Modules\Nodes\EditBlock
 	{
 		parent::add_assets($document);
 
-		$document->css->add('../../public/admin.css');
-		$document->js->add('../../public/admin.js');
+		$document->css->add(DIR . 'public/admin.css');
+		$document->js->add(DIR . 'public/admin.js');
 	}
 
 	protected function get_attributes()

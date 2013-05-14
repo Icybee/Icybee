@@ -13,6 +13,7 @@ namespace Icybee;
 
 use ICanBoogie\Event;
 use ICanBoogie\Exception;
+use ICanBoogie\HTTP\ForceRedirect;
 use ICanBoogie\HTTP\HTTPError;
 use ICanBoogie\I18n;
 use ICanBoogie\Operation;
@@ -35,7 +36,7 @@ class EditBlock extends FormBlock
 	{
 		parent::add_assets($document);
 
-		$document->js->add(ASSETS . 'js/edit.js');
+		$document->js->add('edit.js');
 	}
 
 	/**
@@ -165,9 +166,7 @@ class EditBlock extends FormBlock
 		{
 			$url = $core->models['sites'][$record->siteid]->url;
 
-			header("Location: $url/admin/$module_id/$key/edit");
-
-			exit;
+			throw new ForceRedirect("$url/admin/$module_id/$key/edit");
 		}
 	}
 
@@ -347,6 +346,8 @@ class EditBlock extends FormBlock
 		global $core;
 
 		$module = $this->module;
+		$record = $this->record;
+
 		$mode = isset($core->session->operation_save_mode[$module->id]) ? $core->session->operation_save_mode[$module->id] : OPERATION_SAVE_MODE_LIST;
 
 		$save_mode_options = array
@@ -356,15 +357,21 @@ class EditBlock extends FormBlock
 			OPERATION_SAVE_MODE_NEW => I18n\t('save_mode_new', array(), array('scope' => 'option')),
 		);
 
-		$record = $this->record;
-
-		if ($record instanceof \ICanBoogie\Object && $record->has_property('url'))
+		try
 		{
-			$url = $record->url;
-
-			if ($url)
+			$core->views["{$module->id}/view"];
+			$save_mode_options[OPERATION_SAVE_MODE_DISPLAY] = I18n\t('save_mode_display', array(), array('scope' => 'option'));
+		}
+		catch (\Icybee\Modules\Views\Collection\ViewNotDefined $e)
+		{
+			if ($record instanceof \ICanBoogie\Object && $record->has_property('url'))
 			{
-				$save_mode_options[OPERATION_SAVE_MODE_DISPLAY] = I18n\t('save_mode_display', array(), array('scope' => 'option'));
+				$url = $record->url;
+
+				if ($url)
+				{
+					$save_mode_options[OPERATION_SAVE_MODE_DISPLAY] = I18n\t('save_mode_display', array(), array('scope' => 'option'));
+				}
 			}
 		}
 
@@ -376,53 +383,54 @@ class EditBlock extends FormBlock
 		$key = $this->key;
 		$block = $this;
 
-		\ICanBoogie\Event\attach
-		(
-			function(ActionbarToolbar\CollectEvent $event, ActionbarToolbar $sender) use($record, $module, $key, $save_mode_options, $mode, $block)
+		\ICanBoogie\Event\attach(function(ActionbarToolbar\CollectEvent $event, ActionbarToolbar $sender) use($record, $module, $key, $save_mode_options, $mode, $block)
+		{
+			global $core;
+
+			if ($record instanceof \Icybee\Modules\Nodes\Node && $record->url[0] != '#')
 			{
-				global $core;
-
-				if ($record instanceof \Icybee\Modules\Nodes\Node && $record->url[0] != '#')
-				{
-					$event->buttons[] = '<a href="' . $record->url . '" class="actionbar-link">' . I18n\t('View', array(), array('scope' => 'button')) . '</a>';
-				}
-
-				$locked = true;
-
-				if ($key)
-				{
-					$locked = $module->lock_entry($key, $lock);
-				}
-
-				if ($locked)
-				{
-					if ($key && $core->user->has_permission(Module::PERMISSION_MANAGE, $module) && $core->user->has_ownership($module, $record))
-					{
-						$event->buttons[] = new A
-						(
-							I18n\t('Delete', array(), array('scope' => 'button')), \ICanBoogie\Routing\contextualize('/admin/' . $module . '/' . $key . '/delete'), array
-							(
-								'class' => 'btn btn-danger'
-							)
-						);
-					}
-
-					if (isset($block->actions[OPERATION_SAVE_MODE]))
-					{
-						$event->buttons[] = new SplitButton
-						(
-							$save_mode_options[$mode], array
-							(
-								Element::OPTIONS => $save_mode_options,
-
-								'value' => $mode,
-								'class' => 'btn-primary record-save-mode'
-							)
-						);
-					}
-				}
+				$event->buttons[] = '<a href="' . $record->url . '" class="actionbar-link">' . I18n\t('View', array(), array('scope' => 'button')) . '</a>';
 			}
-		);
+
+			$locked = true;
+
+			if ($key)
+			{
+				$locked = $module->lock_entry($key, $lock);
+			}
+
+			if (!$locked)
+			{
+				return;
+			}
+
+			if ($key
+			&& $core->user->has_permission(Module::PERMISSION_MANAGE, $module)
+			&& $core->user->has_ownership($module, $record))
+			{
+				$event->buttons[] = new A
+				(
+					I18n\t('Delete', array(), array('scope' => 'button')), \ICanBoogie\Routing\contextualize('/admin/' . $module . '/' . $key . '/delete'), array
+					(
+						'class' => 'btn btn-danger'
+					)
+				);
+			}
+
+			if (isset($block->actions[OPERATION_SAVE_MODE]))
+			{
+				$event->buttons[] = new SplitButton
+				(
+					$save_mode_options[$mode], array
+					(
+						Element::OPTIONS => $save_mode_options,
+
+						'value' => $mode,
+						'class' => 'btn-primary record-save-mode'
+					)
+				);
+			}
+		});
 
 		return array_merge
 		(

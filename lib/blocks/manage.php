@@ -15,6 +15,13 @@ use ICanBoogie\ActiveRecord\Query;
 
 class ManageBlock extends \Icybee\Manager
 {
+	static protected function add_assets(\Brickrouge\Document $document)
+	{
+		parent::add_assets($document);
+
+		$document->js->add('manage.js');
+	}
+
 	public function __construct($module, array $tags=array())
 	{
 		global $core;
