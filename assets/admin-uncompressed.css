@@ -332,6 +332,20 @@ form.navbar-search.active:not(.focus) button {
   border-color: #A3C0E5;
   background-color: #B5D5FF;
 }
+.input-append {
+  position: relative;
+}
+.input-append .spinner {
+  float: left;
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
+.input-append .spinner  + .add-on {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  height: auto;
+}
 form {
   margin: 0;
 }
@@ -432,6 +446,28 @@ form {
 .form-primary .form-actions .inputs-list + .separator {
   display: none;
 }
+.form-primary .combo {
+  background-color: white;
+  padding: 4px 6px;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+}
+.form-primary .combo input,
+.form-primary .combo textarea,
+.form-primary .combo select,
+.form-primary .combo .like-input {
+  background-color: #F6F6F6;
+}
+button + .reset-default-value,
+input + .reset-default-value,
+div.input-append + .btn.reset-default-value {
+  margin-left: 1ex;
+}
+textarea + .reset-default-value,
+.help-block + .reset-default-value,
+div::not(.input-append) + .reset-default-value {
+  margin-top: 1em;
+}
 /**
  * Checkboxes are styled by the cunning use of wrappers. The checkbox-wrapper class is used to
  * style those wrappers.
@@ -460,27 +496,18 @@ form {
 .checkbox-wrapper.circle.checked {
   border-color: #CCA;
 }
-/*
- * Reset buttons
- */
-button + .btn.reset-default-value,
-input + .btn.reset-default-value,
-div.input-append + .btn.reset-default-value {
-  margin-left: 1ex;
-}
-textarea + .btn.reset-default-value,
-div::not(.input-append) + .btn.reset-default-value {
-  margin-top: .5em;
-}
-.form-primary .combo {
-  background-color: white;
-  padding: 4px 6px;
-  border: 1px solid #ccc;
+#popover-image {
+  border: 2px solid gray;
+  z-index: 1020;
+  background: white;
+  padding: 1px;
+  border: 1px solid #CCC;
+  position: absolute;
+  top: 0;
+  left: 0;
+  box-shadow: 0 10px 40px gray;
+  background: rgba(0, 0, 0, 0.8);
+  padding: 3px;
   border-radius: 3px;
-}
-.form-primary .combo input,
-.form-primary .combo textarea,
-.form-primary .combo select,
-.form-primary .combo .like-input {
-  background-color: #F6F6F6;
+  border: 0;
 }

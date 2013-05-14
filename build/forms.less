@@ -119,55 +119,6 @@ form {
 	display: none;
 }
 
-/**
- * Checkboxes are styled by the cunning use of wrappers. The checkbox-wrapper class is used to
- * style those wrappers.
- */
-.checkbox-wrapper {
-	width: 14px;
-	height: 14px;
-}
-
-.checkbox-wrapper.disabled {
-	visibility: hidden;
-}
-
-.checkbox-wrapper input {
-	display: none;
-}
-
-.checkbox-wrapper.circle,
-.checkbox-wrapper.rectangle {
-	border: 1px solid #CFCFCF;
-}
-
-.checkbox-wrapper.circle.checked,
-.checkbox-wrapper.rectangle.checked {
-	background-color: #FFC;
-}
-
-.checkbox-wrapper.circle {
-	border-radius: 10px;
-}
-
-.checkbox-wrapper.circle.checked {
-	border-color: #CCA;	
-}
-
-/*
- * Reset buttons
- */
-button + .btn.reset-default-value,
-input + .btn.reset-default-value,
-div.input-append + .btn.reset-default-value {
-	margin-left: 1ex;
-}
-
-textarea + .btn.reset-default-value,
-div::not(.input-append) + .btn.reset-default-value {
-	margin-top: .5em;
-}
-
 .form-primary .combo {
 	background-color: white;
 	padding: 4px 6px;

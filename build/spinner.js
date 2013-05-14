@@ -104,5 +104,3 @@ Brickrouge.Widget.Spinner = new Class
 
 	}
 })
-
-;

@@ -1,7 +1,6 @@
 <?php
 
 $src = $_SERVER['argv'][1];
-$dst = $_SERVER['argv'][2];
 
 if (!function_exists('curl_init'))
 {
@@ -32,17 +31,8 @@ curl_setopt_array
 				'js_code' => file_get_contents($src),
 				'utf8' => 1
 			)
-		),
-
-		CURLOPT_RETURNTRANSFER => true
+		)
 	)
 );
 
-$rc = curl_exec($ch);
-
-if ($rc !== false)
-{
-	file_put_contents($dst, $rc);
-}
-
-echo 'Compressed "' . $src . '" to "' . $dst . '"' . PHP_EOL;
+curl_exec($ch);

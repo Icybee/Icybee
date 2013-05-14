@@ -1,50 +1,65 @@
-ADMIN_LESS = ./build/admin.less
-ADMIN = ./assets/admin
-ADMIN_UNCOMPRESSED = ./assets/admin-uncompressed
-INCLUDE_PATH = --include-path="./framework/Brickrouge/lib"
-LESS_COMPILER ?= `which lessc`
-WATCHR ?= `which watchr`
-DIRS = modules/editor/lib/editors/rte
+#DIRS = modules/editor/lib/editors/rte
 
-build:
-	@if test ! -z ${LESS_COMPILER}; then \
-		lessc ${INCLUDE_PATH} ${ADMIN_LESS} > ${ADMIN_UNCOMPRESSED}.css; \
-		lessc ${INCLUDE_PATH} -x ${ADMIN_LESS} > ${ADMIN}.css; \
-		echo "Brickrouge successfully built! - `date`"; \
-	else \
-		echo "You must have the LESS compiler installed in order to build Brickrouge."; \
-		echo "You can install it by running: npm install less -g"; \
-	fi
+CSS_FILES = \
+	build/admin.less \
+	build/actionbar.less \
+	build/alerts.less \
+	build/checkbox-wrapper.less \
+	build/forms.less \
+	build/mixins.less \
+	build/popover-image.less \
+	build/reset.less \
+	build/spinner.less \
+	build/variables.less
+
+CSS_COMPRESSOR = `which lessc`
+CSS_COMPRESSED = assets/admin.css
+CSS_UNCOMPRESSED = assets/admin-uncompressed.css
+
+JS_FILES = \
+	build/string.js \
+	build/admin.js \
+	build/actionbar.js \
+	build/forms.js \
+	build/checkbox-wrapper.js \
+	build/popover-image.js \
+	build/reset.js \
+	build/save-mode.js \
+	build/spinner.js \
+	build/widget.js
+
+JS_COMPRESSOR = build/compress.php
+JS_COMPRESSED = assets/admin.js
+JS_UNCOMPRESSED = assets/admin-uncompressed.js
+
+all: $(JS_COMPRESSED) $(JS_UNCOMPRESSED) $(CSS_COMPRESSED) $(CSS_UNCOMPRESSED)
+
+$(JS_COMPRESSED): $(JS_UNCOMPRESSED)
+	php $(JS_COMPRESSOR) $^ >$@
+
+$(JS_UNCOMPRESSED): $(JS_FILES)
+	cat $^ >$@
+
+$(CSS_COMPRESSED): $(CSS_FILES)
+	$(CSS_COMPRESSOR) -x build/admin.less >$@
+
+$(CSS_UNCOMPRESSED): $(CSS_FILES)
+	$(CSS_COMPRESSOR) build/admin.less >$@
+
+#sub:
+#	@set -e; for d in $(DIRS); do echo "Making $$d"; $(MAKE) -C $$d ; done
+
+composer.phar:
+	@echo "Installing composer..."
+	@curl -s https://getcomposer.org/installer | php
 	
-	@cat ./build/admin.js ./build/actionbar.js ./build/widget.js ./build/spinner.js > ${ADMIN_UNCOMPRESSED}.js
-	@php ./build/compress.php ${ADMIN_UNCOMPRESSED}.js ${ADMIN}.js;
+vendor: composer.phar
+	@php composer.phar install --prefer-source --dev
 	
-	@set -e; for d in $(DIRS); do echo "Making $$d"; $(MAKE) -C $$d ; done
-
-watch:
-	echo "Watching less files..."
-	watchr -e "watch('lib/.*\.less') { system 'make' }"
-
-install:
-	@if [ ! -f "composer.phar" ] ; then \
-		echo "Installing composer..." ; \
-		curl -s https://getcomposer.org/installer | php ; \
-	fi
-	
-	@php composer.phar install
-
-test:
-	@if [ ! -d "vendor" ] ; then \
-		make install ; \
-	fi
-
+test: vendor
 	@phpunit
 
-doc:
-	@if [ ! -d "vendor" ] ; then \
-		make install ; \
-	fi
-
+doc: vendor
 	@mkdir -p "docs"
 
 	@apigen \
@@ -53,11 +68,14 @@ doc:
 	--exclude "*/composer/*" \
 	--exclude "*/tests/*" \
 	--template-config /usr/share/php/data/ApiGen/templates/bootstrap/config.neon
-	
-clean:
-	@rm -fR docs
-	@rm -fR vendor
-	@rm -f composer.lock
-	@rm -f composer.phar
 
-.PHONY: build watch
+clean:
+	rm -f $(CSS_COMPRESSED)
+	rm -f $(CSS_UNCOMPRESSED)
+	rm -f $(JS_COMPRESSED)
+	rm -f $(JS_UNCOMPRESSED)
+	
+	rm -f composer.phar
+	rm -f composer.lock
+	rm -Rf docs
+	rm -Rf vendor
