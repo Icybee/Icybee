@@ -99,7 +99,7 @@ class Hooks
 		$event->form = $form;
 		$event->stop();
 
-		\ICanBoogie\Event\attach
+		$core->events->attach
 		(
 			get_class($operation) . '::process', function(Operation\ProcessEvent $event, Operation $operation) use ($record, $form)
 			{

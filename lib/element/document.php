@@ -149,27 +149,24 @@ class Document extends \Brickrouge\Document
 
 		$key = '<!-- document-css-placeholder-' . md5(uniqid()) . ' -->';
 
-		Event\attach
-		(
-			function(PageController\RenderEvent $event, PageController $target) use($engine, $template, $key)
+		$core->events->attach(function(PageController\RenderEvent $event, PageController $target) use($engine, $template, $key)
+		{
+			#
+			# The event is chained so that is gets executed once the event chain has been
+			# processed.
+			#
+
+			$event->chain(function(PageController\RenderEvent $event) use($engine, $template, $key)
 			{
-				#
-				# The event is chained so that is gets executed once the event chain has been
-				# processed.
-				#
+				global $core;
 
-				$event->chain(function(PageController\RenderEvent $event) use($engine, $template, $key)
-				{
-					global $core;
+				$document = $core->document;
 
-					$document = $core->document;
+				$html = $template ? $engine($template, $document->css) : (string) $document->css;
 
-					$html = $template ? $engine($template, $document->css) : (string) $document->css;
-
-					$event->html = str_replace($key, $html, $event->html);
-				});
-			}
-		);
+				$event->html = str_replace($key, $html, $event->html);
+			});
+		});
 
 		return PHP_EOL . $key;
 	}

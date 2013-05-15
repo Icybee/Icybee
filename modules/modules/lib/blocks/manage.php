@@ -473,7 +473,9 @@ EOT;
 
 	protected function attach_buttons()
 	{
-		\ICanBoogie\Event\attach
+		global $core;
+
+		$core->events->attach
 		(
 			function(ActionbarToolbar\CollectEvent $event, ActionbarToolbar $target)
 			{

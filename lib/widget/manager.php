@@ -291,10 +291,9 @@ class Manager extends Element
 		$search = $this->render_search();
 		$browse = $this->browse;
 
-		\ICanBoogie\Event\attach(function(ActionbarSearch\AlterInnerHTMLEvent $event, ActionbarSearch $sender) use($search, $browse) {
-
+		$core->events->attach(function(ActionbarSearch\AlterInnerHTMLEvent $event, ActionbarSearch $sender) use($search, $browse)
+		{
 			$event->html .= $browse . $search;
-
 		});
 
 		return $rc;

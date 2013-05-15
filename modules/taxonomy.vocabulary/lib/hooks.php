@@ -490,7 +490,7 @@ class Hooks
 
 			$event->view->range['limit'] = null; // cancel limit TODO-20120403: this should be improved.
 
-			\ICanBoogie\Event\attach(array(__CLASS__, 'on_alter_provider_result'));
+			$core->events->attach(array(__CLASS__, 'on_alter_provider_result'));
 
 			return;
 		}
@@ -499,7 +499,7 @@ class Hooks
 
 		$term = $core->models['taxonomy.terms']->where('vid = ? AND termslug = ?', array($vocabulary->vid, $condition_value))->order('term.weight')->one;
 
-		Event\attach(function(ActiveRecordProvider\AlterContextEvent $event, ActiveRecordProvider $target) use($term) {
+		$core->events->attach(function(ActiveRecordProvider\AlterContextEvent $event, ActiveRecordProvider $target) use($term) {
 
 			$event->context['term'] = $term;
 
@@ -616,7 +616,7 @@ class Hooks
 
 
 		/*
-		\ICanBoogie\Event\attach
+		$core->events->attach
 		(
 			'Icybee\Modules\Pages\Page::render_title', function()
 			{

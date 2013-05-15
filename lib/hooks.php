@@ -317,9 +317,11 @@ class Hooks
 	 */
 	static public function markup_alerts(array $args, $engine, $template)
 	{
+		global $core;
+
 		$key = '<!-- alert-markup-placeholder-' . uniqid() . ' -->';
 
-		Event\attach
+		$core->events->attach
 		(
 			function(PageController\RenderEvent $event, PageController $target) use($engine, $template, $key)
 			{

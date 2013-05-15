@@ -383,7 +383,7 @@ class EditBlock extends FormBlock
 		$key = $this->key;
 		$block = $this;
 
-		\ICanBoogie\Event\attach(function(ActionbarToolbar\CollectEvent $event, ActionbarToolbar $sender) use($record, $module, $key, $save_mode_options, $mode, $block)
+		$core->events->attach(function(ActionbarToolbar\CollectEvent $event, ActionbarToolbar $sender) use($record, $module, $key, $save_mode_options, $mode, $block)
 		{
 			global $core;
 
