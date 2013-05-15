@@ -15,8 +15,11 @@ use ICanBoogie\Debug;
 use ICanBoogie\Event;
 use ICanBoogie\Events;
 use ICanBoogie\Exception;
+use ICanBoogie\HTTP\Dispatcher;
 use ICanBoogie\HTTP\Request;
 use ICanBoogie\HTTP\Response;
+use ICanBoogie\HTTP\RedirectResponse;
+use ICanBoogie\HTTP\WeightedDispatcher;
 use ICanBoogie\Operation;
 use ICanBoogie\Routes;
 
@@ -26,6 +29,72 @@ use Icybee\Modules\Pages\PageController;
 
 class Hooks
 {
+	/*
+	 * Events
+	 */
+
+	static public function on_http_dispatcher_alter(Dispatcher\AlterEvent $event, Dispatcher $dispatcher)
+	{
+		/**
+		 * Router for admin routes.
+		 *
+		 * This event hook handles all "/admin/" routes. It may redirect the user to the proper "admin"
+		 * location e.g. '/admin/' => '/fr/admin/'. If the "admin" route is detected, the Icybee admin
+		 * interface is presented, granted the user has an access permission, otherwise the
+		 * user is asked to authenticate.
+		 */
+		$dispatcher['admin:categories'] = new WeightedDispatcher(function(Request $request)
+		{
+			global $core;
+
+			$path = \ICanBoogie\normalize_url_path(\ICanBoogie\Routing\decontextualize($request->path));
+
+			if (strpos($path, '/admin/') !== 0)
+			{
+				return;
+			}
+
+			$category = substr($path, 7, -1);
+
+			if ($category)
+			{
+				$user = $core->user;
+				$routes = $core->routes;
+
+				foreach ($core->modules->descriptors as $module_id => $descriptor)
+				{
+					if (!isset($core->modules[$module_id]) || !$user->has_permission(Module::PERMISSION_ACCESS, $module_id)
+					|| $descriptor[Module::T_CATEGORY] != $category)
+					{
+						continue;
+					}
+
+					$route_id = "admin:$module_id";
+
+					if (empty($routes[$route_id]))
+					{
+						$route_id = "admin:$module_id/manage"; //TODO-20120829: COMPAT, 'manage' should disappear.
+
+						if (empty($routes[$route_id]))
+						{
+							continue;
+						}
+					}
+
+					$route = $routes[$route_id];
+
+					return new RedirectResponse
+					(
+						\ICanBoogie\Routing\contextualize($route->pattern), 302, array
+						(
+							'Icybee-Redirected-By' => __FILE__ . '::' . __LINE__
+						)
+					);
+				}
+			}
+		}, 'before:pages');
+	}
+
 	static public function before_routes_collect(Routes\BeforeCollectEvent $event, Routes $target)
 	{
 		static $magic = array
