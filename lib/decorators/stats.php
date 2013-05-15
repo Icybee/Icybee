@@ -12,10 +12,37 @@
 namespace Icybee;
 
 use ICanBoogie\Debug;
+use ICanBoogie\HTTP\Dispatcher;
 
 class StatsDecorator
 {
 	protected $component;
+
+	/**
+	 * Adds statistic information about the response if it is of type "text/html".
+	 *
+	 * @param Dispatcher\DispatchEvent $event
+	 * @param Dispatcher $target
+	 */
+	static public function on_dispatcher_dispatch(Dispatcher\DispatchEvent $event, Dispatcher $target)
+	{
+		#
+		# We chain the event so that it is called after the event callbacks have been processed,
+		# for instance a _cache_ callback that may cache the response.
+		#
+
+		$event->chain(function(Dispatcher\DispatchEvent $event, Dispatcher $target)
+		{
+			$response = $event->response;
+
+			if (!$response || $response->content_type->type != 'text/html')
+			{
+				return;
+			}
+
+			$response->body = (string) new \Icybee\StatsDecorator($response->body);
+		});
+	}
 
 	public function __construct($component)
 	{

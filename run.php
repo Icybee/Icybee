@@ -34,33 +34,8 @@ $core = new Core
 
 \Brickrouge\Helpers::patch('t', 'ICanBoogie\I18n\t');
 \Brickrouge\Helpers::patch('render_exception', 'ICanBoogie\Debug::format_alert');
-
-\Brickrouge\Helpers::patch('get_document', function()
-{
-	return \ICanBoogie\Core::get()->document;
-});
-
-\Brickrouge\Helpers::patch('check_session', function()
-{
-	return \ICanBoogie\Core::get()->session;
-});
-
-/*
-\Brickrouge\Helpers::patch('store_form_errors', function($name, $errors) {
-
-	\ICanBoogie\Core::get()->session->brickrouge_errors[$name] = $errors;
-
-});
-
-\Brickrouge\Helpers::patch('retrieve_form_errors', function($name) {
-
-	return \ICanBoogie\Core::get()->session->brickrouge_errors[$name];
-
-});
-*/
-
-# FIXME-20121205: we need to run the core before attaching events, otherwise config events won't
-# be attached.
+\Brickrouge\Helpers::patch('get_document', function() use($core) { return $core->document; });
+\Brickrouge\Helpers::patch('check_session', function() use($core) { return $core->session; });
 
 // \ICanBoogie\log_time('core created');
 
@@ -79,7 +54,7 @@ use ICanBoogie\HTTP\Dispatcher;
 use ICanBoogie\HTTP\RedirectResponse;
 use ICanBoogie\HTTP\Request;
 
-Event\attach(function(Dispatcher\CollectEvent $event, Dispatcher $dispatcher)
+$core->events->attach(function(Dispatcher\CollectEvent $event, Dispatcher $dispatcher)
 {
 	/**
 	 * Router for admin routes.
@@ -139,24 +114,4 @@ Event\attach(function(Dispatcher\CollectEvent $event, Dispatcher $dispatcher)
 			}
 		}
 	};
-});
-
-Event\attach(function(Dispatcher\DispatchEvent $event, Dispatcher $target)
-{
-	#
-	# We chain the event so that it is called after the event callbacks have been processed,
-	# for instance a _cache_ callback that may cache the response.
-	#
-
-	$event->chain(function(Dispatcher\DispatchEvent $event, Dispatcher $target)
-	{
-		$response = $event->response;
-
-		if (!$response || $response->content_type->type != 'text/html')
-		{
-			return;
-		}
-
-		$response->body = (string) new \Icybee\StatsDecorator($response->body);
-	});
 });
