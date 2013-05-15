@@ -33,7 +33,8 @@
 		"icybee/module-pages": "*",
 		"icybee/module-sites": "*",
 		"icybee/module-users": "*",
-		"icybee/module-thumbnailer": "*"
+		"icybee/module-thumbnailer": "*",
+		"icybee/module-views": "*"
 	},
 	"autoload": {
 		"classmap": [ "lib/", "includes/", "modules/" ],
