@@ -39,6 +39,6 @@ $core = new Core
 
 // \ICanBoogie\log_time('core created');
 
-$core->run();
+$core();
 
 // \ICanBoogie\log_time('core is running');
