@@ -100,10 +100,6 @@ table.manage th.filtering:hover>div {
 	border-color: #cfcfcf;
 }
 
-table.manage th.has-no-label>div {
-	padding: 0;
-}
-
 table.manage th.key>div {
 	height: auto;
 }
@@ -116,12 +112,16 @@ table.manage td:last-child,table.manage th:last-child>div {
 	padding-right: 16px;
 }
 
-table.manage th.has-no-label>div>a {
-	display: none;
+table.manage th.has-options > div {
+	padding-right: 28px;
 }
 
-table.manage th.has-options>div {
-	padding-right: 28px;
+table.manage th.has-no-label > div {
+	padding: 0;
+}
+
+table.manage th.has-no-label > div > a {
+	display: none;
 }
 
 table.manage th {
@@ -163,14 +163,14 @@ table.manage th:hover .dropdown,table.manage th .dropdown.open {
 table.manage th .dropdown.open {
 	border-left-style: solid;
 	background: white;
-	background: -moz-linear-gradient(top, rgba(255, 255, 255, 0), white );
+	background: -moz-linear-gradient(top, rgba(255, 255, 255, 0), white);
+	background: linear-gradient(to bottom, rgba(255, 255, 255, 0), white);
 }
 
 table.manage th.filtering .dropdown {
-	/*border-left-color: #cfcfcf;*/
-	/*border-left-style: dashed;*/
 	background: #FFC;
-	background: -moz-linear-gradient(top, rgba(255, 255, 204, 0), #FFC );
+	background: -moz-linear-gradient(top, rgba(255, 255, 204, 0), #FFC);
+	background: linear-gradient(to bottom, rgba(255, 255, 204, 0), #FFC);
 }
 
 table.manage th .dropdown-menu {
@@ -194,7 +194,7 @@ table.manage th.pull-right .dropdown-menu:before {
 }
 
 table.manage th.has-no-label .dropdown {
-	border-left-color: transparent;
+	border: none;
 }
 
 table.manage th a:hover {
