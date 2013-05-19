@@ -55,19 +55,18 @@ table.manage tbody a {
 	text-decoration: none;
 }
 
-table.manage .asc .title {
-	background: url(manage/asc.png) no-repeat right center;
-	padding-right: 10px;
+table.manage .asc .title:after,
+table.manage .desc .title:after {
+	font-family: FontAwesome;
+	margin-left: .5ex;
 }
 
-table.manage .desc .title {
-	background: url(manage/desc.png) no-repeat right center;
-	padding-right: 10px;
-}
+table.manage .asc .title:after {
+	content: "\f0d8";
+}	
 
-table.manage th a.filter {
-	background: url(manage/filter.png) no-repeat right center;
-	padding-right: 16px;
+table.manage .desc .title:after {
+	content: "\f0d7";
 }
 
 table.manage th {
@@ -116,7 +115,7 @@ table.manage th.has-options > div {
 	padding-right: 28px;
 }
 
-table.manage th.has-no-label > div {
+table.manage th.has-no-label:not(:first-child) > div {
 	padding: 0;
 }
 
@@ -128,15 +127,18 @@ table.manage th {
 	line-height: 28px;
 }
 
-table.manage th.orderable:hover,table.manage th.filters:hover,table.manage th.filtering:hover {
+table.manage th.orderable:hover,
+table.manage th.filters:hover,
+table.manage th.filtering:hover {
 	background: -moz-linear-gradient(top, #ddd, #E8E8E8 60%);
 	background: -webkit-linear-gradient(top, #ddd, #E8E8E8 60%);
-	background: linear-gradient(top, #ddd, #E8E8E8 60%);
+	background: linear-gradient(to bottom, #ddd, #E8E8E8 60%);
 }
 
-table.manage th.filtering .title {
-	background: url(manage/filter.png) no-repeat right center;
-	padding-right: 16px;
+table.manage th.filtering .title:after {
+	font-family: FontAwesome;
+	content: "\F0b0";
+	margin-left: .5ex;
 }
 
 table.manage th .dropdown {
@@ -163,14 +165,14 @@ table.manage th:hover .dropdown,table.manage th .dropdown.open {
 table.manage th .dropdown.open {
 	border-left-style: solid;
 	background: white;
-	background: -moz-linear-gradient(top, rgba(255, 255, 255, 0), white);
 	background: linear-gradient(to bottom, rgba(255, 255, 255, 0), white);
 }
 
-table.manage th.filtering .dropdown {
-	background: #FFC;
-	background: -moz-linear-gradient(top, rgba(255, 255, 204, 0), #FFC);
-	background: linear-gradient(to bottom, rgba(255, 255, 204, 0), #FFC);
+table.manage th.filtering > div {
+	background: #ffc;
+	background: -moz-radial-gradient(center bottom, ellipse farthest-side, #ffc, rgba(255, 255, 204, 0));
+	background: -webkit-radial-gradient(center bottom, ellipse farthest-side, #ffc, rgba(255, 255, 204, 0));
+	background: radial-gradient(center bottom, ellipse farthest-side, #ffc, rgba(255, 255, 204, 0));
 }
 
 table.manage th .dropdown-menu {
@@ -292,11 +294,15 @@ table.manage tr.section-title td {
 	font-weight: bold;
 }
 
-table.manage tr+tr.section-title td,table.manage tr.section-title+tr td {
+table.manage tr + tr.section-title td,
+table.manage tr.section-title + tr td {
 	border-color: #cfcfcf;
 }
 
-table.manage th.size,table.manage td.size,table.manage th.date,table.manage td.date {
+table.manage th.size,
+table.manage td.size,
+table.manage th.date,
+table.manage td.date {
 	text-align: right;
 	white-space: nowrap;
 }
@@ -304,21 +310,6 @@ table.manage th.size,table.manage td.size,table.manage th.date,table.manage td.d
 table.manage th.date,table.manage td.date {
 	width: 16ex;
 	white-space: nowrap;
-}
-
-table.manage a.view {
-	display: inline-block;
-	height: 1em;
-	overflow: hidden;
-	padding-left: 11px;
-	margin-right: 5px;
-	width: 0;
-	background: url(manage/view.png) 0 bottom no-repeat;
-	vertical-align: baseline;
-}
-
-table.manage a.view:hover {
-	background-position: -30px bottom;
 }
 
 table.manage tfoot td {
@@ -381,33 +372,32 @@ OPTIONS
 	margin-right: 8px;
 }
 
-.actionbar span.browse a,table.manage span.browse a {
+.actionbar span.browse a,
+table.manage span.browse a {
+	color: inherit;
 	border: 1px solid transparent;
 	border-radius: 4px;
 	display: block;
-	width: 20px;
-	height: 0;
-	padding: 20px 2px 0px 2px;
-	overflow: hidden;
-	background: no-repeat center;
+	padding: 0 5px;
 	position: relative;
 	float: left;
+	text-decoration: none;
+}
+
+.actionbar.fixed span.browse a:hover {
+	color: black;
 }
 
 .actionbar span.browse a {
-	padding-top: 26px;
+	font-size: 18px;
+	line-height: 18px;
+	padding: 4px;
 }
 
-table.manage span.browse a {
-	padding-top: 22px;
-}
-
-.actionbar span.browse a.previous,table.manage span.browse a.previous {
-	background-image: url(manage/arrow-right.png);
-}
-
-.actionbar span.browse a.next,table.manage span.browse a.next {
-	background-image: url(manage/arrow-left.png);
+.actionbar span.browse i,
+table.manage span.browse i {
+	line-height: inherit;
+	display: block;
 }
 
 table.manage span.browse a:hover {
@@ -420,11 +410,13 @@ table.manage span.browse a:hover {
 	background-color: #F6F6F6;
 }
 
-.actionbar span.browse a.previous:active,table.manage span.browse a.previous:active {
+.actionbar span.browse a.previous:active,
+table.manage span.browse a.previous:active {
 	left: -2px;
 }
 
-.actionbar span.browse a.next:active,table.manage span.browse a.next:active {
+.actionbar span.browse a.next:active,
+table.manage span.browse a.next:active {
 	left: 2px;
 }
 

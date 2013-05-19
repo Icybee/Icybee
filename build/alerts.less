@@ -17,25 +17,43 @@
 	}
 }
 
+@keyframes xhr-animation {
+	from {
+		transform: rotate(0deg);
+	}
+	
+	to {
+		transform: rotate(360deg);
+	}
+}
+
 .xhr-dummy {
 	position: fixed;
 	top: 0;
 	right: 0;
 	bottom: 0;
 	left: 0;
-	background: rgba(232, 232, 232, .3) url(spinner.gif) center no-repeat;
+	background: rgba(232, 232, 232, .3);
+	cursor: wait;
 }
 
 .xhr-message {
-	display: none;
+	display: block;
 	position: fixed;
 	top: 50%;
-	margin-top: -15px;
+	margin-top: -200px;
 	left: 0;
 	right: 0;
 	text-align: center;
-	color: white;
-	text-shadow: 0 0 10px gray;
-	font-size: 30px;
+	color: rgba(255,255,255, .8);
+	text-shadow: 0 0 10px rgba(232, 232, 232, .3);
 	line-height: 1em;
+	font-size: 400px;
+	animation: xhr-animation 1s infinite linear;
+	cursor: wait;
+}
+
+.xhr-message:before {
+	content: "\f01e";
+	font-family: FontAwesome;
 }

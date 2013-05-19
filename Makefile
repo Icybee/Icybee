@@ -1,5 +1,3 @@
-#DIRS = modules/editor/lib/editors/rte
-
 CSS_FILES = \
 	build/admin.less \
 	build/actionbar.less \
@@ -7,6 +5,7 @@ CSS_FILES = \
 	build/checkbox-wrapper.less \
 	build/forms.less \
 	build/mixins.less \
+	build/navigation.less \
 	build/popover-image.less \
 	build/reset.less \
 	build/spinner.less \
@@ -19,6 +18,7 @@ CSS_UNCOMPRESSED = assets/admin-uncompressed.css
 JS_FILES = \
 	build/string.js \
 	build/admin.js \
+	build/alerts.js \
 	build/actionbar.js \
 	build/forms.js \
 	build/checkbox-wrapper.js \
@@ -27,15 +27,22 @@ JS_FILES = \
 	build/save-mode.js \
 	build/spinner.js \
 	build/widget.js
-
-JS_COMPRESSOR = build/compress.php
+	
+JS_COMPRESSOR = php build/compress.php
 JS_COMPRESSED = assets/admin.js
 JS_UNCOMPRESSED = assets/admin-uncompressed.js
 
-all: $(JS_COMPRESSED) $(JS_UNCOMPRESSED) $(CSS_COMPRESSED) $(CSS_UNCOMPRESSED)
+MOOTOOLS_FILES = \
+	build/mootools-core.js \
+	build/mootools-more.js
+
+MOOTOOLS_COMPRESSED = assets/mootools.js
+MOOTOOLS_UNCOMPRESSED = assets/mootools-uncompressed.js
+
+all: $(JS_COMPRESSED) $(JS_UNCOMPRESSED) $(CSS_COMPRESSED) $(CSS_UNCOMPRESSED) $(MOOTOOLS_UNCOMPRESSED) $(MOOTOOLS_COMPRESSED)
 
 $(JS_COMPRESSED): $(JS_UNCOMPRESSED)
-	php $(JS_COMPRESSOR) $^ >$@
+	$(JS_COMPRESSOR) $^ >$@
 
 $(JS_UNCOMPRESSED): $(JS_FILES)
 	cat $^ >$@
@@ -45,9 +52,12 @@ $(CSS_COMPRESSED): $(CSS_FILES)
 
 $(CSS_UNCOMPRESSED): $(CSS_FILES)
 	$(CSS_COMPRESSOR) build/admin.less >$@
+	
+$(MOOTOOLS_UNCOMPRESSED): $(MOOTOOLS_FILES)
+	cat $^ >$@
 
-#sub:
-#	@set -e; for d in $(DIRS); do echo "Making $$d"; $(MAKE) -C $$d ; done
+$(MOOTOOLS_COMPRESSED): $(MOOTOOLS_UNCOMPRESSED)
+	$(JS_COMPRESSOR) $^ >$@
 
 composer.phar:
 	@echo "Installing composer..."
@@ -74,6 +84,8 @@ clean:
 	rm -f $(CSS_UNCOMPRESSED)
 	rm -f $(JS_COMPRESSED)
 	rm -f $(JS_UNCOMPRESSED)
+	rm -f $(MOOTOOLS_COMPRESSED)
+	rm -f $(MOOTOOLS_UNCOMPRESSED)
 	
 	rm -f composer.phar
 	rm -f composer.lock

@@ -106,15 +106,15 @@ class Navigation extends \Brickrouge\Element
 		}
 		catch (PropertyNotDefined $e) {}
 
-		$selected = $matching_route ? $descriptors[$matching_route->module][Module::T_CATEGORY] : 'dashboard';
+		$active = $matching_route ? $descriptors[$matching_route->module][Module::T_CATEGORY] : 'dashboard';
 
 		$rc .= '<ul class="nav">';
 
 		foreach ($links as $path => $label)
 		{
-			if (strpos($selected, $path) === 0)
+			if (strpos($active, $path) === 0)
 			{
-				$rc .= '<li class="selected">';
+				$rc .= '<li class="active">';
 			}
 			else
 			{

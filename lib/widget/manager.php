@@ -275,7 +275,7 @@ class Manager extends Element
 			$head = $this->render_head();
 			$foot = $this->render_foot();
 
-			$rc .= '<table class="group manage" cellpadding="4" cellspacing="0">';
+			$rc .= '<table class="manage" cellpadding="4" cellspacing="0">';
 
 			$rc .= $head . PHP_EOL . $foot . PHP_EOL . $body . PHP_EOL;
 
@@ -1467,8 +1467,8 @@ EOT;
 
 			$browse = <<<EOT
 <span class="browse">
-	<a href="?start=$previous" class="browse previous">&lt;</a>
-	<a href="?start=$next" class="browse next">&gt;</a>
+	<a href="?start=$previous" class="browse previous"><i class="icon-arrow-left"></i></a>
+	<a href="?start=$next" class="browse next"><i class="icon-arrow-right"></i></a>
 </span>
 EOT;
 		}

@@ -1264,3 +1264,7 @@ ul.icons-ul > li .icon-li {
 .icon-share-sign:before {
   content: "\f14d";
 }
+
+a[class^="icon-"]:before {
+	text-decoration: none;
+}

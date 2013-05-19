@@ -75,12 +75,19 @@ window.addEvent('click:relay(.group-toggler input[type="checkbox"])', function(e
 	var parent = el.getParent('.group-toggler')
 
 	parent[el.checked ? 'addClass' : 'removeClass']('enabled')
-})
+})/*
+ * This file is part of the Icybee package.
+ *
+ * (c) Olivier Laviale <olivier.laviale@gmail.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 
 /**
  * Provides a notice for long XHR.
  */
-!function() {
+;!function() {
 
 	var dummy = null
 	, dummyTween = null
@@ -94,7 +101,7 @@ window.addEvent('click:relay(.group-toggler input[type="checkbox"])', function(e
 		if (!dummy)
 		{
 			dummy = new Element('div.xhr-dummy')
-			message = new Element('div.xhr-message', { html: 'Loadin...' })
+			message = new Element('div.xhr-message')
 			dummyTween = new Fx.Tween(dummy, { property: 'opacity', duration: 'short', link: 'cancel' })
 			dummyTween.set(0)
 			messageTween = new Fx.Tween(message, { property: 'opacity', duration: 'short', link: 'cancel' })

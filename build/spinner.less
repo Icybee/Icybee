@@ -1,7 +1,7 @@
 /*
  * spinner
  */
- 
+
 .spinner {
 	border: 1px solid;
 	border-color: #CCC #CCC #BBB;
@@ -15,8 +15,21 @@
 	color: inherit !important;
 	text-decoration: none !important;
 	font-size: 13px;
-	background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAMAgMAAAArG7R0AAAAA3NCSVQICAjb4U/gAAAACVBMVEX///8zMzMzMzOVNhaoAAAAA3RSTlMARJnnsGU/AAAACXBIWXMAAAsSAAALEgHS3X78AAAAHnRFWHRTb2Z0d2FyZQBBZG9iZSBGaXJld29ya3MgQ1M1LjGrH0jrAAAAKklEQVQImS3DoREAQAgDwcOgX1MdmqqiqfIj2JkFHtAQgvTyEbEivXz8fMU/CS+a0J12AAAAAElFTkSuQmCC');
+	position: relative;
 	
+	&::after {
+		content: '';
+		display: block;
+		position: absolute;
+		right: 2px;
+		bottom: 2px;
+		width: 0;
+		height: 0;
+		border-bottom: 10px solid;
+		border-left: 10px solid transparent;
+		opacity: .8;
+	}
+
 	&:hover {
 		background-color: #E6E6E6;
 	}
@@ -29,13 +42,12 @@
 	&:not(.placeholder) .spinner-placeholder,
 	&.placeholder .spinner-content {
 		display: none;
-	}
+	}	
 }
 
 .popover.contrast .spinner {
 	border-color: #454545;
 	box-shadow: 0 1px 1px hsla(0, 0%, 100%, 0.075) inset;
-	background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAMCAYAAABWdVznAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAEpJREFUeNpi+P//PwMReCaMzcRAGMxE5jCRopiQhpnYBJlIUYxLw0x8bmQiRTG6hplEhBhcA1GKYRqIVgwCjKDYIwUwMZAIAAIMAFDNLOnGORGSAAAAAElFTkSuQmCC');
 	background-color: hsla(0, 0%, 0%, 0.3);
 	
 	&:hover {
