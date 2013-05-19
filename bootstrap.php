@@ -39,7 +39,7 @@ define('Icybee\ASSETS', DIR . 'assets' . DIRECTORY_SEPARATOR);
  *
  * @var string
  */
-const OPERATION_SAVE_MODE = '#operation-save-mode';
+const OPERATION_SAVE_MODE = '_operation_save_mode';
 const OPERATION_SAVE_MODE_CONTINUE = 'continue';
 const OPERATION_SAVE_MODE_LIST = 'list';
 const OPERATION_SAVE_MODE_NEW = 'new';

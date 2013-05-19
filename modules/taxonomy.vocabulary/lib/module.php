@@ -12,6 +12,7 @@
 namespace Icybee\Modules\Taxonomy\Vocabulary;
 
 use ICanBoogie\I18n;
+use ICanBoogie\Operation;
 
 class Module extends \Icybee\Module
 {
@@ -29,9 +30,9 @@ class Module extends \Icybee\Module
 		$terms = $core->models['taxonomy.terms']->filter_by_vid($vid)->order('term.weight, vtid')->all;
 
 		$rc  = '<form id="taxonomy-order" method="post">';
-		$rc .= '<input type="hidden" name="#operation" value="' . self::OPERATION_ORDER . '" />';
-		$rc .= '<input type="hidden" name="#destination" value="' . $this . '" />';
-		$rc .= '<input type="hidden" name="' . \ICanBoogie\Operation::KEY . '" value="' . $vid . '" />';
+		$rc .= '<input type="hidden" name="' . Operation::NAME . '" value="' . self::OPERATION_ORDER . '" />';
+		$rc .= '<input type="hidden" name="' . Operation::DESTINATION . '" value="' . $this . '" />';
+		$rc .= '<input type="hidden" name="' . Operation::KEY . '" value="' . $vid . '" />';
 		$rc .= '<ol>';
 
 		foreach ($terms as $term)
