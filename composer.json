@@ -30,6 +30,7 @@
 		"icybee/module-editor": "*",
 		"icybee/module-files": "*",
 		"icybee/module-images": "*",
+		"icybee/module-modules": "*",
 		"icybee/module-nodes": "*",
 		"icybee/module-pages": "*",
 		"icybee/module-sites": "*",
