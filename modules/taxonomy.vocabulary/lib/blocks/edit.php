@@ -18,13 +18,15 @@ use Brickrouge\Form;
 use Brickrouge\Text;
 use Brickrouge\Widget;
 
+use Icybee\Modules\Nodes\TitleSlugCombo;
+
 class EditBlock extends \Icybee\EditBlock
 {
 	static protected function add_assets(\Brickrouge\Document $document)
 	{
 		parent::add_assets($document);
 
-		$document->css->add('../../public/admin.css');
+		$document->css->add(DIR . 'public/admin.css');
 	}
 
 	protected function get_attributes()
@@ -51,7 +53,7 @@ class EditBlock extends \Icybee\EditBlock
 		(
 			parent::get_children(), array
 			(
-				Vocabulary::VOCABULARY => new Widget\TitleSlugCombo
+				Vocabulary::VOCABULARY => new TitleSlugCombo
 				(
 					array
 					(
