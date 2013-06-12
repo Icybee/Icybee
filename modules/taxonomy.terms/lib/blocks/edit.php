@@ -11,11 +11,11 @@
 
 namespace Icybee\Modules\Taxonomy\Terms;
 
-use Icybee\Modules\Taxonomy\Terms\Term;
-
 use Brickrouge\Element;
 use Brickrouge\Form;
 use Brickrouge\Widget;
+
+use Icybee\Modules\Nodes\TitleSlugCombo;
 
 class EditBlock extends \Icybee\EditBlock
 {
@@ -34,7 +34,7 @@ class EditBlock extends \Icybee\EditBlock
 		(
 			parent::get_children(), array
 			(
-				Term::TERM => new Widget\TitleSlugCombo
+				Term::TERM => new TitleSlugCombo
 				(
 					array
 					(
