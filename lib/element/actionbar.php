@@ -143,7 +143,7 @@ class ActionbarNav extends Element
 
 		if (Route::is_pattern($pattern))
 		{
-			$pathname = Route::format($pattern, $core->request->path_params);
+			$pathname = Route::format_pattern($pattern, $core->request->path_params);
 		}
 
 		$link = new A($title, \ICanBoogie\Routing\contextualize($pathname), array('class' => 'actionbar-link'));

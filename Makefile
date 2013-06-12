@@ -27,8 +27,8 @@ JS_FILES = \
 	build/save-mode.js \
 	build/spinner.js \
 	build/widget.js
-	
-JS_COMPRESSOR = php build/compress.php
+
+JS_COMPRESSOR = curl -X POST -s --data-urlencode 'js_code@$^' --data-urlencode 'utf8=1' http://marijnhaverbeke.nl/uglifyjs
 JS_COMPRESSED = assets/admin.js
 JS_UNCOMPRESSED = assets/admin-uncompressed.js
 
@@ -42,7 +42,7 @@ MOOTOOLS_UNCOMPRESSED = assets/mootools-uncompressed.js
 all: $(JS_COMPRESSED) $(JS_UNCOMPRESSED) $(CSS_COMPRESSED) $(CSS_UNCOMPRESSED) $(MOOTOOLS_UNCOMPRESSED) $(MOOTOOLS_COMPRESSED)
 
 $(JS_COMPRESSED): $(JS_UNCOMPRESSED)
-	$(JS_COMPRESSOR) $^ >$@
+	$(JS_COMPRESSOR) >$@
 
 $(JS_UNCOMPRESSED): $(JS_FILES)
 	cat $^ >$@
@@ -52,20 +52,20 @@ $(CSS_COMPRESSED): $(CSS_FILES)
 
 $(CSS_UNCOMPRESSED): $(CSS_FILES)
 	$(CSS_COMPRESSOR) build/admin.less >$@
-	
+
 $(MOOTOOLS_UNCOMPRESSED): $(MOOTOOLS_FILES)
 	cat $^ >$@
 
 $(MOOTOOLS_COMPRESSED): $(MOOTOOLS_UNCOMPRESSED)
-	$(JS_COMPRESSOR) $^ >$@
+	$(JS_COMPRESSOR) >$@
 
 composer.phar:
 	@echo "Installing composer..."
 	@curl -s https://getcomposer.org/installer | php
-	
+
 vendor: composer.phar
 	@php composer.phar install --prefer-source --dev
-	
+
 test: vendor
 	@phpunit
 
@@ -86,7 +86,6 @@ clean:
 	rm -f $(JS_UNCOMPRESSED)
 	rm -f $(MOOTOOLS_COMPRESSED)
 	rm -f $(MOOTOOLS_UNCOMPRESSED)
-	
 	rm -f composer.phar
 	rm -f composer.lock
 	rm -Rf docs

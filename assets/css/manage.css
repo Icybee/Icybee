@@ -49,8 +49,8 @@ table.manage thead tr {
 	background-color: #E8E8E8;
 }
 
-table.manage thead a,
-table.manage tbody a {
+table.manage thead a:not(.btn),
+table.manage tbody a:not(.btn) {
 	color: inherit;
 	text-decoration: none;
 }

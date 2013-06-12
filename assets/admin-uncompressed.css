@@ -581,6 +581,18 @@ div::not(.input-append) + .reset-default-value {
 .checkbox-wrapper.circle.checked {
   border-color: #CCA;
 }
+.widget-bordered {
+  background-color: white;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+}
+.form-primary .widget-bordered input,
+.form-primary .widget-bordered textarea,
+.form-primary .widget-bordered select,
+.form-primary .widget-bordered .like-input {
+  background-color: #F6F6F6;
+}
 #popover-image {
   border: 2px solid gray;
   z-index: 1020;

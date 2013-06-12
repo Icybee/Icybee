@@ -1,6 +1,10 @@
 /*
  * Bootstrap
  */
+ 
+.alert .alert-actions {
+	margin-top: 1em;
+}
 
 .input-append,
 .input-prepend {
@@ -14,7 +18,7 @@
 
 .nav-tabs > .active > a,
 .nav-tabs > .active > a:hover {
-    border-color: #ccc #ccc transparent;
+	border-color: #ccc #ccc transparent;
 }
 
 .nav-tabs > li:hover:not(.active) > a {
@@ -35,30 +39,30 @@
 }
 
 .navbar .dropdown-menu {
-    margin-top: 12px;
+	margin-top: 12px;
 }
 
 .navbar .dropdown-menu:before {
-    border-bottom: 7px solid rgba(0, 0, 0, 0.2);
-    border-left: 7px solid transparent;
-    border-right: 7px solid transparent;
-    content: "";
-    display: inline-block;
-    left: 9px;
-    position: absolute;
-    top: -7px;
+	border-bottom: 7px solid rgba(0, 0, 0, 0.2);
+	border-left: 7px solid transparent;
+	border-right: 7px solid transparent;
+	content: "";
+	display: inline-block;
+	left: 9px;
+	position: absolute;
+	top: -7px;
 }
 
 .navbar .dropdown-menu:after {
-    border-bottom: 6px solid #FFF;
-    border-left: 6px solid transparent;
-    border-right: 6px solid transparent;
-    content: "";
-    display: inline-block;
-    left: 10px;
-    position: absolute;
-    top: -6px;
-} 
+	border-bottom: 6px solid #FFF;
+	border-left: 6px solid transparent;
+	border-right: 6px solid transparent;
+	content: "";
+	display: inline-block;
+	left: 10px;
+	position: absolute;
+	top: -6px;
+}
 
 .sortable label {
 	display: inline;
@@ -70,35 +74,34 @@
 }
 
 .label {
-    background-color: #999;
-    border-radius: 3px;
-    color: white;
-    font-size: 9.75px;
-    font-weight: bold;
-    padding: 1px 3px 2px;
-    text-transform: uppercase;
+	background-color: #999;
+	border-radius: 3px;
+	color: white;
+	font-size: 9.75px;
+	font-weight: bold;
+	padding: 1px 3px 2px;
+	text-transform: uppercase;
 }
 
 .label-important {
-    background-color: #DA4F49;
+	background-color: #DA4F49;
 }
 
 .label-warning {
-    background-color: #FAA732;
+	background-color: #FAA732;
 }
 
 .label-success {
-    background-color: #5BB75B;
+	background-color: #5BB75B;
 }
 
 .label-info {
-    background-color: #49AFCD;
+	background-color: #49AFCD;
 }
 
 /*
  * OVERRIDES BRICKROUGE
  */
- 
 .help-block {
 	color: inherit;
 	font-size: 12px;
@@ -119,15 +122,18 @@ label {
 	margin-bottom: 5px;
 }
 
-input, textarea, select,
-.uneditable-input, .like-input {
+input,
+textarea,
+select,
+.uneditable-input,
+.like-input {
 	color: inherit;
 }
 
 .input-append input,
 .input-append .uneditable-input {
-  float: none;
-  display: inline-block;
+	float: none;
+	display: inline-block;
 }
 
 .input > label:last-child {
@@ -142,7 +148,7 @@ input, textarea, select,
 	font-size: 12px;
 }
 
-.popover.contrast input,
+.popover.contrast input:not([type="checkbox"]):not([type="radio"]),
 .popover.contrast textarea,
 .popover.contrast .uneditable-input,
 .popover.contrast .like-input,
@@ -152,15 +158,14 @@ input, textarea, select,
 	line-height: 16px;
 }
 
+.popover.contrast .btn {
+	line-height: 16px;
+}
+
 .popover.contrast select,
 .popover.contrast input[type="file"] {
 	height: 26px;
 	line-height: 26px;
-}
-
-.popover.contrast .btn,
-.popover.contrast button {
-	line-height: 14px;
 }
 
 .popover.contrast .popover-content {

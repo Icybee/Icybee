@@ -561,7 +561,7 @@ class Manager extends Element
 	{
 		global $core;
 
-		static $supported_types = array('varchar', 'text'/*, 'timestamp', 'datetime', 'date'*/);
+		static $supported_types = array('char', 'varchar', 'text'/*, 'timestamp', 'datetime', 'date'*/);
 
 		$where = array();
 		$params = array();
