@@ -21,7 +21,7 @@ class Module extends \Icybee\Module
 	 * The scope for which to retreive columns.
 	 *
 	 * @return
-	 * An array of columns for the Icybee\Manager class
+	 * An array of columns for the Icybee\ManageBlock class
 	 */
 
 	/*

@@ -4,7 +4,7 @@
 	padding: 16px 16px 15px 16px;
 	font-size: 12px;
 	height: 28px;
-	
+
 	&.fixed {
 		color: white;
 		left: 0;
@@ -22,7 +22,7 @@
 		box-shadow: 0 5px 20px rgba(0, 0, 0, .5);
 
 		+ #contents {
-		
+
 			padding-top: 60px;	
 		}
 	}
@@ -31,33 +31,78 @@
 	.pull-right > * {
 		float: left;
 	}
-	
+
 	.pull-left > * + *,
 	.pull-right > * + *,
 	.pull-left + .pull-left {
 		margin-left: 16px;
 	}
-	
+
 	.btn-toolbar {
 		margin: 0 0 0 16px;
-		
+
 		> * {
 			vertical-align: top;
 		}
 	}
 
-	.btn-group {
+	.btn,
+	.btn-group,
+	.inline {
 		display: inline-block;
 		vertical-align: top;
 	}
 
-	button {
-		padding: 3px 10px;
-	}
-	
 	.btn {
 		line-height: 18px;
 	}
+
+	.like-input, select, input, .uneditable-input {
+		background: #F6F6F6;
+		padding: 3px 5px;
+		height: 18px;
+		line-height: 18px;
+	}
+
+	select, input[type="file"] {
+		height: 28px;
+		line-height: 28px;
+	}
+}
+
+// Title
+
+.actionbar-title {
+	display: inline-block;
+
+	h1 {
+		margin: 0;
+		padding: 0;
+		display: inline-block;
+		font-size: 24px;
+		font-weight: normal;
+		line-height: 28px;
+
+		a {
+			color: inherit;
+		}
+	}
+
+	.dropdown-toggle {
+		border: 1px solid transparent;
+		border-radius: 3px;
+		box-shadow: none;
+		padding: 5px;
+	}
+
+	.btn-group .caret {
+		vertical-align: middle;
+	}
+}
+
+.actionbar-title .dropdown-toggle:hover,
+.actionbar-title .btn-group.open .dropdown-toggle {
+	border-color: #ccc;
 }
 
 /*
@@ -73,7 +118,7 @@
 	> * + * {
 		margin-left: 8px;
 	}
-	
+
 	.dropdown-menu {
 		left: auto;
 		right: 0;
@@ -104,59 +149,6 @@
 	}
 }
 
-.actionbar-title {
-	display: inline-block;
-	
-	h1 {
-		margin: 0;
-		padding: 0;
-		display: inline;
-		font-size: 22px;
-		font-weight: normal;
-		
-		a {
-			color: inherit;
-		}
-	}
-	
-	.dropdown-toggle {
-		border: 1px solid transparent;
-		border-radius: 3px;
-		box-shadow: none;
-		padding: 5px;
-	}
-	
-	.btn-group .caret {
-		vertical-align: middle;
-	}
-}
-
-.actionbar-title .dropdown-toggle:hover,
-.actionbar-title .btn-group.open .dropdown-toggle {
-	border-color: #ccc;
-}
-
-.actionbar.fixed {
-
-	.actionbar-title .dropdown-toggle:hover,
-	.actionbar-title .btn-group.open .dropdown-toggle {
-		border-color: #444;
-	}
-	
-	.actionbar-title .caret {
-		border-top-color: white;
-	}	
-
-	.navbar-search {
-		background: #333;
-		background: -webkit-linear-gradient(top, #212121 5%, #333);
-		background: -moz-linear-gradient(top, #212121 5%, #333);
-		background: linear-gradient(to bottom, #212121 5%, #333);
-		border-color: #454545;
-		box-shadow: 0 0 1px black inset;
-	}
-}
-
 .actionbar + #contents > .alert-wrapper {
 	margin-top: -1px;
 	padding-top: 1px;
@@ -166,10 +158,11 @@
  *
  */
  
-form.navbar-search {
+form.navbar-search,
+.listview-search {
 	border: 1px solid #CFCFCF;
 	font-size: 14px; /* we use a fixed value so that the height of the form is the same as the browse element*/
-	padding: 0 0.5ex 0 0;
+	padding: 0;
 	background-color: #F6F6F6;
 	border-radius: 4px;
 	float: left;
@@ -180,23 +173,23 @@ form.navbar-search {
 		position: relative;
 		border-radius: 0;
 		box-shadow: none;
-		padding: 3px .5ex;
+		padding: 4px .5ex;
 		width: 24ex !important;
-		
+
 		&.placeholder {
 			font-style: italic;
 			color: @lightTextColor;
 		}
-		
+
 		&:focus {
 			box-shadow: none;
 		}
-		
+
 		&:not(.placeholder) + button {
 			visibility: visible;
 		}
 	}
-	
+
 	button {
 		color: @lightTextColor;
 		border: none;
@@ -206,30 +199,64 @@ form.navbar-search {
 		text-shadow: none;
 		line-height: 16px !important;
 		padding: 0;
-		margin-left: 1ex;
+		margin: 0 .5ex 0 1ex;
 		box-shadow: none;
 		visibility: hidden;
 		opacity: .6;
 		overflow: hidden;
 		vertical-align: middle;
-		
+
 		&:hover,
 		&:active {
 			opacity: .8;
 			background-color: transparent;
 			background-position: -312px 0;	
 		}
-		
+
 		&:active {
 			opacity: 1;
 		}
 	}
-	
+
 	&.active:not(.focus) {
 		background-color: #FFC;
-		
+
 		button {
 			color: @lightTextColor;
 		}
+	}
+}
+
+/*
+ * Fixed
+ */
+ 
+.actionbar.fixed {
+
+	.actionbar-title .dropdown-toggle:hover,
+	.actionbar-title .btn-group.open .dropdown-toggle {
+		border-color: #444;
+	}
+
+	.actionbar-title .caret {
+		border-top-color: white;
+	}
+
+	.navbar-search,
+	.listview-search,
+	input,
+	select {
+		background: #333;
+		background: -webkit-linear-gradient(top, #212121 5%, #333);
+		background: -moz-linear-gradient(top, #212121 5%, #333);
+		background: linear-gradient(to bottom, #212121 5%, #333);
+		border-color: #454545;
+		box-shadow: 0 0 1px black inset;
+	}
+
+	.navbar-search input,
+	.listview-search input {
+		background: transparent;
+		box-shadow: none;
 	}
 }

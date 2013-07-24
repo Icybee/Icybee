@@ -29,7 +29,14 @@ class Actionbar extends Element
 {
 	public function __construct(array $attributes=array())
 	{
-		parent::__construct('div', $attributes + array('class' => 'actionbar'));
+		parent::__construct
+		(
+			'div', $attributes + array
+			(
+				'class' => 'actionbar',
+				'data-display' => ''
+			)
+		);
 	}
 
 	protected function render_inner_html()
@@ -88,12 +95,25 @@ class Actionbar extends Element
 			throw new \Brickrouge\ElementIsEmpty;
 		}
 
-		return <<<EOT
-<div class="pull-left">
-	{$actionbar_title}{$actionbar_new}{$actionbar_navigation}
-</div>
+		$actionbar_contextual = (string) new ActionbarContextual();
 
-<div class="pull-right">{$actionbar_search}{$actionbar_toolbar}</div>
+		return <<<EOT
+<div class="actionbar-faces">
+	<div class="actionbar-front">
+		<div class="actionbar-brand pull-left">
+			{$actionbar_title}{$actionbar_new}{$actionbar_navigation}
+		</div>
+
+		<div class="pull-right">
+			<div class="actionbar-actions">{$actionbar_toolbar}</div>
+			<div class="actionbar-search">{$actionbar_search}</div>
+		</div>
+	</div>
+
+	<div class="actionbar-back">
+		$actionbar_contextual
+	</div>
+</div>
 EOT;
 	}
 }

@@ -26,21 +26,27 @@ class ManageBlock extends \Icybee\ManageBlock
 		);
 	}
 
-	protected function columns()
+	/**
+	 * Adds the following columns:
+	 *
+	 * - `vocabulary`
+	 * - `scope`
+	 */
+	protected function get_available_columns()
 	{
-		return array
+		return array_merge(parent::get_available_columns(), array
 		(
 			Vocabulary::VOCABULARY => array
 			(
-				'label' => 'Vocabulary'
+				'title' => 'Vocabulary'
 			),
 
 			Vocabulary::SCOPE => array
 			(
-				'label' => 'Portée',
+				'title' => 'Portée',
 				'orderable' => false
 			)
-		);
+		));
 	}
 
 	protected function render_cell_vocabulary($record, $tag)

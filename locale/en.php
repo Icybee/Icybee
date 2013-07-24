@@ -62,12 +62,41 @@ return array
 		'done' => 'The configuration options have been saved.'
 	),
 
-	'manager' => array
+	/*
+	 * lib/blocks/manage.php
+	 */
+
+	'manage' => array
 	(
+		'column' => array
+		(
+			'created' => 'Date created',
+			'created_at' => 'Date created',
+			'updated' => 'Date updated',
+			'updated_at' => 'Date updated'
+		),
+
 		'create_first' => '<strong><a href="!url">Create the first record…</a></strong>',
-		'edit' => 'Edit the entry',
-		'edit_named' => 'Edit the entry: :title'
+
+		'edit' => 'Edit the record',
+		'edit_named' => 'Edit the record: :title',
+
+		'records_count' => array
+		(
+			'none' => 'No records',
+			'one' => 'One record',
+			'other' => ':count records'
+		),
+
+		'records_count_with_filters' => array
+		(
+			'none' => 'No records match the filters',
+			'one' => 'One record matches the filters',
+			'other' => ':count records match the filters'
+		)
 	),
+
+	#
 
 	'module_category' => array
 	(

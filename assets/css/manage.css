@@ -1,83 +1,82 @@
-@charset "utf-8";
+/** listview **/
+/* table */
 
-#manager div.alert {
-	line-height: 4em;
-	text-align: center;
-	margin: 0;
-	border-radius: 0;
-}
-
-#manager div.alert .close {
-	display: none;
-}
-
-table.manage {
+.listview table {
 	width: 100%;
+	border-collapse: collapse;
+	border-spacing: 0;
 }
 
 /* cells */
 
-table.manage td,
-table.manage th {
-	text-align: left;
-	padding: 4px;
-}
-
-table.manage th {
+.listview th {
 	border-bottom: 1px solid #CCC;
+	padding: 0;
+	text-align: left;
 	white-space: nowrap;
 }
 
-table.manage th i[class^="icon-"] {
+.listview th > div,
+.listview td {
+	padding: 4px;
+}
+
+.listview th i[class^="icon-"] {
 	line-height: normal;	
 }
 
-table.manage th.measure,
-table.manage td.measure {
+.listview th.measure,
+.listview td.measure,
+.listview th.pull-right,
+.listview td.pull-right {
 	text-align: right;
 }
 
-table.manage th.pull-right,
-table.manage td.pull-right {
-	text-align: right;
+.listview th.pull-right,
+.listview td.pull-right {
 	float: none;
 }
 
-/* thead */
-
-table.manage thead tr {
-	background-color: #E8E8E8;
-}
-
-table.manage thead a:not(.btn),
-table.manage tbody a:not(.btn) {
+.listview tbody a:not(.btn) {
 	color: inherit;
 	text-decoration: none;
 }
 
-table.manage .asc .title:after,
-table.manage .desc .title:after {
+/* thead */
+
+.listview thead tr {
+	background-color: #E8E8E8;
+}
+
+.listview-interactive thead th > div > a,
+.listview-interactive thead .dropdown > a {
+	color: inherit;
+}
+
+.listview-interactive thead .asc .title:after,
+.listview-interactive thead .desc .title:after {
 	font-family: FontAwesome;
 	margin-left: .5ex;
 }
 
-table.manage .asc .title:after {
+.listview-interactive thead .asc .title:after {
 	content: "\f0d8";
-}	
+}
 
-table.manage .desc .title:after {
+.listview-interactive thead .desc .title:after {
 	content: "\f0d7";
 }
 
-table.manage th {
+.listview-interactive th {
 	padding: 0;
+	line-height: 28px;
 }
 
-table.manage th a {
+.listview-interactive th a {
 	display: block;
 }
 
-table.manage th>div {
+.listview-interactive th > div {
 	padding: 0 4px;
 	border-left: 1px solid transparent;
 	border-right: 1px solid transparent;
@@ -85,241 +84,259 @@ table.manage th>div {
 	height: 28px;
 }
 
-table.manage th:first-child>div {
+.listview th:first-child > div {
 	border-left-width: 0;
 }
 
-table.manage th:last-child>div {
+.listview th:last-child > div {
 	border-right-width: 0;
 }
 
-table.manage th.orderable:hover>div,
-table.manage th.filters:hover>div,
-table.manage th.filtering:hover>div {
+.listview th.orderable:hover>div,
+.listview th.filters:hover>div,
+.listview th.filtering:hover>div {
 	border-color: #cfcfcf;
 }
 
-table.manage th.key>div {
-	height: auto;
-}
-
-table.manage td:first-child,table.manage th:first-child>div {
+.listview td:first-child,
+.listview th:first-child > div {
 	padding-left: 16px;
 }
 
-table.manage td:last-child,table.manage th:last-child>div {
+.listview td:last-child,
+.listview th:last-child > div {
 	padding-right: 16px;
 }
 
-table.manage th.has-options > div {
+.listview th.has-options > div {
 	padding-right: 28px;
 }
 
-table.manage th.has-no-label:not(:first-child) > div {
+.listview th.has-no-label:not(:first-child) > div {
 	padding: 0;
 }
 
-table.manage th.has-no-label > div > a {
+.listview th.has-no-label > div > a {
 	display: none;
 }
 
-table.manage th {
-	line-height: 28px;
-}
-
-table.manage th.orderable:hover,
-table.manage th.filters:hover,
-table.manage th.filtering:hover {
+.listview th.orderable:hover,
+.listview th.filters:hover,
+.listview th.filtering:hover {
 	background: -moz-linear-gradient(top, #ddd, #E8E8E8 60%);
 	background: -webkit-linear-gradient(top, #ddd, #E8E8E8 60%);
 	background: linear-gradient(to bottom, #ddd, #E8E8E8 60%);
 }
 
-table.manage th.filtering .title:after {
+.listview th.filtering .title:after {
 	font-family: FontAwesome;
 	content: "\F0b0";
 	margin-left: .5ex;
 }
 
-table.manage th .dropdown {
+.listview th .dropdown {
 	position: absolute;
 	right: 0;
 	top: 0;
 	border-left: 1px dashed transparent;
 }
 
-table.manage th.has-no-label .dropdown {
+.listview th.has-no-label .dropdown {
 	right: auto;
 	width: 100%;
 }
 
-table.manage th .dropdown>a {
+.listview th .dropdown>a {
 	padding: 0 4px;
 	text-align: center;
 }
 
-table.manage th:hover .dropdown,table.manage th .dropdown.open {
+.listview th:hover .dropdown,
+.listview th .dropdown.open {
 	border-left-color: #cfcfcf;
 }
 
-table.manage th .dropdown.open {
+.listview th .dropdown.open {
 	border-left-style: solid;
 	background: white;
 	background: linear-gradient(to bottom, rgba(255, 255, 255, 0), white);
 }
 
-table.manage th.filtering > div {
+.listview th.filtering > div {
 	background: #ffc;
 	background: -moz-radial-gradient(center bottom, ellipse farthest-side, #ffc, rgba(255, 255, 204, 0));
 	background: -webkit-radial-gradient(center bottom, ellipse farthest-side, #ffc, rgba(255, 255, 204, 0));
 	background: radial-gradient(center bottom, ellipse farthest-side, #ffc, rgba(255, 255, 204, 0));
 }
 
-table.manage th .dropdown-menu {
+.listview th .dropdown-menu {
 	text-align: left;
 	margin-left: -6px;
 }
 
-table.manage th.pull-right .dropdown-menu {
+.listview th.pull-right .dropdown-menu {
 	margin-left: 0;
 	margin-right: -6px;
 }
 
-table.manage th.pull-right .dropdown-menu:after {
+.listview th.pull-right .dropdown-menu:after {
 	left: auto;
 	right: 10px;
 }
 
-table.manage th.pull-right .dropdown-menu:before {
+.listview th.pull-right .dropdown-menu:before {
 	left: auto;
 	right: 9px;
 }
 
-table.manage th.has-no-label .dropdown {
+.listview th.has-no-label .dropdown {
 	border: none;
 }
 
-table.manage th a:hover {
+.listview th a:hover {
 	text-decoration: none;
 }
 
 /* tfoot */
 
-table.manage tfoot {
+.listview tfoot {
 	font-size: 12px;
 }
 
-table.manage tfoot select {
+/* listview: controls */
+
+.listview .listview-controls select {
 	line-height: 24px;
 	height: 24px;
 	padding: 2px;
 }
 
-table.manage tfoot .limiter select {
+.listview-controls select {
 	width: auto;
 }
 
-table.manage tfoot input {
+.listview .listview-controls input {
 	padding: 2px;
 }
 
-table.manage div.limiter {
+.listview .listview-controls {
 	float: right;
 	line-height: 24px;
 }
 
+.actionbar .listview-controls {
+	line-height: 28px;
+}
+
+.listview-controls > div + div {
+	margin-left: 16px;
+}
+
+.listview-start,
+.listview-limit,
+.listview-browse,
+.listview-search {
+	float: left;
+}
+
+.listview-search input,
+.listview-search button {
+	float: left;
+}
+
+.listview-search button {
+	padding: 5px 4px;
+}
+
 /* tbody */
 
-table.manage tbody tr + tr td {
+.listview tbody tr + tr td {
 	border-top: 1px solid #EEE;
 }
 
-table.manage tbody tr:hover a:not(.btn) {
+.listview tbody tr:hover a:not(.btn) {
 	color: #4B8BB3;
 }
 
-table.manage tbody tr:hover .dropdown-menu li a {
+.listview tbody tr:hover .dropdown-menu li a {
 	color: #404040;
 }
 
-table.manage tbody tr:hover .dropdown-menu li:hover a,
-table.manage tbody tr:hover .dropdown-menu li.active a {
+.listview tbody tr:hover .dropdown-menu li:hover a,
+.listview tbody tr:hover .dropdown-menu li.active a {
 	color: white;
 }
 
-table.manage tbody a:hover {
+.listview tbody a:hover {
 	text-decoration: underline;
 }
 
-table.manage tbody .dropdown-menu a:hover {
+.listview tbody .dropdown-menu a:hover {
 	text-decoration: none;
 }
 
-table.manage tbody tr:nth-child(even) {
+.listview tbody tr:nth-child(even) {
 	background-color: #FBFBFB;
 }
 
-table.manage tbody tr:hover {
+.listview tbody tr:hover {
 	background-color: #f2f8ff;
 }
 
-table.manage tbody tr:hover a.filter {
+.listview tbody tr:hover a.filter {
 	color: #4BB38B;
 }
 
-table.manage tr.no-ownership div.checkbox,
-table.manage tr.no-ownership label.checkbox-wrapper {
+.listview tr.no-ownership div.checkbox,
+.listview tr.no-ownership label.checkbox-wrapper {
 	visibility: hidden;
 }
 
-table.manage tr.no-ownership td {
+.listview tr.no-ownership td {
 	opacity: .6;
 }
 
-table.manage tbody.empty td {
+.listview tbody.empty td {
 	padding: 0;
 }
 
-table.manage th.key,table.manage td.key {
-	text-align: right;
-	width: 1em;
-}
+/* section */
 
-table.manage td.key label {
-	display: block;
-}
-
-table.manage tr.section-title td {
+.listview-divider td {
 	background: #F6F6F6;
 	font-weight: bold;
 }
 
-table.manage tr + tr.section-title td,
-table.manage tr.section-title + tr td {
+.listview tr + tr.listview-divider td,
+.listview tr.listview-divider + tr td {
 	border-color: #cfcfcf;
 }
 
-table.manage th.size,
-table.manage td.size,
-table.manage th.date,
-table.manage td.date {
+/* */
+
+.listview th.size,
+.listview td.size,
+.listview th.date,
+.listview td.date {
 	text-align: right;
 	white-space: nowrap;
 }
 
-table.manage th.date,table.manage td.date {
+.listview th.date,
+.listview td.date {
 	width: 16ex;
 	white-space: nowrap;
 }
 
-table.manage tfoot td {
+.listview tfoot td {
 	cursor: auto;
 	background-color: #E8E8E8;
 	border-top: 1px solid #CFCFCF;
 	padding: 6px 4px;
 }
 
-table.manage td img.icon {
+.listview img.icon,
+.listview .thumbnail--icon {
 	width: 24px;
 	height: 24px;
 	vertical-align: middle;
@@ -328,23 +345,9 @@ table.manage td img.icon {
 	padding: 1px;
 }
 
-table.manage td img.icon:hover {
+.listview a img.icon:hover,
+.listview a .thumbnail--icon:hover {
 	border-color: #A3C0E5;
-}
-
-table.manage div.jobs {
-	float: left;
-	visibility: hidden;
-}
-
-table.manage option[value=delete] {
-	color: #C04040;
-}
-
-table.manage div.excerpt {
-	font-size: .9em;
-	max-width: 72ex;
-	margin-top: .5em;
 }
 
 /*
@@ -355,25 +358,7 @@ OPTIONS
 **
 */
 
-#menu-options div.manage form {
-	display: inline-block;
-	margin: 0;
-}
-
-.actionbar span.browse,table.manage span.browse {
-	display: block;
-	float: right;
-	margin-left: 1ex;
-}
-
-.actionbar span.browse {
-	float: left;
-	margin-left: 0;
-	margin-right: 8px;
-}
-
-.actionbar span.browse a,
-table.manage span.browse a {
+.listview-browse a {
 	color: inherit;
 	border: 1px solid transparent;
 	border-radius: 4px;
@@ -384,47 +369,37 @@ table.manage span.browse a {
 	text-decoration: none;
 }
 
-.actionbar.fixed span.browse a:hover {
-	color: black;
-}
-
-.actionbar span.browse a {
+.actionbar .listview-browse a {
 	font-size: 18px;
 	line-height: 18px;
 	padding: 4px;
 }
 
-.actionbar span.browse i,
-table.manage span.browse i {
+.listview-browse i {
 	line-height: inherit;
 	display: block;
 }
 
-table.manage span.browse a:hover {
+.listview-browse a:hover {
 	border-color: #CFCFCF;
 	background-color: white;
 }
 
-.actionbar span.browse a:hover {
+.listview-browse a.previous:active {
+	left: -2px;
+}
+
+.listview-browse a.next:active {
+	left: 2px;
+}
+
+.actionbar .listview-browse a:hover {
 	border-color: #ccc;
 	background-color: #F6F6F6;
 }
 
-.actionbar span.browse a.previous:active,
-table.manage span.browse a.previous:active {
-	left: -2px;
-}
-
-.actionbar span.browse a.next:active,
-table.manage span.browse a.next:active {
-	left: 2px;
-}
-
-#menu-options div.manage a.reset {
-	margin-left: 1ex;
-	padding: .2em .5ex;
-	text-decoration: none;
-	border: 1px solid transparent;
+.actionbar.fixed .listview-browse a:hover {
+	color: black;
 }
 
 /*
@@ -434,31 +409,44 @@ RECORDS
 
 **
 */
-table.manage .key label.checkbox-wrapper {
-	border: 1px solid #CFCFCF;
-	background: #E8E8E8;
+
+.listview tbody .icon-download,
+.listview tbody .icon-download-alt {
+	display: inline-block;
+	height: 0;
+	padding-top: 14px;
+	width: 14px;
+	overflow: hidden;
+	margin-right: .5ex;
 }
 
-table.manage thead .key label.checkbox-wrapper {
-	background: #F6F6F6;
+.listview tbody .cell-fitted {
+	width: 1%;
+	white-space: nowrap;
 }
 
-table.manage thead .key label.checkbox-wrapper.checked {
-	background: #B5D5FF;
+/** manager **/
+
+#manager > div > .alert-info { /* create first record || empty */
+	line-height: 4em;
+	text-align: center;
+	border-radius: 0;
 }
 
-table.manage .key label.checkbox-wrapper.checked {
-	background: #B5D5FF;
-	border-color: #a3c0e5;
+#manager td .alert:last-child {
+	margin-bottom: 0;
 }
 
-/*
-**
+#manager div.alert .close {
+	display: none;
+}
 
-MANAGE-JOB
+#manager tfoot {
+	display: none;
+}
 
-**
-*/
+/* manager: jobs */
+
 #manage-job {
 	text-align: center;
 	padding: 1em;
@@ -485,21 +473,19 @@ MANAGE-JOB
 	background-color: #FFE;
 }
 
-#manage-job div.gauge,#manage-job div.gauge div.bar {
+#manage-job div.gauge,
+#manage-job div.gauge div.bar {
 	border-radius: 4px;
-	-moz-border-radius: 4px;
-	-webkit-border-radius: 4px;
 }
 
 #manage-job div.progress p {
 	font-size: .8em;
 }
 
-table.manage tbody .icon-download,table.manage tbody .icon-download-alt {
-	display: inline-block;
-	height: 0;
-	padding-top: 14px;
-	width: 14px;
-	overflow: hidden;
-	margin-right: .5ex;
+/* ACTIONBAR */
+
+.actionbar .context-icon {
+	font-size: 28px;
+	margin-right: 16px;
+	vertical-align: middle;
 }

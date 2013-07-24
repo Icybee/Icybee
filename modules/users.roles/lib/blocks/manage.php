@@ -63,7 +63,7 @@ class ManageBlock extends Form
 					Operation::NAME => Module::OPERATION_PERMISSIONS
 				),
 
-				'class' => 'form-primary block-manage block--roles-manage',
+				'class' => 'form-primary',
 				'name' => 'roles/manage'
 			)
 		);
@@ -148,7 +148,7 @@ class ManageBlock extends Form
 
 		// table
 
-		$rc .= '<table class="manage" cellpadding="4" cellspacing="0">';
+		$rc .= '<div class="listview"><table class="manage" cellpadding="4" cellspacing="0">';
 
 		//
 		// table header
@@ -257,7 +257,7 @@ EOT;
 
 		foreach ($packages as $p_name => $modules)
 		{
-			$rc .= '<tr class="module">';
+			$rc .= '<tr class="listview-divider">';
 			$rc .= '<td colspan="' . $span . '">';
 			$rc .= $p_name;
 			$rc .= '</td>';
@@ -392,7 +392,7 @@ EOT;
 		}
 
 		$rc .= '</tbody>';
-		$rc .= '</table>';
+		$rc .= '</table></div>';
 
 		$this->inner_html = $rc;
 

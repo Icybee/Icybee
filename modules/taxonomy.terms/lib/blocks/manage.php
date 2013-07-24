@@ -11,8 +11,6 @@
 
 namespace Icybee\Modules\Taxonomy\Terms;
 
-use ICanBoogie\ActiveRecord\Query;
-
 class ManageBlock extends \Icybee\ManageBlock
 {
 	public function __construct(Module $module, array $attributes=array())
@@ -21,73 +19,75 @@ class ManageBlock extends \Icybee\ManageBlock
 		(
 			$module, $attributes += array
 			(
-				self::T_KEY => 'vtid'
+				self::T_KEY => 'vtid',
+				self::T_ORDER_BY => array('term', 'asc')
 			)
 		);
-	}
-
-	protected function columns()
-	{
-		return array
-		(
-			'term' => array
-			(
-				'label' => 'Name'
-			),
-
-			'vid' => array
-			(
-				'label' => 'Vocabulary'
-			),
-
-			'popularity' => array
-			(
-				'label' => 'Popularity'
-			)
-		);
-	}
-
-	protected function update_options(array $options, array $modifiers)
-	{
-		$options = parent::update_options($options, $modifiers);
-
-		if (isset($modifiers['by']) && $modifiers['by'] == 'popularity')
-		{
-			$options['order_by'] = 'popularity';
-			$options['order_direction'] = strtolower($modifiers['order']) == 'desc' ? 'desc' : 'asc';
-		}
-
-		return $options;
 	}
 
 	/**
-	 * Alters the query with the 'vid' filter.
+	 * Adds the following columns:
 	 *
-	 * @see Icybee.Manager::alter_query()
+	 * - `term`: An instance of {@link ManageBlock\TermColumn}.
+	 * - `vid`: An instance of {@link ManageBlock\VidColumn}.
+	 * - `popularity`: An instance of {@link ManageBlock\PopularityColumn}.
 	 */
-	protected function alter_query(Query $query, array $filters)
+	protected function get_available_columns()
 	{
-		$query = parent::alter_query($query, $filters);
+		return array_merge(parent::get_available_columns(), array
+		(
+			'term' => __CLASS__ . '\TermColumn',
+			'vid' => __CLASS__ . '\VidColumn',
+			'popularity' => __CLASS__ . '\PopularityColumn'
+		));
+	}
+}
 
-		if (isset($filters['vid']))
-		{
-			$query->filter_by_vid($filters['vid']);
-		}
+namespace Icybee\Modules\Taxonomy\Terms\ManageBlock;
 
-		return $query;
+use ICanBoogie\ActiveRecord\Query;
+
+use Icybee\ManageBlock\Column;
+use Icybee\ManageBlock\FilterDecorator;
+use Icybee\ManageBlock\EditDecorator;
+
+class TermColumn extends Column
+{
+	public function __construct(\Icybee\ManageBlock $manager, $id, array $options=array())
+	{
+		parent::__construct
+		(
+			$manager, $id, $options + array
+			(
+				'title' => 'Term'
+			)
+		);
 	}
 
-	protected function alter_range_query(Query $query, array $options)
+	public function render_cell($record)
 	{
-		$query->select('*, (select count(s1.nid) from {self}__nodes as s1 where s1.vtid = term.vtid) AS `popularity`');
-		$query->mode(\PDO::FETCH_CLASS, 'Icybee\Modules\Taxonomy\Terms\Term', array($this->model));
-
-		return parent::alter_range_query($query, $options);
+		return new EditDecorator($record->term, $record);
 	}
+}
 
-	/*
-	 * Columns
-	 */
+/**
+ * Representation of the `vid` column.
+ */
+class VidColumn extends Column
+{
+	public function __construct(\Icybee\Modules\Taxonomy\Terms\ManageBlock $manager, $id, array $options=array())
+	{
+		global $core;
+
+		parent::__construct
+		(
+			$manager, $id, $options + array
+			(
+				'title' => 'Vocabulary',
+				'orderable' => true
+			)
+		);
+	}
 
 	/**
 	 * Extends the "vid" column by providing vocabulary filters.
@@ -95,73 +95,117 @@ class ManageBlock extends \Icybee\ManageBlock
 	 * @param array $column
 	 * @param string $id
 	 */
-	protected function extend_column_vid(array $column, $id, array $fields)
+	protected function get_options()
 	{
 		global $core;
 
-		$keys = $this->module->model->select('DISTINCT vid')->all(\PDO::FETCH_COLUMN);
+		// Move this to render_header() when it's actually used
 
-		if (!$keys || count($keys) == 1)
+		$keys = $this->manager->module->model->select('DISTINCT vid')->all(\PDO::FETCH_COLUMN);
+
+		if (count($keys) < 2)
 		{
-			return array
-			(
-				'sortable' => false
-			)
+			$this->orderable = false;
 
-			+ parent::extend_column($column, $id, $fields);
+			return;
 		}
 
-		$vocabulary = $core->models['taxonomy.vocabulary']->select('CONCAT("=", vid), vocabulary')->where(array('vid' => $keys))->order('vocabulary')->pairs;
+		// /
 
-		return array
-		(
-			'filters' => array
-			(
-				'options' => $vocabulary
-			)
-		)
-
-		+ parent::extend_column($column, $id, $fields);
+		return $core->models['taxonomy.vocabulary']
+		->select('CONCAT("?vid=", vid), vocabulary')
+		->where(array('vid' => $keys))
+		->order('vocabulary')
+		->pairs;
 	}
 
-	/*
-	 * Cells
+	/**
+	 * Alters the query with the 'vid' filter.
 	 */
-
-	protected function get_cell_term($record, $property)
+	public function alter_query_with_filter(Query $query, $filter_value)
 	{
-		$label = $record->term;
-
-		return self::modify_code($label, $record->vtid, $this);
-	}
-
-	private $last_rendered_vid;
-
-	protected function get_cell_vid($record, $property)
-	{
-		$vid = $record->vid;
-
-		if ($this->last_rendered_vid === $vid)
+		if ($filter_value)
 		{
-			return self::REPEAT_PLACEHOLDER;
+			$query->filter_by_vid($filter_value);
 		}
 
-		$this->last_rendered_vid = $vid;
-
-		return parent::render_filter_cell($record, $property, $record->vocabulary);
+		return $query;
 	}
 
-	private $last_rendered_popularity;
-
-	protected function get_cell_popularity($record, $property)
+	/**
+	 * Orders the records according to vocabulary name.
+	 */
+	public function alter_query_with_order(Query $query, $order_direction)
 	{
-		$popularity = $record->$property;
+		global $core;
 
-		if ($this->last_rendered_popularity === $popularity)
+		$names = $core->models['taxonomy.vocabulary']->select('vid, vocabulary')->order("vocabulary " . ($order_direction < 0 ? 'DESC' : 'ASC'))->pairs;
+
+		return $query->order('vid', array_keys($names));
+	}
+
+	public function render_cell($record)
+	{
+		return new FilterDecorator($record, $this->id, $this->manager->is_filtering($this->id), $record->vocabulary);
+	}
+}
+
+/**
+ * Representation of the `popularity` column.
+ *
+ * The column displays the times a term is associated to a node.
+ */
+class PopularityColumn extends Column
+{
+	/**
+	 * Popularity values for the displayed rows.
+	 *
+	 * @var array[int]int
+	 */
+	private $values;
+
+	public function __construct(\Icybee\ManageBlock $manager, $id, array $options=array())
+	{
+		parent::__construct
+		(
+			$manager, $id, array
+			(
+				'title' => 'Popularity',
+				'class' => 'pull-right',
+				'orderable' => true
+			)
+		);
+	}
+
+	/**
+	 * Computes the popularity of the specified records.
+	 *
+	 * Note: The popularity values are stored in the {@link $values} property.
+	 */
+	public function alter_records(array $records)
+	{
+		$keys = array();
+
+		foreach ($records as $record)
 		{
-			return self::REPEAT_PLACEHOLDER;
+			$keys[] = $record->vtid;
 		}
 
-		return $this->last_rendered_popularity = $popularity;
+		$this->values = $this->manager->module->model('nodes')->filter_by_vtid($keys)->count('vtid');
+
+		return $records;
+	}
+
+	/**
+	 * Orders the records according to their popularity.
+	 */
+	public function alter_query_with_order(Query $query, $order_direction)
+	{
+		return $query->order("(SELECT COUNT(vtid) FROM {self}__nodes WHERE vtid = term.vtid) " . ($order_direction < 0 ? 'DESC' : 'ASC'));
+	}
+
+	public function render_cell($record)
+	{
+		return isset($this->values[$record->vtid]) ? $this->values[$record->vtid] : 0;
 	}
 }

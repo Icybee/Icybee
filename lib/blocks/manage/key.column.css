@@ -1,0 +1,26 @@
+.listview .cell-key {
+	text-align: right;
+	width: 1em;
+}
+
+.listview .cell-key label {
+	display: block;
+}
+
+.listview .cell-key label.checkbox-wrapper {
+	border: 1px solid #cfcfcf;
+	background: #e8e8e8;
+}
+
+.listview .cell-key label.checkbox-wrapper.checked {
+	background: #b5d5ff;
+	border-color: #a3c0e5;
+}
+
+.listview th.cell-key label.checkbox-wrapper {
+	background: #f6f6f6;
+}
+
+.listview th.cell-key > div {
+	height: auto;
+}

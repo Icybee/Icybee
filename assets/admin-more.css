@@ -354,20 +354,21 @@ CONTENTS
  * Blocks
  */
 
+.block--delete .form-actions {
+	background-color: transparent;
+	border-top: 0;
+	margin: 1em 0 0 0;
+	padding: 0 !important;
+}
+
 .block-alert {
 	padding: 16px;
 	background: linear-gradient(to bottom, hsl(0, 0%, 95%), hsla(0, 0%, 100%, 0) 50px);
 }
 
+.block--delete .block-title,
 .block-alert .block-title {
 	margin-top: 0;
-}
-
-.block-alert .form-actions {
-	background-color: transparent;
-	border-top: 0;
-	margin: 1em 0 0 0;
-	padding: 0 !important;
 }
 
 .block-alert .controls-label { /* fix missing bold on control label */
@@ -378,9 +379,11 @@ CONTENTS
 	margin-top: 0;
 }
 
+/* block delete */
 
 .block--delete {
 	padding: 16px;
+	background: linear-gradient(to bottom, hsl(0, 50%, 95%), hsla(0, 0%, 100%, 0) 50px);
 }
 
 .block--delete .alert {
@@ -402,17 +405,16 @@ CONTENTS
 	max-width: 76ex;
 }
 
-
 .block--delete .dependencies ul ul {
 	margin-top: 1em;
 }
 
 /*
- * 
+ *
  */
- 
+
 body.exception {
-	background: white;	
+	background: white;
 }
 
 body.exception h1 {
@@ -446,4 +448,48 @@ body.exception footer {
 
 body.exception footer a:not(:hover) {
 	color: inherit;
+}
+
+
+
+
+
+
+
+
+
+
+
+.actionbar {
+	height: 28px;
+}
+
+.actionbar-faces {
+	transform-style: preserve-3d;
+	transition: transform .5s;
+}
+
+.actionbar-front,
+.actionbar-back {
+	clear: both;
+	height: 28px;
+	backface-visibility: hidden;
+}
+
+.actionbar-faces.flipped,
+.actionbar-back {
+	transform: rotateX(180deg);
+	transform: rotateX(180deg);
+}
+
+.actionbar .btn-group-label {
+	line-height: 28px;
+	display: inline;
+	margin-right: 8px;
+}
+
+
+
+.actionbar:not([data-display="operations"]) .listview-operations {
+	display: none;
 }

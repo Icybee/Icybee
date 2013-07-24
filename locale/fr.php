@@ -31,24 +31,44 @@ return array
 		'save_mode_new' => "Enregistrer et éditer un nouveau"
 	),
 
+	/*
+	 * lib/blocks/manage.php
+	 */
+
 	'manage' => array
 	(
-		'title' => array
+		'column' => array
 		(
-			'Date created' => 'Crée le',
-			'Date modified' => 'Modifié le',
-
+			'created' => 'Crée le',
 			'created_at' => 'Crée le',
-			'updated_at' => 'Modifié le'
+			'modified' => 'Modifié le',
+			'updated_at' => 'Modifié le',
+
+			'Date created' => 'Crée le',
+			'Date modified' => 'Modifié le'
+		),
+
+		'create_first' => "<strong><a href=\"!url\">Créer le premier enregistrement…</a></strong>",
+
+		'edit' => "Éditer l'enregistrement",
+		'edit_named' => "Éditer l'enregistrement : :title",
+
+		'records_count' => array
+		(
+			'none' => "Aucun enregistrement",
+			'one' => 'Un enregistrement',
+			'other' => ':count enregistrements'
+		),
+
+		'records_count_with_filters' => array
+		(
+			'none' => 'Aucun enregistrement ne correspond aux filters',
+			'one' => 'Un enregistrement correspond aux filtres',
+			'other' => ':count enregistrements correspondent aux filtres'
 		)
 	),
 
-	'manager' => array
-	(
-		'create_first' => "<strong><a href=\"!url\">Créer le premier enregistrement…</a></strong>",
-		'edit' => 'Éditer cette entrée',
-		'edit_named' => "Éditer l'entrée : :title"
-	),
+	#
 
 	'module_category' => array
 	(

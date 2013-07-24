@@ -1,49 +1,33 @@
-table.manage td,
-table.manage th
-{
+.listview td,
+.listview th {
 	text-align: center;
 }
 
-table.manage th:first-child
-{
-	padding-left: 1ex;
-}
-
-table.manage th:first-child,
-table.manage td:first-child
-{
+.listview th:first-child,
+.listview td:first-child {
 	text-align: left;
 }
-	
-table.manage tr.module
-{
-	background-color: #F6F6F6;
-	font-weight: bold;
+
+.block--users-roles--manage th a {
+	color: inherit;
 }
 
-table.manage tr + tr td
-{
-	border-top: 1px solid #EEE;
+.block--users-roles--manage th a:hover {
+	text-decoration: underline;
 }
 
-.block--roles-manage tr.admin
-{
-	background-color: white;
-}
-
-.block--roles-manage tr.admin td:first-child
-{
+.block--users-roles--manage tr.admin td:first-child {
 	padding-left: 32px;
 }
 
-.block--roles-manage tr.perm td:first-child
-{
+.block--users-roles--manage tr.perm td:first-child {
 	padding-left: 48px;
 }
 
-.block--roles-manage .form-actions {
+.block--users-roles--manage .form-actions {
 	text-align: center;
 }
-.block--roles-manage select {
+
+.block--users-roles--manage select {
 	width: auto;
 }

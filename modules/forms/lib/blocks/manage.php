@@ -24,15 +24,17 @@ class ManageBlock extends \Icybee\Modules\Nodes\ManageBlock
 		);
 	}
 
-	protected function columns()
+	/**
+	 * Adds the following columns:
+	 *
+	 * - `modelid`
+	 */
+	protected function get_available_columns()
 	{
-		return parent::columns() + array
+		return array_merge(parent::get_available_columns(), array
 		(
-			'modelid' => array
-			(
-
-			)
-		);
+			'modelid' => 'Icybee\ManageBlock\Column'
+		));
 	}
 
 	static protected $modelid_models;

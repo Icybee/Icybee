@@ -137,38 +137,79 @@ window.addEvent('click:relay(.group-toggler input[type="checkbox"])', function(e
  * file that was distributed with this source code.
  */
 
-window.addEvent('domready', function()
-{
-	var actionbar = document.id(document.body).getElement('.actionbar')
-	, y
+!function() {
 
-	if (!actionbar) return
+	var ActionBar = new Class({
 
-	y = actionbar.getPosition().y
+		initialize: function(el)
+		{
+			this.element = el = document.id(el)
+			this.faces = el.getElement('.actionbar-faces')
 
-	function updateActionBar()
-	{
-		var bodyY = document.html.scrollTop || document.body.scrollTop
+			this.setUpAnchoring()
 
-		actionbar[y < bodyY ? 'addClass' : 'removeClass']('fixed')
-	}
+			el.addEvent('click:relay([data-target])', function(ev) {
 
-	window.addEvents({
-		load: updateActionBar,
-		resize: updateActionBar,
-		scroll: updateActionBar
+				var target = document.id(document.body).getElement(ev.target.get('data-target'))
+
+				if (!target || target.tagName != 'FORM') return
+
+				target.submit()
+
+			})
+		},
+
+		toElement: function()
+		{
+			return this.element
+		},
+
+		setUpAnchoring: function()
+		{
+			var el = this.element
+			, y = el.getPosition().y
+
+			function updateActionBar()
+			{
+				var bodyY = document.html.scrollTop || document.body.scrollTop
+
+				el[y < bodyY ? 'addClass' : 'removeClass']('fixed')
+			}
+
+			window.addEvents({
+				load: updateActionBar,
+				resize: updateActionBar,
+				scroll: updateActionBar
+			})
+		},
+
+		display: function(what)
+		{
+			if (!what)
+			{
+
+				this.faces.removeClass('flipped')
+				;( function() { this.set('data-display', '') }).delay(500, this.element)
+			}
+			else
+			{
+				this.element.set('data-display', what)
+				this.faces.addClass('flipped')
+			}
+		}
 	})
 
-	actionbar.addEvent('click:relay([data-target])', function(ev) {
+	window.addEvent('domready', function() {
 
-		var target = document.id(document.body).getElement(ev.target.get('data-target'))
+		var actionbar = document.body.getElement('.actionbar')
 
-		if (!target || target.tagName != 'FORM') return
+		if (!actionbar) return
 
-		target.submit()
+		Icybee.actionbar = new ActionBar(actionbar)
 
 	})
-})/*
+
+} ()/*
  * This file is part of the Icybee package.
  *
  * (c) Olivier Laviale <olivier.laviale@gmail.com>
