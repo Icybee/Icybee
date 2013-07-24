@@ -256,6 +256,11 @@ class ManageBlock extends Element
 			{
 				throw new \Exception("The <q>{$method_reflection->name}</q> method is deprecated. Use a column class.");
 			}
+
+			if (strpos($method_reflection->name, 'render_cell_') === 0)
+			{
+				throw new \Exception("The <q>{$method_reflection->name}</q> method is deprecated. Use a column class.");
+			}
 		}
 
 		## /20130625
