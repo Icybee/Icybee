@@ -14,10 +14,11 @@ namespace Icybee;
 use ICanBoogie\Debug;
 use ICanBoogie\HTTP\Dispatcher;
 
-class StatsDecorator
+/**
+ * Decorates the specified component with various statistics.
+ */
+class StatsDecorator extends \Brickrouge\Decorator
 {
-	protected $component;
-
 	/**
 	 * Adds statistic information about the response if it is of type "text/html".
 	 *
@@ -42,23 +43,6 @@ class StatsDecorator
 
 			$response->body = (string) new \Icybee\StatsDecorator($response->body);
 		});
-	}
-
-	public function __construct($component)
-	{
-		$this->component = $component;
-	}
-
-	public function __toString()
-	{
-		try
-		{
-			return $this->render();
-		}
-		catch (\Exception $e)
-		{
-			return (string) Debug::format_alert($e);
-		}
 	}
 
 	public function render()
