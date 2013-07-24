@@ -303,7 +303,7 @@ EOT;
 	 */
 	protected function decorate($html)
 	{
-		return '<div class="block-alert block--delete">' . $html . '</div>';
+		return $html;
 	}
 }
 

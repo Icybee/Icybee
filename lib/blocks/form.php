@@ -192,15 +192,7 @@ abstract class FormBlock extends \ICanBoogie\Object
 
 			I18n::push_scope($this->module . '.' . \ICanBoogie\underscore(basename(strtr(get_class($this), '\\', '/'))));
 
-			$baseclass = basename(strtr(get_class($this), '\\', '/'));
-			$type = strtolower(substr($baseclass, 0, -5));
-			$id = \ICanBoogie\normalize($this->module->id);
-
-			$html = <<<EOT
-<div class="block-$type block-$type--$id">
-$this->element
-</div>
-EOT;
+			$html = (string) $this->element;
 
 			I18n::pop_scope();
 
