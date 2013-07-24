@@ -20,13 +20,19 @@ use ICanBoogie\HTTP\Dispatcher;
 class StatsDecorator extends \Brickrouge\Decorator
 {
 	/**
-	 * Adds statistic information about the response if it is of type "text/html".
+	 * Adds statistic information about the response if it is of type "text/html" and the request
+	 * is not XHR.
 	 *
 	 * @param Dispatcher\DispatchEvent $event
 	 * @param Dispatcher $target
 	 */
 	static public function on_dispatcher_dispatch(Dispatcher\DispatchEvent $event, Dispatcher $target)
 	{
+		if ($event->request->is_xhr)
+		{
+			return;
+		}
+
 		#
 		# We chain the event so that it is called after the event callbacks have been processed,
 		# for instance a _cache_ callback that may cache the response.
@@ -41,7 +47,7 @@ class StatsDecorator extends \Brickrouge\Decorator
 				return;
 			}
 
-			$response->body = (string) new \Icybee\StatsDecorator($response->body);
+			$response->body = new StatsDecorator($response->body);
 		});
 	}
 
@@ -82,7 +88,7 @@ class StatsDecorator extends \Brickrouge\Decorator
 			)
 		);
 
-		if (Debug::$mode == Debug::MODE_DEV || $core->user->is_admin)
+		if (Debug::is_dev() || $core->user->is_admin)
 		{
 			$html .= "\n\n" . $this->render_events();
 			$html .= "\n\n" . $this->render_queries();
