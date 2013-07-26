@@ -363,10 +363,16 @@ class EditBlock extends FormBlock
 		{
 			global $core;
 
-			if ($record instanceof \Icybee\Modules\Nodes\Node && $record->url[0] != '#')
+			try
 			{
-				$event->buttons[] = '<a href="' . $record->url . '" class="actionbar-link">' . I18n\t('View', array(), array('scope' => 'button')) . '</a>';
+				$url = $record->url;
+
+				if ($url[0] != '#')
+				{
+					$event->buttons[] = '<a href="' . $record->url . '" class="actionbar-link">' . I18n\t('View', array(), array('scope' => 'button')) . '</a>';
+				}
 			}
+			catch (\Exception $e) {}
 
 			$locked = true;
 
