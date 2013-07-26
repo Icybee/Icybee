@@ -24,10 +24,6 @@ use Brickrouge\Element;
  * @property-read mixed $filter_value The value used by the column to filter the records.
  * @property-read bool $is_filtering `true` if the column is currently filtering the records.
  * `false` otherwise.
- *
- * @todo-20130627:
- *
- * - Rename `label` property as `header`.
  */
 class Column extends \ICanBoogie\Object
 {
