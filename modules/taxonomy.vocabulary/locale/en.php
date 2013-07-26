@@ -16,5 +16,11 @@ return array
 	'section.title' => array
 	(
 		'options' => 'Options'
+	),
+
+	'taxonomy_vocabulary.manage.column' => array
+	(
+		'scope' => 'Scope',
+		'vocabulary' => 'Vocabulary'
 	)
 );

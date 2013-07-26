@@ -11,21 +11,8 @@
 
 namespace Icybee\Modules\Taxonomy\Vocabulary;
 
-use ICanBoogie\I18n;
-
 class ManageBlock extends \Icybee\ManageBlock
 {
-	public function __construct($module, array $attributes=array())
-	{
-		parent::__construct
-		(
-			$module, $attributes += array
-			(
-				self::T_KEY => 'vid'
-			)
-		);
-	}
-
 	/**
 	 * Adds the following columns:
 	 *
@@ -36,54 +23,81 @@ class ManageBlock extends \Icybee\ManageBlock
 	{
 		return array_merge(parent::get_available_columns(), array
 		(
-			Vocabulary::VOCABULARY => array
-			(
-				'title' => 'Vocabulary'
-			),
-
-			Vocabulary::SCOPE => array
-			(
-				'title' => 'Portée',
-				'orderable' => false
-			)
+			Vocabulary::VOCABULARY => __CLASS__ . '\VocabularyColumn',
+			Vocabulary::SCOPE => __CLASS__ . '\ScopeColumn'
 		));
 	}
+}
 
-	protected function render_cell_vocabulary($record, $tag)
+namespace Icybee\Modules\Taxonomy\Vocabulary\ManageBlock;
+
+use ICanBoogie\I18n;
+use ICanBoogie\Module;
+
+use Icybee\ManageBlock\Column;
+use Icybee\ManageBlock\EditDecorator;
+
+/**
+ * Representation of the `vocabulary` column.
+ */
+class VocabularyColumn extends Column
+{
+	public function render_cell($record)
 	{
 		global $core;
 
 		$vid = $record->vid;
-		$terms = $core->models['taxonomy.terms']->select('term')->filter_by_vid($vid)->order('term.weight, term')->all(\PDO::FETCH_COLUMN);
+		$terms = $core->models['taxonomy.terms']
+		->select('term')
+		->filter_by_vid($vid)
+		->order('term.weight, term')
+		->all(\PDO::FETCH_COLUMN);
+
+		$order_link = null;
 
 		if ($terms)
 		{
 			$last = array_pop($terms);
 
 			$includes = $terms
-				? I18n\t('Comprenant&nbsp;: !list et !last', array('!list' => \ICanBoogie\shorten(implode(', ', $terms), 128, 1), '!last' => $last))
-				: I18n\t('Comprenant&nbsp;: !entry', array('!entry' => $last));
+				? I18n\t('Including: !list and !last', array('!list' => \ICanBoogie\shorten(implode(', ', $terms), 128, 1), '!last' => $last))
+				: I18n\t('Including: !entry', array('!entry' => $last));
+
+			$order_url = \ICanBoogie\Routing\contextualize("/admin/{$this->manager->module->id}/$vid/order");
+
+			$order_link = <<<EOT
+<a href="$order_url">Order the terms</a>
+EOT;
 		}
 		else
 		{
-			$includes = '<em>La liste est vide</em>';
+			$includes = '<em class="light">The vocabulary is empty</em>';
 		}
 
-		$context = $core->site->path;
+		if ($order_link)
+		{
+			$order_link = " &ndash; {$order_link}";
+		}
 
-		return parent::modify_code($record->vocabulary, $vid, $this) . <<<EOT
-<span class="small"> &ndash; <a href="$context/admin/{$this->module}/$vid/order">Ordonner les termes du vocabulaire</a></span>
-<br />
-<span class="small">$includes</span>
+		return new EditDecorator($record->vocabulary, $record) . <<<EOT
+<br /><span class="small">{$includes}{$order_link}</span>
 EOT;
 	}
+}
 
-	protected function render_cell_scope($record, $tag)
+/**
+ * Representation of the `scope` column.
+ */
+class ScopeColumn extends Column
+{
+	public function render_cell($record)
 	{
 		global $core;
 
-		$scope = $this->module->model('scopes')
-		->select('constructor')->where('vid = ?', $record->vid)->all(\PDO::FETCH_COLUMN);
+		$scope = $this->manager->module->model('scopes')
+		->select('constructor')
+		->where('vid = ?', $record->vid)
+		->all(\PDO::FETCH_COLUMN);
 
 		if ($scope)
 		{

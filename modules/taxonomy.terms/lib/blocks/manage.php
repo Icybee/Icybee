@@ -19,7 +19,6 @@ class ManageBlock extends \Icybee\ManageBlock
 		(
 			$module, $attributes += array
 			(
-				self::T_KEY => 'vtid',
 				self::T_ORDER_BY => array('term', 'asc')
 			)
 		);
@@ -191,7 +190,10 @@ class PopularityColumn extends Column
 			$keys[] = $record->vtid;
 		}
 
-		$this->values = $this->manager->module->model('nodes')->filter_by_vtid($keys)->count('vtid');
+		if ($keys)
+		{
+			$this->values = $this->manager->module->model('nodes')->filter_by_vtid($keys)->count('vtid');
+		}
 
 		return $records;
 	}
