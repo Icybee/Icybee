@@ -9,9 +9,11 @@
  * file that was distributed with this source code.
  */
 
+namespace Icybee\Modules\Taxonomy\Vocabulary;
+
 use Brickrouge\Element;
 
-class WdCloudElement extends Element
+class CloudElement extends Element
 {
 	const T_LEVELS = '#cloud-levels';
 
@@ -25,10 +27,10 @@ class WdCloudElement extends Element
 		}
 
 		$min = min($options);
-    	$max = max($options);
+		$max = max($options);
 
-    	$range = ($min == $max) ? 1 : $max - $min;
-    	$levels = $this[self::T_LEVELS] ?: 8;
+		$range = ($min == $max) ? 1 : $max - $min;
+		$levels = $this[self::T_LEVELS] ?: 8;
 
 		$markup = $this->type == 'ul' ? 'li' : 'span';
 

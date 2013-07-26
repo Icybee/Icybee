@@ -229,7 +229,7 @@ class Hooks
 								)
 							),
 
-							new \WdCloudElement
+							new CloudElement
 							(
 								'ul', array
 								(
@@ -239,7 +239,7 @@ class Hooks
 							)
 						),
 
-						'class' => 'taxonomy-tags combo'
+						'class' => 'taxonomy-tags widget-bordered'
 					)
 				);
 			}
