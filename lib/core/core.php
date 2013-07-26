@@ -44,8 +44,6 @@ class Core extends \ICanBoogie\Core
 	 * Adds website config and locale paths.
 	 *
 	 * @param array $options
-	 *
-	 * @see \ICanBoogie\Core::__construct
 	 */
 	public function __construct(array $options=array())
 	{

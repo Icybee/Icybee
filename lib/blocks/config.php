@@ -49,8 +49,6 @@ abstract class ConfigBlock extends FormBlock
 
 	/**
 	 * Add the operation name {@link Module::OPERATION_CONFIG}.
-	 *
-	 * @see Icybee.FormBlock::get_attributes()
 	 */
 	protected function get_attributes()
 	{

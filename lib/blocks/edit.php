@@ -64,8 +64,6 @@ class EditBlock extends FormBlock
 
 	/**
 	 * Adds the `key` and `record` properties to the alter parameters.
-	 *
-	 * @see FormBlock::alter()
 	 */
 	protected function alter(array $params)
 	{
@@ -82,8 +80,6 @@ class EditBlock extends FormBlock
 	/**
 	 * If the record to edit is locked by another user a {@link InterlockBlock} is returned
 	 * instead of the {@link Form} element.
-	 *
-	 * @see Icybee.FormBlock::render()
 	 */
 	public function render()
 	{
@@ -190,8 +186,6 @@ class EditBlock extends FormBlock
 	 * - The name of the operation: `save`.
 	 * - The key of the operation: The key provided during construct.
 	 * - The `admin` element group.
-	 *
-	 * @see Icybee\FormBlock::get_attributes()
 	 */
 	protected function get_attributes()
 	{
@@ -219,8 +213,6 @@ class EditBlock extends FormBlock
 
 	/**
 	 * Fires the `alter_attributes:before` event of class {@link EditBlock\BeforeAlterAttributesEvent}.
-	 *
-	 * @see FormBlock::fire_before_alter_attributes()
 	 */
 	protected function fire_before_alter_attributes(array $properties)
 	{
@@ -229,8 +221,6 @@ class EditBlock extends FormBlock
 
 	/**
 	 * Fires the `alter_attributes` event of class {@link EditBlock\AlterAttributesEvent}.
-	 *
-	 * @see FormBlock::fire_alter_attributes()
 	 */
 	protected function fire_alter_attributes(array $properties)
 	{
@@ -247,8 +237,6 @@ class EditBlock extends FormBlock
 	 * - An array with all the properties of the extended schema set to `null`.
 	 * - An array with the properties of the record.
 	 * - An array with the request params of the request.
-	 *
-	 * @see FormBlock::get_values()
 	 */
 	protected function get_values()
 	{
@@ -269,8 +257,6 @@ class EditBlock extends FormBlock
 
 	/**
 	 * Fires the `alter_values:before` event of class {@link EditBlock\BeforeAlterValuesEvent}.
-	 *
-	 * @see FormBlock::fire_before_alter_values()
 	 */
 	protected function fire_before_alter_values(array $properties)
 	{
@@ -279,8 +265,6 @@ class EditBlock extends FormBlock
 
 	/**
 	 * Fires the `alter_values` event of class {@link EditBlock\AlterValuesEvent}.
-	 *
-	 * @see FormBlock::fire_alter_values()
 	 */
 	protected function fire_alter_values(array $properties)
 	{
@@ -293,8 +277,6 @@ class EditBlock extends FormBlock
 
 	/**
 	 * Fires the `alter_children:before` event of class {@link EditBlock\BeforeAlterChildrenEvent}.
-	 *
-	 * @see Icybee\FormBlock::fire_before_alter_children()
 	 */
 	protected function fire_before_alter_children(array $properties)
 	{
@@ -303,8 +285,6 @@ class EditBlock extends FormBlock
 
 	/**
 	 * Fires the `alter_children` event of class {@link EditBlock\AlterChildrenEvent}.
-	 *
-	 * @see Icybee\FormBlock::fire_alter_children()
 	 */
 	protected function fire_alter_children(array $properties)
 	{
@@ -317,8 +297,6 @@ class EditBlock extends FormBlock
 
 	/**
 	 * Replaces the primary button with a button with the label "Save".
-	 *
-	 * @see FormBlock::get_actions()
 	 */
 	protected function get_actions()
 	{
@@ -338,8 +316,6 @@ class EditBlock extends FormBlock
 
 	/**
 	 * Adds the save mode checkbox group of the actions as well as the action bar.
-	 *
-	 * @see FormBlock::alter_actions()
 	 */
 	protected function alter_actions(array $actions, array $params)
 	{
@@ -455,8 +431,6 @@ class EditBlock extends FormBlock
 
 	/**
 	 * Fires the `alter_actions:before` event of class {@link EditBlock\BeforeAlterActionsEvent}.
-	 *
-	 * @see Icybee\FormBlock::fire_before_alter_actions()
 	 */
 	protected function fire_before_alter_actions(array $properties)
 	{
@@ -465,8 +439,6 @@ class EditBlock extends FormBlock
 
 	/**
 	 * Fires the `alter_actions` event of class {@link EditBlock\AlterActionsEvent}.
-	 *
-	 * @see Icybee\FormBlock::fire_alter_actions()
 	 */
 	protected function fire_alter_actions(array $properties)
 	{
@@ -476,8 +448,6 @@ class EditBlock extends FormBlock
 	/**
 	 * If the user doesn't have the permission to edit the record, the actions of the
 	 * {@link Form} element are set to `null` and the form is disabled.
-	 *
-	 * @see FormBlock::alter_element()
 	 */
 	protected function alter_element(Form $element, array $params)
 	{

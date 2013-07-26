@@ -74,8 +74,6 @@ class WdEMailNotifyElement extends \Brickrouge\Group
 
 	/**
 	 * Forward the `DEFAULT_VALUE` and `name` attribute to its children.
-	 *
-	 * @see Brickrouge.Element::offsetSet()
 	 */
 	public function offsetSet($offset, $value)
 	{

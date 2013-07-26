@@ -55,8 +55,6 @@ class ConfigOperation extends \ICanBoogie\Operation
 	/**
 	 * Parse the operation parameters to create the key/value pairs to save in the "global" and
 	 * "local" config spaces.
-	 *
-	 * @see ICanBoogie.Operation::get_properties()
 	 */
 	protected function get_properties()
 	{

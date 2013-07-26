@@ -23,8 +23,6 @@ class DeleteOperation extends \ICanBoogie\DeleteOperation
 	 *
 	 *     PERMISSION: ADMINISTER
 	 *     OWNERSHIP: false
-	 *
-	 * @see ICanBoogie\DeleteOperation::get_controls()
 	 */
 	protected function get_controls()
 	{
@@ -39,8 +37,6 @@ class DeleteOperation extends \ICanBoogie\DeleteOperation
 
 	/**
 	 * The "visitor" (1) and "user" (2) roles cannot be deleted.
-	 *
-	 * @see ICanBoogie\DeleteOperation::validate()
 	 */
 	protected function validate(\ICanboogie\Errors $errors)
 	{

@@ -24,8 +24,6 @@ class Modules extends \ICanBoogie\Modules
 	 * Modules are disabled againts a list of enabled modules. The enabled modules list is made
 	 * from the `enabled_modules` persistant variable and the value of the {@link T_REQUIRED}
 	 * tag, which forces some modules to always be enabled.
-	 *
-	 * @see ICanBoogie.Modules::get_index()
 	 */
 	protected function get_index()
 	{

@@ -86,8 +86,6 @@ class Vocabulary extends ActiveRecord
 
 	/**
 	 * Removes the `scope` and `terms` properties.
-	 *
-	 * @see ICanBoogie.ActiveRecord::__sleep()
 	 */
 	public function __sleep()
 	{

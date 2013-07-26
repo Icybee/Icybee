@@ -13,10 +13,6 @@ namespace Icybee\Modules\Taxonomy\Vocabulary;
 
 class DeleteBlock extends \Icybee\DeleteBlock
 {
-	/**
-	 * (non-PHPdoc)
-	 * @see Icybee.DeleteBlock::get_record_name()
-	 */
 	protected function get_record_name()
 	{
 		return $this->record->vocabulary;

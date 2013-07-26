@@ -16,8 +16,6 @@ class Model extends \ICanBoogie\ActiveRecord\Model
 	/**
 	 * If the `termslug` property is empty it is created from the `term` property, otherwise
 	 * the it is normalized.
-	 *
-	 * @see ICanBoogie\ActiveRecord.Model::save()
 	 */
 	public function save(array $properties, $key=null, array $options=array())
 	{

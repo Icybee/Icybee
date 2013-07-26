@@ -30,8 +30,6 @@ class Group extends \Brickrouge\Group
 	/**
 	 * Adds the `enabled` class name if the element has the `group-toggler` class name and a
 	 * checked checkbox child.
-	 *
-	 * @see Brickrouge.Group::render_class()
 	 */
 	protected function render_class(array $class_names)
 	{

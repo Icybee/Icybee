@@ -92,8 +92,6 @@ class PropertyRenderers implements \IteratorIterator, \ArrayAccess
 
 	/**
 	 * Returns an iterator for callbacks.
-	 *
-	 * @see IteratorAggregate::getIterator()
 	 */
 	public function getIterator()
 	{
@@ -102,8 +100,6 @@ class PropertyRenderers implements \IteratorIterator, \ArrayAccess
 
 	/**
 	 * Checks if a callback exists for a class+property.
-	 *
-	 * @see ArrayAccess::offsetExists()
 	 */
 	public function offsetExists($offset)
 	{
@@ -112,8 +108,6 @@ class PropertyRenderers implements \IteratorIterator, \ArrayAccess
 
 	/**
 	 * Returns the callbacks for a class+property.
-	 *
-	 * @see ArrayAccess::offsetGet()
 	 */
 	public function offsetGet($offset)
 	{

@@ -22,8 +22,6 @@ class Model extends \ICanBoogie\ActiveRecord\Model
 	/**
 	 * If defined, the property {@link Role::PERMS} is serialized using the {@link json_encode()}
 	 * function to set the property {@link Role::SERIALIZED_PERMS}.
-	 *
-	 * @see ICanBoogie\ActiveRecord.Model::save()
 	 */
 	public function save(array $properties, $key=null, array $options=array())
 	{
@@ -37,8 +35,6 @@ class Model extends \ICanBoogie\ActiveRecord\Model
 
 	/**
 	 * @throws Exception when on tries to delete the role with identifier "1".
-	 *
-	 * @see ICanBoogie\ActiveRecord.DatabaseTable::delete()
 	 */
 	public function delete($rid)
 	{

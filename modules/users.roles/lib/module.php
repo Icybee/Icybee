@@ -37,8 +37,6 @@ class Module extends \Icybee\Module
 
 	/**
 	 * Overrides the methods to create the "Visitor" and "User" roles.
-	 *
-	 * @see ICanBoogie.Module::install()
 	 */
 	public function install(\ICanBoogie\Errors $errors)
 	{
