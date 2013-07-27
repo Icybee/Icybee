@@ -126,7 +126,7 @@ EOT;
 
 				if ($r)
 				{
-					$url = \ICanBoogie\Routing\contextualize($r->pattern);
+					$url = \ICanBoogie\Routing\contextualize((string) $r->pattern);
 
 					if ($options)
 					{
