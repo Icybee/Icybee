@@ -72,7 +72,7 @@ class DeleteBlock extends Form
 					Operation::NAME => Module::OPERATION_DELETE,
 					Operation::KEY => $this->key,
 
-					'#location' => \ICanBoogie\Routing\contextualize("/admin/{$module->id}")
+					'redirect_to' => \ICanBoogie\Routing\contextualize("/admin/{$module->id}")
 				),
 
 				self::ACTIONS => array
