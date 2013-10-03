@@ -55,7 +55,7 @@ class KeyColumn extends Column
 	{
 		global $core;
 
-		$key = $this->id;
+		$key = $record->{ $this->id };
 
 		return new Element
 		(
@@ -67,14 +67,14 @@ class KeyColumn extends Column
 					(
 						Element::TYPE_CHECKBOX, array
 						(
-							'value' => $record->$key,
-							'disabled' => !$this->ownership[$record->$key]
+							'value' => $key,
+							'disabled' => !$this->ownership[$key]
 						)
 					)
 				),
 
 				'class' => 'checkbox-wrapper rectangle',
-				'title' => $this->t('Toggle selection for record #:key', array('key' => $key))
+				'title' => $this->t('Toggle selection for the record #:key', array(':key' => $key))
 			)
 		);
 	}
@@ -106,7 +106,7 @@ class KeyColumn extends Column
 				),
 
 				'class' => 'checkbox-wrapper rectangle',
-				'title' => $this->t('Toggle selection for the entries ([alt] to toggle selection)')
+				'title' => $this->t('Toggle selection for the records ([alt] to toggle selection)')
 			)
 		);
 	}
