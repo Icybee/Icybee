@@ -203,6 +203,15 @@
 	font-size: 12px;
 }
 
+/* listview: alert */
+
+.listview-alert {
+	margin: 0;
+	border: 0;
+	padding: 32px 16px;
+	text-align: center;
+}
+
 /* listview: controls */
 
 .listview .listview-controls select {

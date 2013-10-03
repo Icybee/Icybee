@@ -549,8 +549,12 @@ class ManageBlock extends Element
 		{
 			$query = $this->resolve_query($options);
 			$records = $this->fetch_records($query);
-			$records = $this->alter_records($records);
-			$this->records = array_values($records);
+
+			if ($records)
+			{
+				$records = $this->alter_records($records);
+				$this->records = array_values($records);
+			}
 		}
 		catch (\Exception $e)
 		{
@@ -616,7 +620,16 @@ EOT;
 		}
 		else
 		{
-			$content = $this->render_empty_body();
+			$body = $this->render_empty_body();
+			$foot = $this->render_foot();
+			$columns_n = count($this->columns);
+
+			$content = <<<EOT
+<table>
+	<tbody class="empty" td colspan="$columns_n">$body</tbody>
+	$foot
+</table>
+EOT;
 		}
 
 		#
@@ -1097,7 +1110,7 @@ EOT;
 
 		if ($search)
 		{
-			$message = $this->t('Your search <q><strong>!search</strong></q> did not match any record.', array('!search' => $search));
+			$message = $this->t('Your search <q><strong>!search</strong></q> did not match any record.<br /><br /><a href="?q=" rel="manager/search" data-action="reset" class="btn btn-warning">Reset search filter</a>', array('!search' => $search));
 		}
 		else if ($filters)
 		{
@@ -1112,7 +1125,7 @@ EOT;
 			$context = 'info';
 		}
 
-		return new Alert($message, array(Alert::CONTEXT => $context));
+		return new Alert($message, array(Alert::CONTEXT => $context, 'class' => 'alert listview-alert'));
 	}
 
 	/**
@@ -1306,7 +1319,7 @@ EOT;
 		$ncolumns = count($this->columns);
 		$key_column = $this->primary_key ? '<td class="key">&nbsp;</td>' : '';
 		$rendered_jobs = null;
-		$rendered_controls = $this->count ? $this->render_controls() : '';
+		$rendered_controls = $this->render_controls();
 
 		return <<<EOT
 <tfoot>
