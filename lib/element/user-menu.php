@@ -104,8 +104,8 @@ class UserMenu extends Element
 		);
 
 		return <<<EOT
+$username
 <span class="btn-group">
-	$username
 	<span class="dropdown-toggle" data-toggle="dropdown"><i class="icon-user icon-white"></i> <span class="caret"></span></span>
 	$menu
 </span>
