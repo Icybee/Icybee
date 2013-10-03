@@ -45,8 +45,7 @@ class BooleanColumn extends Column
 
 	public function alter_query_with_filter(Query $query, $filter_value)
 	{
-		return parent::alter_query_with_filter($query, $filter_value)
-		->where(array($this->id => $filter_value));
+		return $query->and(array($this->id => $filter_value));
 	}
 }
 
