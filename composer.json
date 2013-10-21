@@ -37,6 +37,7 @@
 		"icybee/module-pages": "*",
 		"icybee/module-sites": "*",
 		"icybee/module-users": "*",
+		"icybee/module-users-noncelogin": "*",
 		"icybee/module-thumbnailer": "*",
 		"icybee/module-views": "*"
 	},
