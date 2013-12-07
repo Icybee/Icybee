@@ -266,7 +266,7 @@ class ListViewColumn extends \ICanBoogie\Object
 		);
 	}
 
-	protected function volatile_get_class()
+	protected function get_class()
 	{
 		return $this->options['class'];
 	}

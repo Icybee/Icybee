@@ -50,11 +50,11 @@ abstract class ConfigBlock extends FormBlock
 	/**
 	 * Add the operation name {@link Module::OPERATION_CONFIG}.
 	 */
-	protected function get_attributes()
+	protected function lazy_get_attributes()
 	{
 		return \ICanBoogie\array_merge_recursive
 		(
-			parent::get_attributes(), array
+			parent::lazy_get_attributes(), array
 			(
 				Form::HIDDENS => array
 				(

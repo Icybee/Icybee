@@ -147,7 +147,7 @@ class Hooks
 		# value without the events overhead.
 		#
 
-		$target->prototype['volatile_get_' . $property] = function(\Icybee\Modules\Nodes\Node $target) use($property, &$cache)
+		$target->prototype['get_' . $property] = function(\Icybee\Modules\Nodes\Node $target) use($property, &$cache)
 		{
 			$cache_record_properties_key = spl_object_hash($target) . '_' . $property;
 

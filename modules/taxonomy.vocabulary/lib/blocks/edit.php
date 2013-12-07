@@ -29,11 +29,11 @@ class EditBlock extends \Icybee\EditBlock
 		$document->css->add(DIR . 'public/admin.css');
 	}
 
-	protected function get_attributes()
+	protected function lazy_get_attributes()
 	{
 		return \ICanBoogie\array_merge_recursive
 		(
-			parent::get_attributes(), array
+			parent::lazy_get_attributes(), array
 			(
 				Element::GROUPS => array
 				(
@@ -47,11 +47,11 @@ class EditBlock extends \Icybee\EditBlock
 		);
 	}
 
-	protected function get_children()
+	protected function lazy_get_children()
 	{
 		return array_merge
 		(
-			parent::get_children(), array
+			parent::lazy_get_children(), array
 			(
 				Vocabulary::VOCABULARY => new TitleSlugCombo
 				(

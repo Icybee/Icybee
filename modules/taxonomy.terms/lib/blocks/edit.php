@@ -19,7 +19,7 @@ use Icybee\Modules\Nodes\TitleSlugCombo;
 
 class EditBlock extends \Icybee\EditBlock
 {
-	protected function get_children()
+	protected function lazy_get_children()
 	{
 		global $core;
 
@@ -32,7 +32,7 @@ class EditBlock extends \Icybee\EditBlock
 
 		return array_merge
 		(
-			parent::get_children(), array
+			parent::lazy_get_children(), array
 			(
 				Term::TERM => new TitleSlugCombo
 				(

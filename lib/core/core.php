@@ -151,7 +151,7 @@ class Core extends \ICanBoogie\Core
 	/**
 	 * Override the method to provide our own accessor.
 	 */
-	protected function get_modules()
+	protected function lazy_get_modules()
 	{
 		$config = $this->config;
 

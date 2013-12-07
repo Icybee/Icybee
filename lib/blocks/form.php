@@ -224,7 +224,7 @@ abstract class FormBlock extends \ICanBoogie\Object
 	 *
 	 * @return array
 	 */
-	protected function get_attributes()
+	protected function lazy_get_attributes()
 	{
 		$module = $this->module;
 
@@ -308,7 +308,7 @@ abstract class FormBlock extends \ICanBoogie\Object
 	 *
 	 * @return array
 	 */
-	protected function get_values()
+	protected function lazy_get_values()
 	{
 		return isset($this->initial_attributes[Form::VALUES]) ? $this->initial_attributes[Form::VALUES] : array();
 	}
@@ -360,7 +360,7 @@ abstract class FormBlock extends \ICanBoogie\Object
 	 *
 	 * @return array
 	 */
-	protected function get_children()
+	protected function lazy_get_children()
 	{
 		return isset($this->initial_attributes[Element::CHILDREN]) ? $this->initial_attributes[Element::CHILDREN] : array();
 	}
@@ -472,7 +472,7 @@ abstract class FormBlock extends \ICanBoogie\Object
 	 *
 	 * @return \Brickrouge\Form
 	 */
-	protected function get_element()
+	protected function lazy_get_element()
 	{
 		return new Form($this->attributes);
 	}

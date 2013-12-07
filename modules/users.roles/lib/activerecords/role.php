@@ -55,7 +55,7 @@ class Role extends \ICanBoogie\ActiveRecord
 		);
 	}
 
-	protected function get_perms()
+	protected function lazy_get_perms()
 	{
 		return (array) json_decode($this->serialized_perms, true);
 	}

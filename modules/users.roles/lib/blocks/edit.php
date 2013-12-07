@@ -20,11 +20,11 @@ use Brickrouge\Text;
  */
 class EditBlock extends \Icybee\EditBlock
 {
-	protected function get_children()
+	protected function lazy_get_children()
 	{
 		return array_merge
 		(
-			parent::get_children(), array
+			parent::lazy_get_children(), array
 			(
 				Role::NAME => new Text
 				(

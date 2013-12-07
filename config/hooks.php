@@ -18,7 +18,7 @@ return array
 
 	'prototypes' => array
 	(
-		'ICanBoogie\Core::get_document' => 'Icybee\Document::get'
+		'ICanBoogie\Core::lazy_get_document' => 'Icybee\Document::get'
 	),
 
 	'patron.markups' => array

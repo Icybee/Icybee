@@ -171,7 +171,7 @@ class EditBlock extends FormBlock
 	 *
 	 * @return \ICanBoogie\ActiveRecord
 	 */
-	protected function get_record()
+	protected function lazy_get_record()
 	{
 		return $this->key ? $this->module->model[$this->key] : null;
 	}
@@ -187,11 +187,11 @@ class EditBlock extends FormBlock
 	 * - The key of the operation: The key provided during construct.
 	 * - The `admin` element group.
 	 */
-	protected function get_attributes()
+	protected function lazy_get_attributes()
 	{
 		return \ICanBoogie\array_merge_recursive
 		(
-			parent::get_attributes(), array
+			parent::lazy_get_attributes(), array
 			(
 				Form::HIDDENS => array
 				(
@@ -238,7 +238,7 @@ class EditBlock extends FormBlock
 	 * - An array with the properties of the record.
 	 * - An array with the request params of the request.
 	 */
-	protected function get_values()
+	protected function lazy_get_values()
 	{
 		global $core;
 
@@ -248,7 +248,7 @@ class EditBlock extends FormBlock
 
 		return array_merge
 		(
-			parent::get_values(),
+			parent::lazy_get_values(),
 			$schema ? array_fill_keys(array_keys($schema['fields']), null) : array(),
 			$record ? $record->to_array() : array(),
 			$params ? $params : array()

@@ -15,12 +15,12 @@ use ICanBoogie\Modules;
 
 class SaveOperation extends \ICanBoogie\SaveOperation
 {
-	protected function get_properties()
+	protected function lazy_get_properties()
 	{
 		global $core;
 
 		$request = $this->request;
-		$properties = parent::get_properties();
+		$properties = parent::lazy_get_properties();
 
 		if ($request['scope'])
 		{

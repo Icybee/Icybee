@@ -56,7 +56,7 @@ class ConfigOperation extends \ICanBoogie\Operation
 	 * Parse the operation parameters to create the key/value pairs to save in the "global" and
 	 * "local" config spaces.
 	 */
-	protected function get_properties()
+	protected function lazy_get_properties()
 	{
 		return array_intersect_key($this->request->params, array('global' => true, 'local' => true));
 	}

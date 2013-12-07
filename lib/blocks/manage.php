@@ -95,7 +95,7 @@ class ManageBlock extends Element
 	 *
 	 * @return \ICanBoogie\ActiveRecord\Model
 	 */
-	protected function volatile_get_model()
+	protected function get_model()
 	{
 		return $this->model;
 	}
@@ -126,7 +126,7 @@ class ManageBlock extends Element
 	 *
 	 * @var string
 	 */
-	protected function volatile_get_primary_key()
+	protected function get_primary_key()
 	{
 		return $this->model->primary;
 	}
@@ -152,7 +152,7 @@ class ManageBlock extends Element
 	 *
 	 * @return \ICanBoogie\I18n\Translator\Proxi
 	 */
-	protected function volatile_get_t()
+	protected function get_t()
 	{
 		return $this->t;
 	}
@@ -169,7 +169,7 @@ class ManageBlock extends Element
 	 *
 	 * @return \Icybee\ManageBlock\Options
 	 */
-	protected function volatile_get_options()
+	protected function get_options()
 	{
 		return $this->options;
 	}
@@ -294,9 +294,30 @@ class ManageBlock extends Element
 	protected function get_columns()
 	{
 		$columns = $this->get_available_columns();
+
+		new \Icybee\ManageBlock\RegisterColumnsEvent($this, $columns);
+
 		$columns = $this->resolve_columns($columns);
 
 		new \Icybee\ManageBlock\AlterColumnsEvent($this, $columns);
+
+		foreach ($columns as $column_id => $column)
+		{
+			if ($column instanceof Column)
+			{
+				continue;
+			}
+
+			throw new \UnexpectedValueException(\ICanBoogie\format
+			(
+				'Column %id must be an instance of Column. Given: %type. :data', array
+				(
+					'%id' => $column_id,
+					'%type' => gettype($column),
+					':data' => $column
+				)
+			));
+		}
 
 		return $columns;
 	}
@@ -1344,13 +1365,57 @@ EOT;
 		return $this->options->is_filtering($column_id);
 	}
 
-	protected function volatile_get_is_filtering()
+	protected function get_is_filtering()
 	{
 		return $this->is_filtering();
 	}
 }
 
+/*
+ * Events
+ */
+
 namespace Icybee\ManageBlock;
+
+/**
+ * Event class for the `Icybee\ManageBlock::register_columns` event.
+ */
+class RegisterColumnsEvent extends \ICanBoogie\Event
+{
+	/**
+	 * Reference to the columns of the element.
+	 *
+	 * @var array[string]array
+	 */
+	public $columns;
+
+	/**
+	 * The event is constructed with the type `register_columns`.
+	 *
+	 * @param \Icybee\ManageBlock $target
+	 * @param array $columns Reference to the columns of the element.
+	 */
+	public function __construct(\Icybee\ManageBlock $target, array &$columns)
+	{
+		$this->columns = &$columns;
+
+		parent::__construct($target, 'register_columns');
+	}
+
+	public function add(Column $column, $weight=null)
+	{
+		if ($weight)
+		{
+			list($position, $relative) = explode(':', $weight) + array('before');
+
+			$this->columns = \ICanBoogie\array_insert($this->columns, $relative, $column, $column->id, $position == 'after');
+		}
+		else
+		{
+			$this->columns[$column->id] = $column;
+		}
+	}
+}
 
 /**
  * Event class for the `Icybee\ManageBlock::alter_columns` event.

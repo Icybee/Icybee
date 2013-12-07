@@ -92,7 +92,7 @@ class Term extends \ICanBoogie\ActiveRecord implements \IteratorAggregate
 	 *
 	 * @return \Icybee\Modules\Taxonomy\Vocabulary\Vocabulary
 	 */
-	protected function get_vocabulary()
+	protected function lazy_get_vocabulary()
 	{
 		global $core;
 
@@ -109,7 +109,7 @@ class Term extends \ICanBoogie\ActiveRecord implements \IteratorAggregate
 	 *
 	 * @return array
 	 */
-	protected function get_nodes_keys()
+	protected function lazy_get_nodes_keys()
 	{
 		global $core;
 
@@ -150,7 +150,7 @@ class Term extends \ICanBoogie\ActiveRecord implements \IteratorAggregate
 	 *
 	 * @return array The nodes associated with the term, or an empty array if there is none.
 	 */
-	protected function get_nodes()
+	protected function lazy_get_nodes()
 	{
 		global $core;
 
@@ -191,7 +191,7 @@ class Term extends \ICanBoogie\ActiveRecord implements \IteratorAggregate
 	 *
 	 * @return array[string]mixed
 	 */
-	protected function get_css_class_names()
+	protected function lazy_get_css_class_names()
 	{
 		return array
 		(
@@ -220,7 +220,7 @@ class Term extends \ICanBoogie\ActiveRecord implements \IteratorAggregate
 	 *
 	 * @return string
 	 */
-	protected function get_css_class()
+	protected function lazy_get_css_class()
 	{
 		return $this->css_class();
 	}

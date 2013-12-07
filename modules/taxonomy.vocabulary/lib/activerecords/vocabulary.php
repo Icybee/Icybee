@@ -105,7 +105,7 @@ class Vocabulary extends ActiveRecord
 	 *
 	 * @return array[]string
 	 */
-	protected function get_scope()
+	protected function lazy_get_scope()
 	{
 		global $core;
 
@@ -118,7 +118,7 @@ class Vocabulary extends ActiveRecord
 	 *
 	 * @return array[]Term
 	 */
-	protected function get_terms()
+	protected function lazy_get_terms()
 	{
 		global $core;
 

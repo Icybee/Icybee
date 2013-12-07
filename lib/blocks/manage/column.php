@@ -69,19 +69,19 @@ class Column extends \ICanBoogie\Object
 	}
 
 	// TODO-20130627: remove this compat method
-	protected function volatile_set_filtering()
+	protected function set_filtering()
 	{
 		throw new \InvalidArgumentException("The <q>filtering</q> property is deprecated. Use <q>is_filtering</q> or <q>filter_value</q>");
 	}
 
-	protected function volatile_set_label($value)
+	protected function set_label($value)
 	{
 		trigger_error("The <q>label</q> property is deprecated, use <q>title</q> instead.");
 
 		$this->title = $value;
 	}
 
-	protected function volatile_get_label()
+	protected function get_label()
 	{
 		trigger_error("The <q>label</q> property is deprecated, use <q>title</q> instead.");
 
@@ -93,7 +93,7 @@ class Column extends \ICanBoogie\Object
 	 *
 	 * @return boolean
 	 */
-	protected function volatile_get_is_filtering()
+	protected function get_is_filtering()
 	{
 		return $this->manager->is_filtering($this->id);
 	}
@@ -103,7 +103,7 @@ class Column extends \ICanBoogie\Object
 	 *
 	 * @return mixed|null
 	 */
-	protected function volatile_get_filter_value()
+	protected function get_filter_value()
 	{
 		return $this->is_filtering ? $this->manager->options->filters[$this->id] : null;
 	}

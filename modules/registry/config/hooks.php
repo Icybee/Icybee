@@ -23,9 +23,9 @@ return array
 
 	'prototypes' => array
 	(
-		'Icybee\Modules\Nodes\Node::get_metas' => $hooks . 'get_metas',
-		'Icybee\Modules\Users\User::get_metas' => $hooks . 'get_metas',
-		'Icybee\Modules\Sites\Site::get_metas' => $hooks . 'get_metas',
-		'ICanBoogie\Core::get_registry' => $hooks . 'get_registry'
+		'Icybee\Modules\Nodes\Node::lazy_get_metas' => $hooks . 'get_metas',
+		'Icybee\Modules\Users\User::lazy_get_metas' => $hooks . 'get_metas',
+		'Icybee\Modules\Sites\Site::lazy_get_metas' => $hooks . 'get_metas',
+		'ICanBoogie\Core::lazy_get_registry' => $hooks . 'get_registry'
 	)
 );

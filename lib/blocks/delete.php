@@ -151,7 +151,7 @@ EOT;
 	 *
 	 * @return ActiveRecord
 	 */
-	protected function get_record()
+	protected function lazy_get_record()
 	{
 		return $this->module->model[$this->key];
 	}

@@ -16,9 +16,9 @@ class Save extends \ICanBoogie\SaveOperation // FIXME-20130501: is this still us
 	/**
 	 * Adds the constructor id to the properties.
 	 */
-	protected function get_properties()
+	protected function lazy_get_properties()
 	{
-		$properties = parent::get_properties();
+		$properties = parent::lazy_get_properties();
 
 		$properties['constructor'] = (string) $this->module;
 
