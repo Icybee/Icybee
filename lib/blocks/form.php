@@ -412,7 +412,7 @@ abstract class FormBlock extends \ICanBoogie\Object
 	 *
 	 * @return array
 	 */
-	protected function get_actions()
+	protected function lazy_get_actions()
 	{
 		return array
 		(

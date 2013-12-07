@@ -298,7 +298,7 @@ class EditBlock extends FormBlock
 	/**
 	 * Replaces the primary button with a button with the label "Save".
 	 */
-	protected function get_actions()
+	protected function lazy_get_actions()
 	{
 		return array
 		(
