@@ -24,7 +24,7 @@
 		"brickrouge/brickrouge": "2.x",
 		"icybee/core": "*",
 		"icybee/bluetihi": "*",
-		"icybee/patron": "*",
+		"icybee/patron": "2.x",
 		"icybee/module-cache": "2.x",
 		"icybee/module-contents": "2.x",
 		"icybee/module-dashboard": "2.x",
