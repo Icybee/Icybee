@@ -21,6 +21,7 @@
 		"php": ">=5.3.0",
 		"icanboogie/icanboogie": "2.x",
 		"icanboogie/image": "*",
+		"icanboogie/i18n": "2.x",
 		"brickrouge/brickrouge": "2.x",
 		"icybee/core": "*",
 		"icybee/bluetihi": "*",
