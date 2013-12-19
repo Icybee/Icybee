@@ -27,7 +27,7 @@
 		"icybee/patron": "2.x",
 		"icybee/module-cache": "2.x",
 		"icybee/module-contents": "2.x",
-		"icybee/module-dashboard": "2.x",
+		"icybee/module-dashboard": "*",
 		"icybee/module-editor": "2.x",
 		"icybee/module-files": "2.x",
 		"icybee/module-forms": "2.x",
