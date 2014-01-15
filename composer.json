@@ -23,7 +23,7 @@
 		"icanboogie/image": "*",
 		"icanboogie/i18n": "2.x",
 		"brickrouge/brickrouge": "2.x",
-		"icybee/core": "*",
+		"icybee/core": "2.x",
 		"icybee/bluetihi": "*",
 		"icybee/patron": "2.x",
 		"icybee/module-cache": "2.x",
