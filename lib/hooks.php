@@ -361,6 +361,28 @@ class Hooks
 	}
 
 	/*
+	 * Prototypes
+	 */
+
+	static public function get_cldr()
+	{
+		static $cldr;
+
+		if (!$cldr)
+		{
+			$provider = new \ICanBoogie\CLDR\Provider
+			(
+				new \ICanBoogie\CLDR\RunTimeCache(new \ICanBoogie\CLDR\FileCache(\ICanBoogie\REPOSITORY . 'cldr' . DIRECTORY_SEPARATOR)),
+				new \ICanBoogie\CLDR\Retriever
+			);
+
+			$cldr = new \ICanBoogie\CLDR\Repository($provider);
+		}
+
+		return $cldr;
+	}
+
+	/*
 	 * Markups
 	 */
 

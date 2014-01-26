@@ -32,6 +32,8 @@ $core = new Core
 	)
 );
 
+\ICanBoogie\I18n\Helpers::patch('get_cldr', function() use($core) { return $core->cldr; });
+
 \Brickrouge\Helpers::patch('t', 'ICanBoogie\I18n\t');
 \Brickrouge\Helpers::patch('render_exception', 'ICanBoogie\Debug::format_alert');
 \Brickrouge\Helpers::patch('get_document', function() use($core) { return $core->document; });
