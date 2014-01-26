@@ -190,7 +190,7 @@ abstract class FormBlock extends \ICanBoogie\Object
 
 			$this->render();
 
-			I18n::push_scope($this->module . '.' . \ICanBoogie\underscore(basename(strtr(get_class($this), '\\', '/'))));
+			I18n::push_scope($this->module->flat_id . '.' . \ICanBoogie\underscore(basename(strtr(get_class($this), '\\', '/'))));
 
 			$html = (string) $this->element;
 
