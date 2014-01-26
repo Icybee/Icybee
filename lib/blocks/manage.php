@@ -344,6 +344,11 @@ class ManageBlock extends Element
 
 		foreach ($columns as $id => $options)
 		{
+			if ($options === null)
+			{
+				throw new \Exception(\ICanBoogie\format("Column %id is not defined.", array('id' => $id)));
+			}
+
 			$construct = __CLASS__ . '\Column';
 
 			if (is_string($options))
