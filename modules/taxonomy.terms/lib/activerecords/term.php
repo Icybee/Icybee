@@ -16,8 +16,10 @@ namespace Icybee\Modules\Taxonomy\Terms;
  *
  * @property-read array $nodes_keys
  */
-class Term extends \ICanBoogie\ActiveRecord implements \IteratorAggregate
+class Term extends \ICanBoogie\ActiveRecord implements \IteratorAggregate, \Brickrouge\CSSClassNames
 {
+	use \Brickrouge\CSSClassNamesProperty;
+
 	const VTID = 'vtid';
 	const VID = 'vid';
 	const TERM = 'term';
@@ -191,7 +193,7 @@ class Term extends \ICanBoogie\ActiveRecord implements \IteratorAggregate
 	 *
 	 * @return array[string]mixed
 	 */
-	protected function lazy_get_css_class_names()
+	protected function get_css_class_names()
 	{
 		return array
 		(
@@ -201,27 +203,5 @@ class Term extends \ICanBoogie\ActiveRecord implements \IteratorAggregate
 			'vid' => $this->vid ? 'vocabulary-' . $this->vid : null,
 			'vslug' => $this->vid ? 'vocabulary-slug--' . $this->vocabulary->vocabularyslug : null
 		);
-	}
-
-	/**
-	 * Return the CSS class of the term.
-	 *
-	 * @param string|array $modifiers CSS class names modifiers
-	 *
-	 * @return string
-	 */
-	public function css_class($modifiers=null)
-	{
-		return \Brickrouge\render_css_class($this->css_class_names, $modifiers);
-	}
-
-	/**
-	 * Returns the CSS class of the term.
-	 *
-	 * @return string
-	 */
-	protected function lazy_get_css_class()
-	{
-		return $this->css_class();
 	}
 }

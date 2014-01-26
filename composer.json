@@ -1,7 +1,7 @@
 {
 	"name": "icybee/icybee",
 	"type": "library",
-	"description": "A buzzing CMS for PHP5.3+",
+	"description": "A buzzing CMS for PHP5.4+",
 	"keywords": ["cms"],
 	"homepage": "http://icybee.org/",
 	"license": "BSD-3-Clause",
@@ -18,11 +18,12 @@
 		"source": "https://github.com/Icybee/Icybee"
 	},
 	"require": {
-		"php": ">=5.3.0",
+		"php": ">=5.4.0",
 		"icanboogie/icanboogie": "2.x",
 		"icanboogie/image": "*",
 		"icanboogie/i18n": "2.x",
 		"brickrouge/brickrouge": "2.x",
+		"brickrouge/css-class-names": "2.x",
 		"icybee/core": "2.x",
 		"icybee/bluetihi": "*",
 		"icybee/patron": "2.x",

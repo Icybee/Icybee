@@ -1,6 +1,6 @@
 # Icybee
 
-Icybee is a CMS for PHP5.3.3+
+Icybee is a CMS for PHP5.4+
 
 If you want to try the CMS for yourself please [download the demonstration](http://icybee.org/icybee-demo-latest.zip)
 and follow the [installation guide](https://github.com/Icybee/Icybee/wiki/Installation-guide-for-Icybee%27s-epic-demonstration).
