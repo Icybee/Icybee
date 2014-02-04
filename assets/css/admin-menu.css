@@ -1,151 +1,92 @@
-@CHARSET "UTF-8";
-
-@font-face {
-	font-family: 'Roboto';
-	font-style: normal;
-	font-weight: bold;
-	src: local('Roboto Medium'), local('Roboto-Medium'),
-		url('http://themes.googleusercontent.com/static/fonts/roboto/v2/RxZJdnzeo3R5zSexge8UUbO3LdcAZYWl9Si6vvxL-qU.woff')
-		format('woff');
-}
-
-@font-face {
-	font-family: 'Roboto';
-	font-style: italic;
-	font-weight: bold;
-	src: local('Roboto Medium Italic'), local('Roboto-MediumItalic'),
-		url('http://themes.googleusercontent.com/static/fonts/roboto/v2/OLffGBTaF0XFOW1gnuHF0brIa-7acMAeDBVuclsi6Gc.woff')
-		format('woff');
-}
-
-@font-face {
-	font-family: 'Roboto';
-	font-style: normal;
-	font-weight: 400;
-	src: local('Roboto Regular'), local('Roboto-Regular'),
-		url('http://themes.googleusercontent.com/static/fonts/roboto/v2/CrYjSnGjrRCn0pd9VQsnFOvvDin1pK8aKteLpeZ5c0A.woff')
-		format('woff');
-}
-
-@font-face {
-	font-family: 'Roboto';
-	font-style: normal;
-	font-weight: 100;
-	src: local('Roboto Thin'), local('Roboto-Thin'),
-		url('http://themes.googleusercontent.com/static/fonts/roboto/v2/vzIUHo9z-oJ4WgkpPOtg13YhjbSpvc47ee6xR_80Hnw.woff')
-		format('woff');
-}
-
-@font-face {
-	font-family: 'Roboto';
-	font-style: italic;
-	font-weight: 400;
-	src: local('Roboto Italic'), local('Roboto-Italic'),
-		url('http://themes.googleusercontent.com/static/fonts/roboto/v2/1pO9eUAp8pSF8VnRTP3xnnYhjbSpvc47ee6xR_80Hnw.woff')
-		format('woff');
-}
-
-#icybee-admin-menu
-{
-	position: fixed;
-	top: 1em;
-	right: 1em;
-	z-index: 1000000; /* to beat the crazy 10000 index of the twitter bootstrap topbar */	
-		
-	color: #404040;
-	background:#F6F6F6;
-	border:1px solid #CCCCCC;
-	border-radius: .5em;
-	
-	font-family: Roboto, Arial, Helvetica, sans-serif;
-	font-size: 12px;
+#icybee-admin-menu {
+	background: black;
+	border: 0;
+	border-radius: 3px 3px 0 0;
+	border-bottom: 5px solid #33B5E5;
+	box-shadow: 0px 10px 40px black;
+	color: #aaa;
+	font-family: Roboto, Helvetica, Arial, sans-serif;
+	font-size: 14px;
 	line-height: 1.33em;
-
-	box-shadow: 0 10px 10px -6px rgba(0, 0, 0, 0.2);
 	overflow: hidden;
+	position: fixed;
+	right: 20px;
+	top: 20px;
+	z-index: 1000000; /* to beat the crazy 10000 index of the twitter bootstrap topbar */
 }
 
 @media print
 {
-	#icybee-admin-menu
-	{
+	#icybee-admin-menu {
 		display: none;
 	}
 }
 
-#icybee-admin-menu:hover
-{
-	box-shadow: 0 25px 15px -20px rgba(0, 0, 0, 0.2);
-}
-
-#icybee-admin-menu div.panel-title
-{
-	background-image: -webkit-gradient(linear, left top, left bottom, from(#F6F6F6), color-stop(50%, #E8E8E8), to(#E8E8E8));
-	background-image: -moz-linear-gradient(center top , #F6F6F6, #E8E8E8 50%);
-	background-image: linear-gradient(to bottom, #F6F6F6, #E8E8E8 50%);
-	background-color: #F6F6F6;
-	font-weight:bolder;
-	padding:0.4em 1ex;
-	text-align:center;
-	text-shadow:0 1px 0 #FFF;
-}
-
-#icybee-admin-menu:hover div.panel-title
-{
-	border-bottom: 1px solid #ccc;
-}
-
-#icybee-admin-menu div.panel-title span
-{
-	color: #808080;
-}
-
-#icybee-admin-menu div.panel-title a
-{
-	color: inherit;
-}
-
-#icybee-admin-menu div.panel-section-title
-{
-	border-top: 1px solid #CCC;
-	border-bottom: 1px solid #CCC;
-	
-	color: #808080;
-	background-color: white;
-	
-	font-weight:normal;
-	text-align:left;
-	padding: .2em 1em;
-}
-
-#icybee-admin-menu div.contents
-{
+#icybee-admin-menu .contents {
 	display: none;
-	padding: 0;
 	margin: 0;
 	max-width: none;
 	min-width: 0;
+	padding: 0;
 }
 
-#icybee-admin-menu:hover div.contents
-{
+#icybee-admin-menu:hover .contents {
 	display: block;
 }
 
-#icybee-admin-menu a
-{
-	color: #4B8BB3;
+#icybee-admin-menu a {
+	color: inherit;
 	text-decoration: none;
 }
 
-#icybee-admin-menu a:hover
-{
+#icybee-admin-menu a:hover {
+	color: white;
 	text-decoration: underline;
 }
 
-#icybee-admin-menu ul
-{
+#icybee-admin-menu ul {
+	list-style: none;
 	margin: 1em 0;
 	padding: 0 1em;
-	list-style: none;
+}
+
+#icybee-admin-menu .panel-title + ul {
+	margin-top: 1em;
+}
+
+#icybee-admin-menu .panel-title {
+	background: #000;
+	background: linear-gradient(#222, #000);
+	color: white;
+	font-weight: 500;
+	text-align: center;
+}
+
+#icybee-admin-menu:hover .panel-title {
+	font-size: 16px;
+}
+
+#icybee-admin-menu .panel-title a {
+	color: inherit;
+	display: block;
+	padding: .5em 1em;
+}
+
+#icybee-admin-menu .panel-title a:hover {
+	background: radial-gradient(ellipse farthest-side at center top, rgba(51, 181, 229, .5), rgba(51, 181, 229, 0));
+}
+
+#icybee-admin-menu .panel-section-title {
+	border-bottom: 1px solid #222;
+	color: white;
+	font-size: 12px;
+	font-weight: 500;
+	margin: 14px 0;
+	padding: 0 14px 8px 14px;
+	text-align:left;
+	text-transform: uppercase;
+}
+
+#icybee-admin-menu .panel-section-title + ul li + li {
+	margin-top: 4px;
 }
