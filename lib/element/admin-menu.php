@@ -21,9 +21,18 @@ use Brickrouge\ElementIsEmpty;
 
 /**
  * A menu that helps managing the contents of pages.
+ *
+ * @property \ICanBoogie\I18n\Translator\Proxi $translator
  */
 class AdminMenu extends Element
 {
+	static protected function add_assets(\Brickrouge\Document $document)
+	{
+		parent::add_assets($document);
+
+		$document->css->add(\Icybee\ASSETS . 'css/admin-menu.css');
+	}
+
 	public function __construct(array $attributes=array())
 	{
 		parent::__construct
@@ -35,7 +44,22 @@ class AdminMenu extends Element
 		);
 	}
 
-	protected function render_inner_html()
+	protected function lazy_get_translator()
+	{
+		global $core;
+
+		$user = $core->user;
+		$translator = new Proxi();
+
+		if ($user->language)
+		{
+			$translator->language = $user->language;
+		}
+
+		return $translator;
+	}
+
+	public function render()
 	{
 		global $core;
 
@@ -44,8 +68,12 @@ class AdminMenu extends Element
 			throw new ElementIsEmpty();
 		}
 
-		$document = $core->document;
-		$document->css->add(\Icybee\ASSETS . 'css/admin-menu.css');
+		return parent::render();
+	}
+
+	protected function render_inner_html()
+	{
+		global $core;
 
 		$user = $core->user;
 		$page = $core->request->context->page;
@@ -56,19 +84,14 @@ class AdminMenu extends Element
 		if (!$edit_target)
 		{
 			#
-			# when the page is cached, 'page' is null because it is not loaded, we should load
+			# when the page is cached 'page' is null because it is not loaded, we should load
 			# the page ourselves to present the admin menu on cached pages.
 			#
 
 			throw new ElementIsEmpty();
 		}
 
-		$translator = new Proxi();
-
-		if ($user->language)
-		{
-			$translator->language = $user->language;
-		}
+		$translator = $this->translator;
 
 		$contents .= '<ul style="text-align: center;"><li>';
 
@@ -101,7 +124,8 @@ class AdminMenu extends Element
 
 			$pathname = $routes[$id]->pattern;
 
-			$links[] = '<a href="' . \ICanBoogie\escape(\ICanBoogie\Routing\contextualize($pathname)) . '">' . $module->title . '</a>';
+			$links[] = '<a href="' . \ICanBoogie\escape(\ICanBoogie\Routing\contextualize($pathname)) . '">'
+			. $translator($module->flat_id, array(), array('scope' => 'module_title', 'default' => $module->title)) . '</a>';
 		}
 
 		if ($links)
@@ -159,8 +183,10 @@ class AdminMenu extends Element
 
 		if ($contents)
 		{
+			$admin_path = \ICanBoogie\Routing\contextualize('/admin/');
+
 			$rc  = <<<EOT
-<div class="panel-title">Icybee</div>
+<div class="panel-title"><a href="$admin_path">Icybee</a></div>
 <div class="contents">$contents</div>
 EOT;
 		}
