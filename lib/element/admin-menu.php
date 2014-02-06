@@ -44,7 +44,7 @@ class AdminMenu extends Element
 		);
 	}
 
-	protected function lazy_get_translator()
+	protected function get_translator()
 	{
 		global $core;
 
