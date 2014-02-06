@@ -30,12 +30,20 @@ return array
 
 		'document:css' => array
 		(
-			'Icybee\Document::markup_document_css', array()
+			'Icybee\Document::markup_document_css', array
+			(
+				'href' => null,
+				'weight' => 100
+			)
 		),
 
 		'document:js' => array
 		(
-			'Icybee\Document::markup_document_js', array()
+			'Icybee\Document::markup_document_js', array
+			(
+				'href' => null,
+				'weight' => 100
+			)
 		),
 
 		'document:title' => array

@@ -124,7 +124,39 @@ class Document extends \Brickrouge\Document
 	}
 
 	/**
-	 * Adds or return the CSS assets of the document.
+	 * CSS assets can be collected and rendered into `LINK` elements with the `p:document:css`
+	 * element. The `href` attribute is used to add an asset to the collection. The `weight`
+	 * attribute specifies the weight of that asset. If the `weight` attribute is not specified,
+	 * the weight of the asset is defaulted to 100. If the `href` attribute is not specified,
+	 * the assets are rendered. If a template is specified the collection is passed as `this`,
+	 * otherwise the collection is rendered into an HTML string of `LINK` elements.
+	 *
+	 * Note: Currently, the element is not rendered right away, a placeholder is inserted instead
+	 * and is replaced when the `Icybee\Modules\Pages\PageController::render` event is fired.
+	 *
+	 * <pre>
+	 * <p:document:css
+	 *     href = string
+	 *     weight = int>
+	 *     <!-- Content: p:with-params, template? -->
+	 * </p:document:css>
+	 * </pre>
+	 *
+	 * Example:
+	 *
+	 * <pre>
+	 * <p:document:css href="/public/page.css" />
+	 * <p:document:css href="/public/reset.css" weight="-100" />
+	 *
+	 * <p:document:css />
+	 * </pre>
+	 *
+	 * Produces:
+	 *
+	 * <pre>
+	 * <link href="/public/reset.css" type="text/css" rel="stylesheet" />
+	 * <link href="/public/page.css" type="text/css" rel="stylesheet" />
+	 * </pre>
 	 *
 	 * @param array $args
 	 * @param Patron\Engine $engine
@@ -136,13 +168,9 @@ class Document extends \Brickrouge\Document
 	{
 		global $core;
 
-		if (isset($args['add']))
+		if (isset($args['href']))
 		{
-			$file = $engine->get_file();
-
-			\ICanBoogie\log(__FILE__ . '::' . __FUNCTION__ . '::file: \1', array($file));
-
-			$core->document->css->add($args['add'], dirname($file));
+			$core->document->css->add($args['href'], $args['weight'], dirname($engine->get_file()));
 
 			return;
 		}
@@ -152,7 +180,7 @@ class Document extends \Brickrouge\Document
 		$core->events->attach(function(PageController\RenderEvent $event, PageController $target) use($engine, $template, $key)
 		{
 			#
-			# The event is chained so that is gets executed once the event chain has been
+			# The event is chained so that it gets executed once the event chain has been
 			# processed.
 			#
 
@@ -171,13 +199,58 @@ class Document extends \Brickrouge\Document
 		return PHP_EOL . $key;
 	}
 
-	static public function markup_document_js(array $args, \Patron\Engine $patron, $template)
+	/**
+	 * JavaScript assets can be collected and rendered into `SCRIPT` elements with the `p:document:js`
+	 * element. The `href` attribute is used to add an asset to the collection. The `weight`
+	 * attribute specifies the weight of that asset. If the `weight` attribute is not specified,
+	 * the weight of the asset is defaulted to 100. If the `href` attribute is not specified,
+	 * the assets are rendered. If a template is specified the collection is passed as `this`,
+	 * otherwise the collection is rendered into an HTML string of `SCRIPT` elements.
+	 *
+	 * <pre>
+	 * <p:document:js
+	 *     href = string
+	 *     weight = int>
+	 *     <!-- Content: p:with-params, template? -->
+	 * </p:document:js>
+	 * </pre>
+	 *
+	 * Example:
+	 *
+	 * <pre>
+	 * <p:document:js href="/public/page.js" />
+	 * <p:document:js href="/public/reset.js" weight="-100" />
+	 *
+	 * <p:document:js />
+	 * </pre>
+	 *
+	 * Produces:
+	 *
+	 * <pre>
+	 * <script src="/public/reset.css" type="text/javascript"></script>
+	 * <script src="/public/page.css" type="text/javascript"></script>
+	 * </pre>
+	 *
+	 * @param array $args
+	 * @param Patron\Engine $engine
+	 * @param mixed $template
+	 *
+	 * @return void|string
+	 */
+	static public function markup_document_js(array $args, \Patron\Engine $engine, $template)
 	{
 		global $core;
 
 		$document = $core->document;
 
-		return $template ? $patron($template, $document->js) : (string) $document->js;
+		if (isset($args['href']))
+		{
+			$document->js->add($args['href'], $args['weight'], dirname($engine->get_file()));
+
+			return;
+		}
+
+		return $template ? $engine($template, $document->js) : (string) $document->js;
 	}
 
 	/*
