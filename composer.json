@@ -41,7 +41,8 @@
 		"icybee/module-users": "2.x",
 		"icybee/module-users-noncelogin": "2.x",
 		"icybee/module-thumbnailer": "2.x",
-		"icybee/module-views": "2.x"
+		"icybee/module-views": "2.x",
+		"icybee/module-taxonomy-vocabulary": "2.x"
 	},
 	"autoload": {
 		"classmap": [ "lib/", "includes/", "modules/" ],
