@@ -65,7 +65,7 @@ class AdminMenu extends Element
 
 		if (!$core->user_id || $core->user instanceof \Icybee\Modules\Members\Member)
 		{
-			throw new ElementIsEmpty();
+			return '';
 		}
 
 		return parent::render();
