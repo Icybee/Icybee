@@ -39,6 +39,7 @@
 		"icybee/module-pages": "2.x",
 		"icybee/module-sites": "2.x",
 		"icybee/module-users": "2.x",
+		"icybee/module-users-roles": "2.x",
 		"icybee/module-users-noncelogin": "2.x",
 		"icybee/module-thumbnailer": "2.x",
 		"icybee/module-views": "2.x",
