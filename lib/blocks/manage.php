@@ -431,7 +431,7 @@ class ManageBlock extends Element
 
 			if ($type == 'boolean')
 			{
-				$value = filter_var($value, FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE);
+				$value = $value === '' ? null : filter_var($value, FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE);
 			}
 			else if ($type == 'integer')
 			{
