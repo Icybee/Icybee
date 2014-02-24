@@ -1209,7 +1209,7 @@ EOT;
 		$start = $this->options->start;
 		$limit = $this->options->limit;
 
-		if ($count <= $limit)
+		if ($count <= 10)
 		{
 			$content = $this->t($this->is_filtering || $this->options->search ? "records_count_with_filters" : "records_count", array(':count' => $count));
 
