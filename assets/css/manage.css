@@ -338,6 +338,15 @@
 	white-space: nowrap;
 }
 
+.listview .cell-boolean {
+	width: 28px;
+	text-align: center;
+}
+
+.listview td.cell-boolean label {
+	margin: auto;
+}
+
 .listview tfoot td {
 	cursor: auto;
 	background-color: #E8E8E8;

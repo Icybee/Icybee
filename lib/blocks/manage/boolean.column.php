@@ -27,6 +27,7 @@ class BooleanColumn extends Column
 			$manager, $id, $options + array
 			(
 				'title' => null,
+				'class' => 'cell-boolean',
 				'discreet' => false,
 				'filters' => array
 				(
@@ -41,6 +42,13 @@ class BooleanColumn extends Column
 				'cell_renderer' => __NAMESPACE__ . '\BooleanCellRenderer'
 			)
 		);
+	}
+
+	public function add_assets(\Brickrouge\Document $document)
+	{
+		parent::add_assets($document);
+
+		$document->js->add('boolean.column.js');
 	}
 
 	public function alter_query_with_filter(Query $query, $filter_value)
@@ -73,7 +81,8 @@ class BooleanCellRenderer extends CellRenderer
 						(
 							'value' => $record->{ $this->column->manager->primary_key },
 							'checked' => ($record->$property != 0),
-							'data-property' => $property
+							'data-property' => $property,
+							'data-property-type' => 'boolean'
 						)
 					)
 				),
