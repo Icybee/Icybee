@@ -72,6 +72,11 @@ class DateTimeColumn extends Column
 	{
 		$date = $record->{ $this->id };
 
+		if (!$date)
+		{
+			return;
+		}
+
 		if (!($date instanceof DateTime))
 		{
 			$date = new DateTime($date, 'utc');
