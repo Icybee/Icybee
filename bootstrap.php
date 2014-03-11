@@ -12,13 +12,6 @@
 namespace Icybee;
 
 /**
- * Version string for the Icybee package.
- *
- * @var string
- */
-const VERSION = 'dev-master (2013-04-05)';
-
-/**
  * Path to the directory of the Icybee package.
  *
  * The path includes a trailing directory separator.

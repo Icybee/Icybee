@@ -1,0 +1,11 @@
+{
+	"config-path": "config/",
+	"locale-path": "locale/",
+	"module-path": "modules/",
+
+	"config-constructors": {
+
+		"admin_routes": "Icybee\\Hooks::synthesize_admin_routes#routes"
+
+	}
+}

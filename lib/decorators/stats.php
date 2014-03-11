@@ -75,9 +75,8 @@ class StatsDecorator extends \Brickrouge\Decorator
 
 		$html = $this->component . PHP_EOL . '<!-- ' . \ICanBoogie\format
 		(
-			'icybee :version – in :elapsed ms (core: :elapsed_core ms, db: :elapsed_queries ms), using :memory-usage (peak: :memory-peak), queries: :queries-count (:queries-details)', array
+			'Icybee – in :elapsed ms (core: :elapsed_core ms, db: :elapsed_queries ms), using :memory-usage (peak: :memory-peak), queries: :queries-count (:queries-details)', array
 			(
-				'version' => \Icybee\VERSION,
 				'elapsed' => number_format(($now - $_SERVER['REQUEST_TIME_FLOAT']) * 1000, 2, '.', ''),
 				'elapsed_core' => number_format(($_SERVER['ICANBOOGIE_READY_TIME_FLOAT'] - $_SERVER['REQUEST_TIME_FLOAT']) * 1000, 2, '.', ''),
 				'elapsed_queries' => number_format($queries_time * 1000, 2, '.', ''),

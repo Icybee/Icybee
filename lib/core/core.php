@@ -41,41 +41,6 @@ use Brickrouge\Document;
 class Core extends \ICanBoogie\Core
 {
 	/**
-	 * Adds website config and locale paths.
-	 *
-	 * @param array $options
-	 */
-	public function __construct(array $options=array())
-	{
-		$config = array();
-		$locale = array();
-
-		$protected_path = \ICanBoogie\DOCUMENT_ROOT . 'protected' . DIRECTORY_SEPARATOR . 'all' . DIRECTORY_SEPARATOR;
-
-		if (file_exists($protected_path . 'config'))
-		{
-			$config[] = $protected_path;
-		}
-
-		if (file_exists($protected_path . 'locale'))
-		{
-			$locale[] = $protected_path;
-		}
-
-		return parent::__construct
-		(
-			\ICanBoogie\array_merge_recursive
-			(
-				$options, array
-				(
-					'config paths' => $config,
-					'locale paths' => $locale
-				)
-			)
-		);
-	}
-
-	/**
 	 * Override the method to provide a nicer exception presentation.
 	 *
 	 * @param \Exception $exception
@@ -155,6 +120,6 @@ class Core extends \ICanBoogie\Core
 	{
 		$config = $this->config;
 
-		return new Modules($config['modules paths'], $config['cache modules'] ? $this->vars : null);
+		return new Modules($config['module-path'], $config['cache modules'] ? $this->vars : null);
 	}
 }

@@ -719,6 +719,12 @@ EOT;
 		$query = new Query($this->model);
 		$query = $this->alter_query($query, $options->filters);
 
+		#
+
+		new ManageBlock\AlterQueryEvent($this, $query, $options);
+
+		#
+
 		$search = $options->search;
 
 		if ($search)
@@ -1382,10 +1388,16 @@ EOT;
 
 namespace Icybee\ManageBlock;
 
+use ICanBoogie\ActiveRecord\Query;
+use ICanBoogie\Event;
+
+use Icybee\ManageBlock;
+use Icybee\ManageBlock\Options;
+
 /**
  * Event class for the `Icybee\ManageBlock::register_columns` event.
  */
-class RegisterColumnsEvent extends \ICanBoogie\Event
+class RegisterColumnsEvent extends Event
 {
 	/**
 	 * Reference to the columns of the element.
@@ -1400,7 +1412,7 @@ class RegisterColumnsEvent extends \ICanBoogie\Event
 	 * @param \Icybee\ManageBlock $target
 	 * @param array $columns Reference to the columns of the element.
 	 */
-	public function __construct(\Icybee\ManageBlock $target, array &$columns)
+	public function __construct(ManageBlock $target, array &$columns)
 	{
 		$this->columns = &$columns;
 
@@ -1425,7 +1437,7 @@ class RegisterColumnsEvent extends \ICanBoogie\Event
 /**
  * Event class for the `Icybee\ManageBlock::alter_columns` event.
  */
-class AlterColumnsEvent extends \ICanBoogie\Event
+class AlterColumnsEvent extends Event
 {
 	/**
 	 * Reference to the columns of the element.
@@ -1440,7 +1452,7 @@ class AlterColumnsEvent extends \ICanBoogie\Event
 	 * @param \Icybee\ManageBlock $target
 	 * @param array $columns Reference to the columns of the element.
 	 */
-	public function __construct(\Icybee\ManageBlock $target, array &$columns)
+	public function __construct(ManageBlock $target, array &$columns)
 	{
 		$this->columns = &$columns;
 
@@ -1462,7 +1474,7 @@ class AlterColumnsEvent extends \ICanBoogie\Event
 	}
 }
 
-class AlterRenderedCellsEvent extends \ICanBoogie\Event
+class AlterRenderedCellsEvent extends Event
 {
 	/**
 	 * Reference to the rendered cells.
@@ -1478,11 +1490,26 @@ class AlterRenderedCellsEvent extends \ICanBoogie\Event
 	 */
 	public $records;
 
-	public function __construct(\Icybee\ManageBlock $target, array &$rendered_cells, array $records)
+	public function __construct(ManageBlock $target, array &$rendered_cells, array $records)
 	{
 		$this->rendered_cells = &$rendered_cells;
 		$this->records = $records;
 
 		parent::__construct($target, 'alter_rendered_cells');
+	}
+}
+
+class AlterQueryEvent extends Event
+{
+	public $query;
+
+	public $options;
+
+	public function __construct(ManageBlock $target, Query $query, Options $options)
+	{
+		$this->query = $query;
+		$this->options = $options;
+
+		parent::__construct($target, 'alter_query');
 	}
 }

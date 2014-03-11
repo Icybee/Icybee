@@ -26,7 +26,7 @@
 		"brickrouge/css-class-names": "2.x",
 		"icybee/core": "2.x",
 		"icybee/bluetihi": "*",
-		"icybee/patron": "*",
+		"icybee/patron": "=>1.2",
 		"icybee/module-cache": "2.x",
 		"icybee/module-contents": "2.x",
 		"icybee/module-dashboard": "*",

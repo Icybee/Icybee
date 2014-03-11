@@ -13,24 +13,12 @@ namespace Icybee;
 
 global $core;
 
-Core::add_path(DIR);
-
 /**
  * The core instance is the heart of the ICanBoogie framework.
  *
  * @var Core
  */
-$core = new Core
-(
-	array
-	(
-		'modules paths' => array
-		(
-			DIR . 'modules' . DIRECTORY_SEPARATOR,
-			\ICanBoogie\Modules\DIR
-		)
-	)
-);
+$core = new Core(require \ICanBoogie\AUTOCONFIG_PATHNAME);
 
 \ICanBoogie\I18n\Helpers::patch('get_cldr', function() use($core) { return $core->cldr; });
 
