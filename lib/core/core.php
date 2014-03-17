@@ -91,7 +91,6 @@ class Core extends \ICanBoogie\Core
 		if (!headers_sent())
 		{
 			$site = isset($core->site) ? $core->site : null;
-			$version = preg_replace('#\s\([^\)]+\)#', '', VERSION);
 
 			if (class_exists('Brickrouge\Document'))
 			{

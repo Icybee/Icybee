@@ -30,7 +30,7 @@ namespace ICanBoogie;
 <div id="contents-wrapper">
 	<?= $formated_exception ?>
 
-	<footer><a href="http://www.icybee.org/" target="_blank">Icybee</a> v<?= $version ?></footer>
+	<footer><a href="http://www.icybee.org/" target="_blank">Icybee</a></footer>
 </div>
 
 </body>
