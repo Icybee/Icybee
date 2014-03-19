@@ -360,6 +360,57 @@ class Hooks
 		});
 	}
 
+	static private $page_controller_loaded_nodes = [];
+
+	/**
+	 * Attaches a hook to the `BlueTihi\Context::loaded_nodes` event to provide data for the
+	 * admin menu. The data is consumed by {@link on_page_controller_render}.
+	 */
+	static public function before_page_controller_render()
+	{
+		global $core;
+
+		$core->events->attach(function(\BlueTihi\Context\LoadedNodesEvent $event, \BlueTihi\Context $target) {
+
+			$nodes = [];
+
+			foreach ($event->nodes as $node)
+			{
+				if (!$node instanceof \Icybee\Modules\Nodes\Node)
+				{
+					\ICanBoogie\log('Not a node object: {0}', [ $node ]);
+
+					continue;
+				}
+
+				$nodes[] = $node;
+			}
+
+			self::$page_controller_loaded_nodes = array_merge(self::$page_controller_loaded_nodes, $nodes);
+
+		});
+	}
+
+	/**
+	 * Adds the AdminMenu to pages rendered by the page controller.
+	 *
+	 * @param \Icybee\Modules\Pages\PageController\RenderEvent $event
+	 * @param \Icybee\Modules\Pages\PageController $target
+	 */
+	static public function on_page_controller_render(\Icybee\Modules\Pages\PageController\RenderEvent $event, \Icybee\Modules\Pages\PageController $target)
+	{
+		$admin_menu = (string) new Element\AdminMenu([
+
+			Element\AdminMenu::NODES => self::$page_controller_loaded_nodes
+
+		]);
+
+		if ($admin_menu)
+		{
+			$event->html = str_replace('</body>', $admin_menu . '</body>', $event->html);
+		}
+	}
+
 	/*
 	 * Prototypes
 	 */

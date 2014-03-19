@@ -26,6 +26,8 @@ use Brickrouge\ElementIsEmpty;
  */
 class AdminMenu extends Element
 {
+	const NODES = '#nodes';
+
 	static protected function add_assets(\Brickrouge\Document $document)
 	{
 		parent::add_assets($document);
@@ -35,13 +37,11 @@ class AdminMenu extends Element
 
 	public function __construct(array $attributes=array())
 	{
-		parent::__construct
-		(
-			'div', array
-			(
-				'id' => 'icybee-admin-menu'
-			)
-		);
+		parent::__construct('div', [
+
+			'id' => 'icybee-admin-menu'
+
+		]);
 	}
 
 	protected function lazy_get_translator()
@@ -136,47 +136,50 @@ class AdminMenu extends Element
 
 		#
 
-		$editables_by_category = array();
-		$descriptors = $core->modules->descriptors;
-
-		$nodes = array();
-
-		foreach (\Icybee\Modules\Pages\PageController::$nodes as $node)
+		if ($this[self::NODES])
 		{
-			$nodes[$node->nid] = $node;
-		}
+			$editables_by_category = array();
+			$descriptors = $core->modules->descriptors;
 
-		$translator->scope = 'module_category';
+			$nodes = array();
 
-		foreach ($nodes as $node)
-		{
-			if ($node->nid == $edit_target->nid || !$user->has_permission(Module::PERMISSION_MAINTAIN, $node->constructor))
+			foreach ($this[self::NODES] as $node)
 			{
-				continue;
+				$nodes[$node->nid] = $node;
 			}
 
-			// TODO-20101223: use the 'language' attribute whenever available to translate the
-			// categories in the user's language.
-
-			$category = isset($descriptors[$node->constructor][Module::T_CATEGORY]) ? $descriptors[$node->constructor][Module::T_CATEGORY] : 'contents';
-			$category = $translator($category);
-
-			$editables_by_category[$category][] = $node;
-		}
-
-		$translator->scope = null;
-
-		foreach ($editables_by_category as $category => $nodes)
-		{
-			$contents .= '<div class="panel-section-title">' . \ICanBoogie\escape($category) . '</div>';
-			$contents .= '<ul>';
+			$translator->scope = 'module_category';
 
 			foreach ($nodes as $node)
 			{
-				$contents .= '<li><a href="' . \ICanBoogie\Routing\contextualize('/admin/' . $node->constructor . '/' . $node->nid . '/edit') . '" title="' . $translator->__invoke('Edit: !title', array('!title' => $node->title)) . '">' . \ICanBoogie\escape(\ICanBoogie\shorten($node->title)) . '</a></li>';
+				if ($node->nid == $edit_target->nid || !$user->has_permission(Module::PERMISSION_MAINTAIN, $node->constructor))
+				{
+					continue;
+				}
+
+				// TODO-20101223: use the 'language' attribute whenever available to translate the
+				// categories in the user's language.
+
+				$category = isset($descriptors[$node->constructor][Module::T_CATEGORY]) ? $descriptors[$node->constructor][Module::T_CATEGORY] : 'contents';
+				$category = $translator($category);
+
+				$editables_by_category[$category][] = $node;
 			}
 
-			$contents .= '</ul>';
+			$translator->scope = null;
+
+			foreach ($editables_by_category as $category => $nodes)
+			{
+				$contents .= '<div class="panel-section-title">' . \ICanBoogie\escape($category) . '</div>';
+				$contents .= '<ul>';
+
+				foreach ($nodes as $node)
+				{
+					$contents .= '<li><a href="' . \ICanBoogie\Routing\contextualize('/admin/' . $node->constructor . '/' . $node->nid . '/edit') . '" title="' . $translator->__invoke('Edit: !title', array('!title' => $node->title)) . '">' . \ICanBoogie\escape(\ICanBoogie\shorten($node->title)) . '</a></li>';
+				}
+
+				$contents .= '</ul>';
+			}
 		}
 
 		$rc = '';
