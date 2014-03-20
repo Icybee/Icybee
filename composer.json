@@ -27,6 +27,7 @@
 		"icybee/core": "2.x",
 		"icybee/bluetihi": "*",
 		"icybee/patron": "1.x",
+		"icybee/module-registry": "*",
 		"icybee/module-cache": "2.x",
 		"icybee/module-contents": "2.x",
 		"icybee/module-dashboard": "*",
