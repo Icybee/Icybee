@@ -13,13 +13,5 @@ return array
 	'config constructors' => array
 	(
 		'admin_routes' => array('Icybee\Hooks::synthesize_admin_routes', 'routes')
-	),
-
-	'connections' => array
-	(
-		'local' => array
-		(
-			'dsn' => 'sqlite:' . ICanBoogie\REPOSITORY . 'local.sqlite'
-		)
 	)
 );
