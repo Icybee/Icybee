@@ -173,6 +173,10 @@ class StatsDecorator extends \Brickrouge\Decorator
 			{
 				$callback = 'Closure 0x' . spl_object_hash($callback);
 			}
+			else if (is_array($callback))
+			{
+				$callback = (is_string($callback[0]) ? $callback[0] : get_class($callback[0])) . '::' . $callback[1];
+			}
 
 			$html .= sprintf("%4d: %2.3f %-{$max_length_type}s %-{$max_length_callback}s", $i, $time * 1000, $type, $callback) . PHP_EOL;
 		}
