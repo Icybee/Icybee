@@ -15,9 +15,12 @@ use ICanBoogie\I18n\Translator\Proxi;
 use ICanBoogie\Module;
 use ICanBoogie\Operation;
 use ICanBoogie\Route;
+use ICanBoogie\Routing;
 
 use Brickrouge\Element;
 use Brickrouge\ElementIsEmpty;
+
+use Icybee\Modules\Users\User;
 
 /**
  * A menu that helps managing the contents of pages.
@@ -59,6 +62,9 @@ class AdminMenu extends Element
 		return $translator;
 	}
 
+	/**
+	 * Returns an empty string if the user is a guest or a member.
+	 */
 	public function render()
 	{
 		global $core;
@@ -75,10 +81,7 @@ class AdminMenu extends Element
 	{
 		global $core;
 
-		$user = $core->user;
 		$page = $core->request->context->page;
-
-		$contents = null;
 		$edit_target = $page->node ?: $page;
 
 		if (!$edit_target)
@@ -92,25 +95,76 @@ class AdminMenu extends Element
 		}
 
 		$translator = $this->translator;
+		$user = $core->user;
 
-		$contents .= '<ul style="text-align: center;"><li>';
+		# header
+
+		$html = $this->render_header($translator, $user, $edit_target);
+
+		# nodes
+
+		$nodes = $this[self::NODES];
+
+		if ($nodes)
+		{
+			if ($edit_target)
+			{
+				unset($nodes[$edit_target->nid]);
+			}
+
+			$html .= $this->render_panel_nodes($nodes, $translator, $user, $edit_target);
+		}
+
+		# config
+
+		$html .= $this->render_panel_config($translator);
+
+		#
+
+		if (!$html)
+		{
+			throw new ElementIsEmpty();
+		}
+
+		$admin_path = Routing\contextualize('/admin/');
+
+		return <<<EOT
+<div class="panel-title"><a href="$admin_path">Icybee</a></div>
+<div class="contents">$html</div>
+EOT;
+	}
+
+	protected function render_header(Proxi $translator, User $user, $edit_target)
+	{
+		global $core;
+
+		$html = '<ul style="text-align: center;"><li>';
 
 		if ($user->has_permission(Module::PERMISSION_MAINTAIN, $edit_target->constructor))
 		{
-			$contents .= '<a href="' . $core->site->path . '/admin/' . $edit_target->constructor . '/' . $edit_target->nid . '/edit' . '" title="' . $translator('Edit: !title', array('!title' => $edit_target->title)) . '">' . $translator('Edit') . '</a> &ndash; ';
+			$href = Routing\contextualize('/admin/' . $edit_target->constructor . '/' . $edit_target->nid . '/edit');
+			$title = $translator('Edit: !title', [ 'title' => $edit_target->title ]);
+			$label = $translator('Edit');
+
+			$html .= <<<EOT
+<a href="$href" title="$title">$label</a> &ndash;
+EOT;
 		}
 
-		$contents .= '<a href="' . \ICanBoogie\escape(Operation::encode('users/logout', array('location'  => $_SERVER['REQUEST_URI']))) . '">' . $translator('Disconnect') . '</a> &ndash;
-		<a href="' . $core->site->path . '/admin/">' . $translator('Admin') . '</a></li>';
-		$contents .= '</ul>';
+		$html .= ' <a href="' . Operation::encode('users/logout', [ 'location'  => $_SERVER['REQUEST_URI'] ]) . '">' . $translator('Disconnect') . '</a> &ndash;';
+		$html .= ' <a href="' . Routing\contextualize('/admin/') . '">' . $translator('Admin') . '</a></li>';
+		$html .= '</ul>';
 
-		#
-		# configurable
-		#
+		return $html;
+	}
+
+	protected function render_panel_config(Proxi $translator)
+	{
+		global $core;
+
+		$links = [];
 
 		$routes = $core->routes;
-
-		$links = array();
 		$site = $core->site;
 
 		foreach ($core->modules as $module_id => $module)
@@ -122,83 +176,80 @@ class AdminMenu extends Element
 				continue;
 			}
 
-			$pathname = $routes[$id]->pattern;
+			$href = \ICanBoogie\escape(Routing\contextualize($routes[$id]));
 
-			$links[] = '<a href="' . \ICanBoogie\escape(\ICanBoogie\Routing\contextualize($pathname)) . '">'
-			. $translator($module->flat_id, array(), array('scope' => 'module_title', 'default' => $module->title)) . '</a>';
+			$label = $translator($module->flat_id, [], [
+
+				'scope' => 'module_title',
+				'default' => $module->title
+
+			]);
+
+			$links[] = <<<EOT
+<a href="$href">$label</a>
+EOT;
 		}
 
-		if ($links)
+		if (!$links)
 		{
-			$contents .= '<div class="panel-section-title">Configurer</div>';
-			$contents .= '<ul><li>' . implode('</li><li>', $links) . '</li></ul>';
+			return;
 		}
 
-		#
+		$links = implode('</li><li>', $links);
 
-		if ($this[self::NODES])
+		return <<<EOT
+<div class="panel-section-title">Configurer</div>
+<ul><li>$links</li></ul>
+EOT;
+	}
+
+	protected function render_panel_nodes(array $nodes, Proxi $translator, User $user)
+	{
+		global $core;
+
+		$editables_by_category = [];
+		$descriptors = $core->modules->descriptors;
+
+		$translator->scope = 'module_category';
+
+		foreach ($nodes as $node)
 		{
-			$editables_by_category = array();
-			$descriptors = $core->modules->descriptors;
-
-			$nodes = array();
-
-			foreach ($this[self::NODES] as $node)
+			if (!$user->has_permission(Module::PERMISSION_MAINTAIN, $node->constructor))
 			{
-				$nodes[$node->nid] = $node;
+				continue;
 			}
 
-			$translator->scope = 'module_category';
+			// TODO-20101223: use the 'language' attribute whenever available to translate the
+			// categories in the user's language.
+
+			$category = isset($descriptors[$node->constructor][Module::T_CATEGORY]) ? $descriptors[$node->constructor][Module::T_CATEGORY] : 'contents';
+			$category = $translator($category);
+
+			$editables_by_category[$category][] = $node;
+		}
+
+		$translator->scope = null;
+		$html = '';
+
+		foreach ($editables_by_category as $category => $nodes)
+		{
+			$html .= '<div class="panel-section-title">' . \ICanBoogie\escape($category) . '</div>';
+			$html .= '<ul>';
 
 			foreach ($nodes as $node)
 			{
-				if ($node->nid == $edit_target->nid || !$user->has_permission(Module::PERMISSION_MAINTAIN, $node->constructor))
-				{
-					continue;
-				}
+				$url = Routing\contextualize('/admin/' . $node->constructor . '/' . $node->nid . '/edit');
+				$title = $translator->__invoke('Edit: !title', array('!title' => $node->title));
+				$label = \ICanBoogie\escape(\ICanBoogie\shorten($node->title));
 
-				// TODO-20101223: use the 'language' attribute whenever available to translate the
-				// categories in the user's language.
-
-				$category = isset($descriptors[$node->constructor][Module::T_CATEGORY]) ? $descriptors[$node->constructor][Module::T_CATEGORY] : 'contents';
-				$category = $translator($category);
-
-				$editables_by_category[$category][] = $node;
-			}
-
-			$translator->scope = null;
-
-			foreach ($editables_by_category as $category => $nodes)
-			{
-				$contents .= '<div class="panel-section-title">' . \ICanBoogie\escape($category) . '</div>';
-				$contents .= '<ul>';
-
-				foreach ($nodes as $node)
-				{
-					$contents .= '<li><a href="' . \ICanBoogie\Routing\contextualize('/admin/' . $node->constructor . '/' . $node->nid . '/edit') . '" title="' . $translator->__invoke('Edit: !title', array('!title' => $node->title)) . '">' . \ICanBoogie\escape(\ICanBoogie\shorten($node->title)) . '</a></li>';
-				}
-
-				$contents .= '</ul>';
-			}
-		}
-
-		$rc = '';
-
-		if ($contents)
-		{
-			$admin_path = \ICanBoogie\Routing\contextualize('/admin/');
-
-			$rc  = <<<EOT
-<div class="panel-title"><a href="$admin_path">Icybee</a></div>
-<div class="contents">$contents</div>
+				$html .= <<<EOT
+<li><a href="$url" title="$title">$label</a></li>
 EOT;
-		}
-		else
-		{
-			throw new ElementIsEmpty();
+			}
+
+			$html .= '</ul>';
 		}
 
-		return $rc;
+		return $html;
 	}
-
 }

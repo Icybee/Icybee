@@ -372,7 +372,7 @@ class Hooks
 
 		$core->events->attach(function(\BlueTihi\Context\LoadedNodesEvent $event, \BlueTihi\Context $target) {
 
-			$nodes = [];
+			$nodes = &self::$page_controller_loaded_nodes;
 
 			foreach ($event->nodes as $node)
 			{
@@ -383,10 +383,8 @@ class Hooks
 					continue;
 				}
 
-				$nodes[] = $node;
+				$nodes[$node->nid] = $node;
 			}
-
-			self::$page_controller_loaded_nodes = array_merge(self::$page_controller_loaded_nodes, $nodes);
 
 		});
 	}
