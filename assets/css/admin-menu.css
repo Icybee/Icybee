@@ -39,6 +39,7 @@
 #icybee-admin-menu a {
 	color: inherit;
 	text-decoration: none;
+	font-size: inherit;
 }
 
 #icybee-admin-menu a:hover {
