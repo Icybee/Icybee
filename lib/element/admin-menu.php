@@ -37,7 +37,7 @@ class AdminMenu extends Element
 
 	public function __construct(array $attributes=array())
 	{
-		parent::__construct('div', [
+		parent::__construct('div', $attributes + [
 
 			'id' => 'icybee-admin-menu'
 
@@ -200,4 +200,5 @@ EOT;
 
 		return $rc;
 	}
+
 }
