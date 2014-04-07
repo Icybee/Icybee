@@ -195,13 +195,24 @@ class Term extends \ICanBoogie\ActiveRecord implements \IteratorAggregate, \Bric
 	 */
 	protected function get_css_class_names()
 	{
+		$vocabulary_slug = '';
+
+		if (isset($this->vocabularyslug))
+		{
+			$vocabulary_slug = $this->vocabularyslug;
+		}
+		else if ($this->vid && $this->vocabulary)
+		{
+			$vocabulary_slug = $this->vocabulary->vocabularyslug;
+		}
+
 		return array
 		(
 			'type' => 'term',
 			'id' => 'term-' . $this->vtid,
 			'slug' => 'term-slug--' . $this->termslug,
 			'vid' => $this->vid ? 'vocabulary-' . $this->vid : null,
-			'vslug' => $this->vid ? 'vocabulary-slug--' . $this->vocabulary->vocabularyslug : null
+			'vslug' => $vocabulary_slug ? "vocabulary-slug--{$vocabulary_slug}" : null
 		);
 	}
 }
