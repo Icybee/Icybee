@@ -98,11 +98,7 @@ class BlockController extends \ICanBoogie\Routing\Controller
 
 		$route = $this->route;
 		$module = $core->modules[$route->module];
-
-		$args = array
-		(
-			$route->block
-		);
+		$args = [ $route->block ];
 
 		foreach ($this->request->path_params as $param => $value)
 		{
@@ -112,7 +108,7 @@ class BlockController extends \ICanBoogie\Routing\Controller
 			}
 		}
 
-		return call_user_func_array(array($module, 'getBlock'), $args);
+		return call_user_func_array([ $module, 'getBlock' ], $args);
 	}
 
 	/**
@@ -125,25 +121,61 @@ class BlockController extends \ICanBoogie\Routing\Controller
 	 */
 	protected function decorate($component, $flags)
 	{
-		$decorated_component = $component;
-
 		if ($flags & self::DECORATE_WITH_BLOCK)
 		{
 			$route = $this->route;
-			$decorated_component = new BlockDecorator($decorated_component, $route->block, $route->module);
+			$component = $this->decorate_with_block($component);
 		}
 
 		if ($flags & self::DECORATE_WITH_ADMIN)
 		{
-			$decorated_component = new AdminDecorator($decorated_component);
+			$component = $this->decorate_with_admin($component);
 		}
 
 		if ($flags & self::DECORATE_WITH_DOCUMENT)
 		{
-			$decorated_component = new DocumentDecorator($decorated_component);
+			$component = $this->decorate_with_document($component);
 		}
 
-		return $decorated_component;
+		return $component;
+	}
+
+	/**
+	 * Decorate a component with an instance of {@link BlockDecorator}.
+	 *
+	 * @param mixed $component
+	 *
+	 * @return \Icybee\BlockDecorator
+	 */
+	protected function decorate_with_block($component)
+	{
+		$route = $this->route;
+
+		return new BlockDecorator($component, $route->block, $route->module);
+	}
+
+	/**
+	 * Decorate a component with an instance of {@link AdminDecorator}.
+	 *
+	 * @param mixed $component
+	 *
+	 * @return \Icybee\AdminDecorator
+	 */
+	protected function decorate_with_admin($component)
+	{
+		return new AdminDecorator($component);
+	}
+
+	/**
+	 * Decorates a component with an instance of {@link DocumentDecorator}.
+	 *
+	 * @param mixed $component
+	 *
+	 * @return \Icybee\DocumentDecorator
+	 */
+	protected function decorate_with_document($component)
+	{
+		return new DocumentDecorator($component);
 	}
 }
 
@@ -190,14 +222,12 @@ class BlockDecorator extends \Brickrouge\Decorator
 		$normalized_block_name = \Brickrouge\normalize($this->block_name);
 		$normalized_module_id = \Brickrouge\normalize($this->module_id);
 
-		return new Element
-		(
-			'div', array
-			(
-				Element::INNER_HTML => $this->component,
+		return new Element('div', [
 
-				'class' => "block block--{$normalized_block_name} block--{$normalized_module_id}--{$normalized_block_name}"
-			)
-		);
+			Element::INNER_HTML => $this->component,
+
+			'class' => "block block--{$normalized_block_name} block--{$normalized_module_id}--{$normalized_block_name}"
+
+		]);
 	}
 }
