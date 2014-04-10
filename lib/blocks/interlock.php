@@ -56,6 +56,7 @@ class InterlockBlock extends Element
 
 		$lock = $this->lock;
 		$luser = $core->models['users'][$lock['uid']];
+		$luser_url = \ICanBoogie\Routing\contextualize("/admin/users/{$luser->uid}/edit");
 		$url = $core->request->path;
 
 		$time = round((strtotime($lock['until']) - time()) / 60);
@@ -68,7 +69,7 @@ class InterlockBlock extends Element
 	<input type="hidden" name="retry" value="1" />
 
 	<p>Impossible d'éditer l'enregistrement parce qu'il est en cours d'édition par
-	<em title="Username: $luser->username">$luser->name</em>.</p>
+	<a title="Username: $luser->username" href="$luser_url">$luser->name</a>.</p>
 
 	<div class="form-actions">
 	<button class="btn btn-success">Réessayer</button> <span class="small light">$message</span>
