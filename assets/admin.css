@@ -70,7 +70,8 @@ form{margin:0;}
 .form-primary>.group-toggler{background-color:white;}
 .form-primary>.group-toggler+.group{display:none;}
 .form-primary>.group-toggler.enabled+.group{display:block;}
-.form-primary .form-actions{background-color:transparent;margin:0;padding:15px 16px 16px 16px;border-top-color:#ccc;}
+.form-actions{background-color:transparent;margin:0;padding:0;border-top:0;}
+.form-primary .form-actions{padding:15px 16px 16px 16px;border-top-color:#ccc;}
 .form-primary .form-actions .inputs-list{margin-bottom:16px;}
 .form-primary .form-actions .inputs-list+.separator{display:none;}
 .form-primary .combo{background-color:white;padding:4px 6px;border:1px solid #ccc;border-radius:3px;}

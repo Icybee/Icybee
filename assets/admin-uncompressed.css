@@ -555,9 +555,13 @@ form {
 /**
  * Primary form actions
  */
-.form-primary .form-actions {
+.form-actions {
   background-color: transparent;
   margin: 0;
+  padding: 0;
+  border-top: 0;
+}
+.form-primary .form-actions {
   padding: 15px 16px 16px 16px;
   border-top-color: #ccc;
 }
