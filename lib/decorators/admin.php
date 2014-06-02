@@ -102,8 +102,7 @@ EOT;
 		$document->css->add(\Icybee\ASSETS . 'admin.css', -200);
 		$document->css->add(\Icybee\ASSETS . 'admin-more.css', -200);
 
-		$document->js->add(\Icybee\ASSETS . 'mootools.js', -200);
-		$document->js->add(\ICanBoogie\ASSETS . 'icanboogie.js', -190);
+		$document->js->add(\Icybee\ASSETS . 'page.js', -200);
 		$document->js->add(\Brickrouge\ASSETS . 'brickrouge.js', -190);
 		$document->js->add(\Icybee\ASSETS . 'admin.js', -180);
 	}

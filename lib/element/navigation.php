@@ -45,7 +45,7 @@ class Navigation extends \Brickrouge\Element
 		$rc = parent::render_inner_html();
 
 		$links = array();
-		$routes = Routes::get();
+		$routes = $core->routes;
 		$user = $core->user;
 		$menus = array();
 

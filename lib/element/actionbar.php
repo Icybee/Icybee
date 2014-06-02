@@ -201,7 +201,7 @@ class ActionbarNav extends Element
 			"/admin/$module_id/manage" => true
 		);
 
-		foreach (Routes::get() as $route)
+		foreach ($core->routes as $route)
 		{
 			$route_module = isset($route['module']) ? $route['module'] : null;
 
@@ -309,7 +309,7 @@ EOT;
 
 		$route = $core->request->route;
 		$module_id = $route->module;
-		$match = Routes::get()->find("/admin/$module_id/new");
+		$match = $core->routes->find("/admin/$module_id/new");
 
 		$this->render_as_button = !$match;
 
@@ -328,7 +328,7 @@ EOT;
 		$collection = array();
 		$translations = array();
 
-		$routes = Routes::get();
+		$routes = $core->routes;
 		$descriptors = $core->modules->descriptors;
 		$user = $core->user;
 

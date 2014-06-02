@@ -99,7 +99,7 @@ EOT;
 
 		$user = $core->user;
 		$module_id = $route->module;
-		$routes = Routes::get();
+		$routes = $core->routes;
 
 		#
 		# Views on the website (home, list)
