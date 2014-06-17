@@ -1,3 +1,4 @@
 .MISC.md.html
 .README.md.html
-/update-*.sql
+build/tmp
+update-*.sql

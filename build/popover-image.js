@@ -95,7 +95,6 @@
 
 				document.body.removeChild(popover)
 
-				delete popover
 			})
 		}
 	})

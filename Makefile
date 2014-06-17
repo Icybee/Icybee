@@ -1,3 +1,18 @@
+JS_COMPRESSOR = curl -X POST -s --data-urlencode 'js_code@$^' --data-urlencode 'utf8=1' http://marijnhaverbeke.nl/uglifyjs
+#JS_COMPRESSOR = cat $^ # uncomment this line to produce uncompressed files
+
+IDEPENDONYOU_JS = build/tmp/idependonyou.js
+MOOTOOLS_JS = build/tmp/mootools.js
+MOOTOOLS_MORE_JS = build/mootools-more.js
+
+PAGE_JS = assets/page.js
+PAGE_JS_UNCOMPRESSED = build/tmp/page-uncompressed.js
+PAGE_JS_UNCOMPRESSED_FILES = \
+	$(IDEPENDONYOU_JS) \
+	$(MOOTOOLS_JS) \
+	$(MOOTOOLS_MORE_JS) \
+	../../icanboogie/icanboogie/assets/icanboogie.js
+
 CSS_FILES = \
 	build/admin.less \
 	build/actionbar.less \
@@ -13,7 +28,7 @@ CSS_FILES = \
 
 CSS_COMPRESSOR = `which lessc`
 CSS_COMPRESSED = assets/admin.css
-CSS_UNCOMPRESSED = assets/admin-uncompressed.css
+CSS_UNCOMPRESSED = build/tmp/admin-uncompressed.css
 
 JS_FILES = \
 	build/string.js \
@@ -28,18 +43,36 @@ JS_FILES = \
 	build/spinner.js \
 	build/widget.js
 
-JS_COMPRESSOR = curl -X POST -s --data-urlencode 'js_code@$^' --data-urlencode 'utf8=1' http://marijnhaverbeke.nl/uglifyjs
 JS_COMPRESSED = assets/admin.js
-JS_UNCOMPRESSED = assets/admin-uncompressed.js
+JS_UNCOMPRESSED = build/tmp/admin-uncompressed.js
 
-MOOTOOLS_FILES = \
-	build/mootools-core.js \
+PAGE_JS_FILES = \
+	$(IDEPENDONYOU_JS) \
+	build/tmp/mootools-core.js \
 	build/mootools-more.js
 
-MOOTOOLS_COMPRESSED = assets/mootools.js
-MOOTOOLS_UNCOMPRESSED = assets/mootools-uncompressed.js
+all: \
+	$(PAGE_JS) \
+	$(JS_COMPRESSED) \
+	$(JS_UNCOMPRESSED) \
+	$(CSS_COMPRESSED) \
+	$(CSS_UNCOMPRESSED)
 
-all: $(JS_COMPRESSED) $(JS_UNCOMPRESSED) $(CSS_COMPRESSED) $(CSS_UNCOMPRESSED) $(MOOTOOLS_UNCOMPRESSED) $(MOOTOOLS_COMPRESSED)
+$(PAGE_JS): $(PAGE_JS_UNCOMPRESSED)
+	$(JS_COMPRESSOR) >$@
+
+$(PAGE_JS_UNCOMPRESSED): $(PAGE_JS_UNCOMPRESSED_FILES)
+	cat $^ >$@
+
+$(IDEPENDONYOU_JS):
+	curl -o $@ https://raw.githubusercontent.com/olvlvl/IDependOnYou/master/idependonyou.js
+
+$(MOOTOOLS_JS):
+	curl -o $@ http://mootools.net/download/get/mootools-core-1.5.0-full-nocompat.js
+
+#
+#
+#
 
 $(JS_COMPRESSED): $(JS_UNCOMPRESSED)
 	$(JS_COMPRESSOR) >$@
@@ -52,12 +85,6 @@ $(CSS_COMPRESSED): $(CSS_FILES)
 
 $(CSS_UNCOMPRESSED): $(CSS_FILES)
 	$(CSS_COMPRESSOR) build/admin.less >$@
-
-$(MOOTOOLS_UNCOMPRESSED): $(MOOTOOLS_FILES)
-	cat $^ >$@
-
-$(MOOTOOLS_COMPRESSED): $(MOOTOOLS_UNCOMPRESSED)
-	$(JS_COMPRESSOR) >$@
 
 composer.phar:
 	@echo "Installing composer..."
@@ -80,12 +107,7 @@ doc: vendor
 	--template-config /usr/share/php/data/ApiGen/templates/bootstrap/config.neon
 
 clean:
-	rm -f $(CSS_COMPRESSED)
-	rm -f $(CSS_UNCOMPRESSED)
-	rm -f $(JS_COMPRESSED)
-	rm -f $(JS_UNCOMPRESSED)
-	rm -f $(MOOTOOLS_COMPRESSED)
-	rm -f $(MOOTOOLS_UNCOMPRESSED)
+	rm -f build/tmp/*.js
 	rm -f composer.phar
 	rm -f composer.lock
 	rm -Rf docs
