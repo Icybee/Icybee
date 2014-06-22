@@ -1,4 +1,4 @@
-JS_COMPRESSOR = curl -X POST -s --data-urlencode 'js_code@$^' --data-urlencode 'utf8=1' http://marijnhaverbeke.nl/uglifyjs
+JS_COMPRESSOR = curl -X POST -s --data-urlencode 'input@$^' http://javascript-minifier.com/raw
 #JS_COMPRESSOR = cat $^ # uncomment this line to produce uncompressed files
 
 IDEPENDONYOU_JS = build/tmp/idependonyou.js
