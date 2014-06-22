@@ -15,8 +15,6 @@ use Brickrouge\Element;
 
 abstract class Widget extends Element
 {
-	const CONSTRUCTOR = '#widget-constructor';
-
 	/**
 	 * Interpolates a widget constructor name from the widget class.
 	 *
@@ -32,28 +30,17 @@ abstract class Widget extends Element
 		(
 			$type, $attributes + array
 			(
-				self::CONSTRUCTOR => $constructor
+				Element::IS => $constructor
 			)
 		);
 	}
 
 	protected function render_class(array $class_names)
 	{
-		$class = 'widget-' . \ICanBoogie\hyphenate($this[self::CONSTRUCTOR]);
+		$class = 'widget-' . \ICanBoogie\hyphenate($this[Element::IS]);
 		$class_names[$class] = $class;
 
 		return parent::render_class($class_names);
-	}
-
-	protected function alter_dataset(array $dataset)
-	{
-		return parent::alter_dataset
-		(
-			$dataset + array
-			(
-				'widget-constructor' => $this[self::CONSTRUCTOR]
-			)
-		);
 	}
 
 	public function get_results(array $options=array())
