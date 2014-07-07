@@ -43,8 +43,7 @@
 		"icybee/module-users-roles": "2.x",
 		"icybee/module-users-noncelogin": "2.x",
 		"icybee/module-thumbnailer": "2.x",
-		"icybee/module-views": "2.x",
-		"icybee/module-taxonomy-terms": "*"
+		"icybee/module-views": "2.x"
 	},
 	"autoload": {
 		"classmap": [ "lib/", "includes/", "modules/" ],
