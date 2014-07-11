@@ -13,6 +13,7 @@ namespace Icybee;
 
 use ICanBoogie\Debug;
 use ICanBoogie\HTTP\Dispatcher;
+use ICanBoogie\Operation;
 
 /**
  * Decorates the specified component with various statistics.
@@ -42,7 +43,8 @@ class StatsDecorator extends \Brickrouge\Decorator
 		{
 			$response = $event->response;
 
-			if (!$response || $response->content_type->type != 'text/html')
+			if (!$response || $response->body === null || $response instanceof Operation\Response
+			|| $response->content_type->type != 'text/html')
 			{
 				return;
 			}
