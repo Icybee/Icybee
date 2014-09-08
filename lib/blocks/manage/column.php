@@ -11,8 +11,6 @@
 
 namespace Icybee\ManageBlock;
 
-use ICanBoogie\ActiveRecord\Query;
-
 use Brickrouge\DropdownMenu;
 use Brickrouge\Element;
 
@@ -25,10 +23,9 @@ use Brickrouge\Element;
  * @property-read bool $is_filtering `true` if the column is currently filtering the records.
  * `false` otherwise.
  */
-class Column extends \ICanBoogie\Object
+class Column extends \ICanBoogie\Object implements ColumnInterface
 {
-	const ORDER_ASC = 1;
-	const ORDER_DESC = -1;
+	use ColumnTrait;
 
 	public $id;
 
@@ -201,87 +198,6 @@ class Column extends \ICanBoogie\Object
 	}
 
 	/**
-	 * Updates the filters for the records according to the specified modifiers.
-	 *
-	 * Note: The filters are returned as is, subclasses shoudl override the method according to
-	 * their needs.
-	 *
-	 * @param array $filters
-	 * @param array $modifiers
-	 *
-	 * @return array The updated filters.
-	 */
-	public function alter_filters(array $filters, array $modifiers)
-	{
-		return $filters;
-	}
-
-	/**
-	 * Alter the initial query.
-	 *
-	 * @param Query $query
-	 *
-	 * @return Query The altered query.
-	 */
-	public function alter_query(Query $query)
-	{
-		return $query;
-	}
-
-	/**
-	 * Alters the query according to the filter value specified.
-	 *
-	 * The method does a simple `{$this->id} = {$filter_value}`, subclasses might want to override
-	 * the method according to the kind of filter they provide.
-	 *
-	 * @param Query $query
-	 * @param mixed $filter_value
-	 *
-	 * @return Query
-	 */
-	public function alter_query_with_filter(Query $query, $filter_value)
-	{
-		if ($filter_value)
-		{
-			$query->and(array($this->id => $filter_value));
-		}
-
-		return $query;
-	}
-
-	/**
-	 * Alters the ORDER clause of the query according to the column identifier and the order
-	 * direction.
-	 *
-	 * The implementation of the method is simple, subclasses might want to override the method
-	 * to support complexer ordering.
-	 *
-	 * @param Query $query
-	 * @param int $order_direction
-	 *
-	 * @return Query
-	 */
-	public function alter_query_with_order(Query $query, $order_direction)
-	{
-		return $query->order("`$this->id` " . ($order_direction < 0 ? 'desc' : 'asc'));
-	}
-
-	/**
-	 * Alters the records.
-	 *
-	 * Note: The records are returned as is, subclasses might override the method according to
-	 * their needs.
-	 *
-	 * @param array $records
-	 *
-	 * @return array[]ActiveRecord
-	 */
-	public function alter_records(array $records)
-	{
-		return $records;
-	}
-
-	/**
 	 * Returns the options available for the filter.
 	 *
 	 * @return array|null
@@ -349,11 +265,6 @@ class Column extends \ICanBoogie\Object
 EOT;
 	}
 
-	/**
-	 * Renders the column's header.
-	 *
-	 * @return string
-	 */
 	public function render_header()
 	{
 		$renderer = $this->header_renderer;
@@ -366,13 +277,6 @@ EOT;
 		return $renderer();
 	}
 
-	/**
-	 * Renders a column cell.
-	 *
-	 * @param mixed $record
-	 *
-	 * @return string
-	 */
 	public function render_cell($record)
 	{
 		$renderer = $this->cell_renderer;
