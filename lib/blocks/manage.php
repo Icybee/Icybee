@@ -772,6 +772,7 @@ EOT;
 	 * Alters the initial query with the specified filters.
 	 *
 	 * The `alter_query` method of each column is invoked in turn to alter the query.
+	 * The `alter_query_with_filter` method of each column is invoked in turn to alter the query.
 	 *
 	 * @param Query $query
 	 * @param array $filters
@@ -780,6 +781,11 @@ EOT;
 	 */
 	protected function alter_query(Query $query, array $filters)
 	{
+		foreach ($this->columns as $column)
+		{
+			$query = $column->alter_query($query);
+		}
+
 		foreach ($this->columns as $id => $column)
 		{
 			if (!isset($filters[$id]))

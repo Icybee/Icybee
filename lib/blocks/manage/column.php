@@ -55,11 +55,6 @@ class Column extends \ICanBoogie\Object
 			throw new \Exception("The <q>update_filters()</q> method is deprecated, please use the <q>alter_filters()</q> method.");
 		}
 
-		if (method_exists($this, 'alter_query'))
-		{
-			throw new \Exception("The <q>alter_query()</q> method is deprecated, please use the <q>alter_query_with_filter()</q> method.");
-		}
-
 		// /
 
 		$this->manager = $manager;
@@ -219,6 +214,18 @@ class Column extends \ICanBoogie\Object
 	public function alter_filters(array $filters, array $modifiers)
 	{
 		return $filters;
+	}
+
+	/**
+	 * Alter the initial query.
+	 *
+	 * @param Query $query
+	 *
+	 * @return Query The altered query.
+	 */
+	public function alter_query(Query $query)
+	{
+		return $query;
 	}
 
 	/**
