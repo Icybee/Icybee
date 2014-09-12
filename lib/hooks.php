@@ -21,7 +21,6 @@ use ICanBoogie\HTTP\Response;
 use ICanBoogie\HTTP\RedirectResponse;
 use ICanBoogie\HTTP\WeightedDispatcher;
 use ICanBoogie\Operation;
-use ICanBoogie\Routes;
 
 use Brickrouge\Alert;
 
@@ -95,17 +94,18 @@ class Hooks
 		}, 'before:pages');
 	}
 
-	static public function before_routes_collect(Routes\BeforeCollectEvent $event, Routes $target)
+	static public function before_routing_collect_routes(\ICanBoogie\Routing\BeforeCollectRoutesEvent $event)
 	{
-		static $magic = array
-		(
+		static $magic = [
+
 			'!admin:manage' => true,
 			'!admin:new' => true,
 			'!admin:config' => true,
 			'!admin:edit' => true
-		);
 
-		$fragments = array();
+		];
+
+		$fragments = [];
 
 		foreach ($event->fragments as $root => $fragment)
 		{

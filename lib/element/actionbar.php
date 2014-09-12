@@ -16,8 +16,8 @@ use ICanBoogie\Exception;
 use ICanBoogie\I18n;
 use ICanBoogie\Module;
 use ICanBoogie\PropertyNotDefined;
-use ICanBoogie\Route;
 use ICanBoogie\Routing\Pattern;
+use ICanBoogie\Routing\Route;
 
 use Brickrouge\A;
 use Brickrouge\Button;

@@ -8,8 +8,9 @@ return array
 (
 	'events' => array
 	(
+		'routing.collect_routes:before' => $hooks . 'before_routing_collect_routes',
+
 		'ICanBoogie\Operation::get_form' => 'Icybee\Element\Form::on_operation_get_form',
-		'ICanBoogie\Routes::collect:before' => $hooks . 'before_routes_collect',
 		'ICanBoogie\SaveOperation::control:before' => $hooks . 'before_save_operation_control',
 		'ICanBoogie\HTTP\Dispatcher::alter' => $hooks . 'on_http_dispatcher_alter',
 		'ICanBoogie\HTTP\Dispatcher::dispatch' => 'Icybee\StatsDecorator::on_dispatcher_dispatch',
