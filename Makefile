@@ -4,6 +4,7 @@ JS_COMPRESSOR = curl -X POST -s --data-urlencode 'input@$^' http://javascript-mi
 IDEPENDONYOU_JS = build/tmp/idependonyou.js
 MOOTOOLS_JS = build/tmp/mootools.js
 MOOTOOLS_MORE_JS = build/mootools-more.js
+MOOTOOLS_CORE_VER = 1.5.1
 
 PAGE_JS = assets/page.js
 PAGE_JS_UNCOMPRESSED = build/tmp/page-uncompressed.js
@@ -68,7 +69,7 @@ $(IDEPENDONYOU_JS):
 	curl -o $@ https://raw.githubusercontent.com/olvlvl/IDependOnYou/master/idependonyou.js
 
 $(MOOTOOLS_JS):
-	curl -o $@ http://mootools.net/download/get/mootools-core-1.5.0-full-nocompat.js
+	curl -o $@ http://mootools.net/download/get/mootools-core-$(MOOTOOLS_CORE_VER)-full-nocompat.js
 
 #
 #
