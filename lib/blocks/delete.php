@@ -14,7 +14,6 @@ namespace Icybee;
 use ICanBoogie\ActiveRecord;
 use ICanBoogie\I18n;
 use ICanBoogie\Operation;
-use ICanBoogie\Route;
 
 use Brickrouge\Button;
 use Brickrouge\Element;
@@ -312,8 +311,6 @@ EOT;
  */
 
 namespace ICanBoogie\ActiveRecord;
-
-use ICanBoogie\Route;
 
 /**
  * Event class for the `ICanBoogie\ActiveRecord::collect_dependencies` event.

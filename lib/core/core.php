@@ -12,11 +12,7 @@
 namespace Icybee;
 
 use ICanBoogie\Debug;
-use ICanBoogie\Exception;
 use ICanBoogie\HTTP\HTTPError;
-use ICanBoogie\Module;
-use ICanBoogie\Operation;
-use ICanBoogie\Route;
 
 use Brickrouge\Document;
 

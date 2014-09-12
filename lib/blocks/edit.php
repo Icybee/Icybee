@@ -11,13 +11,10 @@
 
 namespace Icybee;
 
-use ICanBoogie\Event;
-use ICanBoogie\Exception;
 use ICanBoogie\HTTP\ForceRedirect;
 use ICanBoogie\HTTP\HTTPError;
 use ICanBoogie\I18n;
 use ICanBoogie\Operation;
-use ICanBoogie\Route;
 
 use Brickrouge\A;
 use Brickrouge\Button;

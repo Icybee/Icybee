@@ -11,20 +11,9 @@
 
 namespace Icybee;
 
-use ICanBoogie\Debug;
-use ICanBoogie\Event;
-use ICanBoogie\Events;
-use ICanBoogie\Exception;
-use ICanBoogie\Operation;
-use ICanBoogie\Route;
-
-use Brickrouge\A;
-use Brickrouge\Alert;
-use Brickrouge\DropdownMenu;
 use Brickrouge\Element;
 
 use Icybee\Modules\Pages\PageController;
-use Icybee\Modules\Users\Users\Role;
 
 class Document extends \Brickrouge\Document
 {

@@ -11,8 +11,6 @@
 
 namespace Icybee\Element;
 
-use ICanBoogie\Route;
-
 use Brickrouge\A;
 use Brickrouge\DropdownMenu;
 use Brickrouge\Element;

@@ -14,8 +14,6 @@ namespace Icybee\Element;
 use ICanBoogie\I18n;
 use ICanBoogie\Module;
 use ICanBoogie\PropertyNotDefined;
-use ICanBoogie\Route;
-use ICanBoogie\Routes;
 
 use Brickrouge\A;
 use Brickrouge\DropdownMenu;

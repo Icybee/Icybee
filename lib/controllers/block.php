@@ -12,7 +12,6 @@
 namespace Icybee;
 
 use ICanBoogie\HTTP\Request;
-use ICanBoogie\Route;
 
 use Brickrouge\Element;
 
@@ -36,7 +35,7 @@ class BlockController extends \ICanBoogie\Routing\Controller
 	protected $request;
 	protected $block_name;
 
-	public function __construct(Route $route)
+	public function __construct($route)
 	{
 		$this->decorate_flags = self::DECORATE_WITH_BLOCK | self::DECORATE_WITH_ADMIN | self::DECORATE_WITH_DOCUMENT;
 

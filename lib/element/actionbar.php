@@ -17,7 +17,6 @@ use ICanBoogie\I18n;
 use ICanBoogie\Module;
 use ICanBoogie\PropertyNotDefined;
 use ICanBoogie\Route;
-use ICanBoogie\Routes;
 use ICanBoogie\Routing\Pattern;
 
 use Brickrouge\A;
@@ -184,7 +183,7 @@ class ActionbarNav extends Element
 		$collection = array();
 		$pattern = $current_route->pattern;
 
-		if (!$current_route->module)
+		if (empty($current_route->module))
 		{
 			throw new \Brickrouge\ElementIsEmpty;
 		}
