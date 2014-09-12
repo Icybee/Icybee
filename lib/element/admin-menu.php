@@ -14,7 +14,6 @@ namespace Icybee\Element;
 use ICanBoogie\I18n\Translator\Proxi;
 use ICanBoogie\Module;
 use ICanBoogie\Operation;
-use ICanBoogie\Route;
 use ICanBoogie\Routing;
 
 use Brickrouge\Element;
