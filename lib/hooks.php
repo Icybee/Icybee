@@ -24,7 +24,7 @@ use ICanBoogie\Operation;
 
 use Brickrouge\Alert;
 
-use Icybee\Modules\Pages\PageController;
+use Icybee\Modules\Pages\PageRenderer;
 
 class Hooks
 {
@@ -364,9 +364,9 @@ class Hooks
 
 	/**
 	 * Attaches a hook to the `BlueTihi\Context::loaded_nodes` event to provide data for the
-	 * admin menu. The data is consumed by {@link on_page_controller_render}.
+	 * admin menu. The data is consumed by {@link on_page_renderer_render}.
 	 */
-	static public function before_page_controller_render()
+	static public function before_page_renderer_render()
 	{
 		global $core;
 
@@ -392,10 +392,10 @@ class Hooks
 	/**
 	 * Adds the AdminMenu to pages rendered by the page controller.
 	 *
-	 * @param \Icybee\Modules\Pages\PageController\RenderEvent $event
-	 * @param \Icybee\Modules\Pages\PageController $target
+	 * @param \Icybee\Modules\Pages\PageRenderer\RenderEvent $event
+	 * @param \Icybee\Modules\Pages\PageRenderer $target
 	 */
-	static public function on_page_controller_render(\Icybee\Modules\Pages\PageController\RenderEvent $event, \Icybee\Modules\Pages\PageController $target)
+	static public function on_page_renderer_render(\Icybee\Modules\Pages\PageRenderer\RenderEvent $event, \Icybee\Modules\Pages\PageRenderer $target)
 	{
 		$admin_menu = (string) new Element\AdminMenu([
 
@@ -463,7 +463,7 @@ class Hooks
 
 		$core->events->attach
 		(
-			function(PageController\RenderEvent $event, PageController $target) use($engine, $template, $key)
+			function(PageRenderer\RenderEvent $event, PageRenderer $target) use($engine, $template, $key)
 			{
 				$types = array('success', 'info', 'error');
 

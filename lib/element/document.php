@@ -13,7 +13,7 @@ namespace Icybee;
 
 use Brickrouge\Element;
 
-use Icybee\Modules\Pages\PageController;
+use Icybee\Modules\Pages\PageRenderer;
 
 class Document extends \Brickrouge\Document
 {
@@ -121,7 +121,7 @@ class Document extends \Brickrouge\Document
 	 * otherwise the collection is rendered into an HTML string of `LINK` elements.
 	 *
 	 * Note: Currently, the element is not rendered right away, a placeholder is inserted instead
-	 * and is replaced when the `Icybee\Modules\Pages\PageController::render` event is fired.
+	 * and is replaced when the `Icybee\Modules\Pages\PageRenderer::render` event is fired.
 	 *
 	 * <pre>
 	 * <p:document:css
@@ -164,16 +164,16 @@ class Document extends \Brickrouge\Document
 			return;
 		}
 
-		$key = '<!-- document-css-placeholder-' . md5(uniqid()) . ' -->';
+		$placeholder = '<!-- document-css-placeholder-' . md5(uniqid()) . ' -->';
 
-		$core->events->attach(function(PageController\RenderEvent $event, PageController $target) use($engine, $template, $key)
+		$core->events->attach(function(PageRenderer\RenderEvent $event, PageRenderer $target) use($engine, $template, $placeholder)
 		{
 			#
 			# The event is chained so that it gets executed once the event chain has been
 			# processed.
 			#
 
-			$event->chain(function(PageController\RenderEvent $event) use($engine, $template, $key)
+			$event->chain(function(PageRenderer\RenderEvent $event) use($engine, $template, $placeholder)
 			{
 				global $core;
 
@@ -181,11 +181,11 @@ class Document extends \Brickrouge\Document
 
 				$html = $template ? $engine($template, $document->css) : (string) $document->css;
 
-				$event->html = str_replace($key, $html, $event->html);
+				$event->replace($placeholder, $html);
 			});
 		});
 
-		return PHP_EOL . $key;
+		return PHP_EOL . $placeholder;
 	}
 
 	/**
@@ -230,16 +230,35 @@ class Document extends \Brickrouge\Document
 	{
 		global $core;
 
-		$document = $core->document;
-
 		if (isset($args['href']))
 		{
-			$document->js->add($args['href'], $args['weight'], dirname($engine->get_file()));
+			$core->document->js->add($args['href'], $args['weight'], dirname($engine->get_file()));
 
 			return;
 		}
 
-		return $template ? $engine($template, $document->js) : (string) $document->js;
+		$placeholder = '<!-- document-js-placeholder-' . md5(uniqid()) . ' -->';
+
+		$core->events->attach(function(PageRenderer\RenderEvent $event, PageRenderer $target) use($engine, $template, $placeholder)
+		{
+			#
+			# The event is chained so that it gets executed once the event chain has been
+			# processed.
+			#
+
+			$event->chain(function(PageRenderer\RenderEvent $event) use($engine, $template, $placeholder)
+			{
+				global $core;
+
+				$document = $core->document;
+
+				$html = $template ? $engine($template, $document->js) : (string) $document->js;
+
+				$event->replace($placeholder, $html);
+			});
+		});
+
+		return PHP_EOL . $placeholder;
 	}
 
 	/*

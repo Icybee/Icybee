@@ -15,8 +15,8 @@ return array
 		'ICanBoogie\HTTP\Dispatcher::alter' => $hooks . 'on_http_dispatcher_alter',
 		'ICanBoogie\HTTP\Dispatcher::dispatch' => 'Icybee\StatsDecorator::on_dispatcher_dispatch',
 
-		'Icybee\Modules\Pages\PageController::render:before' => $hooks . 'before_page_controller_render',
-		'Icybee\Modules\Pages\PageController::render' => $hooks . 'on_page_controller_render',
+		'Icybee\Modules\Pages\PageRenderer::render:before' => $hooks . 'before_page_renderer_render',
+		'Icybee\Modules\Pages\PageRenderer::render' => $hooks . 'on_page_renderer_render',
 		'Icybee\Modules\Users\LogoutOperation::process:before' => $hooks . 'before_user_logout'
 	),
 
