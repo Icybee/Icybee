@@ -11,10 +11,9 @@
 
 namespace ICanBoogie\Exception;
 
-use ICanBoogie\Exception;
 use ICanBoogie\Module;
 
-class Config extends Exception
+class Config extends \Exception
 {
 	public function __construct($message, array $params=array(), $code=500)
 	{

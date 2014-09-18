@@ -4,10 +4,6 @@ namespace Icybee\Rendering;
 
 use ICanBoogie\OffsetNotWritable;
 
-use BlueTihi\render;
-
-use ICanBoogie\Exception;
-
 class PropertyRenderers implements \IteratorIterator, \ArrayAccess
 {
 	/**

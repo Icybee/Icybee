@@ -11,7 +11,6 @@
 
 namespace Icybee;
 
-use ICanBoogie\Exception;
 use ICanBoogie\Operation;
 
 use Brickrouge\Button;
@@ -43,7 +42,7 @@ abstract class ConfigBlock extends FormBlock
 	{
 		if (!$this->permission)
 		{
-			throw new Exception("You don't have permission to access the config block of the %module module", array('module' => $this->module->title));
+			throw new \Exception(\ICanBoogie\format("You don't have permission to access the config block of the %module module", array('module' => $this->module->title)));
 		}
 	}
 

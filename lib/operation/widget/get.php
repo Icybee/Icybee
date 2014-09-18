@@ -11,14 +11,11 @@
 
 namespace Icybee\Operation\Widget;
 
-use ICanBoogie\Exception;
-use ICanBoogie\Operation;
-
 use Brickrouge\Button;
 use Brickrouge\Popover;
 use Brickrouge\Widget;
 
-class Get extends Operation
+class Get extends \ICanBoogie\Operation
 {
 	private $widget_class;
 
@@ -38,7 +35,7 @@ class Get extends Operation
 
 		if (!class_exists($class, true))
 		{
-			throw new Exception('Unknown widget class: %class', array('%class' => $class));
+			throw new \Exception(\ICanBoogie\format('Unknown widget class: %class', array('%class' => $class)));
 		}
 
 		return true;
@@ -50,7 +47,7 @@ class Get extends Operation
 
 		if (!$core->user_id)
 		{
-			throw new Exception('Unauthorized', array(), 401);
+			throw new \Exception('Unauthorized', 401);
 		}
 
 		$user = $core->user;
@@ -114,7 +111,7 @@ class Get extends Operation
 		}
 		else if ($mode)
 		{
-			throw new Exception('Uknown widget mode: %mode', array('%mode' => $mode));
+			throw new \Exception(\ICanBoogie\format('Unknown widget mode: %mode', array('%mode' => $mode)));
 		}
 
 		$this->response['assets'] = $document->assets;

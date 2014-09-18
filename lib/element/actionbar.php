@@ -11,8 +11,6 @@
 
 namespace Icybee\Element;
 
-use ICanBoogie\Event;
-use ICanBoogie\Exception;
 use ICanBoogie\I18n;
 use ICanBoogie\Module;
 use ICanBoogie\PropertyNotDefined;

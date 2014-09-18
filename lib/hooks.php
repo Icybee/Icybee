@@ -14,7 +14,6 @@ namespace Icybee;
 use ICanBoogie\Debug;
 use ICanBoogie\Event;
 use ICanBoogie\Events;
-use ICanBoogie\Exception;
 use ICanBoogie\HTTP\Dispatcher;
 use ICanBoogie\HTTP\Request;
 use ICanBoogie\HTTP\Response;

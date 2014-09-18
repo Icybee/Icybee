@@ -11,7 +11,6 @@
 
 namespace Icybee\Operation\Module;
 
-use ICanBoogie\Exception;
 use ICanBoogie\I18n;
 use ICanBoogie\Operation;
 
@@ -47,7 +46,7 @@ class QueryOperation extends Operation
 
 		if (!$this->has_method($callback))
 		{
-			throw new Exception('Missing callback %callback.', array('%callback' => $callback));
+			throw new \Exception(\ICanBoogie\format('Missing callback %callback.', array('%callback' => $callback)));
 		}
 
 		return true;
