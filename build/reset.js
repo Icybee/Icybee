@@ -38,9 +38,9 @@
 
 	})
 
-	window.addEvent('brickrouge.update', function(ev) {
+	window.addEvent('brickrouge.update', function(fragment) {
 
-		ev.target.getElements('[data-default-value]').each(function(el) {
+		fragment.getElements('[data-default-value]').each(function(el) {
 
 			if (controls.indexOf(el) !== -1) return
 

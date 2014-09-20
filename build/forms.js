@@ -10,9 +10,9 @@
 /**
  * Disable spellchecking for textarea with the `code` class.
  */
-window.addEvent('brickrouge.update', function(ev) {
+window.addEvent('brickrouge.update', function(fragment) {
 
-	ev.target.getElements('textarea.code').each(function(el) {
+	fragment.getElements('textarea.code').each(function(el) {
 
 		if (!el.spellcheck) return
 

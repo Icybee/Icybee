@@ -14,9 +14,9 @@ window.addEvent('click:relay(label.checkbox-wrapper)', function(ev, el) {
 /**
  * Sets the initial state of the wrapper according to the state of the input.
  */
-window.addEvent('brickrouge.update', function(ev) {
+window.addEvent('brickrouge.update', function(fragment) {
 
-	ev.target.getElements('label.checkbox-wrapper').each(function(el) {
+	fragment.getElements('label.checkbox-wrapper').each(function(el) {
 
 		var input = el.getElement('input')
 
