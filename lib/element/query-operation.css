@@ -1,0 +1,53 @@
+.widget-query-operation {
+	text-align: center;
+	padding: 1rem;
+}
+
+.widget-query-operation h3 {
+	margin: 0 0 1rem 0;
+	font-weight: normal;
+	font-size: 1.5rem;
+	line-height: 1;
+}
+
+.widget-query-operation .actions button + button {
+	margin-left: 1rem;
+}
+
+.widget-query-operation .progress {
+	max-width: 500px;
+	margin: 1rem auto;
+}
+
+.widget-query-operation .log {
+	display: block;
+	max-width: 500px;
+	max-height: 10em;
+	padding: .5em 0;
+	border: 1px solid #ccc;
+	border-radius: 3px;
+	margin: 1rem auto;
+	overflow: auto;
+	list-style: none;
+	line-height: 1;
+	font-size: 13px;
+	background: #F6F6F6;
+}
+
+.widget-query-operation .log:empty {
+	display: none;
+}
+
+.widget-query-operation .log li {
+	padding: .5em;
+}
+
+.widget-query-operation .screen {
+	display: none;
+}
+
+.widget-query-operation[data-state="confirm"] .screen--confirm,
+.widget-query-operation[data-state="processing"] .screen--processing,
+.widget-query-operation[data-state="success"] .screen--success {
+	display: block;
+}

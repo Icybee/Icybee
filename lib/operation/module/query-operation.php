@@ -11,8 +11,7 @@
 
 namespace Icybee\Operation\Module;
 
-use ICanBoogie\I18n;
-use ICanBoogie\Operation;
+use ICanBoogie\HTTP\Request;
 
 /**
  * Queries a module about an operation.
@@ -21,7 +20,7 @@ use ICanBoogie\Operation;
  * {@link Icybee\Hooks::dispatch_query_operation} controler if the target module doesn't define
  * a suitale operation class.
  */
-class QueryOperation extends Operation
+class QueryOperation extends \ICanBoogie\Operation
 {
 	private $callback;
 
@@ -35,42 +34,97 @@ class QueryOperation extends Operation
 		+ parent::get_controls();
 	}
 
+	public function __invoke(Request $request)
+	{
+		$keys = $request['keys'];
+
+		if (is_string($keys))
+		{
+			$request['keys'] = explode('|', $keys);
+		}
+
+		return parent::__invoke($request);
+	}
+
 	protected function validate(\ICanboogie\Errors $errors)
 	{
 		global $core;
 
 		$request = $this->request;
 
+		if (!$request['keys'])
+		{
+			$errors['keys'] = $errors->format("The parameter %param is empty.", [ 'param' => 'keys' ]);
+		}
+
 		$this->module = $core->modules[$request['module']];
 		$this->callback = $callback = 'query_' . $request['operation'];
 
 		if (!$this->has_method($callback))
 		{
-			throw new \Exception(\ICanBoogie\format('Missing callback %callback.', array('%callback' => $callback)));
+			throw new \Exception(\ICanBoogie\format('Missing callback %callback.', [ '%callback' => $callback ]));
 		}
 
-		return true;
+		return $errors;
 	}
 
 	protected function process()
 	{
-		$request = $this->request;
-		$name = $request['operation'];
-		$t_options = array('scope' => array($this->module->flat_id, $name, 'operation'));
+		global $core;
 
-		$keys = isset($request['keys']) ? $request['keys'] : array();
+		$keys = (array) $this->request['keys'];
 		$count = count($keys);
+		$options = [
 
-		return $this->{$this->callback}() + array
-		(
-			'title' => I18n\t('title', array(), $t_options),
-			'message' => I18n\t('confirm', array(':count' => $count), $t_options),
-			'confirm' => array
-			(
-				I18n\t('cancel', array(), $t_options),
-				I18n\t('continue', array(), $t_options)
-			)
-		);
+			'title' => $this->t('title'),
+			'message' => $this->t('confirm', [ ':count' => $count ]),
+			'confirm' => [
+
+				$this->t('cancel'),
+				$this->t('continue')
+
+			],
+
+			'element_class' => 'Icybee\QueryOperationElement'
+
+		];
+
+		$options = $this->{$this->callback}() + $options;
+		$element = $this->resolve_element($options, []);
+		$element['data-operation'] = $this->request['operation'];
+		$element['data-destination'] = $this->module->id;
+		$element = (string) $element;
+
+		$this->response['assets'] = $core->document->assets;
+		$this->response['options'] = $options;
+
+		return $element;
+	}
+
+	protected function t($str, array $args=[], array $options=[])
+	{
+		$options += [
+
+			'scope' => "{$this->module->flat_id}.{$this->request['operation']}.operation"
+
+		];
+
+		return \ICanBoogie\I18n\t($str, $args, $options);
+	}
+
+	/**
+	 * Return the element used to confirm the operation and display its progress.
+	 *
+	 * @param array $options
+	 * @param array $attributes
+	 *
+	 * @return \Brickrouge\Element
+	 */
+	protected function resolve_element(array $options, array $attributes)
+	{
+		$element_class = $options['element_class'];
+
+		return new $element_class($options, $attributes);
 	}
 
 	protected function query_delete()

@@ -72,8 +72,6 @@ class ManageBlock extends Element
 
 		$document->js->add('manage.js', -170);
 		$document->css->add(\Icybee\ASSETS . 'css/manage.css', -170);
-
-		$document->js->add('manage/operations.js', -170);
 	}
 
 	/**
@@ -696,11 +694,13 @@ EOT;
 		$block_value = $this[self::T_BLOCK] ?: 'manage';
 
 		return <<<EOT
-<form id="manager" method="GET" action="">
-	<input type="hidden" name="{$operation_name}" value="{$operation_value}" />
-	<input type="hidden" name="{$block_name}" value="{$block_value}" />
-	$html
-</form>
+<div brickrouge-is="ManageBlock">
+	<form id="manager" method="GET" action="">
+		<input type="hidden" name="{$operation_name}" value="{$operation_value}" />
+		<input type="hidden" name="{$block_name}" value="{$block_value}" />
+		$html
+	</form>
+</div>
 EOT;
 	}
 
@@ -1258,7 +1258,6 @@ EOT;
 
 					'title' => $this->t('Number of item to display by page'),
 					'name' => 'limit',
-					'onchange' => 'this.form.submit()',
 					'value' => $limit
 				)
 			);
@@ -1303,48 +1302,50 @@ EOT;
 			return;
 		}
 
-		$children = array();
+		$children = [];
 
 		foreach ($jobs as $operation => $label)
 		{
-			$children[] = new Button($label, array('data-operation' => $operation, 'data-target' => 'manager'));
+			$children[] = new Button($label, [
+
+				'data-operation' => $operation,
+				'data-target' => 'manager'
+
+			]);
 		}
 
-		return new Element
-		(
-			'div', array
-			(
-				Element::CHILDREN => array
-				(
-					'<i class="icon-warning-sign context-icon"></i>',
+		return new Element('div', [
 
-					/*
-					new Element
-					(
-						'label', array
-						(
-							Element::INNER_HTML => "Pour la sélection&nbsp;:",
+			Element::IS => 'ActionBarOperations',
 
-							'class' => 'btn-group-label'
-						)
-					),
-					*/
+			Element::CHILDREN => [
 
-					new Element
-					(
-						'div', array
-						(
-							Element::CHILDREN => $children,
+				new Element('label', [
 
-							'class' => 'btn-group'
-						)
-					)
-				),
+					Element::INNER_HTML => '',
 
-				'data-actionbar-context' => 'operations',
-				'class' => 'listview-operations inline'
-			)
-		);
+					'class' => 'btn-group-label count'
+
+				]),
+
+				new Element('div', [
+
+					Element::CHILDREN => $children,
+
+					'class' => 'btn-group'
+
+				]),
+
+				new Button('Annuler la sélection', [ 'data-dismiss' => 'selection' ])
+			],
+
+			'data-actionbar-context' => 'operations',
+			'data-pattern-one' => "Un élément sélectionné",
+			'data-pattern-other' => ":count éléments sélectionnés",
+
+			'class' => 'actionbar-actions listview-operations'
+
+		]);
 	}
 
 	/**

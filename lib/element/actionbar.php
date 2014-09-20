@@ -25,16 +25,16 @@ use Brickrouge\SplitButton;
 
 class Actionbar extends Element
 {
-	public function __construct(array $attributes=array())
+	public function __construct(array $attributes=[])
 	{
-		parent::__construct
-		(
-			'div', $attributes + array
-			(
-				'class' => 'actionbar',
-				'data-display' => ''
-			)
-		);
+		parent::__construct('div', $attributes + [
+
+			Element::IS => 'ActionBar',
+
+			'class' => 'actionbar',
+			'data-display' => ''
+
+		]);
 	}
 
 	protected function render_inner_html()
@@ -44,7 +44,7 @@ class Actionbar extends Element
 		$actionbar_new = null;
 		$actionbar_navigation = null;
 		$actionbar_search = null;
-		$actionbar_toolbar = null;
+		$actionbar_controls = null;
 
 		try
 		{
@@ -75,7 +75,7 @@ class Actionbar extends Element
 
 			$actionbar_navigation = (string) new ActionbarNav;
 			$actionbar_search = (string) new ActionbarSearch;
-			$actionbar_toolbar = (string) new ActionbarToolbar;
+			$actionbar_controls = (string) new ActionbarToolbar;
 		}
 		catch (PropertyNotDefined $e)
 		{
@@ -88,7 +88,7 @@ class Actionbar extends Element
 
 		$actionbar_title = (string) new ActionbarTitle;
 
-		if (!$actionbar_title && !$actionbar_new && !$actionbar_navigation && !$actionbar_toolbar && !$actionbar_search)
+		if (!$actionbar_title && !$actionbar_new && !$actionbar_navigation && !$actionbar_controls && !$actionbar_search)
 		{
 			throw new \Brickrouge\ElementIsEmpty;
 		}
@@ -103,7 +103,7 @@ class Actionbar extends Element
 		</div>
 
 		<div class="pull-right">
-			<div class="actionbar-actions">{$actionbar_toolbar}</div>
+			<div class="actionbar-controls">{$actionbar_controls}</div>
 			<div class="actionbar-search">{$actionbar_search}</div>
 		</div>
 	</div>

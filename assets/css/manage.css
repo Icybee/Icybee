@@ -460,50 +460,200 @@ RECORDS
 	display: none;
 }
 
-/* manager: jobs */
+/* actionbar-actions */
 
-#manage-job {
-	text-align: center;
-	padding: 1em;
+.actionbar-actions-wrapper {
+	position: absolute;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	overflow: hidden;
+	visibility: hidden;
 }
 
-#manage-job h3 {
-	margin-top: 0;
-	font-weight: normal;
+.actionbar-actions-wrapper.show {
+	visibility: visible;
 }
 
-#manage-job span.spacer {
-	padding: 0 .5ex;
+.actionbar-actions {
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	display: none;
+	padding: 16px 16px 15px;
+	height: 28px;
+	transform: translateY(60px);
+	transition: all 180ms;
+	opacity: 0;
 }
 
-#manage-job div.gauge {
-	margin: 1em auto;
-	height: 1.5em;
-	width: 50%;
-	border: 1px solid #CCC;
+.actionbar.fixed .actionbar-actions {
+	padding: 8px 8px 7px;
+	border-bottom: 1px solid hsl(218, 87%, 46%);
 }
 
-#manage-job div.gauge div.bar {
-	height: 100%;
-	background-color: #FFE;
+.actionbar-actions-wrapper .actionbar-actions {
+	display: block;
 }
 
-#manage-job div.gauge,
-#manage-job div.gauge div.bar {
+.actionbar-actions-wrapper.show .actionbar-actions {
+	transform: translateY(0px);
+	opacity: 1;
+}
+
+.actionbar-actions .btn[data-dismiss="selection"] {
+	float: right;
+	font-weight: bold;
+	border-color: white;
+}
+
+.actionbar-actions > .btn-group,
+.actionbar-actions > .btn {
+	opacity: 1;
+	visibility: visible;
+	transition: all 200ms;
+}
+
+.actionbar-actions.working > .btn-group,
+.actionbar-actions.working > .btn {
+	opacity: 0;
+	visibility: hidden;
+}
+
+/**/
+
+.listview-operations {
+	background: #4585F2;
+	background: linear-gradient(to bottom, #4585F2, hsl(218, 87%, 56%));
+}
+
+.listview-operations .btn-group .btn {
+	border-color: white;
+}
+
+.listview-operations .count {
+	color: white;
+	line-height: 28px;
+	margin-right: 8px;
+	font-size: 14px;
+}
+
+.listview-operations .count:before {
+	content: "\f00c";
+	font-family: FontAwesome;
+	border: 2px solid;
+	border-radius: 100%;
+	padding: 4px;
+	margin-right: 8px;
+	font-size: 16px;
+	line-height: 1;
+	display: inline-block;
+	transform: rotate(-90deg);
+	transition: all 400ms;
+}
+
+.actionbar-actions-wrapper.show .listview-operations .count:before {
+	transform: rotate(0deg);
+}
+
+/*
+.listview tbody td + td {
+	border-left: 1px dashed hsla(0,0%,80%,.2);
+}*/
+
+/**/
+
+/* progress */
+
+@keyframes progress-bar-stripes {
+	0% {
+		background-position: 40px 0;
+	}
+	100% {
+		background-position: 0 0;
+	}
+}
+
+.progress {
+	background-color: #f5f5f5;
 	border-radius: 4px;
+	box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1) inset;
+	height: 20px;
+	margin-bottom: 20px;
+	overflow: hidden;
+	border: 1px solid #ccc;
 }
 
-#manage-job div.progress p {
-	font-size: .8em;
+.progress-bar {
+	background-color: #3D7FF1;
+	box-shadow: 0 -1px 0 rgba(0, 0, 0, 0.15) inset;
+	color: #fff;
+	float: left;
+	font-size: 12px;
+	height: 100%;
+	line-height: 20px;
+	text-align: center;
+	transition: width 300ms ease 0s;
+	width: 0;
+	color: #fff;
+}
+
+.progress-striped .progress-bar,
+.progress-bar-striped {
+	background-image: linear-gradient(45deg, rgba(255, 255, 255, 0.15) 25%,
+		transparent 25%, transparent 50%, rgba(255, 255, 255, 0.15) 50%,
+		rgba(255, 255, 255, 0.15) 75%, transparent 75%, transparent);
+	background-size: 40px 40px;
+}
+
+.progress.active .progress-bar,
+.progress-bar.active {
+	animation: 2s linear 0s normal none infinite progress-bar-stripes;
+}
+
+.progress-bar-success {
+	background-color: #5cb85c;
+}
+
+.progress-striped .progress-bar-success {
+	background-image: linear-gradient(45deg, rgba(255, 255, 255, 0.15) 25%,
+		transparent 25%, transparent 50%, rgba(255, 255, 255, 0.15) 50%,
+		rgba(255, 255, 255, 0.15) 75%, transparent 75%, transparent);
+}
+
+.progress-bar-info {
+	background-color: #5bc0de;
+}
+
+.progress-striped .progress-bar-info {
+	background-image: linear-gradient(45deg, rgba(255, 255, 255, 0.15) 25%,
+		transparent 25%, transparent 50%, rgba(255, 255, 255, 0.15) 50%,
+		rgba(255, 255, 255, 0.15) 75%, transparent 75%, transparent);
+}
+
+.progress-bar-warning {
+	background-color: #f0ad4e;
+}
+
+.progress-striped .progress-bar-warning {
+	background-image: linear-gradient(45deg, rgba(255, 255, 255, 0.15) 25%,
+		transparent 25%, transparent 50%, rgba(255, 255, 255, 0.15) 50%,
+		rgba(255, 255, 255, 0.15) 75%, transparent 75%, transparent);
+}
+
+.progress-bar-danger {
+	background-color: #d9534f;
+}
+
+.progress-striped .progress-bar-danger {
+	background-image: linear-gradient(45deg, rgba(255, 255, 255, 0.15) 25%,
+		transparent 25%, transparent 50%, rgba(255, 255, 255, 0.15) 50%,
+		rgba(255, 255, 255, 0.15) 75%, transparent 75%, transparent);
 }
 
 /* ACTIONBAR */
-
-.actionbar .context-icon {
-	font-size: 28px;
-	margin-right: 16px;
-	vertical-align: middle;
-}
 
 .listview td .wrapped-checkbox,
 .listview td .wrapped-checkbox label {

@@ -457,39 +457,8 @@ body.exception footer a:not(:hover) {
 
 
 
-
-
-
-.actionbar {
-	height: 28px;
-}
-
-.actionbar-faces {
-	transform-style: preserve-3d;
-	transition: transform .5s;
-}
-
-.actionbar-front,
-.actionbar-back {
-	clear: both;
-	height: 28px;
-	backface-visibility: hidden;
-}
-
-.actionbar-faces.flipped,
-.actionbar-back {
-	transform: rotateX(180deg);
-	transform: rotateX(180deg);
-}
-
 .actionbar .btn-group-label {
 	line-height: 28px;
 	display: inline;
 	margin-right: 8px;
-}
-
-
-
-.actionbar:not([data-display="operations"]) .listview-operations {
-	display: none;
 }
