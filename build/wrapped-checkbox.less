@@ -1,0 +1,32 @@
+.wrapped-checkbox input {
+	display: none;
+}
+
+.wrapped-checkbox label {
+	width: 14px;
+	height: 14px;
+	border: 1px solid #CFCFCF;
+	transition: all 200ms;
+}
+
+.wrapped-checkbox.circle label {
+	border-radius: 10px;
+}
+
+.wrapped-checkbox input:checked + label {
+	background: #b5d5ff;
+	border-color: #a3c0e5;
+}
+
+.wrapped-checkbox.circle input:checked + label,
+.wrapped-checkbox.rectangle input:checked + label {
+	background-color: #FFC;
+}
+
+.wrapped-checkbox input:disabled + label {
+	visibility: hidden;
+}
+
+.wrapped-checkbox.circle input:checked + label {
+	border-color: #CCA;
+}

@@ -18,7 +18,7 @@ CSS_FILES = \
 	build/admin.less \
 	build/actionbar.less \
 	build/alerts.less \
-	build/checkbox-wrapper.less \
+	build/wrapped-checkbox.less \
 	build/forms.less \
 	build/mixins.less \
 	build/navigation.less \
@@ -37,7 +37,6 @@ JS_FILES = \
 	build/alerts.js \
 	build/actionbar.js \
 	build/forms.js \
-	build/checkbox-wrapper.js \
 	build/popover-image.js \
 	build/reset.js \
 	build/save-mode.js \

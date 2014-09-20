@@ -504,3 +504,13 @@ RECORDS
 	margin-right: 16px;
 	vertical-align: middle;
 }
+
+.listview td .wrapped-checkbox,
+.listview td .wrapped-checkbox label {
+	vertical-align: top;
+}
+
+.listview .wrapped-checkbox input:checked + label {
+	background-color: #cfc;
+	border-color: #9c9;
+}

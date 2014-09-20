@@ -3,21 +3,22 @@
 	white-space: nowrap;
 }
 
-.listview .cell-key label {
+.listview .cell-key .wrapped-checkbox {
 	display: block;
 }
 
-.listview .cell-key label.checkbox-wrapper {
+.listview .cell-key .wrapped-checkbox label {
+	display: block;
 	border: 1px solid #cfcfcf;
 	background: #e8e8e8;
 }
 
-.listview .cell-key label.checkbox-wrapper.checked {
+.listview .cell-key .wrapped-checkbox input:checked + label {
 	background: #b5d5ff;
 	border-color: #a3c0e5;
 }
 
-.listview th.cell-key label.checkbox-wrapper {
+.listview th.cell-key .wrapped-checkbox label {
 	background: #f6f6f6;
 }
 

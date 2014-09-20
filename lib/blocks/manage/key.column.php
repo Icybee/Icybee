@@ -13,6 +13,8 @@ namespace Icybee\ManageBlock;
 
 use Brickrouge\Element;
 
+use Icybee\WrappedCheckbox;
+
 /**
  * Representation of a _primary key_ column.
  */
@@ -53,30 +55,14 @@ class KeyColumn extends Column
 
 	public function render_cell($record)
 	{
-		global $core;
-
 		$key = $record->{ $this->id };
 
-		return new Element
-		(
-			'label', array
-			(
-				Element::CHILDREN => array
-				(
-					new Element
-					(
-						Element::TYPE_CHECKBOX, array
-						(
-							'value' => $key,
-							'disabled' => !$this->ownership[$key]
-						)
-					)
-				),
+		return new WrappedCheckbox([
 
-				'class' => 'checkbox-wrapper rectangle',
-				'title' => $this->t('Toggle selection for the record #:key', array(':key' => $key))
-			)
-		);
+			'value' => $key,
+			'disabled' => !$this->ownership[$key],
+			'title' => $this->t('Toggle selection for the record #:key', [ ':key' => $key ])
+		]);
 	}
 
 	/**
@@ -93,22 +79,12 @@ class KeyColumn extends Column
 			return '&nbsp;';
 		}
 
-		return new Element
-		(
-			'label', array
-			(
-				Element::CHILDREN => array
-				(
-					new Element
-					(
-						Element::TYPE_CHECKBOX
-					)
-				),
+		return new WrappedCheckbox([
 
-				'class' => 'checkbox-wrapper rectangle',
-				'title' => $this->t('Toggle selection for the records ([alt] to toggle selection)')
-			)
-		);
+			'class' => 'wrapped-checkbox rectangle',
+			'title' => $this->t('Toggle selection for the records ([alt] to toggle selection)')
+
+		]);
 	}
 
 	public function add_assets(\BrickRouge\Document $document)

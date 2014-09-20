@@ -14,6 +14,7 @@ namespace Icybee\ManageBlock;
 use ICanBoogie\ActiveRecord\Query;
 
 use Brickrouge\Element;
+use Icybee\WrappedCheckbox;
 
 /**
  * Representation of a _boolean_ column.
@@ -65,30 +66,18 @@ class BooleanCellRenderer extends CellRenderer
 	/**
 	 * Returns an decorated checkbox element.
 	 *
-	 * @return \Brickrouge\Element
+	 * @return WrappedCheckbox
 	 */
 	public function __invoke($record, $property)
 	{
-		return new Element
-		(
-			'label', array
-			(
-				Element::CHILDREN => array
-				(
-					new Element
-					(
-						Element::TYPE_CHECKBOX, array
-						(
-							'value' => $record->{ $this->column->manager->primary_key },
-							'checked' => ($record->$property != 0),
-							'data-property' => $property,
-							'data-property-type' => 'boolean'
-						)
-					)
-				),
+		return new WrappedCheckbox([
 
-				'class' => 'checkbox-wrapper circle'
-			)
-		);
+			'class' => 'wrapped-checkbox circle',
+			'value' => $record->{ $this->column->manager->primary_key },
+			'checked' => ($record->$property != 0),
+			'data-property' => $property,
+			'data-property-type' => 'boolean'
+
+		]);
 	}
 }
