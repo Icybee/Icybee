@@ -18,7 +18,7 @@
 
 .listview th > div,
 .listview td {
-	padding: 4px;
+	padding: .25rem .5rem;
 }
 
 .listview th i[class^="icon-"] {
@@ -77,7 +77,8 @@
 }
 
 .listview-interactive th > div {
-	padding: 0 4px;
+	padding-top: 0;
+	padding-bottom: 0;
 	border-left: 1px solid transparent;
 	border-right: 1px solid transparent;
 	position: relative;
@@ -297,11 +298,6 @@
 	color: #4BB38B;
 }
 
-.listview tr.no-ownership div.checkbox,
-.listview tr.no-ownership label.checkbox-wrapper {
-	visibility: hidden;
-}
-
 .listview tr.no-ownership td {
 	opacity: .6;
 }
@@ -339,8 +335,8 @@
 }
 
 .listview .cell-boolean {
-	width: 28px;
-	text-align: center;
+	width: 1px;
+	white-space: nowrap;
 }
 
 .listview td.cell-boolean label {

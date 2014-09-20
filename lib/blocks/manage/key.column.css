@@ -1,6 +1,6 @@
 .listview .cell-key {
-	text-align: right;
-	width: 1em;
+	width: 1px;
+	white-space: nowrap;
 }
 
 .listview .cell-key label {
