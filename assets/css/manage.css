@@ -485,8 +485,32 @@ RECORDS
 	padding: 16px 16px 15px;
 	height: 28px;
 	transform: translateY(60px);
-	transition: all 180ms;
+	transition: all 240ms;
 	opacity: 0;
+	background: #4585F2;
+	background: linear-gradient(to bottom, #4585F2, hsl(218, 87%, 56%));
+}
+
+.actionbar-actions label {
+	color: white;
+	line-height: 28px;
+	margin-right: 8px;
+	font-size: 14px;
+}
+
+.actionbar-actions label:before {
+	font-family: FontAwesome;
+	padding: 4px;
+	margin-right: 8px;
+	font-size: 20px;
+	line-height: 1;
+	display: inline-block;
+	transform: rotate(-90deg);
+	transition: all 480ms;
+}
+
+.actionbar-actions-wrapper.show .actionbar-actions label:before {
+	transform: rotate(0deg);
 }
 
 .actionbar.fixed .actionbar-actions {
@@ -503,10 +527,21 @@ RECORDS
 	opacity: 1;
 }
 
-.actionbar-actions .btn[data-dismiss="selection"] {
-	float: right;
-	font-weight: bold;
+.actionbar-actions .btn {
 	border-color: white;
+}
+
+.actionbar-actions .btn-primary {
+	background-color: hsl(218, 87%, 90%);
+	background-image: linear-gradient(to bottom, white, hsl(218, 87%, 90%));
+	box-shadow: none;
+	color: hsl(0, 0%, 25%);
+	text-shadow: 0 1px 1px hsla(0, 0%, 100%, 0.75);
+}
+
+.actionbar-actions .btn[data-dismiss] {
+	float: right;
+	font-weight: bolder;
 }
 
 .actionbar-actions > .btn-group,
@@ -524,38 +559,11 @@ RECORDS
 
 /**/
 
-.listview-operations {
-	background: #4585F2;
-	background: linear-gradient(to bottom, #4585F2, hsl(218, 87%, 56%));
-}
-
-.listview-operations .btn-group .btn {
-	border-color: white;
-}
-
-.listview-operations .count {
-	color: white;
-	line-height: 28px;
-	margin-right: 8px;
-	font-size: 14px;
-}
-
-.listview-operations .count:before {
+.listview-operations label:before {
 	content: "\f00c";
-	font-family: FontAwesome;
 	border: 2px solid;
 	border-radius: 100%;
-	padding: 4px;
-	margin-right: 8px;
 	font-size: 16px;
-	line-height: 1;
-	display: inline-block;
-	transform: rotate(-90deg);
-	transition: all 400ms;
-}
-
-.actionbar-actions-wrapper.show .listview-operations .count:before {
-	transform: rotate(0deg);
 }
 
 /*
