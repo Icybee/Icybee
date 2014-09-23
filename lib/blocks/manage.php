@@ -590,7 +590,7 @@ class ManageBlock extends Element
 			$rendered_exception = \Brickrouge\render_exception($e);
 
 			return <<<EOT
-<div class="alert alert-error alert-block undissmisable">
+<div class="alert alert-error alert-block undismissable">
 	<p>There was an error in the SQL statement, orders and filters have been reseted,
 	please reload the page.</p>
 

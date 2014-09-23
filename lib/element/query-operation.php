@@ -55,7 +55,7 @@ class QueryOperationElement extends Element
 </div>
 EOT
 
-				, 'errors' => '<div class="alert alert-error undissmisable"></div>',
+				, 'errors' => '<div class="alert alert-error undismissable"></div>',
 
 				'confirm' => new Element('div', [
 
