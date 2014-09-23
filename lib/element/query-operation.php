@@ -47,7 +47,15 @@ class QueryOperationElement extends Element
 
 				]),
 
-				'log' => '<ul class="log"></ul>',
+				'progress' => <<<EOT
+<div class="progress" brickrouge-is="Progress" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="$count">
+<div class="progress-bar">
+<span class="progress-bar-label"></span>
+</div>
+</div>
+EOT
+
+				, 'errors' => '<div class="alert alert-error undissmisable"></div>',
 
 				'confirm' => new Element('div', [
 
@@ -86,15 +94,7 @@ class QueryOperationElement extends Element
 
 					Element::CHILDREN => [
 
-						'gauge' => <<<EOT
-<div class="progress" brickrouge-is="Progress">
-<div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="$count">
-<span class="progress-bar-label"></span>
-</div>
-</div>
-EOT
-
-						, 'actions' => new Actions([
+						'actions' => new Actions([
 
 							'cancel' => new Button("Cancel", [
 

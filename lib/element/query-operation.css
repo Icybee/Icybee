@@ -1,3 +1,96 @@
+/* progress */
+
+@keyframes progress-bar-stripes {
+	0% {
+		background-position: 40px 0;
+	}
+	100% {
+		background-position: 0 0;
+	}
+}
+
+.progress {
+	background-color: #f5f5f5;
+	border-radius: 4px;
+	box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1) inset;
+	height: 1.5rem;
+	margin-bottom: 20px;
+	overflow: hidden;
+}
+
+.progress[aria-valuenow="0"] {
+	display: none;
+}
+
+.progress-bar {
+	background-color: #3D7FF1;
+	box-shadow: 0 -1px 0 rgba(0, 0, 0, 0.15) inset;
+	color: #fff;
+	float: left;
+	font-size: 12px;
+	height: 100%;
+	line-height: 20px;
+	text-align: center;
+	transition: width 240ms ease 0s, background-color 240ms;
+	width: 0;
+	color: #fff;
+}
+
+.progress-striped .progress-bar,
+.progress-bar-striped {
+	background-image: linear-gradient(45deg, rgba(255, 255, 255, 0.15) 25%,
+		transparent 25%, transparent 50%, rgba(255, 255, 255, 0.15) 50%,
+		rgba(255, 255, 255, 0.15) 75%, transparent 75%, transparent);
+	background-size: 40px 40px;
+}
+
+.progress.active .progress-bar,
+.progress-bar.active {
+	animation: 2s linear 0s normal none infinite progress-bar-stripes;
+}
+
+.progress-bar-success {
+	background-color: #5cb85c;
+}
+
+.progress-striped .progress-bar-success {
+	background-image: linear-gradient(45deg, rgba(255, 255, 255, 0.15) 25%,
+		transparent 25%, transparent 50%, rgba(255, 255, 255, 0.15) 50%,
+		rgba(255, 255, 255, 0.15) 75%, transparent 75%, transparent);
+}
+
+.progress-bar-info {
+	background-color: #5bc0de;
+}
+
+.progress-striped .progress-bar-info {
+	background-image: linear-gradient(45deg, rgba(255, 255, 255, 0.15) 25%,
+		transparent 25%, transparent 50%, rgba(255, 255, 255, 0.15) 50%,
+		rgba(255, 255, 255, 0.15) 75%, transparent 75%, transparent);
+}
+
+.progress-bar-warning {
+	background-color: #f0ad4e;
+}
+
+.progress-striped .progress-bar-warning {
+	background-image: linear-gradient(45deg, rgba(255, 255, 255, 0.15) 25%,
+		transparent 25%, transparent 50%, rgba(255, 255, 255, 0.15) 50%,
+		rgba(255, 255, 255, 0.15) 75%, transparent 75%, transparent);
+}
+
+.progress-bar-danger {
+	background-color: #d9534f;
+}
+
+.progress-striped .progress-bar-danger {
+	background-image: linear-gradient(45deg, rgba(255, 255, 255, 0.15) 25%,
+		transparent 25%, transparent 50%, rgba(255, 255, 255, 0.15) 50%,
+		rgba(255, 255, 255, 0.15) 75%, transparent 75%, transparent);
+}
+
+/* widget-query-operation */
+
 .widget-query-operation {
 	text-align: center;
 	padding: 1rem;
@@ -19,29 +112,16 @@
 	margin: 1rem auto;
 }
 
-.widget-query-operation .log {
-	display: block;
+.widget-query-operation .alert {
+	box-sizing: border-box;
 	max-width: 500px;
 	max-height: 10em;
-	padding: .5em 0;
-	border: 1px solid #ccc;
-	border-radius: 3px;
 	margin: 1rem auto;
 	overflow: auto;
-	list-style: none;
-	line-height: 1;
 	font-size: 13px;
-	background: #F6F6F6;
 }
 
-.widget-query-operation .log:empty {
-	display: none;
-}
-
-.widget-query-operation .log li {
-	padding: .5em;
-}
-
+.widget-query-operation .alert:empty,
 .widget-query-operation .screen {
 	display: none;
 }
@@ -50,4 +130,16 @@
 .widget-query-operation[data-state="processing"] .screen--processing,
 .widget-query-operation[data-state="success"] .screen--success {
 	display: block;
+}
+
+.widget-query-operation[data-state="processing"] .progress-bar {
+	animation: 2s linear 0s normal none infinite progress-bar-stripes;
+}
+
+.widget-query-operation[data-state="success"] .progress-bar {
+	background-color: #5bb75b;
+}
+
+.widget-query-operation.has-errors .progress-bar {
+	background-color: #da4f49 !important;
 }
