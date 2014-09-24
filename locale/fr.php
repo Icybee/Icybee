@@ -31,6 +31,20 @@ return array
 		'save_mode_new' => "Enregistrer et éditer un nouveau"
 	),
 
+	'delete.operation' => array
+	(
+		'title' => 'Supprimer des enregistrements',
+		'short_title' => 'Supprimer',
+		'continue' => 'Supprimer',
+		'cancel' => "Ne pas supprimer",
+
+		'confirm' => array
+		(
+			'one' => "Êtes-vous sûr de vouloir supprimer l'enregistrement sélectionné ?",
+			'other' => "Êtes-vous sûr de vouloir supprimer les :count enregistrements sélectionnés ?"
+		)
+	),
+
 	/*
 	 * lib/blocks/manage.php
 	 */
@@ -102,6 +116,14 @@ return array
 	'Display only: :identifier' => 'Afficher uniquement : :identifier',
 	'From :start to :finish on :count' => 'De :start à :finish sur :count',
 	'Sort by: :identifier' => 'Trier par : :identifier',
+
+	# Icybee\ManageBlock
+
+	"Your search %search did not match any record."
+	=> "Votre recherche %search ne correspond à aucun enregistrement.",
+
+	"Reset search filter"
+	=> "Réinitialiser le filtre de recherche",
 
 	# Icybee\Modules\Pages\PageController
 

@@ -1148,14 +1148,21 @@ EOT;
 
 		if ($search)
 		{
-			$message = $this->t('Your search <q><strong>!search</strong></q> did not match any record.<br /><br /><a href="?q=" rel="manager/search" data-action="reset" class="btn btn-warning">Reset search filter</a>', array('!search' => $search));
+			$message = $this->t("Your search %search did not match any record.", [ 'search' => $search ]);
+			$btn_label = $this->t("Reset search filter");
+
+			$message = <<<EOT
+$message
+<br /><br />
+<a href="?q=" rel="manager/search" data-action="reset" class="btn btn-warning">$btn_label</a>
+EOT;
 		}
 		else if ($filters)
 		{
 			// TODO-20130629: column should implement a humanize_filter() method that would return a humanized filter expression.
 
 			$filters = implode(', ', $filters);
-			$message = $this->t('Your selection <q><strong>!selection</strong></q> dit not match any record.', array('!selection' => $filters));
+			$message = $this->t('Your selection %selection dit not match any record.', [ 'selection' => $filters ]);
 		}
 		else
 		{

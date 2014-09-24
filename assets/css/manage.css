@@ -214,6 +214,10 @@
 	text-align: center;
 }
 
+.listview-alert q {
+	font-weight: bold;
+}
+
 /* listview: controls */
 
 .listview .listview-controls select {
