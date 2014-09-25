@@ -1,22 +1,19 @@
-/*
- * spinner
- */
-
 .spinner {
 	border: 1px solid;
 	border-color: #CCC #CCC #BBB;
 	border-radius: 3px;
 	height: auto;
-	background: bottom right no-repeat white;
+	background: white;
 	box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset;
 	padding: 6px;
 	display: inline-block;
-	cursor: default;
+	cursor: pointer;
 	color: inherit !important;
 	text-decoration: none !important;
-	font-size: 13px;
 	position: relative;
-	
+	overflow: hidden;
+	vertical-align: top;
+
 	&::after {
 		content: '';
 		display: block;
@@ -38,18 +35,18 @@
 		color: #808080 !important;
 		font-style: italic;
 	}
-	
+
 	&:not(.placeholder) .spinner-placeholder,
 	&.placeholder .spinner-content {
 		display: none;
-	}	
+	}
 }
 
 .popover.contrast .spinner {
 	border-color: #454545;
 	box-shadow: 0 1px 1px hsla(0, 0%, 100%, 0.075) inset;
 	background-color: hsla(0, 0%, 0%, 0.3);
-	
+
 	&:hover {
 		background-color: hsla(0, 0%, 20%, 0.3);
 	}
@@ -61,7 +58,7 @@
 	&:active {
 		box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15) inset, 0 1px 2px rgba(0, 0, 0, 0.05);
 	}
-	
+
 	&:focus {
 		border-color: #A3C0E5;
 		background-color: #B5D5FF;
