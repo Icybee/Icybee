@@ -9,10 +9,11 @@
 
 Brickrouge.Widget.ActionBar = new Class({
 
+	Implements: [ Events ],
+
 	initialize: function(el)
 	{
 		this.element = el = document.id(el)
-		this.faces = el.getElement('.actionbar-faces')
 
 		this.setUpAnchoring()
 
@@ -25,6 +26,8 @@ Brickrouge.Widget.ActionBar = new Class({
 			target.submit()
 
 		})
+
+		this.fireEvent('icybee.actionbar.ready', this)
 	},
 
 	toElement: function()
@@ -53,19 +56,9 @@ Brickrouge.Widget.ActionBar = new Class({
 		})
 	},
 
-	display: function(what)
+	changeContext: function(what)
 	{
-		if (!what)
-		{
-
-			this.faces.removeClass('flipped')
-			;( function() { this.set('data-display', '') }).delay(500, this.element)
-		}
-		else
-		{
-			this.element.set('data-display', what)
-			this.faces.addClass('flipped')
-		}
+		this.element.set('data-context', what || '')
 	}
 
 })

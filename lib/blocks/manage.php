@@ -23,11 +23,11 @@ use Brickrouge\Form;
 use Brickrouge\Ranger;
 use Brickrouge\Text;
 
+use Icybee\Element\ActionbarContexts;
 use Icybee\Element\ActionbarSearch;
 use Icybee\ManageBlock\Column;
 use Icybee\ManageBlock\Options;
 use Icybee\ManageBlock\Translator;
-use Icybee\Element\ActionbarContextual;
 
 /* @var $column \Icybee\ManageBlock\Column */
 
@@ -669,7 +669,7 @@ EOT;
 
 		$rendered_jobs = $this->render_jobs($this->jobs);
 
-		$core->events->attach(function(ActionbarContextual\CollectItemsEvent $event, ActionbarContextual $target) use($rendered_jobs) {
+		$core->events->attach(function(ActionbarContexts\CollectItemsEvent $event, ActionbarContexts $target) use($rendered_jobs) {
 
 			$event->items[] = $rendered_jobs;
 

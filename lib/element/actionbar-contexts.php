@@ -14,18 +14,18 @@ namespace Icybee\Element;
 use Brickrouge\Element;
 use Brickrouge\ElementIsEmpty;
 
-class ActionbarContextual extends Element
+class ActionbarContexts extends Element
 {
-	public function __construct(array $attributes=array())
+	public function __construct(array $attributes=[])
 	{
-		parent::__construct('div', $attributes + array('class' => 'actionbar-contextual'));
+		parent::__construct('div', $attributes + [ 'class' => 'actionbar-contexts' ]);
 	}
 
 	protected function render_inner_html()
 	{
 		$items = array();
 
-		new ActionbarContextual\CollectItemsEvent($this, $items);
+		new ActionbarContexts\CollectItemsEvent($this, $items);
 
 		$html = implode($items);
 
@@ -38,10 +38,10 @@ class ActionbarContextual extends Element
 	}
 }
 
-namespace Icybee\Element\ActionbarContextual;
+namespace Icybee\Element\ActionbarContexts;
 
 /**
- * Event class for the `Icybee\Element\ActionbarContextual::collect_items` event.
+ * Event class for the `Icybee\Element\ActionbarContexts::collect_items` event.
  */
 class CollectItemsEvent extends \ICanBoogie\Event
 {
@@ -55,10 +55,10 @@ class CollectItemsEvent extends \ICanBoogie\Event
 	/**
 	 * The event is constructed with the type `collect_items`.
 	 *
-	 * @param \Icybee\Element\ActionbarSearch $target
-	 * @param array $payload
+	 * @param (\Icybee\Element\ActionbarContexts $target
+	 * @param array $items Reference to the contexts items.
 	 */
-	public function __construct(\Icybee\Element\ActionbarContextual $target, array &$items)
+	public function __construct(\Icybee\Element\ActionbarContexts $target, array &$items)
 	{
 		$this->items = &$items;
 

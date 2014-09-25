@@ -32,7 +32,7 @@ class Actionbar extends Element
 			Element::IS => 'ActionBar',
 
 			'class' => 'actionbar',
-			'data-display' => ''
+			'data-context' => ''
 
 		]);
 	}
@@ -93,25 +93,21 @@ class Actionbar extends Element
 			throw new \Brickrouge\ElementIsEmpty;
 		}
 
-		$actionbar_contextual = (string) new ActionbarContextual();
+		$actionbar_contexts = (string) new ActionbarContexts;
 
 		return <<<EOT
-<div class="actionbar-faces">
-	<div class="actionbar-front">
-		<div class="actionbar-brand pull-left">
-			{$actionbar_title}{$actionbar_new}{$actionbar_navigation}
-		</div>
-
-		<div class="pull-right">
-			<div class="actionbar-controls">{$actionbar_controls}</div>
-			<div class="actionbar-search">{$actionbar_search}</div>
-		</div>
+<div class="actionbar-primary">
+	<div class="actionbar-brand pull-left">
+		{$actionbar_title}{$actionbar_new}{$actionbar_navigation}
 	</div>
 
-	<div class="actionbar-back">
-		$actionbar_contextual
+	<div class="pull-right">
+		<div class="actionbar-controls">{$actionbar_controls}</div>
+		<div class="actionbar-search">{$actionbar_search}</div>
 	</div>
 </div>
+
+$actionbar_contexts
 EOT;
 	}
 }
