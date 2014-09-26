@@ -1197,8 +1197,7 @@ EOT;
 							'size' => '16',
 							'class' => 'search',
 							'tabindex' => 0,
-
-							'data-placeholder' => $this->t('Search')
+							'placeholder' => $this->t('Search')
 						)
 					),
 
