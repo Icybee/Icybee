@@ -35,7 +35,7 @@
 		"icybee/module-files": "2.x",
 		"icybee/module-forms": "2.x",
 		"icybee/module-images": "2.x",
-		"icybee/module-modules": "*",
+		"icybee/module-modules": "2.x",
 		"icybee/module-nodes": "2.x",
 		"icybee/module-pages": "2.x",
 		"icybee/module-sites": "2.x",

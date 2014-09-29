@@ -107,14 +107,4 @@ class Core extends \ICanBoogie\Core
 
 		exit($formated_exception);
 	}
-
-	/**
-	 * Override the method to provide our own accessor.
-	 */
-	protected function lazy_get_modules()
-	{
-		$config = $this->config;
-
-		return new Modules($config['module-path'], $config['cache modules'] ? $this->vars : null);
-	}
 }
