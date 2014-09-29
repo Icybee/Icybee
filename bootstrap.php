@@ -61,7 +61,7 @@ const OPERATION_SAVE_MODE_DISPLAY = 'display';
  * $response();
  * </pre>
  *
- * @return \Icybee\Core
+ * @return \ICanBoogie\Core
  */
 function start()
 {
@@ -70,7 +70,7 @@ function start()
 	 *
 	 * @var Core
 	 */
-	$core = new Core( \ICanBoogie\get_autoconfig() );
+	$core = new \ICanBoogie\Core( \ICanBoogie\get_autoconfig() );
 
 	\ICanBoogie\I18n\Helpers::patch('get_cldr', function() use($core) { return $core->cldr; });
 

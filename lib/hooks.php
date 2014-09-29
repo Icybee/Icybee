@@ -15,6 +15,7 @@ use ICanBoogie\Debug;
 use ICanBoogie\Event;
 use ICanBoogie\Events;
 use ICanBoogie\HTTP\Dispatcher;
+use ICanBoogie\HTTP\HTTPError;
 use ICanBoogie\HTTP\Request;
 use ICanBoogie\HTTP\Response;
 use ICanBoogie\HTTP\RedirectResponse;
@@ -22,6 +23,7 @@ use ICanBoogie\HTTP\WeightedDispatcher;
 use ICanBoogie\Operation;
 
 use Brickrouge\Alert;
+use Brickrouge\Document;
 
 use Icybee\Modules\Pages\PageRenderer;
 
@@ -514,5 +516,82 @@ class Hooks
 		global $core;
 
 		return '<body class="' . trim($args['class'] . ' ' . $core->document->css_class) . '">' . $engine($template) . '</body>';
+	}
+
+	/*
+	 *
+	 */
+
+	/**
+	 * Exception handler.
+	 *
+	 * @param \Exception $exception
+	 */
+	static public function exception_handler(\Exception $exception)
+	{
+		global $core;
+
+		$code = $exception->getCode() ?: 500;
+		$message = $exception->getMessage();
+		$class = get_class($exception); // The $class variable is required by the template
+
+		if (!headers_sent())
+		{
+			$normalized_message = strip_tags($message);
+			$normalized_message = str_replace([ "\r\n", "\n" ], ' ', $normalized_message);
+			$normalized_message = mb_convert_encoding($normalized_message, \ICanBoogie\CHARSET, 'ASCII');
+
+			if (strlen($normalized_message) > 32)
+			{
+				$normalized_message = mb_substr($normalized_message, 0, 29) . '…';
+			}
+
+			header('HTTP/1.0 ' . $code . ' ' . $class . ': ' . $normalized_message);
+			header('X-ICanBoogie-Exception: ' . \ICanBoogie\strip_root($exception->getFile()) . '@' . $exception->getLine());
+		}
+
+		if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'] == 'XMLHttpRequest')
+		{
+			$rc = json_encode([ 'rc' => null, 'errors' => [ '_base' => $message ] ]);
+
+			header('Content-Type: application/json');
+			header('Content-Length: ' . strlen($rc));
+
+			exit($rc);
+		}
+
+		$formated_exception = Debug::format_alert($exception);
+		$reported = false;
+
+		if (!($exception instanceof HTTPError))
+		{
+			Debug::report($formated_exception);
+
+			$reported = true;
+		}
+
+		if (!headers_sent())
+		{
+			$site = isset($core->site) ? $core->site : null;
+
+			if (class_exists('Brickrouge\Document'))
+			{
+				$css = [
+
+					Document::resolve_url(\Brickrouge\ASSETS . 'brickrouge.css'),
+					Document::resolve_url(ASSETS . 'admin.css'),
+					Document::resolve_url(ASSETS . 'admin-more.css')
+
+				];
+			}
+			else
+			{
+				$css = [];
+			}
+
+			$formated_exception = require(__DIR__ . '/exception.tpl.php');
+		}
+
+		exit($formated_exception);
 	}
 }

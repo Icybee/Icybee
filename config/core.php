@@ -1,6 +1,8 @@
 <?php
 
-$vars_path = ICanBoogie\REPOSITORY . 'vars' . DIRECTORY_SEPARATOR;
+namespace Icybee;
+
+$vars_path = \ICanBoogie\REPOSITORY . 'vars' . DIRECTORY_SEPARATOR;
 
 return [
 
@@ -8,6 +10,8 @@ return [
 	'cache catalogs' => file_exists($vars_path . 'enable_catalogs_cache'),
 	'cache configs' => file_exists($vars_path . 'enable_configs_cache'),
 	'cache modules' => file_exists($vars_path . 'enable_modules_cache'),
-	'cache views' => file_exists($vars_path . 'enable_views_cache')
+	'cache views' => file_exists($vars_path . 'enable_views_cache'),
+
+	'exception_handler' => 'Icybee\Hooks::exception_handler'
 
 ];
