@@ -106,24 +106,34 @@ class Hooks
 
 		];
 
-		$fragments = [];
+		$fragments = &$event->fragments;
 
-		foreach ($event->fragments as $root => $fragment)
+		foreach ($fragments as $root => &$fragment)
 		{
 			$add_delete_route = false;
 
-			foreach ($fragment as $id => $route)
+			foreach ($fragment as $id => &$route)
 			{
+				$controller = empty($route['controller']) ? true : $route['controller'];
+
+				if (isset($route['block']) && $controller === true)
+				{
+					$route['controller'] = 'Icybee\BlockController';
+				}
+
 				if (empty($magic[$id]))
 				{
-					if (isset($route['block']) && empty($route['controller']))
-					{
-						$route['controller'] = 'Icybee\BlockController';
-					}
-
-					$fragments[$root][$id] = $route;
-
 					continue;
+				}
+
+				if ($controller === true)
+				{
+					unset($route['controller']);
+				}
+
+				if (empty($route['pattern']) || $route['pattern'] == '!auto')
+				{
+					unset($route['pattern']);
 				}
 
 				$module_id = $route['module'];
@@ -134,14 +144,15 @@ class Hooks
 					{
 						$id = "admin:$module_id/manage"; // TODO-20120828: renamed this as "admin:{module_id}"
 
-						$route += array
-						(
+						$route += [
+
 							'pattern' => "/admin/$module_id",
 							'controller' => 'Icybee\BlockController',
 							'title' => '.manage',
 							'block' => 'manage',
 							'index' => true
-						);
+
+						];
 					}
 					break;
 
@@ -149,14 +160,15 @@ class Hooks
 					{
 						$id = "admin:$module_id/new";
 
-						$route += array
-						(
+						$route += [
+
 							'pattern' => "/admin/$module_id/new",
 							'controller' => 'Icybee\BlockController',
 							'title' => '.new',
 							'block' => 'edit',
 							'visibility' => 'visible'
-						);
+
+						];
 					}
 					break;
 
@@ -164,14 +176,15 @@ class Hooks
 					{
 						$id = "admin:$module_id/edit";
 
-						$route += array
-						(
+						$route += [
+
 							'pattern' => "/admin/$module_id/<\d+>/edit",
 							'controller' => 'Icybee\EditController',
 							'title' => '.edit',
 							'block' => 'edit',
 							'visibility' => 'auto'
-						);
+
+						];
 
 						$add_delete_route = true;
 					}
@@ -181,15 +194,16 @@ class Hooks
 					{
 						$id = "admin:$module_id/config";
 
-						$route += array
-						(
+						$route += [
+
 							'pattern' => "/admin/$module_id/config",
 							'controller' => 'Icybee\BlockController',
 							'title' => '.config',
 							'block' => 'config',
 							'permission' => Module::PERMISSION_ADMINISTER,
 							'visibility' => 'visible'
-						);
+
+						];
 					}
 					break;
 				}
@@ -199,8 +213,8 @@ class Hooks
 
 			if ($add_delete_route)
 			{
-				$fragments[$root]["admin:$module_id/delete"] = array
-				(
+				$fragments[$root]["admin:$module_id/delete"] = [
+
 					'pattern' => "/admin/$module_id/<\d+>/delete",
 					'controller' => 'Icybee\BlockController',
 					'title' => '.delete',
@@ -208,15 +222,10 @@ class Hooks
 					'visibility' => 'auto',
 					'via' => 'ANY',
 					'module' => $module_id
-				);
+
+				];
 			}
 		}
-
-		#
-		# default redirection from categories to a module.
-		#
-
-		$event->fragments = $fragments;
 	}
 
 	/**
