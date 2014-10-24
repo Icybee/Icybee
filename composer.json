@@ -19,15 +19,15 @@
 	},
 	"require": {
 		"php": ">=5.4.0",
-		"icanboogie/icanboogie": "2.x",
+		"icanboogie/icanboogie": "~2.0",
 		"icanboogie/image": "*",
-		"icanboogie/i18n": "2.x",
+		"icanboogie/i18n": "~2.0",
 		"brickrouge/brickrouge": "2.x",
 		"brickrouge/css-class-names": "2.x",
 		"icybee/core": "2.x",
 		"icybee/bluetihi": "*",
 		"icybee/patron": "1.x",
-		"icybee/module-registry": "*",
+		"icybee/module-registry": "~2.0",
 		"icybee/module-cache": "2.x",
 		"icybee/module-contents": "2.x",
 		"icybee/module-dashboard": "*",
@@ -39,9 +39,9 @@
 		"icybee/module-nodes": "2.x",
 		"icybee/module-pages": "2.x",
 		"icybee/module-sites": "2.x",
-		"icybee/module-users": "2.x",
+		"icybee/module-users": "~2.0",
 		"icybee/module-users-roles": "2.x",
-		"icybee/module-users-noncelogin": "2.x",
+		"icybee/module-users-noncelogin": "~2.0",
 		"icybee/module-thumbnailer": "2.x",
 		"icybee/module-views": "2.x"
 	},
@@ -54,9 +54,8 @@
 
 		"icanboogie": {
 
-			"config-path": "config/",
-			"locale-path": "locale/",
-			"module-path": "modules/",
+			"config-path": "config",
+			"locale-path": "locale",
 
 			"config-constructors": {
 

@@ -86,12 +86,14 @@ $(CSS_COMPRESSED): $(CSS_FILES)
 $(CSS_UNCOMPRESSED): $(CSS_FILES)
 	$(CSS_COMPRESSOR) build/admin.less >$@
 
-composer.phar:
-	@echo "Installing composer..."
-	@curl -s https://getcomposer.org/installer | php
+vendor:
+	@composer install --prefer-source --dev
 
-vendor: composer.phar
-	@php composer.phar install --prefer-source --dev
+update:
+	@composer update --prefer-source --dev
+
+autoload:
+	@composer dump-autoload
 
 test: vendor
 	@phpunit
@@ -108,7 +110,6 @@ doc: vendor
 
 clean:
 	rm -f build/tmp/*.js
-	rm -f composer.phar
 	rm -f composer.lock
 	rm -Rf docs
 	rm -Rf vendor

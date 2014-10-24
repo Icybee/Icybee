@@ -107,7 +107,7 @@ Create a `composer.json` file and run `php composer.phar install` command to ins
 	},
 
 	"scripts": {
-		"post-autoload-dump": "ICanBoogie\\AutoConfig\\Generator::on_autoload_dump"
+		"post-autoload-dump": "ICanBoogie\\AutoConfig\\Hooks::on_autoload_dump"
 	}
 }
 ```
