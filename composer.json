@@ -46,7 +46,7 @@
 		"icybee/module-views": "2.x"
 	},
 	"autoload": {
-		"classmap": [ "lib/", "includes/", "modules/" ],
+		"classmap": [ "lib/", "includes/" ],
 		"files": [ "bootstrap.php" ]
 	},
 
