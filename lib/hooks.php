@@ -559,16 +559,6 @@ class Hooks
 			header('X-ICanBoogie-Exception: ' . \ICanBoogie\strip_root($exception->getFile()) . '@' . $exception->getLine());
 		}
 
-		if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'] == 'XMLHttpRequest')
-		{
-			$rc = json_encode([ 'rc' => null, 'errors' => [ '_base' => $message ] ]);
-
-			header('Content-Type: application/json');
-			header('Content-Length: ' . strlen($rc));
-
-			exit($rc);
-		}
-
 		$formated_exception = Debug::format_alert($exception);
 		$reported = false;
 
@@ -579,7 +569,7 @@ class Hooks
 			$reported = true;
 		}
 
-		if (!headers_sent())
+		if (!headers_sent() && PHP_SAPI != 'cli')
 		{
 			$site = isset($core->site) ? $core->site : null;
 
@@ -601,6 +591,11 @@ class Hooks
 			$formated_exception = require(__DIR__ . '/exception.tpl.php');
 		}
 
-		exit($formated_exception);
+		if (PHP_SAPI == 'cli')
+		{
+			$formated_exception = strip_tags($formated_exception);
+		}
+
+		echo $formated_exception;
 	}
 }
