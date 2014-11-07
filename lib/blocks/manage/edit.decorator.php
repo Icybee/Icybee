@@ -13,7 +13,7 @@ namespace Icybee\ManageBlock;
 
 use ICanBoogie\I18n;
 
-use Brickrouge\Element;
+use Brickrouge\A;
 
 /**
  * Decorates a component with an _edit_ element.
@@ -36,16 +36,11 @@ class EditDecorator extends \Brickrouge\Decorator
 		$model = $record->model;
 		$primary = $model->primary;
 
-		return new Element
-		(
-			'a', array
-			(
-				Element::INNER_HTML => \Brickrouge\escape($component),
+		return new A($component, \ICanBoogie\Routing\contextualize("/admin/{$model->id}/{$record->$primary}/edit"), [
 
-				'class' => 'edit',
-				'href' => \ICanBoogie\Routing\contextualize("/admin/{$model->id}/{$record->$primary}/edit"),
-				'title' => I18n\t('manage.edit')
-			)
-		);
+			'class' => 'edit',
+			'title' => I18n\t('manage.edit')
+
+		]);
 	}
 }
