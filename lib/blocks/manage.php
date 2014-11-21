@@ -139,20 +139,13 @@ class ManageBlock extends Element
 	protected $browse;
 
 	/**
-	 * Proxis translator with the following scope: "manager.<module_flat_id>"
-	 *
-	 * @var \ICanBoogie\I18n\Translator\Proxi
-	 */
-	protected $t;
-
-	/**
 	 * Returns the {@link $t} property.
 	 *
 	 * @return \ICanBoogie\I18n\Translator\Proxi
 	 */
 	protected function get_t()
 	{
-		return $this->t;
+		return $this[self::TRANSLATOR];
 	}
 
 	/**
@@ -263,11 +256,16 @@ class ManageBlock extends Element
 
 		## /20130625
 
-		parent::__construct('div', $attributes + array('class' => 'listview listview-interactive'));
+		parent::__construct('div', $attributes + [
+
+			Element::TRANSLATOR => new Translator($module),
+
+			'class' => 'listview listview-interactive'
+
+		]);
 
 		$this->module = $module;
 		$this->model = $module->model;
-		$this->t = new Translator($module);
 		$this->columns = $this->get_columns();
 		$this->jobs = $this->get_jobs();
 	}
