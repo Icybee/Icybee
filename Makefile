@@ -87,10 +87,10 @@ $(CSS_UNCOMPRESSED): $(CSS_FILES)
 	$(CSS_COMPRESSOR) build/admin.less >$@
 
 vendor:
-	@composer install --prefer-source --dev
+	@composer install --dev
 
 update:
-	@composer update --prefer-source --dev
+	@composer update --dev
 
 autoload:
 	@composer dump-autoload
