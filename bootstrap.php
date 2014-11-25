@@ -39,10 +39,9 @@ const OPERATION_SAVE_MODE_NEW = 'new';
 const OPERATION_SAVE_MODE_DISPLAY = 'display';
 
 /**
- * Starts Icybee.
+ * Patches some helpers and boots ICanBoogie.
  *
- * The function instantiates a {@link Core} instance with the ICanBoogie's auto-config and patches
- * the following helpers:
+ * The following helpers are patched:
  *
  * - ICanBoogie\I18n\get_cldr
  * - Brickrouge\t
@@ -55,31 +54,24 @@ const OPERATION_SAVE_MODE_DISPLAY = 'display';
  *
  * // index.php
  *
- * $core = Icybee\start();
- * $request = $core();
- * $response = $request();
- * $response();
+ * $app = Icybee\boot();
+ * $app();
  * </pre>
  *
  * @return \ICanBoogie\Core
  */
-function start()
+function boot()
 {
-	/**
-	 * The core instance is the heart of the ICanBoogie framework.
-	 *
-	 * @var Core
-	 */
-	$core = new \ICanBoogie\Core( \ICanBoogie\get_autoconfig() );
+	$app;
 
-	\ICanBoogie\I18n\Helpers::patch('get_cldr', function() use($core) { return $core->cldr; });
+	\ICanBoogie\I18n\Helpers::patch('get_cldr', function() use(&$app) { return $app->cldr; });
 
 	\Brickrouge\Helpers::patch('t', 'ICanBoogie\I18n\t');
 	\Brickrouge\Helpers::patch('render_exception', 'ICanBoogie\Debug::format_alert');
-	\Brickrouge\Helpers::patch('get_document', function() use($core) { return $core->document; });
-	\Brickrouge\Helpers::patch('check_session', function() use($core) { return $core->session; });
+	\Brickrouge\Helpers::patch('get_document', function() use(&$app) { return $app->document; });
+	\Brickrouge\Helpers::patch('check_session', function() use(&$app) { return $app->session; });
 
-	return $core;
+	return $app = \IcanBoogie\boot();
 }
 
 /*
