@@ -125,10 +125,8 @@ Create a `composer.json` file and run `php composer.phar install` command to ins
 
 require 'vendor/autoload.php';
 
-$core = Icybee\start();
-$request = $core();
-$response = $request();
-$response();
+$core = Icybee\boot();
+$core();
 ```
 
 
