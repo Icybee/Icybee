@@ -68,7 +68,7 @@ $(IDEPENDONYOU_JS):
 	curl -o $@ https://raw.githubusercontent.com/olvlvl/IDependOnYou/master/idependonyou.js
 
 $(MOOTOOLS_JS):
-	curl -o $@ http://mootools.net/download/get/mootools-core-$(MOOTOOLS_CORE_VER)-full-nocompat.js
+	curl -o $@ https://raw.githubusercontent.com/mootools/mootools-core/$(MOOTOOLS_CORE_VER)/dist/mootools-core.js
 
 #
 #
