@@ -429,11 +429,10 @@ class Hooks
 
 		if (!$cldr)
 		{
-			$provider = new \ICanBoogie\CLDR\Provider
-			(
-				new \ICanBoogie\CLDR\RunTimeCache(new \ICanBoogie\CLDR\FileCache(\ICanBoogie\REPOSITORY . 'cldr' . DIRECTORY_SEPARATOR)),
-				new \ICanBoogie\CLDR\Retriever
-			);
+			$provider = new \ICanBoogie\CLDR\RunTimeProvider(
+				new \ICanBoogie\CLDR\FileProvider(
+					new \ICanBoogie\CLDR\WebProvider, \ICanBoogie\REPOSITORY . 'cldr' . DIRECTORY_SEPARATOR
+			));
 
 			$cldr = new \ICanBoogie\CLDR\Repository($provider);
 		}

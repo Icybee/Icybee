@@ -21,6 +21,7 @@
 		"php": ">=5.4.0",
 		"icanboogie/icanboogie": "~2.0",
 		"icanboogie/i18n": "~2.0",
+	  	"icanboogie/cldr": "~1.3",
 		"brickrouge/brickrouge": "~2.1",
 		"brickrouge/css-class-names": "~2.0",
 		"icybee/core": "~2.0",
