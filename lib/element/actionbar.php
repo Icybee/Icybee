@@ -57,7 +57,7 @@ class Actionbar extends Element
 				throw new PropertyNotDefined();
 			}
 
-			$route = $core->request->route;
+			$route = $core->request->context->route;
 
 			if (!$core->user->is_guest && !($core->user instanceof \Icybee\Modules\Members\Member))
 			{
@@ -123,7 +123,7 @@ class ActionbarNav extends Element
 	{
 		global $core;
 
-		$current_route = $core->request->route;
+		$current_route = $core->request->context->route;
 		$collection = $this->collect_routes($current_route);
 
 		if (empty($collection))
@@ -296,11 +296,11 @@ EOT;
 		return parent::render_splitbutton_toggle($class);
 	}
 
-	public function __toString()
+	public function render()
 	{
 		global $core;
 
-		$route = $core->request->route;
+		$route = $core->request->context->route;
 		$module_id = $route->module;
 		$match = $core->routes->find("/admin/$module_id/new");
 
@@ -311,7 +311,7 @@ EOT;
 			return '';
 		}
 
-		return parent::__toString();
+		return parent::render();
 	}
 
 	protected function collect_routes()
