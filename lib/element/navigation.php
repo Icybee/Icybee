@@ -100,7 +100,7 @@ class Navigation extends \Brickrouge\Element
 
 		try
 		{
-			$matching_route = $core->request->route;
+			$matching_route = $core->request->context->route;
 		}
 		catch (PropertyNotDefined $e) {}
 

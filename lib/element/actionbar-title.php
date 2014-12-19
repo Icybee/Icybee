@@ -42,7 +42,7 @@ class ActionbarTitle extends Element
 
 		try
 		{
-			$route = $request->route;
+			$route = $request->context->route;
 		}
 		catch (PropertyNotDefined $e)
 		{
