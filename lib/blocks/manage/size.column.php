@@ -16,17 +16,15 @@ namespace Icybee\ManageBlock;
  */
 class SizeColumn extends Column
 {
-	public function __construct(\Icybee\ManageBlock $manager, $id, array $options=array())
+	public function __construct(\Icybee\ManageBlock $manager, $id, array $options=[])
 	{
-		parent::__construct
-		(
-			$manager, $id, $options + array
-			(
-				'class' => 'measure',
-				'default_order' => -1,
-				'discreet' => true
-			)
-		);
+		parent::__construct($manager, $id, $options + [
+
+			'class' => 'measure',
+			'default_order' => -1,
+			'discreet' => true
+
+		]);
 	}
 
 	public function render_cell($record)

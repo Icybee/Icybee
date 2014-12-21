@@ -21,12 +21,11 @@ class Get extends \ICanBoogie\Operation
 
 	protected function get_controls()
 	{
-		return array
-		(
-			self::CONTROL_AUTHENTICATION => true
-		)
+		return [
 
-		+ parent::get_controls();
+			self::CONTROL_AUTHENTICATION => true
+
+		] + parent::get_controls();
 	}
 
 	protected function validate(\ICanboogie\Errors $errors)
@@ -43,22 +42,22 @@ class Get extends \ICanBoogie\Operation
 
 	protected function process()
 	{
-		global $core, $document;
+		$app = $this->app;
 
-		if (!$core->user_id)
+		if (!$app->user_id)
 		{
 			throw new \Exception('Unauthorized', 401);
 		}
 
-		$user = $core->user;
+		$user = $app->user;
 
 		if ($user->language)
 		{
-			$core->locale = $user->language;
+			$app->locale = $user->language;
 		}
 
 		$request = $this->request;
-		$document = $core->document;
+		$document = $app->document;
 
 		$rc = null;
 		$mode = $request['mode'];
@@ -71,14 +70,12 @@ class Get extends \ICanBoogie\Operation
 
 		$class = $this->widget_class;
 
-		$el = new $class
-		(
-			array
-			(
-				'value' => $selected,
-				Widget\AdjustNode::T_CONSTRUCTOR => $request['constructor']
-			)
-		);
+		$el = new $class([
+
+			'value' => $selected,
+			Widget\AdjustNode::T_CONSTRUCTOR => $request['constructor']
+
+		]);
 
 		if (!$mode)
 		{
@@ -86,24 +83,23 @@ class Get extends \ICanBoogie\Operation
 		}
 		else if ($mode == 'popup')
 		{
-			$rc = (string) new Popover
-			(
-				array
-				(
-					Popover::ACTIONS => array
-					(
-						new Button('Cancel', array('data-action' => 'cancel')),
-						new Button('Remove', array('data-action' => 'remove', 'class' => 'btn-danger')),
-						new Button('Use', array('data-action' => 'use', 'class' => 'btn-primary'))
-					),
+			$rc = (string) new Popover([
 
-					Popover::FIT_CONTENT => true,
+				Popover::ACTIONS => [
 
-					Popover::INNER_HTML => $el,
+					new Button('Cancel', [ 'data-action' => 'cancel' ]),
+					new Button('Remove', [ 'data-action' => 'remove', 'class' => 'btn-danger' ]),
+					new Button('Use', [ 'data-action' => 'use', 'class' => 'btn-primary' ])
 
-					'class' => 'popover popover--' . \ICanBoogie\normalize($this->request['class']) . ' contrast'
-				)
-			);
+				],
+
+				Popover::FIT_CONTENT => true,
+
+				Popover::INNER_HTML => $el,
+
+				'class' => 'popover popover--' . \ICanBoogie\normalize($this->request['class']) . ' contrast'
+
+			]);
 		}
 		else if ($mode == 'results')
 		{
@@ -111,7 +107,7 @@ class Get extends \ICanBoogie\Operation
 		}
 		else if ($mode)
 		{
-			throw new \Exception(\ICanBoogie\format('Unknown widget mode: %mode', array('%mode' => $mode)));
+			throw new \Exception(\ICanBoogie\format('Unknown widget mode: %mode', [ '%mode' => $mode ]));
 		}
 
 		$this->response['assets'] = $document->assets;

@@ -49,7 +49,7 @@ class ActionbarTitle extends Element
 			$route = null;
 		}
 
-		if (!$route || !$route->module)
+		if (!$route || empty($route->module))
 		{
 			throw new \Brickrouge\ElementIsEmpty;
 		}

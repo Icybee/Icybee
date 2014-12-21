@@ -43,41 +43,12 @@ class Column extends \ICanBoogie\Object implements ColumnInterface
 
 	public $manager;
 
-	public function __construct(\Icybee\ManageBlock $manager, $id, array $options=array())
+	public function __construct(\Icybee\ManageBlock $manager, $id, array $options=[])
 	{
-		// TODO-20130627
-
-		if (method_exists($this, 'update_filters'))
-		{
-			throw new \Exception("The <q>update_filters()</q> method is deprecated, please use the <q>alter_filters()</q> method.");
-		}
-
-		// /
-
 		$this->manager = $manager;
 		$this->id = $id;
 
 		$this->modify_options($options + $this->resolve_default_values());
-	}
-
-	// TODO-20130627: remove this compat method
-	protected function set_filtering()
-	{
-		throw new \InvalidArgumentException("The <q>filtering</q> property is deprecated. Use <q>is_filtering</q> or <q>filter_value</q>");
-	}
-
-	protected function set_label($value)
-	{
-		trigger_error("The <q>label</q> property is deprecated, use <q>title</q> instead.");
-
-		$this->title = $value;
-	}
-
-	protected function get_label()
-	{
-		trigger_error("The <q>label</q> property is deprecated, use <q>title</q> instead.");
-
-		return $this->title;
 	}
 
 	/**
@@ -109,7 +80,7 @@ class Column extends \ICanBoogie\Object implements ColumnInterface
 	 *
 	 * @return string
 	 */
-	public function t($native, array $args=array(), array $options=array())
+	public function t($native, array $args=[], array $options=[])
 	{
 		return $this->manager->t($native, $args, $options);
 	}
@@ -127,21 +98,15 @@ class Column extends \ICanBoogie\Object implements ColumnInterface
 
 		$orderable = true;
 		$default_order = 1;
-		$discreet = false;
 
 		if ($field)
 		{
 			if (($field['type'] == 'integer' && (!empty($field['primary']) || !empty($field['indexed']))) || $field['type'] == 'boolean')
 			{
 				$orderable = false;
-
-				if (!empty($field['indexed']))
-				{
-					$discreet = true;
-				}
 			}
 
-			if (in_array($field['type'], array('date', 'datetime', 'timestamp')))
+			if (in_array($field['type'], [ 'date', 'datetime', 'timestamp' ]))
 			{
 				$default_order = -1;
 			}
@@ -151,13 +116,14 @@ class Column extends \ICanBoogie\Object implements ColumnInterface
 			$orderable = false;
 		}
 
-		return array
-		(
+		return  [
+
 			'title' => $id,
 			'reset' => "?$id=",
 			'orderable' => $orderable,
 			'default_order' => $default_order
-		);
+
+		];
 	}
 
 	/**
@@ -169,29 +135,38 @@ class Column extends \ICanBoogie\Object implements ColumnInterface
 	 */
 	public function modify_options(array $options)
 	{
+		static $valid_options = [
+
+			'label',
+			'title',
+			'class',
+			'filters',
+			'reset',
+			'orderable',
+			'order',
+			'default_order',
+			'discreet',
+			'filtering',
+			'header_renderer',
+			'cell_renderer'
+
+		];
+
 		foreach ($options as $option => $value)
 		{
-			switch ($option)
+			if (!in_array($option, $valid_options))
 			{
-				case 'label':
-				case 'title':
-				case 'class':
-				case 'filters':
-				case 'reset':
-				case 'orderable':
-				case 'order':
-				case 'default_order':
-				case 'discreet':
-				case 'filtering':
-				case 'header_renderer':
-				case 'cell_renderer':
-					$this->$option = $value;
-					break;
+				\ICanBoogie\log_error("Invalid option: %option for column %column.", [
 
-				case 'hook':
-// 					var_dump($value);
-					break;
+					'option' => $option,
+					'column' => $this->manager->module . '.' . $this->id
+
+				]);
+
+				continue;
 			}
+
+			$this->$option = $value;
 		}
 
 		return $this;
@@ -209,7 +184,7 @@ class Column extends \ICanBoogie\Object implements ColumnInterface
 			return;
 		}
 
-		$options = array();
+		$options = [];
 
 		foreach ($this->filters['options'] as $qs => $label)
 		{
@@ -238,27 +213,21 @@ class Column extends \ICanBoogie\Object implements ColumnInterface
 
 		if ($this->is_filtering)
 		{
-			$options = array_merge
-			(
-				array
-				(
-					$this->reset => $this->t('Display all'),
-					false
-				),
+			$options = array_merge([
 
-				$options
-			);
+				$this->reset => $this->t('Display all'),
+				false
+
+			], $options);
 		}
 
-		$menu = new DropdownMenu
-		(
-			array
-			(
-				DropdownMenu::OPTIONS => $options,
+		$menu = new DropdownMenu([
 
-				'value' => $this->filter_value
-			)
-		);
+			DropdownMenu::OPTIONS => $options,
+
+			'value' => $this->filter_value
+
+		]);
 
 		return <<<EOT
 <div class="dropdown navbar"><a href="#" data-toggle="dropdown"><i class="icon-cog"></i></a>$menu</div>
@@ -317,14 +286,13 @@ class HeaderRenderer
 	public function __invoke()
 	{
 		$column = $this->column;
-		$module = $this->column->manager->module;
 		$id = $column->id;
 		$title = $column->title;
 		$t = $this->column->manager->t;
 
 		if ($title)
 		{
-			$title = $t($id, array(), array('scope' => 'column', 'default' => $title));
+			$title = $t($id, [], [ 'scope' => 'column', 'default' => $title ]);
 		}
 
 		if ($column->is_filtering)
@@ -342,17 +310,15 @@ EOT;
 			$order = $column->order;
 			$order_reverse = ($order === null) ? $column->default_order : -$order;
 
-			return new Element
-			(
-				'a', array
-				(
-					Element::INNER_HTML => '<span class="title">' . $title . '</span>',
+			return new Element('a', [
 
-					'title' => $t('Sort by: :identifier', array(':identifier' => $title)),
-					'href' => "?order=$id:" . ($order_reverse < 0 ? 'desc' : 'asc'),
-					'class' => $order ? ($order < 0 ? 'desc' : 'asc') : null
-				)
-			);
+				Element::INNER_HTML => '<span class="title">' . $title . '</span>',
+
+				'title' => $t('Sort by: :identifier', [ ':identifier' => $title ]),
+				'href' => "?order=$id:" . ($order_reverse < 0 ? 'desc' : 'asc'),
+				'class' => $order ? ($order < 0 ? 'desc' : 'asc') : null
+
+			]);
 		}
 
 		return $title;
@@ -376,7 +342,7 @@ class CellRenderer
 		return \Brickrouge\escape($record->$property);
 	}
 
-	public function t($str, array $args=array(), array $options=array())
+	public function t($str, array $args=[], array $options=[])
 	{
 		return $this->column->t($str, $args, $options);
 	}

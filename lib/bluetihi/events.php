@@ -30,6 +30,6 @@ class LoadedNodesEvent extends \ICanBoogie\Event
 	 */
 	public function __construct(\BlueTihi\Context $target, array $nodes)
 	{
-		parent::__construct($target, 'loaded_nodes', array('nodes' => $nodes));
+		parent::__construct($target, 'loaded_nodes', [ 'nodes' => $nodes ]);
 	}
 }

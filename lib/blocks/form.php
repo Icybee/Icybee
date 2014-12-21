@@ -61,7 +61,7 @@ abstract class FormBlock extends \ICanBoogie\Object
 	 * @param Module $module
 	 * @param array $attributes
 	 */
-	public function __construct(Module $module, array $attributes=array())
+	public function __construct(Module $module, array $attributes=[])
 	{
 		$this->module = $module;
 		$this->initial_attributes = $attributes;
@@ -108,9 +108,9 @@ abstract class FormBlock extends \ICanBoogie\Object
 				continue;
 			}
 
-			call_user_func(array($this, 'fire_before_' . $method_name), $params);
+			call_user_func([ $this, 'fire_before_' . $method_name ], $params);
 			$value = $this->$method_name($value, $params);
-			call_user_func(array($this, 'fire_' . $method_name), $params);
+			call_user_func([ $this, 'fire_' . $method_name ], $params);
 		}
 
 		return $params;
@@ -146,26 +146,23 @@ abstract class FormBlock extends \ICanBoogie\Object
 		$this->actions;
 		$actions = &$this->actions;
 
-		$params = $this->alter
-		(
-			array
-			(
-				'module' => $this->module,
-				'attributes' => &$attributes,
-				'actions' => &$actions,
-				'children' => &$children,
-				'values' => &$values
-			)
-		);
+		$params = $this->alter([
 
-		$attributes = array
-		(
+			'module' => $this->module,
+			'attributes' => &$attributes,
+			'actions' => &$actions,
+			'children' => &$children,
+			'values' => &$values
+
+		]);
+
+		$attributes = [
+
 			Form::ACTIONS => &$actions,
 			Form::CHILDREN => &$children,
 			Form::VALUES => &$values
-		)
 
-		+ $params['attributes'];
+		] + $params['attributes'];
 
 		$this->alter_element($this->element, $params);
 
@@ -183,8 +180,6 @@ abstract class FormBlock extends \ICanBoogie\Object
 	{
 		try
 		{
-// 			$html = (string) $this->render();
-
 			$this->render();
 
 			I18n::push_scope($this->module->flat_id . '.' . \ICanBoogie\underscore(basename(strtr(get_class($this), '\\', '/'))));
@@ -225,37 +220,34 @@ abstract class FormBlock extends \ICanBoogie\Object
 	{
 		$module = $this->module;
 
-		return \ICanBoogie\array_merge_recursive
-		(
-			$this->initial_attributes, array
-			(
-				Form::HIDDENS => array
-				(
-					Operation::DESTINATION => $module->id
-				),
+		return \ICanBoogie\array_merge_recursive($this->initial_attributes, [
 
-				Form::RENDERER => new \Brickrouge\Renderer\Simple
-				(
-					array
-					(
-						\Brickrouge\Renderer\Simple::GROUP_CLASS => 'Icybee\Element\Group'
-					)
-				),
+			Form::HIDDENS => [
 
-				Element::GROUPS => array
-				(
-					'primary' => array
-					(
+				Operation::DESTINATION => $module->id
 
-					)
-				),
+			],
 
-				'id' => 'editor',
-				'action' => '',
-				'class' => 'form-primary edit',
-				'name' => (string) $module
-			)
-		);
+			Form::RENDERER => new \Brickrouge\Renderer\Group([
+
+				\Brickrouge\Renderer\Group::GROUP_CLASS => 'Icybee\Element\Group'
+
+			]),
+
+			Element::GROUPS => [
+
+				'primary' => [
+
+				]
+
+			],
+
+			'id' => 'editor',
+			'action' => '',
+			'class' => 'form-primary edit',
+			'name' => (string) $module
+
+		]);
 	}
 
 	/**
@@ -307,7 +299,7 @@ abstract class FormBlock extends \ICanBoogie\Object
 	 */
 	protected function lazy_get_values()
 	{
-		return isset($this->initial_attributes[Form::VALUES]) ? $this->initial_attributes[Form::VALUES] : array();
+		return isset($this->initial_attributes[Form::VALUES]) ? $this->initial_attributes[Form::VALUES] : [];
 	}
 
 	/**
@@ -359,7 +351,9 @@ abstract class FormBlock extends \ICanBoogie\Object
 	 */
 	protected function lazy_get_children()
 	{
-		return isset($this->initial_attributes[Element::CHILDREN]) ? $this->initial_attributes[Element::CHILDREN] : array();
+		return isset($this->initial_attributes[Element::CHILDREN])
+			? $this->initial_attributes[Element::CHILDREN]
+			: [];
 	}
 
 	/**
@@ -411,18 +405,16 @@ abstract class FormBlock extends \ICanBoogie\Object
 	 */
 	protected function lazy_get_actions()
 	{
-		return array
-		(
-			'primary' => new Button
-			(
-				'Send', array
-				(
-					'class' => 'btn-primary',
-					'type' => 'submit',
-					'name' => false
-				)
-			)
-		);
+		return [
+
+			'primary' => new Button('Send', [
+
+				'class' => 'btn-primary',
+				'type' => 'submit',
+				'name' => false
+
+			])
+		];
 	}
 
 	/**

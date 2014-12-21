@@ -1,6 +1,7 @@
 <?php
 
-return array
-(
+return [
+
 	'Search' => 'Traži'
-);
+
+];

@@ -56,58 +56,55 @@ class DeleteBlock extends Form
 	 * @param array $attributes
 	 * @param array $params Index 0 hold the key of the record to delete.
 	 */
-	public function __construct(Module $module, array $attributes=array(), array $params=array())
+	public function __construct(Module $module, array $attributes=[], array $params=[])
 	{
 		$this->module = $module;
 		$this->key = current($params);
 
-		parent::__construct
-		(
-			$attributes + array
-			(
-				Form::HIDDENS => array
-				(
-					Operation::DESTINATION => $module->id,
-					Operation::NAME => Module::OPERATION_DELETE,
-					Operation::KEY => $this->key,
+		parent::__construct($attributes + [
 
-					'redirect_to' => \ICanBoogie\Routing\contextualize("/admin/{$module->id}")
-				),
+			Form::HIDDENS => [
 
-				self::ACTIONS => array
-				(
-					new Button
-					(
-						'Delete', array
-						(
-							'class' => 'btn-primary btn-danger',
-							'type' => 'submit'
-						)
-					)
-				),
+				Operation::DESTINATION => $module->id,
+				Operation::NAME => Module::OPERATION_DELETE,
+				Operation::KEY => $this->key,
 
-				self::CHILDREN => array
-				(
-					$this->title_element,
-					$this->question_element,
-					$this->preview_element,
-					$this->dependencies_element
-				)
-			)
-		);
+				'redirect_to' => \ICanBoogie\Routing\contextualize("/admin/{$module->id}")
+
+			],
+
+			self::ACTIONS => [
+
+				new Button('Delete', [
+
+					'class' => 'btn-primary btn-danger',
+					'type' => 'submit'
+
+				])
+			],
+
+			self::CHILDREN => [
+
+				$this->title_element,
+				$this->question_element,
+				$this->preview_element,
+				$this->dependencies_element
+
+			]
+		]);
 	}
 
 	public function __toString()
 	{
 		try
 		{
-			$record = $this->record;
+			$this->record;
 		}
 		catch (\Exception $e)
 		{
 			try
 			{
-				$message = I18n\t('Unknown record id: %key', array('%key' => $this->key));
+				$message = I18n\t('Unknown record id: %key', [ '%key' => $this->key ]);
 
 				return <<<EOT
 <div class="block-alert block--delete">
@@ -142,7 +139,7 @@ EOT;
 	 */
 	protected function get_title_element()
 	{
-		return new Element('h1', array(Element::INNER_HTML => \Brickrouge\escape($this->title), 'class' => 'block-title'));
+		return new Element('h1', [ Element::INNER_HTML => \Brickrouge\escape($this->title), 'class' => 'block-title' ]);
 	}
 
 	/**
@@ -180,10 +177,10 @@ EOT;
 		}
 		else
 		{
-			$record_name = I18n\t('record_name', array(), array('default' => 'this record'));
+			$record_name = I18n\t('record_name', [], [ 'default' => 'this record' ]);
 		}
 
-		return I18n\t('Are you sure you want to delete :name?', array('name' => $record_name));
+		return I18n\t('Are you sure you want to delete :name?', [ 'name' => $record_name ]);
 	}
 
 	/**
@@ -193,7 +190,7 @@ EOT;
 	 */
 	protected function get_question_element()
 	{
-		return new Element('p', array(Element::INNER_HTML => $this->question));
+		return new Element('p', [ Element::INNER_HTML => $this->question ]);
 	}
 
 	/**
@@ -225,7 +222,7 @@ EOT;
 	 */
 	protected function get_preview_element()
 	{
-		return $this->preview ? new Element('div', array(Element::INNER_HTML => $this->preview, 'class' => 'preview')) : null;
+		return $this->preview ? new Element('div', [ Element::INNER_HTML => $this->preview, 'class' => 'preview' ]) : null;
 	}
 
 	/**
@@ -244,7 +241,7 @@ EOT;
 			$flat_id = strtr($module_id, '.', '_');
 
 			$html .= '<li>';
-			$html .= '<strong>' . I18n\t(count($by_module) == 1 ? 'one' : 'other', array(), array('scope' => "$flat_id.name")) . '</strong>';
+			$html .= '<strong>' . I18n\t(count($by_module) == 1 ? 'one' : 'other', [], [ 'scope' => "$flat_id.name" ]) . '</strong>';
 			$html .= '<ul>';
 
 			foreach ($by_module as $key => $dependency)
@@ -277,7 +274,7 @@ EOT;
 	protected function get_dependencies()
 	{
 		$record = $this->record;
-		$dependencies = array();
+		$dependencies = [];
 
 		new \ICanBoogie\ActiveRecord\CollectDependenciesEvent($record, $dependencies);
 
@@ -291,7 +288,19 @@ EOT;
 	 */
 	protected function get_dependencies_element()
 	{
-		return $this->dependencies ? new Element('div', array(Element::INNER_HTML => $this->dependencies, 'class' => 'dependencies')) : null;
+		if (!$this->dependencies)
+		{
+			return;
+
+		}
+
+		return new Element('div', [
+
+			Element::INNER_HTML => $this->dependencies,
+
+			'class' => 'dependencies'
+
+		]);
 	}
 
 	/**
@@ -355,6 +364,6 @@ class CollectDependenciesEvent extends \ICanBoogie\Event
 			$edit_url = \ICanBoogie\Routing\contextualize("/admin/$module_id/$key/edit");
 		}
 
-		$this->dependencies[$module_id][$key] = array('title' => $title, 'edit_url' => $edit_url, 'view_url' => $view_url);
+		$this->dependencies[$module_id][$key] = [ 'title' => $title, 'edit_url' => $edit_url, 'view_url' => $view_url ];
 	}
 }

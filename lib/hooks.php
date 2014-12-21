@@ -13,14 +13,14 @@ namespace Icybee;
 
 use ICanBoogie\Debug;
 use ICanBoogie\Event;
-use ICanBoogie\Events;
 use ICanBoogie\HTTP\Dispatcher;
 use ICanBoogie\HTTP\HTTPError;
 use ICanBoogie\HTTP\Request;
-use ICanBoogie\HTTP\Response;
 use ICanBoogie\HTTP\RedirectResponse;
 use ICanBoogie\HTTP\WeightedDispatcher;
+use ICanBoogie\Module\Descriptor;
 use ICanBoogie\Operation;
+use ICanBoogie\Routing;
 
 use Brickrouge\Alert;
 use Brickrouge\Document;
@@ -45,9 +45,8 @@ class Hooks
 		 */
 		$dispatcher['admin:categories'] = new WeightedDispatcher(function(Request $request)
 		{
-			global $core;
-
-			$path = \ICanBoogie\normalize_url_path(\ICanBoogie\Routing\decontextualize($request->path));
+			$app = \ICanBoogie\app();
+			$path = \ICanBoogie\normalize_url_path(Routing\decontextualize($request->path));
 
 			if (strpos($path, '/admin/') !== 0)
 			{
@@ -58,13 +57,14 @@ class Hooks
 
 			if ($category)
 			{
-				$user = $core->user;
-				$routes = $core->routes;
+				$user = $app->user;
+				$routes = $app->routes;
 
-				foreach ($core->modules->descriptors as $module_id => $descriptor)
+				foreach ($app->modules->descriptors as $module_id => $descriptor)
 				{
-					if (!isset($core->modules[$module_id]) || !$user->has_permission(Module::PERMISSION_ACCESS, $module_id)
-					|| $descriptor[Module::T_CATEGORY] != $category)
+					if (!isset($app->modules[$module_id])
+					|| !$user->has_permission(Module::PERMISSION_ACCESS, $module_id)
+					|| $descriptor[Descriptor::CATEGORY] != $category)
 					{
 						continue;
 					}
@@ -83,19 +83,17 @@ class Hooks
 
 					$route = $routes[$route_id];
 
-					return new RedirectResponse
-					(
-						\ICanBoogie\Routing\contextualize($route->pattern), 302, array
-						(
-							'Icybee-Redirected-By' => __FILE__ . '::' . __LINE__
-						)
-					);
+					return new RedirectResponse(Routing\contextualize($route->pattern), 302, [
+
+						'Icybee-Redirected-By' => __FILE__ . '::' . __LINE__
+
+					]);
 				}
 			}
 		}, 'before:pages');
 	}
 
-	static public function before_routing_collect_routes(\ICanBoogie\Routing\BeforeCollectRoutesEvent $event)
+	static public function before_routing_collect_routes(Routing\BeforeCollectRoutesEvent $event)
 	{
 		static $magic = [
 
@@ -142,7 +140,7 @@ class Hooks
 				{
 					case '!admin:manage':
 					{
-						$id = "admin:$module_id/manage"; // TODO-20120828: renamed this as "admin:{module_id}"
+						$id = "admin:$module_id/manage"; // TODO-20120828: rename this as "admin:{module_id}:index"
 
 						$route += [
 
@@ -231,20 +229,19 @@ class Hooks
 	/**
 	 * This is the dispatcher for the QueryOperation operation.
 	 *
-	 * @param array $params
+	 * @param Request $request
 	 *
 	 * @return Operation
 	 */
 	static public function dispatch_query_operation(Request $request)
 	{
-		global $core;
-
+		$app = \ICanBoogie\app();
 		$class = 'Icybee\Operation\Module\QueryOperation';
-		$try_module = $module = $core->modules[$request['module']];
+		$try_module = $module = $app->modules[$request['module']];
 
 		while ($try_module)
 		{
-			$try = Operation::format_class_name($try_module->descriptor[Module::T_NAMESPACE], 'QueryOperation');
+			$try = Operation::format_class_name($try_module->descriptor[Descriptor::NS], 'QueryOperation');
 
 			if (class_exists($try, true))
 			{
@@ -260,15 +257,14 @@ class Hooks
 	}
 
 	/**
-	 * This callback is used to delete all the locks set by the user while editing records.
+	 * Delete locks set by the user while editing records.
 	 *
-	 * @param Event $event
+	 * @param Operation\BeforeProcessEvent $event
 	 */
-	static public function before_user_logout(Event $event)
+	static public function before_user_logout(Operation\BeforeProcessEvent $event)
 	{
-		global $core;
-
-		$uid = $core->user_id;
+		$app = \ICanBoogie\app();
+		$uid = $app->user_id;
 
 		if (!$uid)
 		{
@@ -277,9 +273,7 @@ class Hooks
 
 		try
 		{
-			$registry = $core->registry;
-
-			$names = $registry
+			$app->registry
 			->where('name LIKE "activerecord_locks.%" AND value LIKE ?', '{"uid":"' . $uid . '"%')
 			->delete();
 		}
@@ -300,13 +294,12 @@ class Hooks
 	 *
 	 *     $core->session[operation_save_mode][<module_id>]
 	 *
-	 * @param \ICanBoogie\Operation\BeforeControlEvent $event
+	 * @param Operation\BeforeControlEvent $event
 	 * @param \ICanBoogie\SaveOperation $target
 	 */
-	static public function before_save_operation_control(\ICanBoogie\Operation\BeforeControlEvent $event, \ICanBoogie\SaveOperation $target)
+	static public function before_save_operation_control(Operation\BeforeControlEvent $event, \ICanBoogie\SaveOperation $target)
 	{
-		global $core;
-
+		$app = \ICanBoogie\app();
 		$mode = $event->request[OPERATION_SAVE_MODE];
 
 		if (!$mode)
@@ -314,11 +307,9 @@ class Hooks
 			return;
 		}
 
-		$core->session->operation_save_mode[$target->module->id] = $mode;
+		$app->session->operation_save_mode[$target->module->id] = $mode;
 
-		$eh = $core->events->attach(function(\ICanBoogie\Operation\ProcessEvent $event, \ICanBoogie\SaveOperation $operation) use($mode, $target, &$eh) {
-
-			$eh->detach();
+		$app->events->once(function(Operation\ProcessEvent $event, \ICanBoogie\SaveOperation $operation) use($mode, $target) {
 
 			if ($operation != $target || $event->request->uri != $event->response->location)
 			{
@@ -330,19 +321,19 @@ class Hooks
 			switch ($mode)
 			{
 				case OPERATION_SAVE_MODE_CONTINUE:
-				{
+
 					$location .= '/' . $event->rc['key'] . '/edit';
-				}
-				break;
+
+					break;
 
 				case OPERATION_SAVE_MODE_NEW:
-				{
+
 					$location .= '/new';
-				}
-				break;
+
+					break;
 
 				case OPERATION_SAVE_MODE_DISPLAY:
-				{
+
 					try
 					{
 						$url = $target->record->url;
@@ -356,13 +347,13 @@ class Hooks
 					{
 						return;
 					}
-				}
-				break;
+
+					break;
 			}
 
 			if ($mode != OPERATION_SAVE_MODE_DISPLAY)
 			{
-				$location = \ICanBoogie\Routing\contextualize($location);
+				$location = Routing\contextualize($location);
 			}
 
 			$event->response->location = $location;
@@ -378,9 +369,7 @@ class Hooks
 	 */
 	static public function before_page_renderer_render()
 	{
-		global $core;
-
-		$core->events->attach(function(\BlueTihi\Context\LoadedNodesEvent $event, \BlueTihi\Context $target) {
+		\ICanBoogie\app()->events->attach(function(\BlueTihi\Context\LoadedNodesEvent $event, \BlueTihi\Context $target) {
 
 			$nodes = &self::$page_controller_loaded_nodes;
 
@@ -466,36 +455,32 @@ class Hooks
 	 */
 	static public function markup_alerts(array $args, $engine, $template)
 	{
-		global $core;
-
 		$key = '<!-- alert-markup-placeholder-' . uniqid() . ' -->';
 
-		$core->events->attach
-		(
-			function(PageRenderer\RenderEvent $event, PageRenderer $target) use($engine, $template, $key)
+		\ICanBoogie\app()->events->attach(function(PageRenderer\RenderEvent $event, PageRenderer $target) use($engine, $template, $key) {
+
+			$types = [ 'success', 'info', 'error' ];
+
+			if (Debug::$mode == Debug::MODE_DEV)
 			{
-				$types = array('success', 'info', 'error');
-
-				if (Debug::$mode == Debug::MODE_DEV)
-				{
-					$types[] = 'debug';
-				}
-
-				$alerts = '';
-
-				foreach ($types as $type)
-				{
-					$alerts .= new Alert(Debug::fetch_messages($type), array(Alert::CONTEXT => $type));
-				}
-
-				if ($template)
-				{
-					$alerts = $engine($template, $alerts);
-				}
-
-				$event->html = str_replace($key, $alerts, $event->html);
+				$types[] = 'debug';
 			}
-		);
+
+			$alerts = '';
+
+			foreach ($types as $type)
+			{
+				$alerts .= new Alert(Debug::fetch_messages($type), [ Alert::CONTEXT => $type ]);
+			}
+
+			if ($template)
+			{
+				$alerts = $engine($template, $alerts);
+			}
+
+			$event->html = str_replace($key, $alerts, $event->html);
+
+		});
 
 		return $key;
 	}
@@ -521,9 +506,7 @@ class Hooks
 	 */
 	static public function markup_body(array $args, $engine, $template)
 	{
-		global $core;
-
-		return '<body class="' . trim($args['class'] . ' ' . $core->document->css_class) . '">' . $engine($template) . '</body>';
+		return '<body class="' . trim($args['class'] . ' ' . \ICanBoogie\app()->document->css_class) . '">' . $engine($template) . '</body>';
 	}
 
 	/*
@@ -537,8 +520,7 @@ class Hooks
 	 */
 	static public function exception_handler(\Exception $exception)
 	{
-		global $core;
-
+		$app = \ICanBoogie\app();
 		$code = $exception->getCode() ?: 500;
 		$message = $exception->getMessage();
 		$class = get_class($exception); // The $class variable is required by the template
@@ -570,7 +552,7 @@ class Hooks
 
 		if (!headers_sent() && PHP_SAPI != 'cli')
 		{
-			$site = isset($core->site) ? $core->site : null;
+			$site = isset($app->site) ? $app->site : null;
 
 			if (class_exists('Brickrouge\Document'))
 			{

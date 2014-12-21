@@ -26,12 +26,11 @@ class QueryOperation extends \ICanBoogie\Operation
 
 	protected function get_controls()
 	{
-		return array
-		(
-			self::CONTROL_AUTHENTICATION => true
-		)
+		return [
 
-		+ parent::get_controls();
+			self::CONTROL_AUTHENTICATION => true
+
+		] + parent::get_controls();
 	}
 
 	public function __invoke(Request $request)
@@ -48,8 +47,6 @@ class QueryOperation extends \ICanBoogie\Operation
 
 	protected function validate(\ICanboogie\Errors $errors)
 	{
-		global $core;
-
 		$request = $this->request;
 
 		if (!$request['keys'])
@@ -57,7 +54,7 @@ class QueryOperation extends \ICanBoogie\Operation
 			$errors['keys'] = $errors->format("The parameter %param is empty.", [ 'param' => 'keys' ]);
 		}
 
-		$this->module = $core->modules[$request['module']];
+		$this->module = $this->app->modules[$request['module']];
 		$this->callback = $callback = 'query_' . $request['operation'];
 
 		if (!$this->has_method($callback))
@@ -70,8 +67,6 @@ class QueryOperation extends \ICanBoogie\Operation
 
 	protected function process()
 	{
-		global $core;
-
 		$keys = (array) $this->request['keys'];
 		$count = count($keys);
 		$options = [
@@ -95,7 +90,7 @@ class QueryOperation extends \ICanBoogie\Operation
 		$element['data-destination'] = $this->module->id;
 		$element = (string) $element;
 
-		$this->response['assets'] = $core->document->assets;
+		$this->response['assets'] = $this->app->document->assets;
 		$this->response['options'] = $options;
 
 		return $element;
@@ -129,15 +124,6 @@ class QueryOperation extends \ICanBoogie\Operation
 
 	protected function query_delete()
 	{
-		$keys = $this->request['keys'];
-		$count = count($keys);
-
-		return array
-		(
-			'params' => array
-			(
-				'keys' => $keys
-			)
-		);
+		return [ 'params' => [ 'keys' => $this->request['keys'] ] ];
 	}
 }

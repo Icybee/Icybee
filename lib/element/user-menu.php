@@ -26,7 +26,7 @@ use Icybee\Modules\Users\Roles\Role;
  */
 class UserMenu extends Element
 {
-	public function __construct(array $attributes=array())
+	public function __construct(array $attributes=[])
 	{
 		parent::__construct('div', $attributes);
 	}
@@ -72,35 +72,32 @@ class UserMenu extends Element
 
 		$username = new A($user->name, \ICanBoogie\Routing\contextualize('/admin/profile'));
 
-		$options = array
-		(
+		$options = [
+
 			\ICanBoogie\Routing\contextualize('/admin/profile') => 'Profile',
 			false,
 			Operation::encode('users/logout') => 'Logout'
-		);
 
-		array_walk
-		(
-			$options, function(&$v, $k)
+		];
+
+		array_walk($options, function(&$v, $k) {
+
+			if (!is_string($v))
 			{
-				if (!is_string($v))
-				{
-					return;
-				}
-
-				$v = new A($v, $k);
+				return;
 			}
-		);
 
-		$menu = new DropdownMenu
-		(
-			array
-			(
-				DropdownMenu::OPTIONS => $options,
+			$v = new A($v, $k);
 
-				'value' => $core->request->path
-			)
-		);
+		});
+
+		$menu = new DropdownMenu([
+
+			DropdownMenu::OPTIONS => $options,
+
+			'value' => $core->request->path
+
+		]);
 
 		return <<<EOT
 $username

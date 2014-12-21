@@ -20,17 +20,15 @@ use Icybee\ManageBlock;
  */
 class DateTimeColumn extends Column
 {
-	public function __construct(\Icybee\ManageBlock $manager, $id, array $options=array())
+	public function __construct(\Icybee\ManageBlock $manager, $id, array $options=[])
 	{
-		parent::__construct
-		(
-			$manager, $id, $options + array
-			(
-				'class' => 'date',
-				'default_order' => -1,
-				'discreet' => true
-			)
-		);
+		parent::__construct($manager, $id, $options + [
+
+			'class' => 'date',
+			'default_order' => -1,
+			'discreet' => true
+
+		]);
 	}
 
 	public function alter_query_with_filter(Query $query, $filter_value)
@@ -39,21 +37,21 @@ class DateTimeColumn extends Column
 		{
 			$field = $this->id;
 
-			list($year, $month, $day) = explode('-', $filter_value) + array(0, 0, 0);
+			list($year, $month, $day) = explode('-', $filter_value) + [ 0, 0, 0 ];
 
 			if ($year)
 			{
-				$query->where("YEAR(`$field`) = ?", (int) $year);
+				$query->and("YEAR(`$field`) = ?", (int) $year);
 			}
 
 			if ($month)
 			{
-				$query->where("MONTH(`$field`) = ?", (int) $month);
+				$query->and("MONTH(`$field`) = ?", (int) $month);
 			}
 
 			if ($day)
 			{
-				$query->where("DAY(`$field`) = ?", (int) $day);
+				$query->and("DAY(`$field`) = ?", (int) $day);
 			}
 		}
 
@@ -106,7 +104,7 @@ class DateTimeColumn extends Column
 	/**
 	 * Renders cell value as time.
 	 *
-	 * @param \ICanBoogie\ActiveRecord $record
+	 * @param DateTime $date
 	 * @param string $property
 	 *
 	 * @return string
@@ -119,15 +117,13 @@ class DateTimeColumn extends Column
 	/**
 	 * Renders cell value as date.
 	 *
-	 * @param \ICanBoogie\ActiveRecord $record
+	 * @param DateTime $date
 	 * @param string $property
 	 *
 	 * @return string
 	 */
 	protected function render_cell_date($date, $property)
 	{
-		$tag = $property;
-
 		$year = $date->year;
 		$month = $date->month;
 		$day = $date->day;
@@ -141,12 +137,13 @@ class DateTimeColumn extends Column
 			$filter = $this->manager->options->filters[$property]; // TODO-20130621: provide a get_filter_value() method
 		}
 
-		$parts = array
-		(
-			array($year, $year),
-			array($date->format('m'), $date->format('Y-m')),
-			array($date->format('d'), $date->as_date)
-		);
+		$parts = [
+
+			[ $year, $year ],
+			[ $date->format('m'), $date->format('Y-m') ],
+			[ $date->format('d'), $date->as_date ]
+
+		];
 
 		$today = new DateTime('now', 'utc');
 		$today_year = $today->year;
@@ -155,7 +152,6 @@ class DateTimeColumn extends Column
 		$today_formatted = $today->as_date;
 
 		$select = $parts[2][1];
-		$diff_days = $day - $today_day;
 
 		if ($year == $today_year && $month == $today_month && $day <= $today_day && $day > $today_day - 6)
 		{
@@ -168,7 +164,7 @@ class DateTimeColumn extends Column
 			}
 			else
 			{
-				$ttl = $this->manager->t('Display only: :identifier', array(':identifier' => $label));
+				$ttl = $this->manager->t('Display only: :identifier', [ ':identifier' => $label ]);
 
 				$rc = <<<EOT
 <a href="?$property=$select" title="$ttl" class="filter">$label</a>
@@ -189,7 +185,7 @@ EOT;
 				}
 				else
 				{
-					$ttl = $this->manager->t('Display only: :identifier', array(':identifier' => $select));
+					$ttl = $this->manager->t('Display only: :identifier', [ ':identifier' => $select ]);
 
 					$rc .= <<<EOT
 <a class="filter" href="?$property=$select" title="$ttl">$value</a>

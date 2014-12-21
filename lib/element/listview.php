@@ -26,7 +26,7 @@ class ListView extends Element
 	 */
 	protected $columns;
 
-	public function __construct(array $attributes=array())
+	public function __construct(array $attributes=[])
 	{
 		unset($this->columns);
 
@@ -40,10 +40,11 @@ class ListView extends Element
 	 */
 	protected function alter_class_names(array $class_names)
 	{
-		return parent::alter_class_names($class_names) + array
-		(
+		return parent::alter_class_names($class_names) + [
+
 			'listview' => true
-		);
+
+		];
 	}
 
 	/**
@@ -68,7 +69,7 @@ class ListView extends Element
 			if (is_string($column))
 			{
 				$construct = $column;
-				$column = new $construct($this, $id, array());
+				$column = new $construct($this, $id, []);
 			}
 		}
 
@@ -137,7 +138,7 @@ EOT;
 		$rows = $this->columns_to_rows($rendered_cells);
 		$rendered_rows = $this->render_rows($rows);
 
-		return new Element('tbody', array(Element::CHILDREN => $rendered_rows));
+		return new Element('tbody', [ Element::CHILDREN => $rendered_rows ]);
 	}
 
 	/**
@@ -153,7 +154,7 @@ EOT;
 	 */
 	protected function render_cells(array $columns)
 	{
-		$rendered_cells = array();
+		$rendered_cells = [];
 
 		foreach ($columns as $id => $column)
 		{
@@ -223,7 +224,7 @@ EOT;
 	protected function render_rows(array $rows)
 	{
 		$columns = $this->columns;
-		$rendered_rows = array();
+		$rendered_rows = [];
 
 		foreach ($rows as $i => $cells)
 		{
@@ -239,7 +240,7 @@ EOT;
 EOT;
 			}
 
-			$rendered_rows[] = new Element('tr', array(Element::INNER_HTML => $html));
+			$rendered_rows[] = new Element('tr', [ Element::INNER_HTML => $html ]);
 		}
 
 		return $rendered_rows;
@@ -255,15 +256,16 @@ class ListViewColumn extends \ICanBoogie\Object
 	protected $options;
 	protected $listview;
 
-	public function __construct(ListView $listview, $id, array $options=array())
+	public function __construct(ListView $listview, $id, array $options=[])
 	{
 		$this->id = $id;
 		$this->listview = $listview;
-		$this->options = $options + array
-		(
+		$this->options = $options + [
+
 			'class' => null,
 			'title' => null
-		);
+
+		];
 	}
 
 	protected function get_class()

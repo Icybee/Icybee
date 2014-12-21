@@ -13,7 +13,7 @@ namespace Icybee\Element;
 
 class Group extends \Brickrouge\Group
 {
-	public function __construct(array $attributes=array())
+	public function __construct(array $attributes=[])
 	{
 		parent::__construct($attributes);
 

@@ -15,7 +15,7 @@ use ICanBoogie\Module;
 
 class Config extends \Exception
 {
-	public function __construct($message, array $params=array(), $code=500)
+	public function __construct($message, array $params=[], $code=500)
 	{
 		global $core;
 
@@ -26,11 +26,12 @@ class Config extends \Exception
 
 		if ($message instanceof Module)
 		{
-			$params += array
-			(
+			$params += [
+
 				':module_id' => (string) $message,
 				'!title' => (string) $message
-			);
+
+			];
 
 			$message = 'You need to <a href="' . $core->site->path . '/admin/:module_id/config">configure the <q>!title</q> module</a>.';
 		}

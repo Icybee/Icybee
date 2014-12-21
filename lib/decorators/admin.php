@@ -117,7 +117,7 @@ EOT;
 			return;
 		}
 
-		return new \Icybee\Element\Navigation(array('id' => 'navigation'));
+		return new \Icybee\Element\Navigation([ 'id' => 'navigation' ]);
 	}
 
 	protected function render_shortcuts()
@@ -135,8 +135,8 @@ EOT;
 		}
 		else
 		{
-			$html = new \Icybee\Element\SiteMenu(array('class' => 'pull-left'))
-			. new \Icybee\Element\UserMenu(array('class' => 'pull-right'));
+			$html = new \Icybee\Element\SiteMenu([ 'class' => 'pull-left' ])
+			. new \Icybee\Element\UserMenu([ 'class' => 'pull-right' ]);
 		}
 
 		return '<div id="quick">' . $html . '</div>';
@@ -147,7 +147,7 @@ EOT;
 		global $core;
 
 		$html = '';
-		$types = array('success', 'info', 'error');
+		$types = [ 'success', 'info', 'error' ];
 
 		if (Debug::$mode == Debug::MODE_DEV || $core->user->is_admin)
 		{
@@ -156,7 +156,7 @@ EOT;
 
 		foreach ($types as $type)
 		{
-			$html .= new Alert(Debug::fetch_messages($type), array(Alert::CONTEXT => $type));
+			$html .= new Alert(Debug::fetch_messages($type), [ Alert::CONTEXT => $type ]);
 		}
 
 		return $html;

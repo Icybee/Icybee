@@ -17,7 +17,7 @@ use Brickrouge\Element;
 
 class SiteMenu extends Element
 {
-	public function __construct(array $attributes=array())
+	public function __construct(array $attributes=[])
 	{
 		parent::__construct('div', $attributes);
 	}
@@ -36,7 +36,7 @@ class SiteMenu extends Element
 			$site_title = \ICanBoogie\escape($site->title) . '<span class="language">:' . $site->language . '</span>';
 		}
 
-		$options = array();
+		$options = [];
 
 		try
 		{
@@ -46,7 +46,7 @@ class SiteMenu extends Element
 
 			if ($restricted_sites)
 			{
-				$query->where(array('siteid' => $restricted_sites));
+				$query->where([ 'siteid' => $restricted_sites ]);
 			}
 
 			$sites = $query->all;
@@ -61,7 +61,7 @@ class SiteMenu extends Element
 
 					if (!$title)
 					{
-						$title = new Element('span', array(Element::INNER_HTML => $asite->title . '<span class="language">:' . $asite->language . '</span>'));
+						$title = new Element('span', [ Element::INNER_HTML => $asite->title . '<span class="language">:' . $asite->language . '</span>' ]);
 					}
 
 					$options[$asite->siteid] = new A($title, $asite->url . $path . '?ssc=1');
@@ -75,12 +75,13 @@ class SiteMenu extends Element
 
 		if ($options)
 		{
-			$menu = new DropdownMenu(array
-			(
+			$menu = new DropdownMenu([
+
 				DropdownMenu::OPTIONS => $options,
 
 				'value' => $site->siteid
-			));
+
+			]);
 
 			$menu_toggler = <<<EOT
 <span class="dropdown-toggle" data-toggle="dropdown"><i class="icon-home icon-white"></i> <span class="caret"></span></span>

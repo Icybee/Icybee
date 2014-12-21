@@ -50,7 +50,7 @@ class EditBlock extends FormBlock
 	 * @param array $attributes
 	 * @param array $params
 	 */
-	public function __construct(Module $module, array $attributes=array(), array $params=array())
+	public function __construct(Module $module, array $attributes=[], array $params=[])
 	{
 		$key = isset($params[0]) ? $params[0] : null;
 
@@ -64,14 +64,12 @@ class EditBlock extends FormBlock
 	 */
 	protected function alter(array $params)
 	{
-		return parent::alter
-		(
-			$params + array
-			(
-				'key' => $this->key,
-				'record' => $this->record
-			)
-		);
+		return parent::alter($params + [
+
+			'key' => $this->key,
+			'record' => $this->record
+
+		]);
 	}
 
 	/**
@@ -91,7 +89,7 @@ class EditBlock extends FormBlock
 
 			if (!$locked)
 			{
-				return new InterlockBlock($module, array(), array('lock' => $lock));
+				return new InterlockBlock($module, [], [ 'lock' => $lock ]);
 			}
 		}
 
@@ -144,7 +142,7 @@ class EditBlock extends FormBlock
 
 		if (!$key && !$this->permission)
 		{
-			throw new HTTPError(\ICanBoogie\format("You don't have permission to create records in the %id module.", array('id' => $module_id)), 403);
+			throw new HTTPError(\ICanBoogie\format("You don't have permission to create records in the %id module.", [ 'id' => $module_id ]), 403);
 		}
 
 		#
@@ -186,26 +184,25 @@ class EditBlock extends FormBlock
 	 */
 	protected function lazy_get_attributes()
 	{
-		return \ICanBoogie\array_merge_recursive
-		(
-			parent::lazy_get_attributes(), array
-			(
-				Form::HIDDENS => array
-				(
-					Operation::NAME => 'save',
-					Operation::KEY => $this->key
-				),
+		return \ICanBoogie\array_merge_recursive(parent::lazy_get_attributes(), [
 
-				Element::GROUPS => array
-				(
-					'admin' => array
-					(
-						'title' => 'Admin',
-						'weight' => 1000
-					)
-				)
-			)
-		);
+			Form::HIDDENS => [
+
+				Operation::NAME => 'save',
+				Operation::KEY => $this->key
+
+			],
+
+			Element::GROUPS => [
+
+				'admin' => [
+
+					'title' => 'Admin',
+					'weight' => 1000
+
+				]
+			]
+		]);
 	}
 
 	/**
@@ -297,18 +294,17 @@ class EditBlock extends FormBlock
 	 */
 	protected function lazy_get_actions()
 	{
-		return array
-		(
-			'primary' => new Button
-			(
-				'Save', array
-				(
-					'class' => 'btn-primary',
-					'type' => 'submit',
-					'name' => false
-				)
-			)
-		);
+		return [
+
+			'primary' => new Button('Save', [
+
+				'class' => 'btn-primary',
+				'type' => 'submit',
+				'name' => false
+
+			])
+
+		];
 	}
 
 	/**
@@ -323,17 +319,18 @@ class EditBlock extends FormBlock
 
 		$mode = isset($core->session->operation_save_mode[$module->id]) ? $core->session->operation_save_mode[$module->id] : OPERATION_SAVE_MODE_LIST;
 
-		$save_mode_options = array
-		(
-			OPERATION_SAVE_MODE_LIST => I18n\t('save_mode_list', array(), array('scope' => 'option')),
-			OPERATION_SAVE_MODE_CONTINUE => I18n\t('save_mode_continue', array(), array('scope' => 'option')),
-			OPERATION_SAVE_MODE_NEW => I18n\t('save_mode_new', array(), array('scope' => 'option')),
-		);
+		$save_mode_options =[
+
+			OPERATION_SAVE_MODE_LIST => I18n\t('save_mode_list', [ ], [ 'scope' => 'option' ]),
+			OPERATION_SAVE_MODE_CONTINUE => I18n\t('save_mode_continue', [ ], [ 'scope' => 'option' ]),
+			OPERATION_SAVE_MODE_NEW => I18n\t('save_mode_new', [ ], [ 'scope' => 'option' ]),
+
+		];
 
 		try
 		{
 			$core->views["{$module->id}/view"];
-			$save_mode_options[OPERATION_SAVE_MODE_DISPLAY] = I18n\t('save_mode_display', array(), array('scope' => 'option'));
+			$save_mode_options[OPERATION_SAVE_MODE_DISPLAY] = I18n\t('save_mode_display', [], [ 'scope' => 'option' ]);
 		}
 		catch (\Icybee\Modules\Views\Collection\ViewNotDefined $e)
 		{
@@ -343,7 +340,7 @@ class EditBlock extends FormBlock
 
 				if ($url)
 				{
-					$save_mode_options[OPERATION_SAVE_MODE_DISPLAY] = I18n\t('save_mode_display', array(), array('scope' => 'option'));
+					$save_mode_options[OPERATION_SAVE_MODE_DISPLAY] = I18n\t('save_mode_display', [], [ 'scope' => 'option' ]);
 				}
 			}
 		}
@@ -356,8 +353,8 @@ class EditBlock extends FormBlock
 		$key = $this->key;
 		$block = $this;
 
-		$core->events->attach(function(ActionbarToolbar\CollectEvent $event, ActionbarToolbar $sender) use($record, $module, $key, $save_mode_options, $mode, $block)
-		{
+		$core->events->attach(function(ActionbarToolbar\CollectEvent $event, ActionbarToolbar $sender) use($record, $module, $key, $save_mode_options, $mode, $block) {
+
 			global $core;
 
 			if ($record)
@@ -368,7 +365,7 @@ class EditBlock extends FormBlock
 
 					if ($url[0] != '#')
 					{
-						$event->buttons[] = '<a href="' . $record->url . '" class="actionbar-link">' . I18n\t('View', array(), array('scope' => 'button')) . '</a>';
+						$event->buttons[] = '<a href="' . $record->url . '" class="actionbar-link">' . I18n\t('View', [], [ 'scope' => 'button' ]) . '</a>';
 					}
 				}
 				catch (\Exception $e) {}
@@ -390,49 +387,38 @@ class EditBlock extends FormBlock
 			&& $core->user->has_permission(Module::PERMISSION_MANAGE, $module)
 			&& $core->user->has_ownership($module, $record))
 			{
-				$event->buttons[] = new A
-				(
-					I18n\t('Delete', array(), array('scope' => 'button')), \ICanBoogie\Routing\contextualize('/admin/' . $module . '/' . $key . '/delete'), array
-					(
-						'class' => 'btn btn-danger'
-					)
-				);
+				$event->buttons[] = new A(I18n\t('Delete', [], [ 'scope' => 'button' ]), \ICanBoogie\Routing\contextualize('/admin/' . $module . '/' . $key . '/delete'), [
+
+					'class' => 'btn btn-danger'
+				]);
 			}
 
 			if (isset($block->actions[OPERATION_SAVE_MODE]))
 			{
-				$event->buttons[] = new SplitButton
-				(
-					$save_mode_options[$mode], array
-					(
-						Element::OPTIONS => $save_mode_options,
+				$event->buttons[] = new SplitButton($save_mode_options[$mode], [
 
-						'value' => $mode,
-						'class' => 'btn-primary record-save-mode'
-					)
-				);
+					Element::OPTIONS => $save_mode_options,
+
+					'value' => $mode,
+					'class' => 'btn-primary record-save-mode'
+
+				]);
 			}
 		});
 
-		return array_merge
-		(
-			array
-			(
-				OPERATION_SAVE_MODE => new Element
-				(
-					Element::TYPE_RADIO_GROUP, array
-					(
-						Element::GROUP => 'save',
-						Element::OPTIONS => $save_mode_options,
+		return array_merge([
 
-						'value' => $mode,
-						'class' => 'inputs-list save-mode'
-					)
-				)
-			),
+			OPERATION_SAVE_MODE => new Element(Element::TYPE_RADIO_GROUP, [
 
-			$actions
-		);
+				Element::GROUP => 'save',
+				Element::OPTIONS => $save_mode_options,
+
+				'value' => $mode,
+				'class' => 'inputs-list save-mode'
+
+			])
+
+		], $actions);
 	}
 
 	/**

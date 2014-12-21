@@ -14,7 +14,7 @@ class Options
 	public $order_by = null;
 	public $order_direction = null;
 	public $search = null;
-	public $filters = array();
+	public $filters = [];
 
 	private $name;
 
@@ -43,7 +43,7 @@ class Options
 		$this->order_by = null;
 		$this->order_direction = null;
 		$this->search = null;
-		$this->filters = array();
+		$this->filters = [];
 
 		return $this;
 	}
@@ -65,18 +65,14 @@ class Options
 	/**
 	 * Retrieves previously used options.
 	 *
-	 * @param string $name Storage name for the options, usualy the module's id.
-	 *
 	 * @return array Previously used options, or brand new ones is none were defined.
 	 */
 	public function retrieve()
 	{
-		global $core;
-
 		$this->reset();
 
-		$name = $this->name;
-		$serialized = $core->user->metas["block.manager.{$this->name}:{$core->site_id}"];
+		$app = \ICanBoogie\app();
+		$serialized = $app->user->metas["block.manager.{$this->name}:{$app->site_id}"];
 
 		if ($serialized)
 		{
@@ -93,17 +89,13 @@ class Options
 
 	/**
 	 * Store options for later use.
-	 *
-	 * @param array $options The options to store.
-	 * @param string $name Storage name for the options, usualy the module's id.
 	 */
 	public function store()
 	{
-		global $core;
-
+		$app = \ICanBoogie\app();
 		$serialized = json_encode($this->to_array());
 
-		$core->user->metas["block.manager.{$this->name}:{$core->site_id}"] = $serialized;
+		$app->user->metas["block.manager.{$this->name}:{$app->site_id}"] = $serialized;
 
 		return $this;
 	}
@@ -148,7 +140,7 @@ class Options
 
 		if (isset($modifiers['order']))
 		{
-			list($order_by, $order_direction) = explode(':', $modifiers['order']) + array(1 => null);
+			list($order_by, $order_direction) = explode(':', $modifiers['order']) + [ 1 => null ];
 
 			$order_direction = (strtolower($order_direction) == 'desc' ? -1 : 1);
 

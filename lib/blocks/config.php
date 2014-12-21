@@ -51,27 +51,23 @@ abstract class ConfigBlock extends FormBlock
 	 */
 	protected function lazy_get_attributes()
 	{
-		return \ICanBoogie\array_merge_recursive
-		(
-			parent::lazy_get_attributes(), array
-			(
-				Form::HIDDENS => array
-				(
-					Operation::NAME => Module::OPERATION_CONFIG
-				)
-			)
-		);
+		return \ICanBoogie\array_merge_recursive(parent::lazy_get_attributes(), [
+
+			Form::HIDDENS => [
+
+				Operation::NAME => Module::OPERATION_CONFIG
+
+			]
+		]);
 	}
 
 	protected function alter_actions(array $actions, array $params)
 	{
-		return array_merge
-		(
-			parent::alter_actions($actions, $params), array
-			(
-				'primary' => new Button('Save', array('class' => 'btn-primary', 'type' => 'submit', 'name' => false))
-			)
-		);
+		return array_merge(parent::alter_actions($actions, $params), [
+
+			'primary' => new Button('Save', [ 'class' => 'btn-primary', 'type' => 'submit', 'name' => false ])
+
+		]);
 	}
 
 	protected function alter_values(array $values, array $params)
@@ -80,7 +76,7 @@ abstract class ConfigBlock extends FormBlock
 
 		$values = parent::alter_values($values, $params);
 
-		$iterator = new Form(array(Element::CHILDREN => $this->children));
+		$iterator = new Form([ Element::CHILDREN => $this->children ]);
 
 		$registry = $core->registry;
 		$local = $core->site->metas;
@@ -94,7 +90,7 @@ abstract class ConfigBlock extends FormBlock
 				continue;
 			}
 
-			$dotted_name = strtr($name, array('[' => '.', ']' => ''));
+			$dotted_name = strtr($name, [ '[' => '.', ']' => '' ]);
 
 			$value = null;
 

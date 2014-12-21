@@ -21,6 +21,11 @@ trait ColumnTrait
 	/**
 	 * The filters are returned as is, subclasses should override the method according to
 	 * their needs.
+	 *
+	 * @param array $filters
+	 * @param array $modifiers
+	 *
+	 * @return array
 	 */
 	public function alter_filters(array $filters, array $modifiers)
 	{
@@ -30,6 +35,10 @@ trait ColumnTrait
 	/**
 	 * The query is returned as is, subclasses should override the method according to
 	 * their needs.
+	 *
+	 * @param Query $query
+	 *
+	 * @return Query
 	 */
 	public function alter_query(Query $query)
 	{
@@ -39,6 +48,11 @@ trait ColumnTrait
 	/**
 	 * The method does a simple `{$this->id} = {$filter_value}`, subclasses might want to override
 	 * the method according to the kind of filter they provide.
+	 *
+	 * @param Query $query
+	 * @param $filter_value
+	 *
+	 * @return Query
 	 */
 	public function alter_query_with_filter(Query $query, $filter_value)
 	{
@@ -53,6 +67,11 @@ trait ColumnTrait
 	/**
 	 * The implementation of the method is simple, subclasses might want to override the method
 	 * to support complexer ordering.
+	 *
+	 * @param Query $query
+	 * @param $order_direction
+	 *
+	 * @return Query
 	 */
 	public function alter_query_with_order(Query $query, $order_direction)
 	{
@@ -62,6 +81,10 @@ trait ColumnTrait
 	/**
 	 * The records are returned as is, subclasses might override the method according to
 	 * their needs.
+	 *
+	 * @param array $records
+	 *
+	 * @return array
 	 */
 	public function alter_records(array $records)
 	{

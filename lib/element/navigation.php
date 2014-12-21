@@ -25,15 +25,13 @@ use Icybee\Modules\Users\Users;
  */
 class Navigation extends \Brickrouge\Element
 {
-	public function __construct(array $attributes=array())
+	public function __construct(array $attributes=[])
 	{
-		parent::__construct
-		(
-			'div', $attributes + array
-			(
-				'class' => 'navbar'
-			)
-		);
+		parent::__construct('div', $attributes + [
+
+			'class' => 'navbar'
+
+		]);
 	}
 
 	protected function render_inner_html()
@@ -42,10 +40,10 @@ class Navigation extends \Brickrouge\Element
 
 		$rc = parent::render_inner_html();
 
-		$links = array();
+		$links = [ ];
 		$routes = $core->routes;
 		$user = $core->user;
-		$menus = array();
+		$menus = [ ];
 
 		$modules = $core->modules;
 		$descriptors = $modules->descriptors;
@@ -64,7 +62,7 @@ class Navigation extends \Brickrouge\Element
 				continue;
 			}
 
-			$category = $descriptors[$module_id][Module::T_CATEGORY];
+			$category = $descriptors[$module_id][Module\Descriptor::CATEGORY];
 
 			$permission = isset($route['permission']) ? $route['permission'] : Module::PERMISSION_ACCESS;
 
@@ -80,16 +78,12 @@ class Navigation extends \Brickrouge\Element
 
 		uasort($links, 'ICanBoogie\unaccent_compare_ci');
 
-		$links = array_merge
-		(
-			array
-			(
-				'dashboard' => 'Dashboard',
-				'features' => 'Features'
-			),
+		$links = array_merge([
 
-			$links
-		);
+			'dashboard' => 'Dashboard',
+			'features' => 'Features'
+
+		], $links);
 
 		if (empty($menus['features']))
 		{
@@ -104,7 +98,12 @@ class Navigation extends \Brickrouge\Element
 		}
 		catch (PropertyNotDefined $e) {}
 
-		$active = $matching_route ? $descriptors[$matching_route->module][Module::T_CATEGORY] : 'dashboard';
+		$active = null;
+
+		if (isset($matching_route->module))
+		{
+			$active = $matching_route ? $descriptors[$matching_route->module][Module\Descriptor::CATEGORY] : 'dashboard';
+		}
 
 		$rc .= '<ul class="nav">';
 
@@ -140,7 +139,7 @@ class Navigation extends \Brickrouge\Element
 	{
 		global $core;
 
-		$options = array();
+		$options = [];
 		$descriptors = $core->modules->descriptors;
 
 		foreach ($routes as $route)
@@ -148,7 +147,7 @@ class Navigation extends \Brickrouge\Element
 			$title = $route['title'];
 			$module_id = $route['module'];
 			$module_flat_id = strtr($module_id, '.', '_');
-			$title = I18n\t($module_flat_id, array(), array('scope' => 'module_title', 'default' => $descriptors[$module_id][Module::T_TITLE]));
+			$title = I18n\t($module_flat_id, [], [ 'scope' => 'module_title', 'default' => $descriptors[$module_id][Module::T_TITLE] ]);
 			$url = \ICanBoogie\Routing\contextualize($route['pattern']);
 			$options[$url] = array($title, $url);
 		}
@@ -167,14 +166,12 @@ class Navigation extends \Brickrouge\Element
 
 		});
 
-		return new DropdownMenu
-		(
-			array
-			(
-				DropdownMenu::OPTIONS => $options,
+		return new DropdownMenu([
 
-				'value' => $core->request->path
-			)
-		);
+			DropdownMenu::OPTIONS => $options,
+
+			'value' => $core->request->path
+
+		]);
 	}
 }

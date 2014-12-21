@@ -122,7 +122,7 @@ class ManageBlock extends Element
 	/**
 	 * Returns the primary key of the records.
 	 *
-	 * @var string
+	 * @return string
 	 */
 	protected function get_primary_key()
 	{
@@ -134,7 +134,7 @@ class ManageBlock extends Element
 	 *
 	 * @var array[string]mixed
 	 */
-	protected $jobs = array();
+	protected $jobs = [];
 
 	protected $browse;
 
@@ -281,10 +281,10 @@ class ManageBlock extends Element
 
 		if ($primary_key)
 		{
-			return array($primary_key => 'Icybee\ManageBlock\KeyColumn');
+			return [ $primary_key => 'Icybee\ManageBlock\KeyColumn' ];
 		}
 
-		return array();
+		return [];
 	}
 
 	protected function get_columns()
@@ -304,15 +304,13 @@ class ManageBlock extends Element
 				continue;
 			}
 
-			throw new \UnexpectedValueException(\ICanBoogie\format
-			(
-				'Column %id must be an instance of Column. Given: %type. :data', array
-				(
-					'%id' => $column_id,
-					'%type' => gettype($column),
-					':data' => $column
-				)
-			));
+			throw new \UnexpectedValueException(\ICanBoogie\format('Column %id must be an instance of Column. Given: %type. :data', [
+
+				'%id' => $column_id,
+				'%type' => gettype($column),
+				':data' => $column
+
+			]));
 		}
 
 		return $columns;
@@ -336,13 +334,13 @@ class ManageBlock extends Element
 			$columns = array_merge($columns_order, $columns);
 		}
 
-		$resolved_columns = array();
+		$resolved_columns = [];
 
 		foreach ($columns as $id => $options)
 		{
 			if ($options === null)
 			{
-				throw new \Exception(\ICanBoogie\format("Column %id is not defined.", array('id' => $id)));
+				throw new \Exception(\ICanBoogie\format("Column %id is not defined.", [ 'id' => $id ]));
 			}
 
 			$construct = __CLASS__ . '\Column';
@@ -350,7 +348,7 @@ class ManageBlock extends Element
 			if (is_string($options))
 			{
 				$construct = $options;
-				$options = array();
+				$options = [];
 			}
 
 			$resolved_columns[$id] = new $construct($this, $id, $options);
@@ -366,7 +364,7 @@ class ManageBlock extends Element
 	 */
 	protected function get_available_jobs()
 	{
-		return array();
+		return [];
 	}
 
 	/**
@@ -393,7 +391,7 @@ class ManageBlock extends Element
 	{
 		if ($this->primary_key)
 		{
-			$jobs = array_merge(array(Module::OPERATION_DELETE => $this->t('delete.operation.short_title')), $jobs);
+			$jobs = array_merge([ Module::OPERATION_DELETE => $this->t('delete.operation.short_title') ], $jobs);
 		}
 
 		return $jobs;
@@ -412,7 +410,7 @@ class ManageBlock extends Element
 	 */
 	protected function update_filters(array $filters, array $modifiers)
 	{
-		static $as_strings = array('char', 'varchar', 'date', 'datetime', 'timestamp');
+		static $as_strings = [ 'char', 'varchar', 'date', 'datetime', 'timestamp' ];
 
 		$fields = $this->model->extended_schema['fields'];
 
@@ -467,7 +465,7 @@ class ManageBlock extends Element
 	 *
 	 * The `start` options is reset to 1 when the `order`, `search` or `filters` options change.
 	 *
-	 * @param array $options Previous options.
+	 * @param Options $options Previous options.
 	 * @param array $modifiers Options modifiers.
 	 *
 	 * @return array Updated options.
@@ -502,14 +500,14 @@ class ManageBlock extends Element
 
 		if (!$order_by && $default_order)
 		{
-			list($order_by, $order_direction) = (array) $default_order + array(1 => 'desc');
+			list($order_by, $order_direction) = (array) $default_order + [ 1 => 'desc' ];
 
 			$order_direction = ($order_direction == 'desc') ? -1 : 1;
 		}
 
 		if ($order_by && empty($columns[$order_by]))
 		{
-			\ICanBoogie\log_error("Undefined column for order: !order.", array('order' => $order_by));
+			\ICanBoogie\log_error("Undefined column for order: !order.", [ 'order' => $order_by ]);
 
 			$order_by = null;
 			$order_direction = null;
@@ -520,7 +518,7 @@ class ManageBlock extends Element
 			$order_direction = $columns[$order_by]->default_order;
 		}
 
-		return array($order_by, $order_direction);
+		return [ $order_by, $order_direction ];
 	}
 
 	/**
@@ -551,8 +549,8 @@ class ManageBlock extends Element
 	/**
 	 * Renders the element.
 	 *
-	 * If an error occurd while creating the query or fecthing the records, the filters and the
-	 * order are reseted.
+	 * If an error occurred while creating the query or fetching the records, the filters and the
+	 * order are reset.
 	 */
 	public function render()
 	{
@@ -589,7 +587,7 @@ class ManageBlock extends Element
 
 			return <<<EOT
 <div class="alert alert-error alert-block undismissable">
-	<p>There was an error in the SQL statement, orders and filters have been reseted,
+	<p>There was an error in the SQL statement, orders and filters have been reset,
 	please reload the page.</p>
 
 	$rendered_exception
@@ -807,12 +805,11 @@ EOT;
 	 */
 	protected function alter_query_with_search(Query $query, $search)
 	{
-		static $supported_types = array('char', 'varchar', 'text');
+		static $supported_types = [ 'char', 'varchar', 'text' ];
 
 		$words = explode(' ', $search);
 		$words = array_map('trim', $words);
 
-		$queries = array();
 		$fields = $this->model->extended_schema['fields'];
 
 		foreach ($words as $word)
@@ -865,6 +862,8 @@ EOT;
 	 * Fetches the records matching the query.
 	 *
 	 * @param Query $query
+	 *
+	 * @return \ICanBoogie\ActiveRecord[]
 	 */
 	protected function fetch_records(Query $query)
 	{
@@ -915,7 +914,7 @@ EOT;
 	/**
 	 * Renders a column header.
 	 *
-	 * @param array $cell
+	 * @param Column $column
 	 * @param string $id
 	 *
 	 * @return string The rendered THEAD cell.
@@ -946,12 +945,6 @@ EOT;
 			{
 				$class .= ' filters';
 			}
-		}
-		else
-		{
-			$orderable = false;
-			$filtering = false;
-			$filters = array();
 		}
 
 		$header_options = $column->render_options();
@@ -1058,7 +1051,7 @@ EOT;
 	 */
 	protected function columns_to_rows(array $rendered_columns_cells)
 	{
-		$rows = array();
+		$rows = [];
 
 		foreach ($rendered_columns_cells as $column_id => $cells)
 		{
@@ -1078,13 +1071,13 @@ EOT;
 	 *
 	 * @param array $rows
 	 *
-	 * @return array[]Element
+	 * @return Element[]
 	 */
 	protected function render_rows(array $rows)
 	{
 		global $core;
 
-		$rendered_rows = array();
+		$rendered_rows = [];
 		$columns = $this->columns;
 		$records = $this->records;
 		$key = $this->primary_key;
@@ -1102,7 +1095,7 @@ EOT;
 				. '">' . ($cell ?: '&nbsp;') . '</td>';
 			}
 
-			$tr = new Element('tr', array(Element::INNER_HTML => $html));
+			$tr = new Element('tr', [ Element::INNER_HTML => $html ]);
 
 			if ($key && !$user->has_ownership($module, $records[$i]))
 			{
@@ -1164,11 +1157,11 @@ EOT;
 		}
 		else
 		{
-			$message = $this->t('create_first', array('!url' => \ICanBoogie\Routing\contextualize("/admin/{$this->module->id}/new")));
+			$message = $this->t('create_first', [ '!url' => \ICanBoogie\Routing\contextualize("/admin/{$this->module->id}/new") ]);
 			$context = 'info';
 		}
 
-		return new Alert($message, array(Alert::CONTEXT => $context, 'class' => 'alert listview-alert'));
+		return new Alert($message, [ Alert::CONTEXT => $context, 'class' => 'alert listview-alert' ]);
 	}
 
 	/**
@@ -1180,38 +1173,32 @@ EOT;
 	{
 		$search = $this->options->search;
 
-		return new Element
-		(
-			'div', array
-			(
-				Element::CHILDREN => array
-				(
-					'q' => new Text
-					(
-						array
-						(
-							'title' => $this->t('Search in the records'),
-							'value' => $search,
-							'size' => '16',
-							'class' => 'search',
-							'tabindex' => 0,
-							'placeholder' => $this->t('Search')
-						)
-					),
+		return new Element('div', [
 
-					new Button
-					(
-						'', array
-						(
-							'type' => 'button',
-							'class' => 'icon-remove'
-						)
-					)
-				),
+			Element::CHILDREN => [
 
-				'class' => 'listview-search'
-			)
-		);
+				'q' => new Text([
+
+					'title' => $this->t('Search in the records'),
+					'value' => $search,
+					'size' => '16',
+					'class' => 'search',
+					'tabindex' => 0,
+					'placeholder' => $this->t('Search')
+
+				]),
+
+				new Button('', [
+
+					'type' => 'button',
+					'class' => 'icon-remove'
+
+				])
+
+			],
+
+			'class' => 'listview-search'
+		]);
 	}
 
 	/**
@@ -1236,37 +1223,33 @@ $content
 EOT;
 		}
 
-		$ranger = new Ranger
-		(
-			'div', array
-			(
-				Ranger::T_START => $start,
-				Ranger::T_LIMIT => $limit,
-				Ranger::T_COUNT => $count,
-				Ranger::T_EDITABLE => true,
-				Ranger::T_NO_ARROWS => true,
+		$ranger = new Ranger('div', [
 
-				'class' => 'listview-start'
-			)
-		);
+			Ranger::T_START => $start,
+			Ranger::T_LIMIT => $limit,
+			Ranger::T_COUNT => $count,
+			Ranger::T_EDITABLE => true,
+			Ranger::T_NO_ARROWS => true,
+
+			'class' => 'listview-start'
+
+		]);
 
 		$page_limit_selector = null;
 
 		if ($limit >= 20 || $count >= $limit)
 		{
-			$page_limit_selector = new Element
-			(
-				'select', array
-				(
-					Element::OPTIONS => array(10 => 10, 20 => 20, 50 => 50, 100 => 100),
+			$page_limit_selector = new Element('select', [
 
-					'title' => $this->t('Number of item to display by page'),
-					'name' => 'limit',
-					'value' => $limit
-				)
-			);
+				Element::OPTIONS => [ 10 => 10, 20 => 20, 50 => 50, 100 => 100 ],
 
-			$page_limit_selector = '<div class="listview-limit">' . $this->t(':page_limit_selector by page', array(':page_limit_selector' => (string) $page_limit_selector)) . '</div>';
+				'title' => $this->t('Number of item to display by page'),
+				'name' => 'limit',
+				'value' => $limit
+
+			]);
+
+			$page_limit_selector = '<div class="listview-limit">' . $this->t(':page_limit_selector by page', [ ':page_limit_selector' => (string) $page_limit_selector ]) . '</div>';
 		}
 
 		$browse = null;
@@ -1283,7 +1266,7 @@ EOT;
 
 		$this->browse = $browse;
 
-		# the hidden select is a trick for vertical alignement with the operation select
+		# the hidden select is a trick for vertical alignment with the operation select
 
 		return <<<EOT
 <div class="listview-controls">
@@ -1297,7 +1280,7 @@ EOT;
 	 *
 	 * @param array $jobs
 	 *
-	 * @return \Brickrouge\Element\null
+	 * @return \Brickrouge\Element|null
 	 */
 	protected function render_jobs(array $jobs)
 	{
@@ -1434,7 +1417,7 @@ class RegisterColumnsEvent extends Event
 	{
 		if ($weight)
 		{
-			list($position, $relative) = explode(':', $weight) + array('before');
+			list($position, $relative) = explode(':', $weight) + [ 'before' ];
 
 			$this->columns = \ICanBoogie\array_insert($this->columns, $relative, $column, $column->id, $position == 'after');
 		}
@@ -1474,7 +1457,7 @@ class AlterColumnsEvent extends Event
 	{
 		if ($weight)
 		{
-			list($position, $relative) = explode(':', $weight) + array('before');
+			list($position, $relative) = explode(':', $weight) + [ 'before' ];
 
 			$this->columns = \ICanBoogie\array_insert($this->columns, $relative, $column, $column->id, $position == 'after');
 		}
@@ -1497,7 +1480,7 @@ class AlterRenderedCellsEvent extends Event
 	/**
 	 * The records used to render the cells.
 	 *
-	 * @var array[]\ICanBoogie\ActiveRecord
+	 * @var \ICanBoogie\ActiveRecord[]
 	 */
 	public $records;
 

@@ -114,9 +114,9 @@ EOT;
 
 class ActionbarNav extends Element
 {
-	public function __construct(array $attributes=array())
+	public function __construct(array $attributes=[])
 	{
-		parent::__construct('div', $attributes + array('class' => 'actionbar-nav'));
+		parent::__construct('div', $attributes + [ 'class' => 'actionbar-nav' ]);
 	}
 
 	protected function render_inner_html()
@@ -141,28 +141,24 @@ class ActionbarNav extends Element
 		return $html . parent::render_inner_html();
 	}
 
-	protected function render_link(array $route, Route $current_route)
+	protected function render_link(Route $route, Route $current_route)
 	{
 		global $core;
 
-		$title = $route['title'];
+		$title = $route->title;
 
 		if ($title{0} == '.') // TODO-20120214: COMPAT
 		{
 			$title = substr($title, 1);
 		}
 
-		$title = I18n\t($title, array(), array('scope' => 'block.title'));
-		$pattern = $pathname = $route['pattern'];
+		$title = I18n\t($title, [], [ 'scope' => 'block.title' ]);
 
-		if (Pattern::is_pattern($pattern))
-		{
-			$pathname = Pattern::from($pattern)->format($core->request->path_params);
-		}
+		$formatted_route = $route->format($core->request->path_params);
 
-		$link = new A($title, \ICanBoogie\Routing\contextualize($pathname), array('class' => 'actionbar-link'));
+		$link = new A($title, $formatted_route->url, [ 'class' => 'actionbar-link' ]);
 
-		if ($pattern == $current_route->pattern)
+		if ($route->pattern == $current_route->pattern)
 		{
 			$link->add_class('active');
 		}
@@ -172,19 +168,16 @@ class ActionbarNav extends Element
 
 	protected function collect_routes($current_route)
 	{
-		global $core;
-
-		$collection = array();
-		$pattern = $current_route->pattern;
-
 		if (empty($current_route->module))
 		{
 			throw new \Brickrouge\ElementIsEmpty;
 		}
 
+		$app = $this->app;
+		$collection = [];
+		$pattern = $current_route->pattern;
 		$module_id = $current_route->module;
-		$user = $core->user;
-
+		$user = $app->user;
 		$index_pattern = "/admin/$module_id";
 		$new_pattern = "/admin/$module_id/new";
 
@@ -194,28 +187,25 @@ class ActionbarNav extends Element
 			"/admin/$module_id/manage" => true
 		);
 
-		foreach ($core->routes as $route)
-		{
-			$route_module = isset($route['module']) ? $route['module'] : null;
+		/* @var $routes \ICanBoogie\Routing\Routes */
 
-			if (!$route_module || $route_module != $module_id || empty($route['title']))
+		$routes = $app->routes;
+
+		foreach ($routes as $route_id => $route_definition)
+		{
+			$route_module_id = isset($route_definition['module']) ? $route_definition['module'] : null;
+
+			if (!$route_module_id || $route_module_id != $module_id || empty($route_definition['title']))
 			{
 				continue;
 			}
 
-			$r_pattern = $route['pattern'];
+			$r_pattern = $route_definition['pattern'];
 
 			if ($r_pattern == $index_pattern || $r_pattern == $new_pattern)
 			{
 				continue;
 			}
-
-			/*
-			if (($route['visibility'] == 'auto' && $r_pattern != $pattern) || Pattern::is_pattern($r_pattern) || isset($skip[$r_pattern])))
-			{
-				continue;
-			}
-			*/
 
 			if ($r_pattern == $pattern)
 			{
@@ -223,20 +213,20 @@ class ActionbarNav extends Element
 			}
 			else
 			{
-				if ((isset($route['visibility']) && $route['visibility'] == 'auto') || Pattern::is_pattern($r_pattern) || isset($skip[$r_pattern]))
+				if ((isset($route_definition['visibility']) && $route_definition['visibility'] == 'auto') || Pattern::is_pattern($r_pattern) || isset($skip[$r_pattern]))
 				{
 					continue;
 				}
 			}
 
-			$permission = isset($route['permission']) ? $route['permission'] : Module::PERMISSION_ACCESS;
+			$permission = isset($route_definition['permission']) ? $route_definition['permission'] : Module::PERMISSION_ACCESS;
 
 			if (!$user->has_permission($permission, $module_id))
 			{
 				continue;
 			}
 
-			$collection[$r_pattern] = $route;
+			$collection[$r_pattern] = $routes[$route_id];
 		}
 
 		return $collection;

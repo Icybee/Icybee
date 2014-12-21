@@ -33,11 +33,11 @@ class FilterDecorator
 	 *
 	 * @param \ICanBoogie\ActiveRecord $record
 	 * @param string $property The property to filter.
+	 * @param bool $filtering
 	 * @param null|string $label Defines the label for the filter link. If null the value of the
-	 * property is used instead. If the value of the property is used it is escapted using the
+	 * property is used instead. If the value of the property is used it is escaped using the
 	 * {@link \ICanBoogie\escape()} function, otherwise the label is use as is.
-	 *
-	 * @return string
+	 * @param null $value
 	 */
 	public function __construct($record, $property, $filtering, $label=null, $value=null)
 	{
@@ -69,7 +69,7 @@ class FilterDecorator
 			return $label;
 		}
 
-		$title = \ICanBoogie\escape(I18n\t('Display only: :identifier', array(':identifier' => strip_tags($label))));
+		$title = \ICanBoogie\escape(I18n\t('Display only: :identifier', [ ':identifier' => strip_tags($label) ]));
 		$url = \ICanBoogie\escape($property . '=') . urlencode($value);
 
 		return <<<EOT

@@ -1,58 +1,64 @@
 <?php
 
-return array
-(
-	'block.title' => array
-	(
+return [
+
+	'block.title' => [
+
 		'config' => 'Config.',
 		'delete' => 'Supprimer',
 		'edit' => 'Éditer',
 		'manage' => 'Liste',
 		'new' => 'Nouveau'
-	),
 
-	'button' => array
-	(
+	],
+
+	'button' => [
+
 		'Delete' => 'Supprimer',
 		'New' => 'Nouveau',
 		'Remove' => 'Retirer',
 		'View' => 'Voir'
-	),
 
-	'group.legend' => array
-	(
+	],
+
+	'group.legend' => [
+
 		'Organization' => 'Organisation'
-	),
 
-	'option' => array
-	(
+	],
+
+	'option' => [
+
 		'save_mode_list' => 'Enregistrer et aller à la liste',
 		'save_mode_continue' => "Enregistrer et continuer l'édition",
 		'save_mode_new' => "Enregistrer et éditer un nouveau"
-	),
 
-	'delete.operation' => array
-	(
+	],
+
+	'delete.operation' => [
+
 		'title' => 'Supprimer des enregistrements',
 		'short_title' => 'Supprimer',
 		'continue' => 'Supprimer',
 		'cancel' => "Ne pas supprimer",
 
-		'confirm' => array
-		(
+		'confirm' => [
+
 			'one' => "Êtes-vous sûr de vouloir supprimer l'enregistrement sélectionné ?",
 			'other' => "Êtes-vous sûr de vouloir supprimer les :count enregistrements sélectionnés ?"
-		)
-	),
+
+		]
+
+	],
 
 	/*
 	 * lib/blocks/manage.php
 	 */
 
-	'manage' => array
-	(
-		'column' => array
-		(
+	'manage' => [
+
+		'column' => [
+
 			'created' => 'Crée le',
 			'created_at' => 'Crée le',
 			'modified' => 'Modifié le',
@@ -60,38 +66,43 @@ return array
 
 			'Date created' => 'Crée le',
 			'Date modified' => 'Modifié le'
-		),
+
+		],
 
 		'create_first' => "<strong><a href=\"!url\">Créer le premier enregistrement…</a></strong>",
 
 		'edit' => "Éditer l'enregistrement",
 		'edit_named' => "Éditer l'enregistrement : :title",
 
-		'records_count' => array
-		(
+		'records_count' => [
+
 			'none' => "Aucun enregistrement",
 			'one' => 'Un enregistrement',
 			'other' => ':count enregistrements'
-		),
 
-		'records_count_with_filters' => array
-		(
+		],
+
+		'records_count_with_filters' => [
+
 			'none' => 'Aucun enregistrement ne correspond aux filters',
 			'one' => 'Un enregistrement correspond aux filtres',
 			'other' => ':count enregistrements correspondent aux filtres'
-		)
-	),
+
+		]
+
+	],
 
 	#
 
-	'module_category' => array
-	(
+	'module_category' => [
+
 		'features' => 'Fonctionnalités',
 		'feedback' => 'Intéractions',
 		'organize' => 'Organiser',
 		'structure' => 'Structure',
 		'system' => 'Système'
-	),
+
+	],
 
 	'Hello :username' => 'Bonjour :username',
 	'See the website' => 'Voir le site',
@@ -136,4 +147,5 @@ return array
 	# Icybee\ConfigOperation
 
 	"The configuration has been saved." => "La configuration a été enregistrée.",
-);
+
+];

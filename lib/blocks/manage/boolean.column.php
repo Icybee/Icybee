@@ -13,7 +13,6 @@ namespace Icybee\ManageBlock;
 
 use ICanBoogie\ActiveRecord\Query;
 
-use Brickrouge\Element;
 use Icybee\WrappedCheckbox;
 
 /**
@@ -21,28 +20,27 @@ use Icybee\WrappedCheckbox;
  */
 class BooleanColumn extends Column
 {
-	public function __construct(\Icybee\ManageBlock $manager, $id, array $options=array())
+	public function __construct(\Icybee\ManageBlock $manager, $id, array $options=[])
 	{
-		parent::__construct
-		(
-			$manager, $id, $options + array
-			(
-				'title' => null,
-				'class' => 'cell-boolean',
-				'discreet' => false,
-				'filters' => array
-				(
-					'options' => array
-					(
-						'=1' => 'Yes',
-						'=0' => 'No'
-					)
-				),
+		parent::__construct($manager, $id, $options + [
 
-				'orderable' => false,
-				'cell_renderer' => __NAMESPACE__ . '\BooleanCellRenderer'
-			)
-		);
+			'title' => null,
+			'class' => 'cell-boolean',
+			'discreet' => false,
+			'filters' => [
+
+				'options' => [
+
+					'=1' => 'Yes',
+					'=0' => 'No'
+
+				]
+			],
+
+			'orderable' => false,
+			'cell_renderer' => __NAMESPACE__ . '\BooleanCellRenderer'
+
+		]);
 	}
 
 	public function add_assets(\Brickrouge\Document $document)
@@ -54,7 +52,7 @@ class BooleanColumn extends Column
 
 	public function alter_query_with_filter(Query $query, $filter_value)
 	{
-		return $query->and(array($this->id => $filter_value));
+		return $query->and([ $this->id => $filter_value ]);
 	}
 }
 

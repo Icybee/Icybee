@@ -22,16 +22,14 @@ class KeyColumn extends Column
 {
 	private $ownership;
 
-	public function __construct($manager, $id, array $options=array())
+	public function __construct($manager, $id, array $options=[])
 	{
-		parent::__construct
-		(
-			$manager, $id, array
-			(
-				'title' => null,
-				'class' => 'cell-key'
-			)
-		);
+		parent::__construct($manager, $id, [
+
+			'title' => null,
+			'class' => 'cell-key'
+
+		]);
 	}
 
 	public function alter_records(array $records)
@@ -41,7 +39,7 @@ class KeyColumn extends Column
 		$key = $this->id;
 		$module = $this->manager->module;
 		$user = $core->user;
-		$ownership = array();
+		$ownership = [];
 
 		foreach ($records as $record)
 		{

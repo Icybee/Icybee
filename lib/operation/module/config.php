@@ -43,13 +43,12 @@ class ConfigOperation extends \ICanBoogie\Operation
 {
 	protected function get_controls()
 	{
-		return array
-		(
-			self::CONTROL_PERMISSION => Module::PERMISSION_ADMINISTER,
-			self::CONTROL_FORM => true
-		)
+		return [
 
-		+ parent::get_controls();
+		self::CONTROL_PERMISSION => Module::PERMISSION_ADMINISTER,
+		self::CONTROL_FORM => true
+
+		] + parent::get_controls();
 	}
 
 	/**
@@ -58,7 +57,7 @@ class ConfigOperation extends \ICanBoogie\Operation
 	 */
 	protected function lazy_get_properties()
 	{
-		return array_intersect_key($this->request->params, array('global' => true, 'local' => true));
+		return array_intersect_key($this->request->params, [ 'global' => true, 'local' => true ]);
 	}
 
 	protected function validate(\ICanboogie\Errors $errors)
@@ -70,11 +69,11 @@ class ConfigOperation extends \ICanBoogie\Operation
 	{
 		global $core;
 
-		new ConfigOperation\BeforePropertiesEvent($this, array('request' => $this->request));
+		new ConfigOperation\BeforePropertiesEvent($this, [ 'request' => $this->request ]);
 
 		$properties = $this->properties;
 
-		new ConfigOperation\PropertiesEvent($this, array('request' => $this->request, 'properties' => &$properties));
+		new ConfigOperation\PropertiesEvent($this, [ 'request' => $this->request, 'properties' => &$properties ]);
 
 		if (isset($properties['global']))
 		{

@@ -11,8 +11,6 @@
 
 namespace Brickrouge;
 
-use Brickrouge\Element;
-
 abstract class Widget extends Element
 {
 	/**
@@ -21,18 +19,16 @@ abstract class Widget extends Element
 	 * @param string $type
 	 * @param array $attributes
 	 */
-	public function __construct($type, array $attributes=array())
+	public function __construct($type, array $attributes=[])
 	{
 		$class = get_class($this);
 		$constructor = basename(strtr($class, '\\', '/'));
 
-		parent::__construct
-		(
-			$type, $attributes + array
-			(
-				Element::IS => $constructor
-			)
-		);
+		parent::__construct($type, $attributes + [
+
+			Element::IS => $constructor
+
+		]);
 	}
 
 	protected function render_class(array $class_names)
@@ -43,8 +39,13 @@ abstract class Widget extends Element
 		return parent::render_class($class_names);
 	}
 
-	public function get_results(array $options=array())
+	/**
+	 * @param array $options
+	 *
+	 * @throws \Exception
+	 */
+	public function get_results(array $options=[])
 	{
-		throw new \Exception('The widget class %class does not implement results', array('%class' => get_class($this)));
+		throw new \Exception('The widget class %class does not implement results', [ '%class' => get_class($this) ]);
 	}
 }

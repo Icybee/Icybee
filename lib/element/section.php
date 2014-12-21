@@ -45,7 +45,7 @@ class Section extends Element
 				{
 					if ($label{0} == '.')
 					{
-						$label = I18n\t(substr($label, 1), array(), array('scope' => 'element.label'));
+						$label = I18n\t(substr($label, 1), [], [ 'scope' => 'element.label' ]);
 					}
 
 					$rc .= '<div class="form-label form-label-' . $context_class . '">';

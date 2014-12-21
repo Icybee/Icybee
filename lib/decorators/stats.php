@@ -39,17 +39,20 @@ class StatsDecorator extends \Brickrouge\Decorator
 		# for instance a _cache_ callback that may cache the response.
 		#
 
-		$event->chain(function(Dispatcher\DispatchEvent $event, Dispatcher $target)
-		{
+		$event->chain(function(Dispatcher\DispatchEvent $event, Dispatcher $target) {
+
 			$response = $event->response;
 
-			if (!$response || $response->body === null || $response instanceof Operation\Response
+			if (!$response
+			|| $response->body === null
+			|| $response instanceof Operation\Response
 			|| $response->content_type->type != 'text/html')
 			{
 				return;
 			}
 
 			$response->body = new StatsDecorator($response->body);
+
 		});
 	}
 
@@ -61,7 +64,7 @@ class StatsDecorator extends \Brickrouge\Decorator
 
 		$queries_count = 0;
 		$queries_time = 0;
-		$queries_stats = array();
+		$queries_stats = [];
 
 		foreach ($core->connections as $id => $connection)
 		{
@@ -77,8 +80,8 @@ class StatsDecorator extends \Brickrouge\Decorator
 
 		$html = $this->component . PHP_EOL . '<!-- ' . \ICanBoogie\format
 		(
-			'Icybee – in :elapsed ms (core: :elapsed_core ms, db: :elapsed_queries ms), using :memory-usage (peak: :memory-peak), queries: :queries-count (:queries-details)', array
-			(
+			'Icybee – in :elapsed ms (core: :elapsed_core ms, db: :elapsed_queries ms), using :memory-usage (peak: :memory-peak), queries: :queries-count (:queries-details)', [
+
 				'elapsed' => number_format(($now - $_SERVER['REQUEST_TIME_FLOAT']) * 1000, 2, '.', ''),
 				'elapsed_core' => number_format(($_SERVER['ICANBOOGIE_READY_TIME_FLOAT'] - $_SERVER['REQUEST_TIME_FLOAT']) * 1000, 2, '.', ''),
 				'elapsed_queries' => number_format($queries_time * 1000, 2, '.', ''),
@@ -86,7 +89,8 @@ class StatsDecorator extends \Brickrouge\Decorator
 				'memory-peak' => number_format(memory_get_peak_usage() / (1024 * 1024), 3) . 'Mb',
 				'queries-count' => $queries_count,
 				'queries-details' => implode(', ', $queries_stats)
-			)
+
+			]
 		);
 
 		if (Debug::is_dev() || $core->user->is_admin)
@@ -109,10 +113,10 @@ class StatsDecorator extends \Brickrouge\Decorator
 		$max_length_callback = 0;
 
 		$time_total = 0;
-		$time_by_type = array();
+		$time_by_type = [];
 
 		$calls_total = 0;
-		$calls_by_type = array();
+		$calls_by_type = [];
 
 		foreach ($events as $i => $event)
 		{

@@ -42,7 +42,7 @@ class InterlockBlock extends Element
 
 		$this->parse_params($params);
 
-		parent::__construct('div', array('class' => 'block-alert block--interlock'));
+		parent::__construct('div', [ 'class' => 'block-alert block--interlock' ]);
 	}
 
 	protected function parse_params(array $params)

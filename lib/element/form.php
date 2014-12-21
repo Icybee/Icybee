@@ -23,12 +23,14 @@ class Form extends \Brickrouge\Form
 	 * with the request params.
 	 *
 	 * This function is a callback for the `ICanBoogie\Operation::get_form` event. The event chain
-	 * is stoped if the form is found.
+	 * is stopped if the form is found.
 	 *
-	 * @param \ICanBoogie\Operation\GetFormEvent $event
+	 * @param Operation\GetFormEvent $event
 	 * @param Operation $operation
+	 *
+	 * @throws Operation\FormHasExpired
 	 */
-	static public function on_operation_get_form(\ICanBoogie\Operation\GetFormEvent $event, Operation $operation)
+	static public function on_operation_get_form(Operation\GetFormEvent $event, Operation $operation)
 	{
 		$request = $event->request;
 
@@ -43,7 +45,7 @@ class Form extends \Brickrouge\Form
 		}
 		catch (\Exception $e)
 		{
-			throw new \ICanBoogie\Operation\FormHasExpired($e->getMessage());
+			throw new Operation\FormHasExpired($e->getMessage());
 		}
 
 		if ($form)
