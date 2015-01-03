@@ -12,6 +12,7 @@
 namespace Icybee;
 
 use ICanBoogie\HTTP\Request;
+use ICanBoogie\Routing\Controller;
 
 use Brickrouge\Element;
 
@@ -25,7 +26,7 @@ use Brickrouge\Element;
  * - {@link DECORATE_WITH_ADMIN}: Decorate the component with a {@link AdminDecorator} instance.
  * - {@link DECORATE_WITH_DOCUMENT} Decorate the component with a {@link DocumentDecorator} instance.
  */
-class BlockController extends \ICanBoogie\Routing\Controller
+class BlockController extends Controller
 {
 	const DECORATE_WITH_BLOCK = 1;
 	const DECORATE_WITH_ADMIN = 2;
@@ -35,17 +36,15 @@ class BlockController extends \ICanBoogie\Routing\Controller
 	protected $request;
 	protected $block_name;
 
-	public function __construct($route)
+	public function __construct()
 	{
 		$this->decorate_flags = self::DECORATE_WITH_BLOCK | self::DECORATE_WITH_ADMIN | self::DECORATE_WITH_DOCUMENT;
-
-		parent::__construct($route);
 	}
 
 	/**
 	 * If the `decorate_flags` param is defined the {@link $decorate_flags} property is updated.
 	 */
-	public function __invoke(Request $request)
+	protected function respond(Request $request)
 	{
 		$this->request = $request;
 		$this->control();

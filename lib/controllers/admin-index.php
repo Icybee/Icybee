@@ -13,14 +13,20 @@ namespace Icybee;
 
 use ICanBoogie\AuthenticationRequired;
 use ICanBoogie\HTTP\Request;
+use ICanBoogie\Routing\Controller;
 
-class AdminIndexController extends \ICanBoogie\Routing\Controller
+/**
+ * Class AdminIndexController
+ *
+ * @package Icybee
+ *
+ * @property \Icybee\Modules\Users\User $user
+ */
+class AdminIndexController extends Controller
 {
-	public function __invoke(Request $request)
+	protected function respond(Request $request)
 	{
-		global $core;
-
-		if ($core->user->is_guest)
+		if ($this->user->is_guest)
 		{
 			throw new AuthenticationRequired();
 		}
