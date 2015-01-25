@@ -49,16 +49,11 @@
 	},
 
 	"extra": {
-
 		"icanboogie": {
-
 			"config-path": "config",
 			"locale-path": "locale",
-
-			"config-constructors": {
-
+			"config-constructor": {
 				"admin_routes": "Icybee\\Hooks::synthesize_admin_routes#routes"
-
 			}
 		}
 	}
