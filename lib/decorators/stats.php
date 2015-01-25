@@ -60,6 +60,7 @@ class StatsDecorator extends \Brickrouge\Decorator
 	{
 		global $core;
 
+		$html = (string) $this->component;
 		$now = microtime(true);
 
 		$queries_count = 0;
@@ -78,7 +79,7 @@ class StatsDecorator extends \Brickrouge\Decorator
 			}
 		}
 
-		$html = $this->component . PHP_EOL . '<!-- ' . \ICanBoogie\format
+		$html .= PHP_EOL . '<!-- ' . \ICanBoogie\format
 		(
 			'Icybee – in :elapsed ms (core: :elapsed_core ms, db: :elapsed_queries ms), using :memory-usage (peak: :memory-peak), queries: :queries-count (:queries-details)', [
 
