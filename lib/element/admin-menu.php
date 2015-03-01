@@ -13,6 +13,7 @@ namespace Icybee\Element;
 
 use ICanBoogie\I18n\Translator\Proxi;
 use ICanBoogie\Module;
+use ICanBoogie\Module\Descriptor;
 use ICanBoogie\Operation;
 use ICanBoogie\Routing;
 
@@ -221,7 +222,7 @@ EOT;
 			// TODO-20101223: use the 'language' attribute whenever available to translate the
 			// categories in the user's language.
 
-			$category = isset($descriptors[$node->constructor][Module::T_CATEGORY]) ? $descriptors[$node->constructor][Module::T_CATEGORY] : 'contents';
+			$category = isset($descriptors[$node->constructor][Descriptor::CATEGORY]) ? $descriptors[$node->constructor][Descriptor::CATEGORY] : 'contents';
 			$category = $translator($category);
 
 			$editables_by_category[$category][] = $node;

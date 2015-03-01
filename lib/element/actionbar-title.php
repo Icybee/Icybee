@@ -13,14 +13,13 @@ namespace Icybee\Element;
 
 use ICanBoogie\I18n;
 use ICanBoogie\Module;
+use ICanBoogie\Module\Descriptor;
 use ICanBoogie\PropertyNotDefined;
 use ICanBoogie\Routing\Route;
 
 use Brickrouge\A;
-use Brickrouge\Button;
 use Brickrouge\DropdownMenu;
 use Brickrouge\Element;
-use Brickrouge\SplitButton;
 
 class ActionbarTitle extends Element
 {
@@ -146,7 +145,7 @@ EOT;
 
 		$modules = $core->modules;
 		$descriptors = $modules->descriptors;
-		$category = $descriptors[$module_id][Module::T_CATEGORY];
+		$category = $descriptors[$module_id][Descriptor::CATEGORY];
 
 		$options_routes = array();
 
@@ -159,7 +158,7 @@ EOT;
 
 			$r_module_id = $r['module'];
 
-			if (!isset($modules[$r_module_id]) || $descriptors[$r_module_id][Module::T_CATEGORY] != $category)
+			if (!isset($modules[$r_module_id]) || $descriptors[$r_module_id][Descriptor::CATEGORY] != $category)
 			{
 				continue;
 			}
@@ -176,7 +175,7 @@ EOT;
 
 			$options_routes[$url] = new A
 			(
-				I18n\t($module_flat_id, array(), array('scope' => 'module_title', 'default' => $descriptors[$r_module_id][Module::T_TITLE])), $url
+				I18n\t($module_flat_id, array(), array('scope' => 'module_title', 'default' => $descriptors[$r_module_id][Descriptor::TITLE])), $url
 			);
 		}
 

@@ -11,6 +11,7 @@
 
 namespace Icybee;
 
+use ICanBoogie\Binding\Routing\BeforeSynthesizeRoutesEvent;
 use ICanBoogie\Debug;
 use ICanBoogie\Event;
 use ICanBoogie\HTTP\Dispatcher;
@@ -93,137 +94,142 @@ class Hooks
 		}, 'before:pages');
 	}
 
-	static public function before_routing_collect_routes(Routing\BeforeCollectRoutesEvent $event)
+	static public function before_routing_collect_routes(BeforeSynthesizeRoutesEvent $event)
 	{
-		static $magic = [
-
-			'!admin:manage' => true,
-			'!admin:new' => true,
-			'!admin:config' => true,
-			'!admin:edit' => true
-
-		];
-
-		$fragments = &$event->fragments;
-
-		foreach ($fragments as $root => &$fragment)
+		$event->chain(function(BeforeSynthesizeRoutesEvent $event)
 		{
-			$add_delete_route = false;
 
-			foreach ($fragment as $id => &$route)
+			static $magic = [
+
+				'!admin:manage' => true,
+				'!admin:new' => true,
+				'!admin:config' => true,
+				'!admin:edit' => true
+
+			];
+
+			$fragments = &$event->fragments;
+
+			foreach ($fragments as $root => &$fragment)
 			{
-				$controller = empty($route['controller']) ? true : $route['controller'];
+				$add_delete_route = false;
 
-				if (isset($route['block']) && $controller === true)
+				foreach ($fragment as $id => &$route)
 				{
-					$route['controller'] = 'Icybee\BlockController';
-				}
+					$controller = empty($route['controller']) ? true : $route['controller'];
 
-				if (empty($magic[$id]))
-				{
-					continue;
-				}
-
-				if ($controller === true)
-				{
-					unset($route['controller']);
-				}
-
-				if (empty($route['pattern']) || $route['pattern'] == '!auto')
-				{
-					unset($route['pattern']);
-				}
-
-				$module_id = $route['module'];
-
-				switch ($id)
-				{
-					case '!admin:manage':
+					if (isset($route['block']) && $controller === true)
 					{
-						$id = "admin:$module_id/manage"; // TODO-20120828: rename this as "admin:{module_id}:index"
-
-						$route += [
-
-							'pattern' => "/admin/$module_id",
-							'controller' => 'Icybee\BlockController',
-							'title' => '.manage',
-							'block' => 'manage',
-							'index' => true
-
-						];
+						$route['controller'] = 'Icybee\BlockController';
 					}
-					break;
 
-					case '!admin:new':
+					if (empty($magic[ $id ]))
 					{
-						$id = "admin:$module_id/new";
-
-						$route += [
-
-							'pattern' => "/admin/$module_id/new",
-							'controller' => 'Icybee\BlockController',
-							'title' => '.new',
-							'block' => 'edit',
-							'visibility' => 'visible'
-
-						];
+						continue;
 					}
-					break;
 
-					case '!admin:edit':
+					if ($controller === true)
 					{
-						$id = "admin:$module_id/edit";
-
-						$route += [
-
-							'pattern' => "/admin/$module_id/<\d+>/edit",
-							'controller' => 'Icybee\EditController',
-							'title' => '.edit',
-							'block' => 'edit',
-							'visibility' => 'auto'
-
-						];
-
-						$add_delete_route = true;
+						unset($route['controller']);
 					}
-					break;
 
-					case '!admin:config':
+					if (empty($route['pattern']) || $route['pattern'] == '!auto')
 					{
-						$id = "admin:$module_id/config";
-
-						$route += [
-
-							'pattern' => "/admin/$module_id/config",
-							'controller' => 'Icybee\BlockController',
-							'title' => '.config',
-							'block' => 'config',
-							'permission' => Module::PERMISSION_ADMINISTER,
-							'visibility' => 'visible'
-
-						];
+						unset($route['pattern']);
 					}
-					break;
+
+					$module_id = $route['module'];
+
+					switch ($id)
+					{
+						case '!admin:manage':
+						{
+							$id = "admin:$module_id/manage"; // TODO-20120828: rename this as "admin:{module_id}:index"
+
+							$route += [
+
+								'pattern' => "/admin/$module_id",
+								'controller' => 'Icybee\BlockController',
+								'title' => '.manage',
+								'block' => 'manage',
+								'index' => true
+
+							];
+						}
+							break;
+
+						case '!admin:new':
+						{
+							$id = "admin:$module_id/new";
+
+							$route += [
+
+								'pattern' => "/admin/$module_id/new",
+								'controller' => 'Icybee\BlockController',
+								'title' => '.new',
+								'block' => 'edit',
+								'visibility' => 'visible'
+
+							];
+						}
+							break;
+
+						case '!admin:edit':
+						{
+							$id = "admin:$module_id/edit";
+
+							$route += [
+
+								'pattern' => "/admin/$module_id/<\d+>/edit",
+								'controller' => 'Icybee\EditController',
+								'title' => '.edit',
+								'block' => 'edit',
+								'visibility' => 'auto'
+
+							];
+
+							$add_delete_route = true;
+						}
+							break;
+
+						case '!admin:config':
+						{
+							$id = "admin:$module_id/config";
+
+							$route += [
+
+								'pattern' => "/admin/$module_id/config",
+								'controller' => 'Icybee\BlockController',
+								'title' => '.config',
+								'block' => 'config',
+								'permission' => Module::PERMISSION_ADMINISTER,
+								'visibility' => 'visible'
+
+							];
+						}
+							break;
+					}
+
+					$fragments[ $root ][ $id ] = $route;
 				}
 
-				$fragments[$root][$id] = $route;
+				if ($add_delete_route)
+				{
+					$fragments[ $root ]["admin:$module_id/delete"] = [
+
+						'pattern' => "/admin/$module_id/<\d+>/delete",
+						'controller' => 'Icybee\BlockController',
+						'title' => '.delete',
+						'block' => 'delete',
+						'visibility' => 'auto',
+						'via' => 'ANY',
+						'module' => $module_id
+
+					];
+				}
 			}
 
-			if ($add_delete_route)
-			{
-				$fragments[$root]["admin:$module_id/delete"] = [
-
-					'pattern' => "/admin/$module_id/<\d+>/delete",
-					'controller' => 'Icybee\BlockController',
-					'title' => '.delete',
-					'block' => 'delete',
-					'visibility' => 'auto',
-					'via' => 'ANY',
-					'module' => $module_id
-
-				];
-			}
-		}
+		});
 	}
 
 	/**
@@ -406,27 +412,6 @@ class Hooks
 		{
 			$event->html = str_replace('</body>', $admin_menu . '</body>', $event->html);
 		}
-	}
-
-	/*
-	 * Prototypes
-	 */
-
-	static public function get_cldr()
-	{
-		static $cldr;
-
-		if (!$cldr)
-		{
-			$provider = new \ICanBoogie\CLDR\RunTimeProvider(
-				new \ICanBoogie\CLDR\FileProvider(
-					new \ICanBoogie\CLDR\WebProvider, \ICanBoogie\REPOSITORY . 'cldr' . DIRECTORY_SEPARATOR
-			));
-
-			$cldr = new \ICanBoogie\CLDR\Repository($provider);
-		}
-
-		return $cldr;
 	}
 
 	/*

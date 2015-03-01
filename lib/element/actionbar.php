@@ -13,12 +13,12 @@ namespace Icybee\Element;
 
 use ICanBoogie\I18n;
 use ICanBoogie\Module;
+use ICanBoogie\Module\Descriptor;
 use ICanBoogie\PropertyNotDefined;
 use ICanBoogie\Routing\Pattern;
 use ICanBoogie\Routing\Route;
 
 use Brickrouge\A;
-use Brickrouge\Button;
 use Brickrouge\Collector;
 use Brickrouge\Element;
 use Brickrouge\SplitButton;
@@ -339,7 +339,7 @@ EOT;
 			(
 				$flat_id . '.name', array(':count' => 1), array
 				(
-					'default' => \ICanBoogie\singularize(I18n\t("module_title.$flat_id", array(), array('default' => $descriptors[$module_id][Module::T_TITLE])))
+					'default' => \ICanBoogie\singularize(I18n\t("module_title.$flat_id", array(), array('default' => $descriptors[$module_id][Descriptor::TITLE])))
 				)
 			);
 		}

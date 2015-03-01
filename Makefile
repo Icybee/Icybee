@@ -87,16 +87,20 @@ $(CSS_UNCOMPRESSED): $(CSS_FILES)
 	$(CSS_COMPRESSOR) build/admin.less >$@
 
 vendor:
-	@composer install --dev
+	@composer install
 
 update:
-	@composer update --dev
+	@composer update
 
 autoload:
 	@composer dump-autoload
 
 test: vendor
 	@phpunit
+
+test-coverage: vendor
+	@mkdir -p build/coverage
+	@phpunit --coverage-html build/coverage
 
 doc: vendor
 	@mkdir -p "docs"

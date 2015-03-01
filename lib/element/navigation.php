@@ -13,12 +13,11 @@ namespace Icybee\Element;
 
 use ICanBoogie\I18n;
 use ICanBoogie\Module;
+use ICanBoogie\Module\Descriptor;
 use ICanBoogie\PropertyNotDefined;
 
 use Brickrouge\A;
 use Brickrouge\DropdownMenu;
-
-use Icybee\Modules\Users\Users;
 
 /**
  * Admin navigation bar.
@@ -147,7 +146,7 @@ class Navigation extends \Brickrouge\Element
 			$title = $route['title'];
 			$module_id = $route['module'];
 			$module_flat_id = strtr($module_id, '.', '_');
-			$title = I18n\t($module_flat_id, [], [ 'scope' => 'module_title', 'default' => $descriptors[$module_id][Module::T_TITLE] ]);
+			$title = I18n\t($module_flat_id, [], [ 'scope' => 'module_title', 'default' => $descriptors[$module_id][Descriptor::TITLE] ]);
 			$url = \ICanBoogie\Routing\contextualize($route['pattern']);
 			$options[$url] = array($title, $url);
 		}
