@@ -43,6 +43,8 @@ class BlockController extends Controller
 
 	/**
 	 * If the `decorate_flags` param is defined the {@link $decorate_flags} property is updated.
+	 *
+	 * @inheritdoc
 	 */
 	protected function respond(Request $request)
 	{

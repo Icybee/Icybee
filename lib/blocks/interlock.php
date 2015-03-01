@@ -57,7 +57,6 @@ class InterlockBlock extends Element
 		$lock = $this->lock;
 		$luser = $core->models['users'][$lock['uid']];
 		$luser_url = \ICanBoogie\Routing\contextualize("/admin/users/{$luser->uid}/edit");
-		$url = $core->request->path;
 
 		$time = round((strtotime($lock['until']) - time()) / 60);
 		$message = $time ? "Le verrou devrait disparaitre dans $time minutes." : "Le verrou devrait disparaitre dans moins d'une minutes.";

@@ -37,6 +37,8 @@ class ListView extends Element
 	 * Adds the following class names:
 	 *
 	 * - `listview`
+	 *
+	 * @inheritdoc
 	 */
 	protected function alter_class_names(array $class_names)
 	{

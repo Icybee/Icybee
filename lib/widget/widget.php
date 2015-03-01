@@ -46,6 +46,10 @@ abstract class Widget extends Element
 	 */
 	public function get_results(array $options=[])
 	{
-		throw new \Exception('The widget class %class does not implement results', [ '%class' => get_class($this) ]);
+		throw new \Exception(\ICanBoogie\format('The widget class %class does not implement results', [
+
+			'%class' => get_class($this)
+
+		]));
 	}
 }

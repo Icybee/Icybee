@@ -143,7 +143,6 @@ class Navigation extends \Brickrouge\Element
 
 		foreach ($routes as $route)
 		{
-			$title = $route['title'];
 			$module_id = $route['module'];
 			$module_flat_id = strtr($module_id, '.', '_');
 			$title = I18n\t($module_flat_id, [], [ 'scope' => 'module_title', 'default' => $descriptors[$module_id][Descriptor::TITLE] ]);

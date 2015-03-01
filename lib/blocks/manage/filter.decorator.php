@@ -13,8 +13,6 @@ namespace Icybee\ManageBlock;
 
 use ICanBoogie\I18n;
 
-use Brickrouge\Element;
-
 /**
  * Decorates a component with a _filter_ element.
  *

@@ -13,7 +13,6 @@ namespace Icybee;
 
 use ICanBoogie\Debug;
 
-use Brickrouge\A;
 use Brickrouge\Alert;
 
 class AdminDecorator

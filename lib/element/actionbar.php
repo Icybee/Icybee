@@ -54,7 +54,7 @@ class Actionbar extends Element
 
 			if (!$core->request)
 			{
-				throw new PropertyNotDefined();
+				throw new PropertyNotDefined("There is not request");
 			}
 
 			$route = $core->request->context->route;

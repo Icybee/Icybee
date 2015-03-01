@@ -55,7 +55,7 @@ class CollectItemsEvent extends \ICanBoogie\Event
 	/**
 	 * The event is constructed with the type `collect_items`.
 	 *
-	 * @param (\Icybee\Element\ActionbarContexts $target
+	 * @param \Icybee\Element\ActionbarContexts $target
 	 * @param array $items Reference to the contexts items.
 	 */
 	public function __construct(\Icybee\Element\ActionbarContexts $target, array &$items)

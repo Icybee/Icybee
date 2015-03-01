@@ -36,39 +36,6 @@ class UserMenu extends Element
 		global $core;
 
 		$user = $core->user;
-		$site = $core->site;
-
-		$roles = '';
-
-		if ($user->is_admin)
-		{
-			$roles = 'Admin';
-		}
-		else if ($user->has_permission(Module::PERMISSION_ADMINISTER, 'users.roles'))
-		{
-			foreach ($user->roles as $role)
-			{
-				$roles .= ', <a href="' . $site->path . '/admin/users.roles/' . $role->rid . '/edit">' . $role->name . '</a>';
-			}
-
-			$roles = substr($roles, 2);
-		}
-		else
-		{
-			$n = count($user->roles);
-
-			foreach ($user->roles as $role)
-			{
-				if ($n > 1 && $role->rid == Role::USER_RID)
-				{
-					continue;
-				}
-
-				$roles .= ', ' . $role->name;
-			}
-
-			$roles = substr($roles, 2);
-		}
 
 		$username = new A($user->name, \ICanBoogie\Routing\contextualize('/admin/profile'));
 

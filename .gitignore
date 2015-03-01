@@ -1,4 +1,5 @@
 .idea/
 .README.md.html
+composer.lock
 build/tmp
 vendor

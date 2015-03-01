@@ -308,6 +308,8 @@ EOT;
 	 *
 	 * Because at this level the method has no way of knowing the name of the record, it uses
 	 * the localized string "record_name" which defaults to "this record".
+	 *
+	 * @inheritdoc
 	 */
 	protected function decorate($html)
 	{

@@ -61,6 +61,8 @@ class EditBlock extends FormBlock
 
 	/**
 	 * Adds the `key` and `record` properties to the alter parameters.
+	 *
+	 * @inheritdoc
 	 */
 	protected function alter(array $params)
 	{
@@ -207,6 +209,8 @@ class EditBlock extends FormBlock
 
 	/**
 	 * Fires the `alter_attributes:before` event of class {@link EditBlock\BeforeAlterAttributesEvent}.
+	 *
+	 * @inheritdoc
 	 */
 	protected function fire_before_alter_attributes(array $properties)
 	{
@@ -215,6 +219,8 @@ class EditBlock extends FormBlock
 
 	/**
 	 * Fires the `alter_attributes` event of class {@link EditBlock\AlterAttributesEvent}.
+	 *
+	 * @inheritdoc
 	 */
 	protected function fire_alter_attributes(array $properties)
 	{
@@ -251,6 +257,8 @@ class EditBlock extends FormBlock
 
 	/**
 	 * Fires the `alter_values:before` event of class {@link EditBlock\BeforeAlterValuesEvent}.
+	 *
+	 * @inheritdoc
 	 */
 	protected function fire_before_alter_values(array $properties)
 	{
@@ -259,6 +267,8 @@ class EditBlock extends FormBlock
 
 	/**
 	 * Fires the `alter_values` event of class {@link EditBlock\AlterValuesEvent}.
+	 *
+	 * @inheritdoc
 	 */
 	protected function fire_alter_values(array $properties)
 	{
@@ -271,6 +281,8 @@ class EditBlock extends FormBlock
 
 	/**
 	 * Fires the `alter_children:before` event of class {@link EditBlock\BeforeAlterChildrenEvent}.
+	 *
+	 * @inheritdoc
 	 */
 	protected function fire_before_alter_children(array $properties)
 	{
@@ -279,6 +291,8 @@ class EditBlock extends FormBlock
 
 	/**
 	 * Fires the `alter_children` event of class {@link EditBlock\AlterChildrenEvent}.
+	 *
+	 * @inheritdoc
 	 */
 	protected function fire_alter_children(array $properties)
 	{
@@ -309,6 +323,8 @@ class EditBlock extends FormBlock
 
 	/**
 	 * Adds the save mode checkbox group of the actions as well as the action bar.
+	 *
+	 * @inheritdoc
 	 */
 	protected function alter_actions(array $actions, array $params)
 	{
@@ -423,6 +439,8 @@ class EditBlock extends FormBlock
 
 	/**
 	 * Fires the `alter_actions:before` event of class {@link EditBlock\BeforeAlterActionsEvent}.
+	 *
+	 * @inheritdoc
 	 */
 	protected function fire_before_alter_actions(array $properties)
 	{
@@ -431,6 +449,8 @@ class EditBlock extends FormBlock
 
 	/**
 	 * Fires the `alter_actions` event of class {@link EditBlock\AlterActionsEvent}.
+	 *
+	 * @inheritdoc
 	 */
 	protected function fire_alter_actions(array $properties)
 	{
@@ -440,6 +460,8 @@ class EditBlock extends FormBlock
 	/**
 	 * If the user doesn't have the permission to edit the record, the actions of the
 	 * {@link Form} element are set to `null` and the form is disabled.
+	 *
+	 * @inheritdoc
 	 */
 	protected function alter_element(Form $element, array $params)
 	{

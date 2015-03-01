@@ -14,7 +14,6 @@ namespace Icybee;
 use ICanBoogie\I18n;
 use ICanBoogie\Operation;
 
-use Brickrouge\A;
 use Brickrouge\Button;
 use Brickrouge\Element;
 use Brickrouge\Form;

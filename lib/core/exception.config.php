@@ -36,7 +36,7 @@ class Config extends \Exception
 			$message = 'You need to <a href="' . $core->site->path . '/admin/:module_id/config">configure the <q>!title</q> module</a>.';
 		}
 
-		parent::__construct($message, $params, $code);
+		parent::__construct(\ICanBoogie\format($message, $params), $code);
 	}
 
 	public function __toString()

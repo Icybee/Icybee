@@ -65,6 +65,8 @@ class DateTimeColumn extends Column
 	 *
 	 * If the column is discreet, the repeating dates are replaced by the discreet placeholder
 	 * while the time is still displayed.
+	 *
+	 * @inheritdoc
 	 */
 	public function render_cell($record)
 	{

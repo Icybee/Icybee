@@ -11,7 +11,6 @@
 
 namespace Icybee;
 
-use ICanBoogie\ActiveRecord\Model;
 use ICanBoogie\ActiveRecord\Query;
 use ICanBoogie\I18n;
 use ICanBoogie\Operation;
@@ -19,7 +18,6 @@ use ICanBoogie\Operation;
 use Brickrouge\Alert;
 use Brickrouge\Button;
 use Brickrouge\Element;
-use Brickrouge\Form;
 use Brickrouge\Ranger;
 use Brickrouge\Text;
 
@@ -527,6 +525,7 @@ class ManageBlock extends Element
 	 * Options are restored from the storing backend and updated according to the supplied
 	 * modifiers.
 	 *
+	 * @param string $name
 	 * @param array $modifiers
 	 *
 	 * @return Options
@@ -1386,7 +1385,6 @@ use ICanBoogie\ActiveRecord\Query;
 use ICanBoogie\Event;
 
 use Icybee\ManageBlock;
-use Icybee\ManageBlock\Options;
 
 /**
  * Event class for the `Icybee\ManageBlock::register_columns` event.

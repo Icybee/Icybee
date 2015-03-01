@@ -136,8 +136,6 @@ EOT;
 
 	protected function render_header(Proxi $translator, User $user, $edit_target)
 	{
-		global $core;
-
 		$html = '<ul style="text-align: center;"><li>';
 
 		if ($user->has_permission(Module::PERMISSION_MAINTAIN, $edit_target->constructor))
@@ -165,7 +163,6 @@ EOT;
 		$links = [];
 
 		$routes = $core->routes;
-		$site = $core->site;
 
 		foreach ($core->modules as $module_id => $module)
 		{

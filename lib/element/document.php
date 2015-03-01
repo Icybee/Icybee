@@ -11,8 +11,6 @@
 
 namespace Icybee;
 
-use Brickrouge\Element;
-
 use Icybee\Modules\Pages\PageRenderer;
 
 class Document extends \Brickrouge\Document
@@ -148,7 +146,7 @@ class Document extends \Brickrouge\Document
 	 * </pre>
 	 *
 	 * @param array $args
-	 * @param Patron\Engine $engine
+	 * @param \Patron\Engine $engine
 	 * @param mixed $template
 	 *
 	 * @return void|string
@@ -221,7 +219,7 @@ class Document extends \Brickrouge\Document
 	 * </pre>
 	 *
 	 * @param array $args
-	 * @param Patron\Engine $engine
+	 * @param \Patron\Engine $engine
 	 * @param mixed $template
 	 *
 	 * @return void|string

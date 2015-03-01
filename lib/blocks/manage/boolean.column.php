@@ -65,6 +65,8 @@ class BooleanCellRenderer extends CellRenderer
 	 * Returns an decorated checkbox element.
 	 *
 	 * @return WrappedCheckbox
+	 *
+	 * @inheritdoc
 	 */
 	public function __invoke($record, $property)
 	{
