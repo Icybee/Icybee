@@ -117,7 +117,7 @@ EOT;
 
 		return <<<EOT
 <thead>
-	$html
+	<tr>$html</tr>
 </thead>
 EOT;
 	}

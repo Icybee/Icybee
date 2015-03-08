@@ -22,8 +22,7 @@ return array
 
 	'prototypes' => array
 	(
-		'ICanBoogie\Core::lazy_get_document' => 'Icybee\Document::get',
-		'ICanBoogie\Core::lazy_get_cldr' => $hooks . 'get_cldr'
+		'ICanBoogie\Core::lazy_get_document' => 'Icybee\Document::get'
 	),
 
 	'patron.markups' => array
