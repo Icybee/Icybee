@@ -15,22 +15,16 @@ namespace Icybee;
  * Path to the directory of the Icybee package.
  *
  * The path includes a trailing directory separator.
- *
- * @var string
  */
 define('Icybee\DIR', rtrim(__DIR__, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR);
 
 /**
  * Assets path for the Icybee package.
- *
- * @var string
  */
 define('Icybee\ASSETS', DIR . 'assets' . DIRECTORY_SEPARATOR);
 
 /**
  * Operation save mode constants.
- *
- * @var string
  */
 const OPERATION_SAVE_MODE = '_operation_save_mode';
 const OPERATION_SAVE_MODE_CONTINUE = 'continue';
@@ -62,7 +56,7 @@ const OPERATION_SAVE_MODE_DISPLAY = 'display';
  */
 function boot()
 {
-	$app;
+	$app = null;
 
 	\ICanBoogie\I18n\Helpers::patch('get_cldr', function() use(&$app) { return $app->cldr; });
 

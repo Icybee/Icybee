@@ -37,7 +37,7 @@ class FilterDecorator
 	 * {@link \ICanBoogie\escape()} function, otherwise the label is use as is.
 	 * @param null $value
 	 */
-	public function __construct($record, $property, $filtering, $label=null, $value=null)
+	public function __construct($record, $property, $filtering, $label = null, $value = null)
 	{
 		$this->record = $record;
 		$this->property = $property;

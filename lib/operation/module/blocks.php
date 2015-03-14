@@ -39,20 +39,20 @@ class Blocks extends Operation
 
 	protected function process()
 	{
-		global $core, $document;
+		$app = $this->app;
 
 		// TODO: add block access restriction
 
-		$document = $core->document;
+		$document = $app->document;
 
-		if ($core->user_id && $core->user->language)
+		if ($app->user_id && $app->user->language)
 		{
-			$core->locale = $core->user->language;
+			$app->locale = $app->user->language;
 		}
 
 		$request = $this->request;
 		$name = $request['name'];
-		$module = $core->modules[$request['module']];
+		$module = $app->modules[$request['module']];
 
 		$block = $module->getBlock($name, $request->params);
 

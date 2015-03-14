@@ -11,11 +11,14 @@
 
 namespace Icybee\Element;
 
+use ICanBoogie\Core;
+use ICanBoogie\HTTP\Request;
 use ICanBoogie\I18n\Translator\Proxi;
 use ICanBoogie\Module;
 use ICanBoogie\Module\Descriptor;
 use ICanBoogie\Operation;
 use ICanBoogie\Routing;
+use ICanBoogie\Routing\Routes;
 
 use Brickrouge\Element;
 use Brickrouge\ElementIsEmpty;
@@ -25,11 +28,36 @@ use Icybee\Modules\Users\User;
 /**
  * A menu that helps managing the contents of pages.
  *
+ * @property Core $app
  * @property \ICanBoogie\I18n\Translator\Proxi $translator
+ * @property Module\ModuleCollection $modules
+ * @property Request $request
+ * @property Routes $routes
+ * @property User $user
  */
 class AdminMenu extends Element
 {
 	const NODES = '#nodes';
+
+	protected function lazy_get_modules()
+	{
+		return $this->app->modules;
+	}
+
+	protected function lazy_get_request()
+	{
+		return $this->app->request;
+	}
+
+	protected function lazy_get_routes()
+	{
+		return $this->app->routes;
+	}
+
+	protected function lazy_get_user()
+	{
+		return $this->app->user;
+	}
 
 	static protected function add_assets(\Brickrouge\Document $document)
 	{
@@ -38,7 +66,7 @@ class AdminMenu extends Element
 		$document->css->add(\Icybee\ASSETS . 'css/admin-menu.css');
 	}
 
-	public function __construct(array $attributes=array())
+	public function __construct(array $attributes = [])
 	{
 		parent::__construct('div', $attributes + [
 
@@ -49,9 +77,7 @@ class AdminMenu extends Element
 
 	protected function lazy_get_translator()
 	{
-		global $core;
-
-		$user = $core->user;
+		$user = $this->user;
 		$translator = new Proxi();
 
 		if ($user->language)
@@ -67,9 +93,9 @@ class AdminMenu extends Element
 	 */
 	public function render()
 	{
-		global $core;
+		$user = $this->user;
 
-		if (!$core->user_id || $core->user instanceof \Icybee\Modules\Members\Member)
+		if ($user->is_guest || $user instanceof \Icybee\Modules\Members\Member)
 		{
 			return '';
 		}
@@ -79,9 +105,7 @@ class AdminMenu extends Element
 
 	protected function render_inner_html()
 	{
-		global $core;
-
-		$page = $core->request->context->page;
+		$page = $this->request->context->page;
 		$edit_target = $page->node ?: $page;
 
 		if (!$edit_target)
@@ -91,11 +115,11 @@ class AdminMenu extends Element
 			# the page ourselves to present the admin menu on cached pages.
 			#
 
-			throw new ElementIsEmpty();
+			throw new ElementIsEmpty;
 		}
 
 		$translator = $this->translator;
-		$user = $core->user;
+		$user = $this->user;
 
 		# header
 
@@ -112,7 +136,7 @@ class AdminMenu extends Element
 				unset($nodes[$edit_target->nid]);
 			}
 
-			$html .= $this->render_panel_nodes($nodes, $translator, $user, $edit_target);
+			$html .= $this->render_panel_nodes($nodes, $translator, $user);
 		}
 
 		# config
@@ -123,7 +147,7 @@ class AdminMenu extends Element
 
 		if (!$html)
 		{
-			throw new ElementIsEmpty();
+			throw new ElementIsEmpty;
 		}
 
 		$admin_path = Routing\contextualize('/admin/');
@@ -158,13 +182,10 @@ EOT;
 
 	protected function render_panel_config(Proxi $translator)
 	{
-		global $core;
-
 		$links = [];
+		$routes = $this->routes;
 
-		$routes = $core->routes;
-
-		foreach ($core->modules as $module_id => $module)
+		foreach ($this->modules as $module_id => $module)
 		{
 			$id = "admin:$module_id/config";
 
@@ -189,7 +210,7 @@ EOT;
 
 		if (!$links)
 		{
-			return;
+			return null;
 		}
 
 		$links = implode('</li><li>', $links);
@@ -202,10 +223,8 @@ EOT;
 
 	protected function render_panel_nodes(array $nodes, Proxi $translator, User $user)
 	{
-		global $core;
-
 		$editables_by_category = [];
-		$descriptors = $core->modules->descriptors;
+		$descriptors = $this->modules->descriptors;
 
 		$translator->scope = 'module_category';
 
@@ -236,7 +255,7 @@ EOT;
 			foreach ($nodes as $node)
 			{
 				$url = Routing\contextualize('/admin/' . $node->constructor . '/' . $node->nid . '/edit');
-				$title = $translator->__invoke('Edit: !title', array('!title' => $node->title));
+				$title = $translator->__invoke('Edit: !title', [ '!title' => $node->title ]);
 				$label = \ICanBoogie\escape(\ICanBoogie\shorten($node->title));
 
 				$html .= <<<EOT

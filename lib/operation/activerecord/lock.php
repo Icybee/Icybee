@@ -11,21 +11,20 @@
 
 namespace Icybee\Operation\ActiveRecord;
 
+use ICanBoogie\Errors;
 use ICanBoogie\Module;
 use ICanBoogie\Operation;
 
 /**
- * The "lock" operaton is used to obtain an exclusive lock on a record.
+ * The "lock" operation is used to obtain an exclusive lock on a record.
  */
 class Lock extends Operation
 {
 	protected function reset()
 	{
-		global $core;
-
 		parent::reset();
 
-		$this->module = $core->modules[$this->request['module']];
+		$this->module = $this->app->modules[$this->request['module']];
 		$this->key = $this->request['key'];
 	}
 
@@ -40,7 +39,7 @@ class Lock extends Operation
 		+ parent::get_controls();
 	}
 
-	protected function validate(\ICanboogie\Errors $errors)
+	protected function validate(Errors $errors)
 	{
 		return true;
 	}

@@ -30,7 +30,7 @@ class QueryOperationElement extends Element
 
 	protected $options;
 
-	public function __construct(array $options, array $attributes=[])
+	public function __construct(array $options, array $attributes = [])
 	{
 		$this->options = $options;
 		$count = count($options['params']['keys']);

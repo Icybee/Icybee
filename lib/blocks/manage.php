@@ -32,6 +32,11 @@ use Icybee\ManageBlock\Translator;
 /**
  * An element to manage the records of a module.
  *
+ * @property-read \ICanBoogie\Core $app
+ * @property-read \ICanBoogie\Events $events
+ * @property-read \ICanBoogie\HTTP\Request $request
+ * @property-read \Icybee\Modules\Users\User $user
+ *
  * @property-read \ICanBoogie\ActiveRecord\Model $model
  * @property-read string $primary_key The primary key of the records.
  * @property-read Options $options The display options.
@@ -99,14 +104,14 @@ class ManageBlock extends Element
 	/**
 	 * The columns of the element.
 	 *
-	 * @var array[string]Column
+	 * @var Column[]
 	 */
 	protected $columns;
 
 	/**
 	 * The records to display.
 	 *
-	 * @var array[]ActiveRecord
+	 * @var ActiveRecord[]
 	 */
 	protected $records;
 
@@ -130,7 +135,7 @@ class ManageBlock extends Element
 	/**
 	 * Jobs that can be applied to the records.
 	 *
-	 * @var array[string]mixed
+	 * @var array
 	 */
 	protected $jobs = [];
 
@@ -156,11 +161,41 @@ class ManageBlock extends Element
 	/**
 	 * Returns the {@link $options} property.
 	 *
-	 * @return \Icybee\ManageBlock\Options
+	 * @return Options
 	 */
 	protected function get_options()
 	{
 		return $this->options;
+	}
+
+	/**
+	 * Returns application's events
+	 *
+	 * @return \ICanBoogie\Events
+	 */
+	protected function get_events()
+	{
+		return $this->app->events;
+	}
+
+	/**
+	 * Returns application's request.
+	 *
+	 * @return \ICanBoogie\HTTP\Request
+	 */
+	protected function get_request()
+	{
+		return $this->app->request;
+	}
+
+	/**
+	 * Returns application's user.
+	 *
+	 * @return \Icybee\Modules\Users\User
+	 */
+	protected function get_user()
+	{
+		return $this->app->user;
 	}
 
 	public function __construct(Module $module, array $attributes)
@@ -448,6 +483,8 @@ class ManageBlock extends Element
 			$filters[$identifier] = $value;
 		}
 
+		/* @var $column Column */
+
 		foreach ($this->columns as $id => $column)
 		{
 			$filters = $column->alter_filters($filters, $modifiers);
@@ -466,7 +503,7 @@ class ManageBlock extends Element
 	 * @param Options $options Previous options.
 	 * @param array $modifiers Options modifiers.
 	 *
-	 * @return array Updated options.
+	 * @return Options Updated options.
 	 */
 	protected function update_options(Options $options, array $modifiers)
 	{
@@ -553,9 +590,7 @@ class ManageBlock extends Element
 	 */
 	public function render()
 	{
-		global $core;
-
-		$options = $this->options = $this->resolve_options($this->module->flat_id, $core->request->params);
+		$options = $this->options = $this->resolve_options($this->module->flat_id, $this->request->params);
 		$order_by = $options->order_by;
 
 		if ($order_by)
@@ -610,8 +645,6 @@ EOT;
 	 */
 	protected function render_inner_html()
 	{
-		global $core;
-
 		$records = $this->records;
 		$options = $this->options;
 
@@ -655,7 +688,7 @@ EOT;
 
 		$search = $this->render_search();
 
-		$core->events->attach(function(ActionbarSearch\AlterInnerHTMLEvent $event, ActionbarSearch $sender) use($search)
+		$this->events->attach(function(ActionbarSearch\AlterInnerHTMLEvent $event, ActionbarSearch $sender) use($search)
 		{
 			$event->html .= $search;
 		});
@@ -664,7 +697,7 @@ EOT;
 
 		$rendered_jobs = $this->render_jobs($this->jobs);
 
-		$core->events->attach(function(ActionbarContexts\CollectItemsEvent $event, ActionbarContexts $target) use($rendered_jobs) {
+		$this->events->attach(function(ActionbarContexts\CollectItemsEvent $event, ActionbarContexts $target) use($rendered_jobs) {
 
 			$event->items[] = $rendered_jobs;
 
@@ -974,9 +1007,9 @@ EOT;
 	 *
 	 *     [<column_id>][] => <cell_content>
 	 *
-	 * @param array $columns The columns to render.
+	 * @param Column[] $columns The columns to render.
 	 *
-	 * @return array[string]mixed
+	 * @return array
 	 */
 	protected function render_columns_cells(array $columns)
 	{
@@ -1074,14 +1107,12 @@ EOT;
 	 */
 	protected function render_rows(array $rows)
 	{
-		global $core;
-
 		$rendered_rows = [];
 		$columns = $this->columns;
 		$records = $this->records;
 		$key = $this->primary_key;
 		$module = $this->module;
-		$user = $core->user;
+		$user = $this->user;
 
 		foreach ($rows as $i => $cells)
 		{
@@ -1285,7 +1316,7 @@ EOT;
 	{
 		if (!$jobs)
 		{
-			return;
+			return null;
 		}
 
 		$children = [];

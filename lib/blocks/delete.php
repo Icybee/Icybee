@@ -56,7 +56,7 @@ class DeleteBlock extends Form
 	 * @param array $attributes
 	 * @param array $params Index 0 hold the key of the record to delete.
 	 */
-	public function __construct(Module $module, array $attributes=[], array $params=[])
+	public function __construct(Module $module, array $attributes = [], array $params = [])
 	{
 		$this->module = $module;
 		$this->key = current($params);
@@ -290,7 +290,7 @@ EOT;
 	{
 		if (!$this->dependencies)
 		{
-			return;
+			return null;
 
 		}
 

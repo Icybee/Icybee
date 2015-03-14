@@ -20,7 +20,7 @@ use Icybee\WrappedCheckbox;
  */
 class BooleanColumn extends Column
 {
-	public function __construct(\Icybee\ManageBlock $manager, $id, array $options=[])
+	public function __construct(\Icybee\ManageBlock $manager, $id, array $options = [])
 	{
 		parent::__construct($manager, $id, $options + [
 

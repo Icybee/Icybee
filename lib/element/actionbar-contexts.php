@@ -16,7 +16,7 @@ use Brickrouge\ElementIsEmpty;
 
 class ActionbarContexts extends Element
 {
-	public function __construct(array $attributes=[])
+	public function __construct(array $attributes = [])
 	{
 		parent::__construct('div', $attributes + [ 'class' => 'actionbar-contexts' ]);
 	}
@@ -40,10 +40,14 @@ class ActionbarContexts extends Element
 
 namespace Icybee\Element\ActionbarContexts;
 
+use ICanBoogie\Event;
+
+use Icybee\Element\ActionbarContexts;
+
 /**
  * Event class for the `Icybee\Element\ActionbarContexts::collect_items` event.
  */
-class CollectItemsEvent extends \ICanBoogie\Event
+class CollectItemsEvent extends Event
 {
 	/**
 	 * Reference to the rendered inner HTML of the element.
@@ -55,10 +59,10 @@ class CollectItemsEvent extends \ICanBoogie\Event
 	/**
 	 * The event is constructed with the type `collect_items`.
 	 *
-	 * @param \Icybee\Element\ActionbarContexts $target
+	 * @param ActionbarContexts $target
 	 * @param array $items Reference to the contexts items.
 	 */
-	public function __construct(\Icybee\Element\ActionbarContexts $target, array &$items)
+	public function __construct(ActionbarContexts $target, array &$items)
 	{
 		$this->items = &$items;
 

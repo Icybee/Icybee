@@ -11,21 +11,52 @@
 
 namespace Icybee\Element;
 
-use ICanBoogie\I18n;
+use Brickrouge\ElementIsEmpty;
+use ICanBoogie\HTTP\Request;
 use ICanBoogie\Module;
-use ICanBoogie\Module\Descriptor;
+use ICanBoogie\Module\ModuleCollection;
 use ICanBoogie\PropertyNotDefined;
-use ICanBoogie\Routing\Pattern;
 use ICanBoogie\Routing\Route;
+use ICanBoogie\Routing\Routes;
 
-use Brickrouge\A;
-use Brickrouge\Collector;
 use Brickrouge\Element;
-use Brickrouge\SplitButton;
 
+use Icybee\Modules\Users\User;
+
+/**
+ * Class Actionbar
+ *
+ * @package Icybee\Element
+ *
+ * @property-read \ICanBoogie\Core $app
+ * @property-read ModuleCollection $modules
+ * @property-read Request $request
+ * @property-read Routes $routes
+ * @property-read User $user
+ */
 class Actionbar extends Element
 {
-	public function __construct(array $attributes=[])
+	protected function lazy_get_modules()
+	{
+		return $this->app->modules;
+	}
+
+	protected function lazy_get_request()
+	{
+		return $this->app->request;
+	}
+
+	protected function lazy_get_routes()
+	{
+		return $this->app->routes;
+	}
+
+	protected function lazy_get_user()
+	{
+		return $this->app->user;
+	}
+
+	public function __construct(array $attributes = [])
 	{
 		parent::__construct('div', $attributes + [
 
@@ -39,8 +70,6 @@ class Actionbar extends Element
 
 	protected function render_inner_html()
 	{
-		global $core;
-
 		$actionbar_new = null;
 		$actionbar_navigation = null;
 		$actionbar_search = null;
@@ -52,25 +81,23 @@ class Actionbar extends Element
 			# This happens when a AuthenticationRequired or PermissionRequired was thrown.
 			#
 
-			if (!$core->request)
+			if (!$this->request)
 			{
 				throw new PropertyNotDefined("There is not request");
 			}
 
-			$route = $core->request->context->route;
+			$route = $this->request->context->route;
 
-			if (!$core->user->is_guest && !($core->user instanceof \Icybee\Modules\Members\Member))
+			if (!$this->user->is_guest && !($this->user instanceof \Icybee\Modules\Members\Member))
 			{
 				$module_id = $route->module;
 
-				$actionbar_new = (string) new ActionbarNew
-				(
-					'New', array
-					(
-						ActionbarNew::PATTERN => "/admin/$module_id/new",
-						ActionbarNew::ROUTE => $route
-					)
-				);
+				$actionbar_new = (string) new ActionbarNew('New', [
+
+					ActionbarNew::PATTERN => "/admin/$module_id/new",
+					ActionbarNew::ROUTE => $route
+
+				]);
 			}
 
 			$actionbar_navigation = (string) new ActionbarNav;
@@ -90,7 +117,7 @@ class Actionbar extends Element
 
 		if (!$actionbar_title && !$actionbar_new && !$actionbar_navigation && !$actionbar_controls && !$actionbar_search)
 		{
-			throw new \Brickrouge\ElementIsEmpty;
+			throw new ElementIsEmpty;
 		}
 
 		$actionbar_contexts = (string) new ActionbarContexts;
@@ -112,252 +139,3 @@ EOT;
 	}
 }
 
-class ActionbarNav extends Element
-{
-	public function __construct(array $attributes=[])
-	{
-		parent::__construct('div', $attributes + [ 'class' => 'actionbar-nav' ]);
-	}
-
-	protected function render_inner_html()
-	{
-		global $core;
-
-		$current_route = $core->request->context->route;
-		$collection = $this->collect_routes($current_route);
-
-		if (empty($collection))
-		{
-			throw new \Brickrouge\ElementIsEmpty;
-		}
-
-		$html = '';
-
-		foreach ($collection as $route)
-		{
-			$html .= $this->render_link($route, $current_route);
-		}
-
-		return $html . parent::render_inner_html();
-	}
-
-	protected function render_link(Route $route, Route $current_route)
-	{
-		global $core;
-
-		$title = $route->title;
-
-		if ($title{0} == '.') // TODO-20120214: COMPAT
-		{
-			$title = substr($title, 1);
-		}
-
-		$title = I18n\t($title, [], [ 'scope' => 'block.title' ]);
-
-		$formatted_route = $route->format($core->request->path_params);
-
-		$link = new A($title, $formatted_route->url, [ 'class' => 'actionbar-link' ]);
-
-		if ($route->pattern == $current_route->pattern)
-		{
-			$link->add_class('active');
-		}
-
-		return $link;
-	}
-
-	protected function collect_routes($current_route)
-	{
-		if (empty($current_route->module))
-		{
-			throw new \Brickrouge\ElementIsEmpty;
-		}
-
-		$app = $this->app;
-		$collection = [];
-		$pattern = $current_route->pattern;
-		$module_id = $current_route->module;
-		$user = $app->user;
-		$index_pattern = "/admin/$module_id";
-		$new_pattern = "/admin/$module_id/new";
-
-		$skip = array
-		(
-// 			"/admin/$module/config" => true,
-			"/admin/$module_id/manage" => true
-		);
-
-		/* @var $routes \ICanBoogie\Routing\Routes */
-
-		$routes = $app->routes;
-
-		foreach ($routes as $route_id => $route_definition)
-		{
-			$route_module_id = isset($route_definition['module']) ? $route_definition['module'] : null;
-
-			if (!$route_module_id || $route_module_id != $module_id || empty($route_definition['title']))
-			{
-				continue;
-			}
-
-			$r_pattern = $route_definition['pattern'];
-
-			if ($r_pattern == $index_pattern || $r_pattern == $new_pattern)
-			{
-				continue;
-			}
-
-			if ($r_pattern == $pattern)
-			{
-
-			}
-			else
-			{
-				if ((isset($route_definition['visibility']) && $route_definition['visibility'] == 'auto') || Pattern::is_pattern($r_pattern) || isset($skip[$r_pattern]))
-				{
-					continue;
-				}
-			}
-
-			$permission = isset($route_definition['permission']) ? $route_definition['permission'] : Module::PERMISSION_ACCESS;
-
-			if (!$user->has_permission($permission, $module_id))
-			{
-				continue;
-			}
-
-			$collection[$r_pattern] = $routes[$route_id];
-		}
-
-		return $collection;
-	}
-}
-
-class ActionbarNew extends SplitButton
-{
-	const PATTERN = '#abn-pattern';
-	const ROUTE = '#abn-route';
-
-	public function __construct($label, array $attributes=array())
-	{
-		$options = $this->collect_routes();
-
-		parent::__construct
-		(
-			$label, $attributes + array
-			(
-				self::OPTIONS => $options
-			)
-		);
-
-		$route = $this[self::ROUTE];
-
-		if ($route->pattern == $this[self::PATTERN])
-		{
-			$this->add_class('btn-info');
-		}
-		else
-		{
-			$this->add_class('btn-danger');
-		}
-	}
-
-	private $render_as_button=false;
-
-	protected function render_splitbutton_label($label, $class)
-	{
-		if ($this->render_as_button)
-		{
-			return '';
-		}
-
-		return new A($label, \ICanBoogie\Routing\contextualize($this[self::PATTERN]), array('class' => 'btn ' . $class));
-	}
-
-	protected function render_splitbutton_toggle($class)
-	{
-		if ($this->render_as_button)
-		{
-			return <<<EOT
-<a href="javascript:void()" class="btn dropdown-toggle $class" data-toggle="dropdown">$this->inner_html <span class="caret"></span></a>
-EOT;
-		}
-
-		return parent::render_splitbutton_toggle($class);
-	}
-
-	public function render()
-	{
-		global $core;
-
-		$route = $core->request->context->route;
-		$module_id = $route->module;
-		$match = $core->routes->find("/admin/$module_id/new");
-
-		$this->render_as_button = !$match;
-
-		if ($route->pattern != '/admin/dashboard' && !$match)
-		{
-			return '';
-		}
-
-		return parent::render();
-	}
-
-	protected function collect_routes()
-	{
-		global $core;
-
-		$collection = array();
-		$translations = array();
-
-		$routes = $core->routes;
-		$descriptors = $core->modules->descriptors;
-		$user = $core->user;
-
-		foreach ($routes as $route)
-		{
-			$pattern = $route['pattern'];
-
-			if (!preg_match('#/new$#', $pattern))
-			{
-				continue;
-			}
-
-			$module_id = $route['module'];
-
-			if (!isset($core->modules[$module_id]) || !$user->has_permission(Module::PERMISSION_CREATE, $module_id))
-			{
-				continue;
-			}
-
-			$collection[$pattern] = $module_id;
-
-			$flat_id = strtr($module_id, '.', '_');
-
-			$translations[$module_id] = I18n\t
-			(
-				$flat_id . '.name', array(':count' => 1), array
-				(
-					'default' => \ICanBoogie\singularize(I18n\t("module_title.$flat_id", array(), array('default' => $descriptors[$module_id][Descriptor::TITLE])))
-				)
-			);
-		}
-
-		\ICanBoogie\stable_sort($collection, function($v) use ($translations) {
-
-			return \ICanBoogie\downcase(\ICanBoogie\remove_accents($translations[$v]));
-
-		});
-
-		array_walk($collection, function(&$v, $k) use ($translations) {
-
-			$label = $translations[$v];
-
-			$v = new A($label, \ICanBoogie\Routing\contextualize($k));
-
-		});
-
-		return $collection;
-	}
-}

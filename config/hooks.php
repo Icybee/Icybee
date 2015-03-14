@@ -4,10 +4,10 @@ namespace Icybee;
 
 $hooks = __NAMESPACE__ . '\Hooks::';
 
-return array
-(
-	'events' => array
-	(
+return [
+
+	'events' => [
+
 		'routing.synthesize_routes:before' => $hooks . 'before_routing_collect_routes',
 
 		'ICanBoogie\Operation::get_form' => 'Icybee\Element\Form::on_operation_get_form',
@@ -18,54 +18,62 @@ return array
 		'Icybee\Modules\Pages\PageRenderer::render:before' => $hooks . 'before_page_renderer_render',
 		'Icybee\Modules\Pages\PageRenderer::render' => $hooks . 'on_page_renderer_render',
 		'Icybee\Modules\Users\LogoutOperation::process:before' => $hooks . 'before_user_logout'
-	),
 
-	'prototypes' => array
-	(
+	],
+
+	'prototypes' => [
+
 		'ICanBoogie\Core::lazy_get_document' => 'Icybee\Document::get'
-	),
 
-	'patron.markups' => array
-	(
-		'document:metas' => array
-		(
-			'Icybee\Document::markup_document_metas', array()
-		),
+	],
 
-		'document:css' => array
-		(
-			'Icybee\Document::markup_document_css', array
-			(
+	'patron.markups' => [
+
+		'document:metas' => [
+
+			'Icybee\Document::markup_document_metas', [ ]
+
+		],
+
+		'document:css' => [
+
+			'Icybee\Document::markup_document_css', [
+
 				'href' => null,
 				'weight' => 100
-			)
-		),
 
-		'document:js' => array
-		(
-			'Icybee\Document::markup_document_js', array
-			(
+			]
+		],
+
+		'document:js' => [
+
+			'Icybee\Document::markup_document_js', [
+
 				'href' => null,
 				'weight' => 100
-			)
-		),
 
-		'document:title' => array
-		(
-			'Icybee\Document::markup_document_title', array()
-		),
+			]
+		],
 
-		'alerts' => array
-		(
-			'Icybee\Hooks::markup_alerts', array()
-		),
+		'document:title' => [
 
-		'body' => array
-		(
-			'Icybee\Hooks::markup_body', array
-			(
+			'Icybee\Document::markup_document_title', [ ]
+
+		],
+
+		'alerts' => [
+
+			'Icybee\Hooks::markup_alerts', [ ]
+
+		],
+
+		'body' => [
+
+			'Icybee\Hooks::markup_body', [
+
 				'class' => null
-			)
-		)
-	)
-);
+
+			]
+		]
+	]
+];

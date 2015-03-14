@@ -11,7 +11,11 @@
 
 namespace BlueTihi\Context;
 
-class LoadedNodesEvent extends \ICanBoogie\Event
+use ICanBoogie\Event;
+
+use BlueTihi\Context;
+
+class LoadedNodesEvent extends Event
 {
 	/**
 	 * Loaded nodes.
@@ -25,10 +29,10 @@ class LoadedNodesEvent extends \ICanBoogie\Event
 	 *
 	 * Warning: A node array must be provided instead of an event payload.
 	 *
-	 * @param \BlueTihi\Context $target
+	 * @param Context $target
 	 * @param array $nodes
 	 */
-	public function __construct(\BlueTihi\Context $target, array $nodes)
+	public function __construct(Context $target, array $nodes)
 	{
 		parent::__construct($target, 'loaded_nodes', [ 'nodes' => $nodes ]);
 	}

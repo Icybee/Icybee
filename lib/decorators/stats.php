@@ -56,18 +56,26 @@ class StatsDecorator extends \Brickrouge\Decorator
 		});
 	}
 
+	private $app;
+
+	public function __construct($component)
+	{
+		parent::__construct($component);
+
+		$this->app = \ICanBoogie\app();
+	}
+
 	public function render()
 	{
-		global $core;
-
 		$html = (string) $this->component;
+		$app = $this->app;
 		$now = microtime(true);
 
 		$queries_count = 0;
 		$queries_time = 0;
 		$queries_stats = [];
 
-		foreach ($core->connections as $id => $connection)
+		foreach ($app->connections as $id => $connection)
 		{
 			$count = $connection->queries_count;
 			$queries_count += $count;
@@ -94,7 +102,7 @@ class StatsDecorator extends \Brickrouge\Decorator
 			]
 		);
 
-		if (Debug::is_dev() || $core->user->is_admin)
+		if (Debug::is_dev() || $app->user->is_admin)
 		{
 			$html .= "\n\n" . $this->render_events();
 			$html .= "\n\n" . $this->render_queries();
@@ -209,11 +217,9 @@ class StatsDecorator extends \Brickrouge\Decorator
 
 	protected function render_queries()
 	{
-		global $core;
-
 		$html = '';
 
-		foreach ($core->connections as $id => $connection)
+		foreach ($this->app->connections as $id => $connection)
 		{
 			$traces = $connection->profiling;
 			$total_time = 0;

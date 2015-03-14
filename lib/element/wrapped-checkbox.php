@@ -12,7 +12,7 @@ class WrappedCheckbox extends Element
 	private $input;
 	private $label;
 
-	public function __construct(array $attributes=[])
+	public function __construct(array $attributes = [])
 	{
 		parent::__construct('span', $attributes + [
 

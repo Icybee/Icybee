@@ -19,8 +19,6 @@ class WdEMailNotifyElement extends \Brickrouge\Group
 
 	public function __construct(array $attributes=array())
 	{
-		global $core;
-
 		parent::__construct
 		(
 			$attributes + array
@@ -42,7 +40,7 @@ class WdEMailNotifyElement extends \Brickrouge\Group
 						(
 							Form::LABEL => "Sender address",
 							Element::REQUIRED => true,
-							Element::DEFAULT_VALUE => $core->site->email,
+							Element::DEFAULT_VALUE => $this->app->site->email,
 							Element::VALIDATOR => array('Brickrouge\Form::validate_email')
 						)
 					),

@@ -43,7 +43,7 @@ class Column extends \ICanBoogie\Object implements ColumnInterface
 
 	public $manager;
 
-	public function __construct(\Icybee\ManageBlock $manager, $id, array $options=[])
+	public function __construct(\Icybee\ManageBlock $manager, $id, array $options = [])
 	{
 		$this->manager = $manager;
 		$this->id = $id;
@@ -80,7 +80,7 @@ class Column extends \ICanBoogie\Object implements ColumnInterface
 	 *
 	 * @return string
 	 */
-	public function t($native, array $args=[], array $options=[])
+	public function t($native, array $args = [], array $options = [])
 	{
 		return $this->manager->t($native, $args, $options);
 	}
@@ -181,7 +181,7 @@ class Column extends \ICanBoogie\Object implements ColumnInterface
 	{
 		if (empty($this->filters['options']))
 		{
-			return;
+			return null;
 		}
 
 		$options = [];
@@ -208,7 +208,7 @@ class Column extends \ICanBoogie\Object implements ColumnInterface
 
 		if (!$options)
 		{
-			return;
+			return null;
 		}
 
 		if ($this->is_filtering)

@@ -2,13 +2,20 @@
 
 namespace Icybee\ManageBlock;
 
+use ICanBoogie\Accessor\AccessorTrait;
+
 /**
  * Display options of the manager element.
  *
  * The metas of the current user are used to persist the options.
+ *
+ * @property-read int $site_id
+ * @property-read \Icybee\Modules\Users\User $user
  */
 class Options
 {
+	use AccessorTrait;
+
 	public $start = 1;
 	public $limit = 10;
 	public $order_by = null;
@@ -17,6 +24,16 @@ class Options
 	public $filters = [];
 
 	private $name;
+
+	protected function get_site_id()
+	{
+		return \ICanBoogie\app()->site_id;
+	}
+
+	protected function get_user()
+	{
+		return \ICanBoogie\app()->user;
+	}
 
 	public function __construct($name)
 	{
@@ -51,7 +68,7 @@ class Options
 	/**
 	 * Returns an array representation of the object.
 	 *
-	 * @return array[string]mixed
+	 * @return array
 	 */
 	public function to_array()
 	{
@@ -71,8 +88,7 @@ class Options
 	{
 		$this->reset();
 
-		$app = \ICanBoogie\app();
-		$serialized = $app->user->metas["block.manager.{$this->name}:{$app->site_id}"];
+		$serialized = $this->user->metas["block.manager.{$this->name}:{$this->site_id}"];
 
 		if ($serialized)
 		{
@@ -92,10 +108,9 @@ class Options
 	 */
 	public function store()
 	{
-		$app = \ICanBoogie\app();
 		$serialized = json_encode($this->to_array());
 
-		$app->user->metas["block.manager.{$this->name}:{$app->site_id}"] = $serialized;
+		$this->user->metas["block.manager.{$this->name}:{$this->site_id}"] = $serialized;
 
 		return $this;
 	}
@@ -105,7 +120,7 @@ class Options
 	 *
 	 * @param array $modifiers
 	 *
-	 * @return \Icybee\ManageBlock\Options
+	 * @return Options
 	 */
 	public function update(array $modifiers)
 	{
@@ -175,7 +190,7 @@ class Options
 	 *
 	 * @return boolean
 	 */
-	public function is_filtering($column_id=null)
+	public function is_filtering($column_id = null)
 	{
 		if ($column_id === null)
 		{

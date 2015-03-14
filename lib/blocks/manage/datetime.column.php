@@ -74,7 +74,7 @@ class DateTimeColumn extends Column
 
 		if (!$date)
 		{
-			return;
+			return null;
 		}
 
 		if (!($date instanceof DateTime))
@@ -84,7 +84,7 @@ class DateTimeColumn extends Column
 
 		if ($date->is_empty)
 		{
-			return;
+			return null;
 		}
 
 		if ($this->discreet && $this->discreet_value == $date->as_date)

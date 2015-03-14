@@ -19,7 +19,7 @@ abstract class Widget extends Element
 	 * @param string $type
 	 * @param array $attributes
 	 */
-	public function __construct($type, array $attributes=[])
+	public function __construct($type, array $attributes = [])
 	{
 		$class = get_class($this);
 		$constructor = basename(strtr($class, '\\', '/'));

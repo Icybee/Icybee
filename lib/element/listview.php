@@ -26,7 +26,7 @@ class ListView extends Element
 	 */
 	protected $columns;
 
-	public function __construct(array $attributes=[])
+	public function __construct(array $attributes = [])
 	{
 		unset($this->columns);
 
@@ -152,7 +152,7 @@ EOT;
 	 *
 	 * @param array $columns The columns to render.
 	 *
-	 * @return array[string]mixed
+	 * @return array
 	 */
 	protected function render_cells(array $columns)
 	{
@@ -185,7 +185,7 @@ EOT;
 	 *
 	 * @param array $rendered_cells
 	 *
-	 * @return array[string]mixed
+	 * @return array
 	 */
 	protected function alter_rendered_cells(array $rendered_cells)
 	{
@@ -197,7 +197,7 @@ EOT;
 	 *
 	 * @param array $rendered_cells
 	 *
-	 * @return array[]array
+	 * @return array
 	 */
 	protected function columns_to_rows(array $rendered_cells)
 	{
@@ -221,7 +221,7 @@ EOT;
 	 *
 	 * @param array $rows
 	 *
-	 * @return array[]Element
+	 * @return Element[]
 	 */
 	protected function render_rows(array $rows)
 	{

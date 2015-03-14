@@ -12,9 +12,9 @@
 namespace Icybee;
 
 use ICanBoogie\HTTP\ForceRedirect;
-use ICanBoogie\HTTP\HTTPError;
 use ICanBoogie\I18n;
 use ICanBoogie\Operation;
+use ICanBoogie\PermissionRequired;
 
 use Brickrouge\A;
 use Brickrouge\Button;
@@ -23,9 +23,19 @@ use Brickrouge\Form;
 use Brickrouge\SplitButton;
 
 use Icybee\Element\ActionbarToolbar;
+use Icybee\Modules\Sites\Site;
 
 /**
  * A record editor.
+ *
+ * @property-read \ICanBoogie\Events $events
+ * @property-read \ICanBoogie\Module\ModelCollection $models
+ * @property \ICanBoogie\ActiveRecord $record
+ * @property-read \ICanBoogie\HTTP\Request $request
+ * @property-read \ICanBoogie\Session $session
+ * @property-read \Icybee\Modules\Sites\Site $site
+ * @property-read \Icybee\Modules\Users\User $user
+ * @property-read \Icybee\Modules\Views\Collection $views
  */
 class EditBlock extends FormBlock
 {
@@ -43,6 +53,51 @@ class EditBlock extends FormBlock
 	 */
 	protected $key;
 
+	protected function get_events()
+	{
+		return $this->app->events;
+	}
+
+	protected function get_models()
+	{
+		return $this->app->models;
+	}
+
+	/**
+	 * Returns the record being edited or null if it's a new record.
+	 *
+	 * @return \ICanBoogie\ActiveRecord
+	 */
+	protected function lazy_get_record()
+	{
+		return $this->key ? $this->module->model[$this->key] : null;
+	}
+
+	protected function get_request()
+	{
+		return $this->app->request;
+	}
+
+	protected function get_session()
+	{
+		return $this->app->session;
+	}
+
+	protected function get_site()
+	{
+		return $this->app->site;
+	}
+
+	protected function get_user()
+	{
+		return $this->app->user;
+	}
+
+	protected function get_views()
+	{
+		return $this->app->views;
+	}
+
 	/**
 	 * Constructor.
 	 *
@@ -50,7 +105,7 @@ class EditBlock extends FormBlock
 	 * @param array $attributes
 	 * @param array $params
 	 */
-	public function __construct(Module $module, array $attributes=[], array $params=[])
+	public function __construct(Module $module, array $attributes = [], array $params = [])
 	{
 		$key = isset($params[0]) ? $params[0] : null;
 
@@ -116,9 +171,7 @@ class EditBlock extends FormBlock
 
 	protected function get_permission()
 	{
-		global $core;
-
-		$user = $core->user;
+		$user = $this->user;
 		$permission = $user->has_permission(Module::PERMISSION_CREATE, $this->module);
 
 		#
@@ -137,14 +190,12 @@ class EditBlock extends FormBlock
 
 	protected function access_control()
 	{
-		global $core;
-
 		$key = $this->key;
 		$module_id = $this->module->id;
 
 		if (!$key && !$this->permission)
 		{
-			throw new HTTPError(\ICanBoogie\format("You don't have permission to create records in the %id module.", [ 'id' => $module_id ]), 403);
+			throw new PermissionRequired(\ICanBoogie\format("You don't have permission to create records in the %id module.", [ 'id' => $module_id ]), 403);
 		}
 
 		#
@@ -154,23 +205,13 @@ class EditBlock extends FormBlock
 
 		$record = $this->record;
 
-		if ($record && !($record instanceof \Icybee\Modules\Sites\Site)
-		&& !empty($record->siteid) && $record->siteid != $core->site_id)
+		if ($record && !($record instanceof Site)
+		&& !empty($record->siteid) && $record->siteid != $this->site->siteid)
 		{
-			$url = $core->models['sites'][$record->siteid]->url;
+			$url = $this->models['sites'][$record->siteid]->url;
 
 			throw new ForceRedirect("$url/admin/$module_id/$key/edit");
 		}
-	}
-
-	/**
-	 * Returns the record being edited or null if its a new record.
-	 *
-	 * @return \ICanBoogie\ActiveRecord
-	 */
-	protected function lazy_get_record()
-	{
-		return $this->key ? $this->module->model[$this->key] : null;
 	}
 
 	/*
@@ -240,18 +281,16 @@ class EditBlock extends FormBlock
 	 */
 	protected function lazy_get_values()
 	{
-		global $core;
-
 		$schema = $this->module->model->extended_schema;
 		$record = $this->record;
-		$params = $core->request->request_params;
+		$params = $this->request->request_params;
 
 		return array_merge
 		(
 			parent::lazy_get_values(),
-			$schema ? array_fill_keys(array_keys($schema['fields']), null) : array(),
-			$record ? $record->to_array() : array(),
-			$params ? $params : array()
+			$schema ? array_fill_keys(array_keys($schema['fields']), null) : [],
+			$record ? $record->to_array() : [],
+			$params ? $params : []
 		);
 	}
 
@@ -328,12 +367,13 @@ class EditBlock extends FormBlock
 	 */
 	protected function alter_actions(array $actions, array $params)
 	{
-		global $core;
-
+		$app = $this->app;
 		$module = $this->module;
 		$record = $this->record;
 
-		$mode = isset($core->session->operation_save_mode[$module->id]) ? $core->session->operation_save_mode[$module->id] : OPERATION_SAVE_MODE_LIST;
+		$mode = isset($this->session->operation_save_mode[$module->id])
+			? $this->session->operation_save_mode[$module->id]
+			: OPERATION_SAVE_MODE_LIST;
 
 		$save_mode_options =[
 
@@ -345,7 +385,7 @@ class EditBlock extends FormBlock
 
 		try
 		{
-			$core->views["{$module->id}/view"];
+			$this->views["{$module->id}/view"];
 			$save_mode_options[OPERATION_SAVE_MODE_DISPLAY] = I18n\t('save_mode_display', [], [ 'scope' => 'option' ]);
 		}
 		catch (\Icybee\Modules\Views\Collection\ViewNotDefined $e)
@@ -369,9 +409,7 @@ class EditBlock extends FormBlock
 		$key = $this->key;
 		$block = $this;
 
-		$core->events->attach(function(ActionbarToolbar\CollectEvent $event, ActionbarToolbar $sender) use($record, $module, $key, $save_mode_options, $mode, $block) {
-
-			global $core;
+		$this->events->attach(function(ActionbarToolbar\CollectEvent $event, ActionbarToolbar $sender) use($record, $module, $key, $save_mode_options, $mode, $block, $app) {
 
 			if ($record)
 			{
@@ -400,8 +438,8 @@ class EditBlock extends FormBlock
 			}
 
 			if ($key
-			&& $core->user->has_permission(Module::PERMISSION_MANAGE, $module)
-			&& $core->user->has_ownership($module, $record))
+			&& $this->user->has_permission(Module::PERMISSION_MANAGE, $module)
+			&& $this->user->has_ownership($module, $record))
 			{
 				$event->buttons[] = new A(I18n\t('Delete', [], [ 'scope' => 'button' ]), \ICanBoogie\Routing\contextualize('/admin/' . $module . '/' . $key . '/delete'), [
 
@@ -465,8 +503,6 @@ class EditBlock extends FormBlock
 	 */
 	protected function alter_element(Form $element, array $params)
 	{
-		global $core;
-
 		$element = parent::alter_element($element, $params);
 
 		if (!$this->permission)
@@ -475,7 +511,7 @@ class EditBlock extends FormBlock
 			$element[Form::DISABLED] = true;
 		}
 
-		$language = $core->site->language;
+		$language = $this->site->language;
 
 		foreach ($element as $control)
 		{
@@ -492,6 +528,8 @@ class EditBlock extends FormBlock
 }
 
 namespace Icybee\EditBlock;
+
+use Icybee\EditBlock;
 
 /**
  * Base class for the alter events of the {@link EditBlock} class.
@@ -523,10 +561,10 @@ class BeforeAlterAttributesEvent extends AlterEvent
 	/**
 	 * The event is constructed with the type `alter_attributes:before`.
 	 *
-	 * @param \Icybee\EditBlock $target
+	 * @param EditBlock $target
 	 * @param array $properties
 	 */
-	public function __construct(\Icybee\EditBlock $target, array $properties)
+	public function __construct(EditBlock $target, array $properties)
 	{
 		parent::__construct($target, 'alter_attributes:before', $properties);
 	}
@@ -540,10 +578,10 @@ class AlterAttributesEvent extends AlterEvent
 	/**
 	 * The event is constructed with the type `alter_attributes`.
 	 *
-	 * @param \Icybee\EditBlock $target
+	 * @param EditBlock $target
 	 * @param array $properties
 	 */
-	public function __construct(\Icybee\EditBlock $target, array $properties)
+	public function __construct(EditBlock $target, array $properties)
 	{
 		parent::__construct($target, 'alter_attributes', $properties);
 	}
@@ -557,10 +595,10 @@ class BeforeAlterValuesEvent extends AlterEvent
 	/**
 	 * The event is constructed with the type `alter_values:before`.
 	 *
-	 * @param \Icybee\EditBlock $target
+	 * @param EditBlock $target
 	 * @param array $properties
 	 */
-	public function __construct(\Icybee\EditBlock $target, array $properties)
+	public function __construct(EditBlock $target, array $properties)
 	{
 		parent::__construct($target, 'alter_values:before', $properties);
 	}
@@ -574,10 +612,10 @@ class AlterValuesEvent extends AlterEvent
 	/**
 	 * The event is constructed with the type `alter_values`.
 	 *
-	 * @param \Icybee\EditBlock $target
+	 * @param EditBlock $target
 	 * @param array $properties
 	 */
-	public function __construct(\Icybee\EditBlock $target, array $properties)
+	public function __construct(EditBlock $target, array $properties)
 	{
 		parent::__construct($target, 'alter_values', $properties);
 	}
@@ -591,10 +629,10 @@ class BeforeAlterChildrenEvent extends AlterEvent
 	/**
 	 * The event is constructed with the type `alter_children:before`.
 	 *
-	 * @param \Icybee\EditBlock $target
+	 * @param EditBlock $target
 	 * @param array $properties
 	 */
-	public function __construct(\Icybee\EditBlock $target, array $properties)
+	public function __construct(EditBlock $target, array $properties)
 	{
 		parent::__construct($target, 'alter_children:before', $properties);
 	}
@@ -608,10 +646,10 @@ class AlterChildrenEvent extends AlterEvent
 	/**
 	 * The event is constructed with the type `alter_children`.
 	 *
-	 * @param \Icybee\EditBlock $target
+	 * @param EditBlock $target
 	 * @param array $properties
 	 */
-	public function __construct(\Icybee\EditBlock $target, array $properties)
+	public function __construct(EditBlock $target, array $properties)
 	{
 		parent::__construct($target, 'alter_children', $properties);
 	}
@@ -625,10 +663,10 @@ class BeforeAlterActionsEvent extends AlterEvent
 	/**
 	 * The event is constructed with the type `alter_actions:before`.
 	 *
-	 * @param \Icybee\EditBlock $target
+	 * @param EditBlock $target
 	 * @param array $properties
 	 */
-	public function __construct(\Icybee\EditBlock $target, array $properties)
+	public function __construct(EditBlock $target, array $properties)
 	{
 		parent::__construct($target, 'alter_actions:before', $properties);
 	}
@@ -642,10 +680,10 @@ class AlterActionsEvent extends AlterEvent
 	/**
 	 * The event is constructed with the type `alter_actions`.
 	 *
-	 * @param \Icybee\EditBlock $target
+	 * @param EditBlock $target
 	 * @param array $properties
 	 */
-	public function __construct(\Icybee\EditBlock $target, array $properties)
+	public function __construct(EditBlock $target, array $properties)
 	{
 		parent::__construct($target, 'alter_actions', $properties);
 	}

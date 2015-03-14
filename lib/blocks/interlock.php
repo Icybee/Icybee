@@ -16,6 +16,9 @@ use Brickrouge\Element;
 /**
  * An interlock block, displayed instead of the edit block when another user has locked the record
  * to edit.
+ *
+ * @property-read \ICanBoogie\Core $app
+ * @property-read \ICanBoogie\Module\ModelCollection $models
  */
 class InterlockBlock extends Element
 {
@@ -35,6 +38,11 @@ class InterlockBlock extends Element
 
 	protected $lock;
 
+	protected function get_models()
+	{
+		return $this->app->models;
+	}
+
 	public function __construct(Module $module, array $attributes, array $params)
 	{
 		$this->module = $module;
@@ -52,11 +60,11 @@ class InterlockBlock extends Element
 
 	public function render_inner_html()
 	{
-		global $core;
+		/* @var $lock_user \Icybee\Modules\Users\User */
 
 		$lock = $this->lock;
-		$luser = $core->models['users'][$lock['uid']];
-		$luser_url = \ICanBoogie\Routing\contextualize("/admin/users/{$luser->uid}/edit");
+		$lock_user = $this->models['users'][$lock['uid']];
+		$lock_user_url = \ICanBoogie\Routing\contextualize("/admin/users/{$lock_user->uid}/edit");
 
 		$time = round((strtotime($lock['until']) - time()) / 60);
 		$message = $time ? "Le verrou devrait disparaitre dans $time minutes." : "Le verrou devrait disparaitre dans moins d'une minutes.";
@@ -68,7 +76,7 @@ class InterlockBlock extends Element
 	<input type="hidden" name="retry" value="1" />
 
 	<p>Impossible d'éditer l'enregistrement parce qu'il est en cours d'édition par
-	<a title="Username: $luser->username" href="$luser_url">$luser->name</a>.</p>
+	<a title="Username: $lock_user->username" href="$lock_user_url">$lock_user->name</a>.</p>
 
 	<div class="form-actions">
 	<button class="btn btn-success">Réessayer</button> <span class="small light">$message</span>

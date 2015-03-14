@@ -11,20 +11,52 @@
 
 namespace Icybee\Element;
 
-use ICanBoogie\I18n;
 use ICanBoogie\Module;
 use ICanBoogie\Module\Descriptor;
 use ICanBoogie\PropertyNotDefined;
 
 use Brickrouge\A;
 use Brickrouge\DropdownMenu;
+use Brickrouge\Element;
 
 /**
  * Admin navigation bar.
+ *
+ * @property \ICanBoogie\Core $app
+ * @property \ICanBoogie\Module\ModuleCollection $modules
+ * @property \ICanBoogie\HTTP\Request $request
+ * @property \ICanBoogie\Routing\Route $route
+ * @property \ICanBoogie\Routing\Routes $routes
+ * @property \Icybee\Modules\Users\User $user
  */
-class Navigation extends \Brickrouge\Element
+class Navigation extends Element
 {
-	public function __construct(array $attributes=[])
+	protected function lazy_get_modules()
+	{
+		return $this->app->modules;
+	}
+
+	protected function lazy_get_request()
+	{
+		return $this->app->request;
+	}
+
+	protected function lazy_get_route()
+	{
+		return $this->request->context->route;
+	}
+
+	protected function lazy_get_routes()
+	{
+		return $this->app->routes;
+	}
+
+	protected function lazy_get_user()
+	{
+		return $this->app->user;
+	}
+
+	public function __construct(array $attributes = [])
 	{
 		parent::__construct('div', $attributes + [
 
@@ -35,16 +67,14 @@ class Navigation extends \Brickrouge\Element
 
 	protected function render_inner_html()
 	{
-		global $core;
-
 		$rc = parent::render_inner_html();
 
-		$links = [ ];
-		$routes = $core->routes;
-		$user = $core->user;
-		$menus = [ ];
+		$links = [];
+		$routes = $this->routes;
+		$user = $this->user;
+		$menus = [];
 
-		$modules = $core->modules;
+		$modules = $this->modules;
 		$descriptors = $modules->descriptors;
 
 		foreach ($routes as $route)
@@ -61,7 +91,7 @@ class Navigation extends \Brickrouge\Element
 				continue;
 			}
 
-			$category = $descriptors[$module_id][Module\Descriptor::CATEGORY];
+			$category = $descriptors[$module_id][Descriptor::CATEGORY];
 
 			$permission = isset($route['permission']) ? $route['permission'] : Module::PERMISSION_ACCESS;
 
@@ -72,7 +102,7 @@ class Navigation extends \Brickrouge\Element
 
 			$menus[$category][$route['pattern']] = $route;
 
-			$links[$category] = I18n\t($category, array(), array('scope' => 'module_category')); // TODO: a same category is translated multiple time
+			$links[$category] = $this->t($category, [], [ 'scope' => 'module_category' ]); // TODO: a same category is translated multiple time
 		}
 
 		uasort($links, 'ICanBoogie\unaccent_compare_ci');
@@ -93,7 +123,7 @@ class Navigation extends \Brickrouge\Element
 
 		try
 		{
-			$matching_route = $core->request->context->route;
+			$matching_route = $this->route;
 		}
 		catch (PropertyNotDefined $e) {}
 
@@ -136,18 +166,16 @@ class Navigation extends \Brickrouge\Element
 
 	protected function render_dropdown_menu(array $routes)
 	{
-		global $core;
-
 		$options = [];
-		$descriptors = $core->modules->descriptors;
+		$descriptors = $this->modules->descriptors;
 
 		foreach ($routes as $route)
 		{
 			$module_id = $route['module'];
 			$module_flat_id = strtr($module_id, '.', '_');
-			$title = I18n\t($module_flat_id, [], [ 'scope' => 'module_title', 'default' => $descriptors[$module_id][Descriptor::TITLE] ]);
+			$title = $this->t($module_flat_id, [], [ 'scope' => 'module_title', 'default' => $descriptors[$module_id][Descriptor::TITLE] ]);
 			$url = \ICanBoogie\Routing\contextualize($route['pattern']);
-			$options[$url] = array($title, $url);
+			$options[$url] = [ $title, $url ];
 		}
 
 		uasort($options, function($a, $b) {
@@ -168,7 +196,7 @@ class Navigation extends \Brickrouge\Element
 
 			DropdownMenu::OPTIONS => $options,
 
-			'value' => $core->request->path
+			'value' => $this->request->path
 
 		]);
 	}

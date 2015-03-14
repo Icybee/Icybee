@@ -12,30 +12,37 @@
 namespace Icybee;
 
 use ICanBoogie\I18n;
+use ICanBoogie\Object;
 use ICanBoogie\Operation;
 
 use Brickrouge\Button;
+use Brickrouge\Document;
 use Brickrouge\Element;
 use Brickrouge\Form;
 
 /**
  * Base class for form type blocks.
  *
- * @property array $actions The actions for the {@link Form} element.
- * @property array $attributes The attributes for the {@link Form} element.
+ * @property-read \ICanBoogie\Core $app
+ * @property-read Document $document
+ * @property-read boolean $permission
+ *
  * @property Form $element The {@link Form} element.
- * @property array $values The values for the {@link Form} element.
+ * @property array $attributes Attributes for the {@link Form} element.
+ * @property array $actions Actions for the {@link Form} element.
+ * @property array $children Children for the {@link Form} element.
+ * @property array $values Values for the {@link Form} element.
  */
-abstract class FormBlock extends \ICanBoogie\Object
+abstract class FormBlock extends Object
 {
 	/**
 	 * Adds assets to the document.
 	 *
 	 * The method doesn't add any asset.
 	 *
-	 * @param \Brickrouge\Document $document
+	 * @inheritdoc
 	 */
-	static protected function add_assets(\Brickrouge\Document $document)
+	static protected function add_assets(Document $document)
 	{
 
 	}
@@ -54,18 +61,9 @@ abstract class FormBlock extends \ICanBoogie\Object
 	 */
 	protected $initial_attributes;
 
-	/**
-	 * Constructor.
-	 *
-	 * @param Module $module
-	 * @param array $attributes
-	 */
-	public function __construct(Module $module, array $attributes=[])
+	protected function get_document()
 	{
-		$this->module = $module;
-		$this->initial_attributes = $attributes;
-
-		$this->access_control();
+		return $this->app->document;
 	}
 
 	/**
@@ -74,6 +72,20 @@ abstract class FormBlock extends \ICanBoogie\Object
 	 * @return bool
 	 */
 	abstract protected function get_permission();
+
+	/**
+	 * Constructor.
+	 *
+	 * @param Module $module
+	 * @param array $attributes
+	 */
+	public function __construct(Module $module, array $attributes = [])
+	{
+		$this->module = $module;
+		$this->initial_attributes = $attributes;
+
+		$this->access_control();
+	}
 
 	/**
 	 * Controls the access to the block.
@@ -132,9 +144,7 @@ abstract class FormBlock extends \ICanBoogie\Object
 	 */
 	public function render()
 	{
-		global $core;
-
-		static::add_assets($core->document);
+		static::add_assets($this->document);
 
 		$this->attributes;
 		$attributes = &$this->attributes;
@@ -483,10 +493,13 @@ abstract class FormBlock extends \ICanBoogie\Object
 
 namespace Icybee\FormBlock;
 
+use ICanBoogie\Event;
+use Icybee\FormBlock;
+
 /**
  * Base class for the alter events of the {@link FormBlock} class.
  */
-abstract class AlterEvent extends \ICanBoogie\Event
+abstract class AlterEvent extends Event
 {
 	/**
 	 * The module creating the block.
@@ -532,10 +545,10 @@ class BeforeAlterAttributesEvent extends AlterEvent
 	/**
 	 * The event is constructed with the type `alter_attributes:before`.
 	 *
-	 * @param \Icybee\FormBlock $target
+	 * @param FormBlock $target
 	 * @param array $payload
 	 */
-	public function __construct(\Icybee\FormBlock $target, array $payload)
+	public function __construct(FormBlock $target, array $payload)
 	{
 		parent::__construct($target, 'alter_attributes:before', $payload);
 	}
@@ -549,10 +562,10 @@ class AlterAttributesEvent extends AlterEvent
 	/**
 	 * The event is constructed with the type `alter_attributes`.
 	 *
-	 * @param \Icybee\FormBlock $target
+	 * @param FormBlock $target
 	 * @param array $payload
 	 */
-	public function __construct(\Icybee\FormBlock $target, array $payload)
+	public function __construct(FormBlock $target, array $payload)
 	{
 		parent::__construct($target, 'alter_attributes', $payload);
 	}
@@ -566,10 +579,10 @@ class BeforeAlterValuesEvent extends AlterEvent
 	/**
 	 * The event is constructed with the type `alter_properties:before`.
 	 *
-	 * @param \Icybee\FormBlock $target
+	 * @param FormBlock $target
 	 * @param array $payload
 	 */
-	public function __construct(\Icybee\FormBlock $target, array $payload)
+	public function __construct(FormBlock $target, array $payload)
 	{
 		parent::__construct($target, 'alter_values:before', $payload);
 	}
@@ -583,10 +596,10 @@ class AlterValuesEvent extends AlterEvent
 	/**
 	 * The event is constructed with the type `alter_properties`.
 	 *
-	 * @param \Icybee\FormBlock $target
+	 * @param FormBlock $target
 	 * @param array $payload
 	 */
-	public function __construct(\Icybee\FormBlock $target, array $payload)
+	public function __construct(FormBlock $target, array $payload)
 	{
 		parent::__construct($target, 'alter_values', $payload);
 	}
@@ -600,10 +613,10 @@ class BeforeAlterChildrenEvent extends AlterEvent
 	/**
 	 * The event is constructed with the type `alter_children:before`.
 	 *
-	 * @param \Icybee\FormBlock $target
+	 * @param FormBlock $target
 	 * @param array $payload
 	 */
-	public function __construct(\Icybee\FormBlock $target, array $payload)
+	public function __construct(FormBlock $target, array $payload)
 	{
 		parent::__construct($target, 'alter_children:before', $payload);
 	}
@@ -617,10 +630,10 @@ class AlterChildrenEvent extends AlterEvent
 	/**
 	 * The event is constructed with the type `alter_children`.
 	 *
-	 * @param \Icybee\FormBlock $target
+	 * @param FormBlock $target
 	 * @param array $payload
 	 */
-	public function __construct(\Icybee\FormBlock $target, array $payload)
+	public function __construct(FormBlock $target, array $payload)
 	{
 		parent::__construct($target, 'alter_children', $payload);
 	}
@@ -634,10 +647,10 @@ class BeforeAlterActionsEvent extends AlterEvent
 	/**
 	 * The event is constructed with the type `alter_actions:before`.
 	 *
-	 * @param \Icybee\FormBlock $target
+	 * @param FormBlock $target
 	 * @param array $payload
 	 */
-	public function __construct(\Icybee\FormBlock $target, array $payload)
+	public function __construct(FormBlock $target, array $payload)
 	{
 		parent::__construct($target, 'alter_actions:before', $payload);
 	}
@@ -651,10 +664,10 @@ class AlterActionsEvent extends AlterEvent
 	/**
 	 * The event is constructed with the type `alter_actions`.
 	 *
-	 * @param \Icybee\FormBlock $target
+	 * @param FormBlock $target
 	 * @param array $payload
 	 */
-	public function __construct(\Icybee\FormBlock $target, array $payload)
+	public function __construct(FormBlock $target, array $payload)
 	{
 		parent::__construct($target, 'alter_actions', $payload);
 	}

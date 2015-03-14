@@ -18,24 +18,33 @@ use Brickrouge\A;
 use Brickrouge\Element;
 use Brickrouge\DropdownMenu;
 
-use Icybee\Modules\Users\Roles\Role;
-
 /**
  * The _user menu_ element is made of two parts: a link to the user profile and a dropdown menu.
  * The dropdown menu provides a link to the user profile and a link to logout the user.
+ *
+ * @property-read string $path
+ * @property-read \Icybee\Modules\Users\User $user
  */
 class UserMenu extends Element
 {
-	public function __construct(array $attributes=[])
+	protected function get_path()
+	{
+		return $this->app->request->path;
+	}
+
+	protected function get_user()
+	{
+		return $this->app->user;
+	}
+
+	public function __construct(array $attributes = [])
 	{
 		parent::__construct('div', $attributes);
 	}
 
 	protected function render_inner_html()
 	{
-		global $core;
-
-		$user = $core->user;
+		$user = $this->user;
 
 		$username = new A($user->name, \ICanBoogie\Routing\contextualize('/admin/profile'));
 
@@ -62,7 +71,7 @@ class UserMenu extends Element
 
 			DropdownMenu::OPTIONS => $options,
 
-			'value' => $core->request->path
+			'value' => $this->path
 
 		]);
 

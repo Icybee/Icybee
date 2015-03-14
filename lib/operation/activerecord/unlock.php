@@ -22,11 +22,9 @@ class Unlock extends Operation
 {
 	protected function reset()
 	{
-		global $core;
-
 		parent::reset();
 
-		$this->module = $core->modules[$this->request['module']];
+		$this->module = $this->app->modules[$this->request['module']];
 		$this->key = $this->request['key'];
 	}
 

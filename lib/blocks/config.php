@@ -33,9 +33,7 @@ abstract class ConfigBlock extends FormBlock
 
 	protected function get_permission()
 	{
-		global $core;
-
-		return $core->user->has_permission(Module::PERMISSION_ADMINISTER, $this->module);
+		return $this->app->user->has_permission(Module::PERMISSION_ADMINISTER, $this->module);
 	}
 
 	protected function access_control()
@@ -72,14 +70,11 @@ abstract class ConfigBlock extends FormBlock
 
 	protected function alter_values(array $values, array $params)
 	{
-		global $core;
-
 		$values = parent::alter_values($values, $params);
 
 		$iterator = new Form([ Element::CHILDREN => $this->children ]);
-
-		$registry = $core->registry;
-		$local = $core->site->metas;
+		$registry = $this->app->registry;
+		$local = $this->app->site->metas;
 
 		foreach ($iterator as $child)
 		{

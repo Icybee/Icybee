@@ -11,17 +11,54 @@
 
 namespace Icybee;
 
+use ICanBoogie\Accessor\AccessorTrait;
 use ICanBoogie\Debug;
 
 use Brickrouge\Alert;
 
+/**
+ * @property-read \ICanBoogie\HTTP\Request $request
+ * @property-read \ICanBoogie\Session $session
+ * @property-read \Icybee\Modules\Sites\Site $site
+ * @property-read int $site_id
+ * @property-read \Icybee\Modules\Users\User $user
+ */
 class AdminDecorator
 {
+	use AccessorTrait;
+
 	protected $component;
+	private $app;
+
+	protected function get_request()
+	{
+		return $this->app->request;
+	}
+
+	protected function get_session()
+	{
+		return $this->app->session;
+	}
+
+	protected function get_site()
+	{
+		return $this->app->site;
+	}
+
+	protected function get_site_id()
+	{
+		return $this->app->site_id;
+	}
+
+	protected function get_user()
+	{
+		return $this->app->user;
+	}
 
 	public function __construct($component)
 	{
 		$this->component = $component;
+		$this->app = \ICanBoogie\app();
 	}
 
 	protected $changed_site = false;
@@ -40,19 +77,19 @@ class AdminDecorator
 
 	public function render()
 	{
-		global $core;
+		$app = $this->app;
+		$this->add_assets($app->document);
 
-		$this->add_assets($core->document);
+		$session = $this->session;
+		$site_id = $this->site_id;
 
-		#
-
-		if ($core->session->last_site_id)
+		if ($session->last_site_id)
 		{
-			if ($core->session->last_site_id != $core->site_id)
+			if ($session->last_site_id != $site_id)
 			{
-				$core->session->last_site_id = $core->site_id;
+				$session->last_site_id = $site_id;
 
-				if (!$core->request['ssc'])
+				if (!$this->request['ssc'])
 				{
 					$this->changed_site = true;
 				}
@@ -60,7 +97,7 @@ class AdminDecorator
 		}
 		else
 		{
-			$core->session->last_site_id = $core->site_id;
+			$session->last_site_id = $site_id;
 		}
 
 		if ($this->changed_site)
@@ -105,15 +142,13 @@ EOT;
 
 	protected function render_navigation()
 	{
-		global $core;
-
-		$user = $core->user;
+		$user = $this->user;
 
 		if ($user->is_guest || $user instanceof \Icybee\Modules\Members\Member)
 		{
 			$this->title = 'Icybee';
 
-			return;
+			return null;
 		}
 
 		return new \Icybee\Element\Navigation([ 'id' => 'navigation' ]);
@@ -121,10 +156,8 @@ EOT;
 
 	protected function render_shortcuts()
 	{
-		global $core;
-
-		$user = $core->user;
-		$site = $core->site;
+		$user = $this->user;
+		$site = $this->site;
 
 		if ($user->is_guest)
 		{
@@ -143,12 +176,10 @@ EOT;
 
 	protected function render_alerts()
 	{
-		global $core;
-
 		$html = '';
 		$types = [ 'success', 'info', 'error' ];
 
-		if (Debug::$mode == Debug::MODE_DEV || $core->user->is_admin)
+		if (Debug::$mode == Debug::MODE_DEV || $this->user->is_admin)
 		{
 			$types[] = 'debug';
 		}

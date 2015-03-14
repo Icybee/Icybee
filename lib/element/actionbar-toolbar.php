@@ -21,16 +21,16 @@ use Brickrouge\Element;
  */
 class ActionbarToolbar extends Element
 {
-	public function __construct(array $attributes=array())
+	public function __construct(array $attributes = [])
 	{
-		parent::__construct('div', $attributes + array('class' => 'actionbar-toolbar btn-toolbar'));
+		parent::__construct('div', $attributes + [ 'class' => 'actionbar-toolbar btn-toolbar' ]);
 	}
 
 	protected function render_inner_html()
 	{
 		$buttons = $this->collect();
 
-		new ActionbarToolbar\CollectEvent($this, array('buttons' => &$buttons));
+		new ActionbarToolbar\CollectEvent($this, [ 'buttons' => &$buttons ]);
 
 		if (empty($buttons))
 		{

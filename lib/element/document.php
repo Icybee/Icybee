@@ -13,6 +13,10 @@ namespace Icybee;
 
 use Icybee\Modules\Pages\PageRenderer;
 
+/**
+ * @property \ICanBoogie\Core $app
+ * @property \Icybee\Modules\Pages\Page $page
+ */
 class Document extends \Brickrouge\Document
 {
 	/**
@@ -31,19 +35,17 @@ class Document extends \Brickrouge\Document
 	 * Markups
 	 */
 
-	static public function markup_document_title(array $args, \Patron\Engine $patron, $template)
+	static public function markup_document_title()
 	{
-		global $core;
-
-		$document = $core->document;
+		$document = \Brickrouge\get_document();
 
 		$title = isset($document->title) ? $document->title : null;
 
-		new Document\BeforeRenderTitleEvent($document, array('title' => &$title));
+		new Document\BeforeRenderTitleEvent($document, [ 'title' => &$title ]);
 
 		$rc = '<title>' . \ICanBoogie\escape($title) . '</title>';
 
-		new Document\RenderTitleEvent($document, array('html' => &$rc));
+		new Document\RenderTitleEvent($document, [ 'html' => &$rc ]);
 
 		return $rc;
 	}
@@ -59,19 +61,9 @@ class Document extends \Brickrouge\Document
 	 */
 	static public function markup_document_metas()
 	{
-		global $core;
-
-		$document = $core->document;
-
-		$http_equiv = array
-		(
-			'Content-Type' => 'text/html; charset=' . \ICanBoogie\CHARSET
-		);
-
-		$metas = array
-		(
-			'og' => array()
-		);
+		$document = \Brickrouge\get_document();
+		$http_equiv = [ 'Content-Type' => 'text/html; charset=' . \ICanBoogie\CHARSET ];
+		$metas = [ 'og' => [] ];
 
 		new Document\BeforeRenderMetasEvent($document, array('http_equiv' => &$http_equiv, 'metas' => &$metas));
 
@@ -105,7 +97,7 @@ class Document extends \Brickrouge\Document
 			}
 		}
 
-		new Document\RenderMetasEvent($document, array('html' => &$html));
+		new Document\RenderMetasEvent($document, [ 'html' => &$html ]);
 
 		return $html;
 	}
@@ -153,30 +145,27 @@ class Document extends \Brickrouge\Document
 	 */
 	static public function markup_document_css(array $args, \Patron\Engine $engine, $template)
 	{
-		global $core;
+		$app = \ICanBoogie\app();
+		$document = $app->document;
 
 		if (isset($args['href']))
 		{
-			$core->document->css->add($args['href'], $args['weight'], dirname($engine->get_file()));
+			$document->css->add($args['href'], $args['weight'], dirname($engine->get_file()));
 
-			return;
+			return null;
 		}
 
 		$placeholder = '<!-- document-css-placeholder-' . md5(uniqid()) . ' -->';
 
-		$core->events->attach(function(PageRenderer\RenderEvent $event, PageRenderer $target) use($engine, $template, $placeholder)
+		$app->events->attach(function(PageRenderer\RenderEvent $event, PageRenderer $target) use($engine, $template, $placeholder, $document)
 		{
 			#
 			# The event is chained so that it gets executed once the event chain has been
 			# processed.
 			#
 
-			$event->chain(function(PageRenderer\RenderEvent $event) use($engine, $template, $placeholder)
+			$event->chain(function(PageRenderer\RenderEvent $event) use($engine, $template, $placeholder, $document)
 			{
-				global $core;
-
-				$document = $core->document;
-
 				$html = $template ? $engine($template, $document->css) : (string) $document->css;
 
 				$event->replace($placeholder, $html);
@@ -226,30 +215,27 @@ class Document extends \Brickrouge\Document
 	 */
 	static public function markup_document_js(array $args, \Patron\Engine $engine, $template)
 	{
-		global $core;
+		$app = \ICanBoogie\app();
+		$document = $app->document;
 
 		if (isset($args['href']))
 		{
-			$core->document->js->add($args['href'], $args['weight'], dirname($engine->get_file()));
+			$document->js->add($args['href'], $args['weight'], dirname($engine->get_file()));
 
-			return;
+			return null;
 		}
 
 		$placeholder = '<!-- document-js-placeholder-' . md5(uniqid()) . ' -->';
 
-		$core->events->attach(function(PageRenderer\RenderEvent $event, PageRenderer $target) use($engine, $template, $placeholder)
+		$app->events->attach(function(PageRenderer\RenderEvent $event, PageRenderer $target) use($engine, $template, $placeholder, $document)
 		{
 			#
 			# The event is chained so that it gets executed once the event chain has been
 			# processed.
 			#
 
-			$event->chain(function(PageRenderer\RenderEvent $event) use($engine, $template, $placeholder)
+			$event->chain(function(PageRenderer\RenderEvent $event) use($engine, $template, $placeholder, $document)
 			{
-				global $core;
-
-				$document = $core->document;
-
 				$html = $template ? $engine($template, $document->js) : (string) $document->js;
 
 				$event->replace($placeholder, $html);
@@ -266,13 +252,16 @@ class Document extends \Brickrouge\Document
 	public $title;
 	public $page_title;
 
+	protected function get_page()
+	{
+		return $this->app->request->context->page;
+	}
+
 	public function __construct()
 	{
-		global $core;
-
 		parent::__construct();
 
-		$cache_assets = $core->config['cache assets'];
+		$cache_assets = $this->app->config['cache assets'];
 
 		$this->css->use_cache = $cache_assets;
 		$this->js->use_cache = $cache_assets;
@@ -307,9 +296,7 @@ class Document extends \Brickrouge\Document
 	 */
 	protected function get_css_class_names()
 	{
-		global $core;
-
-		$names = $core->request->context->page->css_class_names;
+		$names = $this->page->css_class_names;
 
 		unset($names['active']);
 

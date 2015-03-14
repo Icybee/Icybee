@@ -16,16 +16,16 @@ use Brickrouge\ElementIsEmpty;
 
 class ActionbarSearch extends Element
 {
-	public function __construct(array $attributes=array())
+	public function __construct(array $attributes = array())
 	{
-		parent::__construct('div', $attributes + array('class' => 'actionbar-search'));
+		parent::__construct('div', $attributes + [ 'class' => 'actionbar-search' ]);
 	}
 
 	protected function render_inner_html()
 	{
 		$html = parent::render_inner_html();
 
-		new ActionbarSearch\AlterInnerHTMLEvent($this, array('html' => &$html));
+		new ActionbarSearch\AlterInnerHTMLEvent($this, [ 'html' => &$html ]);
 
 		if (empty($html))
 		{

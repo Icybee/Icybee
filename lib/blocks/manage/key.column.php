@@ -22,9 +22,9 @@ class KeyColumn extends Column
 {
 	private $ownership;
 
-	public function __construct($manager, $id, array $options=[])
+	public function __construct($manager, $id, array $options = [])
 	{
-		parent::__construct($manager, $id, [
+		parent::__construct($manager, $id, $options + [
 
 			'title' => null,
 			'class' => 'cell-key'
@@ -34,11 +34,9 @@ class KeyColumn extends Column
 
 	public function alter_records(array $records)
 	{
-		global $core;
-
 		$key = $this->id;
 		$module = $this->manager->module;
-		$user = $core->user;
+		$user = \ICanBoogie\app()->user;
 		$ownership = [];
 
 		foreach ($records as $record)

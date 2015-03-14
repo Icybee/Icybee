@@ -298,7 +298,7 @@ class Hooks
 	 *
 	 * The _operation save mode_ is saved in the session per module:
 	 *
-	 *     $core->session[operation_save_mode][<module_id>]
+	 *     $app->session[operation_save_mode][<module_id>]
 	 *
 	 * @param Operation\BeforeControlEvent $event
 	 * @param \ICanBoogie\SaveOperation $target
@@ -554,7 +554,11 @@ class Hooks
 				$css = [];
 			}
 
-			$formated_exception = require(__DIR__ . '/exception.tpl.php');
+			ob_start();
+
+			require __DIR__ . '/exception.tpl.php';
+
+			$formated_exception = ob_get_clean();
 		}
 
 		if (PHP_SAPI == 'cli')

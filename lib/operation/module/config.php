@@ -67,8 +67,6 @@ class ConfigOperation extends \ICanBoogie\Operation
 
 	protected function process()
 	{
-		global $core;
-
 		new ConfigOperation\BeforePropertiesEvent($this, [ 'request' => $this->request ]);
 
 		$properties = $this->properties;
@@ -77,7 +75,7 @@ class ConfigOperation extends \ICanBoogie\Operation
 
 		if (isset($properties['global']))
 		{
-			$registry = $core->registry;
+			$registry = $this->app->registry;
 
 			foreach ($properties['global'] as $name => $value)
 			{
@@ -87,7 +85,7 @@ class ConfigOperation extends \ICanBoogie\Operation
 
 		if (isset($properties['local']))
 		{
-			$site = $core->site;
+			$site = $this->app->site;
 
 			foreach ($properties['local'] as $name => $value)
 			{

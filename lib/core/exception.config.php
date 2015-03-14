@@ -17,11 +17,11 @@ class Config extends \Exception
 {
 	public function __construct($message, array $params=[], $code=500)
 	{
-		global $core;
+		$app = \ICanBoogie\app();
 
-		if (is_string($message) && isset($core->modules->descriptors[$message]))
+		if (is_string($message) && isset($app->modules->descriptors[$message]))
 		{
-			$message = $core->modules[$message];
+			$message = $app->modules[$message];
 		}
 
 		if ($message instanceof Module)
@@ -33,7 +33,7 @@ class Config extends \Exception
 
 			];
 
-			$message = 'You need to <a href="' . $core->site->path . '/admin/:module_id/config">configure the <q>!title</q> module</a>.';
+			$message = 'You need to <a href="' . $app->site->path . '/admin/:module_id/config">configure the <q>!title</q> module</a>.';
 		}
 
 		parent::__construct(\ICanBoogie\format($message, $params), $code);

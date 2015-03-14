@@ -12,9 +12,8 @@
 namespace Icybee;
 
 use ICanBoogie\HTTP\Request;
+use ICanBoogie\PermissionRequired;
 use ICanBoogie\Routing\Controller;
-
-use Brickrouge\Element;
 
 /**
  * Returns a decorated block.
@@ -25,6 +24,9 @@ use Brickrouge\Element;
  * - {@link DECORATE_WITH_BLOCK}: Decorate the component with a {@link BlockDecorator} instance.
  * - {@link DECORATE_WITH_ADMIN}: Decorate the component with a {@link AdminDecorator} instance.
  * - {@link DECORATE_WITH_DOCUMENT} Decorate the component with a {@link DocumentDecorator} instance.
+ *
+ * @property \ICanBoogie\Module\ModuleCollection $modules
+ * @property \Icybee\Modules\Users\User $user
  */
 class BlockController extends Controller
 {
@@ -71,18 +73,16 @@ class BlockController extends Controller
 	{
 		if (!$this->control_permission(Module::PERMISSION_ACCESS))
 		{
-			throw new \ICanBoogie\PermissionRequired();
+			throw new PermissionRequired;
 		}
 	}
 
 	protected function control_permission($permission)
 	{
-		global $core;
-
 		$route = $this->route;
-		$module = $core->modules[$route->module];
+		$module = $this->modules[$route->module];
 
-		return $core->user->has_permission(Module::PERMISSION_ACCESS, $module);
+		return $this->user->has_permission(Module::PERMISSION_ACCESS, $module);
 	}
 
 	/**
@@ -94,10 +94,8 @@ class BlockController extends Controller
 	 */
 	protected function get_component()
 	{
-		global $core;
-
 		$route = $this->route;
-		$module = $core->modules[$route->module];
+		$module = $this->modules[$route->module];
 		$args = [ $route->block ];
 
 		foreach ($this->request->path_params as $param => $value)
@@ -176,58 +174,5 @@ class BlockController extends Controller
 	protected function decorate_with_document($component)
 	{
 		return new DocumentDecorator($component);
-	}
-}
-
-/**
- * Decorates a component with a _block element_.
- *
- * The component is wrapped in a `div.block.block--<name>.block--<module>--<name>` element. Where
- * `<name>` is the normalized name of the block, and `<module>` is the normalized identifier of
- * the module that created the component.
- */
-class BlockDecorator extends \Brickrouge\Decorator
-{
-	/**
-	 * Name of the block.
-	 *
-	 * @var string
-	 */
-	protected $block_name;
-
-	/**
-	 * The identifier of the module providing the block.
-	 *
-	 * @var string
-	 */
-	protected $module_id;
-
-	/**
-	 * Initialiazes the {@link $block_name} and {@link $module_id} properties.
-	 *
-	 * @param mixed $block The block to decorate.
-	 * @param string $block_name The name of the block.
-	 * @param string $module_id The itentifier of the module providing the block.
-	 */
-	public function __construct($block, $block_name, $module_id)
-	{
-		$this->block_name = $block_name;
-		$this->module_id = $module_id;
-
-		parent::__construct($block);
-	}
-
-	public function render()
-	{
-		$normalized_block_name = \Brickrouge\normalize($this->block_name);
-		$normalized_module_id = \Brickrouge\normalize($this->module_id);
-
-		return new Element('div', [
-
-			Element::INNER_HTML => $this->component,
-
-			'class' => "block block--{$normalized_block_name} block--{$normalized_module_id}--{$normalized_block_name}"
-
-		]);
 	}
 }

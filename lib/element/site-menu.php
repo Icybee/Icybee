@@ -15,19 +15,44 @@ use Brickrouge\A;
 use Brickrouge\DropdownMenu;
 use Brickrouge\Element;
 
+/**
+ * @property-read \ICanBoogie\Core $app
+ * @property-read string $decontextualized_path
+ * @property-read \ICanBoogie\Module\ModelCollection $models
+ * @property-read \Icybee\Modules\Sites\Site $site
+ * @property-read \Icybee\Modules\Users\User $user
+ */
 class SiteMenu extends Element
 {
-	public function __construct(array $attributes=[])
+	protected function get_models()
+	{
+		return $this->app->models;
+	}
+
+	protected function get_decontextualized_path()
+	{
+		return $this->app->request->decontextualized_path;
+	}
+
+	protected function get_site()
+	{
+		return $this->app->site;
+	}
+
+	protected function get_user()
+	{
+		return $this->app->user;
+	}
+
+	public function __construct(array $attributes = [])
 	{
 		parent::__construct('div', $attributes);
 	}
 
 	public function render_inner_html()
 	{
-		global $core;
-
-		$user = $core->user;
-		$site = $core->site;
+		$user = $this->user;
+		$site = $this->site;
 
 		$site_title = \ICanBoogie\escape($site->admin_title);
 
@@ -40,7 +65,7 @@ class SiteMenu extends Element
 
 		try
 		{
-			$query = $core->models['sites']->order('admin_title, title');
+			$query = $this->models['sites']->order('admin_title, title');
 
 			$restricted_sites = $user->restricted_sites_ids;
 
@@ -53,7 +78,7 @@ class SiteMenu extends Element
 
 			if (count($sites) > 1)
 			{
-				$path = $core->request->decontextualized_path;
+				$path = $this->decontextualized_path;
 
 				foreach ($sites as $asite)
 				{

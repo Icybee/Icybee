@@ -17,8 +17,11 @@
 		"issues": "https://github.com/Icybee/Icybee/issues",
 		"source": "https://github.com/Icybee/Icybee"
 	},
+
+	"minimum-stability": "dev",
+
 	"require": {
-		"php": ">=5.4.0",
+		"php": ">=5.5.0",
 		"icanboogie/icanboogie": "~2.3.0",
 		"icanboogie/i18n": "~2.0.8",
 		"icanboogie/cldr": "~1.3.8",
@@ -47,7 +50,7 @@
 		"icybee/module-views": "2.1.x@dev"
 	},
 	"autoload": {
-		"classmap": [ "lib/", "includes/" ],
+		"classmap": [ "lib" ],
 		"files": [ "bootstrap.php" ]
 	},
 

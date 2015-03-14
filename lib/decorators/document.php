@@ -18,10 +18,12 @@ use Brickrouge\Element;
 class DocumentDecorator
 {
 	protected $component;
+	private $app;
 
 	public function __construct($component)
 	{
 		$this->component = $component;
+		$this->app = \ICanBoogie\app();
 		$this->body = new Element('body');
 	}
 
@@ -39,10 +41,9 @@ class DocumentDecorator
 
 	public function render()
 	{
-		global $core;
-
 		$component = (string) $this->component;
-		$document = $core->document;
+		$app = $this->app;
+		$document = $app->document;
 		$title = \Brickrouge\escape('Icybee');
 		$favicon = Document::resolve_url(\Icybee\ASSETS . 'favicon.png');
 
@@ -51,14 +52,14 @@ class DocumentDecorator
 
 		$api_base = '';
 
-		if (isset($core->site))
+		if (isset($app->site))
 		{
-			$api_base = $core->site->path;
+			$api_base = $app->site->path;
 		}
 
 		return <<<EOT
 <!DOCTYPE html>
-<html lang="{$core->language}" data-api-base="{$api_base}">
+<html lang="{$app->language}" data-api-base="{$api_base}">
 <head>
 <meta charset="utf-8" />
 <title>$title</title>

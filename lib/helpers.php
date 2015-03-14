@@ -13,7 +13,7 @@ namespace Icybee;
 
 // http://www.ranks.nl/resources/stopwords.html
 
-function strip_stopwords($str, $stopwords=null)
+function strip_stopwords($str, $stopwords = null)
 {
 	$stopwords = "alors au aucuns aussi autre avant avec avoir à bon car ce cela ces ceux chaque
 ci comme comment d' dans de des dedans dehors depuis deux devrait doit donc dos droite du début elle

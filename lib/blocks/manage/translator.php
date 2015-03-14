@@ -26,7 +26,7 @@ class Translator
 		$this->module = $module;
 	}
 
-	public function __invoke($native, array $args=[], array $options=[])
+	public function __invoke($native, array $args = [], array $options = [])
 	{
 		$module = $this->module;
 

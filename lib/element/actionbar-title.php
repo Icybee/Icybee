@@ -11,7 +11,6 @@
 
 namespace Icybee\Element;
 
-use ICanBoogie\I18n;
 use ICanBoogie\Module;
 use ICanBoogie\Module\Descriptor;
 use ICanBoogie\PropertyNotDefined;
@@ -20,24 +19,56 @@ use ICanBoogie\Routing\Route;
 use Brickrouge\A;
 use Brickrouge\DropdownMenu;
 use Brickrouge\Element;
+use Brickrouge\ElementIsEmpty;
 
+/**
+ * @property-read \ICanBoogie\Core $app
+ * @property-read \ICanBoogie\Module\ModuleCollection $modules
+ * @property-read \ICanBoogie\HTTP\Request $request
+ * @property-read \ICanBoogie\Routing\Routes $routes
+ * @property-read \Icybee\Modules\Sites\Site $site
+ * @property-read \Icybee\Modules\Users\User $user
+ */
 class ActionbarTitle extends Element
 {
-	public function __construct(array $attributes=array())
+	protected function get_modules()
 	{
-		parent::__construct('div', $attributes + array('class' => 'actionbar-title'));
+		return $this->app->modules;
+	}
+
+	protected function get_request()
+	{
+		return $this->app->request;
+	}
+
+	protected function get_routes()
+	{
+		return $this->app->routes;
+	}
+
+	protected function get_site()
+	{
+		return $this->app->site;
+	}
+
+	protected function get_user()
+	{
+		return $this->app->user;
+	}
+
+	public function __construct(array $attributes = [])
+	{
+		parent::__construct('div', $attributes + [ 'class' => 'actionbar-title' ]);
 	}
 
 	protected function render_inner_html()
 	{
-		global $core;
-
-		if ($core->user->is_guest || $core->user instanceof Member)
+		if ($this->user->is_guest || $this->user instanceof Member)
 		{
 			return '<h1>Icybee</h1>';
 		}
 
-		$request = $core->request;
+		$request = $this->request;
 
 		try
 		{
@@ -50,10 +81,10 @@ class ActionbarTitle extends Element
 
 		if (!$route || empty($route->module))
 		{
-			throw new \Brickrouge\ElementIsEmpty;
+			throw new ElementIsEmpty;
 		}
 
-		$label = $core->modules[$route->module]->title;
+		$label = $this->modules[$route->module]->title;
 
 		$btn_group = null;
 		$options = $this->collect_options($route);
@@ -91,23 +122,20 @@ EOT;
 
 	protected function collect_options(Route $route)
 	{
-		global $core;
-
-		$options = array();
-
-		$user = $core->user;
+		$options = [];
+		$user = $this->user;
 		$module_id = $route->module;
-		$routes = $core->routes;
+		$routes = $this->routes;
 
 		#
 		# Views on the website (home, list)
 		#
 
-		$list_url = $core->site->resolve_view_url("$module_id/list");
+		$list_url = $this->site->resolve_view_url("$module_id/list");
 
 		if ($list_url{0} != '#')
 		{
-			$options[$list_url] = new A(I18n\t("List page on the website"), $list_url);
+			$options[$list_url] = new A($this->t("List page on the website"), $list_url);
 		}
 
 		#
@@ -133,7 +161,7 @@ EOT;
 
 					$options[$url] = new A
 					(
-						I18n\t('Configuration', array(), array('scope' => 'block_title')), $url
+						$this->t('Configuration', [], [ 'scope' => 'block_title' ]), $url
 					);
 				}
 			}
@@ -143,11 +171,11 @@ EOT;
 		# other modules
 		#
 
-		$modules = $core->modules;
+		$modules = $this->modules;
 		$descriptors = $modules->descriptors;
 		$category = $descriptors[$module_id][Descriptor::CATEGORY];
 
-		$options_routes = array();
+		$options_routes = [];
 
 		foreach ($routes as $r_id => $r)
 		{
@@ -175,7 +203,7 @@ EOT;
 
 			$options_routes[$url] = new A
 			(
-				I18n\t($module_flat_id, array(), array('scope' => 'module_title', 'default' => $descriptors[$r_module_id][Descriptor::TITLE])), $url
+				$this->t($module_flat_id, [], [ 'scope' => 'module_title', 'default' => $descriptors[$r_module_id][Descriptor::TITLE] ]), $url
 			);
 		}
 
