@@ -1,7 +1,7 @@
 /*
  * Bootstrap
  */
- 
+
 .alert .alert-actions {
 	margin-top: 1em;
 }
@@ -13,7 +13,7 @@
 }
 
 .btn {
-	line-height: 1.428571em; 
+	line-height: 1.428571em;
 }
 
 .nav-tabs > .active > a,
@@ -433,6 +433,7 @@ body.exception #contents-wrapper > .alert {
 	margin-right: -16px;
 	margin-top: -17px;
 	box-shadow: 0 25px 15px -20px hsl(0, 43%, 91%);
+	white-space: pre-wrap;
 }
 
 body.exception footer {
