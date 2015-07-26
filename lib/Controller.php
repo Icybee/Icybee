@@ -11,9 +11,10 @@
 
 namespace Icybee;
 
-use ICanBoogie\HTTP\Request;
+use ICanBoogie\Binding\Routing\ControllerBindings as RoutingBindings;
+use ICanBoogie\View\ControllerBindings as ViewBindings;
 
-class EditController extends BlockController
+abstract class Controller extends \ICanBoogie\Routing\Controller
 {
-
+	use RoutingBindings, ViewBindings;
 }

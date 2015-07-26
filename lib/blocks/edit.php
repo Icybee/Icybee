@@ -288,7 +288,7 @@ class EditBlock extends FormBlock
 		return array_merge
 		(
 			parent::lazy_get_values(),
-			$schema ? array_fill_keys(array_keys($schema['fields']), null) : [],
+			$schema ? array_fill_keys(array_keys($schema->columns), null) : [],
 			$record ? $record->to_array() : [],
 			$params ? $params : []
 		);

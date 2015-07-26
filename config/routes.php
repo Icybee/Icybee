@@ -1,5 +1,7 @@
 <?php
 
+namespace Icybee;
+
 use ICanBoogie\HTTP\Request;
 
 return [
@@ -7,14 +9,14 @@ return [
 	'admin:index' => [
 
 		'pattern' => '/admin',
-		'controller' => 'Icybee\AdminIndexController'
+		'controller' => Controller\AdminIndexController::class
 
 	],
 
 	'api:widget' => [
 
 		'pattern' => '/api/widgets/:class',
-		'controller' => 'Icybee\Operation\Widget\Get',
+		'controller' => Operation\Widget\Get::class,
 		'via' => Request::METHOD_GET
 
 	],
@@ -22,14 +24,14 @@ return [
 	'api:widget/mode' => [
 
 		'pattern' => '/api/widgets/:class/:mode',
-		'controller' => 'Icybee\Operation\Widget\Get'
+		'controller' => Operation\Widget\Get::class
 
 	],
 
 	'api:activerecord/lock' => [
 
 		'pattern' => '/api/:module/:key/lock',
-		'controller' => 'Icybee\Operation\ActiveRecord\Lock',
+		'controller' => Operation\ActiveRecord\Lock::class,
 		'via' => Request::METHOD_PUT
 
 	],
@@ -37,7 +39,7 @@ return [
 	'api:activerecord/unlock' => [
 
 		'pattern' => '/api/:module/:key/lock',
-		'controller' => 'Icybee\Operation\ActiveRecord\Unlock',
+		'controller' => Operation\ActiveRecord\Unlock::class,
 		'via' => Request::METHOD_DELETE
 
 	],
@@ -45,7 +47,7 @@ return [
 	'api:module/block' => [
 
 		'pattern' => '/api/:module/blocks/:name',
-		'controller' => 'Icybee\Operation\Module\Blocks',
+		'controller' => Operation\Module\Blocks::class,
 		'via' => Request::METHOD_GET
 
 	],
@@ -53,7 +55,7 @@ return [
 	'api:module/query-operation' => [
 
 		'pattern' => '/api/query-operation/:module/:operation',
-		'controller' => 'Icybee\Hooks::dispatch_query_operation'
+		'controller' => Hooks::class . '::dispatch_query_operation'
 
 	]
 ];

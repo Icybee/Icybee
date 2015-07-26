@@ -2,7 +2,11 @@
 
 namespace Icybee;
 
-$hooks = __NAMESPACE__ . '\Hooks::';
+use ICanBoogie\Core;
+
+$hooks = Hooks::class . '::';
+
+use ICanBoogie\HTTP\RequestDispatcher;
 
 return [
 
@@ -12,8 +16,8 @@ return [
 
 		'ICanBoogie\Operation::get_form' => 'Icybee\Element\Form::on_operation_get_form',
 		'ICanBoogie\SaveOperation::control:before' => $hooks . 'before_save_operation_control',
-		'ICanBoogie\HTTP\Dispatcher::alter' => $hooks . 'on_http_dispatcher_alter',
-		'ICanBoogie\HTTP\Dispatcher::dispatch' => 'Icybee\StatsDecorator::on_dispatcher_dispatch',
+		RequestDispatcher::class . '::alter' => $hooks . 'on_http_dispatcher_alter',
+		RequestDispatcher::class . '::dispatch' => 'Icybee\StatsDecorator::on_dispatcher_dispatch',
 
 		'Icybee\Modules\Pages\PageRenderer::render:before' => $hooks . 'before_page_renderer_render',
 		'Icybee\Modules\Pages\PageRenderer::render' => $hooks . 'on_page_renderer_render',
@@ -23,7 +27,9 @@ return [
 
 	'prototypes' => [
 
-		'ICanBoogie\Core::lazy_get_document' => 'Icybee\Document::get'
+		Core::class . '::get_language' => $hooks . 'get_language',
+		Core::class . '::set_language' => $hooks . 'set_language',
+		Core::class . '::lazy_get_document' => 'Icybee\Document::get'
 
 	],
 

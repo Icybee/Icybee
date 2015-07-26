@@ -12,6 +12,7 @@
 namespace Icybee;
 
 use ICanBoogie\ActiveRecord\Query;
+use ICanBoogie\ActiveRecord\SchemaColumn;
 use ICanBoogie\I18n;
 use ICanBoogie\Operation;
 
@@ -33,7 +34,7 @@ use Icybee\ManageBlock\Translator;
  * An element to manage the records of a module.
  *
  * @property-read \ICanBoogie\Core $app
- * @property-read \ICanBoogie\Events $events
+ * @property-read \ICanBoogie\EventCollection $events
  * @property-read \ICanBoogie\HTTP\Request $request
  * @property-read \Icybee\Modules\Users\User $user
  *
@@ -445,22 +446,22 @@ class ManageBlock extends Element
 	{
 		static $as_strings = [ 'char', 'varchar', 'date', 'datetime', 'timestamp' ];
 
-		$fields = $this->model->extended_schema['fields'];
+		$schema = $this->model->extended_schema;
 
 		foreach ($modifiers as $identifier => $value)
 		{
-			if (empty($fields[$identifier]))
+			if (empty($schema[$identifier]))
 			{
 				continue;
 			}
 
-			$type = $fields[$identifier]['type'];
+			$type = $schema[$identifier]->type;
 
-			if ($type == 'boolean')
+			if ($type == SchemaColumn::TYPE_BOOLEAN)
 			{
 				$value = $value === '' ? null : filter_var($value, FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE);
 			}
-			else if ($type == 'integer')
+			else if ($type == SchemaColumn::TYPE_INTEGER)
 			{
 				$value = filter_var($value, FILTER_VALIDATE_INT, FILTER_NULL_ON_FAILURE);
 			}
@@ -842,22 +843,22 @@ EOT;
 		$words = explode(' ', $search);
 		$words = array_map('trim', $words);
 
-		$fields = $this->model->extended_schema['fields'];
+		$schema = $this->model->extended_schema;
 
 		foreach ($words as $word)
 		{
 			$concats = '';
 
-			foreach ($fields as $identifier => $definition)
+			foreach ($schema as $identifier => $column)
 			{
-				$type = $definition['type'];
+				$type = $column->type;
 
 				if (!in_array($type, $supported_types))
 				{
 					continue;
 				}
 
-				if (!empty($definition['null']))
+				if ($column->null)
 				{
 					$identifier = "IFNULL(`$identifier`, \"\")";
 				}

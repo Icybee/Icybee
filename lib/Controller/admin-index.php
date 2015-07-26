@@ -9,26 +9,24 @@
  * file that was distributed with this source code.
  */
 
-namespace Icybee;
+namespace Icybee\Controller;
 
 use ICanBoogie\AuthenticationRequired;
 use ICanBoogie\HTTP\Request;
-use ICanBoogie\Routing\Controller;
+use Icybee\AdminDecorator;
+use Icybee\Controller;
+use Icybee\DocumentDecorator;
 
 /**
- * Class AdminIndexController
- *
- * @package Icybee
- *
  * @property \Icybee\Modules\Users\User $user
  */
 class AdminIndexController extends Controller
 {
-	protected function respond(Request $request)
+	protected function action(Request $request)
 	{
 		if ($this->user->is_guest)
 		{
-			throw new AuthenticationRequired();
+			throw new AuthenticationRequired;
 		}
 
 		return new DocumentDecorator(new AdminDecorator(''));

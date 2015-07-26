@@ -9,11 +9,15 @@
  * file that was distributed with this source code.
  */
 
-namespace Icybee;
+namespace Icybee\Controller;
 
 use ICanBoogie\HTTP\Request;
+use ICanBoogie\Module;
 use ICanBoogie\PermissionRequired;
-use ICanBoogie\Routing\Controller;
+use Icybee\AdminDecorator;
+use Icybee\BlockDecorator;
+use Icybee\Controller;
+use Icybee\DocumentDecorator;
 
 /**
  * Returns a decorated block.
@@ -27,6 +31,7 @@ use ICanBoogie\Routing\Controller;
  *
  * @property \ICanBoogie\Module\ModuleCollection $modules
  * @property \Icybee\Modules\Users\User $user
+ * @property-read string $block
  */
 class BlockController extends Controller
 {
@@ -38,6 +43,23 @@ class BlockController extends Controller
 	protected $request;
 	protected $block_name;
 
+	protected function get_block()
+	{
+		if (isset($this->route->block))
+		{
+			return $this->route->block;
+		}
+
+		$block = $this->route->action;
+
+		if ($block == 'index')
+		{
+			$block = 'manage';
+		}
+
+		return $block;
+	}
+
 	public function __construct()
 	{
 		$this->decorate_flags = self::DECORATE_WITH_BLOCK | self::DECORATE_WITH_ADMIN | self::DECORATE_WITH_DOCUMENT;
@@ -48,7 +70,7 @@ class BlockController extends Controller
 	 *
 	 * @inheritdoc
 	 */
-	protected function respond(Request $request)
+	protected function action(Request $request)
 	{
 		$this->request = $request;
 		$this->control();
@@ -96,13 +118,17 @@ class BlockController extends Controller
 	{
 		$route = $this->route;
 		$module = $this->modules[$route->module];
-		$args = [ $route->block ];
+		$args = [ $this->block ];
 
 		foreach ($this->request->path_params as $param => $value)
 		{
 			if (is_numeric($param))
 			{
 				$args[] = $value;
+			}
+			else
+			{
+				$args[$param] = $value;
 			}
 		}
 
@@ -149,7 +175,7 @@ class BlockController extends Controller
 	{
 		$route = $this->route;
 
-		return new BlockDecorator($component, $route->block, $route->module);
+		return new BlockDecorator($component, $this->block, $route->module);
 	}
 
 	/**

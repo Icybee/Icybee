@@ -13,6 +13,7 @@ namespace Icybee\ManageBlock;
 
 use Brickrouge\DropdownMenu;
 use Brickrouge\Element;
+use ICanBoogie\ActiveRecord\SchemaColumn;
 
 /**
  * Representation of a column of the manager element.
@@ -93,20 +94,21 @@ class Column extends \ICanBoogie\Object implements ColumnInterface
 	protected function resolve_default_values()
 	{
 		$id = $this->id;
-		$fields = $this->manager->model->extended_schema['fields'];
-		$field = isset($fields[$id]) ? $fields[$id] : null;
+		$schema = $this->manager->model->extended_schema;
+		$field = isset($schema[$id]) ? $schema[$id] : null;
 
 		$orderable = true;
 		$default_order = 1;
 
 		if ($field)
 		{
-			if (($field['type'] == 'integer' && (!empty($field['primary']) || !empty($field['indexed']))) || $field['type'] == 'boolean')
+			if (($field->type == SchemaColumn::TYPE_INTEGER && ($field->primary || $field->indexed))
+			|| $field->type == SchemaColumn::TYPE_BOOLEAN)
 			{
 				$orderable = false;
 			}
 
-			if (in_array($field['type'], [ 'date', 'datetime', 'timestamp' ]))
+			if (in_array($field->type, [ 'date', 'datetime', 'timestamp' ]))
 			{
 				$default_order = -1;
 			}

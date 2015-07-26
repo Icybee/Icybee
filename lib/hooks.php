@@ -13,8 +13,7 @@ namespace Icybee;
 
 use ICanBoogie\Binding\Routing\BeforeSynthesizeRoutesEvent;
 use ICanBoogie\Debug;
-use ICanBoogie\Event;
-use ICanBoogie\HTTP\Dispatcher;
+use ICanBoogie\HTTP\RequestDispatcher;
 use ICanBoogie\HTTP\HTTPError;
 use ICanBoogie\HTTP\Request;
 use ICanBoogie\HTTP\RedirectResponse;
@@ -26,7 +25,9 @@ use ICanBoogie\Routing;
 use Brickrouge\Alert;
 use Brickrouge\Document;
 
+use Icybee\Controller\EditController;
 use Icybee\Modules\Pages\PageRenderer;
+use Icybee\Controller\BlockController;
 
 class Hooks
 {
@@ -34,7 +35,7 @@ class Hooks
 	 * Events
 	 */
 
-	static public function on_http_dispatcher_alter(Dispatcher\AlterEvent $event, Dispatcher $dispatcher)
+	static public function on_http_dispatcher_alter(RequestDispatcher\AlterEvent $event, RequestDispatcher $dispatcher)
 	{
 		/**
 		 * Router for admin routes.
@@ -120,7 +121,7 @@ class Hooks
 
 					if (isset($route['block']) && $controller === true)
 					{
-						$route['controller'] = 'Icybee\BlockController';
+						$route['controller'] = BlockController::class;
 					}
 
 					if (empty($magic[ $id ]))
@@ -149,7 +150,7 @@ class Hooks
 							$route += [
 
 								'pattern' => "/admin/$module_id",
-								'controller' => 'Icybee\BlockController',
+								'controller' => BlockController::class,
 								'title' => '.manage',
 								'block' => 'manage',
 								'index' => true
@@ -165,7 +166,7 @@ class Hooks
 							$route += [
 
 								'pattern' => "/admin/$module_id/new",
-								'controller' => 'Icybee\BlockController',
+								'controller' => BlockController::class,
 								'title' => '.new',
 								'block' => 'edit',
 								'visibility' => 'visible'
@@ -181,7 +182,7 @@ class Hooks
 							$route += [
 
 								'pattern' => "/admin/$module_id/<\d+>/edit",
-								'controller' => 'Icybee\EditController',
+								'controller' => EditController::class,
 								'title' => '.edit',
 								'block' => 'edit',
 								'visibility' => 'auto'
@@ -199,7 +200,7 @@ class Hooks
 							$route += [
 
 								'pattern' => "/admin/$module_id/config",
-								'controller' => 'Icybee\BlockController',
+								'controller' => BlockController::class,
 								'title' => '.config',
 								'block' => 'config',
 								'permission' => Module::PERMISSION_ADMINISTER,
@@ -218,7 +219,7 @@ class Hooks
 					$fragments[ $root ]["admin:$module_id/delete"] = [
 
 						'pattern' => "/admin/$module_id/<\d+>/delete",
-						'controller' => 'Icybee\BlockController',
+						'controller' => BlockController::class,
 						'title' => '.delete',
 						'block' => 'delete',
 						'visibility' => 'auto',
@@ -567,5 +568,36 @@ class Hooks
 		}
 
 		echo $formated_exception;
+	}
+
+	/**
+	 * Prototype methods
+	 */
+
+	/**
+	 * Returns the current language.
+	 *
+	 * **Note:** The language is returned from the stringified `$app->locale` property.
+	 *
+	 * @param \ICanBoogie\Core|\ICanBoogie\Binding\CLDR\CoreBindings $app
+	 *
+	 * @return string
+	 */
+	static public function get_language(\ICanBoogie\Core $app)
+	{
+		return (string) $app->locale;
+	}
+
+	/**
+	 * Sets the current language.
+	 *
+	 * **Note:** The language is set to the `$app->locale` property.
+	 *
+	 * @param \ICanBoogie\Core|\ICanBoogie\Binding\CLDR\CoreBindings $app
+	 * @param string $language
+	 */
+	static public function set_language(\ICanBoogie\Core $app, $language)
+	{
+		$app->locale = $language;
 	}
 }

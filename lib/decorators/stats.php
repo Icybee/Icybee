@@ -12,8 +12,9 @@
 namespace Icybee;
 
 use ICanBoogie\Debug;
-use ICanBoogie\HTTP\Dispatcher;
+use ICanBoogie\HTTP\RequestDispatcher;
 use ICanBoogie\Operation;
+use ICanBoogie\EventProfiler;
 
 /**
  * Decorates the specified component with various statistics.
@@ -24,10 +25,10 @@ class StatsDecorator extends \Brickrouge\Decorator
 	 * Adds statistic information about the response if it is of type "text/html" and the request
 	 * is not XHR.
 	 *
-	 * @param Dispatcher\DispatchEvent $event
-	 * @param Dispatcher $target
+	 * @param RequestDispatcher\DispatchEvent $event
+	 * @param RequestDispatcher $target
 	 */
-	static public function on_dispatcher_dispatch(Dispatcher\DispatchEvent $event, Dispatcher $target)
+	static public function on_dispatcher_dispatch(RequestDispatcher\DispatchEvent $event, RequestDispatcher $target)
 	{
 		if ($event->request->is_xhr)
 		{
@@ -39,7 +40,7 @@ class StatsDecorator extends \Brickrouge\Decorator
 		# for instance a _cache_ callback that may cache the response.
 		#
 
-		$event->chain(function(Dispatcher\DispatchEvent $event, Dispatcher $target) {
+		$event->chain(function(RequestDispatcher\DispatchEvent $event, RequestDispatcher $target) {
 
 			$response = $event->response;
 
@@ -116,7 +117,7 @@ class StatsDecorator extends \Brickrouge\Decorator
 
 	protected function render_events()
 	{
-		$events = \ICanBoogie\Event::$profiling['hooks'];
+		$events = EventProfiler::$calls;
 
 		$max_length_type = 0;
 		$max_length_callback = 0;
@@ -129,7 +130,7 @@ class StatsDecorator extends \Brickrouge\Decorator
 
 		foreach ($events as $i => $event)
 		{
-			list(, $type, $callback, $time) = $event;
+			list($time, $type, $callback, $started_at) = $event;
 
 			if (!($callback instanceof \Closure))
 			{
@@ -143,10 +144,8 @@ class StatsDecorator extends \Brickrouge\Decorator
 			$events[$i][2] = $callback;
 		}
 
-		foreach ($events as $event)
+		foreach ($events as list($time, $type, $callback, $started_at))
 		{
-			list(, $type, $callback, $time) = $event;
-
 			if (!is_string($callback))
 			{
 				$callback = implode('::', $callback);
@@ -160,8 +159,8 @@ class StatsDecorator extends \Brickrouge\Decorator
 				$time_by_type[$type] = 0;
 			}
 
-			$time_total += $time;
-			$time_by_type[$type] += $time;
+			$time_total += ($time - $started_at);
+			$time_by_type[$type] += ($time - $started_at);
 
 			if (empty($calls_by_type[$type]))
 			{
@@ -182,7 +181,7 @@ class StatsDecorator extends \Brickrouge\Decorator
 
 		foreach ($events as $i => $event)
 		{
-			list(, $type, $callback, $time) = $event;
+			list($time, $type, $callback, $started_at) = $event;
 
 			if ($callback instanceof \Closure)
 			{
@@ -193,7 +192,7 @@ class StatsDecorator extends \Brickrouge\Decorator
 				$callback = (is_string($callback[0]) ? $callback[0] : get_class($callback[0])) . '::' . $callback[1];
 			}
 
-			$html .= sprintf("%4d: %2.3f %-{$max_length_type}s %-{$max_length_callback}s", $i, $time * 1000, $type, $callback) . PHP_EOL;
+			$html .= sprintf("%4d: %2.3f %-{$max_length_type}s %-{$max_length_callback}s", $i, ($time - $started_at) * 1000, $type, $callback) . PHP_EOL;
 		}
 
 		#
@@ -205,7 +204,7 @@ class StatsDecorator extends \Brickrouge\Decorator
 
 		$time_ref = $_SERVER['REQUEST_TIME_FLOAT'];
 
-		foreach (\ICanBoogie\Event::$profiling['unused'] as $i => $trace)
+		foreach (EventProfiler::$unused as $i => $trace)
 		{
 			list($time, $type) = $trace;
 
