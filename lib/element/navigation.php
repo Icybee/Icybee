@@ -18,6 +18,7 @@ use ICanBoogie\PropertyNotDefined;
 use Brickrouge\A;
 use Brickrouge\DropdownMenu;
 use Brickrouge\Element;
+use Icybee\Routing\NavigationRouteFilter;
 
 /**
  * Admin navigation bar.
@@ -26,7 +27,7 @@ use Brickrouge\Element;
  * @property \ICanBoogie\Module\ModuleCollection $modules
  * @property \ICanBoogie\HTTP\Request $request
  * @property \ICanBoogie\Routing\Route $route
- * @property \ICanBoogie\Routing\Routes $routes
+ * @property \ICanBoogie\Routing\RouteCollection $routes
  * @property \Icybee\Modules\Users\User $user
  */
 class Navigation extends Element
@@ -77,31 +78,13 @@ class Navigation extends Element
 		$modules = $this->modules;
 		$descriptors = $modules->descriptors;
 
-		foreach ($routes as $route)
+		$filtered_routes = $routes->filter(new NavigationRouteFilter($modules, $user));
+
+		foreach ($filtered_routes as $id => $definition)
 		{
-			if (empty($route['index']) || empty($route['module']))
-			{
-				continue;
-			}
-
-			$module_id = $route['module'];
-
-			if (!isset($modules[$module_id]))
-			{
-				continue;
-			}
-
+			$module_id = $definition['module'];
 			$category = $descriptors[$module_id][Descriptor::CATEGORY];
-
-			$permission = isset($route['permission']) ? $route['permission'] : Module::PERMISSION_ACCESS;
-
-			if (!$user->has_permission($permission, $module_id))
-			{
-				continue;
-			}
-
-			$menus[$category][$route['pattern']] = $route;
-
+			$menus[$category][$definition['pattern']] = $definition;
 			$links[$category] = $this->t($category, [], [ 'scope' => 'module_category' ]); // TODO: a same category is translated multiple time
 		}
 

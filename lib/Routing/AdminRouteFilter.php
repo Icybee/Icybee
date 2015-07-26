@@ -1,0 +1,23 @@
+<?php
+
+/*
+ * This file is part of the Icybee package.
+ *
+ * (c) Olivier Laviale <olivier.laviale@gmail.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+namespace Icybee\Routing;
+
+/**
+ * Keeps routes which id starts with "admin:".
+ */
+class AdminRouteFilter
+{
+	public function __invoke(array $definition, $id)
+	{
+		return strpos($id, 'admin:') === 0;
+	}
+}

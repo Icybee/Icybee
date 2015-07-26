@@ -17,7 +17,7 @@ use ICanBoogie\Module;
 use ICanBoogie\Module\ModuleCollection;
 use ICanBoogie\PropertyNotDefined;
 use ICanBoogie\Routing\Route;
-use ICanBoogie\Routing\Routes;
+use ICanBoogie\Routing\RouteCollection;
 
 use Brickrouge\Element;
 
@@ -31,7 +31,7 @@ use Icybee\Modules\Users\User;
  * @property-read \ICanBoogie\Core $app
  * @property-read ModuleCollection $modules
  * @property-read Request $request
- * @property-read Routes $routes
+ * @property-read RouteCollection $routes
  * @property-read User $user
  */
 class Actionbar extends Element
@@ -100,7 +100,7 @@ class Actionbar extends Element
 				]);
 			}
 
-			$actionbar_navigation = (string) new ActionbarNav;
+			$actionbar_navigation = (string) new ActionBarNav;
 			$actionbar_search = (string) new ActionbarSearch;
 			$actionbar_controls = (string) new ActionbarToolbar;
 		}

@@ -18,7 +18,7 @@ use ICanBoogie\Module;
 use ICanBoogie\Module\Descriptor;
 use ICanBoogie\Operation;
 use ICanBoogie\Routing;
-use ICanBoogie\Routing\Routes;
+use ICanBoogie\Routing\RouteCollection;
 
 use Brickrouge\Element;
 use Brickrouge\ElementIsEmpty;
@@ -32,7 +32,7 @@ use Icybee\Modules\Users\User;
  * @property \ICanBoogie\I18n\Translator\Proxi $translator
  * @property Module\ModuleCollection $modules
  * @property Request $request
- * @property Routes $routes
+ * @property RouteCollection $routes
  * @property User $user
  */
 class AdminMenu extends Element

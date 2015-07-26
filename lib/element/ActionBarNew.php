@@ -17,7 +17,7 @@ use ICanBoogie\HTTP\Request;
 use ICanBoogie\Module;
 use ICanBoogie\Module\ModuleCollection;
 use ICanBoogie\Module\Descriptor;
-use ICanBoogie\Routing\Routes;
+use ICanBoogie\Routing\RouteCollection;
 use Icybee\Modules\Users\User;
 
 /**
@@ -25,7 +25,7 @@ use Icybee\Modules\Users\User;
  *
  * @property ModuleCollection $modules
  * @property Request $request
- * @property Routes $routes
+ * @property RouteCollection $routes
  * @property User $user
  */
 class ActionbarNew extends SplitButton

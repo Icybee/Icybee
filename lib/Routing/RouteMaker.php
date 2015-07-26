@@ -13,16 +13,17 @@ namespace Icybee\Routing;
 
 use ICanBoogie\HTTP\Request;
 
-class RoutesMaker extends \ICanBoogie\Routing\RoutesMaker
+class RouteMaker extends \ICanBoogie\Routing\RouteMaker
 {
 	static public function admin($module_id, $controller, array $options = [])
 	{
 		$options = static::normalize_options($options);
-		$actions = static::filter_actions(static::get_admin_actions(), $options);
+		$actions = array_merge(static::get_admin_actions(), $options['actions']);
+		$actions = static::filter_actions($actions, $options);
 
 		$routes = [];
 
-		foreach (static::routes($module_id, $controller, $actions, $options) as $id => $route)
+		foreach (static::actions($module_id, $controller, $actions, $options) as $id => $route)
 		{
 			$as = 'admin:' . $route['as'];
 
@@ -38,10 +39,11 @@ class RoutesMaker extends \ICanBoogie\Routing\RoutesMaker
 
 	static protected function get_admin_actions()
 	{
-		return static::get_resource_actions() + [
+		return array_merge(static::get_resource_actions(), [
 
-			'config' => [ '/{resource}/config', Request::METHOD_GET ]
+			'confirm-delete' => [ '/{name}/{id}/delete', Request::METHOD_GET ],
+			'config' => [ '/{name}/config', Request::METHOD_GET ]
 
-		];
+		]);
 	}
 }

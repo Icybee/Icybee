@@ -7,21 +7,22 @@ use ICanBoogie\Core;
 $hooks = Hooks::class . '::';
 
 use ICanBoogie\HTTP\RequestDispatcher;
+use ICanBoogie\View\View;
 
 return [
 
 	'events' => [
 
-		'routing.synthesize_routes:before' => $hooks . 'before_routing_collect_routes',
+//		'routing.synthesize_routes:before' => $hooks . 'before_routing_collect_routes',
 
 		'ICanBoogie\Operation::get_form' => 'Icybee\Element\Form::on_operation_get_form',
 		'ICanBoogie\SaveOperation::control:before' => $hooks . 'before_save_operation_control',
 		RequestDispatcher::class . '::alter' => $hooks . 'on_http_dispatcher_alter',
 		RequestDispatcher::class . '::dispatch' => 'Icybee\StatsDecorator::on_dispatcher_dispatch',
-
 		'Icybee\Modules\Pages\PageRenderer::render:before' => $hooks . 'before_page_renderer_render',
 		'Icybee\Modules\Pages\PageRenderer::render' => $hooks . 'on_page_renderer_render',
-		'Icybee\Modules\Users\LogoutOperation::process:before' => $hooks . 'before_user_logout'
+		'Icybee\Modules\Users\LogoutOperation::process:before' => $hooks . 'before_user_logout',
+		View::class . '::alter' => $hooks . 'on_view_alter'
 
 	],
 

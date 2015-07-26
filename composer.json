@@ -48,6 +48,9 @@
 	},
 	"autoload": {
 		"classmap": [ "lib" ],
+		"psr-4": {
+			"Icybee\\": "lib"
+		},
 		"files": [ "bootstrap.php" ]
 	},
 

@@ -11,7 +11,7 @@
 
 namespace Icybee;
 
-use ICanBoogie\Binding\Routing\BeforeSynthesizeRoutesEvent;
+//use ICanBoogie\Binding\Routing\BeforeSynthesizeRoutesEvent;
 use ICanBoogie\Debug;
 use ICanBoogie\HTTP\RequestDispatcher;
 use ICanBoogie\HTTP\HTTPError;
@@ -25,9 +25,11 @@ use ICanBoogie\Routing;
 use Brickrouge\Alert;
 use Brickrouge\Document;
 
-use Icybee\Controller\EditController;
+use ICanBoogie\View\View;
+//use Icybee\Controller\EditController;
 use Icybee\Modules\Pages\PageRenderer;
-use Icybee\Controller\BlockController;
+//use Icybee\Controller\BlockController;
+use Icybee\Routing\AdminController;
 
 class Hooks
 {
@@ -95,6 +97,7 @@ class Hooks
 		}, 'before:pages');
 	}
 
+	/*
 	static public function before_routing_collect_routes(BeforeSynthesizeRoutesEvent $event)
 	{
 		$event->chain(function(BeforeSynthesizeRoutesEvent $event)
@@ -232,6 +235,7 @@ class Hooks
 
 		});
 	}
+	*/
 
 	/**
 	 * This is the dispatcher for the QueryOperation operation.
@@ -413,6 +417,23 @@ class Hooks
 		{
 			$event->html = str_replace('</body>', $admin_menu . '</body>', $event->html);
 		}
+	}
+
+	/**
+	 * If the view renders a module's route, the "template" directory of that module is added
+	 * to the list of templates locations.
+	 *
+	 * @param View\AlterEvent $event
+	 * @param View $target
+	 */
+	static public function on_view_alter(View\AlterEvent $event, View $target)
+	{
+		if (!$target->controller instanceof AdminController)
+		{
+			return;
+		}
+
+		$target->template_resolver->add_path(DIR . 'templates');
 	}
 
 	/*
