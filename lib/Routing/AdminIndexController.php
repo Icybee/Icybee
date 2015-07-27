@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Icybee\Controller;
+namespace Icybee\Routing;
 
 use ICanBoogie\AuthenticationRequired;
 use ICanBoogie\HTTP\Request;
@@ -20,7 +20,7 @@ use Icybee\DocumentDecorator;
 /**
  * @property \Icybee\Modules\Users\User $user
  */
-class AdminIndexController extends Controller
+class AdminIndexController extends AdminController
 {
 	protected function action(Request $request)
 	{

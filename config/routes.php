@@ -9,7 +9,7 @@ return [
 	'admin:index' => [
 
 		'pattern' => '/admin',
-		'controller' => Controller\AdminIndexController::class
+		'controller' => Routing\AdminIndexController::class
 
 	],
 

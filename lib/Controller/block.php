@@ -18,6 +18,7 @@ use Icybee\AdminDecorator;
 use Icybee\BlockDecorator;
 use Icybee\Controller;
 use Icybee\DocumentDecorator;
+use Icybee\Routing\AdminController;
 
 /**
  * Returns a decorated block.
@@ -33,7 +34,7 @@ use Icybee\DocumentDecorator;
  * @property \Icybee\Modules\Users\User $user
  * @property-read string $block
  */
-class BlockController extends Controller
+class BlockController extends AdminController
 {
 	const DECORATE_WITH_BLOCK = 1;
 	const DECORATE_WITH_ADMIN = 2;
