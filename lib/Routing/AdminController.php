@@ -65,7 +65,7 @@ abstract class AdminController extends ResourceController
 	 */
 	protected function is_action_method($action)
 	{
-		if (in_array($action, [ 'config', 'confirm-delete']))
+		if (in_array($action, [ 'config', 'confirm_delete']))
 		{
 			return true;
 		}
