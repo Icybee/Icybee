@@ -11,10 +11,10 @@
 
 namespace Icybee;
 
-//use ICanBoogie\Binding\Routing\BeforeSynthesizeRoutesEvent;
 use ICanBoogie\Debug;
+use ICanBoogie\HTTP\NotFound;
 use ICanBoogie\HTTP\RequestDispatcher;
-use ICanBoogie\HTTP\HTTPError;
+use ICanBoogie\HTTP\Exception as HTTPError;
 use ICanBoogie\HTTP\Request;
 use ICanBoogie\HTTP\RedirectResponse;
 use ICanBoogie\HTTP\WeightedDispatcher;
@@ -26,9 +26,8 @@ use Brickrouge\Alert;
 use Brickrouge\Document;
 
 use ICanBoogie\View\View;
-//use Icybee\Controller\EditController;
+use Icybee\Binding\CoreBindings;
 use Icybee\Modules\Pages\PageRenderer;
-//use Icybee\Controller\BlockController;
 use Icybee\Routing\AdminController;
 
 class Hooks
@@ -87,7 +86,7 @@ class Hooks
 
 					$route = $routes[$route_id];
 
-					return new RedirectResponse(Routing\contextualize($route->pattern), 302, [
+					return new RedirectResponse(self::app()->url_for($route), 302, [
 
 						'Icybee-Redirected-By' => __FILE__ . '::' . __LINE__
 
@@ -96,146 +95,6 @@ class Hooks
 			}
 		}, 'before:pages');
 	}
-
-	/*
-	static public function before_routing_collect_routes(BeforeSynthesizeRoutesEvent $event)
-	{
-		$event->chain(function(BeforeSynthesizeRoutesEvent $event)
-		{
-
-			static $magic = [
-
-				'!admin:manage' => true,
-				'!admin:new' => true,
-				'!admin:config' => true,
-				'!admin:edit' => true
-
-			];
-
-			$fragments = &$event->fragments;
-
-			foreach ($fragments as $root => &$fragment)
-			{
-				$add_delete_route = false;
-
-				foreach ($fragment as $id => &$route)
-				{
-					$controller = empty($route['controller']) ? true : $route['controller'];
-
-					if (isset($route['block']) && $controller === true)
-					{
-						$route['controller'] = BlockController::class;
-					}
-
-					if (empty($magic[ $id ]))
-					{
-						continue;
-					}
-
-					if ($controller === true)
-					{
-						unset($route['controller']);
-					}
-
-					if (empty($route['pattern']) || $route['pattern'] == '!auto')
-					{
-						unset($route['pattern']);
-					}
-
-					$module_id = $route['module'];
-
-					switch ($id)
-					{
-						case '!admin:manage':
-						{
-							$id = "admin:$module_id/manage"; // TODO-20120828: rename this as "admin:{module_id}:index"
-
-							$route += [
-
-								'pattern' => "/admin/$module_id",
-								'controller' => BlockController::class,
-								'title' => '.manage',
-								'block' => 'manage',
-								'index' => true
-
-							];
-						}
-							break;
-
-						case '!admin:new':
-						{
-							$id = "admin:$module_id/new";
-
-							$route += [
-
-								'pattern' => "/admin/$module_id/new",
-								'controller' => BlockController::class,
-								'title' => '.new',
-								'block' => 'edit',
-								'visibility' => 'visible'
-
-							];
-						}
-							break;
-
-						case '!admin:edit':
-						{
-							$id = "admin:$module_id/edit";
-
-							$route += [
-
-								'pattern' => "/admin/$module_id/<\d+>/edit",
-								'controller' => EditController::class,
-								'title' => '.edit',
-								'block' => 'edit',
-								'visibility' => 'auto'
-
-							];
-
-							$add_delete_route = true;
-						}
-							break;
-
-						case '!admin:config':
-						{
-							$id = "admin:$module_id/config";
-
-							$route += [
-
-								'pattern' => "/admin/$module_id/config",
-								'controller' => BlockController::class,
-								'title' => '.config',
-								'block' => 'config',
-								'permission' => Module::PERMISSION_ADMINISTER,
-								'visibility' => 'visible'
-
-							];
-						}
-							break;
-					}
-
-					$fragments[ $root ][ $id ] = $route;
-				}
-
-				if ($add_delete_route)
-				{
-					$fragments[ $root ]["admin:$module_id/delete"] = [
-
-						'pattern' => "/admin/$module_id/<\d+>/delete",
-						'controller' => BlockController::class,
-						'title' => '.delete',
-						'block' => 'delete',
-						'visibility' => 'auto',
-						'via' => 'ANY',
-						'module' => $module_id
-
-					];
-				}
-			}
-
-		});
-	}
-	*/
 
 	/**
 	 * This is the dispatcher for the QueryOperation operation.
@@ -436,6 +295,44 @@ class Hooks
 		$target->template_resolver->add_path(DIR . 'templates');
 	}
 
+	/**
+	 * Rescues NotFound exceptions, when the index of a module category is requested.
+	 *
+	 * @param \ICanBoogie\Exception\RescueEvent $event
+	 * @param NotFound $exception
+	 */
+	static public function on_exception_rescue(\ICanBoogie\Exception\RescueEvent $event, NotFound $exception)
+	{
+		$request = $event->request;
+
+		if (!preg_match('#\/admin\/([^\/\?]+)#', $request->uri, $matches))
+		{
+			return;
+		}
+
+		$category = $matches[1];
+		$app = self::app();
+		$routes = $app->routes;
+
+		foreach ($app->modules->enabled_modules_descriptors as $module_id => $descriptor)
+		{
+			if (empty($descriptor[Descriptor::CATEGORY])
+			|| $descriptor[Descriptor::CATEGORY] != $category)
+			{
+				continue;
+			}
+
+			$route_id = "admin:$module_id:index";
+
+			if (!isset($routes[$route_id]))
+			{
+				continue;
+			}
+
+			$event->response = new RedirectResponse(self::app()->url_for($route_id));
+		}
+	}
+
 	/*
 	 * Markups
 	 */
@@ -591,7 +488,7 @@ class Hooks
 		echo $formated_exception;
 	}
 
-	/**
+	/*
 	 * Prototype methods
 	 */
 
@@ -620,5 +517,17 @@ class Hooks
 	static public function set_language(\ICanBoogie\Core $app, $language)
 	{
 		$app->locale = $language;
+	}
+
+	/*
+	 * Support
+	 */
+
+	/**
+	 * @return \ICanBoogie\Core|CoreBindings
+	 */
+	static private function app()
+	{
+		return \ICanBoogie\app();
 	}
 }

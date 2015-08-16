@@ -11,8 +11,9 @@
 
 namespace Icybee\Routing;
 
-use ICanBoogie\AuthenticationRequired;
+use ICanBoogie\HTTP\AuthenticationRequired;
 use ICanBoogie\HTTP\Request;
+
 use Icybee\AdminDecorator;
 use Icybee\Controller;
 use Icybee\DocumentDecorator;

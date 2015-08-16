@@ -19,6 +19,7 @@ return [
 		'ICanBoogie\SaveOperation::control:before' => $hooks . 'before_save_operation_control',
 		RequestDispatcher::class . '::alter' => $hooks . 'on_http_dispatcher_alter',
 		RequestDispatcher::class . '::dispatch' => 'Icybee\StatsDecorator::on_dispatcher_dispatch',
+		\ICanBoogie\HTTP\NotFound::class . '::rescue' => $hooks . 'on_exception_rescue',
 		'Icybee\Modules\Pages\PageRenderer::render:before' => $hooks . 'before_page_renderer_render',
 		'Icybee\Modules\Pages\PageRenderer::render' => $hooks . 'on_page_renderer_render',
 		'Icybee\Modules\Users\LogoutOperation::process:before' => $hooks . 'before_user_logout',

@@ -11,15 +11,23 @@
 
 namespace Icybee\ManageBlock;
 
+use ICanBoogie\Accessor\AccessorTrait;
+use ICanBoogie\AppAccessor;
 use ICanBoogie\I18n;
 
 use Brickrouge\A;
+use Brickrouge\Decorator;
 
 /**
  * Decorates a component with an _edit_ element.
+ *
+ * @property-read \ICanBoogie\Core|\Icybee\Binding\CoreBindings $app
  */
-class EditDecorator extends \Brickrouge\Decorator
+class EditDecorator extends Decorator
 {
+	use AccessorTrait;
+	use AppAccessor;
+
 	private $record;
 
 	public function __construct($component, $record)
@@ -34,12 +42,11 @@ class EditDecorator extends \Brickrouge\Decorator
 		$component = parent::render();
 		$record = $this->record;
 		$model = $record->model;
-		$primary = $model->primary;
 
-		return new A($component, \ICanBoogie\Routing\contextualize("/admin/{$model->id}/{$record->$primary}/edit"), [
+		return new A($component, $this->app->url_for("admin:{$model->id}:edit", $record), [
 
 			'class' => 'edit',
-			'title' => I18n\t('manage.edit')
+			'title' => $this->app->translate('manage.edit')
 
 		]);
 	}

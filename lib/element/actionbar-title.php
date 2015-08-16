@@ -22,10 +22,10 @@ use Brickrouge\Element;
 use Brickrouge\ElementIsEmpty;
 
 /**
- * @property-read \ICanBoogie\Core $app
+ * @property-read \ICanBoogie\Core|\Icybee\Binding\CoreBindings $app
  * @property-read \ICanBoogie\Module\ModuleCollection $modules
  * @property-read \ICanBoogie\HTTP\Request $request
- * @property-read \ICanBoogie\Routing\Routes $routes
+ * @property-read \ICanBoogie\Routing\RouteCollection $routes
  * @property-read \Icybee\Modules\Sites\Site $site
  * @property-read \Icybee\Modules\Users\User $user
  */
@@ -112,7 +112,7 @@ EOT;
 		}
 
 		$label = \Brickrouge\escape($label);
-		$url = \Brickrouge\escape(\ICanBoogie\Routing\contextualize('/admin/' . $route->module));
+		$url = \Brickrouge\escape($this->app->url_for("admin:$route->module:index"));
 
 		return <<<EOT
 <h1><a href="$url">$label</a></h1>
@@ -152,7 +152,7 @@ EOT;
 
 				if ($r)
 				{
-					$url = \ICanBoogie\Routing\contextualize((string) $r->pattern);
+					$url = (string) $this->app->url_for($r);
 
 					if ($options)
 					{
@@ -198,7 +198,7 @@ EOT;
 				continue;
 			}
 
-			$url = \ICanBoogie\Routing\contextualize($r['pattern']);
+			$url = $this->app->url_for($r);
 			$module_flat_id = strtr($r_module_id, '.', '_');
 
 			$options_routes[$url] = new A

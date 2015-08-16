@@ -83,11 +83,11 @@ class AdminDecorator
 		$session = $this->session;
 		$site_id = $this->site_id;
 
-		if ($session->last_site_id)
+		if ($session['last_site_id'])
 		{
-			if ($session->last_site_id != $site_id)
+			if ($session['last_site_id'] != $site_id)
 			{
-				$session->last_site_id = $site_id;
+				$session['last_site_id'] = $site_id;
 
 				if (!$this->request['ssc'])
 				{
@@ -97,7 +97,7 @@ class AdminDecorator
 		}
 		else
 		{
-			$session->last_site_id = $site_id;
+			$session['last_site_id'] = $site_id;
 		}
 
 		if ($this->changed_site)

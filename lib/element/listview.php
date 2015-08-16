@@ -286,4 +286,18 @@ class ListViewColumn extends \ICanBoogie\Object
 
 		return $this->options['title'];
 	}
+
+	/**
+	 * Translates and formats a string.
+	 *
+	 * @param string $native
+	 * @param array $args
+	 * @param array $options
+	 *
+	 * @return string
+	 */
+	protected function t($native, array $args = [], array $options = [])
+	{
+		return $this->listview->t($native, $args, $options);
+	}
 }

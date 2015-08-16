@@ -23,7 +23,7 @@ use Icybee\Routing\NavigationRouteFilter;
 /**
  * Admin navigation bar.
  *
- * @property \ICanBoogie\Core $app
+ * @property \ICanBoogie\Core|\Icybee\Binding\CoreBindings $app
  * @property \ICanBoogie\Module\ModuleCollection $modules
  * @property \ICanBoogie\HTTP\Request $request
  * @property \ICanBoogie\Routing\Route $route
@@ -157,7 +157,7 @@ class Navigation extends Element
 			$module_id = $route['module'];
 			$module_flat_id = strtr($module_id, '.', '_');
 			$title = $this->t($module_flat_id, [], [ 'scope' => 'module_title', 'default' => $descriptors[$module_id][Descriptor::TITLE] ]);
-			$url = \ICanBoogie\Routing\contextualize($route['pattern']);
+			$url = (string) $this->app->url_for($route['id']);
 			$options[$url] = [ $title, $url ];
 		}
 

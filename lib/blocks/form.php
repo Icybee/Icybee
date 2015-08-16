@@ -23,7 +23,7 @@ use Brickrouge\Form;
 /**
  * Base class for form type blocks.
  *
- * @property-read \ICanBoogie\Core $app
+ * @property-read \ICanBoogie\Core|\Icybee\Binding\CoreBindings $app
  * @property-read Document $document
  * @property-read boolean $permission
  *
@@ -203,6 +203,11 @@ abstract class FormBlock extends Object
 		{
 			return \Brickrouge\render_exception($e);
 		}
+	}
+
+	public function t($native, array $args = [], array $options = [])
+	{
+		return $this->app->translate($native, $args, $options);
 	}
 
 	/*

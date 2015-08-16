@@ -11,16 +11,20 @@
 
 namespace Icybee\Operation\Module;
 
+use ICanboogie\Errors;
 use ICanBoogie\HTTP\Request;
+use ICanBoogie\Operation;
 
 /**
  * Queries a module about an operation.
  *
- * This class is the base classe for operation queries, it is used by default by the
- * {@link Icybee\Hooks::dispatch_query_operation} controler if the target module doesn't define
- * a suitale operation class.
+ * This class is the base class for operation queries, it is used by default by the
+ * {@link Icybee\Hooks::dispatch_query_operation} controller if the target module doesn't define
+ * a suitable operation class.
+ *
+ * @property-read \ICanBoogie\Core|\Icybee\Binding\CoreBindings $app
  */
-class QueryOperation extends \ICanBoogie\Operation
+class QueryOperation extends Operation
 {
 	private $callback;
 
@@ -45,7 +49,7 @@ class QueryOperation extends \ICanBoogie\Operation
 		return parent::__invoke($request);
 	}
 
-	protected function validate(\ICanboogie\Errors $errors)
+	protected function validate(Errors $errors)
 	{
 		$request = $this->request;
 
@@ -96,7 +100,7 @@ class QueryOperation extends \ICanBoogie\Operation
 		return $element;
 	}
 
-	protected function t($str, array $args=[], array $options=[])
+	protected function t($str, array $args = [], array $options = [])
 	{
 		$options += [
 
@@ -104,7 +108,7 @@ class QueryOperation extends \ICanBoogie\Operation
 
 		];
 
-		return \ICanBoogie\I18n\t($str, $args, $options);
+		return $this->app->translate($str, $args, $options);
 	}
 
 	/**

@@ -18,7 +18,9 @@ use ICanBoogie\Module;
 use ICanBoogie\Module\ModuleCollection;
 use ICanBoogie\Module\Descriptor;
 use ICanBoogie\Routing\RouteCollection;
+use Icybee\Binding\ObjectBindings;
 use Icybee\Modules\Users\User;
+use Icybee\Routing\CreateRouteFilter;
 
 /**
  * Action bar _new_ button.
@@ -30,7 +32,9 @@ use Icybee\Modules\Users\User;
  */
 class ActionbarNew extends SplitButton
 {
-	const PATTERN = '#abn-pattern';
+	use ObjectBindings;
+
+	const ID = '#abn-id';
 	const ROUTE = '#abn-route';
 
 	protected function lazy_get_modules()
@@ -53,32 +57,29 @@ class ActionbarNew extends SplitButton
 		return $this->app->user;
 	}
 
+	/**
+	 * @inheritdoc
+	 */
 	public function __construct($label, array $attributes = [])
 	{
 		$options = $this->collect_routes();
 
-		parent::__construct
-		(
-			$label, $attributes + array
-			(
-				self::OPTIONS => $options
-			)
-		);
+		parent::__construct($label, $attributes + [
+
+			self::OPTIONS => $options
+
+		]);
 
 		$route = $this[self::ROUTE];
 
-		if ($route->pattern == $this[self::PATTERN])
-		{
-			$this->add_class('btn-info');
-		}
-		else
-		{
-			$this->add_class('btn-danger');
-		}
+		$this->add_class($route->id === $this[self::ID] ? 'btn-info' : 'btn-danger');
 	}
 
 	private $render_as_button = false;
 
+	/**
+	 * @inheritdoc
+	 */
 	protected function render_splitbutton_label($label, $class)
 	{
 		if ($this->render_as_button)
@@ -86,9 +87,12 @@ class ActionbarNew extends SplitButton
 			return '';
 		}
 
-		return new A($label, \ICanBoogie\Routing\contextualize($this[self::PATTERN]), [ 'class' => 'btn ' . $class ]);
+		return new A($label, $this->app->url_for($this[self::ID]), [ 'class' => 'btn ' . $class ]);
 	}
 
+	/**
+	 * @inheritdoc
+	 */
 	protected function render_splitbutton_toggle($class)
 	{
 		if ($this->render_as_button)
@@ -101,15 +105,18 @@ EOT;
 		return parent::render_splitbutton_toggle($class);
 	}
 
+	/**
+	 * @inheritdoc
+	 */
 	public function render()
 	{
 		$route = $this->request->context->route;
 		$module_id = $route->module;
-		$match = $this->routes->find("/admin/$module_id/new");
+		$has_create = isset($this->routes["admin:$module_id:create"]);
 
-		$this->render_as_button = !$match;
+		$this->render_as_button = !$has_create;
 
-		if ($route->pattern != '/admin/dashboard' && !$match)
+		if ($route->id != 'admin:dashboard:index' && !$has_create)
 		{
 			return '';
 		}
@@ -122,26 +129,15 @@ EOT;
 		$collection = [];
 		$translations = [];
 
-		$routes = $this->routes;
+		$routes = $this->routes->filter(new CreateRouteFilter($this->modules, $this->user));
+
 		$modules = $this->modules;
 		$descriptors = $modules->descriptors;
-		$user = $this->user;
 
 		foreach ($routes as $route)
 		{
 			$pattern = $route['pattern'];
-
-			if (!preg_match('#/new$#', $pattern))
-			{
-				continue;
-			}
-
 			$module_id = $route['module'];
-
-			if (!isset($modules[$module_id]) || !$user->has_permission(Module::PERMISSION_CREATE, $module_id))
-			{
-				continue;
-			}
 
 			$collection[$pattern] = $module_id;
 

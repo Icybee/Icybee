@@ -52,15 +52,20 @@ const OPERATION_SAVE_MODE_DISPLAY = 'display';
  * $app();
  * </pre>
  *
- * @return \ICanBoogie\Core
+ * @return \ICanBoogie\Core|\Icybee\Binding\CoreBindings
  */
 function boot()
 {
+	/* @var $app \ICanBoogie\Core|\Icybee\Binding\CoreBindings */
+
 	$app = null;
 
-	\ICanBoogie\I18n\Helpers::patch('get_cldr', function() use(&$app) { return $app->cldr; });
+	\Brickrouge\Helpers::patch('t', function($native, array $args = [], array $options = []) use (&$app) {
 
-	\Brickrouge\Helpers::patch('t', 'ICanBoogie\I18n\t');
+		return $app->translate($native, $args, $options);
+
+	});
+
 	\Brickrouge\Helpers::patch('render_exception', 'ICanBoogie\Debug::format_alert');
 	\Brickrouge\Helpers::patch('get_document', function() use(&$app) { return $app->document; });
 	\Brickrouge\Helpers::patch('check_session', function() use(&$app) { return $app->session; });

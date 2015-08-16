@@ -14,9 +14,9 @@ namespace Icybee\Element;
 use Brickrouge\A;
 use Brickrouge\DropdownMenu;
 use Brickrouge\Element;
+use Icybee\Binding\ObjectBindings;
 
 /**
- * @property-read \ICanBoogie\Core $app
  * @property-read string $decontextualized_path
  * @property-read \ICanBoogie\Module\ModelCollection $models
  * @property-read \Icybee\Modules\Sites\Site $site
@@ -24,6 +24,8 @@ use Brickrouge\Element;
  */
 class SiteMenu extends Element
 {
+	use ObjectBindings;
+
 	protected function get_models()
 	{
 		return $this->app->models;

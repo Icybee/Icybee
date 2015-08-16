@@ -20,6 +20,7 @@ use Brickrouge\A;
 use Brickrouge\Element;
 use Brickrouge\ElementIsEmpty;
 
+use Icybee\Binding\ObjectBindings;
 use Icybee\Modules\Users\User;
 use Icybee\Routing\ActionBarNavRouteFilter;
 
@@ -32,6 +33,8 @@ use Icybee\Routing\ActionBarNavRouteFilter;
  */
 class ActionBarNav extends Element
 {
+	use ObjectBindings;
+
 	/**
 	 * Returns application's request.
 	 *

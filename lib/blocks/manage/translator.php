@@ -55,6 +55,14 @@ class Translator
 			?: $user_default;
 		};
 
-		return I18n\t($native, $args, $options);
+		return self::app()->translate($native, $args, $options);
+	}
+
+	/**
+	 * @return \ICanBoogie\Core|\Icybee\Binding\CoreBindings
+	 */
+	static private function app()
+	{
+		return \ICanBoogie\app();
 	}
 }

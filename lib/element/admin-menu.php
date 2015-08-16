@@ -28,7 +28,7 @@ use Icybee\Modules\Users\User;
 /**
  * A menu that helps managing the contents of pages.
  *
- * @property Core $app
+ * @property Core|\Icybee\Binding\CoreBindings $app
  * @property \ICanBoogie\I18n\Translator\Proxi $translator
  * @property Module\ModuleCollection $modules
  * @property Request $request
@@ -164,7 +164,7 @@ EOT;
 
 		if ($user->has_permission(Module::PERMISSION_MAINTAIN, $edit_target->constructor))
 		{
-			$href = Routing\contextualize('/admin/' . $edit_target->constructor . '/' . $edit_target->nid . '/edit');
+			$href = $this->app->url_for("admin:{$edit_target->constructor}:edit", $edit_target);
 			$title = $translator('Edit: !title', [ 'title' => $edit_target->title ]);
 			$label = $translator('Edit');
 
@@ -187,14 +187,14 @@ EOT;
 
 		foreach ($this->modules as $module_id => $module)
 		{
-			$id = "admin:$module_id/config";
+			$id = "admin:$module_id:config";
 
 			if (empty($routes[$id]))
 			{
 				continue;
 			}
 
-			$href = \ICanBoogie\escape(Routing\contextualize($routes[$id]));
+			$href = \ICanBoogie\escape($this->app->url_for($id));
 
 			$label = $translator($module->flat_id, [], [
 
@@ -254,7 +254,7 @@ EOT;
 
 			foreach ($nodes as $node)
 			{
-				$url = Routing\contextualize('/admin/' . $node->constructor . '/' . $node->nid . '/edit');
+				$url = $this->app->url_for("admin:{$node->constructor}edit", $node);
 				$title = $translator->__invoke('Edit: !title', [ '!title' => $node->title ]);
 				$label = \ICanBoogie\escape(\ICanBoogie\shorten($node->title));
 

@@ -15,6 +15,8 @@ use ICanBoogie\ActiveRecord\Query;
 
 /**
  * Implement some function of the {@link ColumnInterface} interface.
+ *
+ * @property string $id
  */
 trait ColumnTrait
 {

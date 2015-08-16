@@ -11,8 +11,12 @@
 
 namespace Icybee\Operation\Constructor;
 
+use Icybee\Binding\ObjectBindings;
+
 class Save extends \ICanBoogie\SaveOperation // FIXME-20130501: is this still used ?
 {
+	use ObjectBindings;
+
 	/**
 	 * Adds the constructor id to the properties.
 	 */

@@ -11,10 +11,10 @@
 
 namespace Icybee\Routing;
 
-use ICanBoogie\AuthenticationRequired;
+use ICanBoogie\HTTP\AuthenticationRequired;
+use ICanBoogie\HTTP\PermissionRequired;
 use ICanBoogie\HTTP\Request;
 use ICanBoogie\Module\ControllerBindings as ModuleBindings;
-use ICanBoogie\PermissionRequired;
 
 use Icybee\Modules\Users\User;
 
@@ -60,6 +60,19 @@ abstract class AdminController extends ResourceController
 		return 'admin';
 	}
 
+	/**
+	 * @inheritdoc
+	 */
+	protected function is_action_method($action)
+	{
+		if (in_array($action, [ 'config', 'confirm-delete']))
+		{
+			return true;
+		}
+
+		return parent::is_action_method($action);
+	}
+
 	/*
 	 * Actions
 	 */
@@ -68,6 +81,12 @@ abstract class AdminController extends ResourceController
 	{
 		$this->view->content = $this->module->getBlock('manage');
 		$this->view['block_name'] = 'manage';
+	}
+
+	protected function create()
+	{
+		$this->view->content = $this->module->getBlock('edit');
+		$this->view['block_name'] = 'create';
 	}
 
 	protected function edit($nid)
@@ -82,7 +101,7 @@ abstract class AdminController extends ResourceController
 		$this->view['block_name'] = 'config';
 	}
 
-	protected function action_confirm_delete($nid)
+	protected function confirm_delete($nid)
 	{
 		$this->view->content = $this->module->getBlock('delete', $nid);
 		$this->view['block_name'] = 'delete';

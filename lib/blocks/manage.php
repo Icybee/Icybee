@@ -11,6 +11,7 @@
 
 namespace Icybee;
 
+use ICanBoogie\ActiveRecord;
 use ICanBoogie\ActiveRecord\Query;
 use ICanBoogie\ActiveRecord\SchemaColumn;
 use ICanBoogie\I18n;
@@ -33,7 +34,7 @@ use Icybee\ManageBlock\Translator;
 /**
  * An element to manage the records of a module.
  *
- * @property-read \ICanBoogie\Core $app
+ * @property-read \ICanBoogie\Core|\Icybee\Binding\CoreBindings $app
  * @property-read \ICanBoogie\EventCollection $events
  * @property-read \ICanBoogie\HTTP\Request $request
  * @property-read \Icybee\Modules\Users\User $user
@@ -172,7 +173,7 @@ class ManageBlock extends Element
 	/**
 	 * Returns application's events
 	 *
-	 * @return \ICanBoogie\Events
+	 * @return \ICanBoogie\EventCollection
 	 */
 	protected function get_events()
 	{
@@ -1128,7 +1129,7 @@ EOT;
 
 			$tr = new Element('tr', [ Element::INNER_HTML => $html ]);
 
-			if ($key && !$user->has_ownership($module, $records[$i]))
+			if ($key && !$user->has_ownership($records[$i]))
 			{
 				$tr->add_class('no-ownership');
 			}
@@ -1188,7 +1189,9 @@ EOT;
 		}
 		else
 		{
-			$message = $this->t('create_first', [ '!url' => \ICanBoogie\Routing\contextualize("/admin/{$this->module->id}/new") ]);
+			$url = $this->app->url_for("admin:{$this->module->id}:create");
+
+			$message = $this->t('create_first', [ '!url' => $url ]);
 			$context = 'info';
 		}
 

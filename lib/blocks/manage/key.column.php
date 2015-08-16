@@ -41,7 +41,7 @@ class KeyColumn extends Column
 
 		foreach ($records as $record)
 		{
-			$ownership[$record->$key] = $user->has_ownership($module, $record);
+			$ownership[$record->$key] = $user->has_ownership($record);
 		}
 
 		$this->ownership = $ownership;

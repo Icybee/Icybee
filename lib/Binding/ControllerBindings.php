@@ -9,9 +9,12 @@
  * file that was distributed with this source code.
  */
 
-namespace Icybee;
+namespace Icybee\Binding;
 
-class DeleteController extends BlockController
+/**
+ * @property \ICanBoogie\Core|CoreBindings $app
+ */
+trait ControllerBindings
 {
 
 }

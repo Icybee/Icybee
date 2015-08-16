@@ -12,9 +12,9 @@
 namespace Icybee;
 
 use ICanBoogie\HTTP\ForceRedirect;
+use ICanBoogie\HTTP\PermissionRequired;
 use ICanBoogie\I18n;
 use ICanBoogie\Operation;
-use ICanBoogie\PermissionRequired;
 
 use Brickrouge\A;
 use Brickrouge\Button;
@@ -28,7 +28,7 @@ use Icybee\Modules\Sites\Site;
 /**
  * A record editor.
  *
- * @property-read \ICanBoogie\Events $events
+ * @property-read \ICanBoogie\EventCollection $events
  * @property-read \ICanBoogie\Module\ModelCollection $models
  * @property \ICanBoogie\ActiveRecord $record
  * @property-read \ICanBoogie\HTTP\Request $request
@@ -182,7 +182,7 @@ class EditBlock extends FormBlock
 
 		if ($record && isset($record->uid))
 		{
-			$permission = $user->has_ownership($this->module, $record);
+			$permission = $user->has_ownership($record);
 		}
 
 		return $permission;
@@ -377,16 +377,16 @@ class EditBlock extends FormBlock
 
 		$save_mode_options =[
 
-			OPERATION_SAVE_MODE_LIST => I18n\t('save_mode_list', [ ], [ 'scope' => 'option' ]),
-			OPERATION_SAVE_MODE_CONTINUE => I18n\t('save_mode_continue', [ ], [ 'scope' => 'option' ]),
-			OPERATION_SAVE_MODE_NEW => I18n\t('save_mode_new', [ ], [ 'scope' => 'option' ]),
+			OPERATION_SAVE_MODE_LIST => $this->t('save_mode_list', [ ], [ 'scope' => 'option' ]),
+			OPERATION_SAVE_MODE_CONTINUE => $this->t('save_mode_continue', [ ], [ 'scope' => 'option' ]),
+			OPERATION_SAVE_MODE_NEW => $this->t('save_mode_new', [ ], [ 'scope' => 'option' ]),
 
 		];
 
 		try
 		{
 			$this->views["{$module->id}/view"];
-			$save_mode_options[OPERATION_SAVE_MODE_DISPLAY] = I18n\t('save_mode_display', [], [ 'scope' => 'option' ]);
+			$save_mode_options[OPERATION_SAVE_MODE_DISPLAY] = $this->t('save_mode_display', [], [ 'scope' => 'option' ]);
 		}
 		catch (\Icybee\Modules\Views\Collection\ViewNotDefined $e)
 		{
@@ -396,7 +396,7 @@ class EditBlock extends FormBlock
 
 				if ($url)
 				{
-					$save_mode_options[OPERATION_SAVE_MODE_DISPLAY] = I18n\t('save_mode_display', [], [ 'scope' => 'option' ]);
+					$save_mode_options[OPERATION_SAVE_MODE_DISPLAY] = $this->t('save_mode_display', [], [ 'scope' => 'option' ]);
 				}
 			}
 		}
@@ -419,7 +419,7 @@ class EditBlock extends FormBlock
 
 					if ($url[0] != '#')
 					{
-						$event->buttons[] = '<a href="' . $record->url . '" class="actionbar-link">' . I18n\t('View', [], [ 'scope' => 'button' ]) . '</a>';
+						$event->buttons[] = '<a href="' . $record->url . '" class="actionbar-link">' . $this->t('View', [], [ 'scope' => 'button' ]) . '</a>';
 					}
 				}
 				catch (\Exception $e) {}
@@ -439,9 +439,9 @@ class EditBlock extends FormBlock
 
 			if ($key
 			&& $this->user->has_permission(Module::PERMISSION_MANAGE, $module)
-			&& $this->user->has_ownership($module, $record))
+			&& $this->user->has_ownership($record))
 			{
-				$event->buttons[] = new A(I18n\t('Delete', [], [ 'scope' => 'button' ]), \ICanBoogie\Routing\contextualize('/admin/' . $module . '/' . $key . '/delete'), [
+				$event->buttons[] = new A($this->t('Delete', [], [ 'scope' => 'button' ]), $this->app->url_for("admin:{$module}:confirm-delete", $record), [
 
 					'class' => 'btn btn-danger'
 				]);

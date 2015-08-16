@@ -11,9 +11,13 @@
 
 namespace Icybee\Operation\Module;
 
+use ICanboogie\Errors;
 use ICanBoogie\I18n;
 use ICanBoogie\Operation;
 
+/**
+ * @property-read \ICanBoogie\Core|\Icybee\Binding\CoreBindings $app
+ */
 class Blocks extends Operation
 {
 	protected function get_controls()
@@ -25,11 +29,11 @@ class Blocks extends Operation
 		] + parent::get_controls();
 	}
 
-	protected function validate(\ICanboogie\Errors $errors)
+	protected function validate(Errors $errors)
 	{
 		if (!$this->request['name'])
 		{
-			$errors['name'] = I18n\t('Missing block name');
+			$errors['name'] = $errors->format('Missing block name');
 
 			return false;
 		}

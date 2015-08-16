@@ -12,16 +12,18 @@
 namespace Icybee;
 
 use Brickrouge\Element;
+use Icybee\Binding\ObjectBindings;
 
 /**
  * An interlock block, displayed instead of the edit block when another user has locked the record
  * to edit.
  *
- * @property-read \ICanBoogie\Core $app
  * @property-read \ICanBoogie\Module\ModelCollection $models
  */
 class InterlockBlock extends Element
 {
+	use ObjectBindings;
+
 	/**
 	 * The module managing the record.
 	 *

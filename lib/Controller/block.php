@@ -11,9 +11,10 @@
 
 namespace Icybee\Controller;
 
+use ICanBoogie\HTTP\PermissionRequired;
 use ICanBoogie\HTTP\Request;
 use ICanBoogie\Module;
-use ICanBoogie\PermissionRequired;
+
 use Icybee\AdminDecorator;
 use Icybee\BlockDecorator;
 use Icybee\Controller;
@@ -89,7 +90,7 @@ class BlockController extends AdminController
 	/**
 	 * Controls the user access to the block.
 	 *
-	 * @throws \ICanBoogie\PermissionRequired if the user doesn't have at least the
+	 * @throws PermissionRequired if the user doesn't have at least the
 	 * {@link Module::PERMISSION_ACCESS} permission.
 	 */
 	protected function control()

@@ -21,6 +21,7 @@ use ICanBoogie\Routing\RouteCollection;
 
 use Brickrouge\Element;
 
+use Icybee\Modules\Members\Member;
 use Icybee\Modules\Users\User;
 
 /**
@@ -28,7 +29,7 @@ use Icybee\Modules\Users\User;
  *
  * @package Icybee\Element
  *
- * @property-read \ICanBoogie\Core $app
+ * @property-read \ICanBoogie\Core|\Icybee\Binding\CoreBindings $app
  * @property-read ModuleCollection $modules
  * @property-read Request $request
  * @property-read RouteCollection $routes
@@ -36,22 +37,22 @@ use Icybee\Modules\Users\User;
  */
 class Actionbar extends Element
 {
-	protected function lazy_get_modules()
+	protected function get_modules()
 	{
 		return $this->app->modules;
 	}
 
-	protected function lazy_get_request()
+	protected function get_request()
 	{
 		return $this->app->request;
 	}
 
-	protected function lazy_get_routes()
+	protected function get_routes()
 	{
 		return $this->app->routes;
 	}
 
-	protected function lazy_get_user()
+	protected function get_user()
 	{
 		return $this->app->user;
 	}
@@ -83,18 +84,18 @@ class Actionbar extends Element
 
 			if (!$this->request)
 			{
-				throw new PropertyNotDefined("There is not request");
+				throw new PropertyNotDefined("There is no request");
 			}
 
 			$route = $this->request->context->route;
 
-			if (!$this->user->is_guest && !($this->user instanceof \Icybee\Modules\Members\Member))
+			if (!$this->user->is_guest && !($this->user instanceof Member))
 			{
 				$module_id = $route->module;
 
 				$actionbar_new = (string) new ActionbarNew('New', [
 
-					ActionbarNew::PATTERN => "/admin/$module_id/new",
+					ActionbarNew::ID => "admin:$module_id:create",
 					ActionbarNew::ROUTE => $route
 
 				]);

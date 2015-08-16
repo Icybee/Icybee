@@ -22,6 +22,7 @@ use Brickrouge\Form;
 /**
  * A block to delete a record.
  *
+ * @property-read \ICanBoogie\Core|\Icybee\Binding\CoreBindings $app
  * @property string $title The localized title of the block. {@link get_title()}
  * @property ActiveRecord $record The record to delete. {@link get_record()}
  * @property string $record_name The name of the record to delete. {@link get_record_name()}
@@ -69,7 +70,7 @@ class DeleteBlock extends Form
 				Operation::NAME => Module::OPERATION_DELETE,
 				Operation::KEY => $this->key,
 
-				'redirect_to' => \ICanBoogie\Routing\contextualize("/admin/{$module->id}")
+				'redirect_to' => $this->app->url_for("admin:{$module->id}:index")
 
 			],
 
@@ -104,7 +105,7 @@ class DeleteBlock extends Form
 		{
 			try
 			{
-				$message = I18n\t('Unknown record id: %key', [ '%key' => $this->key ]);
+				$message = $this->t('Unknown record id: %key', [ '%key' => $this->key ]);
 
 				return <<<EOT
 <div class="block-alert block--delete">
@@ -129,7 +130,7 @@ EOT;
 	 */
 	protected function get_title()
 	{
-		return I18n\t('Delete a record');
+		return $this->t('Delete a record');
 	}
 
 	/**
@@ -177,10 +178,10 @@ EOT;
 		}
 		else
 		{
-			$record_name = I18n\t('record_name', [], [ 'default' => 'this record' ]);
+			$record_name = $this->t('record_name', [], [ 'default' => 'this record' ]);
 		}
 
-		return I18n\t('Are you sure you want to delete :name?', [ 'name' => $record_name ]);
+		return $this->t('Are you sure you want to delete :name?', [ 'name' => $record_name ]);
 	}
 
 	/**
@@ -222,7 +223,9 @@ EOT;
 	 */
 	protected function get_preview_element()
 	{
-		return $this->preview ? new Element('div', [ Element::INNER_HTML => $this->preview, 'class' => 'preview' ]) : null;
+		return $this->preview
+			? new Element('div', [ Element::INNER_HTML => $this->preview, 'class' => 'preview' ])
+			: null;
 	}
 
 	/**
@@ -241,7 +244,7 @@ EOT;
 			$flat_id = strtr($module_id, '.', '_');
 
 			$html .= '<li>';
-			$html .= '<strong>' . I18n\t(count($by_module) == 1 ? 'one' : 'other', [], [ 'scope' => "$flat_id.name" ]) . '</strong>';
+			$html .= '<strong>' . $this->t(count($by_module) == 1 ? 'one' : 'other', [], [ 'scope' => "$flat_id.name" ]) . '</strong>';
 			$html .= '<ul>';
 
 			foreach ($by_module as $key => $dependency)
@@ -258,7 +261,7 @@ EOT;
 			return null;
 		}
 
-		$p = I18n\t('The following dependencies were found, they will also be deleted:');
+		$p = $this->t('The following dependencies were found, they will also be deleted:');
 
 		return <<<EOT
 <p>$p</p>

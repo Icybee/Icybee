@@ -14,9 +14,12 @@ namespace Icybee\Operation\Widget;
 use Brickrouge\Button;
 use Brickrouge\Popover;
 use Brickrouge\Widget;
+use Icybee\Binding\ObjectBindings;
 
 class Get extends \ICanBoogie\Operation
 {
+	use ObjectBindings;
+
 	private $widget_class;
 
 	protected function get_controls()

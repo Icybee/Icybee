@@ -39,13 +39,13 @@ class Section extends Element
 
 			if (is_object($element))
 			{
-				$label = I18n\t($element[Form::LABEL]);
+				$label = $this->t($element[Form::LABEL]);
 
 				if ($label)
 				{
 					if ($label{0} == '.')
 					{
-						$label = I18n\t(substr($label, 1), [], [ 'scope' => 'element.label' ]);
+						$label = $this->t(substr($label, 1), [], [ 'scope' => 'element.label' ]);
 					}
 
 					$rc .= '<div class="form-label form-label-' . $context_class . '">';

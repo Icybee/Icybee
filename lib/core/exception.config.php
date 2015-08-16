@@ -38,21 +38,4 @@ class Config extends \Exception
 
 		parent::__construct(\ICanBoogie\format($message, $params), $code);
 	}
-
-	public function __toString()
-	{
-		parent::__toString();
-
-		if ($this->code && !headers_sent())
-		{
-			header('HTTP/1.0 ' . $this->code . ' ' . $this->title);
-		}
-
-		$rc  = '<code class="exception">';
-		$rc .= '<strong>' . $this->title . ', with the following message:</strong><br /><br />';
-		$rc .= $this->getMessage() . '<br />';
-		$rc .= '</code>';
-
-		return $rc;
-	}
 }
