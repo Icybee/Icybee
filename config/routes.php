@@ -5,14 +5,7 @@ namespace Icybee;
 use ICanBoogie\HTTP\Request;
 
 return [
-/*
-	'admin:index' => [
 
-		'pattern' => '/admin',
-		'controller' => Routing\AdminIndexController::class
-
-	],
-*/
 	'api:widget' => [
 
 		'pattern' => '/api/widgets/:class',
