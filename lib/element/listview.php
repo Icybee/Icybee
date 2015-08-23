@@ -52,7 +52,7 @@ class ListView extends Element
 	/**
 	 * Returns the columns of the listview.
 	 *
-	 * @return \Icybee\ListView\Column
+	 * @return ListViewColumn
 	 */
 	protected function get_columns()
 	{
