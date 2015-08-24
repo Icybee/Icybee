@@ -48,12 +48,12 @@ class Hooks
 		 */
 		$dispatcher['admin:categories'] = new WeightedDispatcher(function(Request $request)
 		{
-			$app = \ICanBoogie\app();
+			$app = self::app();
 			$path = \ICanBoogie\normalize_url_path(Routing\decontextualize($request->path));
 
 			if (strpos($path, '/admin/') !== 0)
 			{
-				return;
+				return null;
 			}
 
 			$category = substr($path, 7, -1);
@@ -105,7 +105,7 @@ class Hooks
 	 */
 	static public function dispatch_query_operation(Request $request)
 	{
-		$app = \ICanBoogie\app();
+		$app = self::app();
 		$class = 'Icybee\Operation\Module\QueryOperation';
 		$try_module = $module = $app->modules[$request['module']];
 
@@ -133,7 +133,7 @@ class Hooks
 	 */
 	static public function before_user_logout(Operation\BeforeProcessEvent $event)
 	{
-		$app = \ICanBoogie\app();
+		$app = self::app();
 		$uid = $app->user_id;
 
 		if (!$uid)
@@ -169,7 +169,7 @@ class Hooks
 	 */
 	static public function before_save_operation_control(Operation\BeforeControlEvent $event, \ICanBoogie\SaveOperation $target)
 	{
-		$app = \ICanBoogie\app();
+		$app = self::app();
 		$mode = $event->request[OPERATION_SAVE_MODE];
 
 		if (!$mode)
@@ -239,7 +239,7 @@ class Hooks
 	 */
 	static public function before_page_renderer_render()
 	{
-		\ICanBoogie\app()->events->attach(function(\BlueTihi\Context\LoadedNodesEvent $event, \BlueTihi\Context $target) {
+		self::app()->events->attach(function(\BlueTihi\Context\LoadedNodesEvent $event, \BlueTihi\Context $target) {
 
 			$nodes = &self::$page_controller_loaded_nodes;
 
@@ -357,11 +357,11 @@ class Hooks
 	 *
 	 * @return string
 	 */
-	static public function markup_alerts(array $args, $engine, $template)
+	static public function markup_alerts(array $args, \Patron\Engine $engine, $template)
 	{
 		$key = '<!-- alert-markup-placeholder-' . uniqid() . ' -->';
 
-		\ICanBoogie\app()->events->attach(function(PageRenderer\RenderEvent $event, PageRenderer $target) use($engine, $template, $key) {
+		self::app()->events->attach(function(PageRenderer\RenderEvent $event, PageRenderer $target) use($engine, $template, $key) {
 
 			$types = [ 'success', 'info', 'error' ];
 

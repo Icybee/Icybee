@@ -13,6 +13,8 @@ namespace Brickrouge;
 
 /**
  * A listview element.
+ *
+ * @property array $entries
  */
 class ListView extends Element
 {
@@ -22,7 +24,7 @@ class ListView extends Element
 	/**
 	 * Columns use to display the data of the records.
 	 *
-	 * @var array[string]ListViewColumn
+	 * @var ListViewColumn[]
 	 */
 	protected $columns;
 
@@ -81,7 +83,7 @@ class ListView extends Element
 	/**
 	 * Returns the entries to display.
 	 *
-	 * @return array[]mixed
+	 * @return array[]
 	 */
 	protected function get_entries()
 	{
@@ -150,7 +152,7 @@ EOT;
 	 *
 	 *     [<column_id>][] => <cell_content>
 	 *
-	 * @param array $columns The columns to render.
+	 * @param ListViewColumn[] $columns The columns to render.
 	 *
 	 * @return array
 	 */

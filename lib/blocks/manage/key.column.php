@@ -11,8 +11,10 @@
 
 namespace Icybee\ManageBlock;
 
+use Brickrouge\Document;
 use Brickrouge\Element;
 
+use Icybee\Modules\Users\User;
 use Icybee\WrappedCheckbox;
 
 /**
@@ -34,8 +36,9 @@ class KeyColumn extends Column
 
 	public function alter_records(array $records)
 	{
+		/* @var $user User */
+
 		$key = $this->id;
-		$module = $this->manager->module;
 		$user = \ICanBoogie\app()->user;
 		$ownership = [];
 
@@ -83,7 +86,7 @@ class KeyColumn extends Column
 		]);
 	}
 
-	public function add_assets(\BrickRouge\Document $document)
+	public function add_assets(Document $document)
 	{
 		$document->js->add('key.column.js');
 		$document->css->add('key.column.css');

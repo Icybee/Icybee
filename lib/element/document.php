@@ -390,6 +390,8 @@ class BeforeRenderTitleEvent extends \ICanBoogie\Event
 	 */
 	public $title;
 
+	public $separator = ' – ';
+
 	/**
 	 * The event is constructed with the type `render_title:before`.
 	 *
