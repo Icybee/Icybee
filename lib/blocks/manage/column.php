@@ -25,7 +25,7 @@ use ICanBoogie\ActiveRecord\SchemaColumn;
  * `false` otherwise.
  * @property-read \ICanBoogie\Core|\Icybee\Binding\CoreBindings $app
  */
-class Column extends \ICanBoogie\Object implements ColumnInterface
+class Column extends \ICanBoogie\Prototyped implements ColumnInterface
 {
 	use ColumnTrait;
 

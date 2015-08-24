@@ -390,7 +390,7 @@ class EditBlock extends FormBlock
 		}
 		catch (\Icybee\Modules\Views\Collection\ViewNotDefined $e)
 		{
-			if ($record instanceof \ICanBoogie\Object && $record->has_property('url'))
+			if ($record instanceof \ICanBoogie\Prototyped && $record->has_property('url'))
 			{
 				$url = $record->url;
 

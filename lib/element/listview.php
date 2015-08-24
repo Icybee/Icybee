@@ -254,7 +254,7 @@ EOT;
 /**
  * Representation of a listview column.
  */
-class ListViewColumn extends \ICanBoogie\Object
+class ListViewColumn extends \ICanBoogie\Prototyped
 {
 	protected $id;
 	protected $options;

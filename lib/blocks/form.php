@@ -12,7 +12,7 @@
 namespace Icybee;
 
 use ICanBoogie\I18n;
-use ICanBoogie\Object;
+use ICanBoogie\Prototyped;
 use ICanBoogie\Operation;
 
 use Brickrouge\Button;
@@ -33,7 +33,7 @@ use Brickrouge\Form;
  * @property array $children Children for the {@link Form} element.
  * @property array $values Values for the {@link Form} element.
  */
-abstract class FormBlock extends Object
+abstract class FormBlock extends Prototyped
 {
 	/**
 	 * Adds assets to the document.

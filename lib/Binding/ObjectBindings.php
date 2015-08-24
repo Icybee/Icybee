@@ -12,7 +12,7 @@
 namespace Icybee\Binding;
 
 /**
- * {@link \ICanBoogie\Object} prototype bindings.
+ * {@link \ICanBoogie\Prototyped} prototype bindings.
  *
  * Similar to {@link \ICanBoogie\Binding\ObjectBindings}, this one includes Icybee extended
  * bindings.
