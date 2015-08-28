@@ -102,6 +102,10 @@
 	line-height: 1;
 }
 
+.widget-query-operation .form-actions {
+	margin-top: 20px;
+}
+
 .widget-query-operation .actions button + button {
 	margin-left: 1rem;
 }
