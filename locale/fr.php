@@ -51,6 +51,12 @@ return [
 
 	],
 
+	'route.title' => [
+
+		'confirm-delete' => "Supprimer"
+
+	],
+
 	/*
 	 * lib/blocks/manage.php
 	 */

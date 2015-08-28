@@ -12,6 +12,7 @@
 namespace Icybee\Element;
 
 use ICanBoogie\HTTP\Request;
+use ICanBoogie\I18n\Translator;
 use ICanBoogie\Module;
 use ICanBoogie\Routing\Route;
 use ICanBoogie\Routing\RouteCollection;
@@ -70,15 +71,21 @@ class ActionBarNav extends Element
 		parent::__construct('div', $attributes + [ 'class' => 'actionbar-nav' ]);
 	}
 
+	/**
+	 * @inheritdoc
+	 *
+	 * @throws ElementIsEmpty if there is no link to render.
+	 */
 	protected function render_inner_html()
 	{
 		$current_route = $this->request->context->route;
-		$collection = $this->collect_routes($current_route);
 
-		if (!$collection->count())
+		if (empty($current_route->module))
 		{
 			throw new ElementIsEmpty;
 		}
+
+		$collection = $this->collect_routes($current_route);
 
 		$html = '';
 
@@ -87,25 +94,47 @@ class ActionBarNav extends Element
 			$html .= $this->render_link($collection[$id], $current_route);
 		}
 
+		if (!preg_match('/\:index$/', $current_route->id) && !isset($collection[$current_route->id]))
+		{
+			$html .= $this->render_link($current_route, $current_route);
+		}
+
+		if (!$html)
+		{
+			throw new ElementIsEmpty;
+		}
+
 		return $html . parent::render_inner_html();
 	}
 
+	/**
+	 * Renders navigation link.
+	 *
+	 * @param Route $route
+	 * @param Route $current_route
+	 *
+	 * @return A
+	 */
 	protected function render_link(Route $route, Route $current_route)
 	{
-		$title = $route->id;
+		$title = $this->t($route->id, [], [
 
-		if ($title{0} == '.') // TODO-20120214: COMPAT
-		{
-			$title = substr($title, 1);
-		}
+			'scope' => 'route.title',
+			'default' => function(Translator $t, $str) {
 
-		$title = $this->t($title, [], [ 'scope' => 'block.title' ]);
+				$parts = explode(':', $str);
+
+				return $t(array_pop($parts), [], [ 'scope' => 'route.title' ]);
+
+			}
+
+		]);
 
 		$formatted_route = $route->format($this->request->path_params);
 
 		$link = new A($title, $formatted_route->url, [ 'class' => 'actionbar-link' ]);
 
-		if ($route->pattern == $current_route->pattern)
+		if ($route->id == $current_route->id)
 		{
 			$link->add_class('active');
 		}
@@ -114,19 +143,14 @@ class ActionBarNav extends Element
 	}
 
 	/**
+	 * Collect routes.
+	 *
 	 * @param Route $current_route
 	 *
 	 * @return RouteCollection
-	 *
-	 * @throws ElementIsEmpty
 	 */
 	protected function collect_routes(Route $current_route)
 	{
-		if (empty($current_route->module))
-		{
-			throw new ElementIsEmpty;
-		}
-
 		return $this->routes->filter(new ActionBarNavRouteFilter($current_route, $this->user));
 	}
 }
