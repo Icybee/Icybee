@@ -88,7 +88,7 @@ class KeyColumn extends Column
 
 	public function add_assets(Document $document)
 	{
-		$document->js->add('key.column.js');
-		$document->css->add('key.column.css');
+		$document->js->add(__DIR__ . '/key.column.js');
+		$document->css->add(__DIR__ . '/key.column.css');
 	}
 }

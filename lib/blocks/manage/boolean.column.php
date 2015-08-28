@@ -13,14 +13,16 @@ namespace Icybee\ManageBlock;
 
 use ICanBoogie\ActiveRecord\Query;
 
-use Icybee\WrappedCheckbox;
+use Brickrouge\Document;
+
+use Icybee\ManageBlock;
 
 /**
  * Representation of a _boolean_ column.
  */
 class BooleanColumn extends Column
 {
-	public function __construct(\Icybee\ManageBlock $manager, $id, array $options = [])
+	public function __construct(ManageBlock $manager, $id, array $options = [])
 	{
 		parent::__construct($manager, $id, $options + [
 
@@ -38,46 +40,20 @@ class BooleanColumn extends Column
 			],
 
 			'orderable' => false,
-			'cell_renderer' => __NAMESPACE__ . '\BooleanCellRenderer'
+			'cell_renderer' => BooleanCellRenderer::class
 
 		]);
 	}
 
-	public function add_assets(\Brickrouge\Document $document)
+	public function add_assets(Document $document)
 	{
 		parent::add_assets($document);
 
-		$document->js->add('boolean.column.js');
+		$document->js->add(__DIR__ . '/boolean.column.js');
 	}
 
 	public function alter_query_with_filter(Query $query, $filter_value)
 	{
 		return $query->and([ $this->id => $filter_value ]);
-	}
-}
-
-/**
- * Renderer for the _boolean_ column cells.
- */
-class BooleanCellRenderer extends CellRenderer
-{
-	/**
-	 * Returns an decorated checkbox element.
-	 *
-	 * @return WrappedCheckbox
-	 *
-	 * @inheritdoc
-	 */
-	public function __invoke($record, $property)
-	{
-		return new WrappedCheckbox([
-
-			'class' => 'wrapped-checkbox circle',
-			'value' => $record->{ $this->column->manager->primary_key },
-			'checked' => ($record->$property != 0),
-			'data-property' => $property,
-			'data-property-type' => 'boolean'
-
-		]);
 	}
 }

@@ -15,6 +15,8 @@ use ICanboogie\Errors;
 use ICanBoogie\HTTP\Request;
 use ICanBoogie\Operation;
 
+use Icybee\QueryOperationElement;
+
 /**
  * Queries a module about an operation.
  *
@@ -84,7 +86,7 @@ class QueryOperation extends Operation
 
 			],
 
-			'element_class' => 'Icybee\QueryOperationElement'
+			'element_class' => QueryOperationElement::class
 
 		];
 
@@ -100,15 +102,22 @@ class QueryOperation extends Operation
 		return $element;
 	}
 
+	/**
+	 * Translates and formats a string within the operation scope.
+	 *
+	 * @param string $str
+	 * @param array $args
+	 * @param array $options
+	 *
+	 * @return string
+	 */
 	protected function t($str, array $args = [], array $options = [])
 	{
-		$options += [
+		return $this->app->translate($str, $args, $options + [
 
 			'scope' => "{$this->module->flat_id}.{$this->request['operation']}.operation"
 
-		];
-
-		return $this->app->translate($str, $args, $options);
+		]);
 	}
 
 	/**
@@ -125,6 +134,10 @@ class QueryOperation extends Operation
 
 		return new $element_class($options, $attributes);
 	}
+
+	/*
+	 * Queries
+	 */
 
 	protected function query_delete()
 	{

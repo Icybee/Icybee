@@ -11,6 +11,7 @@
 
 namespace Icybee;
 
+use Brickrouge\Document;
 use ICanBoogie\HTTP\ForceRedirect;
 use ICanBoogie\HTTP\PermissionRequired;
 use ICanBoogie\I18n;
@@ -39,11 +40,11 @@ use Icybee\Modules\Sites\Site;
  */
 class EditBlock extends FormBlock
 {
-	static protected function add_assets(\Brickrouge\Document $document)
+	static protected function add_assets(Document $document)
 	{
 		parent::add_assets($document);
 
-		$document->js->add('edit.js');
+		$document->js->add(__DIR__ . '/edit.js');
 	}
 
 	/**

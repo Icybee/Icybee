@@ -254,7 +254,7 @@ EOT;
 
 			foreach ($nodes as $node)
 			{
-				$url = $this->app->url_for("admin:{$node->constructor}edit", $node);
+				$url = $this->app->url_for("admin:{$node->constructor}:edit", $node);
 				$title = $translator->__invoke('Edit: !title', [ '!title' => $node->title ]);
 				$label = \ICanBoogie\escape(\ICanBoogie\shorten($node->title));
 

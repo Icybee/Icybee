@@ -198,7 +198,7 @@ class Hooks
 
 				case OPERATION_SAVE_MODE_NEW:
 
-					$location .= '/new';
+					$location .= '/create';
 
 					break;
 

@@ -75,7 +75,7 @@ class ManageBlock extends Element
 	{
 		parent::add_assets($document);
 
-		$document->js->add('manage.js', -170);
+		$document->js->add(__DIR__ . '/manage.js', -170);
 		$document->css->add(\Icybee\ASSETS . 'css/manage.css', -170);
 	}
 

@@ -12,20 +12,23 @@
 namespace Icybee;
 
 use Brickrouge\Actions;
+use Brickrouge\Alert;
 use Brickrouge\Button;
+use Brickrouge\Document;
 use Brickrouge\Element;
+use Brickrouge\Form;
 
 /**
  * An element to confirm an operation in bulk and display its process.
  */
 class QueryOperationElement extends Element
 {
-	static protected function add_assets(\Brickrouge\Document $document)
+	static protected function add_assets(Document $document)
 	{
 		parent::add_assets($document);
 
-		$document->css->add('query-operation.css');
-		$document->js->add('query-operation.js');
+		$document->css->add(__DIR__ . '/query-operation.css');
+		$document->js->add(__DIR__ . '/query-operation.js');
 	}
 
 	protected $options;
@@ -33,112 +36,147 @@ class QueryOperationElement extends Element
 	public function __construct(array $options, array $attributes = [])
 	{
 		$this->options = $options;
-		$count = count($options['params']['keys']);
 
 		parent::__construct('div', [
 
 			Element::IS => 'QueryOperation',
+			Element::CHILDREN => $this->create_children($options, $attributes),
 
-			Element::CHILDREN => [
+			'data-keys' => implode('|', $options['params']['keys']),
+			'data-state' => 'confirm',
+			'data-progress-pattern' => ":percent% complete",
 
-				'title' => new Element('h3', [
+			'class' => 'widget-query-operation'
 
-					Element::INNER_HTML => $options['title']
+		]);
+	}
 
-				]),
+	/**
+	 * Creates element's children.
+	 *
+	 * @param array $options
+	 * @param array $attributes
+	 *
+	 * @return Element[]
+	 */
+	protected function create_children(array $options, array $attributes)
+	{
+		$count = count($options['params']['keys']);
 
-				'progress' => <<<EOT
+		return [
+
+			'title' => new Element('h3', [
+
+				Element::INNER_HTML => $options['title']
+
+			]),
+
+			'progress' => <<<EOT
 <div class="progress" brickrouge-is="Progress" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="$count">
 <div class="progress-bar">
 <span class="progress-bar-label"></span>
 </div>
 </div>
 EOT
+			,
 
-				, 'errors' => '<div class="alert alert-error undismissable"></div>',
+			'errors' => '<div class="alert alert-error undismissable"></div>',
 
-				'confirm' => new Element('div', [
+			'confirm' => $this->create_confirm_form($options, $attributes),
 
-					Element::CHILDREN => [
+			'processing' => new Element('div', [
 
-						'message' => new Element('p', [
+				Element::CHILDREN => [
 
-							Element::INNER_HTML => $options['message']
+					'actions' => new Actions([
 
-						]),
+						'cancel' => new Button("Cancel", [
 
-						'actions' => new Actions([
-
-							'cancel' => new Button($options['confirm'][0], [
-
-								'data-action' => 'cancel'
-
-							]),
-
-							'start' => new Button($options['confirm'][1], [
-
-								'data-action' => 'start',
-								'class' => 'btn-warning'
-
-							])
+							'data-action' => 'cancel',
+							'class' => 'btn-danger'
 
 						])
 
-					],
+					])
 
-					'class' => 'screen screen--confirm'
+				],
+
+				'class' => 'screen screen--processing'
+
+			]),
+
+			'complete' => new Element('div', [
+
+				Element::CHILDREN => [
+
+					'actions' => new Actions([
+
+						'complete' => new Button("Ok", [
+
+							'data-action' => 'success',
+							'class' => 'btn-success'
+
+						])
+
+					])
+
+				],
+
+				'class' => 'screen screen--success'
+
+			])
+
+		];
+	}
+
+	protected function create_confirm_form(array $options, array $attributes)
+	{
+		return new Form([
+
+			Form::ACTIONS => [
+
+				'cancel' => new Button($options['confirm'][0], [
+
+					'data-action' => 'cancel'
 
 				]),
 
-				'processing' => new Element('div', [
+				'start' => new Button($options['confirm'][1], [
 
-					Element::CHILDREN => [
-
-						'actions' => new Actions([
-
-							'cancel' => new Button("Cancel", [
-
-								'data-action' => 'cancel',
-								'class' => 'btn-danger'
-
-							])
-
-						])
-
-					],
-
-					'class' => 'screen screen--processing'
-
-				]),
-
-				'complete' => new Element('div', [
-
-					Element::CHILDREN => [
-
-						'actions' => new Actions([
-
-							'complete' => new Button("Ok", [
-
-								'data-action' => 'success',
-								'class' => 'btn-success'
-
-							])
-
-						])
-
-					],
-
-					'class' => 'screen screen--success'
+					'data-action' => 'start',
+					'class' => 'btn-warning'
 
 				])
 
 			],
 
-			'data-keys' => implode('|', $options['params']['keys']),
-			'data-state' => 'confirm',
-			'data-progress-pattern' => ":percent% complete",
-			'class' => 'widget-query-operation'
+			Element::CHILDREN => $this->create_confirm_children($options, $attributes),
+
+			'class' => 'screen screen--confirm'
 
 		]);
+	}
+
+	/**
+	 * Creates _confirm_ children.
+	 *
+	 * @param array $options
+	 * @param array $attributes
+	 *
+	 * @return Element[]
+	 */
+	protected function create_confirm_children(array $options, array $attributes)
+	{
+		return [
+
+			'message' => new Element('p', [
+
+				Element::INNER_HTML => $options['message']
+
+			]),
+
+			'params' => null
+
+		];
 	}
 }
