@@ -14,10 +14,10 @@ namespace Icybee\Operation\Module\ConfigOperation;
 use ICanBoogie\Event;
 use ICanBoogie\HTTP\Request;
 
-use Icybee\Operation\ConfigOperation;
+use Icybee\Operation\Module\ConfigOperation;
 
 /**
- * Event class for the `Icybee\Operation\ConfigOperation::properties` event.
+ * Event class for the `Icybee\Operation\Module\ConfigOperation::properties` event.
  *
  * @property-read Request $request
  */
@@ -45,7 +45,7 @@ class PropertiesEvent extends Event
 	/**
 	 * The event is constructed with the type `properties`.
 	 *
-	 * @param \Icybee\Operation\ConfigOperation $target
+	 * @param \Icybee\Operation\Module\ConfigOperation $target
 	 * @param Request $request
 	 * @param array $properties
 	 */

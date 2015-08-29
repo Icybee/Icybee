@@ -1360,11 +1360,11 @@ EOT;
 				new Button('Annuler la sélection', [ 'data-dismiss' => 'selection' ])
 			],
 
-			'data-actionbar-context' => 'operations',
+			'data-actionbar-context' => 'Operation',
 			'data-pattern-one' => "Un élément sélectionné",
 			'data-pattern-other' => ":count éléments sélectionnés",
 
-			'class' => 'actionbar-actions listview-operations'
+			'class' => 'actionbar-actions listview-Operation'
 
 		]);
 	}

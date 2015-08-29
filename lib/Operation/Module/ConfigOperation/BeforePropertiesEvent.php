@@ -14,10 +14,10 @@ namespace Icybee\Operation\Module\ConfigOperation;
 use ICanBoogie\Event;
 use ICanBoogie\HTTP\Request;
 
-use Icybee\Operation\ConfigOperation;
+use Icybee\Operation\Module\ConfigOperation;
 
 /**
- * Event class for the `Icybee\Operation\ConfigOperation::properties:before` event.
+ * Event class for the `Icybee\Operation\Module\ConfigOperation::properties:before` event.
  *
  * @property Request $request
  */

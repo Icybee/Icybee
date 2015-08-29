@@ -9,13 +9,11 @@
  * file that was distributed with this source code.
  */
 
-namespace Icybee\Operation;
+namespace Icybee\Operation\Module;
 
 use ICanBoogie\Errors;
 use ICanBoogie\Module;
 use ICanBoogie\Operation;
-use Icybee\Operation\Module\ConfigOperation\BeforePropertiesEvent;
-use Icybee\Operation\Module\ConfigOperation\PropertiesEvent;
 
 /**
  * Save the configuration of the module.
@@ -30,8 +28,8 @@ use Icybee\Operation\Module\ConfigOperation\PropertiesEvent;
  * Event: properties:before
  * ------------------------
  *
- * The `property:before` event of class `Icybee\Operation\ConfigOperation\BeforePropertiesEvent` is fired by
- * the `Icybee\Operation\ConfigOperation` and its subclasses before the config properties are collected.
+ * The `property:before` event of class `Icybee\Operation\Module\ConfigOperation\BeforePropertiesEvent` is fired by
+ * the `Icybee\Operation\Module\ConfigOperation` and its subclasses before the config properties are collected.
  *
  * One can attach a hook to this event to modify the operation request params before they are used
  * to collect the config properties.
@@ -40,8 +38,8 @@ use Icybee\Operation\Module\ConfigOperation\PropertiesEvent;
  * Event: properties
  * -----------------
  *
- * The `properties` event of class `Icybee\Operation\ConfigOperation\PropertiesEvent` is fired by the
- * `Icybee\Operation\ConfigOperation` and its subclasses after the config properties were collected.
+ * The `properties` event of class `Icybee\Operation\Module\ConfigOperation\PropertiesEvent` is fired by the
+ * `Icybee\Operation\Module\ConfigOperation` and its subclasses after the config properties were collected.
  *
  * One can attach a hook to this event to modify the properties before they are stored.
  */
@@ -73,11 +71,11 @@ class ConfigOperation extends Operation
 
 	protected function process()
 	{
-		new BeforePropertiesEvent($this, $this->request);
+		new ConfigOperation\BeforePropertiesEvent($this, $this->request);
 
 		$properties = $this->properties;
 
-		new PropertiesEvent($this, $this->request, $properties);
+		new ConfigOperation\PropertiesEvent($this, $this->request, $properties);
 
 		if (isset($properties['global']))
 		{

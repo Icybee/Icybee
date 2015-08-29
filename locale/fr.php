@@ -150,7 +150,7 @@ return [
 
 	"List page on the website" => "Page de la liste sur le site",
 
-	# Icybee\Operation\ConfigOperation
+	# Icybee\Operation\Module\ConfigOperation
 
 	"The configuration has been saved." => "La configuration a été enregistrée.",
 
