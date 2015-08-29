@@ -165,9 +165,9 @@ class Hooks
 	 *     $app->session[operation_save_mode][<module_id>]
 	 *
 	 * @param Operation\BeforeControlEvent $event
-	 * @param \ICanBoogie\SaveOperation $target
+	 * @param \ICanBoogie\Module\Operation\SaveOperation $target
 	 */
-	static public function before_save_operation_control(Operation\BeforeControlEvent $event, \ICanBoogie\SaveOperation $target)
+	static public function before_save_operation_control(Operation\BeforeControlEvent $event, \ICanBoogie\Module\Operation\SaveOperation $target)
 	{
 		$app = self::app();
 		$mode = $event->request[OPERATION_SAVE_MODE];
@@ -179,7 +179,7 @@ class Hooks
 
 		$app->session->operation_save_mode[$target->module->id] = $mode;
 
-		$app->events->once(function(Operation\ProcessEvent $event, \ICanBoogie\SaveOperation $operation) use($mode, $target) {
+		$app->events->once(function(Operation\ProcessEvent $event, \ICanBoogie\Module\Operation\SaveOperation $operation) use($mode, $target) {
 
 			if ($operation != $target || $event->request->uri != $event->response->location)
 			{
