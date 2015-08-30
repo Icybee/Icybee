@@ -35,7 +35,7 @@ class DeleteBlock extends Form
 	{
 		parent::add_assets($document);
 
-		$document->css->add('DeleteBlock.css');
+		$document->css->add(__DIR__. '/DeleteBlock.css');
 	}
 
 	/**
