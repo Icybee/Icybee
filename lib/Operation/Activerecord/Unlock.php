@@ -13,7 +13,7 @@ namespace Icybee\Operation\ActiveRecord;
 
 use ICanBoogie\Module;
 use ICanBoogie\Operation;
-use Icybee\Binding\ObjectBindings;
+use Icybee\Binding\PrototypedBindings;
 
 /**
  * The "unlock" operation is used to unlock a record previously locked using the "lock"
@@ -21,7 +21,7 @@ use Icybee\Binding\ObjectBindings;
  */
 class Unlock extends Operation
 {
-	use ObjectBindings;
+	use PrototypedBindings;
 
 	protected function reset()
 	{

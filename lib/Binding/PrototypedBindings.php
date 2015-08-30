@@ -14,12 +14,12 @@ namespace Icybee\Binding;
 /**
  * {@link \ICanBoogie\Prototyped} prototype bindings.
  *
- * Similar to {@link \ICanBoogie\Binding\ObjectBindings}, this one includes Icybee extended
+ * Similar to {@link \ICanBoogie\Binding\PrototypedBindings}, this one includes Icybee extended
  * bindings.
  *
  * @property \ICanBoogie\Core|CoreBindings $app
  */
-trait ObjectBindings
+trait PrototypedBindings
 {
 
 }

@@ -13,7 +13,7 @@ namespace Icybee\Block;
 
 use Brickrouge\Element;
 
-use Icybee\Binding\ObjectBindings;
+use Icybee\Binding\PrototypedBindings;
 use Icybee\Module;
 
 /**
@@ -24,7 +24,7 @@ use Icybee\Module;
  */
 class InterlockBlock extends Element
 {
-	use ObjectBindings;
+	use PrototypedBindings;
 
 	/**
 	 * The module managing the record.

@@ -14,7 +14,7 @@ namespace Icybee\Element;
 use Brickrouge\A;
 use Brickrouge\DropdownMenu;
 use Brickrouge\Element;
-use Icybee\Binding\ObjectBindings;
+use Icybee\Binding\PrototypedBindings;
 
 /**
  * @property-read string $decontextualized_path
@@ -24,7 +24,7 @@ use Icybee\Binding\ObjectBindings;
  */
 class SiteMenu extends Element
 {
-	use ObjectBindings;
+	use PrototypedBindings;
 
 	protected function get_models()
 	{

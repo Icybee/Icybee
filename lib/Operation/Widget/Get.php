@@ -14,11 +14,11 @@ namespace Icybee\Operation\Widget;
 use Brickrouge\Button;
 use Brickrouge\Popover;
 use Brickrouge\Widget;
-use Icybee\Binding\ObjectBindings;
+use Icybee\Binding\PrototypedBindings;
 
 class Get extends \ICanBoogie\Operation
 {
-	use ObjectBindings;
+	use PrototypedBindings;
 
 	private $widget_class;
 

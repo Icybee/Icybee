@@ -18,7 +18,7 @@ use ICanBoogie\Module;
 use ICanBoogie\Module\ModuleCollection;
 use ICanBoogie\Module\Descriptor;
 use ICanBoogie\Routing\RouteCollection;
-use Icybee\Binding\ObjectBindings;
+use Icybee\Binding\PrototypedBindings;
 use Icybee\Modules\Users\User;
 use Icybee\Routing\CreateRouteFilter;
 
@@ -32,7 +32,7 @@ use Icybee\Routing\CreateRouteFilter;
  */
 class ActionbarNew extends SplitButton
 {
-	use ObjectBindings;
+	use PrototypedBindings;
 
 	const ID = '#abn-id';
 	const ROUTE = '#abn-route';

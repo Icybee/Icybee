@@ -14,14 +14,14 @@ namespace Icybee\Operation\ActiveRecord;
 use ICanBoogie\Errors;
 use ICanBoogie\Module;
 use ICanBoogie\Operation;
-use Icybee\Binding\ObjectBindings;
+use Icybee\Binding\PrototypedBindings;
 
 /**
  * The "lock" operation is used to obtain an exclusive lock on a record.
  */
 class Lock extends Operation
 {
-	use ObjectBindings;
+	use PrototypedBindings;
 
 	protected function reset()
 	{
