@@ -20,7 +20,6 @@ class ActionBarNavRouteFilter
 		$this->user = $user;
 		$this->skip = [
 
-			$current_route->id,
 			"admin:$module_id:index",
 			"admin:$module_id:create"
 
@@ -30,8 +29,8 @@ class ActionBarNavRouteFilter
 	public function __invoke(array $definition, $id)
 	{
 		if (empty($definition['module'])
-			|| in_array($id, $this->skip)
-			|| strpos($id, 'admin:') !== 0)
+		|| in_array($id, $this->skip)
+		|| strpos($id, 'admin:') !== 0)
 		{
 			return false;
 		}
