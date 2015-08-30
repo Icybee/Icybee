@@ -9,10 +9,11 @@
  * file that was distributed with this source code.
  */
 
-namespace Icybee\ManageBlock;
+namespace Icybee\Block\ManageBlock;
 
 use Brickrouge\DropdownMenu;
 use Brickrouge\Element;
+
 use ICanBoogie\ActiveRecord\SchemaColumn;
 
 /**
@@ -40,12 +41,12 @@ class Column extends \ICanBoogie\Prototyped implements ColumnInterface
 	public $default_order = self::ORDER_ASC;
 	public $discreet = true;
 
-	protected $header_renderer = 'Icybee\ManageBlock\HeaderRenderer';
-	protected $cell_renderer = 'Icybee\ManageBlock\CellRenderer';
+	protected $header_renderer = 'Icybee\Block\ManageBlock\HeaderRenderer';
+	protected $cell_renderer = 'Icybee\Block\ManageBlock\CellRenderer';
 
 	public $manager;
 
-	public function __construct(\Icybee\ManageBlock $manager, $id, array $options = [])
+	public function __construct(\Icybee\Block\ManageBlock $manager, $id, array $options = [])
 	{
 		$this->manager = $manager;
 		$this->id = $id;
@@ -134,7 +135,7 @@ class Column extends \ICanBoogie\Prototyped implements ColumnInterface
 	 *
 	 * @param array $options
 	 *
-	 * @return \Icybee\ManageBlock\Column
+	 * @return \Icybee\Block\ManageBlock\Column
 	 */
 	public function modify_options(array $options)
 	{

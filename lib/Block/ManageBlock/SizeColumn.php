@@ -9,14 +9,14 @@
  * file that was distributed with this source code.
  */
 
-namespace Icybee\ManageBlock;
+namespace Icybee\Block\ManageBlock;
 
 /**
  * A column for size properties.
  */
 class SizeColumn extends Column
 {
-	public function __construct(\Icybee\ManageBlock $manager, $id, array $options = [])
+	public function __construct(\Icybee\Block\ManageBlock $manager, $id, array $options = [])
 	{
 		parent::__construct($manager, $id, $options + [
 

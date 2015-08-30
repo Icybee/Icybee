@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Icybee;
+namespace Icybee\Block;
 
 use Brickrouge\Document;
 use ICanBoogie\HTTP\ForceRedirect;
@@ -23,7 +23,9 @@ use Brickrouge\Element;
 use Brickrouge\Form;
 use Brickrouge\SplitButton;
 
+use Icybee;
 use Icybee\Element\ActionbarToolbar;
+use Icybee\Module;
 use Icybee\Modules\Sites\Site;
 
 /**
@@ -44,7 +46,7 @@ class EditBlock extends FormBlock
 	{
 		parent::add_assets($document);
 
-		$document->js->add(__DIR__ . '/edit.js');
+		$document->js->add(__DIR__ . '/EditBlock.js');
 	}
 
 	/**
@@ -374,20 +376,20 @@ class EditBlock extends FormBlock
 
 		$mode = isset($this->session->operation_save_mode[$module->id])
 			? $this->session->operation_save_mode[$module->id]
-			: OPERATION_SAVE_MODE_LIST;
+			: Icybee\OPERATION_SAVE_MODE_LIST;
 
 		$save_mode_options =[
 
-			OPERATION_SAVE_MODE_LIST => $this->t('save_mode_list', [ ], [ 'scope' => 'option' ]),
-			OPERATION_SAVE_MODE_CONTINUE => $this->t('save_mode_continue', [ ], [ 'scope' => 'option' ]),
-			OPERATION_SAVE_MODE_NEW => $this->t('save_mode_new', [ ], [ 'scope' => 'option' ]),
+			Icybee\OPERATION_SAVE_MODE_LIST => $this->t('save_mode_list', [ ], [ 'scope' => 'option' ]),
+			Icybee\OPERATION_SAVE_MODE_CONTINUE => $this->t('save_mode_continue', [ ], [ 'scope' => 'option' ]),
+			Icybee\OPERATION_SAVE_MODE_NEW => $this->t('save_mode_new', [ ], [ 'scope' => 'option' ]),
 
 		];
 
 		try
 		{
 			$this->views["{$module->id}/view"];
-			$save_mode_options[OPERATION_SAVE_MODE_DISPLAY] = $this->t('save_mode_display', [], [ 'scope' => 'option' ]);
+			$save_mode_options[Icybee\OPERATION_SAVE_MODE_DISPLAY] = $this->t('save_mode_display', [], [ 'scope' => 'option' ]);
 		}
 		catch (\Icybee\Modules\Views\Collection\ViewNotDefined $e)
 		{
@@ -397,7 +399,7 @@ class EditBlock extends FormBlock
 
 				if ($url)
 				{
-					$save_mode_options[OPERATION_SAVE_MODE_DISPLAY] = $this->t('save_mode_display', [], [ 'scope' => 'option' ]);
+					$save_mode_options[Icybee\OPERATION_SAVE_MODE_DISPLAY] = $this->t('save_mode_display', [], [ 'scope' => 'option' ]);
 				}
 			}
 		}
@@ -448,7 +450,7 @@ class EditBlock extends FormBlock
 				]);
 			}
 
-			if (isset($block->actions[OPERATION_SAVE_MODE]))
+			if (isset($block->actions[Icybee\OPERATION_SAVE_MODE]))
 			{
 				$event->buttons[] = new SplitButton($save_mode_options[$mode], [
 
@@ -463,7 +465,7 @@ class EditBlock extends FormBlock
 
 		return array_merge([
 
-			OPERATION_SAVE_MODE => new Element(Element::TYPE_RADIO_GROUP, [
+			Icybee\OPERATION_SAVE_MODE => new Element(Element::TYPE_RADIO_GROUP, [
 
 				Element::GROUP => 'save',
 				Element::OPTIONS => $save_mode_options,
@@ -528,16 +530,16 @@ class EditBlock extends FormBlock
 	}
 }
 
-namespace Icybee\EditBlock;
+namespace Icybee\Block\EditBlock;
 
-use Icybee\EditBlock;
+use Icybee\Block\EditBlock;
 
 /**
  * Base class for the alter events of the {@link EditBlock} class.
  *
  * The class extends {@link FormBlock\AlterEvent} with the `key` and `record` properties.
  */
-abstract class AlterEvent extends \Icybee\FormBlock\AlterEvent
+abstract class AlterEvent extends \Icybee\Block\FormBlock\AlterEvent
 {
 	/**
 	 * Key of the record being edited.
@@ -555,7 +557,7 @@ abstract class AlterEvent extends \Icybee\FormBlock\AlterEvent
 }
 
 /**
- * Event class for the `Icybee\EditBlock::alter_attributes:before` event.
+ * Event class for the `Icybee\Block\EditBlock::alter_attributes:before` event.
  */
 class BeforeAlterAttributesEvent extends AlterEvent
 {
@@ -572,7 +574,7 @@ class BeforeAlterAttributesEvent extends AlterEvent
 }
 
 /**
- * Event class for the `Icybee\EditBlock::alter_attributes` event.
+ * Event class for the `Icybee\Block\EditBlock::alter_attributes` event.
  */
 class AlterAttributesEvent extends AlterEvent
 {
@@ -589,7 +591,7 @@ class AlterAttributesEvent extends AlterEvent
 }
 
 /**
- * Event class for the `Icybee\EditBlock::alter_values:before` event.
+ * Event class for the `Icybee\Block\EditBlock::alter_values:before` event.
  */
 class BeforeAlterValuesEvent extends AlterEvent
 {
@@ -606,7 +608,7 @@ class BeforeAlterValuesEvent extends AlterEvent
 }
 
 /**
- * Event class for the `Icybee\EditBlock::alter_values` event.
+ * Event class for the `Icybee\Block\EditBlock::alter_values` event.
  */
 class AlterValuesEvent extends AlterEvent
 {
@@ -623,7 +625,7 @@ class AlterValuesEvent extends AlterEvent
 }
 
 /**
- * Event class for the `Icybee\EditBlock::alter_children:before` event.
+ * Event class for the `Icybee\Block\EditBlock::alter_children:before` event.
  */
 class BeforeAlterChildrenEvent extends AlterEvent
 {
@@ -640,7 +642,7 @@ class BeforeAlterChildrenEvent extends AlterEvent
 }
 
 /**
- * Event class for the `Icybee\EditBlock::alter_children` event.
+ * Event class for the `Icybee\Block\EditBlock::alter_children` event.
  */
 class AlterChildrenEvent extends AlterEvent
 {
@@ -657,7 +659,7 @@ class AlterChildrenEvent extends AlterEvent
 }
 
 /**
- * Event class for the `Icybee\EditBlock::alter_actions:before` event.
+ * Event class for the `Icybee\Block\EditBlock::alter_actions:before` event.
  */
 class BeforeAlterActionsEvent extends AlterEvent
 {
@@ -674,7 +676,7 @@ class BeforeAlterActionsEvent extends AlterEvent
 }
 
 /**
- * Event class for the `Icybee\EditBlock::alter_actions` event.
+ * Event class for the `Icybee\Block\EditBlock::alter_actions` event.
  */
 class AlterActionsEvent extends AlterEvent
 {

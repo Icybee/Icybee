@@ -9,10 +9,12 @@
  * file that was distributed with this source code.
  */
 
-namespace Icybee;
+namespace Icybee\Block;
 
 use Brickrouge\Element;
+
 use Icybee\Binding\ObjectBindings;
+use Icybee\Module;
 
 /**
  * An interlock block, displayed instead of the edit block when another user has locked the record

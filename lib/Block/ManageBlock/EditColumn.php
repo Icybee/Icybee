@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Icybee\ManageBlock;
+namespace Icybee\Block\ManageBlock;
 
 /**
  * Representation of a _boolean_ column.

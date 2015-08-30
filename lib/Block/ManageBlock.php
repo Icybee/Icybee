@@ -9,12 +9,13 @@
  * file that was distributed with this source code.
  */
 
-namespace Icybee;
+namespace Icybee\Block;
 
 use ICanBoogie\ActiveRecord;
 use ICanBoogie\ActiveRecord\Query;
 use ICanBoogie\ActiveRecord\SchemaColumn;
 use ICanBoogie\I18n;
+use ICanBoogie\Module;
 use ICanBoogie\Operation;
 
 use Brickrouge\Alert;
@@ -25,11 +26,11 @@ use Brickrouge\Text;
 
 use Icybee\Element\ActionbarContexts;
 use Icybee\Element\ActionbarSearch;
-use Icybee\ManageBlock\Column;
-use Icybee\ManageBlock\Options;
-use Icybee\ManageBlock\Translator;
+use Icybee\Block\ManageBlock\Column;
+use Icybee\Block\ManageBlock\Options;
+use Icybee\Block\ManageBlock\Translator;
 
-/* @var $column \Icybee\ManageBlock\Column */
+/* @var $column \Icybee\Block\ManageBlock\Column */
 
 /**
  * An element to manage the records of a module.
@@ -75,7 +76,7 @@ class ManageBlock extends Element
 	{
 		parent::add_assets($document);
 
-		$document->js->add(__DIR__ . '/manage.js', -170);
+		$document->js->add(__DIR__ . '/ManageBlock.js', -170);
 		$document->css->add(\Icybee\ASSETS . 'css/manage.css', -170);
 	}
 
@@ -202,95 +203,6 @@ class ManageBlock extends Element
 
 	public function __construct(Module $module, array $attributes)
 	{
-		## 20130625: checking deprecated methods
-
-		if (method_exists($this, 'get_query_conditions'))
-		{
-			throw new \Exception("The <q>get_query_conditions()</q> method is deprecated. Use <q>alter_query()</q> instead.");
-		}
-
-		if (method_exists($this, 'extend_column'))
-		{
-			throw new \Exception("The <q>extend_column()</q> method is deprecated. Define columns with classes.");
-		}
-
-		if (method_exists($this, 'extend_columns'))
-		{
-			throw new \Exception("The <q>extend_columns()</q> method is deprecated. Define columns with classes.");
-		}
-
-		if (method_exists($this, 'retrieve_options'))
-		{
-			throw new \Exception("The <q>retrieve_options()</q> method is deprecated. Use <q>resolve_options()</q>.");
-		}
-
-		if (method_exists($this, 'store_options'))
-		{
-			throw new \Exception("The <q>store_options()</q> method is deprecated. Use the Options instance.");
-		}
-
-		if (method_exists($this, 'alter_range_query'))
-		{
-			throw new \Exception("The <q>alter_range_query()</q> method is deprecated. Use columns and <q>alter_query_with_limit()</q>.");
-		}
-
-		if (method_exists($this, 'load_range'))
-		{
-			throw new \Exception("The <q>load_range()</q> method is deprecated. Use <q>fetch_records()</q>.");
-		}
-
-		if (method_exists($this, 'parseColumns'))
-		{
-			throw new \Exception("The <q>parseColumns()</q> method is deprecated. Use <q>resolve_columns()</q>.");
-		}
-
-		if (method_exists($this, 'columns'))
-		{
-			throw new \Exception("The <q>columns()</q> method is deprecated. Use <q>get_available_columns()</q>.");
-		}
-
-		if (method_exists($this, 'jobs'))
-		{
-			throw new \Exception("The <q>jobs()</q> method is deprecated. Use <q>get_available_jobs()</q>.");
-		}
-
-		if (method_exists($this, 'addJob'))
-		{
-			throw new \Exception("The <q>addJob()</q> method is deprecated. Use <q>resolve_jobs()</q>.");
-		}
-
-		if (method_exists($this, 'getJobs'))
-		{
-			throw new \Exception("The <q>getJobs()</q> method is deprecated. Use <q>render_jobs()</q>.");
-		}
-
-		if (method_exists($this, 'render_limiter'))
-		{
-			throw new \Exception("The <q>render_limiter()</q> method is deprecated. Use <q>render_controls()</q>.");
-		}
-
-		$class_reflection = new \ReflectionClass($this);
-
-		foreach ($class_reflection->getMethods() as $method_reflection)
-		{
-			if (strpos($method_reflection->name, 'extend_column_') === 0)
-			{
-				throw new \Exception("The <q>{$method_reflection->name}</q> method is deprecated. Use a column class.");
-			}
-
-			if (strpos($method_reflection->name, 'render_column_') === 0)
-			{
-				throw new \Exception("The <q>{$method_reflection->name}</q> method is deprecated. Use a column class.");
-			}
-
-			if (strpos($method_reflection->name, 'render_cell_') === 0)
-			{
-				throw new \Exception("The <q>{$method_reflection->name}</q> method is deprecated. Use a column class.");
-			}
-		}
-
-		## /20130625
-
 		parent::__construct('div', $attributes + [
 
 			Element::TRANSLATOR => new Translator($module),
@@ -316,7 +228,7 @@ class ManageBlock extends Element
 
 		if ($primary_key)
 		{
-			return [ $primary_key => 'Icybee\ManageBlock\KeyColumn' ];
+			return [ $primary_key => 'Icybee\Block\ManageBlock\KeyColumn' ];
 		}
 
 		return [];
@@ -326,11 +238,11 @@ class ManageBlock extends Element
 	{
 		$columns = $this->get_available_columns();
 
-		new \Icybee\ManageBlock\RegisterColumnsEvent($this, $columns);
+		new \Icybee\Block\ManageBlock\RegisterColumnsEvent($this, $columns);
 
 		$columns = $this->resolve_columns($columns);
 
-		new \Icybee\ManageBlock\AlterColumnsEvent($this, $columns);
+		new \Icybee\Block\ManageBlock\AlterColumnsEvent($this, $columns);
 
 		foreach ($columns as $column_id => $column)
 		{
@@ -1407,136 +1319,5 @@ EOT;
 	protected function get_is_filtering()
 	{
 		return $this->is_filtering();
-	}
-}
-
-/*
- * Events
- */
-
-namespace Icybee\ManageBlock;
-
-use ICanBoogie\ActiveRecord\Query;
-use ICanBoogie\Event;
-
-use Icybee\ManageBlock;
-
-/**
- * Event class for the `Icybee\ManageBlock::register_columns` event.
- */
-class RegisterColumnsEvent extends Event
-{
-	/**
-	 * Reference to the columns of the element.
-	 *
-	 * @var array[string]array
-	 */
-	public $columns;
-
-	/**
-	 * The event is constructed with the type `register_columns`.
-	 *
-	 * @param \Icybee\ManageBlock $target
-	 * @param array $columns Reference to the columns of the element.
-	 */
-	public function __construct(ManageBlock $target, array &$columns)
-	{
-		$this->columns = &$columns;
-
-		parent::__construct($target, 'register_columns');
-	}
-
-	public function add(Column $column, $weight=null)
-	{
-		if ($weight)
-		{
-			list($position, $relative) = explode(':', $weight) + [ 'before' ];
-
-			$this->columns = \ICanBoogie\array_insert($this->columns, $relative, $column, $column->id, $position == 'after');
-		}
-		else
-		{
-			$this->columns[$column->id] = $column;
-		}
-	}
-}
-
-/**
- * Event class for the `Icybee\ManageBlock::alter_columns` event.
- */
-class AlterColumnsEvent extends Event
-{
-	/**
-	 * Reference to the columns of the element.
-	 *
-	 * @var array[string]array
-	 */
-	public $columns;
-
-	/**
-	 * The event is constructed with the type `alter_columns`.
-	 *
-	 * @param \Icybee\ManageBlock $target
-	 * @param array $columns Reference to the columns of the element.
-	 */
-	public function __construct(ManageBlock $target, array &$columns)
-	{
-		$this->columns = &$columns;
-
-		parent::__construct($target, 'alter_columns');
-	}
-
-	public function add(Column $column, $weight=null)
-	{
-		if ($weight)
-		{
-			list($position, $relative) = explode(':', $weight) + [ 'before' ];
-
-			$this->columns = \ICanBoogie\array_insert($this->columns, $relative, $column, $column->id, $position == 'after');
-		}
-		else
-		{
-			$this->columns[$column->id] = $column;
-		}
-	}
-}
-
-class AlterRenderedCellsEvent extends Event
-{
-	/**
-	 * Reference to the rendered cells.
-	 *
-	 * @var array[string]string
-	 */
-	public $rendered_cells;
-
-	/**
-	 * The records used to render the cells.
-	 *
-	 * @var \ICanBoogie\ActiveRecord[]
-	 */
-	public $records;
-
-	public function __construct(ManageBlock $target, array &$rendered_cells, array $records)
-	{
-		$this->rendered_cells = &$rendered_cells;
-		$this->records = $records;
-
-		parent::__construct($target, 'alter_rendered_cells');
-	}
-}
-
-class AlterQueryEvent extends Event
-{
-	public $query;
-
-	public $options;
-
-	public function __construct(ManageBlock $target, Query $query, Options $options)
-	{
-		$this->query = $query;
-		$this->options = $options;
-
-		parent::__construct($target, 'alter_query');
 	}
 }

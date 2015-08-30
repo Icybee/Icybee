@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Icybee;
+namespace Icybee\Block;
 
 use ICanBoogie\I18n;
 use ICanBoogie\Prototyped;
@@ -19,6 +19,8 @@ use Brickrouge\Button;
 use Brickrouge\Document;
 use Brickrouge\Element;
 use Brickrouge\Form;
+
+use Icybee\Module;
 
 /**
  * Base class for form type blocks.
@@ -501,179 +503,11 @@ namespace Icybee\FormBlock;
 use ICanBoogie\Event;
 use Icybee\FormBlock;
 
-/**
- * Base class for the alter events of the {@link FormBlock} class.
- */
-abstract class AlterEvent extends Event
-{
-	/**
-	 * The module creating the block.
-	 *
-	 * @var \ICanBoogie\Module
-	 */
-	public $module;
 
-	/**
-	 * Reference to the attributes for the {@link Form} element.
-	 *
-	 * @var array
-	 */
-	public $attributes;
 
-	/**
-	 * Reference to the actions for the {@link Form} element.
-	 *
-	 * @var array
-	 */
-	public $actions;
 
-	/**
-	 * Reference to the children for the {@link Form} element.
-	 *
-	 * @var array
-	 */
-	public $children;
 
-	/**
-	 * Reference to the values for the {@link Form} element.
-	 *
-	 * @var array
-	 */
-	public $values;
-}
 
-/**
- * Event class for the `Icybee\FormBlock::alter_attributes:before` event.
- */
-class BeforeAlterAttributesEvent extends AlterEvent
-{
-	/**
-	 * The event is constructed with the type `alter_attributes:before`.
-	 *
-	 * @param FormBlock $target
-	 * @param array $payload
-	 */
-	public function __construct(FormBlock $target, array $payload)
-	{
-		parent::__construct($target, 'alter_attributes:before', $payload);
-	}
-}
 
-/**
- * Event class for the `Icybee\FormBlock::alter_attributes` event.
- */
-class AlterAttributesEvent extends AlterEvent
-{
-	/**
-	 * The event is constructed with the type `alter_attributes`.
-	 *
-	 * @param FormBlock $target
-	 * @param array $payload
-	 */
-	public function __construct(FormBlock $target, array $payload)
-	{
-		parent::__construct($target, 'alter_attributes', $payload);
-	}
-}
 
-/**
- * Event class for the `Icybee\FormBlock::alter_properties:before` event.
- */
-class BeforeAlterValuesEvent extends AlterEvent
-{
-	/**
-	 * The event is constructed with the type `alter_properties:before`.
-	 *
-	 * @param FormBlock $target
-	 * @param array $payload
-	 */
-	public function __construct(FormBlock $target, array $payload)
-	{
-		parent::__construct($target, 'alter_values:before', $payload);
-	}
-}
 
-/**
- * Event class for the `Icybee\FormBlock::alter_values` event.
- */
-class AlterValuesEvent extends AlterEvent
-{
-	/**
-	 * The event is constructed with the type `alter_properties`.
-	 *
-	 * @param FormBlock $target
-	 * @param array $payload
-	 */
-	public function __construct(FormBlock $target, array $payload)
-	{
-		parent::__construct($target, 'alter_values', $payload);
-	}
-}
-
-/**
- * Event class for the `Icybee\FormBlock::alter_children:before` event.
- */
-class BeforeAlterChildrenEvent extends AlterEvent
-{
-	/**
-	 * The event is constructed with the type `alter_children:before`.
-	 *
-	 * @param FormBlock $target
-	 * @param array $payload
-	 */
-	public function __construct(FormBlock $target, array $payload)
-	{
-		parent::__construct($target, 'alter_children:before', $payload);
-	}
-}
-
-/**
- * Event class for the `Icybee\FormBlock::alter_children` event.
- */
-class AlterChildrenEvent extends AlterEvent
-{
-	/**
-	 * The event is constructed with the type `alter_children`.
-	 *
-	 * @param FormBlock $target
-	 * @param array $payload
-	 */
-	public function __construct(FormBlock $target, array $payload)
-	{
-		parent::__construct($target, 'alter_children', $payload);
-	}
-}
-
-/**
- * Event class for the `Icybee\FormBlock::alter_actions:before` event.
- */
-class BeforeAlterActionsEvent extends AlterEvent
-{
-	/**
-	 * The event is constructed with the type `alter_actions:before`.
-	 *
-	 * @param FormBlock $target
-	 * @param array $payload
-	 */
-	public function __construct(FormBlock $target, array $payload)
-	{
-		parent::__construct($target, 'alter_actions:before', $payload);
-	}
-}
-
-/**
- * Event class for the `Icybee\FormBlock::alter_actions` event.
- */
-class AlterActionsEvent extends AlterEvent
-{
-	/**
-	 * The event is constructed with the type `alter_actions`.
-	 *
-	 * @param FormBlock $target
-	 * @param array $payload
-	 */
-	public function __construct(FormBlock $target, array $payload)
-	{
-		parent::__construct($target, 'alter_actions', $payload);
-	}
-}

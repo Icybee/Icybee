@@ -134,7 +134,7 @@ return [
 	'From :start to :finish on :count' => 'De :start à :finish sur :count',
 	'Sort by: :identifier' => 'Trier par : :identifier',
 
-	# Icybee\ManageBlock
+	# Icybee\Block\ManageBlock
 
 	"Your search %search did not match any record."
 	=> "Votre recherche %search ne correspond à aucun enregistrement.",

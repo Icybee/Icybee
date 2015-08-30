@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Icybee\ManageBlock;
+namespace Icybee\Block\ManageBlock;
 
 use ICanBoogie\ActiveRecord\Query;
 

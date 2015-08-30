@@ -9,18 +9,19 @@
  * file that was distributed with this source code.
  */
 
-namespace Icybee\ManageBlock;
+namespace Icybee\Block\ManageBlock;
 
 use ICanBoogie\ActiveRecord\Query;
 use ICanBoogie\DateTime;
-use Icybee\ManageBlock;
+
+use Icybee\Block\ManageBlock;
 
 /**
  * Representation of a _datetime_ column.
  */
 class DateTimeColumn extends Column
 {
-	public function __construct(\Icybee\ManageBlock $manager, $id, array $options=[])
+	public function __construct(\Icybee\Block\ManageBlock $manager, $id, array $options=[])
 	{
 		parent::__construct($manager, $id, $options + [
 

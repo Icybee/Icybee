@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Icybee\ManageBlock;
+namespace Icybee\Block\ManageBlock;
 
 use Brickrouge\Document;
 use Brickrouge\Element;
@@ -88,7 +88,7 @@ class KeyColumn extends Column
 
 	public function add_assets(Document $document)
 	{
-		$document->js->add(__DIR__ . '/key.column.js');
-		$document->css->add(__DIR__ . '/key.column.css');
+		$document->js->add(__DIR__ . '/KeyColumn.js');
+		$document->css->add(__DIR__ . '/KeyColumn.css');
 	}
 }

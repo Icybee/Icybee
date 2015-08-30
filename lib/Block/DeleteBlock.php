@@ -9,13 +9,15 @@
  * file that was distributed with this source code.
  */
 
-namespace Icybee;
+namespace Icybee\Block;
 
 use ICanBoogie\ActiveRecord;
 use ICanBoogie\I18n;
+use ICanBoogie\Module;
 use ICanBoogie\Operation;
 
 use Brickrouge\Button;
+use Brickrouge\Document;
 use Brickrouge\Element;
 use Brickrouge\Form;
 
@@ -29,11 +31,11 @@ use Brickrouge\Form;
  */
 class DeleteBlock extends Form
 {
-	static protected function add_assets(\Brickrouge\Document $document)
+	static protected function add_assets(Document $document)
 	{
 		parent::add_assets($document);
 
-		$document->css->add('delete.css');
+		$document->css->add('DeleteBlock.css');
 	}
 
 	/**
@@ -187,7 +189,7 @@ EOT;
 	/**
 	 * Returns the confirmation question element.
 	 *
-	 * @return \Brickrouge\Element
+	 * @return Element
 	 */
 	protected function get_question_element()
 	{
@@ -197,11 +199,11 @@ EOT;
 	/**
 	 * Renders a preview of the record.
 	 *
-	 * @param \ICanBoogie\ActiveRecord $record
+	 * @param ActiveRecord $record
 	 *
 	 * @return string
 	 */
-	protected function render_preview(\ICanBoogie\ActiveRecord $record)
+	protected function render_preview(ActiveRecord $record)
 	{
 
 	}
@@ -219,7 +221,7 @@ EOT;
 	/**
 	 * Returns the preview element.
 	 *
-	 * @return \Brickrouge\Element
+	 * @return Element
 	 */
 	protected function get_preview_element()
 	{

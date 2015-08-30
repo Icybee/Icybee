@@ -1,6 +1,6 @@
 <?php
 
-namespace Icybee\ManageBlock;
+namespace Icybee\Block\ManageBlock;
 
 use ICanBoogie\Accessor\AccessorTrait;
 

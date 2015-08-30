@@ -9,13 +9,15 @@
  * file that was distributed with this source code.
  */
 
-namespace Icybee;
+namespace Icybee\Block;
 
 use ICanBoogie\Operation;
 
 use Brickrouge\Button;
 use Brickrouge\Element;
 use Brickrouge\Form;
+
+use Icybee\Module;
 
 /**
  * Base class for configuration blocks.

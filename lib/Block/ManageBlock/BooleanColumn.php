@@ -9,13 +9,13 @@
  * file that was distributed with this source code.
  */
 
-namespace Icybee\ManageBlock;
+namespace Icybee\Block\ManageBlock;
 
 use ICanBoogie\ActiveRecord\Query;
 
 use Brickrouge\Document;
 
-use Icybee\ManageBlock;
+use Icybee\Block\ManageBlock;
 
 /**
  * Representation of a _boolean_ column.
@@ -49,7 +49,7 @@ class BooleanColumn extends Column
 	{
 		parent::add_assets($document);
 
-		$document->js->add(__DIR__ . '/boolean.column.js');
+		$document->js->add(__DIR__ . '/BooleanColumn.js');
 	}
 
 	public function alter_query_with_filter(Query $query, $filter_value)
