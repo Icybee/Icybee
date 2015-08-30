@@ -26,7 +26,7 @@
 		"icanboogie/bind-cldr": "^0.3.0",
 		"icanboogie/bind-activerecord": "^0.3.0",
 		"icanboogie/bind-facets": "^0.2.0",
-		"icanboogie/bind-view": "^0.4.0",
+		"icanboogie/bind-view": "^1.0.0",
 		"icanboogie/i18n": "^2.0.8",
 		"brickrouge/brickrouge": "^2.1.4",
 		"brickrouge/css-class-names": "^2.0.0",
