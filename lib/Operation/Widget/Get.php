@@ -15,12 +15,11 @@ use Brickrouge\Button;
 use Brickrouge\Popover;
 use Brickrouge\Widget;
 use Icybee\Binding\PrototypedBindings;
+use Icybee\Modules\Nodes\AdjustNode;
 
 class Get extends \ICanBoogie\Operation
 {
 	use PrototypedBindings;
-
-	private $widget_class;
 
 	protected function get_controls()
 	{
@@ -31,9 +30,14 @@ class Get extends \ICanBoogie\Operation
 		] + parent::get_controls();
 	}
 
+	protected function get_widget_class()
+	{
+		return 'Brickrouge\Widget\\' . \ICanBoogie\camelize(strtr($this->request['class'], '-', '_'));
+	}
+
 	protected function validate(\ICanboogie\Errors $errors)
 	{
-		$this->widget_class = $class = 'Brickrouge\Widget\\' . \ICanBoogie\camelize(strtr($this->request['class'], '-', '_'));
+		$class = $this->widget_class;
 
 		if (!class_exists($class, true))
 		{
@@ -76,7 +80,7 @@ class Get extends \ICanBoogie\Operation
 		$el = new $class([
 
 			'value' => $selected,
-			Widget\AdjustNode::T_CONSTRUCTOR => $request['constructor']
+			AdjustNode::T_CONSTRUCTOR => $request['constructor']
 
 		]);
 

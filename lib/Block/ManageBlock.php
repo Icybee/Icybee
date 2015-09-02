@@ -290,7 +290,7 @@ class ManageBlock extends Element
 				throw new \Exception(\ICanBoogie\format("Column %id is not defined.", [ 'id' => $id ]));
 			}
 
-			$construct = __CLASS__ . '\Column';
+			$construct = ManageBlock\Column::class;
 
 			if (is_string($options))
 			{

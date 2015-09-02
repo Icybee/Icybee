@@ -52,7 +52,7 @@ class PropertiesEvent extends Event
 	public function __construct(ConfigOperation $target, Request $request, array &$properties)
 	{
 		$this->request = $request;
-		$this->propertes = &$properties;
+		$this->properties = &$properties;
 
 		parent::__construct($target, 'properties');
 	}

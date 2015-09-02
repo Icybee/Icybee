@@ -31,4 +31,5 @@ trait CoreBindings
 	use \Icybee\Modules\Sites\Binding\CoreBindings;
 	use \Icybee\Modules\Registry\Binding\CoreBindings;
 	use \Icybee\Modules\Cache\Binding\CoreBindings;
+	use \Icybee\Modules\Files\Binding\CoreBindings;
 }

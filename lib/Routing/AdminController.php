@@ -16,6 +16,7 @@ use ICanBoogie\HTTP\PermissionRequired;
 use ICanBoogie\HTTP\Request;
 use ICanBoogie\Module\ControllerBindings as ModuleBindings;
 
+use Icybee\Binding\Core\PrototypedBindings;
 use Icybee\Modules\Users\User;
 
 /**
@@ -25,6 +26,7 @@ use Icybee\Modules\Users\User;
  */
 abstract class AdminController extends ResourceController
 {
+	use PrototypedBindings;
 	use ModuleBindings;
 
 	/**
