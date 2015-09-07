@@ -73,7 +73,7 @@ class SiteMenu extends Element
 
 			if ($restricted_sites)
 			{
-				$query->where([ 'siteid' => $restricted_sites ]);
+				$query->where([ 'site_id' => $restricted_sites ]);
 			}
 
 			$sites = $query->all;
@@ -91,7 +91,7 @@ class SiteMenu extends Element
 						$title = new Element('span', [ Element::INNER_HTML => $asite->title . '<span class="language">:' . $asite->language . '</span>' ]);
 					}
 
-					$options[$asite->siteid] = new A($title, $asite->url . $path . '?ssc=1');
+					$options[$asite->site_id] = new A($title, $asite->url . $path . '?ssc=1');
 				}
 			}
 		}
@@ -106,7 +106,7 @@ class SiteMenu extends Element
 
 				DropdownMenu::OPTIONS => $options,
 
-				'value' => $site->siteid
+				'value' => $site->site_id
 
 			]);
 

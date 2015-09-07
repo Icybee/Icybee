@@ -209,9 +209,9 @@ class EditBlock extends FormBlock
 		$record = $this->record;
 
 		if ($record && !($record instanceof Site)
-		&& !empty($record->siteid) && $record->siteid != $this->site->siteid)
+		&& !empty($record->site_id) && $record->site_id != $this->site->site_id)
 		{
-			$url = $this->models['sites'][$record->siteid]->url;
+			$url = $this->models['sites'][$record->site_id]->url;
 
 			throw new ForceRedirect("$url/admin/$module_id/$key/edit");
 		}
