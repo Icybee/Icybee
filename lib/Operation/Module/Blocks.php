@@ -33,7 +33,7 @@ class Blocks extends Operation
 	{
 		if (!$this->request['name'])
 		{
-			$errors['name'] = $errors->format('Missing block name');
+			$errors->add('name', "Missing block name");
 
 			return false;
 		}

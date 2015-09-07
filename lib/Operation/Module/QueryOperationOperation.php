@@ -57,7 +57,7 @@ class QueryOperation extends Operation
 
 		if (!$request['keys'])
 		{
-			$errors['keys'] = $errors->format("The parameter %param is empty.", [ 'param' => 'keys' ]);
+			$errors->add('keys', "The parameter %param is empty.", [ 'param' => 'keys' ]);
 		}
 
 		$this->module = $this->app->modules[$request['module']];
