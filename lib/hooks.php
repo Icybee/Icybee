@@ -17,15 +17,14 @@ use ICanBoogie\HTTP\RequestDispatcher;
 use ICanBoogie\HTTP\Exception as HTTPError;
 use ICanBoogie\HTTP\Request;
 use ICanBoogie\HTTP\RedirectResponse;
-use ICanBoogie\HTTP\WeightedDispatcher;
+use ICanBoogie\HTTP\Status;
 use ICanBoogie\Module\Descriptor;
 use ICanBoogie\Operation;
 use ICanBoogie\Routing;
+use ICanBoogie\View\View;
 
 use Brickrouge\Alert;
-use Brickrouge\Document;
 
-use ICanBoogie\View\View;
 use Icybee\Binding\CoreBindings;
 use Icybee\Modules\Pages\PageRenderer;
 use Icybee\Routing\AdminController;
@@ -35,66 +34,6 @@ class Hooks
 	/*
 	 * Events
 	 */
-
-	static public function on_http_dispatcher_alter(RequestDispatcher\AlterEvent $event, RequestDispatcher $dispatcher)
-	{
-		/**
-		 * Router for admin routes.
-		 *
-		 * This event hook handles all "/admin/" routes. It may redirect the user to the proper "admin"
-		 * location e.g. '/admin/' => '/fr/admin/'. If the "admin" route is detected, the Icybee admin
-		 * interface is presented, granted the user has an access permission, otherwise the
-		 * user is asked to authenticate.
-		 */
-		$dispatcher['admin:categories'] = new WeightedDispatcher(function(Request $request)
-		{
-			$app = self::app();
-			$path = \ICanBoogie\normalize_url_path(Routing\decontextualize($request->path));
-
-			if (strpos($path, '/admin/') !== 0)
-			{
-				return null;
-			}
-
-			$category = substr($path, 7, -1);
-
-			if ($category)
-			{
-				$user = $app->user;
-				$routes = $app->routes;
-
-				foreach ($app->modules->descriptors as $module_id => $descriptor)
-				{
-					if (!isset($app->modules[$module_id])
-					|| !$user->has_permission(Module::PERMISSION_ACCESS, $module_id)
-					|| $descriptor[Descriptor::CATEGORY] != $category)
-					{
-						continue;
-					}
-
-					$route_id = "admin:$module_id";
-
-					if (empty($routes[$route_id]))
-					{
-						$route_id = "admin:$module_id/manage"; //TODO-20120829: COMPAT, 'manage' should disappear.
-
-						if (empty($routes[$route_id]))
-						{
-							continue;
-						}
-					}
-
-					$route = $routes[$route_id];
-
-					return new RedirectResponse(self::app()->url_for($route), 302, [
-
-						'Icybee-Redirected-By' => __FILE__ . '::' . __LINE__
-
-					]);
-				}
-			}
-		}, 'before:pages');
-	}
 
 	/**
 	 * This is the dispatcher for the QueryOperation operation.
@@ -316,8 +255,7 @@ class Hooks
 
 		foreach ($app->modules->enabled_modules_descriptors as $module_id => $descriptor)
 		{
-			if (empty($descriptor[Descriptor::CATEGORY])
-			|| $descriptor[Descriptor::CATEGORY] != $category)
+			if ($descriptor[Descriptor::CATEGORY] != $category)
 			{
 				continue;
 			}
@@ -329,7 +267,11 @@ class Hooks
 				continue;
 			}
 
-			$event->response = new RedirectResponse(self::app()->url_for($route_id));
+			$event->response = new RedirectResponse(self::app()->url_for($route_id), Status::TEMPORARY_REDIRECT, [
+
+				'X-ICanBoogie-Redirected' => __FILE__ . '@' . __LINE__
+
+			]);
 		}
 	}
 
