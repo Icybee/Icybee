@@ -27,6 +27,7 @@ use Brickrouge\Alert;
 
 use Icybee\Binding\CoreBindings;
 use Icybee\Modules\Pages\PageRenderer;
+use Icybee\Operation\Module\QueryOperation;
 use Icybee\Routing\AdminController;
 
 class Hooks
@@ -45,24 +46,13 @@ class Hooks
 	static public function dispatch_query_operation(Request $request)
 	{
 		$app = self::app();
-		$class = 'Icybee\Operation\Module\QueryOperation';
-		$try_module = $module = $app->modules[$request['module']];
+		$module = $app->modules[$request['module']];
+		$class = $app->modules->resolve_classname('Operation\QueryOperationOperation', $module)
+			?: QueryOperation::class;
 
-		while ($try_module)
-		{
-			$try = Operation::format_class_name($try_module->descriptor[Descriptor::NS], 'QueryOperation');
+		$operation = $class::from([ 'module' => $module ]);
 
-			if (class_exists($try, true))
-			{
-				$class = $try;
-
-				break;
-			}
-
-			$try_module = $try_module->parent;
-		}
-
-		return new $class($module, $request);
+		return $operation($request);
 	}
 
 	/**

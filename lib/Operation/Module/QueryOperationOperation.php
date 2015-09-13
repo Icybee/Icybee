@@ -39,7 +39,7 @@ class QueryOperation extends Operation
 		] + parent::get_controls();
 	}
 
-	public function __invoke(Request $request)
+	protected function action(Request $request)
 	{
 		$keys = $request['keys'];
 
@@ -48,7 +48,7 @@ class QueryOperation extends Operation
 			$request['keys'] = explode('|', $keys);
 		}
 
-		return parent::__invoke($request);
+		return parent::action($request);
 	}
 
 	protected function validate(Errors $errors)

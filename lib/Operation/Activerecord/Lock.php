@@ -12,8 +12,10 @@
 namespace Icybee\Operation\ActiveRecord;
 
 use ICanBoogie\Errors;
+use ICanBoogie\HTTP\Request;
 use ICanBoogie\Module;
 use ICanBoogie\Operation;
+
 use Icybee\Binding\PrototypedBindings;
 
 /**
@@ -23,23 +25,22 @@ class Lock extends Operation
 {
 	use PrototypedBindings;
 
-	protected function reset()
+	protected function action(Request $request)
 	{
-		parent::reset();
-
 		$this->module = $this->app->modules[$this->request['module']];
 		$this->key = $this->request['key'];
+
+		return parent::action($request);
 	}
 
 	protected function get_controls()
 	{
-		return array
-		(
+		return [
+
 			self::CONTROL_PERMISSION => Module::PERMISSION_MAINTAIN,
 			self::CONTROL_OWNERSHIP => true
-		)
 
-		+ parent::get_controls();
+		] + parent::get_controls();
 	}
 
 	protected function validate(Errors $errors)
@@ -49,6 +50,6 @@ class Lock extends Operation
 
 	protected function process()
 	{
-		return $this->module->lock_entry((int) $this->key);
+		return $this->module->lock_entry($this->key);
 	}
 }
