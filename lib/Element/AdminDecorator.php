@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Icybee;
+namespace Icybee\Element;
 
 use ICanBoogie\Accessor\AccessorTrait;
 use ICanBoogie\Debug;
@@ -108,7 +108,7 @@ class AdminDecorator
 		#
 
 		$component = (string) $this->component;
-		$actionbar = new \Icybee\Element\Actionbar;
+		$actionbar = new \Icybee\Element\ActionBar;
 		$shortcuts = $this->render_shortcuts();
 		$navigation = $this->render_navigation();
 

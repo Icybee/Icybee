@@ -11,7 +11,7 @@
 
 namespace Icybee\Block\ManageBlock;
 
-use Icybee\WrappedCheckbox;
+use Icybee\Element\WrappedCheckbox;
 
 /**
  * Renderer for the _boolean_ column cells.

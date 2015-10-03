@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Icybee;
+namespace Icybee\Element;
 
 use ICanBoogie\Debug;
 use ICanBoogie\HTTP\RequestDispatcher;
@@ -256,7 +256,7 @@ class StatsDecorator extends \Brickrouge\Decorator
 
 		if (!$html)
 		{
-			return;
+			return '';
 		}
 
 		return "\n\nMissing translations\n————————————————————\n\n$html\n";

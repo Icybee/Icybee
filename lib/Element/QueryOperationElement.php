@@ -9,10 +9,9 @@
  * file that was distributed with this source code.
  */
 
-namespace Icybee;
+namespace Icybee\Element;
 
 use Brickrouge\Actions;
-use Brickrouge\Alert;
 use Brickrouge\Button;
 use Brickrouge\Document;
 use Brickrouge\Element;
@@ -27,8 +26,8 @@ class QueryOperationElement extends Element
 	{
 		parent::add_assets($document);
 
-		$document->css->add(__DIR__ . '/query-operation.css');
-		$document->js->add(__DIR__ . '/query-operation.js');
+		$document->css->add(__DIR__ . '/QueryOperationElement.css');
+		$document->js->add(__DIR__ . '/QueryOperationElement.js');
 	}
 
 	protected $options;

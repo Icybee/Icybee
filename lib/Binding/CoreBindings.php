@@ -14,7 +14,7 @@ namespace Icybee\Binding;
 /**
  * {@link \ICanBoogie\Core} prototype bindings.
  *
- * @property \Icybee\Document $document
+ * @property \Icybee\Element\Document $document
  */
 trait CoreBindings
 {

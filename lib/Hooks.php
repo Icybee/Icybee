@@ -333,7 +333,7 @@ class Hooks
 	 * </pre>
 	 *
 	 * The `class` attribute of the element can be specified with the `class` param. It is extended
-	 * with the class of the {@link \Icybee\Document} instance.
+	 * with the class of the {@link \Icybee\Element\Document} instance.
 	 *
 	 * @param array $args
 	 * @param mixed $engine
@@ -343,7 +343,7 @@ class Hooks
 	 */
 	static public function markup_body(array $args, $engine, $template)
 	{
-		return '<body class="' . trim($args['class'] . ' ' . \ICanBoogie\app()->document->css_class) . '">' . $engine($template) . '</body>';
+		return '<body class="' . trim($args['class'] . ' ' . self::app()->document->css_class) . '">' . $engine($template) . '</body>';
 	}
 
 	/*
@@ -357,7 +357,7 @@ class Hooks
 	 */
 	static public function exception_handler(\Exception $exception)
 	{
-		$app = \ICanBoogie\app();
+		$app = self::app();
 		$code = $exception->getCode() ?: 500;
 		$message = $exception->getMessage();
 		$class = get_class($exception); // The $class variable is required by the template
@@ -377,12 +377,12 @@ class Hooks
 			header('X-ICanBoogie-Exception: ' . \ICanBoogie\strip_root($exception->getFile()) . '@' . $exception->getLine());
 		}
 
-		$formated_exception = Debug::format_alert($exception);
+		$formatted_exception = Debug::format_alert($exception);
 		$reported = false;
 
 		if (!($exception instanceof HTTPError))
 		{
-			Debug::report($formated_exception);
+			Debug::report($formatted_exception);
 
 			$reported = true;
 		}
@@ -395,9 +395,9 @@ class Hooks
 			{
 				$css = [
 
-					Document::resolve_url(\Brickrouge\ASSETS . 'brickrouge.css'),
-					Document::resolve_url(ASSETS . 'admin.css'),
-					Document::resolve_url(ASSETS . 'admin-more.css')
+					\Brickrouge\Document::resolve_url(\Brickrouge\ASSETS . 'brickrouge.css'),
+					\Brickrouge\Document::resolve_url(ASSETS . 'admin.css'),
+					\Brickrouge\Document::resolve_url(ASSETS . 'admin-more.css')
 
 				];
 			}
@@ -408,17 +408,17 @@ class Hooks
 
 			ob_start();
 
-			require __DIR__ . '/exception.tpl.php';
+			require DIR . 'templates/exception.phtml';
 
-			$formated_exception = ob_get_clean();
+			$formatted_exception = ob_get_clean();
 		}
 
 		if (PHP_SAPI == 'cli')
 		{
-			$formated_exception = strip_tags($formated_exception);
+			$formatted_exception = strip_tags($formatted_exception);
 		}
 
-		echo $formated_exception;
+		echo $formatted_exception;
 	}
 
 	/*

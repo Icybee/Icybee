@@ -24,8 +24,8 @@ use Brickrouge\Element;
 use Brickrouge\Ranger;
 use Brickrouge\Text;
 
-use Icybee\Element\ActionbarContexts;
-use Icybee\Element\ActionbarSearch;
+use Icybee\Element\ActionBarContexts;
+use Icybee\Element\ActionBarSearch;
 use Icybee\Block\ManageBlock\Column;
 use Icybee\Block\ManageBlock\Options;
 use Icybee\Block\ManageBlock\Translator;
@@ -602,7 +602,7 @@ EOT;
 
 		$search = $this->render_search();
 
-		$this->events->attach(function(ActionbarSearch\AlterInnerHTMLEvent $event, ActionbarSearch $sender) use($search)
+		$this->events->attach(function(ActionBarSearch\AlterInnerHTMLEvent $event, ActionBarSearch $sender) use($search)
 		{
 			$event->html .= $search;
 		});
@@ -611,7 +611,7 @@ EOT;
 
 		$rendered_jobs = $this->render_jobs($this->jobs);
 
-		$this->events->attach(function(ActionbarContexts\CollectItemsEvent $event, ActionbarContexts $target) use($rendered_jobs) {
+		$this->events->attach(function(ActionBarContexts\CollectItemsEvent $event, ActionBarContexts $target) use($rendered_jobs) {
 
 			$event->items[] = $rendered_jobs;
 

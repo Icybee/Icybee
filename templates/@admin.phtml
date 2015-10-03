@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Icybee;
+namespace Icybee\Element;
 
 const DECORATE_WITH_BLOCK = 1;
 const DECORATE_WITH_ADMIN = 2;
@@ -24,7 +24,7 @@ const DECORATE_WITH_DOCUMENT = 4;
 
 $decorate_flags = $view->controller->request['decorate_flags'];
 
-if (preg_match('/Block$/', get_class($content)))
+if (is_object($content) && preg_match('/Block$/', get_class($content)))
 {
 	$content = new BlockDecorator($content, $block_name, $module->id);
 }

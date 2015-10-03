@@ -15,7 +15,7 @@ use Brickrouge\Document;
 use Brickrouge\Element;
 
 use Icybee\Modules\Users\User;
-use Icybee\WrappedCheckbox;
+use Icybee\Element\WrappedCheckbox;
 
 /**
  * Representation of a _primary key_ column.

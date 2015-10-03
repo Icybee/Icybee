@@ -1,6 +1,6 @@
 <?php
 
-namespace Icybee;
+namespace Icybee\Element;
 
 use Brickrouge\Element;
 use Brickrouge\Decorator;

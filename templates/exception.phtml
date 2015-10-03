@@ -2,6 +2,16 @@
 
 namespace ICanBoogie;
 
+/**
+ * @var $exception \Exception
+ * @var $css array
+ * @var $site \Icybee\Modules\Sites\Site
+ * @var $code int
+ * @var $class string
+ * @var $reported bool
+ * @var $formatted_exception string
+ */
+
 ?><!DOCTYPE html>
 <html>
 <head>
@@ -28,7 +38,7 @@ namespace ICanBoogie;
 </div>
 
 <div id="contents-wrapper">
-	<?= $formated_exception ?>
+	<?= $formatted_exception ?>
 
 	<footer><a href="http://www.icybee.org/" target="_blank">Icybee</a></footer>
 </div>

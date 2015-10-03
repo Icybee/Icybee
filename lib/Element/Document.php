@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Icybee;
+namespace Icybee\Element;
 
 use Icybee\Modules\Pages\PageRenderer;
 
@@ -53,8 +53,8 @@ class Document extends \Brickrouge\Document
 	/**
 	 * Returns the rendered metas of the document.
 	 *
-	 * {@link Document\BeforeRenderMetasEvent} is fired to collect HTTP equiv tags and meta tags.
-	 * {@link Document\RenderMetasEvent} is fired once the metas have been rendered into a HTML
+	 * {@link Document\BeforeRenderMetaEvent} is fired to collect HTTP equiv tags and meta tags.
+	 * {@link Document\RenderMetaEvent} is fired once the metas have been rendered into a HTML
 	 * string.
 	 *
 	 * @return string
@@ -63,9 +63,9 @@ class Document extends \Brickrouge\Document
 	{
 		$document = \Brickrouge\get_document();
 		$http_equiv = [ 'Content-Type' => 'text/html; charset=' . \ICanBoogie\CHARSET ];
-		$metas = [ 'og' => [] ];
+		$meta = [ 'og' => [] ];
 
-		new Document\BeforeRenderMetasEvent($document, array('http_equiv' => &$http_equiv, 'metas' => &$metas));
+		new Document\BeforeRenderMetaEvent($document, $http_equiv, $meta);
 
 		$html = '';
 
@@ -74,7 +74,7 @@ class Document extends \Brickrouge\Document
 			$html .= '<meta http-equiv="' . \ICanBoogie\escape($name) . '" content="' . \ICanBoogie\escape($content) . '" />' . PHP_EOL;
 		}
 
-		foreach ($metas as $name => $content)
+		foreach ($meta as $name => $content)
 		{
 			if (is_array($content))
 			{
@@ -84,7 +84,7 @@ class Document extends \Brickrouge\Document
 			$html .= '<meta name="' . \ICanBoogie\escape($name) . '" content="' . \ICanBoogie\escape($content) . '" />' . PHP_EOL;
 		}
 
-		foreach ($metas as $name => $properties)
+		foreach ($meta as $name => $properties)
 		{
 			if (!is_array($properties))
 			{
@@ -97,7 +97,7 @@ class Document extends \Brickrouge\Document
 			}
 		}
 
-		new Document\RenderMetasEvent($document, [ 'html' => &$html ]);
+		new Document\RenderMetaEvent($document, $html);
 
 		return $html;
 	}
@@ -313,117 +313,5 @@ class Document extends \Brickrouge\Document
 	public function css_class($modifiers=null)
 	{
 		return \Brickrouge\render_css_class($this->css_class_names, $modifiers);
-	}
-}
-
-namespace Icybee\Document;
-
-/**
- * Event class for the `Brickrouge\Document::render_metas:before` event.
- */
-class BeforeRenderMetasEvent extends \ICanBoogie\Event
-{
-	/**
-	 * Reference to the HTTP equivalent array.
-	 *
-	 * @var array[string]string
-	 */
-	public $http_equiv;
-
-	/**
-	 * Reference to the metas array.
-	 *
-	 * The `og` array is used to define OpenGraph metas.
-	 *
-	 * @var array[string]string
-	 */
-	public $metas;
-
-	/**
-	 * The event is constructed with the type `render_metas:before`.
-	 *
-	 * @param \Brickrouge\Document $target
-	 * @param array $payload
-	 */
-	public function __construct(\Brickrouge\Document $target, array $payload)
-	{
-		parent::__construct($target, 'render_metas:before', $payload);
-	}
-}
-
-/**
- * Event class for the `Brickrouge\Document::render_metas` event.
- */
-class RenderMetasEvent extends \ICanBoogie\Event
-{
-	/**
-	 * Reference to the rendered HTML.
-	 *
-	 * @var string
-	 */
-	public $html;
-
-	/**
-	 * The event is constructed with the type `render_metas`.
-	 *
-	 * @param \Brickrouge\Document $target
-	 * @param array $payload
-	 */
-	public function __construct(\Brickrouge\Document $target, array $payload)
-	{
-		parent::__construct($target, 'render_metas', $payload);
-	}
-}
-
-/**
- * Event class for the `Brickrouge\Document::render_title:before` event.
- *
- * @todo-20130318: is `title` the only property of the payload ? there should be `page_title`,
- * `site_title` and `separator`. Or an array of parts with the `page` and `site` key.
- */
-class BeforeRenderTitleEvent extends \ICanBoogie\Event
-{
-	/**
-	 * Reference of the title to render.
-	 *
-	 * @var string
-	 */
-	public $title;
-
-	public $separator = ' – ';
-
-	/**
-	 * The event is constructed with the type `render_title:before`.
-	 *
-	 * @param \Brickrouge\Document $target
-	 * @param array $payload
-	 */
-	public function __construct(\Brickrouge\Document $target, array $payload)
-	{
-		parent::__construct($target, 'render_title:before', $payload);
-	}
-}
-
-/**
- * Event class for the `Brickrouge\Document::render_title` event.
- */
-class RenderTitleEvent extends \ICanBoogie\Event
-{
-	/**
-	 * HTML of the `TITLE` markup.
-	 *
-	 * @var string
-	 */
-	public $html;
-
-	/**
-	 * The event is constructed with the type `render_title`.
-	 *
-	 * @param \Brickrouge\Document $target
-	 * @param array $payload
-	 */
-	public function __construct(\Brickrouge\Document $target, array $payload)
-	{
-		parent::__construct($target, 'render_title', $payload);
 	}
 }

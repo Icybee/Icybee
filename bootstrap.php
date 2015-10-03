@@ -77,4 +77,3 @@ function boot()
  * Helpers
  */
 require_once DIR . 'lib/helpers.php';
-require_once DIR . 'lib/helpers-compat.php';

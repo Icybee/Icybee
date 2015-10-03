@@ -29,7 +29,7 @@ use Brickrouge\ElementIsEmpty;
  * @property-read \Icybee\Modules\Sites\Site $site
  * @property-read \Icybee\Modules\Users\User $user
  */
-class ActionbarTitle extends Element
+class ActionBarTitle extends Element
 {
 	protected function get_modules()
 	{
@@ -91,15 +91,13 @@ class ActionbarTitle extends Element
 
 		if ($options)
 		{
-			$menu = (string) new DropdownMenu
-			(
-				array
-				(
-					DropdownMenu::OPTIONS => $options,
+			$menu = (string) new DropdownMenu([
 
-					'value' => $request->path
-				)
-			);
+				DropdownMenu::OPTIONS => $options,
+
+				'value' => $request->path
+
+			]);
 
 			$btn_group = <<<EOT
 <div class="btn-group">

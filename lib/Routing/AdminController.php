@@ -16,6 +16,7 @@ use ICanBoogie\Binding\Routing\ForwardUndefinedPropertiesToApplication;
 use ICanBoogie\HTTP\AuthenticationRequired;
 use ICanBoogie\HTTP\PermissionRequired;
 use ICanBoogie\HTTP\Request;
+use ICanBoogie\Module;
 use ICanBoogie\Module\ControllerBindings as ModuleBindings;
 use ICanBoogie\Routing\Controller;
 use ICanBoogie\View\ControllerBindings as ViewBindings;
@@ -80,9 +81,12 @@ abstract class AdminController extends Controller
 		$this->view['block_name'] = 'new';
 	}
 
-	protected function action_edit($nid)
+	protected function action_edit($id)
 	{
-		$this->view->content = $this->module->getBlock('edit', $nid);
+		$record = $this->model[$id];
+		$this->assert_has_permission(Module::PERMISSION_MAINTAIN, $record);
+
+		$this->view->content = $this->module->getBlock('edit', $id);
 		$this->view['block_name'] = 'edit';
 	}
 
@@ -92,9 +96,12 @@ abstract class AdminController extends Controller
 		$this->view['block_name'] = 'config';
 	}
 
-	protected function action_confirm_delete($nid)
+	protected function action_confirm_delete($id)
 	{
-		$this->view->content = $this->module->getBlock('delete', $nid);
+		$record = $this->model[$id];
+		$this->assert_has_permission(Module::PERMISSION_MANAGE, $record);
+
+		$this->view->content = $this->module->getBlock('delete', $id);
 		$this->view['block_name'] = 'delete';
 	}
 

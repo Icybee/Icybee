@@ -15,13 +15,13 @@ return [
 
 		'document:metas' => [
 
-			'Icybee\Document::markup_document_metas', [ ]
+			'Icybee\Element\Document::markup_document_metas', [ ]
 
 		],
 
 		'document:css' => [
 
-			'Icybee\Document::markup_document_css', [
+			'Icybee\Element\Document::markup_document_css', [
 
 				'href' => null,
 				'weight' => 100
@@ -31,7 +31,7 @@ return [
 
 		'document:js' => [
 
-			'Icybee\Document::markup_document_js', [
+			'Icybee\Element\Document::markup_document_js', [
 
 				'href' => null,
 				'weight' => 100
@@ -41,7 +41,7 @@ return [
 
 		'document:title' => [
 
-			'Icybee\Document::markup_document_title', [ ]
+			'Icybee\Element\Document::markup_document_title', [ ]
 
 		],
 

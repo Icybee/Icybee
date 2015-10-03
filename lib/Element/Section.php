@@ -9,8 +9,9 @@
  * file that was distributed with this source code.
  */
 
-namespace Brickrouge;
+namespace Icybee\Element;
 
+use Brickrouge\Element;
 use ICanBoogie\I18n;
 
 class Section extends Element
@@ -31,7 +32,7 @@ class Section extends Element
 				continue;
 			}
 
-			$context_class = $name ? normalize($name) : ++self::$auto_panelname;
+			$context_class = $name ? \Brickrouge\normalize($name) : ++self::$auto_panelname;
 
 			$class = 'panel panel-' . $context_class . ' ' . (is_object($element) ? $element[self::T_PANEL_CLASS] : '');
 

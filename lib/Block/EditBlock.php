@@ -24,7 +24,7 @@ use Brickrouge\Form;
 use Brickrouge\SplitButton;
 
 use Icybee;
-use Icybee\Element\ActionbarToolbar;
+use Icybee\Element\ActionBarToolbar;
 use Icybee\Module;
 use Icybee\Modules\Sites\Site;
 
@@ -412,7 +412,7 @@ class EditBlock extends FormBlock
 		$key = $this->key;
 		$block = $this;
 
-		$this->events->attach(function(ActionbarToolbar\CollectEvent $event, ActionbarToolbar $sender) use($record, $module, $key, $save_mode_options, $mode, $block, $app) {
+		$this->events->attach(function(ActionBarToolbar\CollectEvent $event, ActionBarToolbar $sender) use($record, $module, $key, $save_mode_options, $mode, $block, $app) {
 
 			if ($record)
 			{

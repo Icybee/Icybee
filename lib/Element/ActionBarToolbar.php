@@ -12,6 +12,7 @@
 namespace Icybee\Element;
 
 use Brickrouge\Element;
+use Brickrouge\ElementIsEmpty;
 
 /**
  * A toolbar of the action bar.
@@ -19,7 +20,7 @@ use Brickrouge\Element;
  * The `alter_buttons` event is fired to alter buttons before the inner HTML of the toolbar is
  * rendered.
  */
-class ActionbarToolbar extends Element
+class ActionBarToolbar extends Element
 {
 	public function __construct(array $attributes = [])
 	{
@@ -30,11 +31,11 @@ class ActionbarToolbar extends Element
 	{
 		$buttons = $this->collect();
 
-		new ActionbarToolbar\CollectEvent($this, [ 'buttons' => &$buttons ]);
+		new ActionBarToolbar\CollectEvent($this, [ 'buttons' => &$buttons ]);
 
 		if (empty($buttons))
 		{
-			throw new \Brickrouge\ElementIsEmpty;
+			throw new ElementIsEmpty;
 		}
 
 		return implode($buttons);
@@ -42,32 +43,6 @@ class ActionbarToolbar extends Element
 
 	protected function collect()
 	{
-		return array();
-	}
-}
-
-namespace Icybee\Element\ActionbarToolbar;
-
-/**
- * Event class for the `Icybee\Element\ActionbarToolbar::collect` event.
- */
-class CollectEvent extends \ICanBoogie\Event
-{
-	/**
-	 * Reference to the button array to alter.
-	 *
-	 * @var array
-	 */
-	public $buttons;
-
-	/**
-	 * The event is constructed with the type `collect`.
-	 *
-	 * @param \Icybee\Element\ActionbarToolbar $target
-	 * @param array $payload
-	 */
-	public function __construct(\Icybee\Element\ActionbarToolbar $target, array $payload)
-	{
-		parent::__construct($target, 'collect', $payload);
+		return [];
 	}
 }

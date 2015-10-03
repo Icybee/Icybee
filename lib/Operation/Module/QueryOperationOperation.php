@@ -15,7 +15,7 @@ use ICanboogie\Errors;
 use ICanBoogie\HTTP\Request;
 use ICanBoogie\Operation;
 
-use Icybee\QueryOperationElement;
+use Icybee\Element\QueryOperationElement;
 
 /**
  * Queries a module about an operation.

@@ -26,7 +26,7 @@ use Icybee\Modules\Users\User;
 use Icybee\Routing\RouteMaker;
 
 /**
- * Class Actionbar
+ * Class ActionBar
  *
  * @package Icybee\Element
  *
@@ -36,7 +36,7 @@ use Icybee\Routing\RouteMaker;
  * @property-read RouteCollection $routes
  * @property-read User $user
  */
-class Actionbar extends Element
+class ActionBar extends Element
 {
 	protected function get_modules()
 	{
@@ -103,8 +103,8 @@ class Actionbar extends Element
 			}
 
 			$actionbar_navigation = (string) new ActionBarNav;
-			$actionbar_search = (string) new ActionbarSearch;
-			$actionbar_controls = (string) new ActionbarToolbar;
+			$actionbar_search = (string) new ActionBarSearch;
+			$actionbar_controls = (string) new ActionBarToolbar;
 		}
 		catch (PropertyNotDefined $e)
 		{
@@ -115,14 +115,14 @@ class Actionbar extends Element
 // 			throw new \Brickrouge\ElementIsEmpty;
 		}
 
-		$actionbar_title = (string) new ActionbarTitle;
+		$actionbar_title = (string) new ActionBarTitle;
 
 		if (!$actionbar_title && !$actionbar_new && !$actionbar_navigation && !$actionbar_controls && !$actionbar_search)
 		{
 			throw new ElementIsEmpty;
 		}
 
-		$actionbar_contexts = (string) new ActionbarContexts;
+		$actionbar_contexts = (string) new ActionBarContexts;
 
 		return <<<EOT
 <div class="actionbar-primary">
