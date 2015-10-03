@@ -7,7 +7,7 @@ use ICanBoogie\Module\ModuleCollection;
 
 use Icybee\Modules\Users\User;
 
-class CreateRouteFilter
+class NewRouteFilter
 {
 	/**
 	 * @var ModuleCollection
@@ -27,7 +27,7 @@ class CreateRouteFilter
 
 	public function __invoke(array $definition, $id)
 	{
-		if (strpos($id, 'admin:') !== 0 || !preg_match('#:create$#', $id))
+		if (strpos($id, RouteMaker::ADMIN_PREFIX) !== 0 || !preg_match('#:' . RouteMaker::ACTION_NEW . '$#', $id))
 		{
 			return false;
 		}

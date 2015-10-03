@@ -29,6 +29,7 @@ use Icybee\Binding\CoreBindings;
 use Icybee\Modules\Pages\PageRenderer;
 use Icybee\Operation\Module\QueryOperation;
 use Icybee\Routing\AdminController;
+use Icybee\Routing\RouteMaker;
 
 class Hooks
 {
@@ -121,13 +122,13 @@ class Hooks
 			{
 				case OPERATION_SAVE_MODE_CONTINUE:
 
-					$location .= '/' . $event->rc['key'] . '/edit';
+					$location .= '/' . $event->rc['key'] . '/' . RouteMaker::ACTION_EDIT;
 
 					break;
 
 				case OPERATION_SAVE_MODE_NEW:
 
-					$location .= '/create';
+					$location .= '/' . RouteMaker::ACTION_NEW;
 
 					break;
 

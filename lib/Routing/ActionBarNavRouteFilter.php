@@ -10,18 +10,33 @@ use Icybee\Modules\Users\User;
 
 class ActionBarNavRouteFilter
 {
+	/**
+	 * @var string
+	 */
 	private $module_id;
+
+	/**
+	 * @var User
+	 */
 	private $user;
+
+	/**
+	 * @var array
+	 */
 	private $skip;
 
+	/**
+	 * @param Route|Module\ModuleRoute $current_route
+	 * @param User $user
+	 */
 	public function __construct(Route $current_route, User $user)
 	{
 		$this->module_id = $module_id = $current_route->module;
 		$this->user = $user;
 		$this->skip = [
 
-			"admin:$module_id:index",
-			"admin:$module_id:create"
+			RouteMaker::ADMIN_PREFIX . $module_id . RouteMaker::SEPARATOR . RouteMaker::ACTION_INDEX,
+			RouteMaker::ADMIN_PREFIX . $module_id . RouteMaker::SEPARATOR . RouteMaker::ACTION_NEW
 
 		];
 	}
@@ -30,7 +45,7 @@ class ActionBarNavRouteFilter
 	{
 		if (empty($definition['module'])
 		|| in_array($id, $this->skip)
-		|| strpos($id, 'admin:') !== 0)
+		|| strpos($id, RouteMaker::ADMIN_PREFIX) !== 0)
 		{
 			return false;
 		}

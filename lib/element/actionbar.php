@@ -23,6 +23,7 @@ use Brickrouge\Element;
 
 use Icybee\Modules\Members\Member;
 use Icybee\Modules\Users\User;
+use Icybee\Routing\RouteMaker;
 
 /**
  * Class Actionbar
@@ -95,7 +96,7 @@ class Actionbar extends Element
 
 				$actionbar_new = (string) new ActionbarNew('New', [
 
-					ActionbarNew::ID => "admin:$module_id:create",
+					ActionbarNew::ID => RouteMaker::ADMIN_PREFIX . "$module_id:" . RouteMaker::ACTION_NEW,
 					ActionbarNew::ROUTE => $route
 
 				]);

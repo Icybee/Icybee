@@ -18,9 +18,10 @@ use ICanBoogie\Module;
 use ICanBoogie\Module\ModuleCollection;
 use ICanBoogie\Module\Descriptor;
 use ICanBoogie\Routing\RouteCollection;
+use ICanBoogie\Routing\RouteMaker;
 use Icybee\Binding\PrototypedBindings;
 use Icybee\Modules\Users\User;
-use Icybee\Routing\CreateRouteFilter;
+use Icybee\Routing\NewRouteFilter;
 
 /**
  * Action bar _new_ button.
@@ -112,11 +113,11 @@ EOT;
 	{
 		$route = $this->request->context->route;
 		$module_id = $route->module;
-		$has_create = isset($this->routes["admin:$module_id:create"]);
+		$has_new = isset($this->routes["admin:$module_id:" . RouteMaker::ACTION_NEW]);
 
-		$this->render_as_button = !$has_create;
+		$this->render_as_button = !$has_new;
 
-		if ($route->id != 'admin:dashboard:index' && !$has_create)
+		if ($route->id != 'admin:dashboard:' . RouteMaker::ACTION_INDEX && !$has_new)
 		{
 			return '';
 		}
@@ -129,7 +130,7 @@ EOT;
 		$collection = [];
 		$translations = [];
 
-		$routes = $this->routes->filter(new CreateRouteFilter($this->modules, $this->user));
+		$routes = $this->routes->filter(new NewRouteFilter($this->modules, $this->user));
 
 		$modules = $this->modules;
 		$descriptors = $modules->descriptors;

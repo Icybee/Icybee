@@ -11,23 +11,25 @@
 
 namespace Icybee\Routing;
 
+use ICanBoogie\Binding\Routing\ControllerBindings as RoutingBindings;
+use ICanBoogie\Binding\Routing\ForwardUndefinedPropertiesToApplication;
 use ICanBoogie\HTTP\AuthenticationRequired;
 use ICanBoogie\HTTP\PermissionRequired;
 use ICanBoogie\HTTP\Request;
 use ICanBoogie\Module\ControllerBindings as ModuleBindings;
+use ICanBoogie\Routing\Controller;
+use ICanBoogie\View\ControllerBindings as ViewBindings;
 
 use Icybee\Binding\Core\PrototypedBindings;
-use Icybee\Modules\Users\User;
+use Icybee\Modules\Users\Binding\CoreBindings as UserBindings;
 
 /**
  * Base class for admin controllers.
- *
- * @property User $user
  */
-abstract class AdminController extends ResourceController
+abstract class AdminController extends Controller
 {
-	use PrototypedBindings;
-	use ModuleBindings;
+	use Controller\ActionTrait, ForwardUndefinedPropertiesToApplication;
+	use PrototypedBindings, RoutingBindings, ModuleBindings, UserBindings, ViewBindings;
 
 	/**
 	 * Returns name as "admin/{name}" instead of "{name}_admin".
@@ -62,48 +64,35 @@ abstract class AdminController extends ResourceController
 		return 'admin';
 	}
 
-	/**
-	 * @inheritdoc
-	 */
-	protected function is_action_method($action)
-	{
-		if (in_array($action, [ 'config', 'confirm_delete']))
-		{
-			return true;
-		}
-
-		return parent::is_action_method($action);
-	}
-
 	/*
 	 * Actions
 	 */
 
-	protected function index()
+	protected function action_index()
 	{
 		$this->view->content = $this->module->getBlock('manage');
 		$this->view['block_name'] = 'manage';
 	}
 
-	protected function create()
+	protected function action_new()
 	{
 		$this->view->content = $this->module->getBlock('edit');
-		$this->view['block_name'] = 'create';
+		$this->view['block_name'] = 'new';
 	}
 
-	protected function edit($nid)
+	protected function action_edit($nid)
 	{
 		$this->view->content = $this->module->getBlock('edit', $nid);
 		$this->view['block_name'] = 'edit';
 	}
 
-	protected function config()
+	protected function action_config()
 	{
 		$this->view->content = $this->module->getBlock('config');
 		$this->view['block_name'] = 'config';
 	}
 
-	protected function confirm_delete($nid)
+	protected function action_confirm_delete($nid)
 	{
 		$this->view->content = $this->module->getBlock('delete', $nid);
 		$this->view['block_name'] = 'delete';
