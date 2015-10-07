@@ -26,6 +26,7 @@
 		"icanboogie/bind-view": "^1.0.0",
 		"brickrouge/brickrouge": "^2.1.4",
 		"brickrouge/css-class-names": "^2.0.0",
+		"brickrouge/listview": "dev-master",
 		"icybee/core": "^3.0.0",
 		"icybee/bluetihi": "^0.0.3",
 		"icybee/patron": "^1.4.0",
