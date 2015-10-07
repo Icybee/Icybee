@@ -16,13 +16,14 @@
 	white-space: nowrap;
 }
 
-.listview th > div,
+.listview:not(.listview-interactive) th,
+.listview-interactive th > div,
 .listview td {
 	padding: .25rem .5rem;
 }
 
 .listview th i[class^="icon-"] {
-	line-height: normal;	
+	line-height: normal;
 }
 
 .listview th.measure,
@@ -100,13 +101,15 @@
 }
 
 .listview td:first-child,
-.listview th:first-child > div {
-	padding-left: 16px;
+.listview:not(.listview-interactive) th:first-child,
+.listview-interactive th:first-child > div {
+	padding-left: 1rem;
 }
 
 .listview td:last-child,
-.listview th:last-child > div {
-	padding-right: 16px;
+.listview:not(.listview-interactive) th:last-child,
+.listview-interactive th:last-child > div {
+	padding-right: 1rem;
 }
 
 .listview th.has-options > div {

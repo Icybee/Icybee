@@ -20,22 +20,22 @@ use ICanBoogie\Operation;
 
 use Brickrouge\Alert;
 use Brickrouge\Button;
+use Brickrouge\Document;
 use Brickrouge\Element;
+use Brickrouge\ListView;
 use Brickrouge\Ranger;
-use Brickrouge\Text;
 
-use Icybee\Element\ActionBarContexts;
-use Icybee\Element\ActionBarSearch;
+use Icybee\Binding\Core\PrototypedBindings;
+use Icybee\Block\ManageBlock\SearchElement;
 use Icybee\Block\ManageBlock\Column;
 use Icybee\Block\ManageBlock\Options;
 use Icybee\Block\ManageBlock\Translator;
-
-/* @var $column \Icybee\Block\ManageBlock\Column */
+use Icybee\Element\ActionBarContexts;
+use Icybee\Element\ActionBarSearch;
 
 /**
- * An element to manage the records of a module.
+ * Manages the records of a module.
  *
- * @property-read \ICanBoogie\Core|\Icybee\Binding\CoreBindings $app
  * @property-read \ICanBoogie\EventCollection $events
  * @property-read \ICanBoogie\HTTP\Request $request
  * @property-read \Icybee\Modules\Users\User $user
@@ -46,19 +46,14 @@ use Icybee\Block\ManageBlock\Translator;
  * @property-read bool $is_filtering `true` if records are filtered.
  * @property-read Translator $t The translator used by the element.
  *
- * @changes-20130622
- *
- * - All extend_column* methods are removed.
- * - alter_range_query() signature changed, $options is now an instance of Options an not an array.
- * - AlterColumnsEvent has been redesigned, `records` is removed.
- *
  * @TODO-20130626:
  *
  * - [filters][options] -> [filter_options]
- * - throw error when COLUMNS_ORDER use an undefined column.
  */
-class ManageBlock extends Element
+class ManageBlock extends ListView
 {
+	use PrototypedBindings;
+
 	const DISCREET_PLACEHOLDER = '<span class="lighter">―</span>';
 
 	const T_BLOCK = '#manager-block';
@@ -72,7 +67,7 @@ class ManageBlock extends Element
 	const ORDER_ASC = 'asc';
 	const ORDER_DESC = 'desc';
 
-	static protected function add_assets(\Brickrouge\Document $document)
+	static protected function add_assets(Document $document)
 	{
 		parent::add_assets($document);
 
@@ -83,21 +78,21 @@ class ManageBlock extends Element
 	/**
 	 * Currently used module.
 	 *
-	 * @var \ICanBoogie\Module
+	 * @var Module
 	 */
 	public $module;
 
 	/**
 	 * Currently used model.
 	 *
-	 * @var \ICanBoogie\ActiveRecord\Model
+	 * @var ActiveRecord\Model
 	 */
 	protected $model;
 
 	/**
 	 * Returns the {@link $model} property.
 	 *
-	 * @return \ICanBoogie\ActiveRecord\Model
+	 * @return ActiveRecord\Model
 	 */
 	protected function get_model()
 	{
@@ -203,7 +198,10 @@ class ManageBlock extends Element
 
 	public function __construct(Module $module, array $attributes)
 	{
-		parent::__construct('div', $attributes + [
+		$this->module = $module;
+		$this->model = $module->model;
+
+		parent::__construct($attributes + [
 
 			Element::TRANSLATOR => new Translator($module),
 
@@ -211,16 +209,14 @@ class ManageBlock extends Element
 
 		]);
 
-		$this->module = $module;
-		$this->model = $module->model;
-		$this->columns = $this->get_columns();
+		$this->columns;
 		$this->jobs = $this->get_jobs();
 	}
 
 	/**
 	 * Returns the available columns.
 	 *
-	 * @return array[string]mixed
+	 * @return array
 	 */
 	protected function get_available_columns()
 	{
@@ -234,15 +230,15 @@ class ManageBlock extends Element
 		return [];
 	}
 
-	protected function get_columns()
+	protected function lazy_get_columns()
 	{
 		$columns = $this->get_available_columns();
 
-		new \Icybee\Block\ManageBlock\RegisterColumnsEvent($this, $columns);
+		new ManageBlock\RegisterColumnsEvent($this, $columns);
 
 		$columns = $this->resolve_columns($columns);
 
-		new \Icybee\Block\ManageBlock\AlterColumnsEvent($this, $columns);
+		new ManageBlock\AlterColumnsEvent($this, $columns);
 
 		foreach ($columns as $column_id => $column)
 		{
@@ -281,27 +277,7 @@ class ManageBlock extends Element
 			$columns = array_merge($columns_order, $columns);
 		}
 
-		$resolved_columns = [];
-
-		foreach ($columns as $id => $options)
-		{
-			if ($options === null)
-			{
-				throw new \Exception(\ICanBoogie\format("Column %id is not defined.", [ 'id' => $id ]));
-			}
-
-			$construct = ManageBlock\Column::class;
-
-			if (is_string($options))
-			{
-				$construct = $options;
-				$options = [];
-			}
-
-			$resolved_columns[$id] = new $construct($this, $id, $options);
-		}
-
-		return $resolved_columns;
+		return parent::resolve_columns($columns);
 	}
 
 	/**
@@ -523,12 +499,28 @@ class ManageBlock extends Element
 				$records = $this->alter_records($records);
 				$this->records = array_values($records);
 			}
+
+			#
+
+			$this->events->attach(function(ActionBarSearch\AlterInnerHTMLEvent $event, ActionBarSearch $target) {
+
+				$event->html .= $this->render_search();
+
+			});
+
+			#
+
+			$this->events->attach(function(ActionBarContexts\CollectItemsEvent $event, ActionBarContexts $target) {
+
+				$event->items[] = $this->render_jobs($this->jobs);
+
+			});
 		}
 		catch (\Exception $e)
 		{
 			$options->order_by = null;
 			$options->order_direction = null;
-			$options->filters = array();
+			$options->filters = [];
 			$options->store();
 
 			$rendered_exception = \Brickrouge\render_exception($e);
@@ -552,74 +544,6 @@ EOT;
 		}
 
 		return $html;
-	}
-
-	/**
-	 * Renders the object into a HTML string.
-	 */
-	protected function render_inner_html()
-	{
-		$records = $this->records;
-		$options = $this->options;
-
-		if ($records || $options->filters)
-		{
-			if ($records)
-			{
-				$body = '<tbody>' . $this->render_body() . '</tbody>';
-			}
-			else
-			{
-				$body = '<tbody class="empty"><tr><td colspan="' . count($this->columns) . '">' . $this->render_empty_body() . '</td></tr></tbody>';
-			}
-
-			$head = $this->render_head();
-			$foot = $this->render_foot();
-
-			$content = <<<EOT
-<table>
-	$head
-	$foot
-	$body
-</table>
-EOT;
-		}
-		else
-		{
-			$body = $this->render_empty_body();
-			$foot = $this->render_foot();
-			$columns_n = count($this->columns);
-
-			$content = <<<EOT
-<table>
-	<tbody class="empty" td colspan="$columns_n">$body</tbody>
-	$foot
-</table>
-EOT;
-		}
-
-		#
-
-		$search = $this->render_search();
-
-		$this->events->attach(function(ActionBarSearch\AlterInnerHTMLEvent $event, ActionBarSearch $sender) use($search)
-		{
-			$event->html .= $search;
-		});
-
-		#
-
-		$rendered_jobs = $this->render_jobs($this->jobs);
-
-		$this->events->attach(function(ActionBarContexts\CollectItemsEvent $event, ActionBarContexts $target) use($rendered_jobs) {
-
-			$event->items[] = $rendered_jobs;
-
-		});
-
-		#
-
-		return $content;
 	}
 
 	/**
@@ -654,7 +578,7 @@ EOT;
 	 *
 	 * @param Options $options
 	 *
-	 * @return \ICanBoogie\ActiveRecord\Query
+	 * @return Query
 	 */
 	protected function resolve_query(Options $options)
 	{
@@ -809,7 +733,7 @@ EOT;
 	 *
 	 * @param Query $query
 	 *
-	 * @return \ICanBoogie\ActiveRecord[]
+	 * @return ActiveRecord[]
 	 */
 	protected function fetch_records(Query $query)
 	{
@@ -822,7 +746,7 @@ EOT;
 	 * The function return the records _as is_ but subclasses can implement the method to
 	 * load all the dependencies of the records in a single step.
 	 *
-	 * @param array $records
+	 * @param ActiveRecord[] $records
 	 *
 	 * @return array
 	 */
@@ -837,128 +761,57 @@ EOT;
 	}
 
 	/**
-	 * Renders the THEAD element.
+	 * Decorates a column header content.
 	 *
-	 * @return string The rendered THEAD element.
+	 * @inheritdoc
 	 */
-	protected function render_head()
+	protected function decorate_header($content, $column_id)
 	{
-		$cells = '';
-
-		foreach ($this->columns as $id => $column)
-		{
-			$cells .= $this->render_column($column, $id);
-		}
-
-		return <<<EOT
-<thead>
-	<tr>$cells</tr>
-</thead>
-EOT;
-	}
-
-	/**
-	 * Renders a column header.
-	 *
-	 * @param Column $column
-	 * @param string $id
-	 *
-	 * @return string The rendered THEAD cell.
-	 */
-	protected function render_column(Column $column, $id)
-	{
-		$class = 'header--' . \Brickrouge\normalize($id) . ' ' . $column->class;
+		$column = $this->columns[$column_id];
+		$header_options = $column->render_options();
+		$element = parent::decorate_header("<div>{$content}{$header_options}</div>", $column_id);
 
 		if ($this->count > 1 || $this->options->filters || $this->options->search)
 		{
-			$orderable = $column->orderable;
-
-			if ($orderable)
+			if ($column->orderable)
 			{
-				$class .= ' orderable';
+				$element->add_class('orderable');
 			}
 
-			$filtering = $column->is_filtering;
-
-			if ($filtering)
+			if ($column->is_filtering)
 			{
-				$class .= ' filtering';
+				$element->add_class('filtering');
 			}
 
-			$filters = $column->filters;
-
-			if ($filters)
+			if ($column->filters)
 			{
-				$class .= ' filters';
+				$element->add_class('filters');
 			}
 		}
-
-		$header_options = $column->render_options();
 
 		if ($header_options)
 		{
-			$class .= ' has-options';
+			$element->add_class('has-options');
 		}
 
-		$header = $column->render_header();
-
-		if (!$header)
+		if (!$content)
 		{
-			$class .= ' has-no-label';
+			$element->add_class('has-no-label');
 		}
 
-		$class = trim($class);
-
-		return <<<EOT
-<th class="$class"><div>{$header}{$header_options}</div></th>
-EOT;
-	}
-
-	/**
-	 * Renders the cells of the columns.
-	 *
-	 * The method returns an array with the following layout:
-	 *
-	 *     [<column_id>][] => <cell_content>
-	 *
-	 * @param Column[] $columns The columns to render.
-	 *
-	 * @return array
-	 */
-	protected function render_columns_cells(array $columns)
-	{
-		$rendered_columns_cells = array();
-
-		foreach ($columns as $id => $column)
-		{
-			foreach ($this->records as $record)
-			{
-				try
-				{
-					$content = (string) $column->render_cell($record);
-				}
-				catch (\Exception $e)
-				{
-					$content = \Brickrouge\render_exception($e);
-				}
-
-				$rendered_columns_cells[$id][] = $content;
-			}
-		}
-
-		return $rendered_columns_cells;
+		return $element;
 	}
 
 	/**
 	 * Replaces repeating values of a column with the discreet placeholder.
 	 *
-	 * @param array $rendered_columns_cells
+	 * @param array $rendered_cells
 	 *
-	 * @return array[string]mixed
+	 * @return array
 	 */
-	protected function apply_discreet_filter(array $rendered_columns_cells)
+	protected function apply_discreet_filter(array $rendered_cells)
 	{
-		$discreet_column_cells = $rendered_columns_cells;
+		$discreet_column_cells = $rendered_cells;
 		$columns = $this->columns;
 
 		foreach ($discreet_column_cells as $id => &$cells)
@@ -989,93 +842,49 @@ EOT;
 	}
 
 	/**
-	 * Convert rendered columns cells to rows.
-	 *
-	 * @param array $rendered_columns_cells
-	 *
-	 * @return array[]array
+	 * @inheritdoc
 	 */
-	protected function columns_to_rows(array $rendered_columns_cells)
+	protected function alter_cells(array &$rendered_cells)
 	{
-		$rows = [];
-
-		foreach ($rendered_columns_cells as $column_id => $cells)
-		{
-			foreach ($cells as $i => $cell)
-			{
-				$rows[$i][$column_id] = $cell;
-			}
-		}
-
-		return $rows;
-	}
-
-	/**
-	 * Renders the specified rows.
-	 *
-	 * The rows are rendered as an array of {@link Element} instances representing `TR` elements.
-	 *
-	 * @param array $rows
-	 *
-	 * @return Element[]
-	 */
-	protected function render_rows(array $rows)
-	{
-		$rendered_rows = [];
-		$columns = $this->columns;
-		$records = $this->records;
-		$key = $this->primary_key;
-		$module = $this->module;
-		$user = $this->user;
-
-		foreach ($rows as $i => $cells)
-		{
-			$html = '';
-
-			foreach ($cells as $column_id => $cell)
-			{
-				$html .= '<td class="'
-				. trim('cell--' . \Brickrouge\normalize($column_id) . ' ' . $columns[$column_id]->class)
-				. '">' . ($cell ?: '&nbsp;') . '</td>';
-			}
-
-			$tr = new Element('tr', [ Element::INNER_HTML => $html ]);
-
-			if ($key && !$user->has_ownership($records[$i]))
-			{
-				$tr->add_class('no-ownership');
-			}
-
-			$rendered_rows[] = $tr;
-		}
-
-		return $rendered_rows;
-	}
-
-	/**
-	 * Renders table body.
-	 *
-	 * @return string
-	 */
-	protected function render_body()
-	{
-		$rendered_cells = $this->render_columns_cells($this->columns);
-
 		new ManageBlock\AlterRenderedCellsEvent($this, $rendered_cells, $this->records);
 
 		$rendered_cells = $this->apply_discreet_filter($rendered_cells);
-		$rows = $this->columns_to_rows($rendered_cells);
-		$rendered_rows = $this->render_rows($rows);
+	}
 
-		return implode(PHP_EOL, $rendered_rows);
+	/**
+	 * Adds the class `no-ownership` on rows representing records that the user does not own.
+	 *
+	 * @inheritdoc
+	 */
+	protected function alter_rows(array &$rendered_rows)
+	{
+		if (!$this->primary_key)
+		{
+			return;
+		}
+
+		$user = $this->user;
+		$records = $this->records;
+
+		/* @var $row Element */
+
+		foreach ($rendered_rows as $i => $row)
+		{
+			if ($user->has_ownership($records[$i]))
+			{
+				continue;
+			}
+
+			$row->add_class('no-ownership');
+		}
 	}
 
 	/**
 	 * Renders an alternate body when there is no record to display.
 	 *
-	 * @return \Brickrouge\Alert
+	 * @return Alert
 	 */
-	protected function render_empty_body()
+	protected function render_no_records()
 	{
 		$search = $this->options->search;
 		$filters = $this->options->filters;
@@ -1113,37 +922,16 @@ EOT;
 	/**
 	 * Renders the "search" element to be injected in the document.
 	 *
-	 * @return \Brickrouge\Form
+	 * @return SearchElement
 	 */
 	protected function render_search()
 	{
-		$search = $this->options->search;
+		return new SearchElement([
 
-		return new Element('div', [
+			'title' => $this->t('Search in the records'),
+			'placeholder' => $this->t('Search'),
+			'value' => $this->options->search
 
-			Element::CHILDREN => [
-
-				'q' => new Text([
-
-					'title' => $this->t('Search in the records'),
-					'value' => $search,
-					'size' => '16',
-					'class' => 'search',
-					'tabindex' => 0,
-					'placeholder' => $this->t('Search')
-
-				]),
-
-				new Button('', [
-
-					'type' => 'button',
-					'class' => 'icon-remove'
-
-				])
-
-			],
-
-			'class' => 'listview-search'
 		]);
 	}
 
@@ -1160,7 +948,7 @@ EOT;
 
 		if ($count <= 10)
 		{
-			$content = $this->t($this->is_filtering || $this->options->search ? "records_count_with_filters" : "records_count", array(':count' => $count));
+			$content = $this->t($this->is_filtering || $this->options->search ? "records_count_with_filters" : "records_count", [ ':count' => $count ]);
 
 			return <<<EOT
 <div class="listview-controls">
@@ -1226,7 +1014,7 @@ EOT;
 	 *
 	 * @param array $jobs
 	 *
-	 * @return \Brickrouge\Element|null
+	 * @return Element|null
 	 */
 	protected function render_jobs(array $jobs)
 	{
@@ -1288,7 +1076,7 @@ EOT;
 	 */
 	protected function render_foot()
 	{
-		$ncolumns = count($this->columns);
+		$n_columns = count($this->columns);
 		$key_column = $this->primary_key ? '<td class="key">&nbsp;</td>' : '';
 		$rendered_jobs = null;
 		$rendered_controls = $this->render_controls();
@@ -1297,7 +1085,7 @@ EOT;
 <tfoot>
 	<tr>
 		$key_column
-		<td colspan="{$ncolumns}">{$rendered_jobs}{$rendered_controls}</td>
+		<td colspan="{$n_columns}">{$rendered_jobs}{$rendered_controls}</td>
 	</tr>
 </tfoot>
 EOT;
@@ -1311,7 +1099,7 @@ EOT;
 	 *
 	 * @return boolean
 	 */
-	public function is_filtering($column_id=null)
+	public function is_filtering($column_id = null)
 	{
 		return $this->options->is_filtering($column_id);
 	}
