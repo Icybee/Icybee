@@ -19,7 +19,6 @@ use ICanBoogie\Module;
 use ICanBoogie\Operation;
 
 use Brickrouge\Alert;
-use Brickrouge\Button;
 use Brickrouge\Document;
 use Brickrouge\Element;
 use Brickrouge\ListView;
@@ -31,6 +30,7 @@ use Icybee\Block\ManageBlock\Column;
 use Icybee\Block\ManageBlock\Options;
 use Icybee\Block\ManageBlock\Translator;
 use Icybee\Element\ActionBarContexts;
+use Icybee\Element\ActionBarOperations;
 use Icybee\Element\ActionBarSearch;
 
 /**
@@ -561,7 +561,7 @@ EOT;
 
 		return <<<EOT
 <div brickrouge-is="ManageBlock">
-	<form id="manager" method="GET" action="">
+	<form id="manager" method="GET">
 		<input type="hidden" name="{$operation_name}" value="{$operation_value}" />
 		<input type="hidden" name="{$block_name}" value="{$block_value}" />
 		$html
@@ -910,7 +910,7 @@ EOT;
 		}
 		else
 		{
-			$url = $this->app->url_for("admin:{$this->module->id}:create");
+			$url = $this->app->url_for("admin:{$this->module->id}:new");
 
 			$message = $this->t('create_first', [ '!url' => $url ]);
 			$context = 'info';
@@ -1014,59 +1014,11 @@ EOT;
 	 *
 	 * @param array $jobs
 	 *
-	 * @return Element|null
+	 * @return Element
 	 */
 	protected function render_jobs(array $jobs)
 	{
-		if (!$jobs)
-		{
-			return null;
-		}
-
-		$children = [];
-
-		foreach ($jobs as $operation => $label)
-		{
-			$children[] = new Button($label, [
-
-				'data-operation' => $operation,
-				'data-target' => 'manager'
-
-			]);
-		}
-
-		return new Element('div', [
-
-			Element::IS => 'ActionBarOperations',
-
-			Element::CHILDREN => [
-
-				new Element('label', [
-
-					Element::INNER_HTML => '',
-
-					'class' => 'btn-group-label count'
-
-				]),
-
-				new Element('div', [
-
-					Element::CHILDREN => $children,
-
-					'class' => 'btn-group'
-
-				]),
-
-				new Button('Annuler la sélection', [ 'data-dismiss' => 'selection' ])
-			],
-
-			'data-actionbar-context' => 'Operation',
-			'data-pattern-one' => "Un élément sélectionné",
-			'data-pattern-other' => ":count éléments sélectionnés",
-
-			'class' => 'actionbar-actions listview-Operation'
-
-		]);
+		return new ActionBarOperations([ Element::OPTIONS => $jobs ]);
 	}
 
 	/**
@@ -1078,14 +1030,19 @@ EOT;
 	{
 		$n_columns = count($this->columns);
 		$key_column = $this->primary_key ? '<td class="key">&nbsp;</td>' : '';
-		$rendered_jobs = null;
+
+		if ($key_column)
+		{
+			$n_columns--;
+		}
+
 		$rendered_controls = $this->render_controls();
 
 		return <<<EOT
 <tfoot>
 	<tr>
 		$key_column
-		<td colspan="{$n_columns}">{$rendered_jobs}{$rendered_controls}</td>
+		<td colspan="{$n_columns}">{$rendered_controls}</td>
 	</tr>
 </tfoot>
 EOT;

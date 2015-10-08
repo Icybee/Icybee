@@ -51,6 +51,7 @@ class WrappedCheckbox extends Element
 	protected function render_attributes(array $attributes)
 	{
 		unset($attributes['id']);
+		unset($attributes['checked']);
 
 		return parent::render_attributes($attributes);
 	}
