@@ -11,6 +11,7 @@
 
 namespace Icybee\Block\ManageBlock;
 
+use ICanBoogie\ActiveRecord;
 use ICanBoogie\ActiveRecord\Query;
 
 /**
@@ -21,17 +22,17 @@ use ICanBoogie\ActiveRecord\Query;
 trait ColumnTrait
 {
 	/**
-	 * The filters are returned as is, subclasses should override the method according to
+	 * The conditions are returned as is, subclasses should override the method according to
 	 * their needs.
 	 *
-	 * @param array $filters
+	 * @param array $conditions
 	 * @param array $modifiers
 	 *
 	 * @return array
 	 */
-	public function alter_filters(array $filters, array $modifiers)
+	public function alter_conditions(array &$conditions, array $modifiers)
 	{
-		return $filters;
+		return $conditions;
 	}
 
 	/**
@@ -52,15 +53,15 @@ trait ColumnTrait
 	 * the method according to the kind of filter they provide.
 	 *
 	 * @param Query $query
-	 * @param $filter_value
+	 * @param mixed $value
 	 *
 	 * @return Query
 	 */
-	public function alter_query_with_filter(Query $query, $filter_value)
+	public function alter_query_with_value(Query $query, $value)
 	{
-		if ($filter_value)
+		if ($value)
 		{
-			$query->and([ $this->id => $filter_value ]);
+			$query->and([ $this->id => $value ]);
 		}
 
 		return $query;
@@ -84,11 +85,11 @@ trait ColumnTrait
 	 * The records are returned as is, subclasses might override the method according to
 	 * their needs.
 	 *
-	 * @param array $records
+	 * @param ActiveRecord[] $records
 	 *
-	 * @return array
+	 * @return ActiveRecord[]
 	 */
-	public function alter_records(array $records)
+	public function alter_records(array &$records)
 	{
 		return $records;
 	}

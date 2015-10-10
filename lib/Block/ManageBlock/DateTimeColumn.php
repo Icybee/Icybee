@@ -21,7 +21,9 @@ use Icybee\Block\ManageBlock;
  */
 class DateTimeColumn extends Column
 {
-	public function __construct(\Icybee\Block\ManageBlock $manager, $id, array $options=[])
+	use CriterionColumnTrait;
+
+	public function __construct(\Icybee\Block\ManageBlock $manager, $id, array $options = [])
 	{
 		parent::__construct($manager, $id, $options + [
 
@@ -30,33 +32,6 @@ class DateTimeColumn extends Column
 			'discreet' => true
 
 		]);
-	}
-
-	public function alter_query_with_filter(Query $query, $filter_value)
-	{
-		if ($filter_value)
-		{
-			$field = $this->id;
-
-			list($year, $month, $day) = explode('-', $filter_value) + [ 0, 0, 0 ];
-
-			if ($year)
-			{
-				$query->and("YEAR(`$field`) = ?", (int) $year);
-			}
-
-			if ($month)
-			{
-				$query->and("MONTH(`$field`) = ?", (int) $month);
-			}
-
-			if ($day)
-			{
-				$query->and("DAY(`$field`) = ?", (int) $day);
-			}
-		}
-
-		return $query;
 	}
 
 	private $discreet_value;
@@ -203,16 +178,5 @@ EOT;
 		}
 
 		return $rc;
-	}
-}
-
-/**
- * Representation of a _date_ column.
- */
-class DateColumn extends DateTimeColumn
-{
-	protected function render_cell_time($date, $property)
-	{
-		return;
 	}
 }

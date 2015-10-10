@@ -34,7 +34,7 @@ class KeyColumn extends Column
 		]);
 	}
 
-	public function alter_records(array $records)
+	public function alter_records(array &$records)
 	{
 		/* @var $user User */
 
@@ -49,7 +49,7 @@ class KeyColumn extends Column
 
 		$this->ownership = $ownership;
 
-		return parent::alter_records($records);
+		parent::alter_records($records);
 	}
 
 	public function render_cell($record)

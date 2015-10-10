@@ -22,6 +22,8 @@ use Icybee\Block\ManageBlock;
  */
 class BooleanColumn extends Column
 {
+	use CriterionColumnTrait;
+
 	public function __construct(ManageBlock $manager, $id, array $options = [])
 	{
 		parent::__construct($manager, $id, $options + [
@@ -50,10 +52,5 @@ class BooleanColumn extends Column
 		parent::add_assets($document);
 
 		$document->js->add(__DIR__ . '/BooleanColumn.js');
-	}
-
-	public function alter_query_with_filter(Query $query, $filter_value)
-	{
-		return $query->and([ $this->id => $filter_value ]);
 	}
 }

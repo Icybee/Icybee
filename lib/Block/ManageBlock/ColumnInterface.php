@@ -11,6 +11,7 @@
 
 namespace Icybee\Block\ManageBlock;
 
+use ICanBoogie\ActiveRecord;
 use ICanBoogie\ActiveRecord\Query;
 
 /**
@@ -22,14 +23,14 @@ interface ColumnInterface
 	const ORDER_DESC = -1;
 
 	/**
-	 * Update the query filters according to the specified modifiers.
+	 * Update the query conditions according to the specified modifiers.
 	 *
-	 * @param array $filters The previous filters.
+	 * @param array $conditions The previous filters.
 	 * @param array $modifiers The filters modifiers.
 	 *
-	 * @return array The updated filters.
+	 * @return array The updated conditions.
 	 */
-	public function alter_filters(array $filters, array $modifiers);
+	public function alter_conditions(array &$conditions, array $modifiers);
 
 	/**
 	 * Alter the initial query.
@@ -46,11 +47,11 @@ interface ColumnInterface
 	 * The method is only invoked if the filter value is not `null`.
 	 *
 	 * @param Query $query The query to alter.
-	 * @param mixed $filter_value The value of the filter.
+	 * @param mixed $value The value of the filter.
 	 *
 	 * @return Query The altered query.
 	 */
-	public function alter_query_with_filter(Query $query, $filter_value);
+	public function alter_query_with_value(Query $query, $value);
 
 	/**
 	 * Alter the order in which records are fetched.
@@ -68,11 +69,11 @@ interface ColumnInterface
 	/**
 	 * Alter the fetched records.
 	 *
-	 * @param \ICanBoogie\ActiveRecord[] $records The records to alter.
+	 * @param ActiveRecord[] $records The records to alter.
 	 *
-	 * @return \ICanBoogie\ActiveRecord[] The altered records.
+	 * @return ActiveRecord[] The altered records.
 	 */
-	public function alter_records(array $records);
+	public function alter_records(array &$records);
 
 	/**
 	 * Renders the column's header.
@@ -84,7 +85,7 @@ interface ColumnInterface
 	/**
 	 * Renders a column cell.
 	 *
-	 * @param \ICanBoogie\ActiveRecord $record
+	 * @param ActiveRecord $record
 	 *
 	 * @return string
 	 */

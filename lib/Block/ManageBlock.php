@@ -14,6 +14,7 @@ namespace Icybee\Block;
 use ICanBoogie\ActiveRecord;
 use ICanBoogie\ActiveRecord\Query;
 use ICanBoogie\ActiveRecord\SchemaColumn;
+use ICanBoogie\Facets\QueryString;
 use ICanBoogie\I18n;
 use ICanBoogie\Module;
 use ICanBoogie\Operation;
@@ -25,6 +26,7 @@ use Brickrouge\ListView;
 use Brickrouge\Ranger;
 
 use Icybee\Binding\Core\PrototypedBindings;
+use Icybee\Block\ManageBlock\CriterionColumn;
 use Icybee\Block\ManageBlock\SearchElement;
 use Icybee\Block\ManageBlock\Column;
 use Icybee\Block\ManageBlock\Options;
@@ -224,7 +226,7 @@ class ManageBlock extends ListView
 
 		if ($primary_key)
 		{
-			return [ $primary_key => 'Icybee\Block\ManageBlock\KeyColumn' ];
+			return [ $primary_key => ManageBlock\KeyColumn::class ];
 		}
 
 		return [];
@@ -326,12 +328,12 @@ class ManageBlock extends ListView
 	 * The extended schema of the model is used to automatically handle booleans, integers,
 	 * dates (date, datetime and timestamp) and strings (char, varchar).
 	 *
-	 * @param array $filters
+	 * @param array $conditions
 	 * @param array $modifiers
 	 *
 	 * @return array Updated filters.
 	 */
-	protected function update_filters(array $filters, array $modifiers)
+	protected function update_filters(array $conditions, array $modifiers)
 	{
 		static $as_strings = [ 'char', 'varchar', 'date', 'datetime', 'timestamp' ];
 
@@ -365,22 +367,22 @@ class ManageBlock extends ListView
 
 			if ($value === null)
 			{
-				unset($filters[$identifier]);
+				unset($conditions[$identifier]);
 
 				continue;
 			}
 
-			$filters[$identifier] = $value;
+			$conditions[$identifier] = $value;
 		}
 
 		/* @var $column Column */
 
 		foreach ($this->columns as $id => $column)
 		{
-			$filters = $column->alter_filters($filters, $modifiers);
+			$column->alter_conditions($conditions, $modifiers);
 		}
 
-		return $filters;
+		return $conditions;
 	}
 
 	/**
@@ -461,6 +463,12 @@ class ManageBlock extends ListView
 	{
 		$options = new Options($name);
 		$options->retrieve();
+
+		if (!empty($modifiers['q']))
+		{
+			$this->alter_modifiers_with_query_string($modifiers, $modifiers['q']);
+		}
+
 		$options = $this->update_options($options, $modifiers);
 
 		list($order_by, $order_direction) = $this->resolve_order($options->order_by, $options->order_direction);
@@ -496,7 +504,7 @@ class ManageBlock extends ListView
 
 			if ($records)
 			{
-				$records = $this->alter_records($records);
+				$this->alter_records($records);
 				$this->records = array_values($records);
 			}
 
@@ -585,8 +593,6 @@ EOT;
 		$query = new Query($this->model);
 		$query = $this->alter_query($query, $options->filters);
 
-		#
-
 		new ManageBlock\AlterQueryEvent($this, $query, $options);
 
 		#
@@ -635,10 +641,38 @@ EOT;
 	}
 
 	/**
+	 * Alters modifiers with a query string.
+	 *
+	 * @param array $modifiers
+	 * @param string $query_string
+	 *
+	 * @return $this
+	 */
+	protected function alter_modifiers_with_query_string(array &$modifiers, $query_string)
+	{
+		$q = new QueryString($query_string);
+
+		foreach ($this->columns as $column)
+		{
+			if (!$column instanceof CriterionColumn)
+			{
+				continue;
+			}
+
+			$column->criterion->parse_query_string($q);
+		}
+
+		$modifiers = array_merge($modifiers, $q->conditions);
+		$modifiers['q'] = $q->remains;
+
+		return $this;
+	}
+
+	/**
 	 * Alters the initial query with the specified filters.
 	 *
 	 * The `alter_query` method of each column is invoked in turn to alter the query.
-	 * The `alter_query_with_filter` method of each column is invoked in turn to alter the query.
+	 * The `alter_query_with_value` method of each column is invoked in turn to alter the query.
 	 *
 	 * @param Query $query
 	 * @param array $filters
@@ -659,7 +693,7 @@ EOT;
 				continue;
 			}
 
-			$query = $column->alter_query_with_filter($query, $filters[$id]);
+			$query = $column->alter_query_with_value($query, $filters[$id]);
 		}
 
 		return $query;
@@ -750,14 +784,12 @@ EOT;
 	 *
 	 * @return array
 	 */
-	protected function alter_records(array $records)
+	protected function alter_records(array &$records)
 	{
 		foreach ($this->columns as $column)
 		{
-			$records = $column->alter_records($records);
+			$column->alter_records($records);
 		}
-
-		return $records;
 	}
 
 	/**

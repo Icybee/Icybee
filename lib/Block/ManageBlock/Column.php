@@ -11,10 +11,12 @@
 
 namespace Icybee\Block\ManageBlock;
 
-use Brickrouge\DropdownMenu;
-use Brickrouge\Element;
-
 use ICanBoogie\ActiveRecord\SchemaColumn;
+use ICanBoogie\Prototyped;
+
+use Brickrouge\DropdownMenu;
+
+use Icybee\Block\ManageBlock;
 
 /**
  * Representation of a column of the manager element.
@@ -26,7 +28,7 @@ use ICanBoogie\ActiveRecord\SchemaColumn;
  * `false` otherwise.
  * @property-read \ICanBoogie\Core|\Icybee\Binding\CoreBindings $app
  */
-class Column extends \ICanBoogie\Prototyped implements ColumnInterface
+class Column extends Prototyped implements ColumnInterface
 {
 	use ColumnTrait;
 
@@ -41,12 +43,12 @@ class Column extends \ICanBoogie\Prototyped implements ColumnInterface
 	public $default_order = self::ORDER_ASC;
 	public $discreet = true;
 
-	protected $header_renderer = 'Icybee\Block\ManageBlock\HeaderRenderer';
-	protected $cell_renderer = 'Icybee\Block\ManageBlock\CellRenderer';
+	protected $header_renderer = HeaderRenderer::class;
+	protected $cell_renderer = CellRenderer::class;
 
 	public $manager;
 
-	public function __construct(\Icybee\Block\ManageBlock $manager, $id, array $options = [])
+	public function __construct(ManageBlock $manager, $id, array $options = [])
 	{
 		$this->manager = $manager;
 		$this->id = $id;
@@ -135,7 +137,7 @@ class Column extends \ICanBoogie\Prototyped implements ColumnInterface
 	 *
 	 * @param array $options
 	 *
-	 * @return \Icybee\Block\ManageBlock\Column
+	 * @return $this
 	 */
 	public function modify_options(array $options)
 	{
@@ -272,82 +274,5 @@ EOT;
 	public function add_assets(\Brickrouge\Document $document)
 	{
 
-	}
-}
-
-/**
- * Default header renderer.
- */
-class HeaderRenderer
-{
-	protected $column;
-
-	public function __construct(Column $column)
-	{
-		$this->column = $column;
-	}
-
-	public function __invoke()
-	{
-		$column = $this->column;
-		$id = $column->id;
-		$title = $column->title;
-		$t = $this->column->manager->t;
-
-		if ($title)
-		{
-			$title = $t($id, [], [ 'scope' => 'column', 'default' => $title ]);
-		}
-
-		if ($column->is_filtering)
-		{
-			$a_title = $t('View all');
-			$title = $title ?: '&nbsp;';
-
-			return <<<EOT
-<a href="{$column->reset}" title="{$a_title}"><span class="title">{$title}</span></a>
-EOT;
-		}
-
-		if ($title && $column->orderable)
-		{
-			$order = $column->order;
-			$order_reverse = ($order === null) ? $column->default_order : -$order;
-
-			return new Element('a', [
-
-				Element::INNER_HTML => '<span class="title">' . $title . '</span>',
-
-				'title' => $t('Sort by: :identifier', [ ':identifier' => $title ]),
-				'href' => "?order=$id:" . ($order_reverse < 0 ? 'desc' : 'asc'),
-				'class' => $order ? ($order < 0 ? 'desc' : 'asc') : null
-
-			]);
-		}
-
-		return $title;
-	}
-}
-
-/**
- * Default cell renderer.
- */
-class CellRenderer
-{
-	protected $column;
-
-	public function __construct(Column $column)
-	{
-		$this->column = $column;
-	}
-
-	public function __invoke($record, $property)
-	{
-		return \Brickrouge\escape($record->$property);
-	}
-
-	public function t($str, array $args=[], array $options=[])
-	{
-		return $this->column->t($str, $args, $options);
 	}
 }
