@@ -235,7 +235,7 @@ class Hooks
 	{
 		$request = $event->request;
 
-		if (!preg_match('#\/admin\/([^\/\?]+)#', $request->uri, $matches))
+		if (!$request->is_get || !preg_match('#\/admin\/([^\/\?]+)#', $request->uri, $matches))
 		{
 			return;
 		}
