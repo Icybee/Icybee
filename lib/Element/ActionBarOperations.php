@@ -47,7 +47,7 @@ class ActionBarOperations extends Element
 			'data-pattern-one' => "Un élément sélectionné",
 			'data-pattern-other' => ":count éléments sélectionnés",
 
-			'class' => 'actionbar-actions listview-Operation'
+			'class' => 'actionbar-actions listview-operations'
 
 		]);
 	}
