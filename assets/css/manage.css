@@ -127,8 +127,6 @@
 .listview th.orderable:hover,
 .listview th.filters:hover,
 .listview th.filtering:hover {
-	background: -moz-linear-gradient(top, #ddd, #E8E8E8 60%);
-	background: -webkit-linear-gradient(top, #ddd, #E8E8E8 60%);
 	background: linear-gradient(to bottom, #ddd, #E8E8E8 60%);
 }
 
@@ -168,9 +166,7 @@
 
 .listview th.filtering > div {
 	background: #ffc;
-	background: -moz-radial-gradient(center bottom, ellipse farthest-side, #ffc, rgba(255, 255, 204, 0));
-	background: -webkit-radial-gradient(center bottom, ellipse farthest-side, #ffc, rgba(255, 255, 204, 0));
-	background: radial-gradient(center bottom, ellipse farthest-side, #ffc, rgba(255, 255, 204, 0));
+	background: radial-gradient(ellipse farthest-side at center bottom, #ffc, rgba(255, 255, 204, 0));
 }
 
 .listview th .dropdown-menu {
@@ -213,8 +209,12 @@
 	margin: 0;
 	border: 0;
 	border-radius: 0;
-	padding: 32px 16px;
+	padding: 2rem 1rem;
 	text-align: center;
+}
+
+.listview-alert.alert-info {
+	line-height: 4em;
 }
 
 .listview-alert q {
@@ -448,12 +448,6 @@ RECORDS
 }
 
 /** manager **/
-
-#manager > div > .alert-info { /* create first record || empty */
-	line-height: 4em;
-	text-align: center;
-	border-radius: 0;
-}
 
 #manager td .alert:last-child {
 	margin-bottom: 0;
