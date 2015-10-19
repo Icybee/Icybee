@@ -84,7 +84,7 @@ abstract class AdminController extends Controller
 	protected function action_edit($id)
 	{
 		$record = $this->model[$id];
-		$this->assert_has_permission(Module::PERMISSION_MAINTAIN, $record);
+		$this->assert_has_permission(Module::PERMISSION_MAINTAIN, $this->module);
 
 		$this->view->content = $this->module->getBlock('edit', $id);
 		$this->view['block_name'] = 'edit';
@@ -99,7 +99,7 @@ abstract class AdminController extends Controller
 	protected function action_confirm_delete($id)
 	{
 		$record = $this->model[$id];
-		$this->assert_has_permission(Module::PERMISSION_MANAGE, $record);
+		$this->assert_has_permission(Module::PERMISSION_MANAGE, $this->module);
 
 		$this->view->content = $this->module->getBlock('delete', $id);
 		$this->view['block_name'] = 'delete';
