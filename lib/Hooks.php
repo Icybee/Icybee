@@ -374,6 +374,9 @@ class Hooks
 			}
 
 			header('HTTP/1.0 ' . $code . ' ' . $class . ': ' . $normalized_message);
+			header('Cache-Control: Cache-Control: no-cache, no-store, must-revalidate');
+			header('Pragma: no-cache');
+			header('Expires: 0');
 			header('X-ICanBoogie-Exception: ' . \ICanBoogie\strip_root($exception->getFile()) . '@' . $exception->getLine());
 		}
 
