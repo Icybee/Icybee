@@ -88,9 +88,9 @@ class StatsDecorator extends \Brickrouge\Decorator
 			}
 		}
 
-		$html .= PHP_EOL . '<!-- ' . \ICanBoogie\format
+		$str = '<!-- ' . \ICanBoogie\format
 		(
-			'Icybee – in :elapsed ms (core: :elapsed_core ms, db: :elapsed_queries ms), using :memory-usage (peak: :memory-peak), queries: :queries-count (:queries-details)', [
+			'Rendered by Icybee in :elapsed ms (boot: :elapsed_core ms, db: :elapsed_queries ms), using :memory-usage (peak: :memory-peak), queries: :queries-count (:queries-details)', [
 
 				'elapsed' => number_format(($now - $_SERVER['REQUEST_TIME_FLOAT']) * 1000, 2, '.', ''),
 				'elapsed_core' => number_format(($_SERVER['ICANBOOGIE_READY_TIME_FLOAT'] - $_SERVER['REQUEST_TIME_FLOAT']) * 1000, 2, '.', ''),
@@ -105,14 +105,14 @@ class StatsDecorator extends \Brickrouge\Decorator
 
 		if (Debug::is_dev() || $app->user->is_admin)
 		{
-			$html .= "\n\n" . $this->render_events();
-			$html .= "\n\n" . $this->render_queries();
-			$html .= $this->render_translations();
+			$str .= "\n\n" . $this->render_events();
+			$str .= "\n\n" . $this->render_queries();
+			$str .= $this->render_translations();
 		}
 
-		$html .= ' -->';
+		$str .= ' -->';
 
-		return $html;
+		return $str . $html;
 	}
 
 	protected function render_events()
