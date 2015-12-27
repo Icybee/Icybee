@@ -42,7 +42,7 @@ use Icybee\Element\ActionBarSearch;
  * @property-read \ICanBoogie\HTTP\Request $request
  * @property-read \Icybee\Modules\Users\User $user
  *
- * @property-read \ICanBoogie\ActiveRecord\Model $model
+ * @property-read \ICanBoogie\ActiveRecord\Model|\ICanBoogie\Binding\Facets\ModelBindings $model
  * @property-read string $primary_key The primary key of the records.
  * @property-read Options $options The display options.
  * @property-read bool $is_filtering `true` if records are filtered.

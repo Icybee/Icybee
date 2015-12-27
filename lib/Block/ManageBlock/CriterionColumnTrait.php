@@ -13,9 +13,12 @@ namespace Icybee\Block\ManageBlock;
 
 use ICanBoogie\ActiveRecord\Query;
 use ICanBoogie\Facets\Criterion;
+use Icybee\Block\ManageBlock;
 
 /**
  * @property-read Criterion $criterion
+ * @property-read ManageBlock $manager
+ * @property-read string $id
  */
 trait CriterionColumnTrait
 {
