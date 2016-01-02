@@ -92,7 +92,7 @@ class Hooks
 	 *
 	 * The _operation save mode_ is saved in the session per module:
 	 *
-	 *     $app->session[operation_save_mode][<module_id>]
+	 *     $app->session['operation_save_mode'][<module_id>]
 	 *
 	 * @param Operation\BeforeControlEvent $event
 	 * @param \ICanBoogie\Module\Operation\SaveOperation $target
@@ -107,7 +107,7 @@ class Hooks
 			return;
 		}
 
-		$app->session->operation_save_mode[$target->module->id] = $mode;
+		$app->session['operation_save_mode'][$target->module->id] = $mode;
 
 		$app->events->once(function(Operation\ProcessEvent $event, \ICanBoogie\Module\Operation\SaveOperation $operation) use($mode, $target) {
 

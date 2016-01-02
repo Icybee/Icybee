@@ -374,8 +374,8 @@ class EditBlock extends FormBlock
 		$module = $this->module;
 		$record = $this->record;
 
-		$mode = isset($this->session->operation_save_mode[$module->id])
-			? $this->session->operation_save_mode[$module->id]
+		$mode = isset($this->session['operation_save_mode'][$module->id])
+			? $this->session['operation_save_mode'][$module->id]
 			: Icybee\OPERATION_SAVE_MODE_LIST;
 
 		$save_mode_options =[
