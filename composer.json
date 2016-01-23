@@ -23,7 +23,7 @@
 	"require": {
 		"php": ">=5.5.0",
 		"icanboogie/bind-facets": "^0.5.0",
-		"icanboogie/bind-view": "^1.0.0",
+		"icanboogie/bind-view": "^0.8.0",
 		"brickrouge/brickrouge": "^2.1.4",
 		"brickrouge/css-class-names": "^2.0.0",
 		"brickrouge/listview": "dev-master",

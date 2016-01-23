@@ -20,6 +20,9 @@ use ICanBoogie\HTTP\RedirectResponse;
 use ICanBoogie\HTTP\Status;
 use ICanBoogie\Module\Descriptor;
 use ICanBoogie\Operation;
+use ICanBoogie\Render\BasicTemplateResolver;
+use ICanBoogie\Render\TemplateResolver;
+use ICanBoogie\Render\TemplateResolverDecorator;
 use ICanBoogie\Routing;
 use ICanBoogie\View\View;
 
@@ -209,20 +212,24 @@ class Hooks
 	}
 
 	/**
-	 * If the view renders a module's route, the "template" directory of that module is added
-	 * to the list of templates locations.
+	 * Adds the `templates` directory to the template resolver paths.
 	 *
-	 * @param View\AlterEvent $event
-	 * @param View $target
+	 * @param TemplateResolver\AlterEvent $event
+	 * @param TemplateResolver $target
 	 */
-	static public function on_view_alter(View\AlterEvent $event, View $target)
+	static public function on_template_resolver_alter(TemplateResolver\AlterEvent $event, TemplateResolver $target)
 	{
-		if (!$target->controller instanceof AdminController)
+		if ($target instanceof TemplateResolverDecorator)
+		{
+			$target = $target->find_renderer(BasicTemplateResolver::class);
+		}
+
+		if (!$target instanceof BasicTemplateResolver)
 		{
 			return;
 		}
 
-		$target->template_resolver->add_path(DIR . 'templates');
+		$target->add_path(DIR . 'templates');
 	}
 
 	/**
