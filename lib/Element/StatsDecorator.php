@@ -88,7 +88,7 @@ class StatsDecorator extends \Brickrouge\Decorator
 			}
 		}
 
-		$str = '<!-- ' . \ICanBoogie\format
+		$str = \ICanBoogie\format
 		(
 			'Rendered by Icybee in :elapsed ms (boot: :elapsed_core ms, db: :elapsed_queries ms), using :memory-usage (peak: :memory-peak), queries: :queries-count (:queries-details)', [
 
@@ -110,9 +110,9 @@ class StatsDecorator extends \Brickrouge\Decorator
 			$str .= $this->render_translations();
 		}
 
-		$str .= ' -->';
+		$str = str_replace('--', '—', $str);
 
-		return $str . $html;
+		return '<!-- ' . $str . ' -->' . $html;
 	}
 
 	protected function render_events()
