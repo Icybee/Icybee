@@ -52,9 +52,15 @@ class DocumentDecorator
 
 		$api_base = '';
 
-		if (isset($app->site))
+		try
 		{
 			$api_base = $app->site->path;
+		}
+		catch (\Exception $e)
+		{
+			#
+			# Too bad we can't get the current site
+			#
 		}
 
 		return <<<EOT
