@@ -26,7 +26,7 @@ class SearchElement extends Element
 
 				]),
 
-				new Button('', [
+				new Element('button', [
 
 					'type' => 'button',
 					'class' => 'icon-remove'
@@ -35,7 +35,7 @@ class SearchElement extends Element
 
 			],
 
-			'class' => 'listview-search'
+			'class' => 'form-control listview-search'
 		]);
 	}
 

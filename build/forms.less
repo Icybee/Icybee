@@ -1,8 +1,16 @@
+select.form-control {
+	background: white url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAUCAMAAACzvE1FAAAADFBMVEUzMzMzMzMzMzMzMzMKAG/3AAAAA3RSTlMAf4C/aSLHAAAAPElEQVR42q3NMQ4AIAgEQTn//2cLdRKppSGzBYwzVXvznNWs8C58CiussPJj8h6NwgorrKRdTvuV9v16Afn0AYFOB7aYAAAAAElFTkSuQmCC) no-repeat right 8px center;
+	background-size: 8px 10px;
+	-webkit-appearance: none;
+	-moz-appearance: none;
+	appearance: none;
+}
+
 form {
 	margin: 0;
 }
 
-.form-horizontal .control-group.required > label:after {
+.form-horizontal .form-group.required > label:after {
 	width: 1ex;
 	margin-right: -1ex;
 	display: inline-block;
@@ -15,14 +23,16 @@ form {
 	-webkit-box-sizing: border-box;
 }
 
+/*
 .form-primary input[type=text]:not([size]) {
 	width: 40%;
 	min-width: 32ex;
 }
+*/
 
 .form-primary > .group {
 	background: #F6F6F6;
-	border: 1px solid transparent; /* this is used to encompass the control-group margins */
+	border: 1px solid transparent; /* this is used to encompass the form-group margins */
 	border-left: 0;
 	border-right: 0;
 }
@@ -31,7 +41,7 @@ form {
 	margin-top: 0;
 	border-top-color: #ccc;
 }
- 
+
 .form-primary > .group > .group-legend
 {
 	border-bottom: 1px solid #CCC;
@@ -47,21 +57,21 @@ form {
 	border-top: 0;
 }
 
-.form-primary > .group > .control-group
+.form-primary > .group > .form-group
 {
 	margin: 16px;
 }
 
-.form-primary > .group > .control-group:first-child {
+.form-primary > .group > .form-group:first-child {
 	margin-top: 15px;
 }
 
-.form-primary > .group > .control-group:last-child {
+.form-primary > .group > .form-group:last-child {
 	margin-bottom: 15px;
 }
 
-.form-primary > .group > .control-group > label,
-.form-primary > .group > .control-group > .controls > label {
+.form-primary > .group > .form-group > label,
+.form-primary > .group > .form-group > .controls > label {
 	font-weight: bold;
 }
 
@@ -78,7 +88,7 @@ form {
 	max-width: none;
 }
 
-.form-primary  > .group > .group-description.control-group  {
+.form-primary  > .group > .group-description.form-group {
 	font-size: inherit;
 	padding-top: 16px;
 	padding-bottom: 17px;

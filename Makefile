@@ -4,7 +4,7 @@ JS_COMPRESSOR = curl -X POST -s --data-urlencode 'input@$^' http://javascript-mi
 IDEPENDONYOU_JS = build/tmp/idependonyou.js
 MOOTOOLS_JS = build/tmp/mootools.js
 MOOTOOLS_MORE_JS = build/mootools-more.js
-MOOTOOLS_CORE_VER = 1.5.1
+MOOTOOLS_CORE_VER = 1.6.0
 
 PAGE_JS = assets/page.js
 PAGE_JS_UNCOMPRESSED = build/tmp/page-uncompressed.js
@@ -33,6 +33,7 @@ CSS_UNCOMPRESSED = build/tmp/admin-uncompressed.css
 
 JS_FILES = \
 	build/string.js \
+	build/request.js \
 	build/admin.js \
 	build/alerts.js \
 	build/actionbar.js \

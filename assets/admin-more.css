@@ -1,19 +1,29 @@
+html {
+	overflow-y: scroll;
+	font-size: 14px;
+}
+
+body {
+	color: #404040;
+	background-color: #E8E8E8;
+	margin: 0;
+	padding: 0;
+	font-family: Roboto, Droid Sans, Arial, Helvetica, sans-serif;
+}
+
+body.page-slug-authenticate {
+	min-height: 100%;
+	background: url(icybee-ghost.png) left bottom no-repeat;
+}
+
 /*
  * Bootstrap
  */
-
-.alert .alert-actions {
-	margin-top: 1em;
-}
 
 .input-append,
 .input-prepend {
 	vertical-align: middle;
 	display: inline-block;
-}
-
-.btn {
-	line-height: 1.428571em;
 }
 
 .nav-tabs > .active > a,
@@ -74,29 +84,30 @@
 }
 
 .label {
-	background-color: #999;
-	border-radius: 3px;
-	color: white;
-	font-size: 9.75px;
-	font-weight: bold;
-	padding: 1px 3px 2px;
+	font-size: 10px;
 	text-transform: uppercase;
 }
 
-.label-important {
-	background-color: #DA4F49;
+.form-primary .element-description {
+	color: inherit;
+	max-width: 76ex;
 }
 
-.label-warning {
-	background-color: #FAA732;
+.form-group > label {
+	display: block;
 }
 
-.label-success {
-	background-color: #5BB75B;
+.form-group > label,
+.element-description {
+	padding-left: 0;
+	padding-right: 0;
+	padding-bottom: 0;
 }
 
-.label-info {
-	background-color: #49AFCD;
+.form-group.required > label::after {
+	content: '\000a0*';
+	vertical-align: top;
+	color: #3a87ad;
 }
 
 /*
@@ -118,7 +129,7 @@ label {
 	margin-bottom: 0;
 }
 
-.control-group > label {
+.form-group > label {
 	margin-bottom: 5px;
 }
 
@@ -144,6 +155,7 @@ select,
 	display: block;
 }
 
+/*
 .popover.contrast {
 	font-size: 12px;
 }
@@ -175,7 +187,7 @@ select,
 .popover.contrast select {
 	background: #222; /* webkit doesn't work with "background-color" */
 }
-
+*/
 .popover-inner {
 	overflow: visible;
 }
@@ -187,24 +199,6 @@ select,
 /*
  *
  */
-
-html {
-	overflow-y: scroll;
-}
-
-body {
-	color: #404040;
-	background-color: #E8E8E8;
-	font-family: Roboto, Droid Sans, Arial, Helvetica, sans-serif;
-	font-size: 14px;
-	margin: 0;
-	padding: 0;
-}
-
-body.page-slug-authenticate {
-	min-height: 100%;
-	background: url(icybee-ghost.png) left bottom no-repeat;
-}
 
 a {
 	color: #4B8BB3;
@@ -273,6 +267,8 @@ div.form-section-description div.contents {
 	font-size: 12px;
 	padding: 1em 16px;
 	height: 16px;
+	box-sizing: content-box;
+	-webkit-box-sizing: content-box;
 }
 
 #quick .btn-group {
@@ -306,11 +302,6 @@ div.form-section-description div.contents {
 
 #quick .dropdown-menu a {
 	color: #404040;
-}
-
-#quick .dropdown-menu a:hover,
-#quick .dropdown-menu li.active a {
-	color: white;
 }
 
 #quick .dropdown-toggle {
@@ -371,7 +362,7 @@ CONTENTS
 	margin-top: 0;
 }
 
-.block-alert .controls-label { /* fix missing bold on control label */
+.block-alert .form-control-label { /* fix missing bold on control label */
 	font-weight: bold;
 }
 

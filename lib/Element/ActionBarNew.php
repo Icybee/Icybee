@@ -73,7 +73,7 @@ class ActionbarNew extends SplitButton
 
 		$route = $this[self::ROUTE];
 
-		$this->add_class($route->id === $this[self::ID] ? 'btn-info' : 'btn-danger');
+		$this->add_class($route->id === $this[self::ID] ? 'btn-info' : 'btn-success');
 	}
 
 	private $render_as_button = false;

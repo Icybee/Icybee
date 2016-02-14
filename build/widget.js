@@ -26,7 +26,7 @@ this.Icybee = {
 
 			getAdjust: function()
 			{
-				return this.element.getElement('.popover-content :first-child').get('widget')
+				return Brickrouge.from(this.element.getElement('.popover-content :first-child'))
 			},
 
 			show: function()

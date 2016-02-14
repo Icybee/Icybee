@@ -244,9 +244,9 @@ abstract class FormBlock extends Prototyped
 
 			],
 
-			Form::RENDERER => new \Brickrouge\Renderer\Group([
+			Form::RENDERER => new Form\GroupRenderer([
 
-				\Brickrouge\Renderer\Group::GROUP_CLASS => 'Icybee\Element\Group'
+				Form\GroupRenderer::GROUP_CLASS => 'Icybee\Element\Group'
 
 			]),
 

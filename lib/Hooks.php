@@ -362,7 +362,7 @@ class Hooks
 	 *
 	 * @param \Exception $exception
 	 */
-	static public function exception_handler(\Exception $exception)
+	static public function exception_handler(/*\Exception */$exception)
 	{
 		$app = self::app();
 		$code = $exception->getCode() ?: 500;

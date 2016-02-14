@@ -130,6 +130,7 @@ EOT;
 
 	protected function add_assets(\Brickrouge\Document $document)
 	{
+		$document->css->add("http://v4-alpha.getbootstrap.com/dist/css/bootstrap.min.css", -250);
 		$document->css->add(\Brickrouge\ASSETS . 'brickrouge.css', -250);
 		$document->css->add(\Icybee\ASSETS . 'icybee.css', -240);
 		$document->css->add(\Icybee\ASSETS . 'admin.css', -200);
@@ -176,17 +177,29 @@ EOT;
 
 	protected function render_alerts()
 	{
+		static $mapping = [
+
+			'success' => Alert::CONTEXT_SUCCESS,
+			'info' => Alert::CONTEXT_INFO,
+			'error' => Alert::CONTEXT_DANGER
+
+		];
+
 		$html = '';
-		$types = [ 'success', 'info', 'error' ];
 
 		if (Debug::$mode == Debug::MODE_DEV || $this->user->is_admin)
 		{
-			$types[] = 'debug';
+			$mapping['debug'] = Alert::CONTEXT_WARNING;
 		}
 
-		foreach ($types as $type)
+		foreach ($mapping as $type => $context)
 		{
-			$html .= new Alert(Debug::fetch_messages($type), [ Alert::CONTEXT => $type ]);
+			$html .= new Alert(Debug::fetch_messages($type), [
+
+				Alert::CONTEXT => $context,
+				Alert::DISMISSIBLE => true
+
+			]);
 		}
 
 		return $html;

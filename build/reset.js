@@ -12,6 +12,7 @@
  */
 ;!function() {
 
+	/*
 	var controls = []
 
 	function resetToDefault(reset)
@@ -38,7 +39,7 @@
 
 	})
 
-	window.addEvent('brickrouge.update', function(fragment) {
+	Brickrouge.observe('update', function (fragment) {
 
 		fragment.getElements('[data-default-value]').each(function(el) {
 
@@ -72,5 +73,6 @@
 			}
 		})
 	})
+	*/
 
 } ()

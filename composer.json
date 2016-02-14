@@ -24,7 +24,7 @@
 		"php": "^5.5|^7.0",
 		"icanboogie/bind-facets": "^0.6",
 		"icanboogie/bind-view": "^0.8",
-		"brickrouge/brickrouge": "^2.1",
+		"brickrouge/brickrouge": "^3.0",
 		"brickrouge/css-class-names": "^2.0",
 		"brickrouge/listview": "dev-master",
 		"icybee/core": "^3.0",

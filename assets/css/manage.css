@@ -1,6 +1,11 @@
 /** listview **/
 /* table */
 
+.listview {
+	box-sizing: content-box;
+	-webkit-box-sizing: content-box;
+}
+
 .listview table {
 	width: 100%;
 	border-collapse: collapse;
@@ -54,6 +59,10 @@
 	color: inherit;
 }
 
+.listview-interactive thead th > div > a {
+	display: block;
+}
+
 .listview-interactive thead .asc .title:after,
 .listview-interactive thead .desc .title:after {
 	font-family: FontAwesome;
@@ -73,8 +82,13 @@
 	line-height: 28px;
 }
 
-.listview-interactive th a {
+.listview .options-trigger {
+	padding: 0;
+	text-align: center;
 	display: block;
+	border: 0;
+	background: transparent;
+	width: 30px;
 }
 
 .listview-interactive th > div {
@@ -120,7 +134,7 @@
 	padding: 0;
 }
 
-.listview th.has-no-label > div > a {
+.listview th.has-no-label > div > .options-trigger {
 	display: none;
 }
 
@@ -146,11 +160,6 @@
 .listview th.has-no-label .dropdown {
 	right: auto;
 	width: 100%;
-}
-
-.listview th .dropdown>a {
-	padding: 0 4px;
-	text-align: center;
 }
 
 .listview th:hover .dropdown,
@@ -363,8 +372,9 @@
 	height: 24px;
 	vertical-align: middle;
 	margin-right: 1ex;
-	border: 1px solid #CFCFCF;
-	padding: 1px;
+	border-radius: .25em;
+	box-sizing: content-box;
+	-webkit-box-sizing: content-box;
 }
 
 .listview a img.icon:hover,
@@ -391,12 +401,6 @@ OPTIONS
 	text-decoration: none;
 }
 
-.actionbar .listview-browse a {
-	font-size: 18px;
-	line-height: 18px;
-	padding: 4px;
-}
-
 .listview-browse i {
 	line-height: inherit;
 	display: block;
@@ -413,6 +417,12 @@ OPTIONS
 
 .listview-browse a.next:active {
 	left: 2px;
+}
+
+.actionbar .listview-browse a {
+	font-size: 18px;
+	line-height: 18px;
+	padding: 4px;
 }
 
 .actionbar .listview-browse a:hover {
@@ -575,11 +585,6 @@ RECORDS
 /**/
 
 /* ACTIONBAR */
-
-.listview td .wrapped-checkbox,
-.listview td .wrapped-checkbox label {
-	vertical-align: top;
-}
 
 .listview .wrapped-checkbox input:checked + label {
 	background-color: #cfc;

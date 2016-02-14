@@ -68,7 +68,6 @@ function boot()
 
 	\Brickrouge\Helpers::patch('render_exception', 'ICanBoogie\Debug::format_alert');
 	\Brickrouge\Helpers::patch('get_document', function() use(&$app) { return $app->document; });
-	\Brickrouge\Helpers::patch('check_session', function() use(&$app) { return $app->session; });
 
 	return $app = \IcanBoogie\boot();
 }

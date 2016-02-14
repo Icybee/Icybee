@@ -62,7 +62,7 @@ class ActionBar extends Element
 	{
 		parent::__construct('div', $attributes + [
 
-			Element::IS => 'ActionBar',
+			Element::IS => 'action-bar',
 
 			'class' => 'actionbar',
 			'data-context' => ''

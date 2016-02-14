@@ -11,59 +11,56 @@
  * Creates a link between the _save mode_ group at the end of the editor form and the one in the
  * action bar.
  */
-window.addEvent('domready', function() {
+Brickrouge.observe('running', function() {
 
-	var mirror = document.body.getElement('.actionbar .record-save-mode')
-	, container = document.body.getElement('.form-actions .save-mode')
-	, modes = container ? container.getElements('input[type="radio"]') : []
-	, primaryButton = document.body.getElement('.form-actions .btn-primary')
+	var mirror = document.body.querySelector('.actionbar .record-save-mode')
+	, container = document.body.querySelector('.form-actions .save-mode')
+	, modes = container ? container.querySelectorAll('input[type="radio"]') : []
+	, primaryButton = document.body.querySelector('.form-actions .btn-primary')
 
-	if (!mirror || !modes) return
+	if (!mirror || !modes.length) return
 
-	mirror.addEvent('click', function(ev) {
+	mirror.addEventListener('click', function (ev) {
 
 		var target = ev.target
-		, mode = target.get('data-key')
+		, mode = target.getAttribute('data-key')
 
 		if (target.match('.btn-primary:first-child'))
 		{
-			ev.stop()
+			ev.preventDefault()
 			primaryButton.click()
 			return
 		}
 
 		if (!mode) return
 
-		ev.stop()
+		ev.preventDefault()
 
-		modes.each(function(el) {
+		Array.prototype.forEach.call(modes, function (radio) {
 
-			el.checked = (el.value == mode)
+			radio.checked = (radio.value === mode)
 
 		})
 
 		primaryButton.click()
 	})
 
-	container.addEvent('click', function(ev) {
+	container.addDelegatedEventListener('[type="radio"]', 'click', function (ev, radio) {
 
-		var mode = ev.target.get('value')
+		var mode = radio.value
 
-		if (!mode) return
+		Array.prototype.forEach.call(mirror.querySelectorAll('.dropdown-item'), function (item) {
 
-		mirror.getElements('li').each(function(el) {
+			var itemMode = item.getAttribute('data-key')
 
-			var anchor = el.getElement('a')
-			, anchorMode = anchor.get('data-key')
-
-			if (mode == anchorMode)
+			if (mode === itemMode)
 			{
-				el.addClass('active')
-				mirror.getElement('.btn').set('html', anchor.get('html'))
+				item.classList.add('active')
+				mirror.querySelector('.btn').innerHTML = item.innerHTML
 			}
 			else
 			{
-				el.removeClass('active')
+				item.classList.remove('active')
 			}
 		})
 	})

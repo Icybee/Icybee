@@ -7,100 +7,110 @@
  * file that was distributed with this source code.
  */
 
-Brickrouge.Widget.Spinner = new Class
-({
-	Implements: [ Options, Events ],
+!function (Brickrouge) {
 
-	initialize: function(el, options)
-	{
-		this.element = el = document.id(el)
-		this.setOptions(options)
+	Brickrouge.Widget.Spinner = new Class({
 
-		this.control = el.getElement('input')
-		this.content = el.getElement('.spinner-content')
-		this.popover = null
-		this.resetValue = null
-		this.resetContent = null
+		Implements: [ Options, Events ],
 
-		el.addEvent('click', function(ev) {
-
-			ev.stop()
-			this.open()
-
-		}.bind(this))
-	},
-
-	open: function()
-	{
-
-	},
-
-	/**
-	 * Translate the internal representation of the value into a string
-	 */
-	setValue: function(value)
-	{
-		if (this.content)
+		initialize: function(el, options)
 		{
-			var formatedValue = this.formatValue(value)
-			, type = typeOf(formatedValue)
+			this.element = el = document.id(el)
+			this.setOptions(options)
 
-			this.content.empty()
+			this.control = el.getElement('input')
+			this.content = el.getElement('.spinner-content')
+			this.popover = null
+			this.resetValue = null
+			this.resetContent = null
 
-			if (type == 'element' || type == 'elements')
+			el.addEvent('click', function(ev) {
+
+				ev.stop()
+				this.open()
+
+			}.bind(this))
+		},
+
+		open: function()
+		{
+
+		},
+
+		/**
+		 * Translate the internal representation of the value into a string
+		 */
+		setValue: function(value)
+		{
+			if (this.content)
 			{
-				this.content.adopt(formatedValue)
+				var formatedValue = this.formatValue(value)
+				, type = typeOf(formatedValue)
+
+				this.content.empty()
+
+				if (type == 'element' || type == 'elements')
+				{
+					this.content.adopt(formatedValue)
+				}
+				else if (type == 'string')
+				{
+					this.content.innerHTML = formatedValue
+				}
 			}
-			else if (type == 'string')
-			{
-				this.content.innerHTML = formatedValue
-			}
+
+			this.element[value ? 'removeClass' : 'addClass']('placeholder')
+
+			this.control.set('value', this.encodeValue(value))
+		},
+
+		/**
+		 * Get the string value for the input and translate it into its internal representation.
+		 */
+		getValue: function()
+		{
+			return this.decodeValue(this.control.get('value'))
+		},
+
+		/**
+		 * Encodes the internal representation of the value into a string.
+		 *
+		 * @param value
+		 *
+		 * @return string
+		 */
+		encodeValue: function(value)
+		{
+			return value
+		},
+
+		/**
+		 * Decode the string encoded value into its internal representation.
+		 *
+		 * @param value
+		 *
+		 * @return mixed
+		 */
+		decodeValue: function(value)
+		{
+			return value
+		},
+
+		formatValue: function(value)
+		{
+			return value
+		},
+
+		attachAdjust: function(adjust)
+		{
+
 		}
+	})
 
-		this.element[value ? 'removeClass' : 'addClass']('placeholder')
+	Brickrouge.register('spinner', function (element, options) {
 
-		this.control.set('value', this.encodeValue(value))
-	},
+		return new Brickrouge.Widget.Spinner(element, options)
 
-	/**
-	 * Get the string value for the input and translate it into its internal representation.
-	 */
-	getValue: function()
-	{
-		return this.decodeValue(this.control.get('value'))
-	},
+	})
 
-	/**
-	 * Encodes the internal representation of the value into a string.
-	 *
-	 * @param value
-	 *
-	 * @return string
-	 */
-	encodeValue: function(value)
-	{
-		return value
-	},
-
-	/**
-	 * Decode the string encoded value into its internal representation.
-	 *
-	 * @param value
-	 *
-	 * @return mixed
-	 */
-	decodeValue: function(value)
-	{
-		return value
-	},
-
-	formatValue: function(value)
-	{
-		return value
-	},
-
-	attachAdjust: function(adjust)
-	{
-
-	}
-})
+} (Brickrouge);

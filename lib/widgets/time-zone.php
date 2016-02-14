@@ -80,7 +80,8 @@ class TimeZone extends \Brickrouge\Element
 
 			Element::INNER_HTML => $html,
 
-			'name' => $this['name']
+			'name' => $this['name'],
+			'class' => 'form-control'
 
 		]);
 	}

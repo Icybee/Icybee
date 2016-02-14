@@ -10,13 +10,14 @@
 /**
  * Disable spellchecking for textarea with the `code` class.
  */
-window.addEvent('brickrouge.update', function(fragment) {
+Brickrouge.observe('update', function (fragment) {
 
 	fragment.getElements('textarea.code').each(function(el) {
 
 		if (!el.spellcheck) return
 
 		el.spellcheck = false
+
 	})
 })
 

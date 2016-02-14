@@ -534,7 +534,7 @@ class ManageBlock extends ListView
 			$rendered_exception = \Brickrouge\render_exception($e);
 
 			return <<<EOT
-<div class="alert alert-error alert-block undismissable">
+<div class="alert alert-danger">
 	<p>There was an error in the SQL statement, orders and filters have been reset,
 	please reload the page.</p>
 
@@ -1011,7 +1011,8 @@ EOT;
 
 				'title' => $this->t('Number of item to display by page'),
 				'name' => 'limit',
-				'value' => $limit
+				'value' => $limit,
+				'class' => 'form-control form-control-inline'
 
 			]);
 

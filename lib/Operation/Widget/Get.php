@@ -94,7 +94,7 @@ class Get extends \ICanBoogie\Operation
 
 				Popover::ACTIONS => [
 
-					new Button('Cancel', [ 'data-action' => 'cancel' ]),
+					new Button('Cancel', [ 'data-action' => 'cancel', 'class' => 'btn-secondary' ]),
 					new Button('Remove', [ 'data-action' => 'remove', 'class' => 'btn-danger' ]),
 					new Button('Use', [ 'data-action' => 'use', 'class' => 'btn-primary' ])
 

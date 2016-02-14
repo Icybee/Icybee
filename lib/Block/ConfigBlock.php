@@ -28,8 +28,6 @@ abstract class ConfigBlock extends FormBlock
 	{
 		parent::render();
 
-		$this->element->save();
-
 		return $this;
 	}
 

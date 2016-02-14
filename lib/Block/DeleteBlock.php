@@ -112,7 +112,7 @@ class DeleteBlock extends Form
 				return <<<EOT
 <div class="block-alert block--delete">
 $this->title_element
-<div class="alert alert-error">$message</div>
+<div class="alert alert-danger">$message</div>
 </div>
 EOT;
 			}

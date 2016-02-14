@@ -1,3 +1,5 @@
+// action bar height: 0 + 16 + 28 + 15 + 1
+//
 .actionbar {
 	position: relative;
 	background: white;
@@ -5,6 +7,8 @@
 	padding: 16px 16px 15px 16px;
 	font-size: 12px;
 	height: 28px;
+	box-sizing: content-box;
+	-webkit-box-sizing: content-box;
 
 	&.fixed {
 		color: white;
@@ -19,12 +23,12 @@
 		background: -o-linear-gradient(center top , rgba(0, 0, 0, 0.8), #000000);
 		background: linear-gradient(to bottom, rgba(0, 0, 0, 0.8), #000000);
 		border-bottom: 0;
-		padding: 8px 16px;
+		padding: .5rem 1rem;
 		box-shadow: 0 5px 20px rgba(0, 0, 0, .5);
 
 		+ #contents {
 
-			padding-top: 60px;	
+			padding-top: 60px;
 		}
 	}
 
@@ -36,11 +40,11 @@
 	.pull-left > * + *,
 	.pull-right > * + *,
 	.pull-left + .pull-left {
-		margin-left: 16px;
+		margin-left: 1rem;
 	}
 
 	.btn-toolbar {
-		margin: 0 0 0 16px;
+		margin: 0 0 0 1rem;
 
 		> * {
 			vertical-align: top;
@@ -49,15 +53,35 @@
 
 	.btn,
 	.btn-group,
-	.inline {
+	.inline,
+	.form-control {
 		display: inline-block;
 		vertical-align: top;
+		font-size: 1em;
 	}
 
-	.btn {
-		line-height: 18px;
+	.form-control,
+	.input-group-addon {
+		padding: 3px 5px;
+		height: 20px;
+		line-height: 20px;
+		font-size: 1em;
 	}
 
+	.form-control {
+		background-color: #F6F6F6;
+	}
+
+	select.form-control {
+		padding-right: 10px;
+	}
+
+	.btn { // h: 1 + 7 + 12 + 7 + 1
+		line-height: 1;
+		padding: 7px 10px;
+	}
+
+/*
 	.like-input, select, input, .uneditable-input {
 		background: #F6F6F6;
 		padding: 3px 5px;
@@ -69,6 +93,7 @@
 		height: 28px;
 		line-height: 28px;
 	}
+*/
 }
 
 // Title
@@ -123,7 +148,7 @@
 	.dropdown-menu {
 		left: auto;
 		right: 0;
-	}	
+	}
 }
 
 .actionbar-link {
@@ -138,13 +163,13 @@
 		background: rgba(51, 181, 229, .3);
 		border-radius: 3px;
 	}
-	
+
 	&.active {
 		background: rgba(51, 181, 229, 1);
 		border-radius: 3px;
 		color: @white;
 	}
-	
+
 	+ .actionbar-link {
 		margin-left: 2px;
 	}
@@ -158,15 +183,18 @@
 /*
  *
  */
- 
+
 form.navbar-search,
 .listview-search {
-	border: 1px solid #CFCFCF;
 	font-size: 14px; /* we use a fixed value so that the height of the form is the same as the browse element*/
-	padding: 0;
+	padding: 0 !important;
 	background-color: #F6F6F6;
-	border-radius: 4px;
 	float: left;
+	height: auto !important;
+
+	&.focus {
+		border-color: #66afe9;
+	}
 
 	input {
 		border: none;
@@ -174,8 +202,10 @@ form.navbar-search,
 		position: relative;
 		border-radius: 0;
 		box-shadow: none;
-		padding: 4px .5ex;
+		padding: 2px .5ex;
 		width: 24ex !important;
+		font-size: 14px;
+		line-height: 22px;
 
 		&.placeholder {
 			font-style: italic;
@@ -200,18 +230,17 @@ form.navbar-search,
 		text-shadow: none;
 		line-height: 16px !important;
 		padding: 0;
-		margin: 0 .5ex 0 1ex;
+		margin: 0 0 0 1ex;
 		box-shadow: none;
 		visibility: hidden;
-		opacity: .6;
 		overflow: hidden;
-		vertical-align: middle;
+		opacity: .6;
 
 		&:hover,
 		&:active {
 			opacity: .8;
 			background-color: transparent;
-			background-position: -312px 0;	
+			background-position: -312px 0;
 		}
 
 		&:active {
@@ -231,7 +260,7 @@ form.navbar-search,
 /*
  * Fixed
  */
- 
+
 .actionbar.fixed {
 
 	.actionbar-title .dropdown-toggle:hover,

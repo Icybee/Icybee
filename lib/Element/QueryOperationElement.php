@@ -79,7 +79,7 @@ class QueryOperationElement extends Element
 EOT
 			,
 
-			'errors' => '<div class="alert alert-error undismissable"></div>',
+			'errors' => '<div class="alert alert-danger"></div>',
 
 			'confirm' => $this->create_confirm_form($options, $attributes),
 
@@ -136,7 +136,8 @@ EOT
 
 				'cancel' => new Button($options['confirm'][0], [
 
-					'data-action' => 'cancel'
+					'data-action' => 'cancel',
+					'class' => 'btn-secondary'
 
 				]),
 
