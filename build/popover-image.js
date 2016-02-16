@@ -55,7 +55,9 @@
 					)
 					popover.set('tween', { duration: 'short', link: 'cancel' })
 					popover.addEvent('mouseenter', this.onMouseLeave.bind(this))
-
+					popover.width = popover.naturalWidth
+					popover.height = popover.naturalHeight
+console.log(popover)
 					// check concurrency
 
 					if (this.popover)
