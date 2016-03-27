@@ -11,7 +11,7 @@
 
 namespace Icybee\Operation\Module;
 
-use ICanBoogie\Errors;
+use ICanBoogie\ErrorCollection;
 use ICanBoogie\Module;
 use ICanBoogie\Operation;
 
@@ -64,9 +64,12 @@ class ConfigOperation extends Operation
 		return array_intersect_key($this->request->params, [ 'global' => true, 'local' => true ]);
 	}
 
-	protected function validate(Errors $errors)
+	/**
+	 * @inheritdoc
+	 */
+	protected function validate(ErrorCollection $errors)
 	{
-		return !count($errors);
+		return $errors;
 	}
 
 	protected function process()

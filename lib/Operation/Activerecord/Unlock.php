@@ -11,7 +11,7 @@
 
 namespace Icybee\Operation\ActiveRecord;
 
-use ICanBoogie\Errors;
+use ICanBoogie\ErrorCollection;
 use ICanBoogie\HTTP\Request;
 use ICanBoogie\Module;
 use ICanBoogie\Operation;
@@ -44,9 +44,12 @@ class Unlock extends Operation
 		] + parent::get_controls();
 	}
 
-	protected function validate(Errors $errors)
+	/**
+	 * @inheritdoc
+	 */
+	protected function validate(ErrorCollection $errors)
 	{
-		return true;
+		return $errors;
 	}
 
 	protected function process()

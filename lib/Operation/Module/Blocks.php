@@ -11,7 +11,7 @@
 
 namespace Icybee\Operation\Module;
 
-use ICanboogie\Errors;
+use ICanboogie\ErrorCollection;
 use ICanBoogie\I18n;
 use ICanBoogie\Operation;
 
@@ -29,16 +29,17 @@ class Blocks extends Operation
 		] + parent::get_controls();
 	}
 
-	protected function validate(Errors $errors)
+	/**
+	 * @inheritdoc
+	 */
+	protected function validate(ErrorCollection $errors)
 	{
 		if (!$this->request['name'])
 		{
 			$errors->add('name', "Missing block name");
-
-			return false;
 		}
 
-		return true;
+		return $errors;
 	}
 
 	protected function process()

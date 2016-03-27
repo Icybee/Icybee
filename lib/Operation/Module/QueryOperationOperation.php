@@ -11,7 +11,7 @@
 
 namespace Icybee\Operation\Module;
 
-use ICanboogie\Errors;
+use ICanboogie\ErrorCollection;
 use ICanBoogie\HTTP\Request;
 use ICanBoogie\Operation;
 
@@ -51,7 +51,10 @@ class QueryOperation extends Operation
 		return parent::action($request);
 	}
 
-	protected function validate(Errors $errors)
+	/**
+	 * @inheritdoc
+	 */
+	protected function validate(ErrorCollection $errors)
 	{
 		$request = $this->request;
 

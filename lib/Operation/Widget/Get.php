@@ -14,6 +14,7 @@ namespace Icybee\Operation\Widget;
 use Brickrouge\Button;
 use Brickrouge\Popover;
 use Brickrouge\Widget;
+use ICanBoogie\ErrorCollection;
 use Icybee\Binding\PrototypedBindings;
 use Icybee\Modules\Nodes\AdjustNode;
 
@@ -35,7 +36,10 @@ class Get extends \ICanBoogie\Operation
 		return 'Brickrouge\Widget\\' . \ICanBoogie\camelize(strtr($this->request['class'], '-', '_'));
 	}
 
-	protected function validate(\ICanboogie\Errors $errors)
+	/**
+	 * @inheritdoc
+	 */
+	protected function validate(ErrorCollection $errors)
 	{
 		$class = $this->widget_class;
 
@@ -44,7 +48,7 @@ class Get extends \ICanBoogie\Operation
 			throw new \Exception(\ICanBoogie\format('Unknown widget class: %class', array('%class' => $class)));
 		}
 
-		return true;
+		return $errors;
 	}
 
 	protected function process()
