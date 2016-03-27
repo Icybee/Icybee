@@ -236,7 +236,7 @@ class Column extends Prototyped implements ColumnInterface
 		]);
 
 		return <<<EOT
-<div class="dropdown"><button class="options-trigger" data-toggle="dropdown"><i class="icon-cog"></i></button>$menu</div>
+<div class="dropdown"><button class="options-trigger" data-toggle="dropdown" type="button"><i class="icon-cog"></i></button>$menu</div>
 EOT;
 	}
 

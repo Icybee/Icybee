@@ -387,6 +387,20 @@ class Hooks
 			header('X-ICanBoogie-Exception: ' . \ICanBoogie\strip_root($exception->getFile()) . '@' . $exception->getLine());
 		}
 
+		if ($app->request->is_xhr)
+		{
+			header("Content-Type: application/json");
+
+			echo json_encode([
+
+				'message' => $exception->getMessage(),
+				'trace' => $exception->getTrace()
+
+			]);
+
+			exit;
+		}
+
 		$formatted_exception = Debug::format_alert($exception);
 		$reported = false;
 

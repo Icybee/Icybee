@@ -1,14 +1,16 @@
-;!function() {
+!function (Brickrouge) {
 
-	var PopoverImage = new Class
-	({
+	var PopoverImage = new Class({
+
 		initialize: function(el, src)
 		{
 			this.src = src
-			this.element = document.id(el)
+			this.element = el
 			this.element.addEvents({
+
 				mouseenter: this.onMouseEnter.bind(this),
 				mouseleave: this.onMouseLeave.bind(this)
+
 			})
 		},
 
@@ -16,7 +18,8 @@
 		{
 			this.cancel = false
 
-			;(this.popover ? this.show : this.load).delay(this.element.get('data-popover-delay') || 100, this)
+			;(this.popover ? this.show : this.load)
+			.delay(this.element.getAttribute('data-popover-delay') || 100, this)
 		},
 
 		onMouseLeave: function()
@@ -33,31 +36,31 @@
 
 				onload: function(popover)
 				{
-					var targetSelector = this.element.get('data-popover-target')
+					var targetSelector = this.element.getAttribute('data-popover-target')
 					, target = this.element
 					, coord
 
 					if (targetSelector)
 					{
-						target = this.element.getParent(targetSelector) || target
+						target = this.element.closest(targetSelector) || target
 					}
 
 					coord = target.getCoordinates()
 
 					popover.id = 'popover-image'
-					popover.setStyles
-					(
-						{
-							top: coord.top + (coord.height - popover.height) / 2 - 2,
-							left: coord.left + coord.width + 20,
-							opacity: 0
-						}
-					)
+					popover.setStyles({
+
+						top: coord.top + (coord.height - popover.height) / 2 - 2,
+						left: coord.left + coord.width + 20,
+						opacity: 0
+
+					})
+
 					popover.set('tween', { duration: 'short', link: 'cancel' })
 					popover.addEvent('mouseenter', this.onMouseLeave.bind(this))
 					popover.width = popover.naturalWidth
 					popover.height = popover.naturalHeight
-console.log(popover)
+
 					// check concurrency
 
 					if (this.popover)
@@ -89,7 +92,7 @@ console.log(popover)
 		{
 			var popover = this.popover
 
-			if (!popover || !popover.getParent()) return
+			if (!popover || !popover.parentNode) return
 
 			this.popover = null
 
@@ -105,16 +108,16 @@ console.log(popover)
 
 	document.body.addEvent('mouseenter:relay([data-popover-image])', function(ev, el) {
 
-		var uniqueNumber = el.uniqueNumber
+		var uniqueNumber = Brickrouge.uidOf(el)
 		, popover
 
 		if (popovers[uniqueNumber]) return
 
-		popover = new PopoverImage(el, el.get('data-popover-image'))
+		popover = new PopoverImage(el, el.getAttribute('data-popover-image'))
 		popover.load()
 
 		popovers[uniqueNumber] = popover
 
 	})
 
-} ()
+} (Brickrouge);

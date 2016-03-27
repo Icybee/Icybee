@@ -42,7 +42,8 @@ JS_FILES = \
 	build/reset.js \
 	build/save-mode.js \
 	build/spinner.js \
-	build/widget.js
+	build/widget.js \
+	build/img-dpr.js
 
 JS_COMPRESSED = assets/admin.js
 JS_UNCOMPRESSED = build/tmp/admin-uncompressed.js
