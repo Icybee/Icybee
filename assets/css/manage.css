@@ -294,7 +294,7 @@
 	color: white;
 }
 
-.listview tbody a:hover {
+.listview tbody a:not(.btn):hover {
 	text-decoration: underline;
 }
 

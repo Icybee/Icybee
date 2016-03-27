@@ -7,9 +7,11 @@
  * file that was distributed with this source code.
  */
 
-!function (Brickrouge) {
+define('icybee/spinner', [
 
-	Brickrouge.Widget.Spinner = new Class({
+], function () {
+
+	return new Class({
 
 		Implements: [ Options, Events ],
 
@@ -106,11 +108,23 @@
 
 		}
 	})
+})
+
+!function (Brickrouge) {
+
+	Brickrouge.Widget.Spinner = require('icybee/spinner') // FIXME: COMPAT
+
+	var Constructor
 
 	Brickrouge.register('spinner', function (element, options) {
 
-		return new Brickrouge.Widget.Spinner(element, options)
+		if (!Constructor)
+		{
+			Constructor = require('icybee/spinner')
+		}
+
+		return new Constructor(element, options)
 
 	})
 
-} (Brickrouge);
+} (Brickrouge)

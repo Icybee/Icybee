@@ -32,6 +32,7 @@ CSS_COMPRESSED = assets/admin.css
 CSS_UNCOMPRESSED = build/tmp/admin-uncompressed.css
 
 JS_FILES = \
+	build/core.js \
 	build/string.js \
 	build/request.js \
 	build/admin.js \
