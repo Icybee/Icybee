@@ -1,0 +1,58 @@
+// Colors
+
+$white:                                #ffffff !default;
+$black:                                #000000 !default;
+
+$gray-dark:                            #373a3c !default;
+$gray:                                 #55595c !default;
+$gray-light:                           #818a91 !default;
+$gray-lighter:                         #eceeef !default;
+$gray-lightest:                        #f7f7f9 !default;
+
+$brand-primary:                        #0275d8 !default;
+$brand-success:                        #5cb85c !default;
+$brand-info:                           #5bc0de !default;
+$brand-warning:                        #f0ad4e !default;
+$brand-danger:                         #d9534f !default;
+
+$text:                                 #404040 !default;
+$text-light:                           #808080 !default;
+$background:                           #e8e8e8 !default;
+
+$line-shadow:                          #cfcfcf !default;
+
+// Spacing
+
+$spacer:                               1rem !default;
+$spacer-x:                             $spacer !default;
+$spacer-y:                             $spacer !default;
+
+// Typography
+
+$font-size-root:                       14px !default;
+$font-size-base:                       1rem !default;
+$font-size-lg:                         1.25rem !default;
+$font-size-sm:                         .875rem !default;
+$font-size-xs:                         .75rem !default;
+
+// Components
+
+$border-color:                         #cccccc !default;
+$border-radius:                        .25rem !default;
+$border-radius-lg:                     .3rem !default;
+$border-radius-sm:                     .2rem !default;
+
+// Inputs
+
+$input-background:                     $white !default;
+$input-background-focus:               rgba(102,175,233,.6) !default;
+$input-border-color:                   $border-color !default;
+$input-border-radius:                  $border-radius !default;
+$input-border-focus:                   #66afe9 !default;
+$input-padding-x:                      .75rem !default;
+$input-padding-y:                      .375rem !default;
+$input-placeholder-color:              $text-light !default;
+
+// Forms
+
+$form-group-margin-bottom:             $spacer-y !default;

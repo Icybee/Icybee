@@ -1,0 +1,188 @@
+@import "../variables";
+
+form {
+	margin: 0;
+}
+
+.form-group {
+	> label {
+		display: block;
+	}
+
+	&.required > label::after {
+		content: '\000a0*';
+		vertical-align: top;
+		color: #3a87ad;
+	}
+}
+
+.form-group > label,
+.element-description {
+	padding-left: 0;
+	padding-right: 0;
+	padding-bottom: 0;
+}
+
+.form-horizontal .form-group.required > label:after {
+	width: 1ex;
+	margin-right: -1ex;
+	display: inline-block;
+}
+
+.form-primary {
+	> .group {
+		background: #F6F6F6;
+		border: 1px solid transparent; /* this is used to encompass the form-group margins */
+		border-left: 0;
+		border-right: 0;
+
+		> .group-legend {
+			border-bottom: 1px solid $line-shadow;
+			background-color: $background;
+			margin: 0;
+			font-size: 1.1428rem;
+			font-weight: normal;
+			padding: 0 1em;
+			line-height: 2em;
+		}
+
+		> .group-description {
+			padding: .5rem 1rem;
+			font-size: .8571rem;
+			background: white;
+			border-bottom: 1px solid $line-shadow;
+			margin: 0;
+			max-width: none;
+		}
+
+		> .group-description.form-group {
+			font-size: inherit;
+			padding-top: 1rem;
+			padding-bottom: calc(1rem + 1px);
+		}
+
+		> .group-legend + .group-description {
+			border-top: 0;
+		}
+
+		&:first-of-type > .group-legend {
+			border-top: 0;
+		}
+
+		> .form-group {
+			margin: 1rem;
+
+			> label,
+			> .controls > label {
+				font-weight: bold;
+			}
+		}
+
+		> .form-group:first-child {
+			margin-top: calc(1rem - 1px);
+		}
+
+		> .form-group:last-child {
+			margin-bottom: calc(1rem - 1px);
+		}
+
+	}
+
+	> .group + .group {
+		margin-top: 0;
+		border-top-color: $line-shadow;
+	}
+
+	.group-toggler {
+		background-color: white;
+	}
+
+	.group-toggler + .group {
+		display: none;
+	}
+
+	.group-toggler.enabled + .group {
+		display: block;
+	}
+
+	//
+
+	textarea {
+		width: 100%;
+		box-sizing: border-box;
+		-moz-box-sizing: border-box;
+		-webkit-box-sizing: border-box;
+	}
+
+	.element-description,
+	.help-block {
+		color: inherit;
+		font-size: 12px;
+		max-width: 76ex;
+	}
+
+	.alert-dismissible {
+		margin-bottom: 0;
+		border-radius: 0;
+		border-top: 0;
+	}
+}
+
+
+/**
+ * Primary form actions
+ */
+.form-actions {
+	background-color: transparent;
+	margin: 0;
+	padding: 0;
+	border-top: 0;
+}
+
+.form-primary .form-actions {
+	padding: 1rem;
+	border-top: 1px solid $line-shadow;
+
+	.inputs-list {
+		margin-bottom: 1rem;
+	}
+
+	.btn-primary {
+		margin-left: 0 !important;
+	}
+}
+
+.form-primary .combo {
+	background-color: $input-background;
+	padding: $input-padding-y $input-padding-x;
+	border: 1px solid $input-border-color;
+	border-radius: 3px;
+}
+
+.form-primary .combo input,
+.form-primary .combo textarea,
+.form-primary .combo select,
+.form-primary .combo .like-input {
+	background-color: #F6F6F6;
+}
+
+select.form-control {
+	background: white url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAUCAMAAACzvE1FAAAADFBMVEUzMzMzMzMzMzMzMzMKAG/3AAAAA3RSTlMAf4C/aSLHAAAAPElEQVR42q3NMQ4AIAgEQTn//2cLdRKppSGzBYwzVXvznNWs8C58CiussPJj8h6NwgorrKRdTvuV9v16Afn0AYFOB7aYAAAAAElFTkSuQmCC) no-repeat right 8px center;
+	background-size: 8px 10px;
+	-webkit-appearance: none;
+	-moz-appearance: none;
+	appearance: none;
+}
+
+.label {
+	font-size: 10px;
+	text-transform: uppercase;
+}
+
+.form-control-label {
+	margin-bottom: .5em;
+}
+
+.element-label.wrapping {
+	margin-bottom: 0;
+}

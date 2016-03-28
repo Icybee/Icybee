@@ -1,23 +1,25 @@
+@import "../variables";
+
 // action bar height: 0 + 16 + 28 + 15 + 1
 //
 .actionbar {
 	position: relative;
-	background: white;
-	border-bottom: 1px solid #cfcfcf;
-	padding: 16px 16px 15px 16px;
+	background: $white;
+	border-bottom: 1px solid $line-shadow;
+	padding: 1rem;
 	font-size: 12px;
 	height: 28px;
 	box-sizing: content-box;
 	-webkit-box-sizing: content-box;
 
 	&.fixed {
-		color: white;
+		color: $white;
 		left: 0;
 		position: fixed;
 		right: 0;
 		top: 0;
 		z-index: 1030;
-		background: black;
+		background: $black;
 		background: linear-gradient(to bottom, rgba(0, 0, 0, 0.8), #000000);
 		border-bottom: 0;
 		padding: .5rem 1rem;
@@ -78,20 +80,6 @@
 		line-height: 1;
 		padding: 7px 10px;
 	}
-
-/*
-	.like-input, select, input, .uneditable-input {
-		background: #F6F6F6;
-		padding: 3px 5px;
-		height: 18px;
-		line-height: 18px;
-	}
-
-	select, input[type="file"] {
-		height: 28px;
-		line-height: 28px;
-	}
-*/
 }
 
 // Title
@@ -165,7 +153,7 @@
 	&.active {
 		background: rgba(51, 181, 229, 1);
 		border-radius: 3px;
-		color: @white;
+		color: $white;
 	}
 
 	+ .actionbar-link {
@@ -207,7 +195,7 @@ form.navbar-search,
 
 		&.placeholder {
 			font-style: italic;
-			color: @lightTextColor;
+			color: $gray;
 		}
 
 		&:focus {
@@ -220,7 +208,7 @@ form.navbar-search,
 	}
 
 	button {
-		color: @lightTextColor;
+		color: $gray;
 		border: none;
 		background: transparent;
 		font-weight: normal;
@@ -250,7 +238,7 @@ form.navbar-search,
 		background-color: #FFC;
 
 		button {
-			color: @lightTextColor;
+			color: $gray;
 		}
 	}
 }
@@ -275,8 +263,6 @@ form.navbar-search,
 	input,
 	select {
 		background: #333;
-		background: -webkit-linear-gradient(top, #212121 5%, #333);
-		background: -moz-linear-gradient(top, #212121 5%, #333);
 		background: linear-gradient(to bottom, #212121 5%, #333);
 		border-color: #454545;
 		box-shadow: 0 0 1px black inset;

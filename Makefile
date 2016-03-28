@@ -1,10 +1,16 @@
 JS_COMPRESSOR = curl -X POST -s --data-urlencode 'input@$^' http://javascript-minifier.com/raw
 #JS_COMPRESSOR = cat $^ # uncomment this line to produce uncompressed files
+CSS_COMPILER = `which sass`
+CSS_COMPILER_OPTIONS = --style compressed   # comment to disable compression
 
 IDEPENDONYOU_JS = build/tmp/idependonyou.js
 MOOTOOLS_JS = build/tmp/mootools.js
-MOOTOOLS_MORE_JS = build/mootools-more.js
+MOOTOOLS_MORE_JS = src/assets/page/mootools-more.js
 MOOTOOLS_CORE_VER = 1.6.0
+
+ADMIN_CSS = ./assets/admin.css
+ADMIN_CSS_FILES = $(shell ls src/assets/admin/*.scss)
+ADMIN_CSS_ENTRY = ./src/assets/admin/main.scss
 
 PAGE_JS = assets/page.js
 PAGE_JS_UNCOMPRESSED = build/tmp/page-uncompressed.js
@@ -14,37 +20,20 @@ PAGE_JS_UNCOMPRESSED_FILES = \
 	$(MOOTOOLS_MORE_JS) \
 	../../icanboogie/icanboogie/assets/icanboogie.js
 
-CSS_FILES = \
-	build/admin.less \
-	build/actionbar.less \
-	build/alerts.less \
-	build/wrapped-checkbox.less \
-	build/forms.less \
-	build/mixins.less \
-	build/navigation.less \
-	build/popover-image.less \
-	build/reset.less \
-	build/spinner.less \
-	build/variables.less
-
-CSS_COMPRESSOR = `which lessc`
-CSS_COMPRESSED = assets/admin.css
-CSS_UNCOMPRESSED = build/tmp/admin-uncompressed.css
-
 JS_FILES = \
-	build/core.js \
-	build/string.js \
-	build/request.js \
-	build/admin.js \
-	build/alerts.js \
-	build/actionbar.js \
-	build/forms.js \
-	build/popover-image.js \
-	build/reset.js \
-	build/save-mode.js \
-	build/spinner.js \
-	build/widget.js \
-	build/img-dpr.js
+	src/assets/admin/core.js \
+	src/assets/admin/string.js \
+	src/assets/admin/request.js \
+	src/assets/admin/admin.js \
+	src/assets/admin/alert.js \
+	src/assets/admin/actionbar.js \
+	src/assets/admin/form.js \
+	src/assets/admin/popover-image.js \
+	src/assets/admin/reset.js \
+	src/assets/admin/save-mode.js \
+	src/assets/admin/spinner.js \
+	src/assets/admin/widget.js \
+	src/assets/admin/img-dpr.js
 
 JS_COMPRESSED = assets/admin.js
 JS_UNCOMPRESSED = build/tmp/admin-uncompressed.js
@@ -52,14 +41,13 @@ JS_UNCOMPRESSED = build/tmp/admin-uncompressed.js
 PAGE_JS_FILES = \
 	$(IDEPENDONYOU_JS) \
 	build/tmp/mootools-core.js \
-	build/mootools-more.js
+	$(MOOTOOLS_MORE_JS)
 
 all: \
 	$(PAGE_JS) \
 	$(JS_COMPRESSED) \
 	$(JS_UNCOMPRESSED) \
-	$(CSS_COMPRESSED) \
-	$(CSS_UNCOMPRESSED)
+	$(ADMIN_CSS)
 
 $(PAGE_JS): $(PAGE_JS_UNCOMPRESSED)
 	$(JS_COMPRESSOR) >$@
@@ -68,9 +56,11 @@ $(PAGE_JS_UNCOMPRESSED): $(PAGE_JS_UNCOMPRESSED_FILES)
 	cat $^ >$@
 
 $(IDEPENDONYOU_JS):
+	mkdir -p build/tmp
 	curl -o $@ https://raw.githubusercontent.com/olvlvl/IDependOnYou/master/idependonyou.js
 
 $(MOOTOOLS_JS):
+	mkdir -p build/tmp
 	curl -o $@ https://raw.githubusercontent.com/mootools/mootools-core/$(MOOTOOLS_CORE_VER)/dist/mootools-core.js
 
 #
@@ -83,11 +73,16 @@ $(JS_COMPRESSED): $(JS_UNCOMPRESSED)
 $(JS_UNCOMPRESSED): $(JS_FILES)
 	cat $^ >$@
 
-$(CSS_COMPRESSED): $(CSS_FILES)
-	$(CSS_COMPRESSOR) -x build/admin.less >$@
+$(ADMIN_CSS): $(ADMIN_CSS_FILES)
+	$(CSS_COMPILER) $(CSS_COMPILER_OPTIONS) $(ADMIN_CSS_ENTRY):$@
 
-$(CSS_UNCOMPRESSED): $(CSS_FILES)
-	$(CSS_COMPRESSOR) build/admin.less >$@
+watch-css:
+	echo "Watching SCSS files..."
+	$(CSS_COMPILER) $(CSS_COMPILER_OPTIONS) --watch $(ADMIN_CSS_ENTRY):$(ADMIN_CSS)
+
+#
+#
+#
 
 vendor:
 	@composer install
@@ -106,17 +101,13 @@ test-coverage: vendor
 	@phpunit --coverage-html build/coverage
 
 doc: vendor
-	@mkdir -p "docs"
-
+	@mkdir -p build/docs
 	@apigen \
-	--source ./ \
-	--destination docs/ --title Icybee \
-	--exclude "*/composer/*" \
-	--exclude "*/tests/*" \
+	--source ./lib \
+	--destination build/docs/ --title Icybee \
 	--template-config /usr/share/php/data/ApiGen/templates/bootstrap/config.neon
 
 clean:
-	rm -f build/tmp/*.js
-	rm -f composer.lock
-	rm -Rf docs
+	rm -Rf build
+	rm -f  composer.lock
 	rm -Rf vendor

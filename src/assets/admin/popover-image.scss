@@ -1,0 +1,14 @@
+@import "../variables";
+
+#popover-image {
+	z-index: 1020; // 10 above .popover
+	background: $white;
+	position: absolute;
+	top: 0;
+	left: 0;
+	box-shadow: 0 10px 40px gray;
+	background: rgba(0,0,0,.8);
+	padding: $border-radius;
+	border-radius: $border-radius;
+	border: 0;
+}

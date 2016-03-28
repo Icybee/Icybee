@@ -1,11 +1,11 @@
+@import "../variables";
+
 .spinner {
-	border: 1px solid;
-	border-color: #CCC #CCC #BBB;
-	border-radius: 3px;
+	border: 1px solid $input-border-color;
+	border-radius: $input-border-radius;
 	height: auto;
-	background: white;
-	box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset;
-	padding: 6px;
+	background: $white;
+	padding: $input-padding-y;
 	display: inline-block;
 	cursor: pointer;
 	color: inherit !important;
@@ -28,11 +28,12 @@
 	}
 
 	&:hover {
-		background-color: #E6E6E6;
+		background-color: darken($input-background, 10%);
+		border-color: darken($input-border-color, 12%);
 	}
 
 	&.placeholder {
-		color: #808080 !important;
+		color: $input-placeholder-color !important;
 		font-style: italic;
 	}
 

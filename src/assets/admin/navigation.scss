@@ -9,7 +9,7 @@
 
 	.nav {
 		margin: 0;
-		padding: 0 0 0 16px;
+		padding: 0 0 0 1rem;
 		list-style: none;
 
 		& > li {
@@ -17,14 +17,14 @@
 			position: relative;
 
             & + li {
-              margin-left: 16px;
+              margin-left: 1rem;
             }
 
 			& > a {
 				color: #aaa;
 				text-decoration: none;
 				display: inline-block;
-				padding: 16px 0 12px 0;
+				padding: 1rem 0 .75rem 0;
 				border-bottom: 4px solid transparent;
 
 				&:hover {
@@ -64,8 +64,8 @@
 		}
 
         a {
-			padding-left: 16px;
-			padding-right: 16px;
+			padding-left: 1rem;
+			padding-right: 1rem;
         }
 	}
 
@@ -76,4 +76,9 @@
 	.active > .dropdown-menu:before {
 		border-top-color: #33B5E5;
 	}
+}
+
+.dropdown-menu {
+	box-sizing: border-box;
+	-webkit-box-sizing: border-box;
 }

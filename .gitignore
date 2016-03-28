@@ -1,5 +1,4 @@
-.idea/
-.README.md.html
+.sass-cache
 composer.lock
-build/tmp
+build
 vendor

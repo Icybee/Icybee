@@ -1,19 +1,20 @@
+@import "../variables";
 
 .alert-wrapper {
 	position: relative;
 	background-color: white;
-	padding: 16px 16px 15px 16px;
-	border-bottom: 1px solid #cfcfcf;
-	
+	padding: 1rem;
+	border-bottom: 1px solid $line-shadow;
+
 	&:empty {
 		display: none;
 	}
 
 	.alert {
 		margin: 0;
-		
+
 		+ .alert {
-			margin-top: 16px;
+			margin-top: 1rem;
 		}
 	}
 }
@@ -22,7 +23,7 @@
 	from {
 		transform: rotate(0deg);
 	}
-	
+
 	to {
 		transform: rotate(360deg);
 	}

@@ -6,6 +6,6 @@ div.input-append + .btn.reset-default-value {
 
 textarea + .reset-default-value,
 .help-block + .reset-default-value,
-div::not(.input-append) + .reset-default-value {
+div:not(.input-append) + .reset-default-value {
 	margin-top: 1em;
 }

@@ -1,3 +1,5 @@
+@import "../variables";
+
 .wrapped-checkbox {
 	box-sizing: content-box;
 	-webkit-box-sizing: content-box;
@@ -11,14 +13,14 @@
 }
 
 .wrapped-checkbox label {
-	width: 14px;
-	height: 14px;
-	border: 1px solid #CFCFCF;
-	transition: all 200ms;
+	width: 1rem;
+	height: 1rem;
+	border: 1px solid $line-shadow;
+	transition: all 240ms;
 }
 
 .wrapped-checkbox.circle label {
-	border-radius: 10px;
+	border-radius: 100%;
 }
 
 .wrapped-checkbox input:checked + label {
