@@ -9,42 +9,38 @@
 
 !function (Brickrouge) {
 
-	Brickrouge.Widget.ActionBar = new Class({
-
-		Implements: [ Events ],
-
-		initialize: function(el)
+	class ActionBar
+	{
+		constructor(el)
 		{
-			this.element = el = document.id(el)
-
+			this.element = el
 			this.setUpAnchoring()
 
-			el.addEvent('click:relay([data-target])', function(ev) {
+			el.addDelegatedEventListener('[data-target]', 'click', ev => {
 
-				var target = document.id(document.body).getElement(ev.target.get('data-target'))
+				const target = document.body.querySelector(ev.target.getAttribute('data-target'))
 
 				if (!target || target.tagName != 'FORM') return
 
 				target.submit()
 
 			})
+		}
 
-			this.fireEvent('icybee.actionbar.ready', this)
-		},
-
-		toElement: function()
+		toElement()
 		{
 			return this.element
-		},
+		}
 
-		setUpAnchoring: function()
+		setUpAnchoring()
 		{
-			var el = this.element
-			, y = el.getPosition().y
+			const el = this.element
+
+			let y = el.getPosition().y
 
 			function updateActionBar()
 			{
-				var bodyY = document.html.scrollTop || document.body.scrollTop
+				const bodyY = document.html.scrollTop || document.body.scrollTop
 
 				el[y < bodyY ? 'addClass' : 'removeClass']('fixed')
 			}
@@ -56,19 +52,14 @@
 				scroll: updateActionBar
 
 			})
-		},
-
-		changeContext: function(what)
-		{
-			this.element.set('data-context', what || '')
 		}
 
-	})
+		changeContext(context)
+		{
+			this.element.set('data-context', context || '')
+		}
+	}
 
-	Brickrouge.register('action-bar', function (element, options) {
-
-		return new Brickrouge.Widget.ActionBar(element, options)
-
-	})
+	Brickrouge.register('action-bar', (element, options) => new ActionBar(element, options))
 
 } (Brickrouge);
