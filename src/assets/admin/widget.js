@@ -49,8 +49,20 @@ define('icybee/adjust-popover', [
 
 			if (adjust)
 			{
-				adjust.addEvent('results', this.repositionCallback)
-				adjust.addEvent('adjust', this.quickRepositionCallback)
+				try {
+					if ('observeResult' in adjust) {
+						adjust.observeResult(this.repositionCallback)
+					}
+					if ('observeChange' in adjust) {
+						adjust.observeChange(this.quickRepositionCallback)
+					}
+					if ('addEvent' in adjust) {
+						console.warn('adjust should implement observeChange:', adjust)
+						adjust.addEvent('change', this.quickRepositionCallback)
+					}
+				} catch (e) {
+					console.error(e)
+				}
 			}
 		}
 
@@ -59,7 +71,7 @@ define('icybee/adjust-popover', [
 		 */
 		getAdjust()
 		{
-			console.log('deprecated use this.adjust', new Error)
+			console.log('getAdjust() is deprecated, use this.adjust', new Error)
 
 			return this.adjust
 		}
