@@ -11,6 +11,7 @@
 
 namespace Icybee\Block;
 
+use Brickrouge\A;
 use ICanBoogie\ActiveRecord;
 use ICanBoogie\ActiveRecord\Query;
 use ICanBoogie\ActiveRecord\SchemaColumn;
@@ -944,11 +945,22 @@ EOT;
 		{
 			$url = $this->app->url_for("admin:{$this->module->id}:new");
 
-			$message = $this->t('create_first', [ '!url' => $url ]);
+			$message = new A($this->t('create_first'), $url, [
+
+				'class' => 'alert-link'
+
+			]);
+
 			$context = 'info';
 		}
 
-		return new Alert($message, [ Alert::CONTEXT => $context, 'class' => 'alert listview-alert' ]);
+		return new Alert($message, [
+
+			Alert::CONTEXT => $context,
+
+			'class' => 'alert listview-alert'
+
+		]);
 	}
 
 	/**

@@ -9,70 +9,62 @@
 
 define('icybee/spinner', [
 
-], function () {
+], () => {
 
-	return new Class({
-
-		Implements: [ Options, Events ],
-
-		initialize: function(el, options)
+	return class
+	{
+		constructor(el, options)
 		{
-			this.element = el = document.id(el)
-			this.setOptions(options)
-
-			this.control = el.getElement('input')
-			this.content = el.getElement('.spinner-content')
+			this.element = el
+			this.options = options
+			this.control = el.querySelector('input')
+			this.content = el.querySelector('.spinner-content')
 			this.popover = null
 			this.resetValue = null
 			this.resetContent = null
 
-			el.addEvent('click', function(ev) {
+			el.addEventListener('click', ev => {
 
-				ev.stop()
+				ev.preventDefault()
 				this.open()
 
-			}.bind(this))
-		},
-
-		open: function()
-		{
-
-		},
+			})
+		}
 
 		/**
 		 * Translate the internal representation of the value into a string
 		 */
-		setValue: function(value)
+		setValue(value)
 		{
 			if (this.content)
 			{
-				var formatedValue = this.formatValue(value)
-				, type = typeOf(formatedValue)
+				const formattedValue = this.formatValue(value)
+				const type = typeOf(formattedValue)
 
 				this.content.empty()
 
 				if (type == 'element' || type == 'elements')
 				{
-					this.content.adopt(formatedValue)
+					this.content.adopt(formattedValue)
 				}
 				else if (type == 'string')
 				{
-					this.content.innerHTML = formatedValue
+					this.content.innerHTML = formattedValue
 				}
 			}
 
 			this.element[value ? 'removeClass' : 'addClass']('placeholder')
 
 			this.control.set('value', this.encodeValue(value))
-		},
+		}
 
 		/**
 		 * Get the string value for the input and translate it into its internal representation.
 		 */
-		getValue: function()
+		getValue()
 		{
 			return this.decodeValue(this.control.get('value'))
-		},
+		}
 
 		/**
 		 * Encodes the internal representation of the value into a string.
@@ -81,10 +73,10 @@ define('icybee/spinner', [
 		 *
 		 * @return string
 		 */
-		encodeValue: function(value)
+		encodeValue(value)
 		{
 			return value
-		},
+		}
 
 		/**
 		 * Decode the string encoded value into its internal representation.
@@ -93,30 +85,33 @@ define('icybee/spinner', [
 		 *
 		 * @return mixed
 		 */
-		decodeValue: function(value)
+		decodeValue(value)
 		{
 			return value
-		},
+		}
 
-		formatValue: function(value)
+		formatValue(value)
 		{
 			return value
-		},
+		}
 
-		attachAdjust: function(adjust)
+		attachAdjust(adjust)
 		{
 
 		}
-	})
+
+		open()
+		{
+
+		}
+	}
 })
 
 !function (Brickrouge) {
 
-	Brickrouge.Widget.Spinner = require('icybee/spinner') // FIXME: COMPAT
+	let Constructor
 
-	var Constructor
-
-	Brickrouge.register('spinner', function (element, options) {
+	Brickrouge.register('spinner', (element, options) => {
 
 		if (!Constructor)
 		{

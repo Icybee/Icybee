@@ -19,6 +19,7 @@ use ICanBoogie\HTTP\Request;
 use ICanBoogie\HTTP\RedirectResponse;
 use ICanBoogie\HTTP\Status;
 use ICanBoogie\Module\Descriptor;
+use ICanBoogie\Module\Operation\SaveOperation;
 use ICanBoogie\Operation;
 use ICanBoogie\Render\BasicTemplateResolver;
 use ICanBoogie\Render\TemplateResolver;
@@ -230,6 +231,22 @@ class Hooks
 		}
 
 		$target->add_path(DIR . 'templates');
+	}
+
+	static public function on_save_operation_rescue(Operation\RescueEvent $event, SaveOperation $target)
+	{
+		$request = $event->request;
+
+		// FIXME: should use segment flash
+		$session = self::app()->session;
+		$session->flash['form.values'] = $request->params;
+		$session->flash['form.errors'] = $target->response->errors;
+
+		$event->response = new RedirectResponse($request->referer ?: $request->uri, Status::FOUND, [
+
+			'X-ICanBoogie-Exception-Origin' => $event->exception->getFile() . '@' . $event->exception->getLine()
+
+		]);
 	}
 
 	/**

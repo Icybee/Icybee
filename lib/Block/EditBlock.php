@@ -377,7 +377,7 @@ class EditBlock extends FormBlock
 			? $this->session['operation_save_mode'][$module->id]
 			: Icybee\OPERATION_SAVE_MODE_LIST;
 
-		$save_mode_options =[
+		$save_mode_options = [
 
 			Icybee\OPERATION_SAVE_MODE_LIST => $this->t('save_mode_list', [ ], [ 'scope' => 'option' ]),
 			Icybee\OPERATION_SAVE_MODE_CONTINUE => $this->t('save_mode_continue', [ ], [ 'scope' => 'option' ]),
@@ -411,7 +411,7 @@ class EditBlock extends FormBlock
 		$key = $this->key;
 		$block = $this;
 
-		$this->events->attach(function(ActionBarToolbar\CollectEvent $event, ActionBarToolbar $sender) use($record, $module, $key, $save_mode_options, $mode, $block, $app) {
+		$this->events->once(function(ActionBarToolbar\CollectEvent $event, ActionBarToolbar $sender) use($record, $module, $key, $save_mode_options, $mode, $block, $app) {
 
 			if ($record)
 			{

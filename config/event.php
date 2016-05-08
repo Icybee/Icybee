@@ -17,5 +17,6 @@ return [
 	Icybee\Modules\Pages\PageRenderer::class . '::render:before' => $hooks . 'before_page_renderer_render',
 	Icybee\Modules\Pages\PageRenderer::class . '::render' => $hooks . 'on_page_renderer_render',
 	Icybee\Modules\Users\Operation\LogoutOperation::class . '::process:before' => $hooks . 'before_user_logout',
+	ICanBoogie\Module\Operation\SaveOperation::class . '::rescue' => $hooks . 'on_save_operation_rescue',
 
 ];

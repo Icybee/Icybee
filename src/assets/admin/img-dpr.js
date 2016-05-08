@@ -50,7 +50,9 @@
 
 	window.addEventListener('load', function () {
 
-		Brickrouge.observe('update', function (fragment) {
+		Brickrouge.observe(Brickrouge.EVENT_UPDATE, ev => {
+
+			const fragment = ev.fragment
 
 			if (fragment.tagName === 'IMG')
 			{

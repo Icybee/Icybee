@@ -1,4 +1,8 @@
-JS_COMPRESSOR = curl -X POST -s --data-urlencode 'input@$^' http://javascript-minifier.com/raw
+JS_COMPRESSOR = `which uglifyjs` $^ \
+	--compress \
+	--mangle \
+	--screw-ie8 \
+	--source-map $@.map
 #JS_COMPRESSOR = cat $^ # uncomment this line to produce uncompressed files
 CSS_COMPILER = `which sass`
 CSS_COMPILER_OPTIONS = --style compressed   # comment to disable compression

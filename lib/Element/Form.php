@@ -29,9 +29,12 @@ class Form extends \Brickrouge\Form
 	 * @param Operation $operation
 	 *
 	 * @throws Operation\FormHasExpired
+	 *
+	 * @deprecated Forms can no longer be saved in session
 	 */
 	static public function on_operation_get_form(Operation\GetFormEvent $event, Operation $operation)
 	{
+		/*
 		$request = $event->request;
 
 		if (!$request[self::STORED_KEY_NAME])
@@ -62,5 +65,6 @@ class Form extends \Brickrouge\Form
 			$event->form = $form;
 			$event->stop();
 		}
+		*/
 	}
 }

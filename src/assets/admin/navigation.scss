@@ -46,9 +46,10 @@
 		border-top-right-radius: 0;
 		border-top: 0;
 		margin-top: 0;
-		margin-left: -17px;
+		margin-left: calc(-1rem - 1px);
 
-		&:before {
+		&::before {
+			content: "";
 			border: none;
 			border-top: 4px solid #1F6D89;
 			position: absolute;
@@ -59,7 +60,7 @@
 			display: block;
 		}
 
-		&:after {
+		&::after {
     		display: none;
 		}
 
@@ -81,4 +82,5 @@
 .dropdown-menu {
 	box-sizing: border-box;
 	-webkit-box-sizing: border-box;
+	box-shadow: 0 .5rem 1rem rgba(0,0,0,.2);
 }

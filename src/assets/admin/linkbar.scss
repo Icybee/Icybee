@@ -1,0 +1,46 @@
+#quick {
+	color: silver;
+	background-color: black;
+	font-size: .8571rem;
+	padding: .75rem 1rem;
+	box-sizing: content-box;
+	-webkit-box-sizing: content-box;
+
+	.btn-group {
+		vertical-align: top;
+		display: inline-block;
+
+		.caret {
+			vertical-align: middle;
+			opacity: .6;
+		}
+
+		&:hover .caret {
+			opacity: .8;
+		}
+
+		&.open .caret {
+			opacity: 1;
+		}
+	}
+
+	a {
+		color: inherit;
+	}
+
+	.language {
+		color: #777;
+	}
+
+	.dropdown-toggle {
+		box-shadow: none;
+		border-radius: 3px;
+		padding: 0;
+		cursor: default;
+	}
+
+	.dropdown-toggle:hover,
+	.btn-group.open .dropdown-toggle {
+		border-color: #444;
+	}
+}

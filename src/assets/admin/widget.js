@@ -11,48 +11,59 @@ define('icybee/adjust-popover', [
 
 	'brickrouge'
 
-], function (Brickrouge) {
+], (Brickrouge) => {
 
-	return new Class({
+	return class extends Brickrouge.Popover {
 
-		Extends: Brickrouge.Popover,
-		Implements: [ Options, Events ],
-
-		initialize: function(el, options)
+		/**
+		 * @param {Element} el
+		 * @param {object} options
+		 */
+		constructor(el, options)
 		{
-			this.parent(el, options)
+			super(el, options)
 
-			this.adjust = null
 			this.selected = null
-		},
+		}
 
-		getAdjust: function()
+		/**
+		 * Returns the adjust widget.
+		 *
+		 * @returns {object}
+		 */
+		get adjust()
 		{
 			return Brickrouge.from(this.element.querySelector('.popover-content :first-child'))
-		},
+		}
 
-		show: function()
+		/**
+		 * @inheritdoc
+		 *
+		 * Reposition the popover when the content of the adjust element is updated.
+		 */
+		show()
 		{
-			this.parent()
+			super.show()
 
-			this.adjust = this.getAdjust()
+			const adjust = this.adjust
 
-			if (this.adjust)
+			if (adjust)
 			{
-				this.adjust.addEvent('results', this.repositionCallback)
-				this.adjust.addEvent('adjust', this.quickRepositionCallback)
+				adjust.addEvent('results', this.repositionCallback)
+				adjust.addEvent('adjust', this.quickRepositionCallback)
 			}
 		}
-	})
 
-})
+		/**
+		 * @deprecated
+		 */
+		getAdjust()
+		{
+			console.log('deprecated use this.adjust', new Error)
 
-this.Icybee = {
-
-	Widget: {
-
-		AdjustPopover: require('icybee/adjust-popover')
+			return this.adjust
+		}
 
 	}
 
-}
+})

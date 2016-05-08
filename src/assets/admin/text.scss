@@ -1,0 +1,26 @@
+@import "../variables";
+
+.darker,
+.text-darker{
+	color: $text-darker;
+}
+
+.dark,
+.text-dark{
+	color: $text-dark;
+}
+
+.light,
+.text-light {
+	color: $text-light;
+}
+
+.lighter,
+.text-lighter {
+	color: $text-lighter;
+}
+
+.small,
+.text-small {
+	font-size: .8571em;
+}

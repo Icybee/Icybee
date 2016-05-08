@@ -92,7 +92,7 @@ return [
 
 		],
 
-		'create_first' => '<strong><a href="!url">Create the first record…</a></strong>',
+		'create_first' => "Create the first record…",
 
 		'edit' => 'Edit the record',
 		'edit_named' => 'Edit the record: :title',

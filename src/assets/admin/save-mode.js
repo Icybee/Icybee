@@ -11,19 +11,19 @@
  * Creates a link between the _save mode_ group at the end of the editor form and the one in the
  * action bar.
  */
-Brickrouge.observe('running', function() {
+Brickrouge.observeRunning(ev => {
 
-	var mirror = document.body.querySelector('.actionbar .record-save-mode')
-	, container = document.body.querySelector('.form-actions .save-mode')
-	, modes = container ? container.querySelectorAll('input[type="radio"]') : []
-	, primaryButton = document.body.querySelector('.form-actions .btn-primary')
+	const mirror = document.body.querySelector('.actionbar .record-save-mode')
+	const container = document.body.querySelector('.form-actions .save-mode')
+	const modes = container ? container.querySelectorAll('input[type="radio"]') : []
+	const primaryButton = document.body.querySelector('.form-actions .btn-primary')
 
 	if (!mirror || !modes.length) return
 
-	mirror.addEventListener('click', function (ev) {
+	mirror.addEventListener('click', ev => {
 
-		var target = ev.target
-		, mode = target.getAttribute('data-key')
+		const target = ev.target
+		const mode = target.getAttribute('data-key')
 
 		if (target.match('.btn-primary:first-child'))
 		{
@@ -36,7 +36,7 @@ Brickrouge.observe('running', function() {
 
 		ev.preventDefault()
 
-		Array.prototype.forEach.call(modes, function (radio) {
+		Array.prototype.forEach.call(modes, radio => {
 
 			radio.checked = (radio.value === mode)
 
@@ -45,13 +45,13 @@ Brickrouge.observe('running', function() {
 		primaryButton.click()
 	})
 
-	container.addDelegatedEventListener('[type="radio"]', 'click', function (ev, radio) {
+	container.addDelegatedEventListener('[type="radio"]', 'click', (ev, radio) => {
 
-		var mode = radio.value
+		const mode = radio.value
 
-		Array.prototype.forEach.call(mirror.querySelectorAll('.dropdown-item'), function (item) {
+		mirror.querySelectorAll('.dropdown-item').forEach(item => {
 
-			var itemMode = item.getAttribute('data-key')
+			const itemMode = item.getAttribute('data-key')
 
 			if (mode === itemMode)
 			{

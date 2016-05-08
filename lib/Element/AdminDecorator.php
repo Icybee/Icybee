@@ -172,7 +172,7 @@ EOT;
 			. new \Icybee\Element\UserMenu([ 'class' => 'pull-right' ]);
 		}
 
-		return '<div id="quick">' . $html . '</div>';
+		return '<div id="quick" class="clearfix">' . $html . '</div>';
 	}
 
 	protected function render_alerts()

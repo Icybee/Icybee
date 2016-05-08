@@ -75,7 +75,7 @@ return [
 
 		],
 
-		'create_first' => "<strong><a href=\"!url\">Créer le premier enregistrement…</a></strong>",
+		'create_first' => "Créer le premier enregistrement…",
 
 		'edit' => "Éditer l'enregistrement",
 		'edit_named' => "Éditer l'enregistrement : :title",

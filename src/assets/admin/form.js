@@ -10,9 +10,9 @@
 /**
  * Disable spellchecking for textarea with the `code` class.
  */
-Brickrouge.observe('update', function (fragment) {
+Brickrouge.observe(Brickrouge.EVENT_UPDATE, ev => {
 
-	fragment.getElements('textarea.code').each(function(el) {
+	ev.fragment.querySelectorAll('textarea.code').forEach(el => {
 
 		if (!el.spellcheck) return
 

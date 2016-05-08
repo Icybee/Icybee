@@ -157,6 +157,20 @@ abstract class FormBlock extends Prototyped
 		$this->actions;
 		$actions = &$this->actions;
 
+		// FIXME: should use segment flash
+		$flash = $this->app->session->flash;
+
+		if ($flash['form.errors'])
+		{
+			$errors = $flash['form.errors'];
+		}
+
+		if ($flash['form.values'])
+		{
+			$values = array_merge($values, $flash['form.values']);
+		}
+		// /
+
 		$params = $this->alter([
 
 			'module' => $this->module,
@@ -171,7 +185,8 @@ abstract class FormBlock extends Prototyped
 
 			Form::ACTIONS => &$actions,
 			Form::CHILDREN => &$children,
-			Form::VALUES => &$values
+			Form::VALUES => &$values,
+			Form::ERRORS => &$errors,
 
 		] + $params['attributes'];
 
