@@ -11,63 +11,55 @@
 
 use Brickrouge\Element;
 use Brickrouge\Form;
+use Brickrouge\Group;
 use Brickrouge\Text;
 
-class WdEMailNotifyElement extends \Brickrouge\Group
+class WdEMailNotifyElement extends Group
 {
 	protected $elements;
 
-	public function __construct(array $attributes=array())
+	public function __construct(array $attributes = [])
 	{
-		parent::__construct
-		(
-			$attributes + array
-			(
-				Element::CHILDREN => array
-				(
-					'subject' => $this->elements['subject'] = new Text
-					(
-						array
-						(
-							Form::LABEL => "Subject",
-							Element::REQUIRED => true
-						)
-					),
+		parent::__construct($attributes +  [
 
-					'from' => $this->elements['from'] = new Text
-					(
-						array
-						(
-							Form::LABEL => "Sender address",
-							Element::REQUIRED => true,
-							Element::DEFAULT_VALUE => $this->app->site->email,
-							Element::VALIDATOR => array('Brickrouge\Form::validate_email')
-						)
-					),
+			Element::CHILDREN => [
 
-					'bcc' => $this->elements['bcc'] = new Text
-					(
-						array
-						(
-							Form::LABEL => "Blind copy",
-						)
-					),
+				'subject' => $this->elements['subject'] = new Text([
 
-					'template' => $this->elements['template'] = new Element
-					(
-						'textarea', array
-						(
-							Form::LABEL => "Message template",
-							Element::REQUIRED => true,
+					Group::LABEL => "Subject",
+					Element::REQUIRED => true
 
-							'rows' => 8
-						)
-					)
-				),
+				]),
 
-				'class' => 'combo'
-			)
-		);
+				'from' => $this->elements['from'] = new Text([
+
+					Group::LABEL => "Sender address",
+					Element::REQUIRED => true,
+					Element::DEFAULT_VALUE => $this->app->site->email,
+					Element::VALIDATION => 'email'
+
+				]),
+
+				'bcc' => $this->elements['bcc'] = new Text([
+
+					Group::LABEL => "Blind copy",
+
+				]),
+
+				'template' => $this->elements['template'] = new Element('textarea', [
+
+					Group::LABEL => "Message template",
+					Element::REQUIRED => true,
+
+					'rows' => 8
+
+				])
+
+			],
+
+			'class' => 'combo'
+
+		]);
 	}
 
 	/**

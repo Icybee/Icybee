@@ -9,10 +9,16 @@
 
 define('icybee/spinner', [
 
-], () => {
+	'brickrouge'
+
+], (Brickrouge) => {
 
 	return class
 	{
+		/**
+		 * @param {Element} el
+		 * @param {{}} options
+		 */
 		constructor(el, options)
 		{
 			this.element = el
@@ -23,7 +29,15 @@ define('icybee/spinner', [
 			this.resetValue = null
 			this.resetContent = null
 
-			el.addEventListener('click', ev => {
+			this.listenToClick()
+		}
+
+		/**
+		 * Invokes `this.open()` when the element is clicked.
+		 */
+		listenToClick()
+		{
+			this.element.addEventListener('click', ev => {
 
 				ev.preventDefault()
 				this.open()
@@ -33,15 +47,17 @@ define('icybee/spinner', [
 
 		/**
 		 * Translate the internal representation of the value into a string
+		 *
+		 * @param {*} value
 		 */
-		setValue(value)
+		set value(value)
 		{
 			if (this.content)
 			{
 				const formattedValue = this.formatValue(value)
 				const type = typeOf(formattedValue)
 
-				this.content.empty()
+				Brickrouge.empty(this.content)
 
 				if (type == 'element' || type == 'elements')
 				{
@@ -60,8 +76,10 @@ define('icybee/spinner', [
 
 		/**
 		 * Get the string value for the input and translate it into its internal representation.
+		 *
+		 * @returns {*}
 		 */
-		getValue()
+		get value()
 		{
 			return this.decodeValue(this.control.get('value'))
 		}
@@ -81,15 +99,20 @@ define('icybee/spinner', [
 		/**
 		 * Decode the string encoded value into its internal representation.
 		 *
-		 * @param value
+		 * @param {*} value
 		 *
-		 * @return mixed
+		 * @return {*}
 		 */
 		decodeValue(value)
 		{
 			return value
 		}
 
+		/**
+		 * @param {*} value
+		 *
+		 * @returns {*}
+		 */
 		formatValue(value)
 		{
 			return value
@@ -100,6 +123,9 @@ define('icybee/spinner', [
 
 		}
 
+		/**
+		 * Displays the adjust element.
+		 */
 		open()
 		{
 

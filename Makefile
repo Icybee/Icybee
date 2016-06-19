@@ -37,6 +37,8 @@ JS_FILES = \
 	src/assets/admin/save-mode.js \
 	src/assets/admin/spinner.js \
 	src/assets/admin/widget.js \
+	src/assets/admin/adjust.js \
+	src/assets/admin/pop-adjust.js \
 	src/assets/admin/img-dpr.js
 
 JS_COMPRESSED = assets/admin.js
