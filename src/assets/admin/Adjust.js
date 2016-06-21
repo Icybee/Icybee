@@ -15,6 +15,9 @@ define('icybee/adjust', [
 
 	const Subject = Brickrouge.Subject
 
+	/**
+	 * @event Icybee.Adjust#change
+	 */
 	const ChangeEvent = Subject.createEvent(function (target, value) {
 
 		this.target = target
@@ -25,11 +28,11 @@ define('icybee/adjust', [
 	const Adjust = class extends Brickrouge.mixin(Object, Subject) {
 
 		/**
-		 * Observes update event.
+		 * Observes change event.
 		 *
 		 * @param {function} callback
 		 */
-		observeUpdate(callback) {
+		observeChange(callback) {
 
 			this.observe(ChangeEvent, callback)
 
@@ -39,7 +42,7 @@ define('icybee/adjust', [
 
 	Object.defineProperties(Adjust, {
 
-		'ChangeEvent': { value: ChangeEvent }
+		ChangeEvent: { value: ChangeEvent }
 
 	})
 

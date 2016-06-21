@@ -35,10 +35,9 @@ JS_FILES = \
 	src/assets/admin/popover-image.js \
 	src/assets/admin/reset.js \
 	src/assets/admin/save-mode.js \
-	src/assets/admin/spinner.js \
-	src/assets/admin/widget.js \
-	src/assets/admin/adjust.js \
-	src/assets/admin/pop-adjust.js \
+	src/assets/admin/Spinner.js \
+	src/assets/admin/AdjustPopover.js \
+	src/assets/admin/Adjust.js \
 	src/assets/admin/img-dpr.js
 
 JS_COMPRESSED = assets/admin.js

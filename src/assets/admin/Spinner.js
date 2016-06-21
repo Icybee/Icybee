@@ -11,8 +11,21 @@ define('icybee/spinner', [
 
 	'brickrouge'
 
-], (Brickrouge) => {
+],
 
+/**
+ * @param {Brickrouge} Brickrouge
+ */
+(Brickrouge) => {
+
+	/**
+	 * @property {Element} element
+	 * @property {Object} options
+	 * @property {HTMLInputElement} control
+	 * @property {Element|null} content
+	 * @property {Brickrouge.Popover} popover
+	 * @property {string|number|null} resetValue
+	 */
 	return class
 	{
 		/**
@@ -27,7 +40,6 @@ define('icybee/spinner', [
 			this.content = el.querySelector('.spinner-content')
 			this.popover = null
 			this.resetValue = null
-			this.resetContent = null
 
 			this.listenToClick()
 		}
@@ -71,7 +83,7 @@ define('icybee/spinner', [
 
 			this.element[value ? 'removeClass' : 'addClass']('placeholder')
 
-			this.control.set('value', this.encodeValue(value))
+			this.control.value = this.encodeValue(value)
 		}
 
 		/**
@@ -81,7 +93,7 @@ define('icybee/spinner', [
 		 */
 		get value()
 		{
-			return this.decodeValue(this.control.get('value'))
+			return this.decodeValue(this.control.value)
 		}
 
 		/**
@@ -118,18 +130,127 @@ define('icybee/spinner', [
 			return value
 		}
 
-		attachAdjust(adjust)
+		/**
+		 * Opens the popover.
+		 */
+		open()
 		{
+			this.resetValue = this.value
+
+			if (this.popover)
+			{
+				this.popover.adjust.value = this.resetValue
+				this.popover.show()
+			}
+			else
+			{
+				this.createPopover(popover => {
+
+					this.popover = popover
+
+					popover.show()
+
+					/**
+					 * @param {Icybee.AdjustPopover.ActionEvent} ev
+					 */
+					popover.observeAction(ev => this.action(ev.action))
+
+					/**
+					 * @param {Icybee.Adjust.ChangeEvent} ev
+					 */
+					popover.adjust.observeChange(ev => this.change(ev.value))
+
+				})
+			}
+		}
+
+		/**
+		 * Close the popover.
+		 */
+		close()
+		{
+			if (!this.popover)
+			{
+				return
+			}
+
+			this.popover.hide()
+		}
+
+		/**
+		 * Creates popover with adjust element.
+		 *
+		 * @param {function} callback Callback to call when the popover has been created.
+		 */
+		createPopover(callback)
+		{
+			throw new Error("The method must be implemented by sub-classes.")
+		}
+
+		/**
+		 *
+		 * @param {string|number|null} value
+		 */
+		change(value)
+		{
+			this.value = value
+
+			if (this.popover)
+			{
+				this.popover.reposition()
+			}
+		}
+
+		/**
+		 * @param {string} action
+		 */
+		action(action)
+		{
+			switch (action)
+			{
+				case 'cancel':
+					this.reset()
+					break
+
+				case 'remove':
+					this.remove()
+					break
+
+				case 'use':
+					this.use(this.popover.value)
+					break
+			}
+
+			this.close()
 
 		}
 
 		/**
-		 * Displays the adjust element.
+		 * Reset to the original value.
 		 */
-		open()
+		reset()
 		{
-
+			this.value = this.resetValue
 		}
+
+		/**
+		 * Remove the value.
+		 */
+		remove()
+		{
+			this.value = null
+		}
+
+		/**
+		 * Use a value.
+		 *
+		 * @param {string|number|null} value
+		 */
+		use(value)
+		{
+			this.value = value
+		}
+
 	}
 })
 
