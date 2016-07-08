@@ -1,15 +1,21 @@
 declare namespace Icybee {
 
-    interface AdjustPopover extends Brickrouge.Popover {
-        adjust: Icybee.Adjust
+    class AdjustPopover extends Brickrouge.Popover {
+        static readonly UpdateEvent: AdjustPopover.UpdateEvent
+        static readonly LayoutEvent: AdjustPopover.LayoutEvent
+        readonly adjust: Icybee.Adjust
         value: string|number|null
+        observeUpdate(callback: Function)
+        observeLayout(callback: Function)
     }
 
     namespace AdjustPopover {
 
-        interface ActionEvent extends Brickrouge.Popover.ActionEvent {
-            action: string
-            popover: AdjustPopover
+        interface UpdateEvent {
+            value: string|number|null
+        }
+
+        interface LayoutEvent {
         }
 
     }

@@ -7,110 +7,130 @@
  * file that was distributed with this source code.
  */
 
-/**
- * Disable spellchecking for textarea with the `code` class.
- */
-Brickrouge.observe(Brickrouge.EVENT_UPDATE, ev => {
+define([
 
-	ev.fragment.querySelectorAll('textarea.code').forEach(el => {
+	'brickrouge'
 
-		if (!el.spellcheck) return
-
-		el.spellcheck = false
-
-	})
-})
+],
 
 /**
- * Ask the user before losing changes made to the primary form.
- *
- * The primary form is indicated by the `.form-primary` class.
+ * @param {Brickrouge} Brickrouge
  */
-window.addEvent('domready', function() {
+Brickrouge => {
 
-	/*
-	 * The following code looks for changes in elements' values between the 'domready' event and
-	 * the 'onbeforeunload' event. If there are changes, the user is asked to confirm page unload.
+	/**
+	 * Disable spellchecking for textarea with the `code` class.
 	 */
+	Brickrouge.observeUpdate(ev => {
 
-	function toQueryString(el)
-	{
-		var keys = []
-		, values = []
-		, assoc = {}
+		ev.fragment.querySelectorAll('textarea.code').forEach(el => {
 
-		el.getElements('[name]').each(function(el) {
+			if (!el.spellcheck) {
+				return
+			}
 
-			if (el.disabled) return
-
-			var key = el.get('name')
-			, value = el.get('value')
-
-			keys.push(key)
-			values.push(value)
-			assoc[key] = value
+			el.spellcheck = false
 
 		})
-
-		var sorted_keys = keys.slice(0)
-		, sorted_values = {}
-
-		sorted_keys.sort()
-
-		//console.log('elements (%d): %a, active: %a, concat: %s', elements.length, elements, actives, concat);
-		//console.log('keys: %a, values: %a', keys, values);
-
-		for (var i = 0 ; i < sorted_keys.length ; i++)
-		{
-			var key = sorted_keys[i]
-
-			sorted_values[key] = assoc[key]
-		}
-
-		var hash = new Hash(sorted_values)
-
-		//console.log('sorted keys: %a, values: %a', sorted_keys, sorted_values);
-		//console.log('queryString: %s', hash.toQueryString());
-
-		return hash.toQueryString()
-	}
-
-	var initValues = null
-	, skip = false
-	, form = document.body.getElement('.form-primary')
-
-	if (!form) return
-
-	initValues = toQueryString(form)
-
-	window.addEvent('load', function() {
-
-		initValues = toQueryString(form)
-
 	})
 
-	window.onbeforeunload = function() {
+	/**
+	 * Ask the user before losing changes made to the primary form.
+	 *
+	 * The primary form is indicated by the `.form-primary` class.
+	 */
+	Brickrouge.observeRunning(() => {
 
-		if (skip)
+		/*
+		 * The following code looks for changes in elements' values between the 'domready' event and
+		 * the 'onbeforeunload' event. If there are changes, the user is asked to confirm page unload.
+		 */
+
+		function toQueryString(el)
 		{
-			skip = false
+			const keys = []
+			const values = []
+			const assoc = {}
 
+			el.querySelectorAll('[name]').forEach(el => {
+
+				if (el.disabled) {
+					return
+				}
+
+				const key = el.getAttribute('name')
+				const value = el.value
+
+				keys.push(key)
+				values.push(value)
+				assoc[key] = value
+
+			})
+
+			const sorted_keys = keys.slice(0)
+			const sorted_values = {}
+
+			sorted_keys.sort()
+
+			//console.log('elements (%d): %a, active: %a, concat: %s', elements.length, elements, actives, concat);
+			//console.log('keys: %a, values: %a', keys, values);
+
+			for (let i = 0 ; i < sorted_keys.length ; i++)
+			{
+				const key = sorted_keys[i]
+
+				sorted_values[key] = assoc[key]
+			}
+
+			const hash = new Hash(sorted_values)
+
+			//console.log('sorted keys: %a, values: %a', sorted_keys, sorted_values);
+			//console.log('queryString: %s', hash.toQueryString());
+
+			return hash.toQueryString()
+		}
+
+		let skip = false
+		const form = document.body.querySelector('.form-primary')
+
+		if (!form) {
 			return
 		}
 
-		var values = toQueryString(form)
+		let initValues = toQueryString(form)
 
-		//console.log('values_now: %s', values_now);
+		window.addEvent('load', () => {
 
-		if (initValues == values) return
+			initValues = toQueryString(form)
 
-		return "Des changements ont été fait sur la page. Si vous changez de page maintenant, ils seront perdus."
-	}
+		})
 
-	form.addEvent('submit', function(ev) {
+		window.onbeforeunload = () => {
 
-		skip = true
-		initValues = toQueryString(form)
+			if (skip)
+			{
+				skip = false
 
+				return null
+			}
+
+			const values = toQueryString(form)
+
+			//console.log('values_now: %s', values_now);
+
+			if (initValues == values) {
+				return null
+			}
+
+			return "Des changements ont été fait sur la page. Si vous changez de page maintenant, ils seront perdus."
+		}
+
+		form.addEvent('submit', ev => {
+
+			skip = true
+			initValues = toQueryString(form)
+
+		})
 	})
+
 })

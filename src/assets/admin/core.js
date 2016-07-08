@@ -1,6 +1,6 @@
 var require = IDependOnYou.require
 
-define('brickrouge', function () {
+define('brickrouge', () => {
 
 	return Brickrouge
 

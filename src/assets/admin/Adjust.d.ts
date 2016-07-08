@@ -1,9 +1,11 @@
 declare namespace Icybee {
 
     class Adjust extends Brickrouge.Subject {
-        observeChange(callback: Function)
+        static readonly ChangeEvent: Adjust.ChangeEvent
+        static readonly LayoutEvent: Adjust.LayoutEvent
         value: string|number|null
-        static value: Adjust.ChangeEvent
+        observeChange(callback: Function)
+        observeLayout(callback: Function)
     }
 
     namespace Adjust {
@@ -11,6 +13,10 @@ declare namespace Icybee {
         interface ChangeEvent {
             target: Adjust
             value: string|number|null
+        }
+
+        interface LayoutEvent {
+            target: Adjust
         }
 
     }

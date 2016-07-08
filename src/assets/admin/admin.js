@@ -11,9 +11,10 @@
  * Changes the `enabled` class of the `.group-toggler` element according to the state of its
  * checkbox child.
  */
-document.body.addEvent('click:relay(.group-toggler input[type="checkbox"])', function(ev, el) {
+document.body.addEvent('click:relay(.group-toggler input[type="checkbox"])', (ev, el) => {
 
-	var parent = el.getParent('.group-toggler')
+	const parent = el.getParent('.group-toggler')
 
 	parent[el.checked ? 'addClass' : 'removeClass']('enabled')
+
 })

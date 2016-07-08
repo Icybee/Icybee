@@ -1,14 +1,14 @@
 declare namespace Icybee {
 
-    interface Spinner {
-        constructor(element: Element, options?: Object): Spinner
+    class Spinner {
+        constructor(element: Element, options?: Object)
         open(): void
         close(): void
-        element: Element
-        options: Object
-        control: Element
-        content: Element|null
-        popover: Element|null
+        readonly element: Element
+        readonly options: Object
+        readonly control: Element
+        readonly content: Element|null
+        readonly popover: Element|null
         resetValue: any
         value: any
     }

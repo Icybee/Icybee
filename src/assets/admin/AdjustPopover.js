@@ -11,18 +11,54 @@ define('icybee/adjust-popover', [
 
 	'brickrouge'
 
-], (Brickrouge) => {
+],
+
+/**
+ * @param {Brickrouge} Brickrouge
+ *
+ * @returns {Icybee.AdjustPopover}
+ */
+Brickrouge => {
+
+	const Subject = Brickrouge.Subject
 
 	/**
 	 * @event Icybee.AdjustPopover#update
+	 * @type {Icybee.AdjustPopover.UpdateEvent|Function}
 	 */
-	const UpdateEvent = Brickrouge.Subject.createEvent(function (value) {
+	const UpdateEvent = Subject.createEvent(function (value) {
 
 		this.value = value
 
 	})
 
-	const AdjustPopover = class extends Brickrouge.Popover {
+	/**
+	 * @event Icybee.AdjustPopover#layout
+	 * @type {Icybee.AdjustPopover.LayoutEvent|Function}
+	 */
+	const LayoutEvent = Subject.createEvent(function () {
+
+	})
+
+	return class extends Brickrouge.Popover
+	{
+		/**
+		 * @returns {Icybee.AdjustPopover.UpdateEvent}
+		 * @constructor
+		 */
+		static get UpdateEvent()
+		{
+			return UpdateEvent
+		}
+
+		/**
+		 * @returns {Icybee.AdjustPopover.LayoutEvent}
+		 * @constructor
+		 */
+		static get LayoutEvent()
+		{
+			return LayoutEvent
+		}
 
 		/**
 		 * @returns {Icybee.Adjust}
@@ -63,25 +99,28 @@ define('icybee/adjust-popover', [
 
 			const adjust = this.adjust
 
-			if (!adjust) {
+			if (!adjust)
+			{
 				return
 			}
 
-			try {
-				if ('observeResult' in adjust) {
-					adjust.observeResult(this.repositionCallback)
-				}
-				if ('observeChange' in adjust) {
-					adjust.observeChange(ev => {
-						this.quickRepositionCallback()
-						this.notify(new UpdateEvent(this.adjust.value))
-					})
-				}
-				if ('addEvent' in adjust) {
-					console.warn('adjust should implement observeChange:', adjust)
-					adjust.addEvent('change', this.quickRepositionCallback)
-				}
-			} catch (e) {
+			try
+			{
+				adjust.observeLayout(() => {
+					this.repositionCallback()
+					this.notify(new LayoutEvent(this))
+				})
+
+				/**
+				 * @param {Icybee.Adjust.ChangeEvent} ev
+				 */
+				adjust.observeChange(ev => {
+					this.quickRepositionCallback()
+					this.notify(new UpdateEvent(ev.value))
+				})
+			}
+			catch (e)
+			{
 				console.error(e)
 			}
 		}
@@ -94,14 +133,13 @@ define('icybee/adjust-popover', [
 			this.observe(UpdateEvent, callback)
 		}
 
+		/**
+		 * @param {Function} callback
+		 */
+		observeLayout(callback)
+		{
+			this.observe(LayoutEvent, callback)
+		}
 	}
-
-	Object.defineProperties(AdjustPopover, {
-
-		UpdateEvent: { value: UpdateEvent }
-
-	})
-
-	return AdjustPopover
 
 })

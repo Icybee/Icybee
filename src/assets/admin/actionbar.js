@@ -7,6 +7,12 @@
  * file that was distributed with this source code.
  */
 
+/**
+ * @global
+ * @type {Brickrouge}
+ */
+var Brickrouge
+
 !function (Brickrouge) {
 
 	class ActionBar
@@ -20,7 +26,9 @@
 
 				const target = document.body.querySelector(ev.target.getAttribute('data-target'))
 
-				if (!target || target.tagName != 'FORM') return
+				if (!target || 'FORM' !== target.tagName) {
+					return
+				}
 
 				target.submit()
 
@@ -52,11 +60,6 @@
 				scroll: updateActionBar
 
 			})
-		}
-
-		changeContext(context)
-		{
-			this.element.set('data-context', context || '')
 		}
 	}
 

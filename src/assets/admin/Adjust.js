@@ -11,12 +11,22 @@ define('icybee/adjust', [
 
 	'brickrouge'
 
-], function (Brickrouge) {
+],
+
+/**
+ * @param {Brickrouge} Brickrouge
+ *
+ * @returns {Icybee.Adjust}
+ */
+Brickrouge => {
 
 	const Subject = Brickrouge.Subject
 
 	/**
+	 * Fired when the value changes.
+	 *
 	 * @event Icybee.Adjust#change
+	 * @type {Icybee.Adjust.ChangeEvent|Function}
 	 */
 	const ChangeEvent = Subject.createEvent(function (target, value) {
 
@@ -25,12 +35,54 @@ define('icybee/adjust', [
 
 	})
 
-	const Adjust = class extends Brickrouge.mixin(Object, Subject) {
+	/**
+	 * Fired when the element layout changes.
+	 *
+	 * @event Icybee.Adjust#layout
+	 * @type {Icybee.Adjust.LayoutEvent|Function}
+	 */
+	const LayoutEvent = Subject.createEvent(function (target) {
+
+		this.target = target
+
+	})
+
+	return class extends Brickrouge.mixin(Object, Subject) {
 
 		/**
-		 * Observes change event.
+		 * @returns {Icybee.Adjust.ChangeEvent}
+		 * @constructor
+		 */
+		static get ChangeEvent()
+		{
+			return ChangeEvent
+		}
+
+		/**
+		 * @returns {Icybee.Adjust.LayoutEvent}
+		 * @constructor
+		 */
+		static get LayoutEvent()
+		{
+			return LayoutEvent
+		}
+
+		/**
+		 * @param {Element} element
+		 * @param {Object} options
+		 */
+		constructor(element, options)
+		{
+			super()
+
+			this.element = element
+			this.options = options
+		}
+
+		/**
+		 * Observe change event.
 		 *
-		 * @param {function} callback
+		 * @param {Function} callback
 		 */
 		observeChange(callback) {
 
@@ -38,14 +90,17 @@ define('icybee/adjust', [
 
 		}
 
+		/**
+		 * Observe layout event.
+		 *
+		 * @param {Function} callback
+		 */
+		observeLayout(callback) {
+
+			this.observe(LayoutEvent, callback)
+
+		}
+
 	}
-
-	Object.defineProperties(Adjust, {
-
-		ChangeEvent: { value: ChangeEvent }
-
-	})
-
-	return Adjust
 
 })

@@ -16,7 +16,7 @@ define('icybee/spinner', [
 /**
  * @param {Brickrouge} Brickrouge
  */
-(Brickrouge) => {
+Brickrouge => {
 
 	/**
 	 * @property {Element} element
