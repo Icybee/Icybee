@@ -26,22 +26,22 @@ namespace ICanBoogie;
 
 <div id="quick">←&nbsp;<a href="<?= $site ? $site->url : '/' ?>"><?= $site ? escape($site->title) : 'Home' ?></a></div>
 
-<div class="actionbar">
-<div class="pull-left">
-	<div class="actionbar-title"><h1>Icybee <small><?= $code . ' ' . $class ?></small></h1></div>
-</div>
-<?php if ($reported): ?>
-<div class="pull-right">
-	<span class="btn btn-success">The error has been reported</span>
-</div>
-<?php endif ?>
+<div class="actionbar clearfix">
+	<div class="pull-xs-left">
+		<div class="actionbar-title"><h1>Icybee <small><?= $code . ' ' . $class ?></small></h1></div>
+	</div>
+	<?php if ($reported): ?>
+	<div class="pull-xs-right">
+		<span class="btn btn-success">The error has been reported</span>
+	</div>
+	<?php endif ?>
 </div>
 
 <div id="contents-wrapper">
 	<?= $formatted_exception ?>
-
-	<footer><a href="http://www.icybee.org/" target="_blank">Icybee</a></footer>
 </div>
+
+<footer><a href="http://www.icybee.org/" target="_blank">Icybee</a></footer>
 
 </body>
 </html>
