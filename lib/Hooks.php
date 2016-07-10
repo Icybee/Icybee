@@ -331,7 +331,12 @@ class Hooks
 
 			foreach ($types as $type)
 			{
-				$alerts .= new Alert(Debug::fetch_messages($type), [ Alert::CONTEXT => $type ]);
+				$alerts .= new Alert(Debug::fetch_messages($type), [
+
+					Alert::CONTEXT => $type,
+					Alert::DISMISSIBLE => true
+
+				]);
 			}
 
 			if ($template)
@@ -436,6 +441,7 @@ class Hooks
 			{
 				$css = [
 
+					\Brickrouge\Document::resolve_url(\Icybee\ASSETS . "bootstrap.css"),
 					\Brickrouge\Document::resolve_url(\Brickrouge\ASSETS . 'brickrouge.css'),
 					\Brickrouge\Document::resolve_url(ASSETS . 'admin.css'),
 					\Brickrouge\Document::resolve_url(ASSETS . 'admin-more.css')

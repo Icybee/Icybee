@@ -130,7 +130,7 @@ EOT;
 
 	protected function add_assets(\Brickrouge\Document $document)
 	{
-		$document->css->add("http://v4-alpha.getbootstrap.com/dist/css/bootstrap.min.css", -250);
+		$document->css->add(\Icybee\ASSETS . "bootstrap.css", -250);
 		$document->css->add(\Brickrouge\ASSETS . 'brickrouge.css', -250);
 		$document->css->add(\Icybee\ASSETS . 'icybee.css', -240);
 		$document->css->add(\Icybee\ASSETS . 'admin.css', -200);

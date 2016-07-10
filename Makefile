@@ -8,9 +8,13 @@ CSS_COMPILER = `which sass`
 CSS_COMPILER_OPTIONS = --style compressed   # comment to disable compression
 
 IDEPENDONYOU_JS = build/tmp/idependonyou.js
+
 MOOTOOLS_JS = build/tmp/mootools.js
 MOOTOOLS_MORE_JS = src/assets/page/mootools-more.js
 MOOTOOLS_CORE_VER = 1.6.0
+
+BOOTSTRAP_CSS = assets/bootstrap.css
+BOOTSTRAP_BRANCH = v4-dev
 
 ADMIN_CSS = ./assets/admin.css
 ADMIN_CSS_FILES = $(shell ls src/assets/admin/*.scss)
@@ -52,6 +56,7 @@ all: \
 	$(PAGE_JS) \
 	$(JS_COMPRESSED) \
 	$(JS_UNCOMPRESSED) \
+	$(BOOTSTRAP_CSS) \
 	$(ADMIN_CSS)
 
 $(PAGE_JS): $(PAGE_JS_UNCOMPRESSED)
@@ -67,6 +72,10 @@ $(IDEPENDONYOU_JS):
 $(MOOTOOLS_JS):
 	mkdir -p build/tmp
 	curl -o $@ https://raw.githubusercontent.com/mootools/mootools-core/$(MOOTOOLS_CORE_VER)/dist/mootools-core.js
+
+$(BOOTSTRAP_CSS):
+	mkdir -p build/tmp
+	curl -o $@ https://raw.githubusercontent.com/twbs/bootstrap/$(BOOTSTRAP_BRANCH)/dist/css/bootstrap.min.css
 
 #
 #
