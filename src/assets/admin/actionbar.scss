@@ -31,14 +31,14 @@
 		}
 	}
 
-	.pull-left > *,
-	.pull-right > * {
+	.pull-xs-left > *,
+	.pull-xs-right > * {
 		float: left;
 	}
 
-	.pull-left > * + *,
-	.pull-right > * + *,
-	.pull-left + .pull-left {
+	.pull-xs-left > * + *,
+	.pull-xs-right > * + *,
+	.pull-xs-left + .pull-xs-left {
 		margin-left: 1rem;
 	}
 
@@ -74,6 +74,7 @@
 
 	select.form-control {
 		padding-right: 10px;
+		height: 20px !important;
 	}
 
 	.btn { // h: 1 + 7 + 12 + 7 + 1

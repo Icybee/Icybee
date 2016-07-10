@@ -168,8 +168,8 @@ EOT;
 		}
 		else
 		{
-			$html = new \Icybee\Element\SiteMenu([ 'class' => 'pull-left' ])
-			. new \Icybee\Element\UserMenu([ 'class' => 'pull-right' ]);
+			$html = new \Icybee\Element\SiteMenu([ 'class' => 'pull-xs-left' ])
+			. new \Icybee\Element\UserMenu([ 'class' => 'pull-xs-right' ]);
 		}
 
 		return '<div id="quick" class="clearfix">' . $html . '</div>';

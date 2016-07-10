@@ -18,7 +18,7 @@ body.page-slug-authenticate {
 	display: inline;
 }
 
-.pull-right .dropdown-menu {
+.pull-xs-right .dropdown-menu {
 	left: auto;
 	right: 0;
 }

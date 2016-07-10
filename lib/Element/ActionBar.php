@@ -126,11 +126,11 @@ class ActionBar extends Element
 
 		return <<<EOT
 <div class="actionbar-primary">
-	<div class="actionbar-brand pull-left">
+	<div class="actionbar-brand pull-xs-left">
 		{$actionbar_title}{$actionbar_new}{$actionbar_navigation}
 	</div>
 
-	<div class="pull-right">
+	<div class="pull-xs-right">
 		<div class="actionbar-controls">{$actionbar_controls}</div>
 		<div class="actionbar-search">{$actionbar_search}</div>
 	</div>
