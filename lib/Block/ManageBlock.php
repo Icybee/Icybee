@@ -15,6 +15,7 @@ use Brickrouge\A;
 use ICanBoogie\ActiveRecord;
 use ICanBoogie\ActiveRecord\Query;
 use ICanBoogie\ActiveRecord\SchemaColumn;
+use ICanBoogie\Binding\PrototypedBindings;
 use ICanBoogie\Facets\QueryString;
 use ICanBoogie\I18n;
 use ICanBoogie\Module;
@@ -26,7 +27,6 @@ use Brickrouge\Element;
 use Brickrouge\ListView;
 use Brickrouge\Ranger;
 
-use Icybee\Binding\Core\PrototypedBindings;
 use Icybee\Block\ManageBlock\CriterionColumn;
 use Icybee\Block\ManageBlock\SearchElement;
 use Icybee\Block\ManageBlock\Column;

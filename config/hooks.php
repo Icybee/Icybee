@@ -2,13 +2,6 @@
 
 namespace Icybee;
 
-use ICanBoogie\Core;
-
-$hooks = Hooks::class . '::';
-
-use ICanBoogie\HTTP\RequestDispatcher;
-use ICanBoogie\View\View;
-
 return [
 
 	'patron.markups' => [

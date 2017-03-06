@@ -16,7 +16,7 @@ namespace Icybee;
  *
  * The path includes a trailing directory separator.
  */
-define('Icybee\DIR', rtrim(__DIR__, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR);
+define('Icybee\DIR', __DIR__ . DIRECTORY_SEPARATOR);
 
 /**
  * Assets path for the Icybee package.
@@ -52,11 +52,11 @@ const OPERATION_SAVE_MODE_DISPLAY = 'display';
  * $app();
  * </pre>
  *
- * @return \ICanBoogie\Core|\Icybee\Binding\CoreBindings
+ * @return \ICanBoogie\Application
  */
 function boot()
 {
-	/* @var $app \ICanBoogie\Core|\Icybee\Binding\CoreBindings */
+	/* @var $app \ICanBoogie\Application */
 
 	$app = null;
 

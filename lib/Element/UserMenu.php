@@ -22,7 +22,7 @@ use Brickrouge\DropdownMenu;
  * The _user menu_ element is made of two parts: a link to the user profile and a dropdown menu.
  * The dropdown menu provides a link to the user profile and a link to logout the user.
  *
- * @property-read \ICanBoogie\Core|\Icybee\Binding\CoreBindings $app
+ * @property-read \ICanBoogie\Application $app
  * @property-read string $path
  * @property-read \Icybee\Modules\Users\User $user
  */

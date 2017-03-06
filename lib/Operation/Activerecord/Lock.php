@@ -11,12 +11,11 @@
 
 namespace Icybee\Operation\ActiveRecord;
 
+use ICanBoogie\Binding\PrototypedBindings;
 use ICanBoogie\ErrorCollection;
 use ICanBoogie\HTTP\Request;
 use ICanBoogie\Module;
 use ICanBoogie\Operation;
-
-use Icybee\Binding\PrototypedBindings;
 
 /**
  * The "lock" operation is used to obtain an exclusive lock on a record.

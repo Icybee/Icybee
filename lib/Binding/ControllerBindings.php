@@ -12,7 +12,7 @@
 namespace Icybee\Binding;
 
 /**
- * @property \ICanBoogie\Core|CoreBindings $app
+ * @property \ICanBoogie\Application $app
  */
 trait ControllerBindings
 {

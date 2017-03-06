@@ -13,9 +13,8 @@ namespace Icybee\Operation\Widget;
 
 use Brickrouge\Button;
 use Brickrouge\Popover;
-use Brickrouge\Widget;
+use ICanBoogie\Binding\PrototypedBindings;
 use ICanBoogie\ErrorCollection;
-use Icybee\Binding\PrototypedBindings;
 use Icybee\Modules\Nodes\AdjustNode;
 
 class Get extends \ICanBoogie\Operation

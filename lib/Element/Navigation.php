@@ -24,7 +24,7 @@ use Icybee\Routing\NavigationRouteFilter;
 /**
  * Admin navigation bar.
  *
- * @property \ICanBoogie\Core|\Icybee\Binding\CoreBindings $app
+ * @property \ICanBoogie\Application $app
  * @property \ICanBoogie\Module\ModuleCollection $modules
  * @property \ICanBoogie\HTTP\Request $request
  * @property \ICanBoogie\Routing\Route $route

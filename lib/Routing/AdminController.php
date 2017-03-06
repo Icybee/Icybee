@@ -11,18 +11,17 @@
 
 namespace Icybee\Routing;
 
+use ICanBoogie\Binding\PrototypedBindings;
 use ICanBoogie\Binding\Routing\ControllerBindings as RoutingBindings;
 use ICanBoogie\Binding\Routing\ForwardUndefinedPropertiesToApplication;
 use ICanBoogie\HTTP\AuthenticationRequired;
 use ICanBoogie\HTTP\PermissionRequired;
-use ICanBoogie\HTTP\Request;
 use ICanBoogie\Module;
 use ICanBoogie\Module\ControllerBindings as ModuleBindings;
 use ICanBoogie\Routing\Controller;
 use ICanBoogie\View\ControllerBindings as ViewBindings;
 
-use Icybee\Binding\Core\PrototypedBindings;
-use Icybee\Modules\Users\Binding\CoreBindings as UserBindings;
+use Icybee\Modules\Users\Binding\ApplicationBindings as UserBindings;
 
 /**
  * Base class for admin controllers.
@@ -30,7 +29,8 @@ use Icybee\Modules\Users\Binding\CoreBindings as UserBindings;
 abstract class AdminController extends Controller
 {
 	use Controller\ActionTrait, ForwardUndefinedPropertiesToApplication;
-	use PrototypedBindings, RoutingBindings, ModuleBindings, UserBindings, ViewBindings;
+	use PrototypedBindings;
+	use RoutingBindings, ModuleBindings, UserBindings, ViewBindings;
 
 	/**
 	 * Returns name as "admin/{name}" instead of "{name}_admin".

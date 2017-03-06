@@ -30,7 +30,7 @@ use Icybee\Routing\RouteMaker;
  *
  * @package Icybee\Element
  *
- * @property-read \ICanBoogie\Core|\Icybee\Binding\CoreBindings $app
+ * @property-read \ICanBoogie\Application $app
  * @property-read ModuleCollection $modules
  * @property-read Request $request
  * @property-read RouteCollection $routes

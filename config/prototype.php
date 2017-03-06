@@ -2,14 +2,14 @@
 
 namespace Icybee;
 
-use ICanBoogie\Core;
+use ICanBoogie\Application;
 
 $hooks = Hooks::class . '::';
 
 return [
 
-	Core::class . '::get_language' => $hooks . 'get_language',
-	Core::class . '::set_language' => $hooks . 'set_language',
-	Core::class . '::lazy_get_document' => 'Icybee\Element\Document::get'
+	Application::class . '::get_language' => $hooks . 'get_language',
+	Application::class . '::set_language' => $hooks . 'set_language',
+	Application::class . '::lazy_get_document' => 'Icybee\Element\Document::get'
 
 ];

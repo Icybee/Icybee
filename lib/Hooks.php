@@ -29,7 +29,7 @@ use ICanBoogie\View\View;
 
 use Brickrouge\Alert;
 
-use Icybee\Binding\CoreBindings;
+use Icybee\Binding\Application;
 use Icybee\Modules\Pages\PageRenderer;
 use Icybee\Operation\Module\QueryOperation;
 use Icybee\Routing\AdminController;
@@ -477,11 +477,11 @@ class Hooks
 	 *
 	 * **Note:** The language is returned from the stringified `$app->locale` property.
 	 *
-	 * @param \ICanBoogie\Core|\ICanBoogie\Binding\CLDR\CoreBindings $app
+	 * @param \ICanBoogie\Application $app
 	 *
 	 * @return string
 	 */
-	static public function get_language(\ICanBoogie\Core $app)
+	static public function get_language(\ICanBoogie\Application $app)
 	{
 		return (string) $app->locale;
 	}
@@ -491,10 +491,10 @@ class Hooks
 	 *
 	 * **Note:** The language is set to the `$app->locale` property.
 	 *
-	 * @param \ICanBoogie\Core|\ICanBoogie\Binding\CLDR\CoreBindings $app
+	 * @param \ICanBoogie\Application $app
 	 * @param string $language
 	 */
-	static public function set_language(\ICanBoogie\Core $app, $language)
+	static public function set_language(\ICanBoogie\Application $app, $language)
 	{
 		$app->locale = $language;
 	}
@@ -504,7 +504,7 @@ class Hooks
 	 */
 
 	/**
-	 * @return \ICanBoogie\Core|CoreBindings
+	 * @return \ICanBoogie\Application
 	 */
 	static private function app()
 	{

@@ -13,7 +13,7 @@ namespace Icybee\Block;
 
 use Brickrouge\Element;
 
-use Icybee\Binding\PrototypedBindings;
+use ICanBoogie\Binding\PrototypedBindings;
 use Icybee\Module;
 
 /**

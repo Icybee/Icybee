@@ -14,13 +14,13 @@ namespace Icybee\Element;
 use Icybee\Modules\Pages\PageRenderer;
 
 /**
- * @property \ICanBoogie\Core $app
+ * @property \ICanBoogie\Application $app
  * @property \Icybee\Modules\Pages\Page $page
  */
 class Document extends \Brickrouge\Document
 {
 	/**
-	 * Getter hook for the use ICanBoogie\Core::$document property.
+	 * Getter hook for the use ICanBoogie\Application::$document property.
 	 *
 	 * @return Document
 	 */

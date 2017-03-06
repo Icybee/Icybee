@@ -22,7 +22,7 @@ use Brickrouge\Element;
 use Brickrouge\ElementIsEmpty;
 
 /**
- * @property-read \ICanBoogie\Core|\Icybee\Binding\CoreBindings $app
+ * @property-read \ICanBoogie\Application $app
  * @property-read \ICanBoogie\Module\ModuleCollection $modules
  * @property-read \ICanBoogie\HTTP\Request $request
  * @property-read \ICanBoogie\Routing\RouteCollection $routes

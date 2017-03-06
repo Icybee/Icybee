@@ -14,7 +14,7 @@ namespace Icybee\Element;
 use Brickrouge\A;
 use Brickrouge\DropdownMenu;
 use Brickrouge\Element;
-use Icybee\Binding\PrototypedBindings;
+use ICanBoogie\Binding\PrototypedBindings;
 
 /**
  * @property-read string $decontextualized_path

@@ -24,7 +24,7 @@ use Brickrouge\Form;
 /**
  * A block to delete a record.
  *
- * @property-read \ICanBoogie\Core|\Icybee\Binding\CoreBindings $app
+ * @property-read \ICanBoogie\Application $app
  * @property string $title The localized title of the block. {@link get_title()}
  * @property ActiveRecord $record The record to delete. {@link get_record()}
  * @property string $record_name The name of the record to delete. {@link get_record_name()}

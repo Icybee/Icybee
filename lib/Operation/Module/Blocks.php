@@ -16,7 +16,7 @@ use ICanBoogie\I18n;
 use ICanBoogie\Operation;
 
 /**
- * @property-read \ICanBoogie\Core|\Icybee\Binding\CoreBindings $app
+ * @property-read \ICanBoogie\Application $app
  */
 class Blocks extends Operation
 {

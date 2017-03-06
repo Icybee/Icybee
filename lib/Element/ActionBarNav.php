@@ -11,9 +11,9 @@
 
 namespace Icybee\Element;
 
+use ICanBoogie\Binding\PrototypedBindings;
 use ICanBoogie\HTTP\Request;
 use ICanBoogie\I18n\Translator;
-use ICanBoogie\Module;
 use ICanBoogie\Routing\Route;
 use ICanBoogie\Routing\RouteCollection;
 
@@ -21,7 +21,6 @@ use Brickrouge\A;
 use Brickrouge\Element;
 use Brickrouge\ElementIsEmpty;
 
-use Icybee\Binding\PrototypedBindings;
 use Icybee\Modules\Users\User;
 use Icybee\Routing\ActionBarNavRouteFilter;
 

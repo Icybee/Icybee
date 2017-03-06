@@ -24,7 +24,7 @@ use Icybee\Element\QueryOperationElement;
  * {@link Icybee\Hooks::dispatch_query_operation} controller if the target module doesn't define
  * a suitable operation class.
  *
- * @property-read \ICanBoogie\Core|\Icybee\Binding\CoreBindings $app
+ * @property-read \ICanBoogie\Application $app
  */
 class QueryOperation extends Operation
 {

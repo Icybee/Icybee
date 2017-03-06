@@ -13,13 +13,12 @@ namespace Icybee\Element;
 
 use Brickrouge\A;
 use Brickrouge\SplitButton;
+use ICanBoogie\Binding\PrototypedBindings;
 use ICanBoogie\HTTP\Request;
-use ICanBoogie\Module;
 use ICanBoogie\Module\ModuleCollection;
 use ICanBoogie\Module\Descriptor;
 use ICanBoogie\Routing\RouteCollection;
 use ICanBoogie\Routing\RouteMaker;
-use Icybee\Binding\PrototypedBindings;
 use Icybee\Modules\Users\User;
 use Icybee\Routing\NewRouteFilter;
 

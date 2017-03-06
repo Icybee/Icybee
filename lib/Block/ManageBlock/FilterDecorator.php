@@ -88,7 +88,7 @@ EOT;
 	}
 
 	/**
-	 * @return \ICanBoogie\Core|\Icybee\Binding\CoreBindings
+	 * @return \ICanBoogie\Application
 	 */
 	static private function app()
 	{

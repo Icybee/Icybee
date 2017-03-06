@@ -21,7 +21,7 @@ use Brickrouge\Decorator;
 /**
  * Decorates a component with an _edit_ element.
  *
- * @property-read \ICanBoogie\Core|\Icybee\Binding\CoreBindings $app
+ * @property-read \ICanBoogie\Application $app
  */
 class EditDecorator extends Decorator
 {

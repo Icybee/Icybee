@@ -25,7 +25,7 @@ use Icybee\Module;
 /**
  * Base class for form type blocks.
  *
- * @property-read \ICanBoogie\Core|\Icybee\Binding\CoreBindings $app
+ * @property-read \ICanBoogie\Application $app
  * @property-read Document $document
  * @property-read boolean $permission
  *

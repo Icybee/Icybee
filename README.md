@@ -1,6 +1,6 @@
 # Icybee
 
-Icybee is a CMS for PHP5.5+
+Icybee is a CMS for PHP.
 
 If you want to try the CMS for yourself please [download the demonstration](http://icybee.org/icybee-demo-latest.zip)
 and follow the [installation guide](https://github.com/Icybee/Icybee/wiki/Installation-guide-for-Icybee%27s-epic-demonstration).
@@ -87,7 +87,7 @@ capable of, after twelve months of development:
 
 ## Requirements
 
-The package requires PHP 5.5 or later.
+The package requires PHP 5.6 or later.
 
 
 
@@ -100,10 +100,8 @@ Create a `composer.json` file and run `php composer.phar install` command to ins
 
 ```json
 {
-	"minimum-stability": "dev",
-
 	"require": {
-		"icybee/icybee": "2.x"
+		"icybee/icybee": "^4.0"
 	},
 
 	"scripts": {

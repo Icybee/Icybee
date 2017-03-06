@@ -11,7 +11,7 @@
 
 namespace Icybee\Element;
 
-use ICanBoogie\Core;
+use ICanBoogie\Application;
 use ICanBoogie\HTTP\Request;
 use ICanBoogie\I18n\Translator\Proxi;
 use ICanBoogie\Module;
@@ -28,7 +28,7 @@ use Icybee\Modules\Users\User;
 /**
  * A menu that helps managing the contents of pages.
  *
- * @property Core|\Icybee\Binding\CoreBindings $app
+ * @property Application $app
  * @property \ICanBoogie\I18n\Translator\Proxi $translator
  * @property Module\ModuleCollection $modules
  * @property Request $request
