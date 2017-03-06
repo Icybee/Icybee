@@ -12,6 +12,7 @@
 namespace Icybee\Element;
 
 use ICanBoogie\Accessor\AccessorTrait;
+use function ICanBoogie\app;
 use ICanBoogie\Debug;
 
 use Brickrouge\Alert;
@@ -58,7 +59,7 @@ class AdminDecorator
 	public function __construct($component)
 	{
 		$this->component = $component;
-		$this->app = \ICanBoogie\app();
+		$this->app = app();
 	}
 
 	protected $changed_site = false;

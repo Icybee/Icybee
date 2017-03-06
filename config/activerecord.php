@@ -6,7 +6,7 @@ return [
 
 		'local' => [
 
-			'dsn' => 'sqlite:' . ICanBoogie\REPOSITORY . 'local.sqlite'
+			'dsn' => 'sqlite:repository/local.sqlite'
 
 		]
 

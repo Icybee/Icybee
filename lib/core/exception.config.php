@@ -11,13 +11,14 @@
 
 namespace ICanBoogie\Exception;
 
+use function ICanBoogie\app;
 use ICanBoogie\Module;
 
 class Config extends \Exception
 {
 	public function __construct($message, array $params=[], $code=500)
 	{
-		$app = \ICanBoogie\app();
+		$app = app();
 
 		if (is_string($message) && isset($app->modules->descriptors[$message]))
 		{

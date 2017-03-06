@@ -11,6 +11,7 @@
 
 namespace Icybee\Element;
 
+use function ICanBoogie\app;
 use ICanBoogie\Debug;
 use ICanBoogie\HTTP\RequestDispatcher;
 use ICanBoogie\Operation;
@@ -63,7 +64,7 @@ class StatsDecorator extends \Brickrouge\Decorator
 	{
 		parent::__construct($component);
 
-		$this->app = \ICanBoogie\app();
+		$this->app = app();
 	}
 
 	public function render()

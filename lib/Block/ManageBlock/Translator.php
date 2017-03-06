@@ -11,7 +11,7 @@
 
 namespace Icybee\Block\ManageBlock;
 
-use ICanBoogie\I18n;
+use function ICanBoogie\app;
 use ICanBoogie\Module;
 
 /**
@@ -55,14 +55,6 @@ class Translator
 			?: $user_default;
 		};
 
-		return self::app()->translate($native, $args, $options);
-	}
-
-	/**
-	 * @return \ICanBoogie\Application
-	 */
-	static private function app()
-	{
-		return \ICanBoogie\app();
+		return app()->translate($native, $args, $options);
 	}
 }

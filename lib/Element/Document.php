@@ -11,6 +11,7 @@
 
 namespace Icybee\Element;
 
+use function ICanBoogie\app;
 use Icybee\Modules\Pages\PageRenderer;
 
 /**
@@ -145,7 +146,7 @@ class Document extends \Brickrouge\Document
 	 */
 	static public function markup_document_css(array $args, \Patron\Engine $engine, $template)
 	{
-		$app = \ICanBoogie\app();
+		$app = app();
 		$document = $app->document;
 
 		if (isset($args['href']))
@@ -215,7 +216,7 @@ class Document extends \Brickrouge\Document
 	 */
 	static public function markup_document_js(array $args, \Patron\Engine $engine, $template)
 	{
-		$app = \ICanBoogie\app();
+		$app = app();
 		$document = $app->document;
 
 		if (isset($args['href']))

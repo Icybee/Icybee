@@ -11,6 +11,7 @@
 
 namespace Icybee;
 
+use function ICanBoogie\app;
 use ICanBoogie\Debug;
 use ICanBoogie\HTTP\NotFound;
 use ICanBoogie\HTTP\RequestDispatcher;
@@ -50,7 +51,7 @@ class Hooks
 	 */
 	static public function dispatch_query_operation(Request $request)
 	{
-		$app = self::app();
+		$app = app();
 		$module = $app->modules[$request['module']];
 		$class = $app->modules->resolve_classname('Operation\QueryOperationOperation', $module)
 			?: QueryOperation::class;
@@ -67,7 +68,7 @@ class Hooks
 	 */
 	static public function before_user_logout(Operation\BeforeProcessEvent $event)
 	{
-		$app = self::app();
+		$app = app();
 		$uid = $app->user_id;
 
 		if (!$uid)
@@ -103,7 +104,7 @@ class Hooks
 	 */
 	static public function before_save_operation_control(Operation\BeforeControlEvent $event, \ICanBoogie\Module\Operation\SaveOperation $target)
 	{
-		$app = self::app();
+		$app = app();
 		$mode = $event->request[OPERATION_SAVE_MODE];
 
 		if (!$mode)
@@ -173,7 +174,7 @@ class Hooks
 	 */
 	static public function before_page_renderer_render()
 	{
-		self::app()->events->attach(function(\BlueTihi\Context\LoadedNodesEvent $event, \BlueTihi\Context $target) {
+		app()->events->attach(function(\BlueTihi\Context\LoadedNodesEvent $event, \BlueTihi\Context $target) {
 
 			$nodes = &self::$page_controller_loaded_nodes;
 
@@ -238,7 +239,7 @@ class Hooks
 		$request = $event->request;
 
 		// FIXME: should use segment flash
-		$session = self::app()->session;
+		$session = app()->session;
 		$session->flash['form.values'] = $request->params;
 		$session->flash['form.errors'] = $target->response->errors;
 
@@ -265,7 +266,7 @@ class Hooks
 		}
 
 		$category = $matches[1];
-		$app = self::app();
+		$app = app();
 		$routes = $app->routes;
 
 		foreach ($app->modules->enabled_modules_descriptors as $module_id => $descriptor)
@@ -282,7 +283,7 @@ class Hooks
 				continue;
 			}
 
-			$event->response = new RedirectResponse(self::app()->url_for($route_id), Status::TEMPORARY_REDIRECT, [
+			$event->response = new RedirectResponse(app()->url_for($route_id), Status::TEMPORARY_REDIRECT, [
 
 				'X-ICanBoogie-Redirected' => __FILE__ . '@' . __LINE__
 
@@ -318,7 +319,7 @@ class Hooks
 	{
 		$key = '<!-- alert-markup-placeholder-' . uniqid() . ' -->';
 
-		self::app()->events->attach(function(PageRenderer\RenderEvent $event, PageRenderer $target) use($engine, $template, $key) {
+		app()->events->attach(function(PageRenderer\RenderEvent $event, PageRenderer $target) use($engine, $template, $key) {
 
 			$types = [ 'success', 'info', 'error' ];
 
@@ -372,7 +373,7 @@ class Hooks
 	 */
 	static public function markup_body(array $args, $engine, $template)
 	{
-		return '<body class="' . trim($args['class'] . ' ' . self::app()->document->css_class) . '">' . $engine($template) . '</body>';
+		return '<body class="' . trim($args['class'] . ' ' . app()->document->css_class) . '">' . $engine($template) . '</body>';
 	}
 
 	/*
@@ -386,7 +387,7 @@ class Hooks
 	 */
 	static public function exception_handler(/*\Exception */$exception)
 	{
-		$app = self::app();
+		$app = app();
 		$code = $exception->getCode() ?: 500;
 		$message = $exception->getMessage();
 		$class = get_class($exception); // The $class variable is required by the template
@@ -497,17 +498,5 @@ class Hooks
 	static public function set_language(\ICanBoogie\Application $app, $language)
 	{
 		$app->locale = $language;
-	}
-
-	/*
-	 * Support
-	 */
-
-	/**
-	 * @return \ICanBoogie\Application
-	 */
-	static private function app()
-	{
-		return \ICanBoogie\app();
 	}
 }

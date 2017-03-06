@@ -11,7 +11,7 @@
 
 namespace Icybee\Block\ManageBlock;
 
-use ICanBoogie\I18n;
+use function ICanBoogie\app;
 
 /**
  * Decorates a component with a _filter_ element.
@@ -67,7 +67,7 @@ class FilterDecorator
 			return $label;
 		}
 
-		$title = \ICanBoogie\escape(self::app()->translate('Display only: :identifier', [ ':identifier' => strip_tags($label) ]));
+		$title = \ICanBoogie\escape(app()->translate('Display only: :identifier', [ ':identifier' => strip_tags($label) ]));
 		$url = \ICanBoogie\escape($property . '=') . urlencode($value);
 
 		return <<<EOT
@@ -85,13 +85,5 @@ EOT;
 		{
 			return \Brickrouge\render_exception($e);
 		}
-	}
-
-	/**
-	 * @return \ICanBoogie\Application
-	 */
-	static private function app()
-	{
-		return \ICanBoogie\app();
 	}
 }

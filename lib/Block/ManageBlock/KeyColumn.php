@@ -14,6 +14,7 @@ namespace Icybee\Block\ManageBlock;
 use Brickrouge\Document;
 use Brickrouge\Element;
 
+use function ICanBoogie\app;
 use Icybee\Modules\Users\User;
 use Icybee\Element\WrappedCheckbox;
 
@@ -39,7 +40,7 @@ class KeyColumn extends Column
 		/* @var $user User */
 
 		$key = $this->id;
-		$user = \ICanBoogie\app()->user;
+		$user = app()->user;
 		$ownership = [];
 
 		foreach ($records as $record)

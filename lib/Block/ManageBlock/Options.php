@@ -3,6 +3,7 @@
 namespace Icybee\Block\ManageBlock;
 
 use ICanBoogie\Accessor\AccessorTrait;
+use function ICanBoogie\app;
 
 /**
  * Display options of the manager element.
@@ -27,12 +28,12 @@ class Options
 
 	protected function get_site_id()
 	{
-		return \ICanBoogie\app()->site_id;
+		return app()->site_id;
 	}
 
 	protected function get_user()
 	{
-		return \ICanBoogie\app()->user;
+		return app()->user;
 	}
 
 	public function __construct($name)

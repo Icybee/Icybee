@@ -11,6 +11,7 @@
 
 namespace Icybee\Element;
 
+use function ICanBoogie\app;
 use ICanBoogie\Debug;
 
 use Brickrouge\Element;
@@ -23,7 +24,7 @@ class DocumentDecorator
 	public function __construct($component)
 	{
 		$this->component = $component;
-		$this->app = \ICanBoogie\app();
+		$this->app = app();
 		$this->body = new Element('body');
 	}
 
