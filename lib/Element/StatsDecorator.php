@@ -149,7 +149,17 @@ class StatsDecorator extends \Brickrouge\Decorator
 		{
 			if (!is_string($callback))
 			{
-				$callback = implode('::', $callback);
+				if (is_object($callback))
+				{
+					if (method_exists($callback, '__toString'))
+					{
+						$callback = (string) $callback;
+					}
+				}
+				else
+				{
+					$callback = implode('::', $callback);
+				}
 			}
 
 			$max_length_type = max($max_length_type, strlen($type));

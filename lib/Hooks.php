@@ -269,7 +269,7 @@ class Hooks
 		$app = app();
 		$routes = $app->routes;
 
-		foreach ($app->modules->enabled_modules_descriptors as $module_id => $descriptor)
+		foreach ($app->modules->descriptors as $module_id => $descriptor)
 		{
 			if ($descriptor[Descriptor::CATEGORY] != $category)
 			{
@@ -387,6 +387,11 @@ class Hooks
 	 */
 	static public function exception_handler(/*\Exception */$exception)
 	{
+		if (PHP_SAPI === 'cli')
+		{
+			return;
+		}
+
 		$app = app();
 		$code = $exception->getCode() ?: 500;
 		$message = $exception->getMessage();
@@ -403,8 +408,8 @@ class Hooks
 				$normalized_message = mb_substr($normalized_message, 0, 29) . '…';
 			}
 
-			header('HTTP/1.0 ' . $code . ' ' . $class . ': ' . $normalized_message);
-			header('Cache-Control: Cache-Control: no-cache, no-store, must-revalidate');
+			header('HTTP/1.1 ' . $code . ' ' . $class . ': ' . $normalized_message);
+			header('Cache-Control: no-cache, no-store, must-revalidate');
 			header('Pragma: no-cache');
 			header('Expires: 0');
 			header('X-ICanBoogie-Exception: ' . \ICanBoogie\strip_root($exception->getFile()) . '@' . $exception->getLine());
@@ -424,15 +429,12 @@ class Hooks
 			exit;
 		}
 
-		$formatted_exception = Debug::format_alert($exception);
-		$reported = false;
+		$formatted_exception = (string) $exception;
+		$formatted_exception = strtr($formatted_exception, [
 
-		if (!($exception instanceof HTTPError))
-		{
-			Debug::report($formatted_exception);
+			getcwd() => ''
 
-			$reported = true;
-		}
+		]);
 
 		if (!headers_sent() && PHP_SAPI != 'cli')
 		{
@@ -459,11 +461,6 @@ class Hooks
 			require DIR . 'templates/exception.phtml';
 
 			$formatted_exception = ob_get_clean();
-		}
-
-		if (PHP_SAPI == 'cli')
-		{
-			$formatted_exception = strip_tags($formatted_exception);
 		}
 
 		echo $formatted_exception;

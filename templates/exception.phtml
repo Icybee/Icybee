@@ -30,15 +30,10 @@ namespace ICanBoogie;
 	<div class="pull-xs-left">
 		<div class="actionbar-title"><h1>Icybee <small><?= $code . ' ' . $class ?></small></h1></div>
 	</div>
-	<?php if ($reported): ?>
-	<div class="pull-xs-right">
-		<span class="btn btn-success">The error has been reported</span>
-	</div>
-	<?php endif ?>
 </div>
 
 <div id="contents-wrapper">
-	<?= $formatted_exception ?>
+	<div class="alert alert-danger"><pre><code><?= $formatted_exception ?></code></pre></div>
 </div>
 
 <footer><a href="http://www.icybee.org/" target="_blank">Icybee</a></footer>

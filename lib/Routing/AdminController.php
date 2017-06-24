@@ -17,7 +17,7 @@ use ICanBoogie\Binding\Routing\ForwardUndefinedPropertiesToApplication;
 use ICanBoogie\HTTP\AuthenticationRequired;
 use ICanBoogie\HTTP\PermissionRequired;
 use ICanBoogie\Module;
-use ICanBoogie\Module\ControllerBindings as ModuleBindings;
+use ICanBoogie\Binding\Module\ControllerBindings as ModuleBindings;
 use ICanBoogie\Routing\Controller;
 use ICanBoogie\View\ControllerBindings as ViewBindings;
 
