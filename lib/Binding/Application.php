@@ -24,7 +24,7 @@ trait Application
 	use \ICanBoogie\Binding\Render\ApplicationBindings;
 	use \ICanBoogie\Binding\Routing\ApplicationBindings;
 	use \ICanBoogie\Binding\I18n\ApplicationBindings;
-	use \ICanBoogie\Module\ApplicationBindings;
+	use \ICanBoogie\Binding\Module\ApplicationBindings;
 
 	use \Icybee\Modules\Editor\Binding\ApplicationBindings;
 	use \Icybee\Modules\Users\Binding\ApplicationBindings;
