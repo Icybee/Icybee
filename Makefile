@@ -1,8 +1,15 @@
+PACKAGE_NAME = icybee/icybee
+PACKAGE_VERSION = 4.0
+PHPUNIT_VERSION = phpunit-5.7.phar
+PHPUNIT_FILENAME = build/$(PHPUNIT_VERSION)
+PHPUNIT = php $(PHPUNIT_FILENAME)
+
 JS_COMPRESSOR = `which uglifyjs` $^ \
 	--compress \
 	--mangle \
 	--screw-ie8 \
-	--source-map $@.map
+	--source-map "filename='$@.map'" \
+	--output "$@"
 #JS_COMPRESSOR = cat $^ # uncomment this line to produce uncompressed files
 CSS_COMPILER = `which sass`
 CSS_COMPILER_OPTIONS = --style compressed   # comment to disable compression
@@ -53,14 +60,16 @@ PAGE_JS_FILES = \
 	$(MOOTOOLS_MORE_JS)
 
 all: \
+	$(PHPUNIT_FILENAME) \
 	$(PAGE_JS) \
 	$(JS_COMPRESSED) \
 	$(JS_UNCOMPRESSED) \
 	$(BOOTSTRAP_CSS) \
-	$(ADMIN_CSS)
+	$(ADMIN_CSS) \
+	vendor
 
 $(PAGE_JS): $(PAGE_JS_UNCOMPRESSED)
-	$(JS_COMPRESSOR) >$@
+	$(JS_COMPRESSOR)
 
 $(PAGE_JS_UNCOMPRESSED): $(PAGE_JS_UNCOMPRESSED_FILES)
 	cat $^ >$@
@@ -82,7 +91,7 @@ $(BOOTSTRAP_CSS):
 #
 
 $(JS_COMPRESSED): $(JS_UNCOMPRESSED)
-	$(JS_COMPRESSOR) >$@
+	$(JS_COMPRESSOR)
 
 $(JS_UNCOMPRESSED): $(JS_FILES)
 	cat $^ >$@
@@ -99,29 +108,42 @@ watch-css:
 #
 
 vendor:
-	@composer install
+	@COMPOSER_ROOT_VERSION=$(PACKAGE_VERSION) composer install
 
 update:
-	@composer update
+	@COMPOSER_ROOT_VERSION=$(PACKAGE_VERSION) composer update
 
-autoload:
+autoload: vendor
 	@composer dump-autoload
 
-test: vendor
-	@phpunit
+$(PHPUNIT_FILENAME):
+	mkdir -p build
+	wget https://phar.phpunit.de/$(PHPUNIT_VERSION) -O $(PHPUNIT_FILENAME)
 
-test-coverage: vendor
+test: all
+	@$(PHPUNIT)
+
+test-coverage: all
 	@mkdir -p build/coverage
-	@phpunit --coverage-html build/coverage
+	@$(PHPUNIT) --coverage-html ../build/coverage
+
+test-coveralls: all
+	@mkdir -p build/logs
+	COMPOSER_ROOT_VERSION=$(PACKAGE_VERSION) composer require satooshi/php-coveralls
+	@$(PHPUNIT) --coverage-clover ../build/logs/clover.xml
+	php vendor/bin/coveralls -v
 
 doc: vendor
 	@mkdir -p build/docs
-	@apigen \
-	--source ./lib \
-	--destination build/docs/ --title Icybee \
-	--template-config /usr/share/php/data/ApiGen/templates/bootstrap/config.neon
+	@apigen generate \
+	--source lib \
+	--destination build/docs/ \
+	--title "$(PACKAGE_NAME) v$(PACKAGE_VERSION)" \
+	--template-theme "bootstrap"
 
 clean:
-	rm -Rf build
-	rm -f  composer.lock
-	rm -Rf vendor
+	@rm -fR build
+	@rm -fR vendor
+	@rm -f composer.lock
+
+.PHONY: all autoload doc clean test test-coverage test-coveralls update
