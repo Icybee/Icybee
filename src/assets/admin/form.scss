@@ -22,7 +22,7 @@ form {
 }
 
 .form-group > label,
-.element-description {
+.form-text {
 	padding-left: 0;
 	padding-right: 0;
 	padding-bottom: 0;
@@ -119,9 +119,9 @@ form {
 		-webkit-box-sizing: border-box;
 	}
 
-	.element-description,
-	.help-block {
-		color: inherit;
+	.help-block,
+	.form-text {
+		color: inherit !important;
 		font-size: 12px;
 		max-width: 76ex;
 	}
