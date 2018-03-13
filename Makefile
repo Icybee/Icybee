@@ -17,61 +17,54 @@ CSS_COMPILER_OPTIONS = --style compressed   # comment to disable compression
 IDEPENDONYOU_JS = build/tmp/idependonyou.js
 
 MOOTOOLS_JS = build/tmp/mootools.js
-MOOTOOLS_MORE_JS = src/assets/page/mootools-more.js
+MOOTOOLS_MORE_JS = assets/page/mootools-more.js
 MOOTOOLS_CORE_VER = 1.6.0
 
 BOOTSTRAP_CSS = assets/bootstrap.css
 BOOTSTRAP_BRANCH = v4-dev
 
 ADMIN_CSS = ./assets/admin.css
-ADMIN_CSS_FILES = $(shell ls src/assets/admin/*.scss)
-ADMIN_CSS_ENTRY = ./src/assets/admin/main.scss
+ADMIN_CSS_FILES = $(shell ls assets/admin/*.scss)
+ADMIN_CSS_ENTRY = ./assets/admin/main.scss
+
+ADMIN_JS = assets/admin.js
+ADMIN_JS_UNCOMPRESSED = build/tmp/admin-uncompressed.js
+ADMIN_JS_FILES = \
+	assets/admin/core.js \
+	assets/admin/string.js \
+	assets/admin/request.js \
+	assets/admin/admin.js \
+	assets/admin/alert.js \
+	assets/admin/actionbar.js \
+	assets/admin/form.js \
+	assets/admin/popover-image.js \
+	assets/admin/reset.js \
+	assets/admin/save-mode.js \
+	assets/admin/Spinner.js \
+	assets/admin/AdjustPopover.js \
+	assets/admin/Adjust.js \
+	assets/admin/img-dpr.js
 
 PAGE_JS = assets/page.js
 PAGE_JS_UNCOMPRESSED = build/tmp/page-uncompressed.js
-PAGE_JS_UNCOMPRESSED_FILES = \
+PAGE_JS_FILES = \
 	$(IDEPENDONYOU_JS) \
 	$(MOOTOOLS_JS) \
 	$(MOOTOOLS_MORE_JS) \
 	../../icanboogie/icanboogie/assets/icanboogie.js
 
-JS_FILES = \
-	src/assets/admin/core.js \
-	src/assets/admin/string.js \
-	src/assets/admin/request.js \
-	src/assets/admin/admin.js \
-	src/assets/admin/alert.js \
-	src/assets/admin/actionbar.js \
-	src/assets/admin/form.js \
-	src/assets/admin/popover-image.js \
-	src/assets/admin/reset.js \
-	src/assets/admin/save-mode.js \
-	src/assets/admin/Spinner.js \
-	src/assets/admin/AdjustPopover.js \
-	src/assets/admin/Adjust.js \
-	src/assets/admin/img-dpr.js
-
-JS_COMPRESSED = assets/admin.js
-JS_UNCOMPRESSED = build/tmp/admin-uncompressed.js
-
-PAGE_JS_FILES = \
-	$(IDEPENDONYOU_JS) \
-	build/tmp/mootools-core.js \
-	$(MOOTOOLS_MORE_JS)
-
 all: \
 	$(PHPUNIT_FILENAME) \
-	$(PAGE_JS) \
-	$(JS_COMPRESSED) \
-	$(JS_UNCOMPRESSED) \
 	$(BOOTSTRAP_CSS) \
 	$(ADMIN_CSS) \
+	$(ADMIN_JS) \
+	$(PAGE_JS) \
 	vendor
 
 $(PAGE_JS): $(PAGE_JS_UNCOMPRESSED)
 	$(JS_COMPRESSOR)
 
-$(PAGE_JS_UNCOMPRESSED): $(PAGE_JS_UNCOMPRESSED_FILES)
+$(PAGE_JS_UNCOMPRESSED): $(PAGE_JS_FILES)
 	cat $^ >$@
 
 $(IDEPENDONYOU_JS):
@@ -90,10 +83,10 @@ $(BOOTSTRAP_CSS):
 #
 #
 
-$(JS_COMPRESSED): $(JS_UNCOMPRESSED)
+$(ADMIN_JS): $(ADMIN_JS_UNCOMPRESSED)
 	$(JS_COMPRESSOR)
 
-$(JS_UNCOMPRESSED): $(JS_FILES)
+$(ADMIN_JS_UNCOMPRESSED): $(ADMIN_JS_FILES)
 	cat $^ >$@
 
 $(ADMIN_CSS): $(ADMIN_CSS_FILES)
